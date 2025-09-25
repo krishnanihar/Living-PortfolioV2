@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/effects/ThemeProvider';
 import { Navigation } from '@/components/ui/Navigation';
 import { CustomCursor } from '@/components/effects/CustomCursor';
 import { FocusManager } from '@/components/effects/FocusManager';
+import { MicroInteractionProvider } from '@/components/effects/MicroInteractionProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -92,6 +93,9 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <ThemeProvider defaultTheme="dark" attribute="data-theme">
+          {/* Micro-interactions system */}
+          <MicroInteractionProvider />
+
           {/* Premium cursor system */}
           <CustomCursor />
 
