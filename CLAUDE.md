@@ -56,7 +56,8 @@ src/
 ├── data/
 │   └── projects.ts        # Project portfolio data
 ├── lib/
-│   ├── design-tokens.ts   # Design system tokens
+│   ├── animations.ts      # Animation utilities
+│   ├── micro-interactions.ts  # Advanced interaction system
 │   └── utils.ts           # Utility functions
 └── types/
     └── projects.ts        # TypeScript type definitions
@@ -64,29 +65,29 @@ src/
 
 ### Design System Architecture
 
-**Design Tokens**: Located in `src/lib/design-tokens.ts`
-- Centralized color system with dark/light themes
-- Spacing, typography, and motion tokens
-- Component-specific tokens (navigation, hero, particles)
-- Glassmorphism utilities in Tailwind config
+**CSS Variables System**: Located in `src/app/globals.css`
+- Comprehensive design token system with CSS variables
+- Theme-aware colors, spacing, and typography
+- Advanced glassmorphism with iOS Control Center-level sophistication
+- Film grain overlay and atmospheric background effects
 
 **Color System**:
 - OLED black canvas (`#0A0A0A`) as primary background
 - Brand red (`#DA0E29`) for primary actions
-- Section-specific accent colors (work: blue, labs: amber, etc.)
-- Sophisticated opacity-based surface hierarchy
+- Sophisticated opacity-based surface hierarchy (4-6% opacity)
+- Theme-aware glass surfaces with proper blur and saturation
 
-**Tailwind Configuration**:
-- Custom utilities for glassmorphism (`.glass-dark`, `.glass-light`)
-- Extended color palette matching design tokens
-- Premium cubic-bezier easing (`cubic-bezier(0.22, 1, 0.36, 1)`)
-- Navigation height utilities
+**Micro-Interactions**:
+- Magnetic hover effects with performance monitoring
+- Device capability detection (touch/hover/high DPI)
+- Cursor spotlight effects and advanced particle systems
+- Scroll reveal animations with intersection observers
 
 ### Component Architecture
 
 **UI Components** (`src/components/ui/`):
 - Follow consistent prop interfaces with TypeScript
-- Use design tokens from `design-tokens.ts`
+- Use CSS variables for theme-aware styling
 - Support both light and dark themes
 - Export types and components from `index.ts`
 
@@ -151,7 +152,8 @@ TypeScript path mapping configured:
 
 ### Development Workflow
 1. Always check TypeScript errors before committing
-2. Use the design token system rather than hardcoded values
+2. Use CSS variables rather than hardcoded values
 3. Test components in both light and dark themes
 4. Ensure accessibility for interactive components
 5. Follow the existing project data structure for new portfolio items
+6. Consider performance impact of animations and effects
