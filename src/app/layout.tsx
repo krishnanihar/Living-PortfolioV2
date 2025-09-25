@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { ThemeProvider, ThemeToggle } from '@/components/effects/ThemeProvider';
+import { ThemeProvider } from '@/components/effects/ThemeProvider';
 import { Navigation } from '@/components/ui/Navigation';
 
 const inter = Inter({
@@ -84,8 +84,7 @@ export default function RootLayout({
       <body
         className={`
           ${inter.className}
-          min-h-screen bg-dark-bg-primary text-dark-text-primary
-          [data-theme="light"] &:bg-light-bg-primary [data-theme="light"] &:text-light-text-primary
+          min-h-screen bg-black text-white/92
           antialiased overflow-x-hidden
         `}
         suppressHydrationWarning
@@ -94,15 +93,10 @@ export default function RootLayout({
           {/* Navigation */}
           <Navigation />
 
-          {/* Main content */}
-          <main className="relative z-10">
-            {children}
-          </main>
+          {/* Main content - Hero component handles its own layout now */}
+          {children}
 
-          {/* Theme toggle */}
-          <ThemeToggle />
-
-          {/* Background effects will go here */}
+          {/* Background effects placeholder */}
           <div
             id="particle-canvas"
             className="fixed inset-0 pointer-events-none z-0"
