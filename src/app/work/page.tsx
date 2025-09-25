@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Navigation } from '@/components/ui/Navigation';
+import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import { Work } from '@/components/sections/Work';
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default function WorkPage() {
   return (
     <>
-      <Navigation className="fixed top-4 left-4 right-4 z-[200] max-w-none" />
+      <PortfolioNavigation />
       <Work />
     </>
   );
