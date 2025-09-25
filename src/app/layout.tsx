@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/effects/ThemeProvider';
 import { Navigation } from '@/components/ui/Navigation';
+import { CustomCursor } from '@/components/effects/CustomCursor';
+import { FocusManager } from '@/components/effects/FocusManager';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -90,6 +92,12 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <ThemeProvider defaultTheme="dark" attribute="data-theme">
+          {/* Premium cursor system */}
+          <CustomCursor />
+
+          {/* Enhanced focus management */}
+          <FocusManager />
+
           {/* Navigation */}
           <Navigation />
 
