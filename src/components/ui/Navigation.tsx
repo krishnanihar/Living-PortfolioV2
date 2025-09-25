@@ -3,12 +3,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { motion, useMotionValue, useSpring, useTransform, useScroll, AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useScroll, AnimatePresence } from 'framer-motion';
 import { Moon, Sun, Palette, Home, User, Mail, Briefcase } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/components/effects/ThemeProvider';
-import { useMagneticEffect, useGlowEffect, baseVariants, transitions, liquidMorphVariants } from '@/lib/animations';
-import { MagneticText } from './MagneticText';
 import { prefersReducedMotion } from '@/lib/utils';
 
 export interface NavigationProps {
@@ -32,122 +30,38 @@ interface NavItemProps {
 }
 
 function NavItem({ href, label, icon: Icon, isActive, isCompact, index }: NavItemProps) {
-  const itemRef = useRef<HTMLAnchorElement>(null);
-  const { x, y, handleMouseMove, handleMouseLeave } = useMagneticEffect(0.2);
-  const { x: glowX, y: glowY, opacity: glowOpacity, updateGlow, hideGlow } = useGlowEffect();
-
-  const handleMouseEnter = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (itemRef.current) {
-      updateGlow(event.nativeEvent, itemRef.current);
-    }
-  };
-
-  const handleMouseMoveInternal = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (itemRef.current) {
-      handleMouseMove(event.nativeEvent, itemRef.current);
-      updateGlow(event.nativeEvent, itemRef.current);
-    }
-  };
-
-  const handleMouseLeaveInternal = () => {
-    handleMouseLeave();
-    hideGlow();
-  };
-
   return (
     <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{
-        delay: index * 0.1,
-        duration: 0.5,
-        ease: [0.22, 1, 0.36, 1]
+        delay: index * 0.05,
+        duration: 0.3,
       }}
       className="relative"
     >
-      <motion.div
-        style={{ x, y }}
-        className="relative"
+      <Link
+        href={href as any}
+        className={cn(
+          'flex items-center gap-2 px-4 py-2 rounded-full font-light transition-all duration-300',
+          'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#DA0E29]/50 focus-visible:ring-offset-1 focus-visible:ring-offset-transparent',
+          isCompact ? 'w-10 h-10 justify-center px-0' : 'px-4',
+          isActive
+            ? 'text-white/95 bg-[#DA0E29]/10'
+            : 'text-white/60 hover:text-white/90 hover:bg-white/04'
+        )}
       >
-        <Link
-          ref={itemRef}
-          href={href as any}
-          className={cn(
-            'relative flex items-center gap-2 px-3 py-2 rounded-full font-medium transition-all duration-300 will-change-transform',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DA0E29] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent',
-            'group overflow-hidden',
-            isCompact ? 'w-10 h-10 justify-center' : 'px-4',
-            isActive
-              ? 'text-white/95 bg-white/10'
-              : 'text-white/70 hover:text-white/95 hover:bg-white/8'
-          )}
-          onMouseMove={handleMouseMoveInternal}
-          onMouseLeave={handleMouseLeaveInternal}
-          onMouseEnter={handleMouseEnter}
-        >
-        {/* Dynamic glow background */}
-        <motion.div
-          className="absolute inset-0 rounded-full pointer-events-none"
-          style={{
-            background: isActive
-              ? `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(218, 14, 41, 0.3), transparent 70%)`
-              : `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(255, 255, 255, 0.1), transparent 70%)`,
-            opacity: glowOpacity,
-          }}
-        />
-
         {/* Icon */}
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          transition={transitions.base}
-        >
-          <Icon size={isCompact ? 18 : 16} className="relative z-10" />
-        </motion.div>
+        <Icon size={isCompact ? 16 : 14} />
 
         {/* Label (hidden in compact mode) */}
-        <AnimatePresence>
-          {!isCompact && (
-            <motion.span
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: 'auto' }}
-              exit={{ opacity: 0, width: 0 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="relative z-10 text-sm whitespace-nowrap overflow-hidden"
-            >
-              <MagneticText strength={0.1} splitByLetters={false}>
-                {label}
-              </MagneticText>
-            </motion.span>
-          )}
-        </AnimatePresence>
-
-        {/* Active indicator blob */}
-        {isActive && (
-          <motion.div
-            layoutId="activeIndicator"
-            className="absolute inset-0 bg-gradient-to-r from-[#DA0E29]/20 to-[#DA0E29]/10 rounded-full"
-            initial={false}
-            transition={{
-              type: 'spring',
-              stiffness: 500,
-              damping: 30,
-            }}
-          />
+        {!isCompact && (
+          <span className="text-sm font-light tracking-wide">
+            {label}
+          </span>
         )}
-
-        {/* Ripple effect on click */}
-        <motion.div
-          className="absolute inset-0 bg-white/20 rounded-full scale-0 opacity-0"
-          whileTap={{
-            scale: [0, 1.2],
-            opacity: [0.5, 0],
-            transition: { duration: 0.4 }
-          }}
-        />
       </Link>
     </motion.div>
-  </motion.div>
   );
 }
 
@@ -157,27 +71,6 @@ interface ThemeToggleProps {
 
 function ThemeToggle({ isCompact }: ThemeToggleProps) {
   const { theme, resolvedTheme, toggleTheme } = useTheme();
-  const toggleRef = useRef<HTMLButtonElement>(null);
-  const { x, y, handleMouseMove, handleMouseLeave } = useMagneticEffect(0.15);
-  const { x: glowX, y: glowY, opacity: glowOpacity, updateGlow, hideGlow } = useGlowEffect();
-
-  const handleMouseEnter = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (toggleRef.current) {
-      updateGlow(event.nativeEvent, toggleRef.current);
-    }
-  };
-
-  const handleMouseMoveInternal = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (toggleRef.current) {
-      handleMouseMove(event.nativeEvent, toggleRef.current);
-      updateGlow(event.nativeEvent, toggleRef.current);
-    }
-  };
-
-  const handleMouseLeaveInternal = () => {
-    handleMouseLeave();
-    hideGlow();
-  };
 
   const getThemeIcon = () => {
     if (theme === 'system') return Palette;
@@ -187,42 +80,18 @@ function ThemeToggle({ isCompact }: ThemeToggleProps) {
   const ThemeIcon = getThemeIcon();
 
   return (
-    <motion.button
-      ref={toggleRef}
-      style={{ x, y }}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      transition={transitions.spring}
+    <button
       className={cn(
-        'relative flex items-center justify-center rounded-full bg-white/8 hover:bg-white/12 border border-white/10 hover:border-white/20',
-        'transition-all duration-300 will-change-transform group overflow-hidden',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DA0E29] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent',
-        isCompact ? 'w-10 h-10' : 'w-11 h-11'
+        'flex items-center justify-center rounded-full bg-white/04 hover:bg-white/08 border border-white/08 hover:border-white/16',
+        'transition-all duration-300',
+        'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#DA0E29]/50 focus-visible:ring-offset-1 focus-visible:ring-offset-transparent',
+        isCompact ? 'w-9 h-9' : 'w-10 h-10'
       )}
       onClick={toggleTheme}
-      onMouseMove={handleMouseMoveInternal}
-      onMouseLeave={handleMouseLeaveInternal}
-      onMouseEnter={handleMouseEnter}
       aria-label={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light'} theme`}
     >
-      {/* Glow background */}
-      <motion.div
-        className="absolute inset-0 rounded-full pointer-events-none"
-        style={{
-          background: `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(255, 255, 255, 0.15), transparent 70%)`,
-          opacity: glowOpacity,
-        }}
-      />
-
-      <ThemeIcon size={isCompact ? 16 : 18} className="text-white/70 group-hover:text-white/95 transition-colors relative z-10" />
-
-      {/* Rotation effect */}
-      <motion.div
-        className="absolute inset-0 rounded-full border border-white/20"
-        whileTap={{ rotate: 180 }}
-        transition={{ duration: 0.3 }}
-      />
-    </motion.button>
+      <ThemeIcon size={isCompact ? 14 : 16} className="text-white/60 group-hover:text-white/90 transition-colors" />
+    </button>
   );
 }
 
@@ -310,13 +179,9 @@ export function Navigation({ className }: NavigationProps) {
       <motion.div
         layout
         className={cn(
-          'flex items-center gap-1 px-2 py-2 rounded-2xl nav-glass transform-gpu',
-          'border border-white/12 shadow-2xl',
-          isCompact ? 'gap-2' : 'gap-4 px-4'
+          'flex items-center nav-glass transform-gpu rounded-2xl',
+          isCompact ? 'gap-4 px-6 py-3' : 'gap-12 px-12 py-4'
         )}
-        style={{
-          backdropFilter: 'blur(32px) saturate(180%)',
-        }}
       >
         {/* Logo - hidden in compact mode */}
         <AnimatePresence>
@@ -330,11 +195,9 @@ export function Navigation({ className }: NavigationProps) {
             >
               <Link
                 href="/"
-                className="text-base font-semibold tracking-wide text-white/95 hover:text-white transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DA0E29] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded-sm px-2"
+                className="text-lg font-light tracking-wider text-white/90 hover:text-white/95 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DA0E29] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded-sm px-1"
               >
-                <MagneticText strength={0.2} splitByLetters={false} glowEffect>
-                  NIHAR
-                </MagneticText>
+                NIHAR
               </Link>
             </motion.div>
           )}
@@ -345,7 +208,7 @@ export function Navigation({ className }: NavigationProps) {
           layout
           className={cn(
             'flex items-center',
-            isCompact ? 'gap-1' : 'gap-2'
+            isCompact ? 'gap-6' : 'gap-8'
           )}
         >
           {navigationItems.map((item, index) => (
@@ -364,22 +227,6 @@ export function Navigation({ className }: NavigationProps) {
           <ThemeToggle isCompact={isCompact} />
         </motion.div>
 
-        {/* Enhanced glow effect */}
-        <motion.div
-          className="absolute inset-0 rounded-2xl pointer-events-none"
-          animate={{
-            background: [
-              'radial-gradient(circle at 20% 50%, rgba(218, 14, 41, 0.1), transparent 50%)',
-              'radial-gradient(circle at 80% 50%, rgba(218, 14, 41, 0.1), transparent 50%)',
-              'radial-gradient(circle at 20% 50%, rgba(218, 14, 41, 0.1), transparent 50%)',
-            ]
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: 'easeInOut'
-          }}
-        />
       </motion.div>
     </motion.nav>
   );
