@@ -93,7 +93,7 @@ export function Work() {
     if (containerRef.current) {
       containerRef.current.scrollTo({
         top: index * window.innerHeight,
-        behavior: 'smooth'
+        behavior: 'auto'
       });
     }
   };
@@ -207,7 +207,7 @@ export function Work() {
           height: '100vh',
           overflowY: 'auto',
           scrollSnapType: 'y mandatory',
-          scrollBehavior: 'smooth',
+          scrollBehavior: 'auto',
           background: '#000000',
           fontFamily: 'Inter, sans-serif',
           position: 'relative',
