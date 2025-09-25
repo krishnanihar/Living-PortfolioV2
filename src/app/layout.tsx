@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/effects/ThemeProvider';
-import { Navigation } from '@/components/ui/Navigation';
 import { CustomCursor } from '@/components/effects/CustomCursor';
 import { FocusManager } from '@/components/effects/FocusManager';
 import { MicroInteractionProvider } from '@/components/effects/MicroInteractionProvider';
@@ -102,8 +101,6 @@ export default function RootLayout({
           {/* Enhanced focus management */}
           <FocusManager />
 
-          {/* Navigation */}
-          <Navigation />
 
           {/* Main content - Hero component handles its own layout now */}
           {children}
