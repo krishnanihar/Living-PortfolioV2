@@ -67,30 +67,33 @@ export function Navigation({ className }: NavigationProps) {
               // Structure
               'relative h-full',
               'flex items-center justify-between',
-              'px-8 rounded-[32px]', // Exact v1 border-radius
-              'overflow-hidden',
-              // Premium Glassmorphism - Dark Theme (exactly like v1)
-              'bg-white/5 backdrop-blur-2xl',
-              'border border-white/12',
-              // Multi-layer shadows for depth (exactly like v1)
-              'shadow-[0_2px_8px_rgba(0,0,0,0.08),0_8px_16px_rgba(0,0,0,0.12),0_16px_32px_rgba(0,0,0,0.16),0_24px_48px_rgba(0,0,0,0.2)]',
-              // Inset shadows
-              'shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_-1px_2px_rgba(0,0,0,0.1)]',
-              // Smooth transitions
+              'px-8 rounded-full overflow-hidden',
+              // Glassmorphism base
+              'bg-white/5 border border-white/12',
+              'backdrop-blur-xl',
+              // Enhanced shadow for depth
+              'shadow-2xl shadow-black/20',
+              // Transitions
               'transition-all duration-300 ease-out',
               // Light theme
-              '[data-theme="light"] &:bg-white/95 [data-theme="light"] &:border-black/8',
-              '[data-theme="light"] &:shadow-[0_2px_8px_rgba(0,0,0,0.06),0_8px_16px_rgba(0,0,0,0.08),0_16px_32px_rgba(0,0,0,0.1),0_24px_48px_rgba(0,0,0,0.12)]',
-              '[data-theme="light"] &:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.6),inset_0_1px_0_rgba(255,255,255,0.8)]',
+              '[data-theme=light]:bg-white/95 [data-theme=light]:border-black/8',
+              '[data-theme=light]:shadow-xl [data-theme=light]:shadow-black/5',
               // Hover effects
               'hover:bg-white/8 hover:border-white/18',
-              '[data-theme="light"] &:hover:bg-white/98 [data-theme="light"] &:hover:border-black/12',
-              'hover:shadow-[0_6px_20px_rgba(0,0,0,0.15),0_20px_40px_rgba(0,0,0,0.2),0_40px_80px_rgba(0,0,0,0.25),0_60px_120px_rgba(0,0,0,0.3)]',
-              'hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_-1px_4px_rgba(0,0,0,0.15)]'
+              '[data-theme=light]:hover:bg-white/98 [data-theme=light]:hover:border-black/12',
+              'hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)]'
             )}
             style={{
               backdropFilter: 'blur(24px) saturate(150%)',
               WebkitBackdropFilter: 'blur(24px) saturate(150%)',
+              boxShadow: `
+                0 2px 8px rgba(0, 0, 0, 0.08),
+                0 8px 16px rgba(0, 0, 0, 0.12),
+                0 16px 32px rgba(0, 0, 0, 0.16),
+                0 24px 48px rgba(0, 0, 0, 0.2),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+                inset 0 -1px 2px rgba(0, 0, 0, 0.1)
+              `,
             }}
           >
             {/* Logo - exactly like v1 */}
@@ -100,7 +103,7 @@ export function Navigation({ className }: NavigationProps) {
                 'flex items-center min-h-11 px-1',
                 'font-normal text-base tracking-wide', // v1: font-weight 400, 1rem
                 'text-white/95 hover:text-white',
-                '[data-theme="light"] &:text-black/85 [data-theme="light"] &:hover:text-black',
+                '[data-theme=light]:text-black/85 [data-theme=light]:hover:text-black',
                 'transition-all duration-300',
                 'hover:scale-105 focus:scale-105',
                 'focus-visible:outline-2 focus-visible:outline-white/40 focus-visible:outline-offset-4',
@@ -126,14 +129,14 @@ export function Navigation({ className }: NavigationProps) {
                       'transition-all duration-300',
                       // Default state
                       'text-white/80 hover:text-white/90',
-                      '[data-theme="light"] &:text-black/65 [data-theme="light"] &:hover:text-black/90',
+                      '[data-theme=light]:text-black/65 [data-theme=light]:hover:text-black/90',
                       // Hover effects
                       'hover:-translate-y-0.5',
                       'focus-visible:outline-2 focus-visible:outline-white/40 focus-visible:outline-offset-2',
                       // Active state
                       active && [
                         'text-white/95',
-                        '[data-theme="light"] &:text-black/95',
+                        '[data-theme=light]:text-black/95',
                       ]
                     )}
                   >
@@ -147,7 +150,7 @@ export function Navigation({ className }: NavigationProps) {
                           'absolute -bottom-0.5 left-1/2 -translate-x-1/2',
                           'w-5 h-0.5 rounded-full',
                           'bg-white/80',
-                          '[data-theme="light"] &:bg-black/70'
+                          '[data-theme=light]:bg-black/70'
                         )}
                         transition={{
                           type: "spring",
@@ -164,7 +167,7 @@ export function Navigation({ className }: NavigationProps) {
                         'bg-gradient-to-r from-transparent via-white/8 to-transparent',
                         'transition-opacity duration-500',
                         'hover:opacity-100',
-                        '[data-theme="light"] &:via-black/4'
+                        '[data-theme=light]:via-black/4'
                       )}
                       style={{
                         background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)',
