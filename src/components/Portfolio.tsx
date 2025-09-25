@@ -194,7 +194,6 @@ export default function Portfolio() {
               fontSize: '0.925rem',
               fontWeight: '500',
               letterSpacing: '0.08em',
-              cursor: 'pointer',
               transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
               position: 'relative',
             }}
@@ -240,7 +239,6 @@ export default function Portfolio() {
                     }}
                     style={{
                       position: 'relative',
-                      cursor: 'pointer',
                       padding: '0.5rem 1.25rem',
                       borderRadius: '24px',
                       fontSize: '0.825rem',
@@ -293,7 +291,6 @@ export default function Portfolio() {
                   borderRadius: '50%',
                   width: '34px',
                   height: '34px',
-                  cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -480,7 +477,6 @@ export default function Portfolio() {
                         : 'rgba(255, 255, 255, 0.5)',
                       fontSize: '0.825rem',
                       fontWeight: '400',
-                      cursor: inputValue ? 'pointer' : 'default',
                       transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                       animation: inputValue ? 'glow 2s ease-in-out infinite' : 'none',
                     }}
@@ -532,7 +528,6 @@ export default function Portfolio() {
                       color: 'rgba(255, 255, 255, 0.95)',
                       fontSize: '0.825rem',
                       fontWeight: '400',
-                      cursor: 'pointer',
                       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                       boxShadow: button.primary
                         ? 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 4px 8px rgba(218, 14, 41, 0.15)'
@@ -586,7 +581,6 @@ export default function Portfolio() {
                       fontWeight: '300',
                       letterSpacing: '0.03em',
                       transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                      cursor: 'pointer',
                     }}
                     onMouseEnter={(e) => {
                       (e.currentTarget as HTMLElement).style.color = 'rgba(255, 255, 255, 0.8)';
