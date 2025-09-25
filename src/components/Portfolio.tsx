@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Send, Sparkles, Briefcase, User, Zap, Moon, Sun } from 'lucide-react';
 
 export default function Portfolio() {
@@ -37,8 +38,8 @@ export default function Portfolio() {
   }, []);
 
   const navItems = [
-    { name: 'Work', icon: Briefcase },
-    { name: 'About', icon: User },
+    { name: 'Work', icon: Briefcase, href: '/work' as const },
+    { name: 'About', icon: User, href: '/about' as const },
   ];
 
   const companies = [
@@ -223,57 +224,62 @@ export default function Portfolio() {
                 const Icon = item.icon;
 
                 return (
-                  <div
+                  <Link
                     key={item.name}
-                    onMouseEnter={(e) => {
-                      const target = e.currentTarget as HTMLElement;
-                      target.style.transform = 'translateY(-2px) scale(1.02)';
-                      const bg = target.querySelector('.hover-bg') as HTMLElement;
-                      if (bg) bg.style.opacity = '1';
-                    }}
-                    onMouseLeave={(e) => {
-                      const target = e.currentTarget as HTMLElement;
-                      target.style.transform = 'translateY(0) scale(1)';
-                      const bg = target.querySelector('.hover-bg') as HTMLElement;
-                      if (bg) bg.style.opacity = '0';
-                    }}
-                    style={{
-                      position: 'relative',
-                      padding: '0.5rem 1.25rem',
-                      borderRadius: '24px',
-                      fontSize: '0.825rem',
-                      fontWeight: '400',
-                      letterSpacing: '0.025em',
-                      color: 'rgba(255, 255, 255, 0.8)',
-                      transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                    }}
+                    href={item.href}
+                    style={{ textDecoration: 'none' }}
                   >
-                    {/* Glass hover background */}
-                    <div className="hover-bg" style={{
-                      position: 'absolute',
-                      inset: 0,
-                      borderRadius: '24px',
-                      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%)',
-                      backdropFilter: 'blur(20px)',
-                      WebkitBackdropFilter: 'blur(20px)',
-                      border: '1px solid rgba(255, 255, 255, 0.06)',
-                      opacity: 0,
-                      transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                      boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05)',
-                    }} />
-
-                    <div style={{
-                      position: 'relative',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                    }}>
-                      <Icon size={15} style={{
+                    <div
+                      onMouseEnter={(e) => {
+                        const target = e.currentTarget as HTMLElement;
+                        target.style.transform = 'translateY(-2px) scale(1.02)';
+                        const bg = target.querySelector('.hover-bg') as HTMLElement;
+                        if (bg) bg.style.opacity = '1';
+                      }}
+                      onMouseLeave={(e) => {
+                        const target = e.currentTarget as HTMLElement;
+                        target.style.transform = 'translateY(0) scale(1)';
+                        const bg = target.querySelector('.hover-bg') as HTMLElement;
+                        if (bg) bg.style.opacity = '0';
+                      }}
+                      style={{
+                        position: 'relative',
+                        padding: '0.5rem 1.25rem',
+                        borderRadius: '24px',
+                        fontSize: '0.825rem',
+                        fontWeight: '400',
+                        letterSpacing: '0.025em',
+                        color: 'rgba(255, 255, 255, 0.8)',
                         transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                      }}
+                    >
+                      {/* Glass hover background */}
+                      <div className="hover-bg" style={{
+                        position: 'absolute',
+                        inset: 0,
+                        borderRadius: '24px',
+                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%)',
+                        backdropFilter: 'blur(20px)',
+                        WebkitBackdropFilter: 'blur(20px)',
+                        border: '1px solid rgba(255, 255, 255, 0.06)',
+                        opacity: 0,
+                        transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05)',
                       }} />
-                      <span>{item.name}</span>
+
+                      <div style={{
+                        position: 'relative',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                      }}>
+                        <Icon size={15} style={{
+                          transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                        }} />
+                        <span>{item.name}</span>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
 
