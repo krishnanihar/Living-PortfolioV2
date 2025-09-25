@@ -69,7 +69,7 @@ src/
 - Comprehensive design token system with CSS variables
 - Theme-aware colors, spacing, and typography
 - Advanced glassmorphism with iOS Control Center-level sophistication
-- Film grain overlay and atmospheric background effects
+- Clean OLED black background with sophisticated glass surfaces
 
 **Color System**:
 - OLED black canvas (`#0A0A0A`) as primary background
@@ -80,7 +80,7 @@ src/
 **Micro-Interactions**:
 - Magnetic hover effects with performance monitoring
 - Device capability detection (touch/hover/high DPI)
-- Cursor spotlight effects and advanced particle systems
+- Custom cursor with state-aware interactions
 - Scroll reveal animations with intersection observers
 
 ### Component Architecture

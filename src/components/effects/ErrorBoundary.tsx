@@ -202,10 +202,3 @@ export function NavigationErrorBoundary({ children }: { children: ReactNode }) {
   );
 }
 
-export function ParticleErrorBoundary({ children }: { children: ReactNode }) {
-  return (
-    <ErrorBoundary fallback={null}>
-      {children}
-    </ErrorBoundary>
-  );
-}

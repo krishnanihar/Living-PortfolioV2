@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useInView, useAnimation } from 'framer-motion';
 import { ChevronDown, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { CanvasParticles } from '@/components/effects/CanvasParticles';
 import { useMagneticEffect, useScrollReveal } from '@/lib/micro-interactions';
 
 interface HeroProps {
@@ -146,15 +145,6 @@ export function Hero({ className }: HeroProps) {
 
   return (
     <main className={cn('relative min-h-screen overflow-hidden', className)}>
-      {/* Canvas background with particles */}
-      <div className="absolute inset-0 z-0">
-        <CanvasParticles
-          variant="ambient"
-          particleCount={60}
-          connectionDistance={100}
-          mouseInfluence={0.6}
-        />
-      </div>
 
       {/* Hero Section */}
       <section

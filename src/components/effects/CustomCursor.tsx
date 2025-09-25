@@ -251,37 +251,6 @@ export function CustomCursor({ className = '' }: CursorProps) {
         }}
       />
 
-      {/* Cursor particles */}
-      {cursorState === 'hover' && (
-        <motion.div
-          style={{
-            x: springX,
-            y: springY,
-            translateX: '-50%',
-            translateY: '-50%',
-          }}
-          className="fixed top-0 left-0"
-        >
-          {[...Array(6)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-white/60 rounded-full"
-              animate={{
-                x: [0, Math.cos(i * 60 * Math.PI / 180) * 20],
-                y: [0, Math.sin(i * 60 * Math.PI / 180) * 20],
-                opacity: [0, 1, 0],
-                scale: [0, 1, 0],
-              }}
-              transition={{
-                duration: 1,
-                repeat: Infinity,
-                delay: i * 0.1,
-                ease: 'easeOut',
-              }}
-            />
-          ))}
-        </motion.div>
-      )}
     </div>
   );
 }

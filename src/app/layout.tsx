@@ -108,12 +108,6 @@ export default function RootLayout({
           {/* Main content - Hero component handles its own layout now */}
           {children}
 
-          {/* Background effects placeholder */}
-          <div
-            id="particle-canvas"
-            className="fixed inset-0 pointer-events-none z-0"
-            aria-hidden="true"
-          />
         </ThemeProvider>
       </body>
     </html>
