@@ -255,8 +255,8 @@ export function AboutSection() {
         position: 'fixed',
         inset: 0,
         background: `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%,
-          rgba(218, 14, 41, 0.015) 0%,
-          transparent 50%)`,
+          rgba(218, 14, 41, 0.02) 0%,
+          transparent 40%)`,
         pointerEvents: 'none',
         transition: 'background 1.5s cubic-bezier(0.16, 1, 0.3, 1)',
       }} />
@@ -330,32 +330,24 @@ export function AboutSection() {
                 position: 'relative',
               }}
             >
-              <div style={{
-                position: 'absolute',
-                inset: 0,
-                background: `linear-gradient(135deg, ${stat.gradient})`,
-                borderRadius: '24px',
-                filter: 'blur(40px)',
-                transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-              }} />
               <div
                 style={{
                   position: 'relative',
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  backdropFilter: 'blur(60px) saturate(130%) brightness(0.85)',
-                  WebkitBackdropFilter: 'blur(60px) saturate(130%) brightness(0.85)',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
                   borderRadius: '24px',
                   padding: '2rem',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.04)',
                   transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'scale(1.02)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)';
                 }}
               >
                 <div style={{
@@ -401,22 +393,15 @@ export function AboutSection() {
             className={isVisible ? 'animate-fade-in-left' : ''}
             style={{ opacity: isVisible ? 1 : 0, position: 'relative' }}
           >
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(59, 130, 246, 0.1))',
-              borderRadius: '24px',
-              filter: 'blur(40px)',
-            }} />
             <div
               style={{
                 position: 'relative',
-                background: 'rgba(255, 255, 255, 0.03)',
-                backdropFilter: 'blur(60px) saturate(130%) brightness(0.85)',
-                WebkitBackdropFilter: 'blur(60px) saturate(130%) brightness(0.85)',
+                background: 'rgba(255, 255, 255, 0.02)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
                 borderRadius: '24px',
                 padding: '2.5rem',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.04)',
                 height: '100%',
                 transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
               }}
@@ -469,22 +454,15 @@ export function AboutSection() {
             className={isVisible ? 'animate-fade-in-right' : ''}
             style={{ opacity: isVisible ? 1 : 0, position: 'relative' }}
           >
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1))',
-              borderRadius: '24px',
-              filter: 'blur(40px)',
-            }} />
             <div
               style={{
                 position: 'relative',
-                background: 'rgba(255, 255, 255, 0.03)',
-                backdropFilter: 'blur(60px) saturate(130%) brightness(0.85)',
-                WebkitBackdropFilter: 'blur(60px) saturate(130%) brightness(0.85)',
+                background: 'rgba(255, 255, 255, 0.02)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
                 borderRadius: '24px',
                 padding: '2.5rem',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.04)',
                 height: '100%',
                 transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
               }}
@@ -568,24 +546,15 @@ export function AboutSection() {
                 onMouseEnter={() => setActiveSkill(index)}
                 onMouseLeave={() => setActiveSkill(null)}
               >
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(59, 130, 246, 0.2))',
-                  borderRadius: '16px',
-                  filter: 'blur(40px)',
-                  opacity: activeSkill === index ? 1 : 0,
-                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                }} />
                 <div
                   style={{
                     position: 'relative',
-                    background: 'rgba(255, 255, 255, 0.03)',
-                    backdropFilter: 'blur(60px) saturate(130%) brightness(0.85)',
-                    WebkitBackdropFilter: 'blur(60px) saturate(130%) brightness(0.85)',
+                    background: 'rgba(255, 255, 255, 0.02)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
                     borderRadius: '16px',
                     padding: '1.5rem',
-                    border: activeSkill === index ? '1px solid rgba(147, 51, 234, 0.3)' : '1px solid rgba(255, 255, 255, 0.06)',
+                    border: activeSkill === index ? '1px solid rgba(255, 255, 255, 0.06)' : '1px solid rgba(255, 255, 255, 0.04)',
                     transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                     transform: activeSkill === index ? 'scale(1.05)' : 'scale(1)',
                   }}
@@ -648,33 +617,24 @@ export function AboutSection() {
                   position: 'relative',
                 }}
               >
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(to right, rgba(147, 51, 234, 0.05), rgba(59, 130, 246, 0.05))',
-                  borderRadius: '24px',
-                  filter: 'blur(40px)',
-                  opacity: 0,
-                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                }} />
                 <div
                   style={{
                     position: 'relative',
-                    background: 'rgba(255, 255, 255, 0.03)',
-                    backdropFilter: 'blur(60px) saturate(130%) brightness(0.85)',
-                    WebkitBackdropFilter: 'blur(60px) saturate(130%) brightness(0.85)',
+                    background: 'rgba(255, 255, 255, 0.02)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
                     borderRadius: '24px',
                     padding: '2rem',
-                    border: '1px solid rgba(255, 255, 255, 0.06)',
+                    border: '1px solid rgba(255, 255, 255, 0.04)',
                     transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)';
                     const bg = e.currentTarget.previousElementSibling as HTMLElement;
                     if (bg) bg.style.opacity = '1';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)';
                     const bg = e.currentTarget.previousElementSibling as HTMLElement;
                     if (bg) bg.style.opacity = '0';
                   }}
@@ -719,7 +679,7 @@ export function AboutSection() {
                             background: 'rgba(255, 255, 255, 0.06)',
                             color: 'rgba(255, 255, 255, 0.4)',
                             borderRadius: '12px',
-                            border: '1px solid rgba(255, 255, 255, 0.06)',
+                            border: '1px solid rgba(255, 255, 255, 0.04)',
                             textTransform: 'capitalize',
                           }}>
                             {exp.type}
@@ -756,7 +716,7 @@ export function AboutSection() {
                           background: 'rgba(255, 255, 255, 0.06)',
                           color: 'rgba(255, 255, 255, 0.6)',
                           borderRadius: '12px',
-                          border: '1px solid rgba(255, 255, 255, 0.06)',
+                          border: '1px solid rgba(255, 255, 255, 0.04)',
                           fontWeight: '300',
                         }}>
                           {tag}
@@ -812,21 +772,21 @@ export function AboutSection() {
                 <div
                   style={{
                     position: 'relative',
-                    background: 'rgba(255, 255, 255, 0.03)',
-                    backdropFilter: 'blur(60px) saturate(130%) brightness(0.85)',
-                    WebkitBackdropFilter: 'blur(60px) saturate(130%) brightness(0.85)',
+                    background: 'rgba(255, 255, 255, 0.02)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
                     borderRadius: '24px',
                     padding: '2rem',
-                    border: '1px solid rgba(255, 255, 255, 0.06)',
+                    border: '1px solid rgba(255, 255, 255, 0.04)',
                     transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'scale(1.02)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'scale(1)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)';
                   }}
                 >
                   <GraduationCap style={{
