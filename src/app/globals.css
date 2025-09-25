@@ -151,26 +151,26 @@ body {
     border: 1px solid var(--border-secondary);
   }
 
-  /* Ultra-subtle glass system - barely perceptible */
+  /* Premium glassmorphism system - iOS Control Center level */
   .glass-whisper {
-    background: rgba(255, 255, 255, 0.005);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .glass-breath {
-    background: rgba(255, 255, 255, 0.01);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .glass-subtle {
-    background: rgba(255, 255, 255, 0.008);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.025);
+    background: rgba(255, 255, 255, 0.045);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.09);
   }
 
   /* Premium frosted glass with noise texture */
@@ -221,22 +221,28 @@ body {
     mix-blend-mode: overlay;
   }
 
-  /* Ultra-subtle navigation glass */
+  /* Premium navigation glass */
   .nav-glass {
-    background: rgba(255, 255, 255, 0.008);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.025);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      0 1px 0 rgba(255, 255, 255, 0.2) inset,
+      0 -1px 0 rgba(255, 255, 255, 0.05) inset;
   }
 
-  /* Ultra-minimal hero background - barely there */
+  /* Premium hero glass background */
   .hero-glass {
-    background: rgba(255, 255, 255, 0.005);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.015);
-    box-shadow: 0 16px 64px rgba(0, 0, 0, 0.06);
+    background: rgba(255, 255, 255, 0.035);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 16px 64px rgba(0, 0, 0, 0.12),
+      0 8px 32px rgba(0, 0, 0, 0.08),
+      0 1px 0 rgba(255, 255, 255, 0.15) inset;
   }
 
   /* Ultra-refined typography hierarchy */
@@ -306,23 +312,31 @@ body {
     transform: translateY(-1px);
   }
 
-  /* Light theme adaptations */
+  /* Light theme adaptations - enhanced contrast */
   [data-theme="light"] .glass-whisper,
   [data-theme="light"] .glass-breath,
   [data-theme="light"] .glass-subtle {
-    background: rgba(255, 255, 255, 0.6);
-    border-color: rgba(0, 0, 0, 0.04);
+    background: rgba(255, 255, 255, 0.75);
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
   }
 
   [data-theme="light"] .nav-glass {
-    background: rgba(255, 255, 255, 0.7);
-    border-color: rgba(0, 0, 0, 0.04);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.02);
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.06),
+      0 1px 0 rgba(255, 255, 255, 0.9) inset,
+      0 -1px 0 rgba(0, 0, 0, 0.03) inset;
   }
 
   [data-theme="light"] .hero-glass {
-    background: rgba(255, 255, 255, 0.4);
-    border-color: rgba(0, 0, 0, 0.03);
+    background: rgba(255, 255, 255, 0.6);
+    border-color: rgba(0, 0, 0, 0.06);
+    box-shadow:
+      0 16px 64px rgba(0, 0, 0, 0.08),
+      0 8px 32px rgba(0, 0, 0, 0.04),
+      0 1px 0 rgba(255, 255, 255, 0.9) inset;
   }
 
   /* Interactive glass states */

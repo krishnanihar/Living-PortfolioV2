@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { motion, useMotionValue } from 'framer-motion';
+import { motion, useMotionValue, useInView, useAnimation } from 'framer-motion';
 import { ChevronDown, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ParticleField } from '@/components/effects/ParticleField';
@@ -16,8 +16,12 @@ export function Hero({ className }: HeroProps) {
   const [greeting, setGreeting] = useState('');
   const [query, setQuery] = useState('');
   const heroRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const buttonsRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const isInView = useInView(heroRef, { once: true, amount: 0.3 });
+  const controls = useAnimation();
 
   // Time-based greeting
   useEffect(() => {
@@ -27,7 +31,7 @@ export function Hero({ className }: HeroProps) {
     else setGreeting('Good evening.');
   }, []);
 
-  // Ultra-subtle mouse tracking - only for hero title
+  // Enhanced mouse parallax for hero title
   const handleMouseMove = (event: React.MouseEvent) => {
     if (prefersReducedMotion()) return;
 
@@ -35,8 +39,8 @@ export function Hero({ className }: HeroProps) {
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
 
-    mouseX.set((event.clientX - centerX) * 0.005); // Ultra-subtle movement
-    mouseY.set((event.clientY - centerY) * 0.005);
+    mouseX.set((event.clientX - centerX) * 0.015); // Enhanced but still subtle
+    mouseY.set((event.clientY - centerY) * 0.012);
   };
 
   const handleMouseLeave = () => {
@@ -44,10 +48,45 @@ export function Hero({ className }: HeroProps) {
     mouseY.set(0);
   };
 
-  // Handle search/ask
+  // Handle search/ask with animation
   const onAsk = (e?: React.FormEvent) => {
     e?.preventDefault();
     console.log('Ask:', query);
+  };
+
+  // Button click animations
+  const handleButtonClick = (action: string) => {
+    console.log(`Navigate to: ${action}`);
+  };
+
+  // Staggered content reveal with Framer Motion
+  useEffect(() => {
+    if (!isInView) return;
+
+    controls.start('visible');
+  }, [isInView, controls]);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1]
+      }
+    }
   };
 
   return (
@@ -75,94 +114,106 @@ export function Hero({ className }: HeroProps) {
       <section className="relative min-h-screen flex items-center justify-center px-8 pt-48 pb-32">
         <div className="relative w-full max-w-6xl mx-auto">
           {/* Content with generous Apple-level spacing */}
-          <div className="max-w-4xl mx-auto text-center"
-               onMouseMove={handleMouseMove}
-               onMouseLeave={handleMouseLeave}
+          <motion.div
+            className="max-w-4xl mx-auto text-center"
+            variants={containerVariants}
+            initial="hidden"
+            animate={controls}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
           >
-            {/* Greeting - ultra-clean */}
+            {/* Greeting - enhanced reveal */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
+              variants={itemVariants}
               className="mb-12"
             >
               <p className="text-greeting">{greeting}</p>
             </motion.div>
 
-            {/* Hero title with ultra-subtle mouse follow */}
+            {/* Hero title with enhanced mouse parallax */}
             <motion.div
               style={{ x: mouseX, y: mouseY }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="mb-16"
+              variants={itemVariants}
+              className="mb-16 transform-gpu will-change-transform"
             >
-              <h1 className="text-hero">Nihar Sunkara</h1>
+              <h1 className="text-hero drop-shadow-sm">Nihar Sunkara</h1>
             </motion.div>
 
-            {/* Simple subtitle */}
+            {/* Enhanced subtitle */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
+              variants={itemVariants}
               className="mb-24"
             >
               <p className="text-subtitle">I visualize complex data and craft digital experiences</p>
             </motion.div>
 
-            {/* Minimal floating search prompt */}
+            {/* Enhanced floating search prompt */}
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 0.6 }}
+              variants={itemVariants}
               className="mb-16"
             >
               <div className="max-w-2xl mx-auto">
-                <div className="flex items-center gap-4 px-6 py-4 rounded-full glass-breath">
+                <motion.div
+                  className="flex items-center gap-4 px-7 py-5 rounded-full glass-breath shadow-xl shadow-black/10 border border-white/10"
+                  whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+                >
                   <input
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Ask me anything about my work..."
-                    className="flex-1 bg-transparent text-white/90 placeholder:text-white/40 text-body outline-none"
+                    className="flex-1 bg-transparent text-white/90 placeholder:text-white/50 text-body outline-none selection:bg-[#DA0E29]/20"
                     onKeyDown={(e) => e.key === 'Enter' && onAsk()}
                   />
-                  <button
+                  <motion.button
                     onClick={onAsk}
-                    className="button-ghost rounded-full px-6 py-2"
+                    className="button-ghost rounded-full px-6 py-2 hover:shadow-md hover:shadow-[#DA0E29]/10"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     <ArrowRight size={16} />
-                  </button>
-                </div>
+                  </motion.button>
+                </motion.div>
               </div>
             </motion.div>
 
-            {/* Clean CTA buttons */}
+            {/* Enhanced CTA buttons */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.6, duration: 0.6 }}
+              variants={itemVariants}
               className="flex justify-center gap-6 mb-32"
             >
-              <button className="button-primary rounded-full">
+              <motion.button
+                className="button-primary rounded-full transform-gpu will-change-transform hover:shadow-xl hover:shadow-[#DA0E29]/20"
+                onClick={() => handleButtonClick('work')}
+                whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                whileTap={{ scale: 0.95 }}
+              >
                 View Work
-              </button>
-              <button className="button-ghost rounded-full">
+              </motion.button>
+              <motion.button
+                className="button-ghost rounded-full transform-gpu will-change-transform hover:shadow-lg hover:shadow-white/10"
+                onClick={() => handleButtonClick('about')}
+                whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                whileTap={{ scale: 0.95 }}
+              >
                 About Me
-              </button>
-              <button className="button-ghost rounded-full">
+              </motion.button>
+              <motion.button
+                className="button-ghost rounded-full transform-gpu will-change-transform hover:shadow-lg hover:shadow-white/10"
+                onClick={() => handleButtonClick('contact')}
+                whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                whileTap={{ scale: 0.95 }}
+              >
                 Contact
-              </button>
+              </motion.button>
             </motion.div>
 
-            {/* Minimal credentials */}
+            {/* Enhanced credentials */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2.0, duration: 0.6 }}
-              className="pt-16 border-t border-white/03"
+              variants={itemVariants}
+              className="pt-16 border-t border-white/06"
             >
-              <p className="text-xs text-white/30 mb-8 tracking-wider uppercase text-center">Trusted by</p>
+              <p className="text-xs text-white/40 mb-8 tracking-wider uppercase text-center font-light">Trusted by</p>
               <div className="flex flex-wrap justify-center gap-12 text-body">
                 {[
                   'Air India DesignLAB',
@@ -170,16 +221,20 @@ export function Hero({ className }: HeroProps) {
                   'Indian School of Business',
                   'Microsoft'
                 ].map((company, index) => (
-                  <span
+                  <motion.span
                     key={company}
-                    className="hover:text-white/90 transition-colors duration-300 cursor-pointer"
+                    className="hover:text-white/95 cursor-pointer transform-gpu will-change-transform"
+                    whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 2.5 + index * 0.1 }}
                   >
                     {company}
-                  </span>
+                  </motion.span>
                 ))}
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Minimal scroll hint */}

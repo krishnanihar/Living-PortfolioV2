@@ -30,8 +30,8 @@ interface ParticleFieldProps {
 export function ParticleField({
   className = '',
   particleCount: propParticleCount,
-  connectionDistance = 120,
-  mouseInfluence = 0.3,
+  connectionDistance = 80,
+  mouseInfluence = 0.4,
   speed = 0.5,
   density = 'medium',
   variant = 'subtle',
@@ -53,48 +53,48 @@ export function ParticleField({
     if (propParticleCount) return propParticleCount;
 
     const densityMap = {
-      low: 0.05,  // Ultra-sparse
-      medium: 0.08, // Still very few
-      high: 0.12,   // Modest amount
+      low: 0.06,    // Visible but sparse
+      medium: 0.1,  // Balanced ambient
+      high: 0.15,   // Rich atmosphere
     };
 
     const baseCount = Math.min((typeof window !== 'undefined' ? window.innerWidth : 1920) || 1920, 1920) * (densityMap[density] / 10);
-    return reducedMotion ? Math.floor(baseCount * 0.5) : Math.floor(baseCount * 0.5); // 50% reduction
+    return reducedMotion ? Math.floor(baseCount * 0.7) : Math.floor(baseCount); // Restored count
   }, [propParticleCount, density, reducedMotion]);
 
-  // Ultra-subtle theme-based colors
+  // Visible but ambient theme-based colors
   const colors = useMemo(() => {
     if (isDark) {
       return {
-        particle: 'rgba(255, 255, 255, 0.01)',
-        connection: 'rgba(255, 255, 255, 0)',
-        accent: 'rgba(218, 14, 41, 0.005)',
-        glow: 'rgba(255, 255, 255, 0.01)',
+        particle: 'rgba(255, 255, 255, 0.06)',
+        connection: 'rgba(255, 255, 255, 0.02)',
+        accent: 'rgba(218, 14, 41, 0.03)',
+        glow: 'rgba(255, 255, 255, 0.04)',
       };
     } else {
       return {
-        particle: 'rgba(0, 0, 0, 0.02)',
-        connection: 'rgba(0, 0, 0, 0)',
-        accent: 'rgba(218, 14, 41, 0.01)',
-        glow: 'rgba(0, 0, 0, 0.01)',
+        particle: 'rgba(0, 0, 0, 0.08)',
+        connection: 'rgba(0, 0, 0, 0.025)',
+        accent: 'rgba(218, 14, 41, 0.04)',
+        glow: 'rgba(0, 0, 0, 0.06)',
       };
     }
   }, [isDark]);
 
-  // Create ultra-subtle particles
+  // Create visible but ambient particles
   const createParticle = useCallback((width: number, height: number): Particle => {
-    const baseOpacity = 0.01; // Barely visible dust motes
+    const baseOpacity = variant === 'ambient' ? 0.08 : variant === 'dynamic' ? 0.1 : 0.06;
 
     return {
       x: Math.random() * width,
       y: Math.random() * height,
-      vx: (Math.random() - 0.5) * speed * 0.3, // Much slower movement
-      vy: (Math.random() - 0.5) * speed * 0.3,
-      radius: Math.random() * 1 + 0.5, // Smaller particles
+      vx: (Math.random() - 0.5) * speed * 0.8, // Gentle movement
+      vy: (Math.random() - 0.5) * speed * 0.8,
+      radius: Math.random() * 1.5 + 0.8, // Slightly larger for visibility
       opacity: baseOpacity,
       originalOpacity: baseOpacity,
       hue: Math.random() * 60 + 340,
-      brightness: Math.random() * 30 + 70,
+      brightness: Math.random() * 40 + 60,
       connections: 0,
     };
   }, [speed, variant]);
@@ -168,10 +168,10 @@ export function ParticleField({
         const dy = mouse.y - particle.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance < 150) {
-          const force = (150 - distance) / 150;
-          particle.vx += (dx / distance) * force * mouseInfluence * 0.01;
-          particle.vy += (dy / distance) * force * mouseInfluence * 0.01;
+        if (distance < 200) {
+          const force = (200 - distance) / 200;
+          particle.vx += (dx / distance) * force * mouseInfluence * 0.02;
+          particle.vy += (dy / distance) * force * mouseInfluence * 0.02;
         }
       }
 
@@ -219,18 +219,70 @@ export function ParticleField({
     const particles = particlesRef.current;
     const mouse = mouseRef.current;
 
-    // Connections disabled for ultra-minimal aesthetic
+    // Draw subtle connections first (behind particles)
+    if (connectionDistance > 0) {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
 
-    // Draw ultra-minimal particles - like dust motes
+          if (distance < connectionDistance) {
+            const opacity = (1 - distance / connectionDistance) * 0.02;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+
+            particles[i].connections++;
+            particles[j].connections++;
+          }
+        }
+      }
+    }
+
+    // Draw ambient particles with gentle glow
     particles.forEach((particle) => {
-      // Simple, constant opacity - no dynamic effects
+      const glowOpacity = Math.min(particle.connections * 0.01 + particle.opacity, particle.opacity * 1.5);
+
+      // Subtle glow effect
+      if (glowOpacity > particle.opacity) {
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.radius * 2, 0, Math.PI * 2);
+        const gradient = ctx.createRadialGradient(
+          particle.x, particle.y, 0,
+          particle.x, particle.y, particle.radius * 2
+        );
+        gradient.addColorStop(0, `rgba(255, 255, 255, ${glowOpacity * 0.3})`);
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = gradient;
+        ctx.fill();
+      }
+
+      // Main particle
       ctx.beginPath();
       ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
       ctx.fill();
     });
 
-    // No mouse effects - pure minimalism
+    // Gentle mouse cursor effect
+    if (mouse.isActive && !reducedMotion) {
+      const cursorRadius = 60;
+      const gradient = ctx.createRadialGradient(
+        mouse.x, mouse.y, 0,
+        mouse.x, mouse.y, cursorRadius
+      );
+      gradient.addColorStop(0, 'rgba(218, 14, 41, 0.02)');
+      gradient.addColorStop(1, 'rgba(218, 14, 41, 0)');
+
+      ctx.beginPath();
+      ctx.arc(mouse.x, mouse.y, cursorRadius, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+    }
   }, [connectionDistance, variant, reducedMotion]);
 
   // Animation loop

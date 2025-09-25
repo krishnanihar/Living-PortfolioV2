@@ -180,7 +180,8 @@ export function Navigation({ className }: NavigationProps) {
         layout
         className={cn(
           'flex items-center nav-glass transform-gpu rounded-2xl',
-          isCompact ? 'gap-4 px-6 py-3' : 'gap-12 px-12 py-4'
+          'shadow-xl shadow-black/20',
+          isCompact ? 'gap-5 px-7 py-4' : 'gap-16 px-16 py-5'
         )}
       >
         {/* Logo - hidden in compact mode */}
@@ -208,7 +209,7 @@ export function Navigation({ className }: NavigationProps) {
           layout
           className={cn(
             'flex items-center',
-            isCompact ? 'gap-6' : 'gap-8'
+            isCompact ? 'gap-8' : 'gap-12'
           )}
         >
           {navigationItems.map((item, index) => (
