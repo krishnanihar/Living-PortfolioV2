@@ -132,6 +132,16 @@ module.exports = {
       transitionTimingFunction: {
         'premium': 'cubic-bezier(0.22, 1, 0.36, 1)',
       },
+      keyframes: {
+        shimmer: {
+          '100%': {
+            transform: 'translateX(100%)'
+          }
+        }
+      },
+      animation: {
+        shimmer: 'shimmer 3s infinite',
+      },
       zIndex: {
         'hide': '-1',
         'auto': 'auto',

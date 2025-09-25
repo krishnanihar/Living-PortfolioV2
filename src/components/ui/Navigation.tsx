@@ -11,7 +11,6 @@ export interface NavigationProps {
 }
 
 const navigationItems = [
-  { href: '/', label: 'Home', key: 'home' },
   { href: '/work', label: 'Work', key: 'work' },
   { href: '/about', label: 'About', key: 'about' },
   { href: '/contact', label: 'Contact', key: 'contact' },
@@ -20,24 +19,14 @@ const navigationItems = [
 export function Navigation({ className }: NavigationProps) {
   const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    // Show navigation after hero animation (1.2s delay like v1)
+    // Show navigation after hero animation (1.2s delay exactly like v1)
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 1200);
 
     return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 100);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const isActive = (href: string) => {
@@ -50,67 +39,80 @@ export function Navigation({ className }: NavigationProps) {
       {isVisible && (
         <motion.nav
           initial={{ opacity: 0, y: -20, scale: 0.9 }}
-          animate={{
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            transition: {
-              duration: 0.8,
-              ease: [0.22, 1, 0.36, 1], // Premium easing
-              type: "spring",
-              stiffness: 100,
-              damping: 20,
-            }
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{
+            duration: 0.8,
+            ease: [0.34, 1.56, 0.64, 1], // Exactly like v1
+            delay: 0,
           }}
           className={cn(
-            'fixed top-5 left-1/2 -translate-x-1/2 z-50',
-            'w-[min(92%,800px)] h-14',
+            // Bulletproof positioning like v1
+            'fixed top-5 left-1/2 z-[10001]',
+            'w-[min(92%,800px)] h-14', // v1: 56px but we'll use h-14 (56px)
+            'min-w-80',
+            'transform -translate-x-1/2',
+            // Performance optimizations
+            'will-change-transform',
+            'backface-hidden',
+            'isolate',
             className
           )}
+          style={{
+            contain: 'layout style paint',
+            isolation: 'isolate',
+          }}
         >
           <div
             className={cn(
-              // Base structure
+              // Structure
               'relative h-full',
               'flex items-center justify-between',
-              'px-8 rounded-full',
-              // Glass effect
-              'bg-white/5 backdrop-blur-lg',
+              'px-8 rounded-[32px]', // Exact v1 border-radius
+              'overflow-hidden',
+              // Premium Glassmorphism - Dark Theme (exactly like v1)
+              'bg-white/5 backdrop-blur-2xl',
               'border border-white/12',
-              '[data-theme="light"] &:bg-white/85 [data-theme="light"] &:border-black/8',
-              // Shadow and depth
-              'shadow-lg shadow-black/10',
-              '[data-theme="light"] &:shadow-lg [data-theme="light"] &:shadow-black/5',
-              // Transitions
-              'transition-all duration-300 ease-premium',
-              // Scrolled state
-              scrolled && [
-                'bg-white/8 border-white/16',
-                '[data-theme="light"] &:bg-white/90 [data-theme="light"] &:border-black/12',
-                'shadow-xl shadow-black/20',
-                '[data-theme="light"] &:shadow-xl [data-theme="light"] &:shadow-black/10',
-              ]
+              // Multi-layer shadows for depth (exactly like v1)
+              'shadow-[0_2px_8px_rgba(0,0,0,0.08),0_8px_16px_rgba(0,0,0,0.12),0_16px_32px_rgba(0,0,0,0.16),0_24px_48px_rgba(0,0,0,0.2)]',
+              // Inset shadows
+              'shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_-1px_2px_rgba(0,0,0,0.1)]',
+              // Smooth transitions
+              'transition-all duration-300 ease-out',
+              // Light theme
+              '[data-theme="light"] &:bg-white/95 [data-theme="light"] &:border-black/8',
+              '[data-theme="light"] &:shadow-[0_2px_8px_rgba(0,0,0,0.06),0_8px_16px_rgba(0,0,0,0.08),0_16px_32px_rgba(0,0,0,0.1),0_24px_48px_rgba(0,0,0,0.12)]',
+              '[data-theme="light"] &:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.6),inset_0_1px_0_rgba(255,255,255,0.8)]',
+              // Hover effects
+              'hover:bg-white/8 hover:border-white/18',
+              '[data-theme="light"] &:hover:bg-white/98 [data-theme="light"] &:hover:border-black/12',
+              'hover:shadow-[0_6px_20px_rgba(0,0,0,0.15),0_20px_40px_rgba(0,0,0,0.2),0_40px_80px_rgba(0,0,0,0.25),0_60px_120px_rgba(0,0,0,0.3)]',
+              'hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_-1px_4px_rgba(0,0,0,0.15)]'
             )}
+            style={{
+              backdropFilter: 'blur(24px) saturate(150%)',
+              WebkitBackdropFilter: 'blur(24px) saturate(150%)',
+            }}
           >
-            {/* Logo */}
+            {/* Logo - exactly like v1 */}
             <Link
               href="/"
               className={cn(
-                'font-normal text-lg tracking-wide',
+                'flex items-center min-h-11 px-1',
+                'font-normal text-base tracking-wide', // v1: font-weight 400, 1rem
                 'text-white/95 hover:text-white',
                 '[data-theme="light"] &:text-black/85 [data-theme="light"] &:hover:text-black',
-                'transition-all duration-200',
+                'transition-all duration-300',
                 'hover:scale-105 focus:scale-105',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red',
-                'rounded-lg px-2 py-1'
+                'focus-visible:outline-2 focus-visible:outline-white/40 focus-visible:outline-offset-4',
+                'rounded-lg'
               )}
             >
               NIHAR
             </Link>
 
-            {/* Navigation Links */}
-            <div className="flex items-center gap-1">
-              {navigationItems.slice(1).map((item) => {
+            {/* Navigation Links - exactly like v1 */}
+            <div className="flex items-center gap-4">
+              {navigationItems.map((item) => {
                 const active = isActive(item.href);
 
                 return (
@@ -118,13 +120,16 @@ export function Navigation({ className }: NavigationProps) {
                     key={item.key}
                     href={item.href as any}
                     className={cn(
-                      'relative px-4 py-2 rounded-full',
-                      'text-sm font-light transition-all duration-200',
-                      'hover:scale-105 focus:scale-105',
-                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red',
+                      'relative flex items-center min-h-11 px-4 py-2',
+                      'rounded-3xl', // v1: 24px border-radius
+                      'text-sm font-light', // v1: 0.9rem, font-weight 300
+                      'transition-all duration-300',
                       // Default state
-                      'text-white/70 hover:text-white/90',
+                      'text-white/80 hover:text-white/90',
                       '[data-theme="light"] &:text-black/65 [data-theme="light"] &:hover:text-black/90',
+                      // Hover effects
+                      'hover:-translate-y-0.5',
+                      'focus-visible:outline-2 focus-visible:outline-white/40 focus-visible:outline-offset-2',
                       // Active state
                       active && [
                         'text-white/95',
@@ -134,10 +139,10 @@ export function Navigation({ className }: NavigationProps) {
                   >
                     {item.label}
 
-                    {/* Active indicator */}
+                    {/* Active indicator - exactly like v1 */}
                     {active && (
                       <motion.div
-                        layoutId="navigation-active"
+                        layoutId="nav-active-indicator"
                         className={cn(
                           'absolute -bottom-0.5 left-1/2 -translate-x-1/2',
                           'w-5 h-0.5 rounded-full',
@@ -146,23 +151,40 @@ export function Navigation({ className }: NavigationProps) {
                         )}
                         transition={{
                           type: "spring",
-                          stiffness: 380,
+                          stiffness: 400,
                           damping: 30,
                         }}
                       />
                     )}
+
+                    {/* Shine effect */}
+                    <div
+                      className={cn(
+                        'absolute inset-0 rounded-3xl opacity-0',
+                        'bg-gradient-to-r from-transparent via-white/8 to-transparent',
+                        'transition-opacity duration-500',
+                        'hover:opacity-100',
+                        '[data-theme="light"] &:via-black/4'
+                      )}
+                      style={{
+                        background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)',
+                        left: '-100%',
+                        animation: 'none',
+                      }}
+                    />
                   </Link>
                 );
               })}
             </div>
 
-            {/* Background glow effect */}
+            {/* Background glow effect - exactly like v1 */}
             <div
               className={cn(
-                'absolute inset-0 rounded-full opacity-0',
-                'bg-gradient-to-r from-transparent via-white/5 to-transparent',
+                'absolute -inset-0.5 rounded-[34px] opacity-0',
+                'bg-gradient-to-45 from-transparent via-white/5 to-transparent',
                 'transition-opacity duration-300',
-                'group-hover:opacity-100 hover:opacity-100'
+                'group-hover:opacity-100 hover:opacity-100',
+                'pointer-events-none -z-10'
               )}
               aria-hidden="true"
             />
