@@ -11,9 +11,9 @@ export interface NavigationProps {
 }
 
 const navigationItems = [
-  { href: '/work', label: 'Work' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/work' as const, label: 'Work' },
+  { href: '/about' as const, label: 'About' },
+  { href: '/contact' as const, label: 'Contact' },
 ];
 
 export function Navigation({ className }: NavigationProps) {
