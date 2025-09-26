@@ -212,9 +212,9 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
               }} />
             </div>
             <h2 style={{
-              fontSize: '1rem',
-              fontWeight: '400',
-              color: 'rgba(255, 255, 255, 0.7)',
+              fontSize: '1.5rem',
+              fontWeight: '500',
+              color: 'rgba(255, 255, 255, 0.9)',
               letterSpacing: '0.05em',
             }}>
               Selected Work
@@ -428,10 +428,10 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                       <p style={{
                         fontSize: '0.75rem',
                         fontWeight: '300',
-                        color: 'rgba(255, 255, 255, 0.4)',
+                        color: 'rgba(255, 255, 255, 0.7)',
                         letterSpacing: '0.02em',
                         transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                        opacity: isHovered ? 0.6 : 0.4,
+                        opacity: isHovered ? 0.8 : 0.7,
                       }}>
                         {project.category}
                       </p>
@@ -452,7 +452,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                       animation: isHovered ? 'workFloat 3s ease-in-out infinite' : 'none',
                     }}>
                       <ArrowUpRight size={14} style={{
-                        color: 'rgba(255, 255, 255, 0.4)',
+                        color: 'rgba(255, 255, 255, 0.7)',
                         transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                       }} />
                     </div>
@@ -492,8 +492,8 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                         gap: '0.5rem',
                       }}>
                         <Icon size={14} style={{
-                          color: 'rgba(255, 255, 255, 0.3)',
-                          opacity: isHovered ? 0.5 : 0.3,
+                          color: 'rgba(255, 255, 255, 0.6)',
+                          opacity: isHovered ? 0.7 : 0.6,
                           transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                         }} />
                         <span style={{
@@ -513,9 +513,9 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                         <span style={{
                           fontSize: '0.7rem',
                           fontWeight: '300',
-                          color: 'rgba(255, 255, 255, 0.3)',
+                          color: 'rgba(255, 255, 255, 0.6)',
                           letterSpacing: '0.02em',
-                          opacity: isHovered ? 0.5 : 0.3,
+                          opacity: isHovered ? 0.7 : 0.6,
                           transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                         }}>
                           {project.status}
@@ -523,7 +523,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                         <span style={{
                           fontSize: '0.7rem',
                           fontWeight: '300',
-                          color: 'rgba(255, 255, 255, 0.3)',
+                          color: 'rgba(255, 255, 255, 0.6)',
                           letterSpacing: '0.02em',
                         }}>
                           {project.year}
@@ -549,10 +549,10 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                             border: '1px solid rgba(255, 255, 255, 0.03)',
                             fontSize: '0.688rem',
                             fontWeight: '300',
-                            color: 'rgba(255, 255, 255, 0.4)',
+                            color: 'rgba(255, 255, 255, 0.7)',
                             letterSpacing: '0.01em',
                             transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${tagIndex * 0.05}s`,
-                            opacity: isHovered ? 0.6 : 0.4,
+                            opacity: isHovered ? 0.8 : 0.7,
                             transform: isHovered ? 'translateY(-1px)' : 'translateY(0)',
                           }}
                         >

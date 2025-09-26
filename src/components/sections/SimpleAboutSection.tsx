@@ -136,9 +136,9 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
               }} />
             </div>
             <h2 style={{
-              fontSize: '1rem',
-              fontWeight: '400',
-              color: 'rgba(255, 255, 255, 0.7)',
+              fontSize: '1.5rem',
+              fontWeight: '500',
+              color: 'rgba(255, 255, 255, 0.9)',
               letterSpacing: '0.05em',
             }}>
               About
@@ -234,7 +234,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                       letterSpacing: '0.02em',
                       marginBottom: '1.5rem',
                       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                      opacity: isHovered ? 0.6 : 0.4,
+                      opacity: isHovered ? 0.8 : 0.7,
                     }}>
                       {card.subtitle}
                     </p>
