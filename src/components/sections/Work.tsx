@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { ArrowDown, ArrowUpRight, Circle, Hexagon, Grid3x3 } from 'lucide-react';
 
 export function Work() {
@@ -596,39 +597,77 @@ export function Work() {
                     <div style={{
                       animation: isActive ? 'slideInLeft 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both' : 'none',
                     }}>
-                      <button
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '1rem',
-                          padding: '1rem 2rem',
-                          borderRadius: '16px',
-                          background: 'rgba(255, 255, 255, 0.02)',
-                          backdropFilter: 'blur(20px)',
-                          WebkitBackdropFilter: 'blur(20px)',
-                          border: '1px solid rgba(255, 255, 255, 0.06)',
-                          color: 'rgba(255, 255, 255, 0.8)',
-                          fontSize: '0.875rem',
-                          fontWeight: '400',
-                          letterSpacing: '0.02em',
-                          cursor: 'pointer',
-                          transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                          animation: 'float 4s ease-in-out infinite',
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                          e.currentTarget.style.transform = 'translateX(5px)';
-                          e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
-                          e.currentTarget.style.transform = 'translateX(0)';
-                          e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
-                        }}
-                      >
-                        View Project
-                        <ArrowUpRight size={16} />
-                      </button>
+                      {project.id === 1 ? (
+                        <Link href="/work/air-india" style={{ textDecoration: 'none' }}>
+                          <button
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '1rem',
+                              padding: '1rem 2rem',
+                              borderRadius: '16px',
+                              background: 'rgba(255, 255, 255, 0.02)',
+                              backdropFilter: 'blur(20px)',
+                              WebkitBackdropFilter: 'blur(20px)',
+                              border: '1px solid rgba(255, 255, 255, 0.06)',
+                              color: 'rgba(255, 255, 255, 0.8)',
+                              fontSize: '0.875rem',
+                              fontWeight: '400',
+                              letterSpacing: '0.02em',
+                              cursor: 'pointer',
+                              transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                              animation: 'float 4s ease-in-out infinite',
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                              e.currentTarget.style.transform = 'translateX(5px)';
+                              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+                              e.currentTarget.style.transform = 'translateX(0)';
+                              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                            }}
+                          >
+                            View Project
+                            <ArrowUpRight size={16} />
+                          </button>
+                        </Link>
+                      ) : (
+                        <button
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '1rem',
+                            padding: '1rem 2rem',
+                            borderRadius: '16px',
+                            background: 'rgba(255, 255, 255, 0.02)',
+                            backdropFilter: 'blur(20px)',
+                            WebkitBackdropFilter: 'blur(20px)',
+                            border: '1px solid rgba(255, 255, 255, 0.06)',
+                            color: 'rgba(255, 255, 255, 0.8)',
+                            fontSize: '0.875rem',
+                            fontWeight: '400',
+                            letterSpacing: '0.02em',
+                            cursor: 'pointer',
+                            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                            animation: 'float 4s ease-in-out infinite',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                            e.currentTarget.style.transform = 'translateX(5px)';
+                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+                            e.currentTarget.style.transform = 'translateX(0)';
+                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                          }}
+                        >
+                          View Project
+                          <ArrowUpRight size={16} />
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
