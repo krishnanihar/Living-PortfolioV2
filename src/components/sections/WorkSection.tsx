@@ -152,7 +152,6 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
       `}</style>
 
       <section style={{
-        minHeight: '100vh',
         background: '#000000',
         fontFamily: 'Inter, sans-serif',
         padding: '3rem 1.5rem',
