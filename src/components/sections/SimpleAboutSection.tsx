@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { User, Sparkles, Award } from 'lucide-react';
+import { User, GraduationCap, Award } from 'lucide-react';
 
 interface SimpleAboutSectionProps {
   className?: string;
@@ -45,11 +45,11 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
     },
     {
       id: 2,
-      title: "Design Philosophy",
-      subtitle: "Human-Centered Approach",
-      description: "Every interface should reduce the time between thought and action. I believe in consciousness-aware design that anticipates needs and creates meaningful digital experiences.",
-      icon: Sparkles,
-      highlight: "Consciousness-aware design"
+      title: "Education & Learning",
+      subtitle: "Masters + Bachelors in Design",
+      description: "Master's in New Media Design from National Institute of Design (2021-2023) and BFA in Design & Applied Arts from JNTU (2016-2020). Specialized in prototyping, systems thinking, and creative coding.",
+      icon: GraduationCap,
+      highlight: "NID + Creative Coding"
     },
     {
       id: 3,
