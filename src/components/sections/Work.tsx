@@ -75,7 +75,7 @@ export function Work() {
       status: 'Research',
       year: '2023',
       color: '140, 100, 255',
-      url: null,
+      url: undefined,
     },
     {
       id: 3,
@@ -103,7 +103,7 @@ export function Work() {
       status: 'Active',
       year: '2024',
       color: '255, 100, 150',
-      url: null,
+      url: undefined,
     }
   ];
 
@@ -625,7 +625,7 @@ export function Work() {
                       animation: isActive ? 'slideInLeft 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both' : 'none',
                     }}>
                       {project.url ? (
-                        <Link href={project.url} style={{ textDecoration: 'none' }}>
+                        <Link href={project.url as any} style={{ textDecoration: 'none' }}>
                           <button
                             style={{
                               display: 'flex',
