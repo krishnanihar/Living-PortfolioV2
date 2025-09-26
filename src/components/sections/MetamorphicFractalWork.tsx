@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
 
 export function MetamorphicFractalWork() {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
@@ -356,7 +355,7 @@ export function MetamorphicFractalWork() {
         }
 
         section {
-          padding: 80px 0;
+          padding: 120px 0;
         }
 
         section#experience {
@@ -820,39 +819,7 @@ export function MetamorphicFractalWork() {
           max-width: var(--max);
         }
 
-        /* Back button styles */
-        .back-btn {
-          position: fixed;
-          top: 24px;
-          left: 24px;
-          z-index: 10000;
-          padding: 12px 20px;
-          border-radius: 100px;
-          border: 1px solid var(--border);
-          background: var(--card);
-          color: var(--fg-dim);
-          text-decoration: none;
-          font-size: 0.875rem;
-          font-weight: 400;
-          letter-spacing: 0.02em;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-        }
-
-        .back-btn:hover {
-          transform: translateY(-2px);
-          border-color: rgba(255,255,255,.15);
-          background: rgba(255,255,255,.04);
-          color: var(--fg);
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
       `}</style>
-
-      {/* Back Button */}
-      <Link href="/work" className="back-btn">
-        ← Back to Work
-      </Link>
 
       {/* Isolated Container */}
       <div className="metamorphic-container">
@@ -920,21 +887,25 @@ export function MetamorphicFractalWork() {
                 A short capture of the installation and the mirror-portal moment.
               </p>
               <div id="exp-video" className={`video-wrap reveal ${visibleElements.has('exp-video') ? 'on' : ''}`}>
-                <video
-                  controls
-                  playsInline
-                  preload="metadata"
-                  style={{ width: '100%', height: 'auto' }}
-                  onPlay={() => setIsVideoPlaying(true)}
-                  onPause={() => setIsVideoPlaying(false)}
-                >
-                  <source src="" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/0U_BLJTcsDU?si=FmbBoowxVPrfZYkx"
+                  title="Metamorphic Fractal Reflections - Experience Film"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                  style={{
+                    aspectRatio: '16/9',
+                    background: '#000',
+                    borderRadius: 'var(--radius)'
+                  }}
+                />
                 <div className="video-veil" aria-hidden="true" />
               </div>
               <div className="caption">
-                Replace video source with your final render or Vimeo/YouTube embed.
+                Experience film showing the installation and mirror-portal interaction.
               </div>
             </div>
           </section>
