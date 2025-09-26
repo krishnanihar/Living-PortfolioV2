@@ -173,10 +173,19 @@ export function MetamorphicFractalWork() {
 
         header {
           position: relative;
-          padding: 150px 24px 200px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 80vh;
+          padding: 60px 24px;
           overflow: hidden;
           background: radial-gradient(ellipse at top center, rgba(181,131,255,.08) 0%, transparent 50%);
-          min-height: 100vh;
+        }
+
+        .hero-content {
+          text-align: center;
+          max-width: 1000px;
+          width: 100%;
         }
 
         .title {
@@ -842,7 +851,7 @@ export function MetamorphicFractalWork() {
         {/* Header */}
         <header>
           <div className="ribbon" aria-hidden="true" />
-          <div className="wrap">
+          <div className="hero-content">
             <span className="kicker">Classroom Project · Immersive Installation</span>
             <h1 className="title">
               <span className="aura" data-text="Metamorphic Fractal Reflections">
