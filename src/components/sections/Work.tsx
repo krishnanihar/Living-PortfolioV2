@@ -61,6 +61,7 @@ export function Work() {
       status: 'Active',
       year: '2024',
       color: '218, 14, 41',
+      url: '/work/air-india',
     },
     {
       id: 2,
@@ -74,6 +75,7 @@ export function Work() {
       status: 'Research',
       year: '2023',
       color: '140, 100, 255',
+      url: null,
     },
     {
       id: 3,
@@ -87,6 +89,7 @@ export function Work() {
       status: 'Completed',
       year: '2023',
       color: '50, 200, 150',
+      url: '/work/metamorphic-fractal-reflections',
     },
     {
       id: 4,
@@ -100,6 +103,7 @@ export function Work() {
       status: 'Active',
       year: '2024',
       color: '255, 100, 150',
+      url: null,
     }
   ];
 
@@ -620,44 +624,68 @@ export function Work() {
                     <div style={{
                       animation: isActive ? 'slideInLeft 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both' : 'none',
                     }}>
-                      <button
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '1rem',
-                          padding: '1rem 2rem',
-                          borderRadius: '16px',
-                          background: 'rgba(255, 255, 255, 0.02)',
-                          backdropFilter: 'blur(20px)',
-                          WebkitBackdropFilter: 'blur(20px)',
-                          border: '1px solid rgba(255, 255, 255, 0.06)',
-                          color: 'rgba(255, 255, 255, 0.8)',
-                          fontSize: '0.875rem',
-                          fontWeight: '400',
-                          letterSpacing: '0.02em',
-                          cursor: project.id === 1 ? 'default' : 'pointer',
-                          transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                          animation: 'float 4s ease-in-out infinite',
-                          pointerEvents: project.id === 1 ? 'none' : 'auto',
-                        }}
-                        onMouseEnter={(e) => {
-                          if (project.id !== 1) {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                            e.currentTarget.style.transform = 'translateX(5px)';
-                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                          }
-                        }}
-                        onMouseLeave={(e) => {
-                          if (project.id !== 1) {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
-                            e.currentTarget.style.transform = 'translateX(0)';
-                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
-                          }
-                        }}
-                      >
-                        View Project
-                        <ArrowUpRight size={16} />
-                      </button>
+                      {project.url ? (
+                        <Link href={project.url} style={{ textDecoration: 'none' }}>
+                          <button
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '1rem',
+                              padding: '1rem 2rem',
+                              borderRadius: '16px',
+                              background: 'rgba(255, 255, 255, 0.02)',
+                              backdropFilter: 'blur(20px)',
+                              WebkitBackdropFilter: 'blur(20px)',
+                              border: '1px solid rgba(255, 255, 255, 0.06)',
+                              color: 'rgba(255, 255, 255, 0.8)',
+                              fontSize: '0.875rem',
+                              fontWeight: '400',
+                              letterSpacing: '0.02em',
+                              cursor: 'pointer',
+                              transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                              animation: 'float 4s ease-in-out infinite',
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                              e.currentTarget.style.transform = 'translateX(5px)';
+                              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+                              e.currentTarget.style.transform = 'translateX(0)';
+                              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                            }}
+                          >
+                            View Project
+                            <ArrowUpRight size={16} />
+                          </button>
+                        </Link>
+                      ) : (
+                        <button
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '1rem',
+                            padding: '1rem 2rem',
+                            borderRadius: '16px',
+                            background: 'rgba(255, 255, 255, 0.02)',
+                            backdropFilter: 'blur(20px)',
+                            WebkitBackdropFilter: 'blur(20px)',
+                            border: '1px solid rgba(255, 255, 255, 0.06)',
+                            color: 'rgba(255, 255, 255, 0.4)',
+                            fontSize: '0.875rem',
+                            fontWeight: '400',
+                            letterSpacing: '0.02em',
+                            cursor: 'default',
+                            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                            animation: 'float 4s ease-in-out infinite',
+                            pointerEvents: 'none',
+                          }}
+                        >
+                          Coming Soon
+                          <ArrowUpRight size={16} />
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
