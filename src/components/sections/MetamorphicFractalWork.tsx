@@ -221,6 +221,7 @@ export function MetamorphicFractalWork() {
           flex-wrap: wrap;
           gap: 12px 16px;
           margin-top: 30px;
+          justify-content: center;
         }
 
         .pill {
@@ -265,6 +266,7 @@ export function MetamorphicFractalWork() {
           display: flex;
           gap: 16px;
           margin-top: 40px;
+          justify-content: center;
         }
 
         .btn {
@@ -383,14 +385,16 @@ export function MetamorphicFractalWork() {
           font-weight: 200;
           letter-spacing: -0.02em;
           margin-bottom: 25px;
+          text-align: center;
         }
 
         .lead {
           color: var(--fg-dim);
           max-width: 900px;
-          margin-bottom: 40px;
+          margin: 0 auto 40px auto;
           font-weight: 300;
           font-size: 1.05rem;
+          text-align: center;
         }
 
         .video-wrap {
@@ -422,11 +426,13 @@ export function MetamorphicFractalWork() {
           font-size: 0.875rem;
           margin-top: 15px;
           font-weight: 300;
+          text-align: center;
         }
 
         /* Process Section with Cards */
         .process-header {
           margin-bottom: 60px;
+          text-align: center;
         }
 
         .process-grid {
@@ -535,6 +541,7 @@ export function MetamorphicFractalWork() {
 
         .process-content {
           padding: 30px;
+          text-align: center;
         }
 
         .process-number {
@@ -586,6 +593,7 @@ export function MetamorphicFractalWork() {
           padding: 28px;
           transition: all 0.3s ease;
           position: relative;
+          text-align: center;
         }
 
         .card::before {
@@ -716,6 +724,7 @@ export function MetamorphicFractalWork() {
           display: flex;
           flex-wrap: wrap;
           gap: 12px;
+          justify-content: center;
         }
 
         .chip {
