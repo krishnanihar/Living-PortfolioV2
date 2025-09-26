@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Briefcase, User, Moon, Sun } from 'lucide-react';
 
 interface PortfolioNavigationProps {
@@ -11,6 +12,7 @@ interface PortfolioNavigationProps {
 export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
   const [scrolled, setScrolled] = useState(false);
   const [theme, setTheme] = useState('dark');
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +29,11 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
     { name: 'Work', icon: Briefcase, href: '/work' as const },
     { name: 'About', icon: User, href: '/about' as const },
   ];
+
+  const isActive = (href: string) => {
+    if (href === '/') return pathname === '/';
+    return pathname.startsWith(href);
+  };
 
   return (
     <>
@@ -100,7 +107,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
           <Link href="/" style={{ textDecoration: 'none' }}>
             <div style={{
               fontSize: '0.925rem',
-              fontWeight: '500',
+              fontWeight: isActive('/') ? '600' : '500',
               letterSpacing: '0.08em',
               transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
               position: 'relative',
@@ -113,7 +120,9 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
             }}>
               <span style={{
                 display: 'inline-block',
-                background: 'linear-gradient(120deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%)',
+                background: isActive('/')
+                  ? 'linear-gradient(120deg, rgba(180, 210, 240, 1) 0%, rgba(180, 210, 240, 0.8) 100%)'
+                  : 'linear-gradient(120deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -130,6 +139,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
           }}>
             {navItems.map((item, index) => {
               const Icon = item.icon;
+              const active = isActive(item.href);
 
               return (
                 <Link
@@ -139,41 +149,62 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                 >
                   <div
                     onMouseEnter={(e) => {
-                      const target = e.currentTarget as HTMLElement;
-                      target.style.transform = 'translateY(-2px) scale(1.02)';
-                      const bg = target.querySelector('.hover-bg') as HTMLElement;
-                      if (bg) bg.style.opacity = '1';
+                      if (!active) {
+                        const target = e.currentTarget as HTMLElement;
+                        target.style.transform = 'translateY(-2px) scale(1.02)';
+                        const bg = target.querySelector('.hover-bg') as HTMLElement;
+                        if (bg) bg.style.opacity = '1';
+                      }
                     }}
                     onMouseLeave={(e) => {
-                      const target = e.currentTarget as HTMLElement;
-                      target.style.transform = 'translateY(0) scale(1)';
-                      const bg = target.querySelector('.hover-bg') as HTMLElement;
-                      if (bg) bg.style.opacity = '0';
+                      if (!active) {
+                        const target = e.currentTarget as HTMLElement;
+                        target.style.transform = 'translateY(0) scale(1)';
+                        const bg = target.querySelector('.hover-bg') as HTMLElement;
+                        if (bg) bg.style.opacity = '0';
+                      }
                     }}
                     style={{
                       position: 'relative',
                       padding: '0.5rem 1.25rem',
                       borderRadius: '24px',
                       fontSize: '0.825rem',
-                      fontWeight: '400',
+                      fontWeight: active ? '500' : '400',
                       letterSpacing: '0.025em',
-                      color: 'rgba(255, 255, 255, 0.8)',
+                      color: active ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.8)',
                       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                     }}
                   >
+                    {/* Active state background */}
+                    {active && (
+                      <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        borderRadius: '24px',
+                        background: 'linear-gradient(135deg, rgba(180, 210, 240, 0.08) 0%, rgba(180, 210, 240, 0.04) 100%)',
+                        backdropFilter: 'blur(20px)',
+                        WebkitBackdropFilter: 'blur(20px)',
+                        border: '1px solid rgba(180, 210, 240, 0.15)',
+                        boxShadow: 'inset 0 1px 0 rgba(180, 210, 240, 0.1)',
+                        transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                      }} />
+                    )}
+
                     {/* Glass hover background */}
-                    <div className="hover-bg" style={{
-                      position: 'absolute',
-                      inset: 0,
-                      borderRadius: '24px',
-                      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%)',
-                      backdropFilter: 'blur(20px)',
-                      WebkitBackdropFilter: 'blur(20px)',
-                      border: '1px solid rgba(255, 255, 255, 0.06)',
-                      opacity: 0,
-                      transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                      boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05)',
-                    }} />
+                    {!active && (
+                      <div className="hover-bg" style={{
+                        position: 'absolute',
+                        inset: 0,
+                        borderRadius: '24px',
+                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%)',
+                        backdropFilter: 'blur(20px)',
+                        WebkitBackdropFilter: 'blur(20px)',
+                        border: '1px solid rgba(255, 255, 255, 0.06)',
+                        opacity: 0,
+                        transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+                      }} />
+                    )}
 
                     <div style={{
                       position: 'relative',
