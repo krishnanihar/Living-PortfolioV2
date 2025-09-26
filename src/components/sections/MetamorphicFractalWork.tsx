@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Play, Pause, Volume2, VolumeX, ChevronDown, ExternalLink } from 'lucide-react';
+import { ChevronDown, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
+import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
+import { cn } from '@/lib/utils';
 
 interface TimelineStep {
   id: string;
@@ -71,23 +73,7 @@ export function MetamorphicFractalWork() {
 
   return (
     <>
-      {/* Global Styles */}
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap');
-
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-
-        body {
-          background: #0A0A0A;
-          color: white;
-          font-family: 'Inter', sans-serif;
-          overflow-x: hidden;
-        }
-
         @keyframes psychedelicPulse {
           0%, 100% {
             background: linear-gradient(45deg, rgba(255, 100, 150, 0.1), rgba(50, 200, 150, 0.1));
@@ -107,6 +93,11 @@ export function MetamorphicFractalWork() {
           50% { transform: translateY(-20px); }
         }
 
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
         .psychedelic-gradient {
           background: linear-gradient(
             135deg,
@@ -116,15 +107,7 @@ export function MetamorphicFractalWork() {
             rgba(255, 200, 100, 0.1) 75%,
             rgba(255, 100, 150, 0.1) 100%
           );
-          animation: psychedelicPulse 8s ease-in-out infinite;
-        }
-
-        .glassmorphism {
-          background: rgba(255, 255, 255, 0.02);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 16px;
+          animation: psychedelicPulse 8s var(--ease-premium) infinite;
         }
 
         .text-glow {
@@ -132,167 +115,83 @@ export function MetamorphicFractalWork() {
         }
       `}</style>
 
+      {/* Portfolio Navigation */}
+      <PortfolioNavigation />
+
       {/* Progress Bar */}
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: `${scrollProgress}%`,
-        height: '2px',
-        background: 'linear-gradient(90deg, #FF6496, #32C896, #8C64FF)',
-        zIndex: 1000,
-        transition: 'width 0.1s ease-out',
-      }} />
+      <div
+        className="fixed top-0 left-0 h-0.5 bg-gradient-to-r from-pink-400 via-emerald-400 to-purple-400 z-50 transition-all duration-100 ease-out"
+        style={{ width: `${scrollProgress}%` }}
+      />
 
-      {/* Back Navigation */}
-      <div style={{
-        position: 'fixed',
-        top: '2rem',
-        left: '2rem',
-        zIndex: 100,
-      }}>
-        <Link href="/work" style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          padding: '0.75rem 1rem',
-          background: 'rgba(0, 0, 0, 0.8)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          borderRadius: '12px',
-          color: 'rgba(255, 255, 255, 0.8)',
-          textDecoration: 'none',
-          fontSize: '0.875rem',
-          fontWeight: '400',
-          transition: 'all 0.3s ease',
-        }}>
-          <ArrowLeft size={16} />
-          Back to Work
-        </Link>
-      </div>
-
-      <div style={{
-        minHeight: '100vh',
-        background: '#0A0A0A',
-        position: 'relative',
-      }}>
+      <div className="min-h-screen bg-[var(--bg-primary)] relative">
         {/* Hero Section */}
-        <section style={{
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'relative',
-          padding: '2rem',
-          background: 'radial-gradient(circle at center, rgba(255, 100, 150, 0.05) 0%, transparent 70%)',
-        }}>
-          <div className="psychedelic-gradient" style={{
-            position: 'absolute',
-            inset: 0,
-            opacity: 0.3,
-          }} />
+        <section className="min-h-screen flex flex-col justify-center items-center relative px-8 py-16">
+          {/* Psychedelic Background */}
+          <div
+            className="psychedelic-gradient absolute inset-0 opacity-30"
+            style={{
+              background: 'radial-gradient(circle at center, rgba(255, 100, 150, 0.05) 0%, transparent 70%)',
+            }}
+          />
 
-          <div style={{
-            textAlign: 'center',
-            position: 'relative',
-            zIndex: 2,
-          }}>
-            <h1 style={{
-              fontSize: 'clamp(2.5rem, 8vw, 6rem)',
-              fontWeight: '200',
-              marginBottom: '2rem',
-              letterSpacing: '-0.02em',
-              animation: 'breathe 4s ease-in-out infinite',
-            }} className="text-glow">
+          <div className="text-center relative z-10 max-w-6xl mx-auto">
+            <h1 className={cn(
+              "text-display text-glow mb-8 animate-[breathe_4s_var(--ease-premium)_infinite]",
+              "text-[var(--text-primary)]"
+            )}>
               Metamorphic Fractal Reflections
             </h1>
 
-            <p style={{
-              fontSize: 'clamp(1rem, 2.5vw, 1.5rem)',
-              color: 'rgba(255, 255, 255, 0.7)',
-              maxWidth: '800px',
-              lineHeight: '1.6',
-              marginBottom: '3rem',
-            }}>
+            <p className={cn(
+              "text-subheading text-[var(--text-secondary)] max-w-4xl mx-auto mb-12"
+            )}>
               An immersive installation exploring consciousness through ego dissolution.
               Participants enter a bathroom mirror portal and traverse a trippy multiverse
               of liquid color and pattern-creatures.
             </p>
 
-            <div style={{
-              display: 'flex',
-              gap: '1rem',
-              justifyContent: 'center',
-              flexWrap: 'wrap',
-            }}>
-              <div className="glassmorphism" style={{
-                padding: '0.75rem 1.5rem',
-                fontSize: '0.875rem',
-                fontWeight: '500',
-              }}>
+            <div className="flex gap-4 justify-center flex-wrap">
+              <div className={cn(
+                "glass-card px-6 py-3 rounded-[var(--radius-full)]",
+                "text-small font-medium text-[var(--text-primary)]"
+              )}>
                 Interactive Installation
               </div>
-              <div className="glassmorphism" style={{
-                padding: '0.75rem 1.5rem',
-                fontSize: '0.875rem',
-                fontWeight: '500',
-              }}>
+              <div className={cn(
+                "glass-card px-6 py-3 rounded-[var(--radius-full)]",
+                "text-small font-medium text-[var(--text-primary)]"
+              )}>
                 2 Months Development
               </div>
-              <div className="glassmorphism" style={{
-                padding: '0.75rem 1.5rem',
-                fontSize: '0.875rem',
-                fontWeight: '500',
-              }}>
+              <div className={cn(
+                "glass-card px-6 py-3 rounded-[var(--radius-full)]",
+                "text-small font-medium text-[var(--text-primary)]"
+              )}>
                 Completed 2023
               </div>
             </div>
           </div>
 
-          <div style={{
-            position: 'absolute',
-            bottom: '2rem',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            animation: 'float 3s ease-in-out infinite',
-          }}>
-            <ChevronDown size={24} style={{
-              color: 'rgba(255, 255, 255, 0.5)',
-            }} />
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-[float_3s_var(--ease-premium)_infinite]">
+            <ChevronDown
+              size={24}
+              className="text-[var(--text-muted)]"
+            />
           </div>
         </section>
 
         {/* Experience Section */}
-        <section style={{
-          padding: '6rem 2rem',
+        <section className="py-24 px-8" style={{
           background: 'linear-gradient(180deg, transparent 0%, rgba(50, 200, 150, 0.02) 100%)',
         }}>
-          <div style={{
-            maxWidth: '1200px',
-            margin: '0 auto',
-          }}>
-            <h2 style={{
-              fontSize: 'clamp(2rem, 5vw, 3rem)',
-              fontWeight: '300',
-              marginBottom: '2rem',
-              textAlign: 'center',
-            }}>
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-heading text-[var(--text-primary)] text-center mb-8">
               The Experience
             </h2>
 
-            <div className="glassmorphism" style={{
-              padding: '3rem',
-              margin: '2rem 0',
-            }}>
-              <p style={{
-                fontSize: '1.125rem',
-                lineHeight: '1.8',
-                color: 'rgba(255, 255, 255, 0.8)',
-                textAlign: 'center',
-                maxWidth: '800px',
-                margin: '0 auto',
-              }}>
+            <div className="glass-card p-12 my-8 rounded-[var(--radius-2xl)]">
+              <p className="text-body text-[var(--text-secondary)] text-center max-w-4xl mx-auto leading-relaxed">
                 Participants begin their journey by gazing into a seemingly ordinary bathroom mirror.
                 As sensors detect their presence, the reflection begins to shift and morph, revealing
                 portals to other dimensions. TouchDesigner-generated visuals respond to movement and
@@ -300,37 +199,32 @@ export function MetamorphicFractalWork() {
               </p>
             </div>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: '2rem',
-              marginTop: '4rem',
-            }}>
-              <div className="glassmorphism" style={{ padding: '2rem' }}>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem', color: '#FF6496' }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+              <div className="glass-card p-8 rounded-[var(--radius-xl)]">
+                <h3 className="text-subheading mb-4 text-pink-400">
                   Mirror Portal
                 </h3>
-                <p style={{ color: 'rgba(255, 255, 255, 0.7)', lineHeight: '1.6' }}>
+                <p className="text-body text-[var(--text-tertiary)]">
                   The bathroom mirror serves as the threshold between realities,
                   equipped with depth sensors and computer vision to track participant movement.
                 </p>
               </div>
 
-              <div className="glassmorphism" style={{ padding: '2rem' }}>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem', color: '#32C896' }}>
+              <div className="glass-card p-8 rounded-[var(--radius-xl)]">
+                <h3 className="text-subheading mb-4 text-emerald-400">
                   Reactive Visuals
                 </h3>
-                <p style={{ color: 'rgba(255, 255, 255, 0.7)', lineHeight: '1.6' }}>
+                <p className="text-body text-[var(--text-tertiary)]">
                   TouchDesigner algorithms generate infinite fractal patterns that respond
                   to breathing, heart rate, and subtle movements of the participant.
                 </p>
               </div>
 
-              <div className="glassmorphism" style={{ padding: '2rem' }}>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem', color: '#8C64FF' }}>
+              <div className="glass-card p-8 rounded-[var(--radius-xl)]">
+                <h3 className="text-subheading mb-4 text-purple-400">
                   Audio Landscape
                 </h3>
-                <p style={{ color: 'rgba(255, 255, 255, 0.7)', lineHeight: '1.6' }}>
+                <p className="text-body text-[var(--text-tertiary)]">
                   Spatial audio creates an immersive soundscape that adapts to the visual journey,
                   guiding participants through different states of consciousness.
                 </p>
@@ -340,69 +234,48 @@ export function MetamorphicFractalWork() {
         </section>
 
         {/* Process Timeline */}
-        <section style={{
-          padding: '6rem 2rem',
+        <section className="py-24 px-8" style={{
           background: 'linear-gradient(180deg, rgba(50, 200, 150, 0.02) 0%, rgba(140, 100, 255, 0.02) 100%)',
         }}>
-          <div style={{
-            maxWidth: '1200px',
-            margin: '0 auto',
-          }}>
-            <h2 style={{
-              fontSize: 'clamp(2rem, 5vw, 3rem)',
-              fontWeight: '300',
-              marginBottom: '4rem',
-              textAlign: 'center',
-            }}>
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-heading text-[var(--text-primary)] text-center mb-16">
               Development Process
             </h2>
 
-            <div style={{
-              display: 'grid',
-              gap: '1rem',
-            }}>
+            <div className="grid gap-4">
               {timelineSteps.map((step) => (
-                <div key={step.id} className="glassmorphism" style={{
-                  padding: '2rem',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  border: activeStep === step.id ? '1px solid rgba(255, 100, 150, 0.3)' : '1px solid rgba(255, 255, 255, 0.1)',
-                }} onClick={() => setActiveStep(activeStep === step.id ? null : step.id)}>
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginBottom: activeStep === step.id ? '1rem' : '0',
-                  }}>
+                <div
+                  key={step.id}
+                  className={cn(
+                    "glass-card p-8 rounded-[var(--radius-xl)] cursor-pointer",
+                    "transition-all duration-[var(--duration-slow)] ease-[var(--ease-premium)]",
+                    "hover:bg-[var(--surface-hover)]",
+                    activeStep === step.id ? "border-pink-400/30" : "border-[var(--border-primary)]"
+                  )}
+                  onClick={() => setActiveStep(activeStep === step.id ? null : step.id)}
+                >
+                  <div className={cn(
+                    "flex justify-between items-center",
+                    activeStep === step.id ? "mb-4" : "mb-0"
+                  )}>
                     <div>
-                      <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>
+                      <h3 className="text-subheading text-[var(--text-primary)] mb-2">
                         {step.title}
                       </h3>
-                      <p style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '0.875rem' }}>
+                      <p className="text-small text-[var(--text-tertiary)]">
                         {step.description}
                       </p>
                     </div>
-                    <div style={{
-                      padding: '0.5rem 1rem',
-                      background: 'rgba(255, 100, 150, 0.1)',
-                      borderRadius: '8px',
-                      fontSize: '0.75rem',
-                      fontWeight: '500',
-                    }}>
-                      {step.duration}
+                    <div className="px-4 py-2 bg-pink-400/10 rounded-lg">
+                      <span className="text-micro text-[var(--text-primary)]">
+                        {step.duration}
+                      </span>
                     </div>
                   </div>
 
                   {activeStep === step.id && (
-                    <div style={{
-                      paddingTop: '1rem',
-                      borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                      animation: 'fadeIn 0.3s ease-out',
-                    }}>
-                      <p style={{
-                        color: 'rgba(255, 255, 255, 0.8)',
-                        lineHeight: '1.6',
-                      }}>
+                    <div className="pt-4 border-t border-[var(--border-primary)] animate-[fadeIn_300ms_var(--ease-out)]">
+                      <p className="text-body text-[var(--text-secondary)]">
                         {step.details}
                       </p>
                     </div>
@@ -414,45 +287,28 @@ export function MetamorphicFractalWork() {
         </section>
 
         {/* Tech Stack */}
-        <section style={{
-          padding: '6rem 2rem',
+        <section className="py-24 px-8" style={{
           background: 'linear-gradient(180deg, rgba(140, 100, 255, 0.02) 0%, transparent 100%)',
         }}>
-          <div style={{
-            maxWidth: '1200px',
-            margin: '0 auto',
-          }}>
-            <h2 style={{
-              fontSize: 'clamp(2rem, 5vw, 3rem)',
-              fontWeight: '300',
-              marginBottom: '4rem',
-              textAlign: 'center',
-            }}>
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-heading text-[var(--text-primary)] text-center mb-16">
               Technology Stack
             </h2>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '2rem',
-            }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {techStack.map((tech) => (
-                <div key={tech.name} className="glassmorphism" style={{
-                  padding: '2rem',
-                  textAlign: 'center',
-                  transition: 'all 0.3s ease',
-                }}>
-                  <h3 style={{
-                    fontSize: '1.25rem',
-                    marginBottom: '1rem',
-                    color: '#FF6496',
-                  }}>
+                <div
+                  key={tech.name}
+                  className={cn(
+                    "glass-card p-8 text-center rounded-[var(--radius-xl)]",
+                    "transition-all duration-[var(--duration-base)] ease-[var(--ease-premium)]",
+                    "hover:bg-[var(--surface-hover)] hover:scale-[1.02]"
+                  )}
+                >
+                  <h3 className="text-subheading mb-4 text-pink-400">
                     {tech.name}
                   </h3>
-                  <p style={{
-                    color: 'rgba(255, 255, 255, 0.7)',
-                    lineHeight: '1.6',
-                  }}>
+                  <p className="text-body text-[var(--text-tertiary)]">
                     {tech.description}
                   </p>
                 </div>
@@ -462,64 +318,43 @@ export function MetamorphicFractalWork() {
         </section>
 
         {/* Ethics & Safety */}
-        <section style={{
-          padding: '6rem 2rem',
+        <section className="py-24 px-8" style={{
           background: 'radial-gradient(circle at center, rgba(255, 100, 150, 0.05) 0%, transparent 70%)',
         }}>
-          <div style={{
-            maxWidth: '800px',
-            margin: '0 auto',
-            textAlign: 'center',
-          }}>
-            <h2 style={{
-              fontSize: 'clamp(2rem, 5vw, 3rem)',
-              fontWeight: '300',
-              marginBottom: '2rem',
-            }}>
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-heading text-[var(--text-primary)] mb-8">
               Ethics & Safety
             </h2>
 
-            <div className="glassmorphism" style={{
-              padding: '3rem',
-            }}>
-              <p style={{
-                fontSize: '1.125rem',
-                lineHeight: '1.8',
-                color: 'rgba(255, 255, 255, 0.8)',
-                marginBottom: '2rem',
-              }}>
+            <div className="glass-card p-12 rounded-[var(--radius-2xl)]">
+              <p className="text-body text-[var(--text-secondary)] mb-8 leading-relaxed">
                 The installation was designed with careful consideration for participant safety and
                 psychological well-being. Clear consent protocols, exit mechanisms, and trained
                 facilitators ensure a secure exploration of consciousness.
               </p>
 
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                gap: '1.5rem',
-                marginTop: '2rem',
-              }}>
-                <div style={{ padding: '1rem' }}>
-                  <h4 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: '#32C896' }}>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                <div className="p-4">
+                  <h4 className="text-body font-semibold mb-2 text-emerald-400">
                     Informed Consent
                   </h4>
-                  <p style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.6)' }}>
+                  <p className="text-small text-[var(--text-muted)]">
                     Clear explanation of experience
                   </p>
                 </div>
-                <div style={{ padding: '1rem' }}>
-                  <h4 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: '#8C64FF' }}>
+                <div className="p-4">
+                  <h4 className="text-body font-semibold mb-2 text-purple-400">
                     Exit Protocols
                   </h4>
-                  <p style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.6)' }}>
+                  <p className="text-small text-[var(--text-muted)]">
                     Multiple ways to end session
                   </p>
                 </div>
-                <div style={{ padding: '1rem' }}>
-                  <h4 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: '#FF6496' }}>
+                <div className="p-4">
+                  <h4 className="text-body font-semibold mb-2 text-pink-400">
                     Trained Support
                   </h4>
-                  <p style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.6)' }}>
+                  <p className="text-small text-[var(--text-muted)]">
                     Facilitators present at all times
                   </p>
                 </div>
@@ -529,28 +364,18 @@ export function MetamorphicFractalWork() {
         </section>
 
         {/* Footer */}
-        <section style={{
-          padding: '4rem 2rem',
-          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-        }}>
-          <div style={{
-            maxWidth: '1200px',
-            margin: '0 auto',
-            textAlign: 'center',
-          }}>
-            <Link href="/work" style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '1rem 2rem',
-              background: 'linear-gradient(45deg, #FF6496, #32C896)',
-              color: 'white',
-              textDecoration: 'none',
-              borderRadius: '12px',
-              fontWeight: '500',
-              transition: 'all 0.3s ease',
-            }}>
-              <ArrowLeft size={16} />
+        <section className="py-16 px-8 border-t border-[var(--border-primary)]">
+          <div className="max-w-7xl mx-auto text-center">
+            <Link
+              href="/work"
+              className={cn(
+                "inline-flex items-center gap-2 px-8 py-4",
+                "bg-gradient-to-r from-pink-400 to-emerald-400",
+                "text-white font-medium rounded-full",
+                "transition-all duration-[var(--duration-base)] ease-[var(--ease-premium)]",
+                "hover:scale-[1.05] hover:shadow-2xl"
+              )}
+            >
               Back to All Work
             </Link>
           </div>
