@@ -762,13 +762,6 @@ export function AboutSection() {
                   position: 'relative',
                 }}
               >
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(219, 39, 119, 0.1))',
-                  borderRadius: '24px',
-                  filter: 'blur(40px)',
-                }} />
                 <div
                   style={{
                     position: 'relative',
@@ -782,7 +775,7 @@ export function AboutSection() {
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'scale(1.02)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'scale(1)';
