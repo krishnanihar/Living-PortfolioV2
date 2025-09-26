@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import { MetamorphicFractalWork } from '@/components/sections/MetamorphicFractalWork';
 
 export const metadata: Metadata = {
@@ -16,10 +15,5 @@ export const metadata: Metadata = {
 };
 
 export default function MetamorphicFractalReflectionsPage() {
-  return (
-    <>
-      <PortfolioNavigation />
-      <MetamorphicFractalWork />
-    </>
-  );
+  return <MetamorphicFractalWork />;
 }

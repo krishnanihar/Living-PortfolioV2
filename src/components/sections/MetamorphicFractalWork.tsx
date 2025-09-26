@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 
 export function MetamorphicFractalWork() {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
@@ -99,7 +100,7 @@ export function MetamorphicFractalWork() {
 
   return (
     <>
-      <style jsx>{`
+      <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600&display=swap');
 
         :root {
@@ -123,22 +124,32 @@ export function MetamorphicFractalWork() {
           inherits: false;
         }
 
-        * {
+        /* CSS Reset and Isolation - Override global styles */
+        .metamorphic-container * {
           box-sizing: border-box;
           margin: 0;
           padding: 0;
         }
 
-        body {
-          background: var(--bg);
-          color: var(--fg);
-          font-family: 'Inter', -apple-system, system-ui, sans-serif;
-          font-weight: 300;
-          line-height: 1.7;
-          letter-spacing: 0.01em;
-          -webkit-font-smoothing: antialiased;
-          text-rendering: optimizeLegibility;
-          overflow-x: hidden;
+        .metamorphic-container {
+          background: var(--bg) !important;
+          color: var(--fg) !important;
+          font-family: 'Inter', -apple-system, system-ui, sans-serif !important;
+          font-weight: 300 !important;
+          line-height: 1.7 !important;
+          letter-spacing: 0.01em !important;
+          -webkit-font-smoothing: antialiased !important;
+          text-rendering: optimizeLegibility !important;
+          overflow-x: hidden !important;
+          min-height: 100vh !important;
+          width: 100% !important;
+          position: relative !important;
+        }
+
+        /* Override any global body/html styles that might interfere */
+        body:has(.metamorphic-container) {
+          background: var(--bg) !important;
+          overflow-x: hidden !important;
         }
 
         .cursor {
@@ -808,10 +819,43 @@ export function MetamorphicFractalWork() {
           margin: 0 auto;
           max-width: var(--max);
         }
+
+        /* Back button styles */
+        .back-btn {
+          position: fixed;
+          top: 24px;
+          left: 24px;
+          z-index: 10000;
+          padding: 12px 20px;
+          border-radius: 100px;
+          border: 1px solid var(--border);
+          background: var(--card);
+          color: var(--fg-dim);
+          text-decoration: none;
+          font-size: 0.875rem;
+          font-weight: 400;
+          letter-spacing: 0.02em;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+        }
+
+        .back-btn:hover {
+          transform: translateY(-2px);
+          border-color: rgba(255,255,255,.15);
+          background: rgba(255,255,255,.04);
+          color: var(--fg);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
       `}</style>
 
-      {/* OLED Black Container */}
-      <div style={{ minHeight: '100vh', background: '#000' }}>
+      {/* Back Button */}
+      <Link href="/work" className="back-btn">
+        ← Back to Work
+      </Link>
+
+      {/* Isolated Container */}
+      <div className="metamorphic-container">
 
         {/* Cursor prism effect */}
         <div
