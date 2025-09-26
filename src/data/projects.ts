@@ -6,6 +6,37 @@ import { Project, FilterTab } from '@/types/projects';
  */
 
 export const projects: Project[] = [
+  // Meta Design Projects
+  {
+    id: 'living-organism',
+    title: 'Living Organism',
+    company: 'Personal Portfolio',
+    description: 'This portfolio website itself - architected to feel like a living organism. Features breathing animations, consciousness-aware interactions, and adaptive micro-behaviors that respond to user presence and intent. Built with Next.js 15, Framer Motion, and a sophisticated glassmorphism design system.',
+    category: 'web',
+    status: 'live',
+    tags: [
+      { id: 'nextjs', label: 'Next.js' },
+      { id: 'framer-motion', label: 'Framer Motion' },
+      { id: 'consciousness-ui', label: 'Consciousness UI' },
+      { id: 'glassmorphism', label: 'Glassmorphism' },
+      { id: 'typescript', label: 'TypeScript' },
+    ],
+    meta: {
+      year: '2024',
+      role: 'Designer & Developer',
+      team: 'Solo Project',
+    },
+    metrics: {
+      impact: 'Living & breathing digital experience',
+      improvement: 'Adaptive behaviors & micro-interactions',
+    },
+    links: [
+      { type: 'live', url: '/', label: 'Live Portfolio' },
+      { type: 'github', url: 'https://github.com/krishnanihar/Living-PortfolioV2', label: 'View Source' },
+    ],
+    featured: true,
+    order: 1,
+  },
   // System Design Projects
   {
     id: 'pixel-radar',

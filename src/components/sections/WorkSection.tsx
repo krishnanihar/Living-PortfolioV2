@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { ArrowUpRight, Circle, Hexagon, Grid3X3 } from 'lucide-react';
+import { ArrowUpRight, Circle, Hexagon, Grid3X3, Heart } from 'lucide-react';
 
 interface Project {
   id: number;
@@ -79,6 +79,17 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
       tags: ['TouchDesigner', 'Arduino', 'VR + Installation'],
       status: 'Completed',
       year: '2023'
+    },
+    {
+      id: 4,
+      icon: Heart,
+      title: 'Living Organism',
+      category: 'Meta Design',
+      description: 'This portfolio website itself - architected to feel like a living organism. Breathing animations, consciousness-aware interactions, and adaptive micro-behaviors that respond to user presence and intent.',
+      metric: 'Living & Breathing',
+      tags: ['Next.js', 'Framer Motion', 'Consciousness UI'],
+      status: 'Active',
+      year: '2024'
     }
   ];
 
