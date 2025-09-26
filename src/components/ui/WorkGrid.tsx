@@ -56,10 +56,19 @@ export function WorkGrid({
   };
 
   const handleProjectClick = (project: Project) => {
-    // Future: Open project modal or navigate to detail page
+    // Check if project has case study links
+    const caseStudyLink = project.links?.find(link => link.type === 'case-study');
+
+    if (caseStudyLink) {
+      // Navigate to case study page
+      window.location.href = caseStudyLink.url;
+      return;
+    }
+
+    // Fallback: Log project click for future modal/detail page implementation
     console.log('Project clicked:', project.title);
 
-    // For now, just provide user feedback
+    // Provide user feedback for accessibility
     const announcement = `Selected project: ${project.title} at ${project.company}`;
 
     // Create live region for screen readers

@@ -237,9 +237,8 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
             const [cardTilt, setCardTilt] = useState({ x: 0, y: 0 });
             const [cardRef, setCardRef] = useState<HTMLElement | null>(null);
 
-            return (
+            const cardContent = (
               <div
-                key={project.id}
                 ref={(ref) => setCardRef(ref)}
                 onMouseEnter={() => setHoveredCard(project.id)}
                 onMouseLeave={() => {
@@ -262,6 +261,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     : 'rotateX(0) rotateY(0) translateZ(0) scale(1)',
                   transformStyle: 'preserve-3d' as const,
                   transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                  cursor: project.id === 1 ? 'pointer' : 'default',
                 }}
               >
                 {/* Image Placeholder with enhanced glass */}
@@ -465,35 +465,13 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     color: 'rgba(255, 255, 255, 0.5)',
                     lineHeight: '1.6',
                     letterSpacing: '0.01em',
-                    marginBottom: project.id === 1 ? '1rem' : 'auto',
+                    marginBottom: 'auto',
                     transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                     opacity: isHovered ? 0.7 : 0.5,
                   }}>
                     {project.description}
                   </p>
 
-                  {/* Case Study Link for Air India */}
-                  {project.id === 1 && (
-                    <Link
-                      href="/work/air-india"
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        fontSize: '0.75rem',
-                        fontWeight: '400',
-                        color: 'rgba(218, 14, 41, 0.8)',
-                        textDecoration: 'none',
-                        transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                        opacity: isHovered ? 1 : 0.8,
-                        transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
-                        marginBottom: 'auto',
-                      }}
-                    >
-                      View Full Case Study
-                      <ArrowUpRight size={12} />
-                    </Link>
-                  )}
 
                   {/* Footer */}
                   <div style={{
@@ -584,6 +562,16 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     </div>
                   </div>
                 </div>
+              </div>
+            );
+
+            return project.id === 1 ? (
+              <Link key={project.id} href="/work/air-india" style={{ textDecoration: 'none' }}>
+                {cardContent}
+              </Link>
+            ) : (
+              <div key={project.id}>
+                {cardContent}
               </div>
             );
           })}
