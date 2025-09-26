@@ -368,6 +368,10 @@ export function MetamorphicFractalWork() {
           padding: 160px 0;
         }
 
+        section:not(#experience) {
+          padding: 240px 0;
+        }
+
         section#experience {
           padding-top: 0;
           background: radial-gradient(ellipse at top center, rgba(181,131,255,.03) 0%, transparent 40%);
