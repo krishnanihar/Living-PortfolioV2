@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { ArrowDown, ArrowUpRight, Circle, Hexagon, Grid3x3 } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Circle, Hexagon, Grid3x3, Heart } from 'lucide-react';
 
 export function Work() {
   const [currentProject, setCurrentProject] = useState(0);
@@ -87,6 +87,19 @@ export function Work() {
       status: 'Completed',
       year: '2023',
       color: '50, 200, 150',
+    },
+    {
+      id: 4,
+      number: '04',
+      icon: Heart,
+      title: 'Living Organism',
+      category: 'Meta Design',
+      description: 'This portfolio website itself - architected to feel like a living organism. Features breathing animations, consciousness-aware interactions, and adaptive micro-behaviors that respond to user presence and intent.',
+      metric: 'Living & Breathing',
+      tags: ['Next.js', 'Framer Motion', 'Consciousness UI', 'Glassmorphism'],
+      status: 'Active',
+      year: '2024',
+      color: '255, 100, 150',
     }
   ];
 
@@ -423,6 +436,14 @@ export function Work() {
                               fill="none"
                             />
                           ))}
+                        </g>
+                      )}
+                      {project.id === 4 && (
+                        <g>
+                          {/* Heart-based organic pattern */}
+                          <path d="M150,80 C120,50 80,50 80,90 C80,130 150,180 150,180 C150,180 220,130 220,90 C220,50 180,50 150,80 Z" stroke="white" strokeWidth="0.5" fill="none" />
+                          <path d="M150,110 C135,100 120,100 120,115 C120,130 150,150 150,150 C150,150 180,130 180,115 C180,100 165,100 150,110 Z" stroke="white" strokeWidth="0.5" fill="none" />
+                          <path d="M150,140 C142,135 135,135 135,142 C135,149 150,160 150,160 C150,160 165,149 165,142 C165,135 158,135 150,140 Z" stroke="white" strokeWidth="0.5" fill="none" />
                         </g>
                       )}
                     </svg>
