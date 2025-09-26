@@ -261,7 +261,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     : 'rotateX(0) rotateY(0) translateZ(0) scale(1)',
                   transformStyle: 'preserve-3d' as const,
                   transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                  cursor: project.id === 1 ? 'pointer' : 'default',
+                  cursor: project.id === 1 || project.id === 3 ? 'pointer' : 'default',
                 }}
               >
                 {/* Image Placeholder with enhanced glass */}
@@ -567,6 +567,10 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
 
             return project.id === 1 ? (
               <Link key={project.id} href="/work/air-india" style={{ textDecoration: 'none' }}>
+                {cardContent}
+              </Link>
+            ) : project.id === 3 ? (
+              <Link key={project.id} href="/work/metamorphic-fractal-reflections" style={{ textDecoration: 'none' }}>
                 {cardContent}
               </Link>
             ) : (

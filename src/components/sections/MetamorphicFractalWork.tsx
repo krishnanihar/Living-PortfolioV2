@@ -369,7 +369,7 @@ export function MetamorphicFractalWork() {
         }
 
         section:not(#experience) {
-          padding: 200px 0;
+          padding: 150px 0;
         }
 
         section#experience {
