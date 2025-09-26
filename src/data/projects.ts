@@ -195,6 +195,40 @@ export const projects: Project[] = [
     order: 7,
   },
 
+  // Research Projects
+  {
+    id: 'metamorphic-fractal-reflections',
+    title: 'Metamorphic Fractal Reflections',
+    company: 'National Institute of Design',
+    description: 'Psychedelic journey installation exploring consciousness through ego dissolution. An immersive bathroom mirror portal experience that takes participants through a trippy multiverse of liquid color, pattern-creatures, and structureless music guided by a fading companion.',
+    category: 'research',
+    status: 'shipped',
+    tags: [
+      { id: 'immersive-installation', label: 'Immersive Installation' },
+      { id: 'touchdesigner', label: 'TouchDesigner' },
+      { id: 'arduino', label: 'Arduino' },
+      { id: 'psychedelic-design', label: 'Psychedelic Design' },
+      { id: 'consciousness-ui', label: 'Consciousness UI' },
+      { id: 'vr-previz', label: 'VR Previz' },
+      { id: 'stable-diffusion', label: 'Stable Diffusion' },
+    ],
+    meta: {
+      year: '2023',
+      role: 'Designer & Developer',
+      team: 'Solo Project',
+      duration: 'Two months',
+    },
+    metrics: {
+      impact: 'Safe, accessible ego-dissolution themes',
+      improvement: 'Timothy Leary\'s Psychedelic Experience framework',
+    },
+    links: [
+      { type: 'case-study', url: '/work/metamorphic-fractal-reflections', label: 'View Case Study' },
+    ],
+    featured: true,
+    order: 10,
+  },
+
   // IFE Projects
   {
     id: 'ife-experience-concepts',
@@ -299,6 +333,11 @@ export const filterTabs: FilterTab[] = [
     id: 'hackathons',
     label: 'Hackathons',
     color: '#F59E0B',
+  },
+  {
+    id: 'research',
+    label: 'Research',
+    color: '#E879F9',
   },
 ];
 

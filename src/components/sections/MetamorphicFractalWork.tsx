@@ -173,9 +173,10 @@ export function MetamorphicFractalWork() {
 
         header {
           position: relative;
-          padding: 100px 24px 140px;
+          padding: 150px 24px 200px;
           overflow: hidden;
           background: radial-gradient(ellipse at top center, rgba(181,131,255,.08) 0%, transparent 50%);
+          min-height: 100vh;
         }
 
         .title {
@@ -355,7 +356,7 @@ export function MetamorphicFractalWork() {
         }
 
         section {
-          padding: 120px 0;
+          padding: 160px 0;
         }
 
         section#experience {
