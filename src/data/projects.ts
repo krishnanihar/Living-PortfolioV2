@@ -60,6 +60,9 @@ export const projects: Project[] = [
       improvement: '90% reduction in review time',
       impact: '50+ components audited',
     },
+    links: [
+      { type: 'case-study', url: '/work/air-india', label: 'View Air India Case Study' },
+    ],
     featured: true,
     order: 1,
   },
@@ -86,6 +89,9 @@ export const projects: Project[] = [
       improvement: 'Minutes to seconds decision time',
       impact: 'Flight operations optimization',
     },
+    links: [
+      { type: 'case-study', url: '/work/air-india', label: 'View Air India Case Study' },
+    ],
     featured: true,
     order: 2,
   },

@@ -13,7 +13,8 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(git commit:*)",
       "Bash(git reset:*)",
-      "Bash(npm run lint)"
+      "Bash(npm run lint)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []
