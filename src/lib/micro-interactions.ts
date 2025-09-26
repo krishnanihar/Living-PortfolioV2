@@ -152,7 +152,7 @@ export class MagneticEffect {
 
       if (this.options.glow && this.isActive) {
         const glowIntensity = Math.min(Math.abs(this.currentX) + Math.abs(this.currentY), 20);
-        this.element.style.filter = `drop-shadow(0 0 ${glowIntensity}px rgba(218, 14, 41, 0.3))`;
+        this.element.style.filter = `drop-shadow(0 0 ${glowIntensity}px rgba(180, 200, 240, 0.2))`;
       } else if (this.options.glow) {
         this.element.style.filter = 'drop-shadow(0 0 0 transparent)';
       }
@@ -216,7 +216,7 @@ export class SpotlightEffect {
       height: 400px;
       pointer-events: none;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(218, 14, 41, 0.05) 0%, transparent 60%);
+      background: radial-gradient(circle, rgba(200, 220, 255, 0.04) 0%, transparent 60%);
       transform: translate(-50%, -50%);
       z-index: 9999;
       opacity: 0;
