@@ -307,6 +307,7 @@ export function Work() {
               <div
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
+                onClick={project.id === 1 ? () => window.location.href = '/work/air-india' : undefined}
                 style={{
                   width: '100%',
                   maxWidth: '1400px',
@@ -316,6 +317,7 @@ export function Work() {
                   transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
                   transformStyle: 'preserve-3d',
                   transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                  cursor: project.id === 1 ? 'pointer' : 'default',
                 }}
               >
                 {/* Card Background Layers */}
@@ -597,77 +599,44 @@ export function Work() {
                     <div style={{
                       animation: isActive ? 'slideInLeft 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both' : 'none',
                     }}>
-                      {project.id === 1 ? (
-                        <Link
-                          href="/work/air-india"
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '1rem',
-                            padding: '1rem 2rem',
-                            borderRadius: '16px',
-                            background: 'rgba(255, 255, 255, 0.02)',
-                            backdropFilter: 'blur(20px)',
-                            WebkitBackdropFilter: 'blur(20px)',
-                            border: '1px solid rgba(255, 255, 255, 0.06)',
-                            color: 'rgba(255, 255, 255, 0.8)',
-                            fontSize: '0.875rem',
-                            fontWeight: '400',
-                            letterSpacing: '0.02em',
-                            cursor: 'pointer',
-                            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                            animation: 'float 4s ease-in-out infinite',
-                            textDecoration: 'none',
-                          }}
-                          onMouseEnter={(e) => {
+                      <button
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '1rem',
+                          padding: '1rem 2rem',
+                          borderRadius: '16px',
+                          background: 'rgba(255, 255, 255, 0.02)',
+                          backdropFilter: 'blur(20px)',
+                          WebkitBackdropFilter: 'blur(20px)',
+                          border: '1px solid rgba(255, 255, 255, 0.06)',
+                          color: 'rgba(255, 255, 255, 0.8)',
+                          fontSize: '0.875rem',
+                          fontWeight: '400',
+                          letterSpacing: '0.02em',
+                          cursor: project.id === 1 ? 'default' : 'pointer',
+                          transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                          animation: 'float 4s ease-in-out infinite',
+                          pointerEvents: project.id === 1 ? 'none' : 'auto',
+                        }}
+                        onMouseEnter={(e) => {
+                          if (project.id !== 1) {
                             e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
                             e.currentTarget.style.transform = 'translateX(5px)';
                             e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                          }}
-                          onMouseLeave={(e) => {
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (project.id !== 1) {
                             e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
                             e.currentTarget.style.transform = 'translateX(0)';
                             e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
-                          }}
-                        >
-                          View Project
-                          <ArrowUpRight size={16} />
-                        </Link>
-                      ) : (
-                        <button
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '1rem',
-                            padding: '1rem 2rem',
-                            borderRadius: '16px',
-                            background: 'rgba(255, 255, 255, 0.02)',
-                            backdropFilter: 'blur(20px)',
-                            WebkitBackdropFilter: 'blur(20px)',
-                            border: '1px solid rgba(255, 255, 255, 0.06)',
-                            color: 'rgba(255, 255, 255, 0.8)',
-                            fontSize: '0.875rem',
-                            fontWeight: '400',
-                            letterSpacing: '0.02em',
-                            cursor: 'pointer',
-                            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                            animation: 'float 4s ease-in-out infinite',
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                            e.currentTarget.style.transform = 'translateX(5px)';
-                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
-                            e.currentTarget.style.transform = 'translateX(0)';
-                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
-                          }}
-                        >
-                          View Project
-                          <ArrowUpRight size={16} />
-                        </button>
-                      )}
+                          }
+                        }}
+                      >
+                        View Project
+                        <ArrowUpRight size={16} />
+                      </button>
                     </div>
                   </div>
                 </div>
