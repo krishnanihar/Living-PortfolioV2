@@ -91,7 +91,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
         minHeight: '100vh',
         background: '#000000',
         fontFamily: 'Inter, sans-serif',
-        padding: '6rem 1.5rem',
+        padding: '3rem 1.5rem',
         position: 'relative',
       }} className={className}>
         {/* Subtle background gradient */}
@@ -137,9 +137,9 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
               }} />
             </div>
             <h2 style={{
-              fontSize: '0.875rem',
-              fontWeight: '300',
-              color: 'rgba(255, 255, 255, 0.5)',
+              fontSize: '1rem',
+              fontWeight: '400',
+              color: 'rgba(255, 255, 255, 0.7)',
               letterSpacing: '0.05em',
             }}>
               About

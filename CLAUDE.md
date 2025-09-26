@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+- `npm run lint` - Run ESLint (Note: `next lint` is deprecated, consider migrating to ESLint CLI)
 - `npm run type-check` - Run TypeScript type checking (no emit)
 
 ### Quality Assurance
