@@ -132,7 +132,7 @@ const HeroSection = ({ isLoaded }: { isLoaded: boolean }) => {
   const y = useTransform(scrollY, [0, 500], [0, 150]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6">
+    <section className="relative min-h-screen flex items-center justify-center px-6 md:px-8 lg:px-12 mb-32">
       <motion.div
         style={{ y }}
         className="text-center max-w-6xl mx-auto"
@@ -236,8 +236,8 @@ const DesignResearchSection = () => {
   ];
 
   return (
-    <section className="relative py-32 px-6">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-32 px-6 md:px-8 lg:px-12 mb-32">
+      <div className="max-w-6xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -255,7 +255,7 @@ const DesignResearchSection = () => {
           </motion.h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {researchAreas.map((area, index) => (
             <motion.div
               key={index}
@@ -346,7 +346,7 @@ const NarrativeArcSection = () => {
   ];
 
   return (
-    <section className="relative py-32 px-6 bg-gradient-to-b from-transparent via-purple-950/5 to-transparent">
+    <section className="relative py-32 px-6 md:px-8 lg:px-12 bg-gradient-to-b from-transparent via-purple-950/5 to-transparent mb-32">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial="hidden"
@@ -389,7 +389,7 @@ const NarrativeArcSection = () => {
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <div className="flex items-baseline gap-6 mb-4">
+                    <div className="flex items-baseline gap-6 md:gap-8 mb-4">
                       <span className="text-5xl font-extralight text-white/30">
                         {chapter.number}
                       </span>
@@ -464,8 +464,8 @@ const ScienceExplorationSection = () => {
   ];
 
   return (
-    <section className="relative py-32 px-6">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-32 px-6 md:px-8 lg:px-12 mb-32">
+      <div className="max-w-6xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -496,7 +496,7 @@ const ScienceExplorationSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               className={cx(
-                "flex items-center gap-2 px-6 py-3 rounded-full text-sm font-extralight transition-all duration-300 border",
+                "flex items-center gap-2 px-6 md:px-8 lg:px-12 py-3 rounded-full text-sm font-extralight transition-all duration-300 border",
                 activeTab === tab.id
                   ? "bg-white/[0.03] border-white/20 text-white/90"
                   : "bg-white/[0.01] border-white/10 text-white/60 hover:bg-white/[0.02] hover:border-white/15"
@@ -850,11 +850,11 @@ const SixPillarsSection = () => {
 
   return (
     <section
-      className="relative py-32 px-6 bg-gradient-to-b from-cyan-950/5 to-transparent"
+      className="relative py-32 px-6 md:px-8 lg:px-12 bg-gradient-to-b from-cyan-950/5 to-transparent mb-32"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -1072,8 +1072,8 @@ const SystemArchitectureSection = () => {
   );
 
   return (
-    <section className="relative py-32 px-6">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-32 px-6 md:px-8 lg:px-12 mb-32">
+      <div className="max-w-6xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -1207,7 +1207,7 @@ const SystemArchitectureSection = () => {
           <h3 className="text-2xl font-extralight text-white/90 mb-6 text-center">
             Critical Architecture Questions
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-sm text-white/60">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 text-sm text-white/60">
             <div>
               <h4 className="text-white/80 mb-2">Data Sovereignty</h4>
               <p>• Who owns the consciousness data collected?</p>
@@ -1292,8 +1292,8 @@ const InteractivePrototypesSection = () => {
   };
 
   return (
-    <section className="relative py-32 px-6 bg-gradient-to-b from-purple-950/5 to-transparent">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-32 px-6 md:px-8 lg:px-12 bg-gradient-to-b from-purple-950/5 to-transparent mb-32">
+      <div className="max-w-6xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -1324,7 +1324,7 @@ const InteractivePrototypesSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               className={cx(
-                "flex items-center gap-3 px-6 py-4 rounded-2xl text-left transition-all duration-300 border min-w-[200px]",
+                "flex items-center gap-3 px-6 md:px-8 lg:px-12 py-4 rounded-2xl text-left transition-all duration-300 border min-w-[200px]",
                 activePrototype === prototype.id
                   ? "bg-white/[0.03] border-white/20"
                   : "bg-white/[0.01] border-white/10 hover:bg-white/[0.02] hover:border-white/15"
@@ -1694,8 +1694,8 @@ const VisionSection = () => {
   ];
 
   return (
-    <section className="relative py-32 px-6">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-32 px-6 md:px-8 lg:px-12 mb-32">
+      <div className="max-w-6xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -1935,8 +1935,8 @@ const InterfaceSpeculationSection = () => {
   const currentScreen = screens.find(s => s.id === activeScreen) || screens[0];
 
   return (
-    <section className="relative py-32 px-6 bg-gradient-to-b from-cyan-950/5 to-transparent">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-32 px-6 md:px-8 lg:px-12 bg-gradient-to-b from-cyan-950/5 to-transparent mb-32">
+      <div className="max-w-6xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -2047,7 +2047,7 @@ const InterfaceSpeculationSection = () => {
                 {/* Screen */}
                 <div className="w-full h-full rounded-[2.5rem] bg-black border border-white/10 overflow-hidden relative">
                   {/* Status Bar */}
-                  <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-white/5 to-transparent flex items-center justify-between px-6 z-10">
+                  <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-white/5 to-transparent flex items-center justify-between px-6 md:px-8 lg:px-12 z-10">
                     <span className="text-xs text-white/60">9:41</span>
                     <div className="flex items-center gap-1">
                       <div className="w-1 h-1 bg-white/60 rounded-full" />
@@ -2064,7 +2064,7 @@ const InterfaceSpeculationSection = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.4 }}
-                      className="absolute inset-0 pt-16 pb-8 px-6 flex flex-col"
+                      className="absolute inset-0 pt-16 pb-8 px-6 md:px-8 lg:px-12 flex flex-col"
                     >
                       {/* Header */}
                       <div className="text-center mb-8">
@@ -2148,7 +2148,7 @@ const InterfaceSpeculationSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.8 }}
-          className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6"
+          className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"
         >
           {[
             {
@@ -2330,8 +2330,8 @@ const TeamPerspectivesSection = () => {
   };
 
   return (
-    <section className="relative py-32 px-6">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-32 px-6 md:px-8 lg:px-12 mb-32">
+      <div className="max-w-6xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -2499,7 +2499,7 @@ const TeamPerspectivesSection = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {[
               {
                 principle: "Ethical Foundation",
