@@ -18,15 +18,15 @@ const DESIGN = {
   black: "#000000",
   white: "#ffffff",
 
-  glass: "rgba(255,255,255,0.01)",
-  glassBorder: "rgba(255,255,255,0.04)",
-  glassHover: "rgba(255,255,255,0.02)",
+  glass: "rgba(255,255,255,0.03)",
+  glassBorder: "rgba(255,255,255,0.08)",
+  glassHover: "rgba(255,255,255,0.05)",
 
   text: {
     primary: "rgba(255,255,255,0.95)",
-    secondary: "rgba(255,255,255,0.60)",
-    tertiary: "rgba(255,255,255,0.35)",
-    ghost: "rgba(255,255,255,0.15)",
+    secondary: "rgba(255,255,255,0.70)",
+    tertiary: "rgba(255,255,255,0.50)",
+    ghost: "rgba(255,255,255,0.25)",
   },
 
   gradient: {
@@ -281,7 +281,7 @@ const ResearchOverview = () => {
     <Section>
       <SectionTitle eyebrow="Design Research" title="Exploring Possibilities" />
       <div className="max-w-5xl mx-auto">
-        <p className="text-center text-sm text-white/40 mb-12 max-w-3xl mx-auto">
+        <p className="text-center text-sm text-white/60 mb-12 max-w-3xl mx-auto">
           This speculative design project imagines a future where dream technology exists.
           What questions would we need to ask? What ethical frameworks would guide us?
         </p>
@@ -291,10 +291,10 @@ const ResearchOverview = () => {
               key={i}
               onClick={() => setSelectedMetric(i)}
               className={cx(
-                "relative p-6 rounded-2xl cursor-pointer transition-all duration-300",
+                "relative p-6 rounded-2xl cursor-pointer transition-all duration-300 border",
                 selectedMetric === i
-                  ? "bg-white/[0.04] border border-white/10"
-                  : "bg-white/[0.01] border border-white/5 hover:bg-white/[0.02]"
+                  ? "bg-white/5 border-white/20"
+                  : "bg-white/[0.02] border-white/10 hover:bg-white/[0.03]"
               )}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -371,18 +371,18 @@ const DetailedStorySection = ({ onInteract }: ComponentProps) => {
                 setExpandedChapter(expandedChapter === i ? null : i);
                 onInteract();
               }}
-              className="relative p-8 rounded-2xl bg-white/[0.01] border border-white/5 hover:bg-white/[0.02] transition-all duration-300 cursor-pointer"
+              className="relative p-8 rounded-2xl bg-white/[0.02] border border-white/10 hover:bg-white/[0.03] transition-all duration-300 cursor-pointer"
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-baseline gap-4 mb-2">
-                    <span className="text-3xl font-extralight text-white/20">{chapter.num}</span>
-                    <h3 className="text-lg font-light text-white/80">{chapter.title}</h3>
+                    <span className="text-3xl font-extralight text-white/40">{chapter.num}</span>
+                    <h3 className="text-lg font-light text-white/90">{chapter.title}</h3>
                   </div>
-                  <p className="text-sm text-white/40">{chapter.brief}</p>
+                  <p className="text-sm text-white/60">{chapter.brief}</p>
                 </div>
                 <ChevronRight className={cx(
-                  "w-5 h-5 text-white/20 transition-transform duration-300",
+                  "w-5 h-5 text-white/40 transition-transform duration-300",
                   expandedChapter === i ? "rotate-90" : ""
                 )} />
               </div>
@@ -628,10 +628,11 @@ const TechnicalArchitecture = ({ onInteract }: ComponentProps) => {
         <p className="text-center text-sm text-white/40 mb-12">
           A speculative technical architecture for privacy-first dream analysis.
         </p>
-        <div className="h-[500px] rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-center">
+        <div className="h-[500px] rounded-2xl bg-white/[0.02] border border-white/10 flex items-center justify-center">
           <div className="text-center">
-            <div className="text-6xl mb-4 opacity-20">🏗️</div>
-            <p className="text-sm text-white/40">Technical Architecture & Data Flow</p>
+            <div className="text-6xl mb-4 opacity-40">🏗️</div>
+            <p className="text-sm text-white/60">Technical Architecture & Data Flow</p>
+            <p className="text-xs text-white/40 mt-2">Interactive visualization coming soon</p>
           </div>
         </div>
       </div>
@@ -677,15 +678,15 @@ const LivePrototypes = ({ onInteract }: ComponentProps) => {
       </div>
 
       <div className="max-w-5xl mx-auto">
-        <div className="h-[600px] rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-center">
+        <div className="h-[600px] rounded-2xl bg-white/[0.02] border border-white/10 flex items-center justify-center">
           <div className="text-center">
-            <div className="text-6xl mb-4 opacity-20">
+            <div className="text-6xl mb-4 opacity-40">
               {activeProto === 'explorer' ? '✨' :
                activeProto === 'timeline' ? '⏰' :
                activeProto === 'patterns' ? '📊' : '🎙️'}
             </div>
-            <p className="text-sm text-white/40">Interactive {prototypes.find(p => p.id === activeProto)?.name} Demo</p>
-            <p className="text-xs text-white/20 mt-2">Click to explore this speculative interface</p>
+            <p className="text-sm text-white/60">Interactive {prototypes.find(p => p.id === activeProto)?.name} Demo</p>
+            <p className="text-xs text-white/40 mt-2">Click to explore this speculative interface</p>
           </div>
         </div>
       </div>
@@ -702,13 +703,13 @@ const ImmersiveVision = () => {
       <SectionTitle eyebrow="Speculative Futures" title="Imagining Dream Technology" />
 
       <div className="max-w-5xl mx-auto">
-        <p className="text-center text-sm text-white/40 mb-12 max-w-3xl mx-auto">
+        <p className="text-center text-sm text-white/60 mb-12 max-w-3xl mx-auto">
           What if we could interface with our dreams? This design fiction explores possible
           futures, ethical dilemmas, and the implications of consciousness technology.
         </p>
 
         {/* Video placeholder */}
-        <div className="relative aspect-video rounded-2xl bg-gradient-to-br from-purple-900/5 via-transparent to-pink-900/5 overflow-hidden border border-white/5">
+        <div className="relative aspect-video rounded-2xl bg-gradient-to-br from-purple-900/5 via-transparent to-pink-900/5 overflow-hidden border border-white/10">
           {/* Animated background */}
           <div className="absolute inset-0">
             {STATIC_PARTICLES.map((particle, i) => (
@@ -914,7 +915,7 @@ const FooterSection = ({ interactions }: FooterSectionProps) => {
 
 // ---------- Helper Components ----------
 const Section = ({ children }: SectionProps) => (
-  <section className="relative py-32 px-6">
+  <section className="relative py-24 md:py-32 px-6 bg-black">
     <div className="max-w-7xl mx-auto">
       {children}
     </div>
@@ -924,11 +925,11 @@ const Section = ({ children }: SectionProps) => (
 const SectionTitle = ({ eyebrow, title }: SectionTitleProps) => (
   <div className="text-center mb-16">
     {eyebrow && (
-      <div className="text-[10px] font-light tracking-[0.3em] text-white/20 uppercase mb-4">
+      <div className="text-[10px] font-light tracking-[0.3em] text-white/40 uppercase mb-4">
         {eyebrow}
       </div>
     )}
-    <h2 className="text-3xl md:text-4xl lg:text-5xl font-extralight text-white/90">
+    <h2 className="text-3xl md:text-4xl lg:text-5xl font-extralight text-white">
       {title}
     </h2>
   </div>
