@@ -133,7 +133,7 @@ export default function Portfolio() {
 
       <div style={{
         minHeight: '100vh',
-        background: '#000000',
+        background: 'var(--bg-primary)',
         fontFamily: 'Inter, sans-serif',
         position: 'relative',
       }}>
@@ -164,12 +164,12 @@ export default function Portfolio() {
             position: 'absolute',
             inset: 0,
             background: `linear-gradient(90deg,
-              rgba(255, 255, 255, ${scrolled ? 0.06 : 0.03}) 0%,
-              rgba(255, 255, 255, ${scrolled ? 0.04 : 0.02}) 50%,
-              rgba(255, 255, 255, ${scrolled ? 0.05 : 0.025}) 100%)`,
+              var(--surface-secondary) 0%,
+              var(--surface-primary) 50%,
+              var(--surface-secondary) 100%)`,
             backdropFilter: 'blur(40px) saturate(150%)',
             WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+            borderBottom: '1px solid var(--border-primary)',
             boxShadow: scrolled ? '0 4px 12px rgba(0, 0, 0, 0.2)' : 'none',
           }}>
             {/* Animated shimmer overlay */}
@@ -250,7 +250,7 @@ export default function Portfolio() {
                         fontSize: '0.825rem',
                         fontWeight: '400',
                         letterSpacing: '0.025em',
-                        color: 'rgba(255, 255, 255, 0.8)',
+                        color: 'var(--text-secondary)',
                         transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                       }}
                     >
@@ -301,7 +301,7 @@ export default function Portfolio() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: 'rgba(255, 255, 255, 0.8)',
+                  color: 'var(--text-secondary)',
                   background: 'rgba(255, 255, 255, 0.03)',
                   backdropFilter: 'blur(20px) brightness(0.8)',
                   WebkitBackdropFilter: 'blur(20px) brightness(0.8)',
@@ -389,7 +389,7 @@ export default function Portfolio() {
             <div style={{ position: 'relative', zIndex: 1 }}>
               <div style={{
                 fontSize: '0.825rem',
-                color: 'rgba(255, 255, 255, 0.5)',
+                color: 'var(--text-muted)',
                 marginBottom: '1.25rem',
                 letterSpacing: '0.025em',
                 fontWeight: '200',
@@ -401,7 +401,7 @@ export default function Portfolio() {
               <h1 style={{
                 fontSize: 'clamp(1.75rem, 4.5vw, 2.75rem)',
                 fontWeight: '200',
-                color: 'rgba(255, 255, 255, 0.95)',
+                color: 'var(--text-primary)',
                 marginBottom: '2.5rem',
                 lineHeight: '1.1',
                 letterSpacing: '-0.02em',
@@ -463,7 +463,7 @@ export default function Portfolio() {
                       background: 'none',
                       border: 'none',
                       outline: 'none',
-                      color: 'rgba(255, 255, 255, 0.95)',
+                      color: 'var(--text-primary)',
                       fontSize: '0.875rem',
                       fontFamily: 'Inter, sans-serif',
                       fontWeight: '300',
@@ -483,8 +483,8 @@ export default function Portfolio() {
                       borderRadius: '20px',
                       padding: '0.5rem 1.25rem',
                       color: inputValue
-                        ? 'rgba(255, 255, 255, 1)'
-                        : 'rgba(255, 255, 255, 0.5)',
+                        ? 'var(--text-primary)'
+                        : 'var(--text-muted)',
                       fontSize: '0.825rem',
                       fontWeight: '400',
                       transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -535,7 +535,7 @@ export default function Portfolio() {
                         : 'rgba(255, 255, 255, 0.06)'}`,
                       borderRadius: '24px',
                       padding: '0.75rem 1.5rem',
-                      color: 'rgba(255, 255, 255, 0.95)',
+                      color: 'var(--text-primary)',
                       fontSize: '0.825rem',
                       fontWeight: '400',
                       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -586,7 +586,7 @@ export default function Portfolio() {
                   <div
                     key={company}
                     style={{
-                      color: 'rgba(255, 255, 255, 0.4)',
+                      color: 'var(--text-muted)',
                       fontSize: '0.7rem',
                       fontWeight: '300',
                       letterSpacing: '0.03em',
