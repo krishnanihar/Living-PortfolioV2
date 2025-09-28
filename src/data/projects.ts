@@ -224,7 +224,7 @@ export const projects: Project[] = [
       improvement: 'Privacy-first approach to consciousness technology',
     },
     links: [
-      { type: 'case-study', url: '/work/latent-space', label: 'View Interactive Experience' },
+      { type: 'case-study', url: '/work/latent-space', label: 'Explore the Speculation' },
     ],
     featured: true,
     order: 9,
