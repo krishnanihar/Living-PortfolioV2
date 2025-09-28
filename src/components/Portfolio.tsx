@@ -369,8 +369,9 @@ export default function Portfolio() {
               position: 'absolute',
               inset: '1px',
               borderRadius: '35px',
-              background: 'linear-gradient(180deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
+              background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.05) 100%)',
               pointerEvents: 'none',
+              opacity: 0.3,
             }} />
 
             {/* Top shine */}

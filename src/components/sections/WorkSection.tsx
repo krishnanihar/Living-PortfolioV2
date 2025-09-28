@@ -270,8 +270,8 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                   width: '100%',
                   height: '180px',
                   background: `linear-gradient(135deg,
-                    rgba(${project.id === 1 ? '218, 14, 41' : project.id === 2 ? '140, 100, 255' : '50, 200, 150'}, 0.02) 0%,
-                    var(--surface-secondary) 100%)`,
+                    rgba(${project.id === 1 ? '218, 14, 41' : project.id === 2 ? '140, 100, 255' : '50, 200, 150'}, 0.01) 0%,
+                    transparent 100%)`,
                   overflow: 'hidden',
                 }}>
                   {/* Glass layer for image */}
@@ -286,12 +286,13 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
                   }} />
 
-                  {/* Theme-aware gradient overlay to blend into card */}
+                  {/* Very light gradient overlay to blend into card */}
                   <div style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(to bottom, transparent 0%, var(--surface-primary) 60%, var(--surface-secondary) 100%)',
+                    background: 'linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.02) 80%, rgba(0, 0, 0, 0.05) 100%)',
                     pointerEvents: 'none',
+                    opacity: 0.4,
                   }} />
 
                   {/* Shimmer effect on hover */}
@@ -386,14 +387,14 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     : 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
                 }} />
 
-                {/* Theme-aware translucent overlay */}
+                {/* Very light translucent overlay */}
                 <div style={{
                   position: 'absolute',
                   inset: 0,
                   top: '180px',
-                  background: 'linear-gradient(180deg, transparent 0%, var(--surface-primary) 100%)',
+                  background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.02) 100%)',
                   pointerEvents: 'none',
-                  opacity: isHovered ? 0.3 : 0.6,
+                  opacity: isHovered ? 0.1 : 0.2,
                   transition: 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                 }} />
 
