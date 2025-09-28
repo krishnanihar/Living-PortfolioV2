@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Briefcase, User, Moon, Sun } from 'lucide-react';
+import { Briefcase, User, Moon, Sun, Palette } from 'lucide-react';
+import { useTheme } from '@/components/effects/ThemeProvider';
 
 interface PortfolioNavigationProps {
   className?: string;
@@ -11,8 +12,8 @@ interface PortfolioNavigationProps {
 
 export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
   const [scrolled, setScrolled] = useState(false);
-  const [theme, setTheme] = useState('dark');
   const pathname = usePathname();
+  const { theme, resolvedTheme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -230,7 +231,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
             }} />
 
             <div
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              onClick={toggleTheme}
               style={{
                 position: 'relative',
                 borderRadius: '50%',
@@ -256,7 +257,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                 (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.03)';
               }}
             >
-              {theme === 'dark' ? <Moon size={15} /> : <Sun size={15} />}
+              {theme === 'system' ? <Palette size={15} /> : (resolvedTheme === 'dark' ? <Moon size={15} /> : <Sun size={15} />)}
             </div>
           </div>
         </div>

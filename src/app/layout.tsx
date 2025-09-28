@@ -85,9 +85,12 @@ export default function RootLayout({
       <body
         className={`
           ${inter.className}
-          min-h-screen bg-black text-white/92
-          antialiased overflow-x-hidden
+          min-h-screen antialiased overflow-x-hidden
         `}
+        style={{
+          backgroundColor: 'var(--bg-primary)',
+          color: 'var(--text-primary)',
+        }}
         suppressHydrationWarning
       >
         <ThemeProvider defaultTheme="dark" attribute="data-theme">
