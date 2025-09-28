@@ -197,6 +197,39 @@ export const projects: Project[] = [
 
   // Research Projects
   {
+    id: 'latent-space',
+    title: 'Latent Space',
+    company: 'MIT Media Lab',
+    description: 'A speculative exploration of dream technology through critical design. What if we could navigate our dreams while preserving the mystery of consciousness? An interactive experience exploring ethical frameworks for brain-computer interfaces and the implications of consciousness data.',
+    category: 'research',
+    status: 'concept',
+    tags: [
+      { id: 'speculative-design', label: 'Speculative Design' },
+      { id: 'neuroscience', label: 'Neuroscience' },
+      { id: 'brain-computer-interface', label: 'Brain-Computer Interface' },
+      { id: 'ethical-ai', label: 'Ethical AI' },
+      { id: 'consciousness-tech', label: 'Consciousness Tech' },
+      { id: 'interactive-prototype', label: 'Interactive Prototype' },
+      { id: 'framer-motion', label: 'Framer Motion' },
+      { id: 'critical-design', label: 'Critical Design' },
+    ],
+    meta: {
+      year: '2024',
+      role: 'Designer & Researcher',
+      team: 'MIT Media Lab',
+      duration: 'Four months',
+    },
+    metrics: {
+      impact: '24+ design provocations, 16 ethical considerations',
+      improvement: 'Privacy-first approach to consciousness technology',
+    },
+    links: [
+      { type: 'case-study', url: '/work/latent-space', label: 'View Interactive Experience' },
+    ],
+    featured: true,
+    order: 9,
+  },
+  {
     id: 'metamorphic-fractal-reflections',
     title: 'Metamorphic Fractal Reflections',
     company: 'National Institute of Design',

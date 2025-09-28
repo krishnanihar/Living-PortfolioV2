@@ -73,9 +73,9 @@ export function Work() {
       metric: '∞ Unique Dream Maps',
       tags: ['Ethics', 'Consciousness', 'Future Concepts', 'Speculative'],
       status: 'Research',
-      year: '2023',
+      year: '2024',
       color: '140, 100, 255',
-      url: undefined,
+      url: '/work/latent-space',
     },
     {
       id: 3,
@@ -324,7 +324,7 @@ export function Work() {
               <div
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
-                onClick={project.id === 1 ? () => window.location.href = '/work/air-india' : project.id === 3 ? () => window.location.href = '/work/metamorphic-fractal-reflections' : undefined}
+                onClick={project.url ? () => window.location.href = project.url : undefined}
                 style={{
                   width: '100%',
                   maxWidth: '1400px',
@@ -334,7 +334,7 @@ export function Work() {
                   transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
                   transformStyle: 'preserve-3d',
                   transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-                  cursor: (project.id === 1 || project.id === 3) ? 'pointer' : 'default',
+                  cursor: project.url ? 'pointer' : 'default',
                 }}
               >
                 {/* Card Background Layers */}

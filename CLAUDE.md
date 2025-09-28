@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run start` - Start production server
-- `npm run lint` - Run ESLint (Note: `next lint` is deprecated, consider migrating to ESLint CLI)
+- `npm run lint` - Run ESLint with Next.js configuration
 - `npm run type-check` - Run TypeScript type checking (no emit)
 
 ### Quality Assurance
@@ -28,7 +28,8 @@ npm run build
 - **UI Components**: Custom components using glassmorphism design
 - **Icons**: Lucide React
 - **Font**: Inter (variable font)
-- **Animation**: Framer Motion (dev dependency)
+- **Animation**: Framer Motion (dev dependency), Anime.js
+- **Additional Libraries**: clsx, tailwind-merge for utility class management
 
 ### Directory Structure
 ```
@@ -38,21 +39,36 @@ src/
 │   ├── page.tsx           # Home/Hero page
 │   ├── about/page.tsx     # About page
 │   ├── contact/page.tsx   # Contact page
-│   └── work/page.tsx      # Work portfolio page
+│   ├── work/page.tsx      # Work portfolio page
+│   │   ├── air-india/page.tsx
+│   │   └── metamorphic-fractal-reflections/page.tsx
 ├── components/
-│   ├── effects/           # Theme and effects
-│   │   └── ThemeProvider.tsx
+│   ├── effects/           # Theme and effects, micro-interactions
+│   │   ├── ThemeProvider.tsx
+│   │   ├── MicroInteractionProvider.tsx
+│   │   ├── CustomCursor.tsx
+│   │   ├── FocusManager.tsx
+│   │   └── ErrorBoundary.tsx
 │   ├── sections/          # Page sections
 │   │   ├── Hero.tsx
-│   │   └── Work.tsx
+│   │   ├── Work.tsx
+│   │   ├── WorkSection.tsx
+│   │   ├── AboutSection.tsx
+│   │   ├── SimpleAboutSection.tsx
+│   │   ├── AirIndiaWork.tsx
+│   │   └── MetamorphicFractalWork.tsx
 │   └── ui/                # Reusable UI components
 │       ├── index.ts       # Barrel exports
 │       ├── Navigation.tsx
+│       ├── PortfolioNavigation.tsx
 │       ├── Button.tsx
 │       ├── Card.tsx
 │       ├── ProjectCard.tsx
 │       ├── FilterTabs.tsx
-│       └── WorkGrid.tsx
+│       ├── WorkGrid.tsx
+│       ├── AnimatedHeading.tsx
+│       ├── MagneticText.tsx
+│       └── MorphingText.tsx
 ├── data/
 │   └── projects.ts        # Project portfolio data
 ├── lib/

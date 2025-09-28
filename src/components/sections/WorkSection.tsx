@@ -68,7 +68,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
       metric: '∞ Unique Dream Maps',
       tags: ['Ethics', 'Consciousness', 'Future Concepts'],
       status: 'Research',
-      year: '2023'
+      year: '2024'
     },
     {
       id: 3,
@@ -565,12 +565,20 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
               </div>
             );
 
-            return project.id === 1 ? (
-              <Link key={project.id} href="/work/air-india" style={{ textDecoration: 'none' }}>
-                {cardContent}
-              </Link>
-            ) : project.id === 3 ? (
-              <Link key={project.id} href="/work/metamorphic-fractal-reflections" style={{ textDecoration: 'none' }}>
+            // Determine the URL based on project id
+            const getProjectUrl = (id: number) => {
+              switch (id) {
+                case 1: return '/work/air-india';
+                case 2: return '/work/latent-space';
+                case 3: return '/work/metamorphic-fractal-reflections';
+                default: return null;
+              }
+            };
+
+            const projectUrl = getProjectUrl(project.id);
+
+            return projectUrl ? (
+              <Link key={project.id} href={projectUrl as any} style={{ textDecoration: 'none' }}>
                 {cardContent}
               </Link>
             ) : (
