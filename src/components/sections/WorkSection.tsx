@@ -164,7 +164,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
       `}</style>
 
       <section style={{
-        background: '#000000',
+        background: 'var(--bg-primary)',
         fontFamily: 'Inter, sans-serif',
         padding: '3rem 1.5rem',
         position: 'relative',
@@ -196,10 +196,10 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
               width: '32px',
               height: '32px',
               borderRadius: '50%',
-              background: 'rgba(255, 255, 255, 0.02)',
+              background: 'var(--surface-primary)',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.05)',
+              border: '1px solid var(--border-primary)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -208,13 +208,13 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                 width: '4px',
                 height: '4px',
                 borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.6)',
+                background: 'var(--text-secondary)',
               }} />
             </div>
             <h2 style={{
               fontSize: '1.5rem',
               fontWeight: '500',
-              color: 'rgba(255, 255, 255, 0.9)',
+              color: 'var(--text-primary)',
               letterSpacing: '0.05em',
             }}>
               Selected Work
@@ -373,11 +373,11 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                   inset: 0,
                   top: '180px',
                   background: isHovered
-                    ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%)'
-                    : 'linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.005) 100%)',
+                    ? 'linear-gradient(135deg, var(--surface-secondary) 0%, var(--surface-primary) 100%)'
+                    : 'linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
                   backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
                   WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  border: '1px solid var(--border-primary)',
                   borderTop: 'none',
                   borderRadius: '0 0 24px 24px',
                   transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -417,7 +417,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                       <h3 style={{
                         fontSize: '1.125rem',
                         fontWeight: '300',
-                        color: 'rgba(255, 255, 255, 0.9)',
+                        color: 'var(--text-primary)',
                         marginBottom: '0.25rem',
                         letterSpacing: '-0.01em',
                         transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -428,7 +428,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                       <p style={{
                         fontSize: '0.75rem',
                         fontWeight: '300',
-                        color: 'rgba(255, 255, 255, 0.7)',
+                        color: 'var(--text-secondary)',
                         letterSpacing: '0.02em',
                         transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                         opacity: isHovered ? 0.8 : 0.7,
@@ -440,10 +440,10 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                       width: '32px',
                       height: '32px',
                       borderRadius: '10px',
-                      background: 'rgba(255, 255, 255, 0.02)',
+                      background: 'var(--surface-primary)',
                       backdropFilter: 'blur(20px)',
                       WebkitBackdropFilter: 'blur(20px)',
-                      border: '1px solid rgba(255, 255, 255, 0.04)',
+                      border: '1px solid var(--border-primary)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -452,7 +452,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                       animation: isHovered ? 'workFloat 3s ease-in-out infinite' : 'none',
                     }}>
                       <ArrowUpRight size={14} style={{
-                        color: 'rgba(255, 255, 255, 0.7)',
+                        color: 'var(--text-secondary)',
                         transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                       }} />
                     </div>
@@ -462,7 +462,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                   <p style={{
                     fontSize: '0.813rem',
                     fontWeight: '300',
-                    color: 'rgba(255, 255, 255, 0.5)',
+                    color: 'var(--text-tertiary)',
                     lineHeight: '1.6',
                     letterSpacing: '0.01em',
                     marginBottom: 'auto',
@@ -477,7 +477,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                   <div style={{
                     paddingTop: '1.5rem',
                     marginTop: '1.5rem',
-                    borderTop: '1px solid rgba(255, 255, 255, 0.04)',
+                    borderTop: '1px solid var(--border-primary)',
                   }}>
                     {/* Metric */}
                     <div style={{
@@ -492,14 +492,14 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                         gap: '0.5rem',
                       }}>
                         <Icon size={14} style={{
-                          color: 'rgba(255, 255, 255, 0.6)',
+                          color: 'var(--text-secondary)',
                           opacity: isHovered ? 0.7 : 0.6,
                           transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                         }} />
                         <span style={{
                           fontSize: '0.75rem',
                           fontWeight: '400',
-                          color: 'rgba(255, 255, 255, 0.6)',
+                          color: 'var(--text-secondary)',
                           letterSpacing: '0.02em',
                         }}>
                           {project.metric}
@@ -513,7 +513,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                         <span style={{
                           fontSize: '0.7rem',
                           fontWeight: '300',
-                          color: 'rgba(255, 255, 255, 0.6)',
+                          color: 'var(--text-tertiary)',
                           letterSpacing: '0.02em',
                           opacity: isHovered ? 0.7 : 0.6,
                           transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -523,7 +523,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                         <span style={{
                           fontSize: '0.7rem',
                           fontWeight: '300',
-                          color: 'rgba(255, 255, 255, 0.6)',
+                          color: 'var(--text-tertiary)',
                           letterSpacing: '0.02em',
                         }}>
                           {project.year}
@@ -543,13 +543,13 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                           style={{
                             padding: '0.25rem 0.625rem',
                             borderRadius: '8px',
-                            background: 'rgba(255, 255, 255, 0.02)',
+                            background: 'var(--surface-primary)',
                             backdropFilter: 'blur(20px)',
                             WebkitBackdropFilter: 'blur(20px)',
-                            border: '1px solid rgba(255, 255, 255, 0.03)',
+                            border: '1px solid var(--border-primary)',
                             fontSize: '0.688rem',
                             fontWeight: '300',
-                            color: 'rgba(255, 255, 255, 0.7)',
+                            color: 'var(--text-secondary)',
                             letterSpacing: '0.01em',
                             transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${tagIndex * 0.05}s`,
                             opacity: isHovered ? 0.8 : 0.7,

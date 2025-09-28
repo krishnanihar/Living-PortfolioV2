@@ -88,7 +88,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
       `}</style>
 
       <section style={{
-        background: '#000000',
+        background: 'var(--bg-primary)',
         fontFamily: 'Inter, sans-serif',
         padding: '3rem 1.5rem',
         position: 'relative',
@@ -120,10 +120,10 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
               width: '32px',
               height: '32px',
               borderRadius: '50%',
-              background: 'rgba(255, 255, 255, 0.02)',
+              background: 'var(--surface-primary)',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.05)',
+              border: '1px solid var(--border-primary)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -132,13 +132,13 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                 width: '4px',
                 height: '4px',
                 borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.6)',
+                background: 'var(--text-secondary)',
               }} />
             </div>
             <h2 style={{
               fontSize: '1.5rem',
               fontWeight: '500',
-              color: 'rgba(255, 255, 255, 0.9)',
+              color: 'var(--text-primary)',
               letterSpacing: '0.05em',
             }}>
               About
@@ -176,13 +176,13 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                 <div style={{
                   position: 'relative',
                   background: isHovered
-                    ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%)'
-                    : 'linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.005) 100%)',
+                    ? 'linear-gradient(135deg, var(--surface-secondary) 0%, var(--surface-primary) 100%)'
+                    : 'linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
                   backdropFilter: 'blur(30px) saturate(120%)',
                   WebkitBackdropFilter: 'blur(30px) saturate(120%)',
                   border: isHovered
-                    ? '1px solid rgba(255, 255, 255, 0.06)'
-                    : '1px solid rgba(255, 255, 255, 0.04)',
+                    ? '1px solid var(--border-secondary)'
+                    : '1px solid var(--border-primary)',
                   borderRadius: '24px',
                   padding: '2.5rem',
                   transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -195,10 +195,10 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                     width: '48px',
                     height: '48px',
                     borderRadius: '16px',
-                    background: 'rgba(255, 255, 255, 0.02)',
+                    background: 'var(--surface-primary)',
                     backdropFilter: 'blur(20px)',
                     WebkitBackdropFilter: 'blur(20px)',
-                    border: '1px solid rgba(255, 255, 255, 0.04)',
+                    border: '1px solid var(--border-primary)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -208,7 +208,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                     animation: isHovered ? 'aboutFloat 3s ease-in-out infinite' : 'none',
                   }}>
                     <Icon size={20} style={{
-                      color: 'rgba(255, 255, 255, 0.6)',
+                      color: 'var(--text-secondary)',
                       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                     }} />
                   </div>
@@ -218,7 +218,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                     <h3 style={{
                       fontSize: '1.125rem',
                       fontWeight: '300',
-                      color: 'rgba(255, 255, 255, 0.9)',
+                      color: 'var(--text-primary)',
                       marginBottom: '0.5rem',
                       letterSpacing: '-0.01em',
                       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -230,7 +230,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                     <p style={{
                       fontSize: '0.75rem',
                       fontWeight: '300',
-                      color: 'rgba(255, 255, 255, 0.4)',
+                      color: 'var(--text-muted)',
                       letterSpacing: '0.02em',
                       marginBottom: '1.5rem',
                       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -242,7 +242,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                     <p style={{
                       fontSize: '0.875rem',
                       fontWeight: '300',
-                      color: 'rgba(255, 255, 255, 0.6)',
+                      color: 'var(--text-secondary)',
                       lineHeight: '1.6',
                       letterSpacing: '0.01em',
                       marginBottom: '1.5rem',
@@ -256,10 +256,10 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                     <div style={{
                       padding: '0.5rem 1rem',
                       borderRadius: '12px',
-                      background: 'rgba(255, 255, 255, 0.02)',
+                      background: 'var(--surface-primary)',
                       backdropFilter: 'blur(20px)',
                       WebkitBackdropFilter: 'blur(20px)',
-                      border: '1px solid rgba(255, 255, 255, 0.03)',
+                      border: '1px solid var(--border-primary)',
                       display: 'inline-block',
                       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                       transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
@@ -267,7 +267,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                       <span style={{
                         fontSize: '0.75rem',
                         fontWeight: '400',
-                        color: 'rgba(255, 255, 255, 0.7)',
+                        color: 'var(--text-secondary)',
                         letterSpacing: '0.01em',
                       }}>
                         {card.highlight}
