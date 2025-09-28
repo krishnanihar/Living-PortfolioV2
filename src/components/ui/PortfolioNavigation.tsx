@@ -76,19 +76,19 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
           position: 'absolute',
           inset: 0,
           background: `linear-gradient(90deg,
-            rgba(255, 255, 255, ${scrolled ? 0.06 : 0.03}) 0%,
-            rgba(255, 255, 255, ${scrolled ? 0.04 : 0.02}) 50%,
-            rgba(255, 255, 255, ${scrolled ? 0.05 : 0.025}) 100%)`,
+            var(--surface-secondary) 0%,
+            var(--surface-primary) 50%,
+            var(--surface-secondary) 100%)`,
           backdropFilter: 'blur(40px) saturate(150%)',
           WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+          borderBottom: '1px solid var(--border-primary)',
           boxShadow: scrolled ? '0 4px 12px rgba(0, 0, 0, 0.2)' : 'none',
         }}>
           {/* Animated shimmer overlay */}
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 50%, transparent 100%)',
+            background: 'linear-gradient(90deg, transparent 0%, var(--highlight-subtle) 50%, transparent 100%)',
             animation: 'shimmer 8s linear infinite',
             pointerEvents: 'none',
           }} />
@@ -123,7 +123,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                 display: 'inline-block',
                 background: isActive('/')
                   ? 'linear-gradient(120deg, rgba(180, 210, 240, 1) 0%, rgba(180, 210, 240, 0.8) 100%)'
-                  : 'linear-gradient(120deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%)',
+                  : 'linear-gradient(120deg, var(--text-primary) 0%, var(--text-secondary) 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -172,7 +172,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                       fontSize: '0.825rem',
                       fontWeight: active ? '500' : '400',
                       letterSpacing: '0.025em',
-                      color: active ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.8)',
+                      color: active ? 'var(--text-primary)' : 'var(--text-secondary)',
                       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                     }}
                   >
@@ -185,7 +185,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                         background: 'linear-gradient(135deg, rgba(180, 210, 240, 0.08) 0%, rgba(180, 210, 240, 0.04) 100%)',
                         backdropFilter: 'blur(20px)',
                         WebkitBackdropFilter: 'blur(20px)',
-                        border: '1px solid rgba(180, 210, 240, 0.15)',
+                        border: '1px solid var(--border-secondary)',
                         boxShadow: 'inset 0 1px 0 rgba(180, 210, 240, 0.1)',
                         transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                       }} />
@@ -197,10 +197,10 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                         position: 'absolute',
                         inset: 0,
                         borderRadius: '24px',
-                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%)',
+                        background: 'var(--surface-primary)',
                         backdropFilter: 'blur(20px)',
                         WebkitBackdropFilter: 'blur(20px)',
-                        border: '1px solid rgba(255, 255, 255, 0.06)',
+                        border: '1px solid var(--border-primary)',
                         opacity: 0,
                         transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                         boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05)',
@@ -226,7 +226,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
             <div style={{
               width: '1px',
               height: '18px',
-              background: 'rgba(255, 255, 255, 0.1)',
+              background: 'var(--border-primary)',
               margin: '0 0.5rem',
             }} />
 
@@ -240,21 +240,21 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'rgba(255, 255, 255, 0.8)',
-                background: 'rgba(255, 255, 255, 0.03)',
+                color: 'var(--text-secondary)',
+                background: 'var(--surface-primary)',
                 backdropFilter: 'blur(20px) brightness(0.8)',
                 WebkitBackdropFilter: 'blur(20px) brightness(0.8)',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
+                border: '1px solid var(--border-primary)',
                 transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                 cursor: 'pointer',
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.transform = 'scale(1.1) rotate(15deg)';
-                (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.1)';
+                (e.currentTarget as HTMLElement).style.background = 'var(--surface-secondary)';
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.transform = 'scale(1) rotate(0)';
-                (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.03)';
+                (e.currentTarget as HTMLElement).style.background = 'var(--surface-primary)';
               }}
             >
               {theme === 'system' ? <Palette size={15} /> : (resolvedTheme === 'dark' ? <Moon size={15} /> : <Sun size={15} />)}
