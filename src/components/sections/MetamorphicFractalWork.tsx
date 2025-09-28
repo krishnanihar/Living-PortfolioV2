@@ -158,7 +158,7 @@ export function MetamorphicFractalWork() {
           border-radius: 50%;
           pointer-events: none;
           mix-blend-mode: screen;
-          background: radial-gradient(closest-side, rgba(181,131,255,.15), rgba(0,0,0,0));
+          background: radial-gradient(closest-side, rgba(181,131,255,.15), var(--overlay-transparent));
           filter: blur(30px) saturate(150%);
           opacity: .4;
           transition: opacity .3s ease;
@@ -360,7 +360,7 @@ export function MetamorphicFractalWork() {
             transparent 0%,
             rgba(181,131,255,.03) 30%,
             rgba(181,131,255,.05) 60%,
-            rgba(0,0,0,0) 100%
+            var(--overlay-transparent) 100%
           );
           margin-top: -100px;
           pointer-events: none;
@@ -418,7 +418,7 @@ export function MetamorphicFractalWork() {
           width: 100%;
           height: auto;
           aspect-ratio: 16/9;
-          background: #000;
+          background: var(--bg-primary);
         }
 
         .caption {
@@ -921,7 +921,7 @@ export function MetamorphicFractalWork() {
                   allowFullScreen
                   style={{
                     aspectRatio: '16/9',
-                    background: '#000',
+                    background: 'var(--bg-primary)',
                     borderRadius: 'var(--radius)'
                   }}
                 />

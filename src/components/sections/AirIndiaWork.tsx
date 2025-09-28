@@ -179,7 +179,7 @@ export function AirIndiaWork() {
 
         .air-india-hero-title strong {
           font-weight: 700;
-          background: linear-gradient(135deg, var(--brand-red), #6366f1);
+          background: linear-gradient(135deg, var(--brand-red), var(--mood-work));
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -343,7 +343,7 @@ export function AirIndiaWork() {
           inset: -2px;
           border-radius: var(--radius-2xl);
           padding: 2px;
-          background: linear-gradient(135deg, var(--brand-red), #6366f1);
+          background: linear-gradient(135deg, var(--brand-red), var(--mood-work));
           -webkit-mask:
             linear-gradient(#fff 0 0) content-box,
             linear-gradient(#fff 0 0);
@@ -577,7 +577,7 @@ export function AirIndiaWork() {
           font-size: 13px;
           text-transform: uppercase;
           letter-spacing: 0.12em;
-          color: #34d399;
+          color: var(--mood-labs);
           margin-bottom: var(--space-2);
           font-weight: 700;
         }
@@ -670,7 +670,7 @@ export function AirIndiaWork() {
         .air-india-badge.winner {
           background: rgba(251, 146, 60, 0.15);
           border-color: rgba(251, 146, 60, 0.3);
-          color: #fb9260;
+          color: var(--mood-about);
           box-shadow: 0 0 20px rgba(251, 146, 60, 0.15);
         }
 

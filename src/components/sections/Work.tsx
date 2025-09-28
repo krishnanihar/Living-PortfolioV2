@@ -136,7 +136,7 @@ export function Work() {
         }
 
         ::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.1);
+          background: var(--border-primary);
           border-radius: 2px;
         }
 
@@ -226,7 +226,7 @@ export function Work() {
           overflowY: 'auto',
           scrollSnapType: 'y mandatory',
           scrollBehavior: 'auto',
-          background: '#000000',
+          background: 'var(--bg-primary)',
           fontFamily: 'Inter, sans-serif',
           position: 'relative',
         }}
@@ -236,7 +236,7 @@ export function Work() {
           position: 'fixed',
           inset: 0,
           background: `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%,
-            rgba(218, 14, 41, 0.015) 0%,
+            rgba(218, 14, 41, 0.01) 0%,
             transparent 50%)`,
           pointerEvents: 'none',
           transition: 'background 1.5s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -259,9 +259,9 @@ export function Work() {
                 height: '8px',
                 borderRadius: '50%',
                 background: currentProject === index
-                  ? 'rgba(255, 255, 255, 0.8)'
-                  : 'rgba(255, 255, 255, 0.2)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                  ? 'var(--text-primary)'
+                  : 'var(--text-muted)',
+                border: '1px solid var(--border-primary)',
                 marginBottom: '1.5rem',
                 cursor: 'pointer',
                 transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -312,7 +312,7 @@ export function Work() {
                 transform: 'translateY(-50%)',
                 fontSize: '20vw',
                 fontWeight: '200',
-                color: 'rgba(255, 255, 255, 0.02)',
+                color: 'var(--surface-primary)',
                 letterSpacing: '-0.05em',
                 pointerEvents: 'none',
                 animation: isActive ? 'fadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
@@ -342,16 +342,14 @@ export function Work() {
                   position: 'absolute',
                   inset: 0,
                   borderRadius: '32px',
-                  background: `linear-gradient(135deg,
-                    rgba(255, 255, 255, 0.03) 0%,
-                    rgba(255, 255, 255, 0.005) 100%)`,
-                  backdropFilter: 'blur(60px) saturate(130%) brightness(0.85)',
-                  WebkitBackdropFilter: 'blur(60px) saturate(130%) brightness(0.85)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  background: 'var(--surface-primary)',
+                  backdropFilter: 'blur(60px) saturate(130%)',
+                  WebkitBackdropFilter: 'blur(60px) saturate(130%)',
+                  border: '1px solid var(--border-primary)',
                   boxShadow: `
-                    inset 0 2px 0 rgba(255, 255, 255, 0.04),
-                    inset 0 -2px 0 rgba(0, 0, 0, 0.3),
-                    0 30px 60px rgba(0, 0, 0, 0.5)
+                    inset 0 2px 0 var(--highlight-subtle),
+                    inset 0 -2px 0 var(--shadow-primary),
+                    0 30px 60px var(--shadow-deep)
                   `,
                   overflow: 'hidden',
                 }}>
@@ -359,7 +357,7 @@ export function Work() {
                   <div style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.02) 50%, transparent 60%)',
+                    background: 'linear-gradient(105deg, transparent 40%, var(--highlight-subtle) 50%, transparent 60%)',
                     animation: isActive ? 'shimmer 3s ease-out' : 'none',
                   }} />
                 </div>
@@ -369,7 +367,7 @@ export function Work() {
                   position: 'absolute',
                   inset: 0,
                   borderRadius: '32px',
-                  background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 100%)',
+                  background: 'linear-gradient(180deg, transparent 0%, var(--overlay-light) 100%)',
                   pointerEvents: 'none',
                 }} />
 
@@ -386,8 +384,9 @@ export function Work() {
                   <div style={{
                     position: 'relative',
                     background: `linear-gradient(135deg,
-                      rgba(${project.color}, 0.03) 0%,
-                      rgba(0, 0, 0, 0.6) 100%)`,
+                      rgba(${project.color}, 0.02) 0%,
+                      var(--surface-secondary) 100%)`,
+                    opacity: 0.8,
                     overflow: 'hidden',
                     borderRadius: '32px 0 0 32px',
                   }}>
@@ -395,9 +394,10 @@ export function Work() {
                     <div style={{
                       position: 'absolute',
                       inset: 0,
-                      background: 'rgba(255, 255, 255, 0.01)',
+                      background: 'var(--surface-primary)',
                       backdropFilter: 'blur(40px)',
                       WebkitBackdropFilter: 'blur(40px)',
+                      opacity: 0.5,
                     }} />
 
                     {/* Pattern */}
@@ -469,7 +469,7 @@ export function Work() {
                           ? 'rgba(52, 211, 153, 0.8)'
                           : project.status === 'Research'
                           ? 'rgba(251, 191, 36, 0.8)'
-                          : 'rgba(255, 255, 255, 0.3)',
+                          : 'var(--text-muted)',
                         boxShadow: project.status === 'Active'
                           ? '0 0 20px rgba(52, 211, 153, 0.6)'
                           : 'none',
@@ -478,7 +478,7 @@ export function Work() {
                       <span style={{
                         fontSize: '0.75rem',
                         fontWeight: '300',
-                        color: 'rgba(255, 255, 255, 0.5)',
+                        color: 'var(--text-secondary)',
                         letterSpacing: '0.05em',
                         textTransform: 'uppercase',
                       }}>
@@ -494,13 +494,13 @@ export function Work() {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
-                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%)',
+                    background: 'var(--surface-secondary)',
                   }}>
                     {/* Category */}
                     <div style={{
                       fontSize: '0.875rem',
                       fontWeight: '300',
-                      color: `rgba(${project.color}, 0.8)`,
+                      color: `rgba(${project.color}, 0.9)`,
                       letterSpacing: '0.1em',
                       textTransform: 'uppercase',
                       marginBottom: '1rem',
@@ -513,7 +513,7 @@ export function Work() {
                     <h2 style={{
                       fontSize: 'clamp(2rem, 4vw, 3.5rem)',
                       fontWeight: '200',
-                      color: 'rgba(255, 255, 255, 0.95)',
+                      color: 'var(--text-primary)',
                       letterSpacing: '-0.02em',
                       marginBottom: '2rem',
                       lineHeight: '1.1',
@@ -526,7 +526,7 @@ export function Work() {
                     <p style={{
                       fontSize: '1rem',
                       fontWeight: '300',
-                      color: 'rgba(255, 255, 255, 0.6)',
+                      color: 'var(--text-secondary)',
                       lineHeight: '1.8',
                       letterSpacing: '0.02em',
                       marginBottom: '3rem',
@@ -548,7 +548,7 @@ export function Work() {
                         <div style={{
                           fontSize: '1.5rem',
                           fontWeight: '200',
-                          color: 'rgba(255, 255, 255, 0.9)',
+                          color: 'var(--text-primary)',
                           marginBottom: '0.25rem',
                         }}>
                           {project.metric.split(' ')[0]}
@@ -556,7 +556,7 @@ export function Work() {
                         <div style={{
                           fontSize: '0.75rem',
                           fontWeight: '300',
-                          color: 'rgba(255, 255, 255, 0.4)',
+                          color: 'var(--text-muted)',
                           letterSpacing: '0.05em',
                         }}>
                           {project.metric.split(' ').slice(1).join(' ')}
@@ -566,7 +566,7 @@ export function Work() {
                         <div style={{
                           fontSize: '1.5rem',
                           fontWeight: '200',
-                          color: 'rgba(255, 255, 255, 0.9)',
+                          color: 'var(--text-primary)',
                           marginBottom: '0.25rem',
                         }}>
                           {project.year}
@@ -574,7 +574,7 @@ export function Work() {
                         <div style={{
                           fontSize: '0.75rem',
                           fontWeight: '300',
-                          color: 'rgba(255, 255, 255, 0.4)',
+                          color: 'var(--text-muted)',
                           letterSpacing: '0.05em',
                         }}>
                           Year
@@ -596,22 +596,22 @@ export function Work() {
                           style={{
                             padding: '0.5rem 1rem',
                             borderRadius: '12px',
-                            background: 'rgba(255, 255, 255, 0.02)',
+                            background: 'var(--surface-primary)',
                             backdropFilter: 'blur(20px)',
                             WebkitBackdropFilter: 'blur(20px)',
-                            border: '1px solid rgba(255, 255, 255, 0.04)',
+                            border: '1px solid var(--border-primary)',
                             fontSize: '0.75rem',
                             fontWeight: '300',
-                            color: 'rgba(255, 255, 255, 0.5)',
+                            color: 'var(--text-secondary)',
                             letterSpacing: '0.02em',
                             transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                            e.currentTarget.style.background = 'var(--surface-secondary)';
                             e.currentTarget.style.transform = 'translateY(-2px)';
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+                            e.currentTarget.style.background = 'var(--surface-primary)';
                             e.currentTarget.style.transform = 'translateY(0)';
                           }}
                         >
@@ -633,11 +633,11 @@ export function Work() {
                               gap: '1rem',
                               padding: '1rem 2rem',
                               borderRadius: '16px',
-                              background: 'rgba(255, 255, 255, 0.02)',
+                              background: 'var(--surface-primary)',
                               backdropFilter: 'blur(20px)',
                               WebkitBackdropFilter: 'blur(20px)',
-                              border: '1px solid rgba(255, 255, 255, 0.06)',
-                              color: 'rgba(255, 255, 255, 0.8)',
+                              border: '1px solid var(--border-primary)',
+                              color: 'var(--text-primary)',
                               fontSize: '0.875rem',
                               fontWeight: '400',
                               letterSpacing: '0.02em',
@@ -646,14 +646,14 @@ export function Work() {
                               animation: 'float 4s ease-in-out infinite',
                             }}
                             onMouseEnter={(e) => {
-                              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                              e.currentTarget.style.background = 'var(--surface-secondary)';
                               e.currentTarget.style.transform = 'translateX(5px)';
-                              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                              e.currentTarget.style.borderColor = 'var(--border-secondary)';
                             }}
                             onMouseLeave={(e) => {
-                              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+                              e.currentTarget.style.background = 'var(--surface-primary)';
                               e.currentTarget.style.transform = 'translateX(0)';
-                              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                              e.currentTarget.style.borderColor = 'var(--border-primary)';
                             }}
                           >
                             View Project
@@ -668,11 +668,11 @@ export function Work() {
                             gap: '1rem',
                             padding: '1rem 2rem',
                             borderRadius: '16px',
-                            background: 'rgba(255, 255, 255, 0.02)',
+                            background: 'var(--surface-primary)',
                             backdropFilter: 'blur(20px)',
                             WebkitBackdropFilter: 'blur(20px)',
-                            border: '1px solid rgba(255, 255, 255, 0.06)',
-                            color: 'rgba(255, 255, 255, 0.4)',
+                            border: '1px solid var(--border-primary)',
+                            color: 'var(--text-muted)',
                             fontSize: '0.875rem',
                             fontWeight: '400',
                             letterSpacing: '0.02em',
@@ -710,13 +710,13 @@ export function Work() {
                     <span style={{
                       fontSize: '0.75rem',
                       fontWeight: '300',
-                      color: 'rgba(255, 255, 255, 0.4)',
+                      color: 'var(--text-muted)',
                       letterSpacing: '0.05em',
                     }}>
                       Next Project
                     </span>
                     <ArrowDown size={20} style={{
-                      color: 'rgba(255, 255, 255, 0.4)',
+                      color: 'var(--text-muted)',
                     }} />
                   </div>
                 )}

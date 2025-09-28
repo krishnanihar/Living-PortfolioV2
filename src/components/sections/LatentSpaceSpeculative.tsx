@@ -59,8 +59,8 @@ const baseStyles = {
   main: {
     position: 'relative' as const,
     minHeight: '100vh',
-    backgroundColor: '#0a0a0a',
-    color: '#ffffff',
+    backgroundColor: 'var(--bg-primary)',
+    color: 'var(--text-primary)',
     overflow: 'hidden' as const,
   },
   section: {
@@ -192,13 +192,13 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
               marginBottom: '2rem',
             }}
           >
-            <Sparkles size={16} style={{ color: '#DA0E29' }} />
+            <Sparkles size={16} style={{ color: 'var(--brand-red)' }} />
             <span style={{
               fontSize: '0.75rem',
               fontWeight: '500',
               letterSpacing: '0.1em',
               textTransform: 'uppercase' as const,
-              color: 'rgba(255, 255, 255, 0.8)',
+              color: 'var(--text-secondary)',
             }}>
               Speculative Design
             </span>
@@ -251,7 +251,7 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
               fontWeight: '300',
               letterSpacing: '-0.01em',
               lineHeight: '1.3',
-              color: 'rgba(255, 255, 255, 0.8)',
+              color: 'var(--text-secondary)',
               marginBottom: '1rem',
             }}>
               What if we could navigate our dreams through technology while preserving the mystery of consciousness?
@@ -356,7 +356,7 @@ function DesignResearchSection() {
             fontWeight: '300',
             letterSpacing: '-0.02em',
             lineHeight: '1.1',
-            color: 'rgba(255, 255, 255, 0.95)',
+            color: 'var(--text-primary)',
           }}>
             What should we ask before consciousness becomes data?
           </motion.h2>
@@ -413,7 +413,7 @@ function DesignResearchSection() {
                 <h3 style={{
                   fontSize: '1rem',
                   fontWeight: '400',
-                  color: 'rgba(255, 255, 255, 0.8)',
+                  color: 'var(--text-secondary)',
                   marginBottom: '0.75rem',
                   letterSpacing: '0.025em',
                 }}>
@@ -522,7 +522,7 @@ function NarrativeArcSection() {
             fontWeight: '300',
             letterSpacing: '-0.02em',
             lineHeight: '1.1',
-            color: 'rgba(255, 255, 255, 0.95)',
+            color: 'var(--text-primary)',
             marginBottom: '1.5rem',
           }}>
             The Journey from Dreams to Data
@@ -702,7 +702,7 @@ function ScienceExplorationSection() {
             fontWeight: '300',
             letterSpacing: '-0.02em',
             lineHeight: '1.1',
-            color: 'rgba(255, 255, 255, 0.95)',
+            color: 'var(--text-primary)',
             marginBottom: '1.5rem',
           }}>
             What if we could map consciousness?
@@ -865,7 +865,7 @@ function SleepStagesTab() {
                 <div style={{
                   fontSize: '1.5rem',
                   fontWeight: '300',
-                  color: 'rgba(255, 255, 255, 0.8)',
+                  color: 'var(--text-secondary)',
                 }}>
                   {stage.duration}
                 </div>
@@ -969,7 +969,7 @@ function BrainWavesTab() {
                   transition={{ delay: index * 0.1 + 0.3, duration: 0.8 }}
                   style={{
                     height: '100%',
-                    background: 'linear-gradient(90deg, #DA0E29, rgba(218, 14, 41, 0.6))',
+                    background: 'linear-gradient(90deg, var(--brand-red), rgba(218, 14, 41, 0.6))',
                     borderRadius: '4px',
                   }}
                 />
@@ -1151,7 +1151,7 @@ function SixPillarsSection() {
             fontWeight: '300',
             letterSpacing: '-0.02em',
             lineHeight: '1.1',
-            color: 'rgba(255, 255, 255, 0.95)',
+            color: 'var(--text-primary)',
             marginBottom: '1.5rem',
           }}>
             Six questions that shape the future
@@ -1198,7 +1198,7 @@ function SixPillarsSection() {
           <h3 style={{
             fontSize: '2rem',
             fontWeight: '300',
-            color: 'rgba(255, 255, 255, 0.95)',
+            color: 'var(--text-primary)',
             marginBottom: '1rem',
           }}>
             {currentPillar.title}
@@ -1206,7 +1206,7 @@ function SixPillarsSection() {
           <p style={{
             fontSize: '1.25rem',
             fontWeight: '300',
-            color: 'rgba(255, 255, 255, 0.8)',
+            color: 'var(--text-secondary)',
             marginBottom: '1.5rem',
             fontStyle: 'italic',
           }}>
@@ -1329,7 +1329,7 @@ function SystemArchitectureSection() {
             fontWeight: '300',
             letterSpacing: '-0.02em',
             lineHeight: '1.1',
-            color: 'rgba(255, 255, 255, 0.95)',
+            color: 'var(--text-primary)',
             marginBottom: '1.5rem',
           }}>
             How might consciousness become data?
@@ -1469,7 +1469,7 @@ function SystemArchitectureSection() {
                       >
                         <p style={{
                           fontSize: '0.75rem',
-                          color: 'rgba(255, 255, 255, 0.8)',
+                          color: 'var(--text-secondary)',
                           lineHeight: '1.5',
                         }}>
                           Critical Question: How do we ensure this component respects human dignity and mental sovereignty?
@@ -1493,8 +1493,8 @@ function SystemArchitectureSection() {
             padding: '1rem 2rem',
             fontSize: '1rem',
             fontWeight: '400',
-            color: dataFlowActive ? '#DA0E29' : 'rgba(255, 255, 255, 0.8)',
-            border: dataFlowActive ? '2px solid #DA0E29' : '1px solid rgba(255, 255, 255, 0.2)',
+            color: dataFlowActive ? 'var(--brand-red)' : 'var(--text-secondary)',
+            border: dataFlowActive ? '2px solid var(--brand-red)' : '1px solid rgba(255, 255, 255, 0.2)',
             cursor: 'pointer',
             transition: 'all 0.3s ease',
             display: 'flex',
@@ -1622,7 +1622,7 @@ function InteractivePrototypesSection() {
             fontWeight: '300',
             letterSpacing: '-0.02em',
             lineHeight: '1.1',
-            color: 'rgba(255, 255, 255, 0.95)',
+            color: 'var(--text-primary)',
             marginBottom: '1.5rem',
           }}>
             What might the interfaces look like?
@@ -1657,14 +1657,14 @@ function InteractivePrototypesSection() {
                 fontWeight: '400',
                 transition: 'all 0.3s ease',
                 border: activePrototype === prototype.id
-                  ? '2px solid #DA0E29'
+                  ? '2px solid var(--brand-red)'
                   : '1px solid rgba(255, 255, 255, 0.2)',
                 background: activePrototype === prototype.id
                   ? 'rgba(218, 14, 41, 0.1)'
                   : 'rgba(255, 255, 255, 0.02)',
                 color: activePrototype === prototype.id
-                  ? '#DA0E29'
-                  : 'rgba(255, 255, 255, 0.8)',
+                  ? 'var(--brand-red)'
+                  : 'var(--text-secondary)',
                 cursor: 'pointer',
                 backdropFilter: 'blur(20px)',
                 WebkitBackdropFilter: 'blur(20px)',
@@ -1808,7 +1808,7 @@ function InteractivePrototypesSection() {
                     ? 'rgba(218, 14, 41, 0.2)'
                     : 'rgba(255, 255, 255, 0.05)',
                   border: isRecording
-                    ? '3px solid #DA0E29'
+                    ? '3px solid var(--brand-red)'
                     : '2px solid rgba(255, 255, 255, 0.2)',
                   display: 'flex',
                   alignItems: 'center',
@@ -1824,7 +1824,7 @@ function InteractivePrototypesSection() {
                 } : {}}
                 transition={isRecording ? { duration: 1.5, repeat: Infinity } : {}}
               >
-                <Mic size={32} color={isRecording ? '#DA0E29' : 'rgba(255, 255, 255, 0.6)'} />
+                <Mic size={32} color={isRecording ? 'var(--brand-red)' : 'rgba(255, 255, 255, 0.6)'} />
               </motion.button>
 
               {/* Waveform Visualization */}
@@ -1846,7 +1846,7 @@ function InteractivePrototypesSection() {
                       key={i}
                       style={{
                         width: '3px',
-                        background: '#DA0E29',
+                        background: 'var(--brand-red)',
                         borderRadius: '1px',
                       }}
                       animate={{
@@ -1971,7 +1971,7 @@ function VisionSection() {
             fontWeight: '200',
             letterSpacing: '-0.03em',
             lineHeight: '1',
-            color: 'rgba(255, 255, 255, 0.95)',
+            color: 'var(--text-primary)',
             marginBottom: '2rem',
           }}>
             Questions Without Answers
@@ -2033,7 +2033,7 @@ function VisionSection() {
             whileHover={{ scale: 1.1, background: 'rgba(218, 14, 41, 0.2)' }}
             whileTap={{ scale: 0.9 }}
           >
-            <Play size={32} color="rgba(255, 255, 255, 0.8)" />
+            <Play size={32} color="var(--text-secondary)" />
           </motion.div>
 
           <h3 style={{
@@ -2093,7 +2093,7 @@ function VisionSection() {
             <h3 style={{
               fontSize: 'clamp(1.5rem, 3vw, 2rem)',
               fontWeight: '300',
-              color: activeQuestion === index ? '#DA0E29' : 'rgba(255, 255, 255, 0.95)',
+              color: activeQuestion === index ? 'var(--brand-red)' : 'var(--text-primary)',
               marginBottom: '1.5rem',
               lineHeight: '1.2',
             }}>
@@ -2124,7 +2124,7 @@ function VisionSection() {
                   <h4 style={{
                     fontSize: '0.875rem',
                     fontWeight: '500',
-                    color: 'rgba(255, 255, 255, 0.8)',
+                    color: 'var(--text-secondary)',
                     marginBottom: '1rem',
                     letterSpacing: '0.05em',
                     textTransform: 'uppercase' as const,
@@ -2148,7 +2148,7 @@ function VisionSection() {
                           border: '1px solid rgba(218, 14, 41, 0.3)',
                           borderRadius: '999px',
                           fontSize: '0.75rem',
-                          color: 'rgba(255, 255, 255, 0.8)',
+                          color: 'var(--text-secondary)',
                         }}
                       >
                         {implication}
@@ -2246,7 +2246,7 @@ function InterfaceSpeculationSection() {
             fontWeight: '300',
             letterSpacing: '-0.02em',
             lineHeight: '1.1',
-            color: 'rgba(255, 255, 255, 0.95)',
+            color: 'var(--text-primary)',
             marginBottom: '1.5rem',
           }}>
             How might we design for consciousness?
@@ -2332,7 +2332,7 @@ function InterfaceSpeculationSection() {
                   <h3 style={{
                     fontSize: '1.25rem',
                     fontWeight: '300',
-                    color: 'rgba(255, 255, 255, 0.95)',
+                    color: 'var(--text-primary)',
                     marginBottom: '1rem',
                   }}>
                     {interfaceScreens[currentScreen].title}
@@ -2391,7 +2391,7 @@ function InterfaceSpeculationSection() {
                       height: '8px',
                       borderRadius: '50%',
                       background: currentScreen === index
-                        ? '#DA0E29'
+                        ? 'var(--brand-red)'
                         : 'rgba(255, 255, 255, 0.3)',
                       transition: 'all 0.3s ease',
                     }}
@@ -2412,7 +2412,7 @@ function InterfaceSpeculationSection() {
           <h3 style={{
             fontSize: 'clamp(1.5rem, 3vw, 2rem)',
             fontWeight: '300',
-            color: 'rgba(255, 255, 255, 0.95)',
+            color: 'var(--text-primary)',
             marginBottom: '2rem',
           }}>
             Design Principles
@@ -2556,7 +2556,7 @@ function TeamPerspectivesSection() {
             fontWeight: '200',
             letterSpacing: '-0.03em',
             lineHeight: '1',
-            color: 'rgba(255, 255, 255, 0.95)',
+            color: 'var(--text-primary)',
             marginBottom: '2rem',
           }}>
             Who Questions the Future?
@@ -2627,7 +2627,7 @@ function TeamPerspectivesSection() {
             <h3 style={{
               fontSize: '1.25rem',
               fontWeight: '300',
-              color: 'rgba(255, 255, 255, 0.95)',
+              color: 'var(--text-primary)',
               marginBottom: '0.5rem',
             }}>
               {questioner.role}
@@ -2692,7 +2692,7 @@ function TeamPerspectivesSection() {
 
           <p style={{
             fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-            color: 'rgba(255, 255, 255, 0.8)',
+            color: 'var(--text-secondary)',
             lineHeight: '1.7',
             textAlign: 'center' as const,
           }}>
