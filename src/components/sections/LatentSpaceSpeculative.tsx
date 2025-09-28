@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import {
   ChevronDown,
   ChevronRight,
@@ -24,7 +24,8 @@ import {
   FileText,
   Moon,
   Zap
-} from "lucide-react";
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 /**
  * LATENT SPACE — Speculative Design Experience
@@ -32,50 +33,26 @@ import {
  * and the ethics of mental privacy. Questions what we might lose by making the invisible visible.
  */
 
-// Design System for Speculative Experience
-const DESIGN = {
-  colors: {
-    black: "#000000",
-    white: "#ffffff",
-    gradient: {
-      from: "#da1b60", // Deep burgundy
-      via: "#7c3aed",  // Purple
-      to: "#0ea5e9",   // Cyan
-    },
-    glass: {
-      bg: "rgba(255, 255, 255, 0.01)",
-      bgHover: "rgba(255, 255, 255, 0.02)",
-      border: "rgba(255, 255, 255, 0.04)",
-      borderHover: "rgba(255, 255, 255, 0.08)",
-    },
-    text: {
-      primary: "rgba(255, 255, 255, 0.95)",
-      secondary: "rgba(255, 255, 255, 0.60)",
-      tertiary: "rgba(255, 255, 255, 0.35)",
-    }
-  },
-  animation: {
-    ease: [0.16, 1, 0.3, 1],
-    spring: { damping: 25, stiffness: 300 },
-    duration: {
-      fast: 300,
-      normal: 500,
-      slow: 800,
+// Animation variants using global design system
+const fadeInUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.22, 1, 0.36, 1]
     }
   }
 };
 
-// Helper function for conditional classes
-const cx = (...classes: (string | boolean | undefined)[]) => classes.filter(Boolean).join(" ");
-
-// Animation variants
-const fadeInUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 }
-};
-
 const stagger = {
-  visible: { transition: { staggerChildren: 0.1 } }
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  }
 };
 
 export default function LatentSpaceSpeculative() {
@@ -87,7 +64,7 @@ export default function LatentSpaceSpeculative() {
   }, []);
 
   return (
-    <main className="relative min-h-screen bg-black text-white overflow-hidden">
+    <main className="relative min-h-screen overflow-hidden">
       {/* Background gradient overlay */}
       <div className="fixed inset-0 opacity-30">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/5 via-transparent to-cyan-900/5" />
@@ -132,7 +109,7 @@ const HeroSection = ({ isLoaded }: { isLoaded: boolean }) => {
   const y = useTransform(scrollY, [0, 500], [0, 150]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6 md:px-8 lg:px-12 mb-32">
+    <section className="relative min-h-screen flex items-center justify-center px-4 pt-32 pb-20">
       <motion.div
         style={{ y }}
         className="text-center max-w-6xl mx-auto"
@@ -142,10 +119,10 @@ const HeroSection = ({ isLoaded }: { isLoaded: boolean }) => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: isLoaded ? 1 : 0, scale: isLoaded ? 1 : 0.8 }}
           transition={{ delay: 0.2, duration: 0.8 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/5 mb-8"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8"
         >
-          <Sparkles className="w-4 h-4 text-purple-400" />
-          <span className="text-xs font-extralight tracking-wider text-white/60 uppercase">
+          <Sparkles className="w-4 h-4 text-[var(--brand-red)]" />
+          <span className="text-micro text-[var(--text-muted)] uppercase tracking-wider">
             Speculative Design
           </span>
         </motion.div>
@@ -157,11 +134,11 @@ const HeroSection = ({ isLoaded }: { isLoaded: boolean }) => {
           transition={{ delay: 0.4, duration: 1 }}
           className="mb-8"
         >
-          <h1 className="text-8xl md:text-9xl font-extralight leading-none tracking-tight">
-            <span className="block bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent">
+          <h1 className="text-display font-light leading-none tracking-tight">
+            <span className="block bg-gradient-to-r from-[var(--text-primary)] via-purple-200 to-cyan-200 bg-clip-text text-transparent">
               Latent
             </span>
-            <span className="block bg-gradient-to-r from-cyan-200 via-purple-200 to-white bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-cyan-200 via-purple-200 to-[var(--text-primary)] bg-clip-text text-transparent">
               Space
             </span>
           </h1>
@@ -174,10 +151,10 @@ const HeroSection = ({ isLoaded }: { isLoaded: boolean }) => {
           transition={{ delay: 0.8, duration: 0.8 }}
           className="max-w-3xl mx-auto mb-12"
         >
-          <p className="text-xl md:text-2xl font-extralight leading-relaxed text-white/70">
+          <p className="text-subheading text-[var(--text-secondary)] leading-relaxed">
             What if we could navigate our dreams through technology while preserving the mystery of consciousness?
           </p>
-          <p className="text-base font-extralight mt-4 text-white/50">
+          <p className="text-body mt-4 text-[var(--text-muted)]">
             A speculative exploration questioning the ethics of consciousness interfaces.
           </p>
         </motion.div>
@@ -189,14 +166,14 @@ const HeroSection = ({ isLoaded }: { isLoaded: boolean }) => {
           transition={{ delay: 1.2, duration: 0.8 }}
           className="flex flex-col items-center gap-2"
         >
-          <span className="text-xs font-extralight tracking-wider text-white/40 uppercase">
+          <span className="text-micro text-[var(--text-muted)] uppercase tracking-wider">
             Explore the Questions
           </span>
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ repeat: Infinity, duration: 2 }}
           >
-            <ChevronDown className="w-5 h-5 text-white/30" />
+            <ChevronDown className="w-5 h-5 text-[var(--text-muted)]" />
           </motion.div>
         </motion.div>
       </motion.div>
@@ -236,8 +213,8 @@ const DesignResearchSection = () => {
   ];
 
   return (
-    <section className="relative py-32 px-6 md:px-8 lg:px-12 mb-32">
-      <div className="max-w-6xl mx-auto">
+    <section className="relative py-20 px-4">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -246,11 +223,11 @@ const DesignResearchSection = () => {
           className="text-center mb-16"
         >
           <motion.div variants={fadeInUp} className="mb-4">
-            <span className="text-xs font-extralight tracking-[0.3em] text-white/35 uppercase">
+            <span className="text-xs font-extralight tracking-[0.3em] text-[var(--text-muted)] uppercase">
               Critical Questions
             </span>
           </motion.div>
-          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-white/95">
+          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-[var(--text-primary)]">
             What should we ask before consciousness becomes data?
           </motion.h2>
         </motion.div>
@@ -267,21 +244,21 @@ const DesignResearchSection = () => {
             >
               <div
                 onClick={() => setExpandedCard(expandedCard === index ? null : index)}
-                className={cx(
+                className={cn(
                   "relative p-8 rounded-2xl cursor-pointer transition-all duration-500 border",
                   expandedCard === index
-                    ? "bg-white/[0.02] border-white/8"
-                    : "bg-white/[0.01] border-white/4 hover:bg-white/[0.015] hover:border-white/6"
+                    ? "glass-card border-[var(--border-secondary)]"
+                    : "glass-card hover:bg-[var(--surface-hover)] hover:border-[var(--border-hover)]"
                 )}
               >
                 <div className="text-center">
-                  <div className="text-4xl font-extralight text-white/90 mb-2">
+                  <div className="text-4xl font-extralight text-[var(--text-primary)] mb-2">
                     {area.count}
                   </div>
-                  <h3 className="text-sm font-extralight text-white/80 mb-3 tracking-wide">
+                  <h3 className="text-sm font-extralight text-[var(--text-secondary)] mb-3 tracking-wide">
                     {area.title}
                   </h3>
-                  <p className="text-xs text-white/50 leading-relaxed">
+                  <p className="text-xs text-[var(--text-muted)] leading-relaxed">
                     {area.brief}
                   </p>
                 </div>
@@ -293,9 +270,9 @@ const DesignResearchSection = () => {
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="mt-6 pt-6 border-t border-white/10"
+                      className="mt-6 pt-6 border-t border-[var(--border-primary)]"
                     >
-                      <p className="text-sm text-white/60 leading-relaxed">
+                      <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
                         {area.expanded}
                       </p>
                     </motion.div>
@@ -346,8 +323,8 @@ const NarrativeArcSection = () => {
   ];
 
   return (
-    <section className="relative py-32 px-6 md:px-8 lg:px-12 bg-gradient-to-b from-transparent via-purple-950/5 to-transparent mb-32">
-      <div className="max-w-6xl mx-auto">
+    <section className="relative py-20 px-4 bg-gradient-to-b from-transparent via-purple-950/5 to-transparent">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -356,14 +333,14 @@ const NarrativeArcSection = () => {
           className="text-center mb-20"
         >
           <motion.div variants={fadeInUp} className="mb-4">
-            <span className="text-xs font-extralight tracking-[0.3em] text-white/35 uppercase">
+            <span className="text-xs font-extralight tracking-[0.3em] text-[var(--text-muted)] uppercase">
               Narrative Arc
             </span>
           </motion.div>
-          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-white/95 mb-6">
+          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-[var(--text-primary)] mb-6">
             The Journey from Dreams to Data
           </motion.h2>
-          <motion.p variants={fadeInUp} className="text-lg text-white/60 max-w-3xl mx-auto">
+          <motion.p variants={fadeInUp} className="text-lg text-[var(--text-secondary)] max-w-3xl mx-auto">
             Four chapters exploring the ethical implications of consciousness technology
           </motion.p>
         </motion.div>
@@ -380,32 +357,32 @@ const NarrativeArcSection = () => {
             >
               <div
                 onClick={() => setExpandedChapter(expandedChapter === index ? null : index)}
-                className={cx(
+                className={cn(
                   "relative p-10 rounded-3xl cursor-pointer transition-all duration-500 border",
                   expandedChapter === index
-                    ? "bg-white/[0.02] border-white/8"
-                    : "bg-white/[0.01] border-white/4 hover:bg-white/[0.015] hover:border-white/6"
+                    ? "glass-card border-[var(--border-secondary)]"
+                    : "glass-card hover:bg-[var(--surface-hover)] hover:border-[var(--border-hover)]"
                 )}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-baseline gap-6 md:gap-8 mb-4">
-                      <span className="text-5xl font-extralight text-white/30">
+                      <span className="text-5xl font-extralight text-[var(--text-muted)]">
                         {chapter.number}
                       </span>
                       <div>
-                        <h3 className="text-2xl font-extralight text-white/90 mb-2">
+                        <h3 className="text-2xl font-extralight text-[var(--text-primary)] mb-2">
                           {chapter.title}
                         </h3>
-                        <p className="text-lg font-extralight text-white/70">
+                        <p className="text-lg font-extralight text-[var(--text-secondary)]">
                           {chapter.question}
                         </p>
                       </div>
                     </div>
                   </div>
                   <ChevronRight
-                    className={cx(
-                      "w-6 h-6 text-white/40 transition-transform duration-300",
+                    className={cn(
+                      "w-6 h-6 text-[var(--text-muted)] transition-transform duration-300",
                       expandedChapter === index ? "rotate-90" : ""
                     )}
                   />
@@ -418,20 +395,20 @@ const NarrativeArcSection = () => {
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.4 }}
-                      className="mt-8 pt-8 border-t border-white/10"
+                      className="mt-8 pt-8 border-t border-[var(--border-primary)]"
                     >
-                      <p className="text-base text-white/70 leading-relaxed mb-6">
+                      <p className="text-base text-[var(--text-secondary)] leading-relaxed mb-6">
                         {chapter.dilemma}
                       </p>
                       <div>
-                        <h4 className="text-sm font-extralight text-white/50 mb-3 tracking-wide uppercase">
+                        <h4 className="text-sm font-extralight text-[var(--text-muted)] mb-3 tracking-wide uppercase">
                           Implications to Consider
                         </h4>
                         <div className="flex flex-wrap gap-2">
                           {chapter.implications.map((implication, i) => (
                             <span
                               key={i}
-                              className="px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs text-white/60"
+                              className="px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs text-[var(--text-secondary)]"
                             >
                               {implication}
                             </span>
@@ -464,8 +441,8 @@ const ScienceExplorationSection = () => {
   ];
 
   return (
-    <section className="relative py-32 px-6 md:px-8 lg:px-12 mb-32">
-      <div className="max-w-6xl mx-auto">
+    <section className="relative py-20 px-4">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -474,14 +451,14 @@ const ScienceExplorationSection = () => {
           className="text-center mb-20"
         >
           <motion.div variants={fadeInUp} className="mb-4">
-            <span className="text-xs font-extralight tracking-[0.3em] text-white/35 uppercase">
+            <span className="text-xs font-extralight tracking-[0.3em] text-[var(--text-muted)] uppercase">
               Speculative Science
             </span>
           </motion.div>
-          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-white/95 mb-6">
+          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-[var(--text-primary)] mb-6">
             What if we could map consciousness?
           </motion.h2>
-          <motion.p variants={fadeInUp} className="text-lg text-white/60 max-w-3xl mx-auto">
+          <motion.p variants={fadeInUp} className="text-lg text-[var(--text-secondary)] max-w-3xl mx-auto">
             Exploring the theoretical frameworks that might enable dream technology
           </motion.p>
         </motion.div>
@@ -495,11 +472,11 @@ const ScienceExplorationSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className={cx(
+              className={cn(
                 "flex items-center gap-2 px-6 md:px-8 lg:px-12 py-3 rounded-full text-sm font-extralight transition-all duration-300 border",
                 activeTab === tab.id
-                  ? "bg-white/[0.03] border-white/20 text-white/90"
-                  : "bg-white/[0.01] border-white/10 text-white/60 hover:bg-white/[0.02] hover:border-white/15"
+                  ? "bg-white/[0.03] border-white/20 text-[var(--text-primary)]"
+                  : "bg-white/[0.01] border-white/10 text-[var(--text-secondary)] hover:bg-white/[0.02] hover:border-white/15"
               )}
             >
               <tab.icon className="w-4 h-4" />
@@ -552,10 +529,10 @@ const SleepStagesTab = () => {
       className="grid grid-cols-1 md:grid-cols-3 gap-8"
     >
       <div className="md:col-span-2">
-        <h3 className="text-2xl font-extralight text-white/90 mb-6">
+        <h3 className="text-2xl font-extralight text-[var(--text-primary)] mb-6">
           What if we could navigate between sleep stages?
         </h3>
-        <p className="text-white/60 mb-8 leading-relaxed">
+        <p className="text-[var(--text-secondary)] mb-8 leading-relaxed">
           Current sleep science identifies distinct stages, each with unique neural signatures.
           But what ethical questions arise if we could consciously control these transitions?
         </p>
@@ -566,25 +543,25 @@ const SleepStagesTab = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
-              className={cx(
+              className={cn(
                 "relative p-6 rounded-2xl border border-white/10 bg-gradient-to-r to-transparent",
                 stage.color
               )}
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="text-lg font-extralight text-white/90">{stage.name}</h4>
-                  <p className="text-sm text-white/60">{stage.description}</p>
+                  <h4 className="text-lg font-extralight text-[var(--text-primary)]">{stage.name}</h4>
+                  <p className="text-sm text-[var(--text-secondary)]">{stage.description}</p>
                 </div>
-                <div className="text-2xl font-extralight text-white/70">{stage.duration}</div>
+                <div className="text-2xl font-extralight text-[var(--text-secondary)]">{stage.duration}</div>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
-      <div className="bg-white/[0.01] border border-white/10 rounded-2xl p-6">
-        <h4 className="text-lg font-extralight text-white/90 mb-4">Critical Questions</h4>
-        <div className="space-y-3 text-sm text-white/60">
+      <div className="glass-card rounded-2xl p-6">
+        <h4 className="text-lg font-extralight text-[var(--text-primary)] mb-4">Critical Questions</h4>
+        <div className="space-y-3 text-sm text-[var(--text-secondary)]">
           <p>• Should we have the right to alter our natural sleep cycles?</p>
           <p>• What happens to dreams if we control REM sleep?</p>
           <p>• Who decides what constitutes "healthy" sleep patterns?</p>
@@ -613,10 +590,10 @@ const BrainWavesTab = ({ isRecording, setIsRecording }: { isRecording: boolean; 
       className="grid grid-cols-1 lg:grid-cols-2 gap-8"
     >
       <div>
-        <h3 className="text-2xl font-extralight text-white/90 mb-6">
+        <h3 className="text-2xl font-extralight text-[var(--text-primary)] mb-6">
           What if consciousness had a frequency?
         </h3>
-        <p className="text-white/60 mb-8 leading-relaxed">
+        <p className="text-[var(--text-secondary)] mb-8 leading-relaxed">
           Different brain wave patterns correlate with states of consciousness.
           But can frequency truly capture the richness of subjective experience?
         </p>
@@ -628,14 +605,14 @@ const BrainWavesTab = ({ isRecording, setIsRecording }: { isRecording: boolean; 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="p-4 rounded-xl bg-white/[0.01] border border-white/10"
+              className="p-4 rounded-xl glass-card"
             >
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <span className="text-white/90 font-extralight">{wave.name} Wave</span>
-                  <span className="text-white/50 text-sm ml-3">{wave.range}</span>
+                  <span className="text-[var(--text-primary)] font-extralight">{wave.name} Wave</span>
+                  <span className="text-[var(--text-muted)] text-sm ml-3">{wave.range}</span>
                 </div>
-                <span className="text-white/60 text-sm">{wave.purpose}</span>
+                <span className="text-[var(--text-secondary)] text-sm">{wave.purpose}</span>
               </div>
               <div className="h-2 bg-white/5 rounded-full overflow-hidden">
                 <motion.div
@@ -650,16 +627,16 @@ const BrainWavesTab = ({ isRecording, setIsRecording }: { isRecording: boolean; 
         </div>
       </div>
 
-      <div className="bg-white/[0.01] border border-white/10 rounded-2xl p-6">
+      <div className="glass-card rounded-2xl p-6">
         <div className="flex items-center justify-between mb-6">
-          <h4 className="text-lg font-extralight text-white/90">Speculative Recording</h4>
+          <h4 className="text-lg font-extralight text-[var(--text-primary)]">Speculative Recording</h4>
           <button
             onClick={() => setIsRecording(!isRecording)}
-            className={cx(
+            className={cn(
               "px-4 py-2 rounded-full text-sm font-extralight transition-all duration-300 border",
               isRecording
                 ? "bg-red-500/20 border-red-500/40 text-red-300"
-                : "bg-white/5 border-white/20 text-white/70 hover:bg-white/10"
+                : "bg-white/5 border-white/20 text-[var(--text-secondary)] hover:bg-white/10"
             )}
           >
             {isRecording ? "Stop Recording" : "Start Recording"}
@@ -669,18 +646,18 @@ const BrainWavesTab = ({ isRecording, setIsRecording }: { isRecording: boolean; 
         <div className="h-48 rounded-xl bg-white/[0.005] border border-white/5 flex items-center justify-center mb-6">
           {isRecording ? (
             <div className="text-center">
-              <Activity className="w-8 h-8 text-white/40 mx-auto mb-2 animate-pulse" />
-              <p className="text-sm text-white/50">Simulating brainwave capture...</p>
+              <Activity className="w-8 h-8 text-[var(--text-muted)] mx-auto mb-2 animate-pulse" />
+              <p className="text-sm text-[var(--text-muted)]">Simulating brainwave capture...</p>
             </div>
           ) : (
             <div className="text-center">
-              <Waves className="w-8 h-8 text-white/20 mx-auto mb-2" />
-              <p className="text-sm text-white/30">Click to begin simulation</p>
+              <Waves className="w-8 h-8 text-[var(--text-muted)] mx-auto mb-2" />
+              <p className="text-sm text-[var(--text-muted)]">Click to begin simulation</p>
             </div>
           )}
         </div>
 
-        <div className="text-xs text-white/40 space-y-1">
+        <div className="text-xs text-[var(--text-muted)] space-y-1">
           <p>⚠ This is speculative technology</p>
           <p>⚠ Raises questions about mental privacy</p>
           <p>⚠ What consent frameworks would protect consciousness data?</p>
@@ -698,17 +675,17 @@ const DetectionTab = () => (
     transition={{ duration: 0.4 }}
     className="text-center"
   >
-    <h3 className="text-2xl font-extralight text-white/90 mb-6">
+    <h3 className="text-2xl font-extralight text-[var(--text-primary)] mb-6">
       What patterns would reveal our inner worlds?
     </h3>
-    <p className="text-white/60 mb-8 max-w-3xl mx-auto leading-relaxed">
+    <p className="text-[var(--text-secondary)] mb-8 max-w-3xl mx-auto leading-relaxed">
       Detection algorithms might identify dream states, but what happens to the mystery and
       ineffability of consciousness when it becomes measurable data?
     </p>
-    <div className="h-64 rounded-2xl bg-white/[0.01] border border-white/10 flex items-center justify-center">
+    <div className="h-64 rounded-2xl glass-card flex items-center justify-center">
       <div className="text-center">
-        <Eye className="w-12 h-12 text-white/20 mx-auto mb-4" />
-        <p className="text-white/40">Pattern recognition speculation</p>
+        <Eye className="w-12 h-12 text-[var(--text-muted)] mx-auto mb-4" />
+        <p className="text-[var(--text-muted)]">Pattern recognition speculation</p>
       </div>
     </div>
   </motion.div>
@@ -722,17 +699,17 @@ const ProcessingTab = () => (
     transition={{ duration: 0.4 }}
     className="text-center"
   >
-    <h3 className="text-2xl font-extralight text-white/90 mb-6">
+    <h3 className="text-2xl font-extralight text-[var(--text-primary)] mb-6">
       How do you process a dream?
     </h3>
-    <p className="text-white/60 mb-8 max-w-3xl mx-auto leading-relaxed">
+    <p className="text-[var(--text-secondary)] mb-8 max-w-3xl mx-auto leading-relaxed">
       The gap between neural activity and subjective experience remains vast.
       What would be lost in translation from consciousness to code?
     </p>
-    <div className="h-64 rounded-2xl bg-white/[0.01] border border-white/10 flex items-center justify-center">
+    <div className="h-64 rounded-2xl glass-card flex items-center justify-center">
       <div className="text-center">
-        <Layers className="w-12 h-12 text-white/20 mx-auto mb-4" />
-        <p className="text-white/40">Processing pipeline speculation</p>
+        <Layers className="w-12 h-12 text-[var(--text-muted)] mx-auto mb-4" />
+        <p className="text-[var(--text-muted)]">Processing pipeline speculation</p>
       </div>
     </div>
   </motion.div>
@@ -764,7 +741,7 @@ const ResearchPapersTab = () => {
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.4 }}
     >
-      <h3 className="text-2xl font-extralight text-white/90 mb-6 text-center">
+      <h3 className="text-2xl font-extralight text-[var(--text-primary)] mb-6 text-center">
         What questions should researchers ask?
       </h3>
       <div className="space-y-6">
@@ -774,11 +751,11 @@ const ResearchPapersTab = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="p-6 rounded-2xl bg-white/[0.01] border border-white/10"
+            className="p-6 rounded-2xl glass-card"
           >
-            <h4 className="text-lg font-extralight text-white/90 mb-2">{paper.title}</h4>
-            <p className="text-sm text-white/50 mb-3">{paper.authors}</p>
-            <p className="text-white/70 italic">"{paper.question}"</p>
+            <h4 className="text-lg font-extralight text-[var(--text-primary)] mb-2">{paper.title}</h4>
+            <p className="text-sm text-[var(--text-muted)] mb-3">{paper.authors}</p>
+            <p className="text-[var(--text-secondary)] italic">"{paper.question}"</p>
           </motion.div>
         ))}
       </div>
@@ -854,7 +831,7 @@ const SixPillarsSection = () => {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -863,14 +840,14 @@ const SixPillarsSection = () => {
           className="text-center mb-20"
         >
           <motion.div variants={fadeInUp} className="mb-4">
-            <span className="text-xs font-extralight tracking-[0.3em] text-white/35 uppercase">
+            <span className="text-xs font-extralight tracking-[0.3em] text-[var(--text-muted)] uppercase">
               Critical Pillars
             </span>
           </motion.div>
-          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-white/95 mb-6">
+          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-[var(--text-primary)] mb-6">
             Six questions that shape the future
           </motion.h2>
-          <motion.p variants={fadeInUp} className="text-lg text-white/60 max-w-3xl mx-auto">
+          <motion.p variants={fadeInUp} className="text-lg text-[var(--text-secondary)] max-w-3xl mx-auto">
             Each pillar represents a fundamental question about consciousness technology
           </motion.p>
         </motion.div>
@@ -887,20 +864,20 @@ const SixPillarsSection = () => {
           >
             <div className="flex items-center gap-4 mb-6">
               <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10">
-                <currentPillar.icon className="w-8 h-8 text-white/70" />
+                <currentPillar.icon className="w-8 h-8 text-[var(--text-secondary)]" />
               </div>
               <div>
-                <h3 className="text-3xl font-extralight text-white/95">{currentPillar.title}</h3>
-                <p className="text-lg text-white/70 italic mt-2">"{currentPillar.question}"</p>
+                <h3 className="text-3xl font-extralight text-[var(--text-primary)]">{currentPillar.title}</h3>
+                <p className="text-lg text-[var(--text-secondary)] italic mt-2">"{currentPillar.question}"</p>
               </div>
             </div>
 
-            <p className="text-lg text-white/60 leading-relaxed">
+            <p className="text-lg text-[var(--text-secondary)] leading-relaxed">
               {currentPillar.description}
             </p>
 
             <div>
-              <h4 className="text-sm font-extralight text-white/50 mb-4 tracking-wide uppercase">
+              <h4 className="text-sm font-extralight text-[var(--text-muted)] mb-4 tracking-wide uppercase">
                 Key Implications
               </h4>
               <div className="flex flex-wrap gap-3">
@@ -910,7 +887,7 @@ const SixPillarsSection = () => {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.1 }}
-                    className="px-4 py-2 rounded-full bg-white/[0.02] border border-white/10 text-sm text-white/70"
+                    className="px-4 py-2 rounded-full bg-white/[0.02] border border-white/10 text-sm text-[var(--text-secondary)]"
                   >
                     {implication}
                   </motion.span>
@@ -927,7 +904,7 @@ const SixPillarsSection = () => {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="aspect-square rounded-3xl bg-white/[0.01] border border-white/10 overflow-hidden">
+            <div className="aspect-square rounded-3xl glass-card overflow-hidden">
               <div className="relative h-full flex items-center justify-center">
                 <motion.div
                   animate={{
@@ -941,7 +918,7 @@ const SixPillarsSection = () => {
                   }}
                   className="relative"
                 >
-                  <currentPillar.icon className="w-24 h-24 text-white/20" />
+                  <currentPillar.icon className="w-24 h-24 text-[var(--text-muted)]" />
                 </motion.div>
 
                 {/* Floating particles */}
@@ -976,7 +953,7 @@ const SixPillarsSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className={cx(
+              className={cn(
                 "group relative p-4 rounded-2xl text-left transition-all duration-500 border min-w-[200px]",
                 activePillar === index
                   ? "bg-white/[0.03] border-white/20"
@@ -984,10 +961,10 @@ const SixPillarsSection = () => {
               )}
             >
               <div className="flex items-center gap-3 mb-2">
-                <pillar.icon className="w-5 h-5 text-white/60" />
-                <span className="text-sm font-extralight text-white/80">{pillar.title}</span>
+                <pillar.icon className="w-5 h-5 text-[var(--text-secondary)]" />
+                <span className="text-sm font-extralight text-[var(--text-secondary)]">{pillar.title}</span>
               </div>
-              <p className="text-xs text-white/50 leading-relaxed">
+              <p className="text-xs text-[var(--text-muted)] leading-relaxed">
                 {pillar.question}
               </p>
 
@@ -1011,7 +988,7 @@ const SixPillarsSection = () => {
             animate={{ opacity: 1 }}
             className="text-center mt-8"
           >
-            <span className="text-xs text-white/40">Paused • Move cursor away to resume</span>
+            <span className="text-xs text-[var(--text-muted)]">Paused • Move cursor away to resume</span>
           </motion.div>
         )}
       </div>
@@ -1072,8 +1049,8 @@ const SystemArchitectureSection = () => {
   );
 
   return (
-    <section className="relative py-32 px-6 md:px-8 lg:px-12 mb-32">
-      <div className="max-w-6xl mx-auto">
+    <section className="relative py-20 px-4">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -1082,25 +1059,25 @@ const SystemArchitectureSection = () => {
           className="text-center mb-20"
         >
           <motion.div variants={fadeInUp} className="mb-4">
-            <span className="text-xs font-extralight tracking-[0.3em] text-white/35 uppercase">
+            <span className="text-xs font-extralight tracking-[0.3em] text-[var(--text-muted)] uppercase">
               Speculative Architecture
             </span>
           </motion.div>
-          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-white/95 mb-6">
+          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-[var(--text-primary)] mb-6">
             How would consciousness become data?
           </motion.h2>
-          <motion.p variants={fadeInUp} className="text-lg text-white/60 max-w-3xl mx-auto mb-8">
+          <motion.p variants={fadeInUp} className="text-lg text-[var(--text-secondary)] max-w-3xl mx-auto mb-8">
             A speculative system architecture raising questions about data sovereignty and mental privacy
           </motion.p>
 
           <motion.button
             variants={fadeInUp}
             onClick={() => setDataFlowActive(!dataFlowActive)}
-            className={cx(
+            className={cn(
               "px-8 py-3 rounded-full text-sm font-extralight transition-all duration-500 border",
               dataFlowActive
                 ? "bg-purple-500/20 border-purple-500/40 text-purple-300"
-                : "bg-white/5 border-white/20 text-white/70 hover:bg-white/10"
+                : "bg-white/5 border-white/20 text-[var(--text-secondary)] hover:bg-white/10"
             )}
           >
             {dataFlowActive ? "Stop Data Flow" : "Start Data Flow"}
@@ -1120,8 +1097,8 @@ const SystemArchitectureSection = () => {
             >
               {/* Layer Header */}
               <div className="text-center">
-                <h3 className="text-lg font-extralight text-white/90 mb-2">{layer.name}</h3>
-                <p className="text-xs text-white/50">{layer.description}</p>
+                <h3 className="text-lg font-extralight text-[var(--text-primary)] mb-2">{layer.name}</h3>
+                <p className="text-xs text-[var(--text-muted)]">{layer.description}</p>
               </div>
 
               {/* Components */}
@@ -1135,7 +1112,7 @@ const SystemArchitectureSection = () => {
                     viewport={{ once: true }}
                     transition={{ delay: (layerIndex * 0.2) + (compIndex * 0.1) }}
                     whileHover={{ scale: 1.05 }}
-                    className={cx(
+                    className={cn(
                       "relative p-6 rounded-2xl cursor-pointer transition-all duration-300 border group",
                       activeNode === component.id
                         ? "bg-white/[0.03] border-white/20"
@@ -1159,8 +1136,8 @@ const SystemArchitectureSection = () => {
                     )}
 
                     <div className="flex items-center gap-3 mb-3">
-                      <component.icon className="w-5 h-5 text-white/60" />
-                      <span className="text-sm font-extralight text-white/80">{component.name}</span>
+                      <component.icon className="w-5 h-5 text-[var(--text-secondary)]" />
+                      <span className="text-sm font-extralight text-[var(--text-secondary)]">{component.name}</span>
                     </div>
 
                     <AnimatePresence>
@@ -1170,9 +1147,9 @@ const SystemArchitectureSection = () => {
                           animate={{ opacity: 1, height: "auto" }}
                           exit={{ opacity: 0, height: 0 }}
                           transition={{ duration: 0.3 }}
-                          className="pt-3 border-t border-white/10"
+                          className="pt-3 border-t border-[var(--border-primary)]"
                         >
-                          <p className="text-xs text-white/60 italic">"{component.question}"</p>
+                          <p className="text-xs text-[var(--text-secondary)] italic">"{component.question}"</p>
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -1202,26 +1179,26 @@ const SystemArchitectureSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.8 }}
-          className="mt-20 p-8 rounded-3xl bg-white/[0.01] border border-white/10"
+          className="mt-20 p-8 rounded-3xl glass-card"
         >
-          <h3 className="text-2xl font-extralight text-white/90 mb-6 text-center">
+          <h3 className="text-2xl font-extralight text-[var(--text-primary)] mb-6 text-center">
             Critical Architecture Questions
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 text-sm text-white/60">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 text-sm text-[var(--text-secondary)]">
             <div>
-              <h4 className="text-white/80 mb-2">Data Sovereignty</h4>
+              <h4 className="text-[var(--text-secondary)] mb-2">Data Sovereignty</h4>
               <p>• Who owns the consciousness data collected?</p>
               <p>• What rights do users have over their dreams?</p>
               <p>• Can consciousness data be deleted?</p>
             </div>
             <div>
-              <h4 className="text-white/80 mb-2">Processing Ethics</h4>
+              <h4 className="text-[var(--text-secondary)] mb-2">Processing Ethics</h4>
               <p>• What biases exist in pattern recognition?</p>
               <p>• Who decides what constitutes 'normal' dreams?</p>
               <p>• How do algorithms shape interpretation?</p>
             </div>
             <div>
-              <h4 className="text-white/80 mb-2">Interface Responsibility</h4>
+              <h4 className="text-[var(--text-secondary)] mb-2">Interface Responsibility</h4>
               <p>• Should we be able to edit our dreams?</p>
               <p>• What happens to natural sleep cycles?</p>
               <p>• How do we preserve the mystery of consciousness?</p>
@@ -1292,8 +1269,8 @@ const InteractivePrototypesSection = () => {
   };
 
   return (
-    <section className="relative py-32 px-6 md:px-8 lg:px-12 bg-gradient-to-b from-purple-950/5 to-transparent mb-32">
-      <div className="max-w-6xl mx-auto">
+    <section className="relative py-20 px-4 bg-gradient-to-b from-purple-950/5 to-transparent">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -1302,14 +1279,14 @@ const InteractivePrototypesSection = () => {
           className="text-center mb-20"
         >
           <motion.div variants={fadeInUp} className="mb-4">
-            <span className="text-xs font-extralight tracking-[0.3em] text-white/35 uppercase">
+            <span className="text-xs font-extralight tracking-[0.3em] text-[var(--text-muted)] uppercase">
               Speculative Interfaces
             </span>
           </motion.div>
-          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-white/95 mb-6">
+          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-[var(--text-primary)] mb-6">
             How would we interact with consciousness data?
           </motion.h2>
-          <motion.p variants={fadeInUp} className="text-lg text-white/60 max-w-3xl mx-auto">
+          <motion.p variants={fadeInUp} className="text-lg text-[var(--text-secondary)] max-w-3xl mx-auto">
             Four conceptual interfaces that question the ethics of dream technology
           </motion.p>
         </motion.div>
@@ -1323,17 +1300,17 @@ const InteractivePrototypesSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className={cx(
+              className={cn(
                 "flex items-center gap-3 px-6 md:px-8 lg:px-12 py-4 rounded-2xl text-left transition-all duration-300 border min-w-[200px]",
                 activePrototype === prototype.id
                   ? "bg-white/[0.03] border-white/20"
                   : "bg-white/[0.01] border-white/10 hover:bg-white/[0.02] hover:border-white/15"
               )}
             >
-              <prototype.icon className="w-5 h-5 text-white/60" />
+              <prototype.icon className="w-5 h-5 text-[var(--text-secondary)]" />
               <div>
-                <div className="text-sm font-extralight text-white/80">{prototype.name}</div>
-                <div className="text-xs text-white/50">{prototype.description}</div>
+                <div className="text-sm font-extralight text-[var(--text-secondary)]">{prototype.name}</div>
+                <div className="text-xs text-[var(--text-muted)]">{prototype.description}</div>
               </div>
             </motion.button>
           ))}
@@ -1369,7 +1346,7 @@ const InteractivePrototypesSection = () => {
           transition={{ delay: 0.6 }}
           className="mt-12 text-center"
         >
-          <p className="text-lg text-white/70 italic">
+          <p className="text-lg text-[var(--text-secondary)] italic">
             "{prototypes.find(p => p.id === activePrototype)?.question}"
           </p>
         </motion.div>
@@ -1394,13 +1371,13 @@ const DreamExplorerPrototype = ({
     className="space-y-6"
   >
     <div className="text-center mb-6">
-      <h3 className="text-2xl font-extralight text-white/90 mb-2">Dream Explorer</h3>
-      <p className="text-white/60">Click anywhere to add dream fragments that float and connect</p>
+      <h3 className="text-2xl font-extralight text-[var(--text-primary)] mb-2">Dream Explorer</h3>
+      <p className="text-[var(--text-secondary)]">Click anywhere to add dream fragments that float and connect</p>
     </div>
 
     <div
       onClick={onCanvasClick}
-      className="relative h-96 rounded-3xl bg-white/[0.01] border border-white/10 cursor-crosshair overflow-hidden"
+      className="relative h-96 rounded-3xl glass-card cursor-crosshair overflow-hidden"
     >
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-10">
@@ -1424,7 +1401,7 @@ const DreamExplorerPrototype = ({
             duration: 0.5,
             y: { duration: 3, repeat: Infinity, ease: "easeInOut" }
           }}
-          className="absolute px-3 py-1 rounded-full bg-white/[0.03] border border-white/20 text-xs text-white/70"
+          className="absolute px-3 py-1 rounded-full bg-white/[0.03] border border-white/20 text-xs text-[var(--text-secondary)]"
           style={{
             left: `${fragment.x}%`,
             top: `${fragment.y}%`,
@@ -1462,14 +1439,14 @@ const DreamExplorerPrototype = ({
       {fragments.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
-            <Sparkles className="w-12 h-12 text-white/20 mx-auto mb-4" />
-            <p className="text-white/40">Click to begin exploring dream space</p>
+            <Sparkles className="w-12 h-12 text-[var(--text-muted)] mx-auto mb-4" />
+            <p className="text-[var(--text-muted)]">Click to begin exploring dream space</p>
           </div>
         </div>
       )}
     </div>
 
-    <div className="text-xs text-white/40 text-center">
+    <div className="text-xs text-[var(--text-muted)] text-center">
       ⚠ Speculative interface • Questions the ethics of mapping consciousness
     </div>
   </motion.div>
@@ -1484,11 +1461,11 @@ const SleepTimelinePrototype = () => (
     className="space-y-6"
   >
     <div className="text-center mb-6">
-      <h3 className="text-2xl font-extralight text-white/90 mb-2">Sleep Timeline</h3>
-      <p className="text-white/60">Visualizing a night's journey through consciousness states</p>
+      <h3 className="text-2xl font-extralight text-[var(--text-primary)] mb-2">Sleep Timeline</h3>
+      <p className="text-[var(--text-secondary)]">Visualizing a night's journey through consciousness states</p>
     </div>
 
-    <div className="h-64 rounded-3xl bg-white/[0.01] border border-white/10 p-8">
+    <div className="h-64 rounded-3xl glass-card p-8">
       <div className="flex items-end justify-between h-full">
         {Array.from({ length: 8 }, (_, i) => (
           <motion.div
@@ -1502,7 +1479,7 @@ const SleepTimelinePrototype = () => (
       </div>
     </div>
 
-    <div className="text-xs text-white/40 text-center">
+    <div className="text-xs text-[var(--text-muted)] text-center">
       ⚠ Who determines optimal sleep patterns? What about individual differences?
     </div>
   </motion.div>
@@ -1517,11 +1494,11 @@ const PatternAnalysisPrototype = () => (
     className="space-y-6"
   >
     <div className="text-center mb-6">
-      <h3 className="text-2xl font-extralight text-white/90 mb-2">Pattern Analysis</h3>
-      <p className="text-white/60">Algorithmic interpretation of dream themes</p>
+      <h3 className="text-2xl font-extralight text-[var(--text-primary)] mb-2">Pattern Analysis</h3>
+      <p className="text-[var(--text-secondary)]">Algorithmic interpretation of dream themes</p>
     </div>
 
-    <div className="h-64 rounded-3xl bg-white/[0.01] border border-white/10 p-8 flex items-center justify-center">
+    <div className="h-64 rounded-3xl glass-card p-8 flex items-center justify-center">
       <div className="grid grid-cols-3 gap-4 w-full max-w-md">
         {['Recurring Symbols', 'Emotional Patterns', 'Narrative Structures'].map((category, i) => (
           <motion.div
@@ -1531,14 +1508,14 @@ const PatternAnalysisPrototype = () => (
             transition={{ delay: i * 0.2 }}
             className="p-4 rounded-xl bg-white/[0.02] border border-white/10 text-center"
           >
-            <BarChart3 className="w-6 h-6 text-white/40 mx-auto mb-2" />
-            <span className="text-xs text-white/60">{category}</span>
+            <BarChart3 className="w-6 h-6 text-[var(--text-muted)] mx-auto mb-2" />
+            <span className="text-xs text-[var(--text-secondary)]">{category}</span>
           </motion.div>
         ))}
       </div>
     </div>
 
-    <div className="text-xs text-white/40 text-center">
+    <div className="text-xs text-[var(--text-muted)] text-center">
       ⚠ What biases exist in pattern recognition? Who defines meaningful patterns?
     </div>
   </motion.div>
@@ -1556,26 +1533,26 @@ const VoiceCapturePrototype = () => {
       className="space-y-6"
     >
       <div className="text-center mb-6">
-        <h3 className="text-2xl font-extralight text-white/90 mb-2">Voice Capture</h3>
-        <p className="text-white/60">Recording sleep talk and dream narration</p>
+        <h3 className="text-2xl font-extralight text-[var(--text-primary)] mb-2">Voice Capture</h3>
+        <p className="text-[var(--text-secondary)]">Recording sleep talk and dream narration</p>
       </div>
 
-      <div className="h-64 rounded-3xl bg-white/[0.01] border border-white/10 p-8 flex flex-col items-center justify-center">
+      <div className="h-64 rounded-3xl glass-card p-8 flex flex-col items-center justify-center">
         <motion.button
           onClick={() => setIsRecording(!isRecording)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className={cx(
+          className={cn(
             "w-20 h-20 rounded-full border-2 transition-all duration-300 mb-4",
             isRecording
               ? "bg-red-500/20 border-red-500/40 text-red-300"
-              : "bg-white/5 border-white/20 text-white/60 hover:bg-white/10"
+              : "bg-white/5 border-white/20 text-[var(--text-secondary)] hover:bg-white/10"
           )}
         >
           <Mic className="w-8 h-8 mx-auto" />
         </motion.button>
 
-        <p className="text-sm text-white/60 mb-2">
+        <p className="text-sm text-[var(--text-secondary)] mb-2">
           {isRecording ? "Recording dream speech..." : "Click to begin capture"}
         </p>
 
@@ -1603,7 +1580,7 @@ const VoiceCapturePrototype = () => {
         )}
       </div>
 
-      <div className="text-xs text-white/40 text-center">
+      <div className="text-xs text-[var(--text-muted)] text-center">
         ⚠ Should unconscious speech be recorded? What about consent during sleep?
       </div>
     </motion.div>
@@ -1694,8 +1671,8 @@ const VisionSection = () => {
   ];
 
   return (
-    <section className="relative py-32 px-6 md:px-8 lg:px-12 mb-32">
-      <div className="max-w-6xl mx-auto">
+    <section className="relative py-20 px-4">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -1704,14 +1681,14 @@ const VisionSection = () => {
           className="text-center mb-20"
         >
           <motion.div variants={fadeInUp} className="mb-4">
-            <span className="text-xs font-extralight tracking-[0.3em] text-white/35 uppercase">
+            <span className="text-xs font-extralight tracking-[0.3em] text-[var(--text-muted)] uppercase">
               Speculative Futures
             </span>
           </motion.div>
-          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-white/95 mb-6">
+          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-[var(--text-primary)] mb-6">
             What worlds are we creating?
           </motion.h2>
-          <motion.p variants={fadeInUp} className="text-lg text-white/60 max-w-3xl mx-auto">
+          <motion.p variants={fadeInUp} className="text-lg text-[var(--text-secondary)] max-w-3xl mx-auto">
             Four critical scenarios exploring potential futures of consciousness technology
           </motion.p>
         </motion.div>
@@ -1733,7 +1710,7 @@ const VisionSection = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.2 }}
-                className={cx(
+                className={cn(
                   "relative flex items-center",
                   index % 2 === 0 ? "justify-start" : "justify-end"
                 )}
@@ -1744,7 +1721,7 @@ const VisionSection = () => {
                 {/* Content card */}
                 <div
                   onClick={() => setActiveVision(activeVision === index ? null : index)}
-                  className={cx(
+                  className={cn(
                     "relative p-8 rounded-3xl cursor-pointer transition-all duration-500 border max-w-md",
                     index % 2 === 0 ? "mr-auto pr-16" : "ml-auto pl-16",
                     activeVision === index
@@ -1753,33 +1730,33 @@ const VisionSection = () => {
                   )}
                 >
                   {/* Gradient overlay */}
-                  <div className={cx(
+                  <div className={cn(
                     "absolute inset-0 rounded-3xl opacity-30",
                     `bg-gradient-to-br ${vision.gradient}`
                   )} />
 
                   <div className="relative z-10">
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-xs font-extralight text-white/50 uppercase tracking-wider">
+                      <span className="text-xs font-extralight text-[var(--text-muted)] uppercase tracking-wider">
                         {vision.timeframe}
                       </span>
                       <ChevronRight
-                        className={cx(
-                          "w-5 h-5 text-white/40 transition-transform duration-300",
+                        className={cn(
+                          "w-5 h-5 text-[var(--text-muted)] transition-transform duration-300",
                           activeVision === index ? "rotate-90" : ""
                         )}
                       />
                     </div>
 
-                    <h3 className="text-xl font-extralight text-white/90 mb-3">
+                    <h3 className="text-xl font-extralight text-[var(--text-primary)] mb-3">
                       {vision.title}
                     </h3>
 
-                    <p className="text-lg text-white/70 italic mb-4">
+                    <p className="text-lg text-[var(--text-secondary)] italic mb-4">
                       "{vision.scenario}"
                     </p>
 
-                    <p className="text-sm text-white/60 leading-relaxed">
+                    <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
                       {vision.description}
                     </p>
 
@@ -1790,11 +1767,11 @@ const VisionSection = () => {
                           animate={{ opacity: 1, height: "auto" }}
                           exit={{ opacity: 0, height: 0 }}
                           transition={{ duration: 0.4 }}
-                          className="mt-6 pt-6 border-t border-white/10 space-y-6"
+                          className="mt-6 pt-6 border-t border-[var(--border-primary)] space-y-6"
                         >
                           {/* Implications */}
                           <div>
-                            <h4 className="text-sm font-extralight text-white/50 mb-3 tracking-wide uppercase">
+                            <h4 className="text-sm font-extralight text-[var(--text-muted)] mb-3 tracking-wide uppercase">
                               Potential Implications
                             </h4>
                             <div className="grid grid-cols-1 gap-2">
@@ -1807,7 +1784,7 @@ const VisionSection = () => {
                                   className="flex items-center gap-2"
                                 >
                                   <div className="w-1 h-1 bg-white/40 rounded-full" />
-                                  <span className="text-xs text-white/60">{implication}</span>
+                                  <span className="text-xs text-[var(--text-secondary)]">{implication}</span>
                                 </motion.div>
                               ))}
                             </div>
@@ -1815,7 +1792,7 @@ const VisionSection = () => {
 
                           {/* Critical Questions */}
                           <div>
-                            <h4 className="text-sm font-extralight text-white/50 mb-3 tracking-wide uppercase">
+                            <h4 className="text-sm font-extralight text-[var(--text-muted)] mb-3 tracking-wide uppercase">
                               Critical Questions
                             </h4>
                             <div className="space-y-2">
@@ -1825,7 +1802,7 @@ const VisionSection = () => {
                                   initial={{ opacity: 0, x: -10 }}
                                   animate={{ opacity: 1, x: 0 }}
                                   transition={{ delay: i * 0.1 + 0.2 }}
-                                  className="text-xs text-white/70 italic"
+                                  className="text-xs text-[var(--text-secondary)] italic"
                                 >
                                   "{question}"
                                 </motion.p>
@@ -1850,10 +1827,10 @@ const VisionSection = () => {
           transition={{ delay: 0.6 }}
           className="text-center p-8 rounded-3xl bg-white/[0.01] border border-white/8"
         >
-          <h3 className="text-2xl font-extralight text-white/90 mb-4">
+          <h3 className="text-2xl font-extralight text-[var(--text-primary)] mb-4">
             The Future is Not Inevitable
           </h3>
-          <p className="text-white/60 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed">
             These scenarios are not predictions but provocations. By questioning what might be,
             we can shape what should be. The choices we make today about consciousness technology
             will determine tomorrow's reality.
@@ -1935,8 +1912,8 @@ const InterfaceSpeculationSection = () => {
   const currentScreen = screens.find(s => s.id === activeScreen) || screens[0];
 
   return (
-    <section className="relative py-32 px-6 md:px-8 lg:px-12 bg-gradient-to-b from-cyan-950/5 to-transparent mb-32">
-      <div className="max-w-6xl mx-auto">
+    <section className="relative py-20 px-4 bg-gradient-to-b from-cyan-950/5 to-transparent">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -1945,14 +1922,14 @@ const InterfaceSpeculationSection = () => {
           className="text-center mb-20"
         >
           <motion.div variants={fadeInUp} className="mb-4">
-            <span className="text-xs font-extralight tracking-[0.3em] text-white/35 uppercase">
+            <span className="text-xs font-extralight tracking-[0.3em] text-[var(--text-muted)] uppercase">
               Interface Speculation
             </span>
           </motion.div>
-          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-white/95 mb-6">
+          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-[var(--text-primary)] mb-6">
             How do we interface with consciousness ethically?
           </motion.h2>
-          <motion.p variants={fadeInUp} className="text-lg text-white/60 max-w-3xl mx-auto">
+          <motion.p variants={fadeInUp} className="text-lg text-[var(--text-secondary)] max-w-3xl mx-auto">
             A speculative mobile interface prioritizing privacy, consent, and human dignity
           </motion.p>
         </motion.div>
@@ -1966,10 +1943,10 @@ const InterfaceSpeculationSection = () => {
             className="space-y-8"
           >
             <div>
-              <h3 className="text-2xl font-extralight text-white/90 mb-6">
+              <h3 className="text-2xl font-extralight text-[var(--text-primary)] mb-6">
                 Privacy-First Design Principles
               </h3>
-              <p className="text-white/60 mb-8 leading-relaxed">
+              <p className="text-[var(--text-secondary)] mb-8 leading-relaxed">
                 Unlike current data-hungry platforms, this speculative interface asks:
                 What if technology served consciousness rather than exploiting it?
               </p>
@@ -1985,7 +1962,7 @@ const InterfaceSpeculationSection = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className={cx(
+                  className={cn(
                     "w-full text-left p-6 rounded-2xl transition-all duration-300 border group",
                     activeScreen === screen.id
                       ? "bg-white/[0.03] border-white/20"
@@ -1993,15 +1970,15 @@ const InterfaceSpeculationSection = () => {
                   )}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-lg font-extralight text-white/90">{screen.title}</h4>
+                    <h4 className="text-lg font-extralight text-[var(--text-primary)]">{screen.title}</h4>
                     <ChevronRight
-                      className={cx(
-                        "w-5 h-5 text-white/40 transition-transform duration-300",
+                      className={cn(
+                        "w-5 h-5 text-[var(--text-muted)] transition-transform duration-300",
                         activeScreen === screen.id ? "rotate-90" : ""
                       )}
                     />
                   </div>
-                  <p className="text-sm text-white/60 italic">"{screen.description}"</p>
+                  <p className="text-sm text-[var(--text-secondary)] italic">"{screen.description}"</p>
                 </motion.button>
               ))}
             </div>
@@ -2015,10 +1992,10 @@ const InterfaceSpeculationSection = () => {
               className="p-6 rounded-2xl bg-white/[0.01] border border-white/8"
             >
               <div className="flex items-center justify-between">
-                <span className="text-sm text-white/70">3D Phone View</span>
+                <span className="text-sm text-[var(--text-secondary)]">3D Phone View</span>
                 <button
                   onClick={() => setIsPhoneRotated(!isPhoneRotated)}
-                  className="px-4 py-2 rounded-full bg-white/5 border border-white/20 text-white/70 hover:bg-white/10 transition-all duration-300 text-sm"
+                  className="px-4 py-2 rounded-full bg-white/5 border border-white/20 text-[var(--text-secondary)] hover:bg-white/10 transition-all duration-300 text-sm"
                 >
                   {isPhoneRotated ? "Front View" : "3D View"}
                 </button>
@@ -2048,7 +2025,7 @@ const InterfaceSpeculationSection = () => {
                 <div className="w-full h-full rounded-[2.5rem] bg-black border border-white/10 overflow-hidden relative">
                   {/* Status Bar */}
                   <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-white/5 to-transparent flex items-center justify-between px-6 md:px-8 lg:px-12 z-10">
-                    <span className="text-xs text-white/60">9:41</span>
+                    <span className="text-xs text-[var(--text-secondary)]">9:41</span>
                     <div className="flex items-center gap-1">
                       <div className="w-1 h-1 bg-white/60 rounded-full" />
                       <div className="w-1 h-1 bg-white/60 rounded-full" />
@@ -2068,7 +2045,7 @@ const InterfaceSpeculationSection = () => {
                     >
                       {/* Header */}
                       <div className="text-center mb-8">
-                        <h3 className="text-xl font-extralight text-white/90 mb-2">
+                        <h3 className="text-xl font-extralight text-[var(--text-primary)] mb-2">
                           {currentScreen.content.header}
                         </h3>
                         <div className="h-0.5 w-16 bg-gradient-to-r from-purple-500 to-cyan-500 mx-auto rounded-full" />
@@ -2085,7 +2062,7 @@ const InterfaceSpeculationSection = () => {
                             className="flex items-center gap-3 p-4 rounded-2xl bg-white/[0.02] border border-white/10"
                           >
                             <div className="w-2 h-2 bg-green-400 rounded-full opacity-80" />
-                            <span className="text-sm text-white/80 font-extralight">{feature}</span>
+                            <span className="text-sm text-[var(--text-secondary)] font-extralight">{feature}</span>
                           </motion.div>
                         ))}
                       </div>
@@ -2097,8 +2074,8 @@ const InterfaceSpeculationSection = () => {
                         transition={{ delay: 0.4 }}
                         className="mt-8 p-4 rounded-2xl bg-white/[0.01] border border-white/5 text-center"
                       >
-                        <Shield className="w-5 h-5 text-white/40 mx-auto mb-2" />
-                        <p className="text-xs text-white/60 italic">
+                        <Shield className="w-5 h-5 text-[var(--text-muted)] mx-auto mb-2" />
+                        <p className="text-xs text-[var(--text-secondary)] italic">
                           {currentScreen.content.warning}
                         </p>
                       </motion.div>
@@ -2172,10 +2149,10 @@ const InterfaceSpeculationSection = () => {
               transition={{ delay: index * 0.1 + 0.8 }}
               className="p-6 rounded-2xl bg-white/[0.01] border border-white/8"
             >
-              <h4 className="text-sm font-extralight text-white/90 mb-3">
+              <h4 className="text-sm font-extralight text-[var(--text-primary)] mb-3">
                 {item.question}
               </h4>
-              <p className="text-xs text-white/60 italic leading-relaxed">
+              <p className="text-xs text-[var(--text-secondary)] italic leading-relaxed">
                 {item.thought}
               </p>
             </motion.div>
@@ -2330,8 +2307,8 @@ const TeamPerspectivesSection = () => {
   };
 
   return (
-    <section className="relative py-32 px-6 md:px-8 lg:px-12 mb-32">
-      <div className="max-w-6xl mx-auto">
+    <section className="relative py-20 px-4">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -2340,14 +2317,14 @@ const TeamPerspectivesSection = () => {
           className="text-center mb-20"
         >
           <motion.div variants={fadeInUp} className="mb-4">
-            <span className="text-xs font-extralight tracking-[0.3em] text-white/35 uppercase">
+            <span className="text-xs font-extralight tracking-[0.3em] text-[var(--text-muted)] uppercase">
               Critical Perspectives
             </span>
           </motion.div>
-          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-white/95 mb-6">
+          <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-extralight text-[var(--text-primary)] mb-6">
             Who should shape the future of consciousness?
           </motion.h2>
-          <motion.p variants={fadeInUp} className="text-lg text-white/60 max-w-3xl mx-auto">
+          <motion.p variants={fadeInUp} className="text-lg text-[var(--text-secondary)] max-w-3xl mx-auto">
             Four archetypal voices exploring the implications of consciousness technology
           </motion.p>
         </motion.div>
@@ -2365,7 +2342,7 @@ const TeamPerspectivesSection = () => {
             >
               <div
                 onClick={() => setActivePersona(activePersona === personaIndex ? null : personaIndex)}
-                className={cx(
+                className={cn(
                   "relative p-8 rounded-3xl cursor-pointer transition-all duration-500 border",
                   activePersona === personaIndex
                     ? "bg-white/[0.03] border-white/15"
@@ -2373,7 +2350,7 @@ const TeamPerspectivesSection = () => {
                 )}
               >
                 {/* Gradient overlay */}
-                <div className={cx(
+                <div className={cn(
                   "absolute inset-0 rounded-3xl opacity-20",
                   `bg-gradient-to-br ${persona.gradient}`
                 )} />
@@ -2384,13 +2361,13 @@ const TeamPerspectivesSection = () => {
                     <div className="flex items-center gap-4">
                       <div className="text-4xl">{persona.avatar}</div>
                       <div>
-                        <h3 className="text-xl font-extralight text-white/90">{persona.name}</h3>
-                        <p className="text-sm text-white/60">{persona.role}</p>
+                        <h3 className="text-xl font-extralight text-[var(--text-primary)]">{persona.name}</h3>
+                        <p className="text-sm text-[var(--text-secondary)]">{persona.role}</p>
                       </div>
                     </div>
                     <ChevronRight
-                      className={cx(
-                        "w-5 h-5 text-white/40 transition-transform duration-300",
+                      className={cn(
+                        "w-5 h-5 text-[var(--text-muted)] transition-transform duration-300",
                         activePersona === personaIndex ? "rotate-90" : ""
                       )}
                     />
@@ -2398,12 +2375,12 @@ const TeamPerspectivesSection = () => {
 
                   {/* Concern */}
                   <div className="mb-4">
-                    <span className="text-xs font-extralight text-white/50 uppercase tracking-wider">Primary Concern</span>
-                    <p className="text-sm text-white/70 mt-1">{persona.concern}</p>
+                    <span className="text-xs font-extralight text-[var(--text-muted)] uppercase tracking-wider">Primary Concern</span>
+                    <p className="text-sm text-[var(--text-secondary)] mt-1">{persona.concern}</p>
                   </div>
 
                   {/* Perspective */}
-                  <p className="text-white/60 leading-relaxed italic">
+                  <p className="text-[var(--text-secondary)] leading-relaxed italic">
                     "{persona.perspective}"
                   </p>
 
@@ -2415,9 +2392,9 @@ const TeamPerspectivesSection = () => {
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="mt-8 pt-6 border-t border-white/10"
+                        className="mt-8 pt-6 border-t border-[var(--border-primary)]"
                       >
-                        <h4 className="text-sm font-extralight text-white/50 mb-4 tracking-wide uppercase">
+                        <h4 className="text-sm font-extralight text-[var(--text-muted)] mb-4 tracking-wide uppercase">
                           Critical Questions
                         </h4>
                         <div className="space-y-4">
@@ -2439,15 +2416,15 @@ const TeamPerspectivesSection = () => {
                                 <div className="flex items-start justify-between">
                                   <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-2">
-                                      <span className="text-xs text-white/50 uppercase tracking-wider">
+                                      <span className="text-xs text-[var(--text-muted)] uppercase tracking-wider">
                                         {q.category}
                                       </span>
                                     </div>
-                                    <p className="text-sm text-white/80">"{q.question}"</p>
+                                    <p className="text-sm text-[var(--text-secondary)]">"{q.question}"</p>
                                   </div>
                                   <ChevronDown
-                                    className={cx(
-                                      "w-4 h-4 text-white/30 transition-transform duration-300",
+                                    className={cn(
+                                      "w-4 h-4 text-[var(--text-muted)] transition-transform duration-300",
                                       expandedQuestions.has(personaIndex * 100 + questionIndex) ? "rotate-180" : ""
                                     )}
                                   />
@@ -2462,7 +2439,7 @@ const TeamPerspectivesSection = () => {
                                       transition={{ duration: 0.3 }}
                                       className="mt-3 pt-3 border-t border-white/5"
                                     >
-                                      <p className="text-xs text-white/60 italic leading-relaxed">
+                                      <p className="text-xs text-[var(--text-secondary)] italic leading-relaxed">
                                         {q.implication}
                                       </p>
                                     </motion.div>
@@ -2490,10 +2467,10 @@ const TeamPerspectivesSection = () => {
           className="p-10 rounded-3xl bg-white/[0.01] border border-white/8"
         >
           <div className="text-center mb-8">
-            <h3 className="text-2xl font-extralight text-white/90 mb-4">
+            <h3 className="text-2xl font-extralight text-[var(--text-primary)] mb-4">
               The Conversation We Need
             </h3>
-            <p className="text-white/60 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-[var(--text-secondary)] max-w-3xl mx-auto leading-relaxed">
               These perspectives represent different facets of the same fundamental question:
               How do we develop consciousness technology that enhances rather than diminishes human flourishing?
             </p>
@@ -2526,10 +2503,10 @@ const TeamPerspectivesSection = () => {
                 transition={{ delay: index * 0.1 + 0.9 }}
                 className="p-6 rounded-2xl bg-white/[0.005] border border-white/5 text-center"
               >
-                <h4 className="text-sm font-extralight text-white/90 mb-3">
+                <h4 className="text-sm font-extralight text-[var(--text-primary)] mb-3">
                   {item.principle}
                 </h4>
-                <p className="text-xs text-white/60 leading-relaxed">
+                <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
                   {item.description}
                 </p>
               </motion.div>
@@ -2543,7 +2520,7 @@ const TeamPerspectivesSection = () => {
             transition={{ delay: 1.2 }}
             className="mt-8 pt-8 border-t border-white/5 text-center"
           >
-            <p className="text-sm text-white/50 italic">
+            <p className="text-sm text-[var(--text-muted)] italic">
               "The future of consciousness technology depends not just on what we can build,
               but on whether we choose to build it wisely."
             </p>
