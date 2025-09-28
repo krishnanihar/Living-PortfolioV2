@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
-import { LatentSpaceWork } from '@/components/sections/LatentSpaceWork';
+import LatentSpaceWork from '@/components/sections/LatentSpaceWork';
 
 export const metadata: Metadata = {
   title: 'Latent Space — Dream Technology & Consciousness Research',
