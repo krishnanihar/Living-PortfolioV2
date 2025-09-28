@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Send, Sparkles, Briefcase, User, Zap, Moon, Sun, Palette } from 'lucide-react';
-import { useTheme } from '@/components/effects/ThemeProvider';
+import { Send, Sparkles, Briefcase, User, Zap } from 'lucide-react';
 
 export default function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
@@ -11,7 +10,6 @@ export default function Portfolio() {
   const [inputValue, setInputValue] = useState('');
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [cardTilt, setCardTilt] = useState({ x: 0, y: 0 });
-  const { theme, resolvedTheme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -284,87 +282,10 @@ export default function Portfolio() {
                 );
               })}
 
-              <div style={{
-                width: '1px',
-                height: '18px',
-                background: 'rgba(255, 255, 255, 0.1)',
-                margin: '0 0.5rem',
-              }} />
-
-              <div
-                onClick={toggleTheme}
-                style={{
-                  position: 'relative',
-                  borderRadius: '50%',
-                  width: '34px',
-                  height: '34px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'rgba(255, 255, 255, 0.8)',
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  backdropFilter: 'blur(20px) brightness(0.8)',
-                  WebkitBackdropFilter: 'blur(20px) brightness(0.8)',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
-                  transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.transform = 'scale(1.1) rotate(15deg)';
-                  (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.1)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.transform = 'scale(1) rotate(0)';
-                  (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.06)';
-                }}
-              >
-                {theme === 'system' ? <Palette size={15} /> : (resolvedTheme === 'dark' ? <Moon size={15} /> : <Sun size={15} />)}
-              </div>
             </div>
           </div>
         </nav>
 
-        {/* Standalone Theme Toggle - Prominent Position */}
-        <div
-          onClick={toggleTheme}
-          style={{
-            position: 'fixed',
-            top: '2rem',
-            right: '2rem',
-            zIndex: 60,
-            width: '56px',
-            height: '56px',
-            borderRadius: '50%',
-            background: 'rgba(255, 255, 255, 0.08)',
-            backdropFilter: 'blur(20px) brightness(0.9)',
-            WebkitBackdropFilter: 'blur(20px) brightness(0.9)',
-            border: '1px solid rgba(255, 255, 255, 0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-          }}
-          title={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light'} theme`}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.transform = 'scale(1.1) rotate(15deg)';
-            (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.15)';
-            (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255, 255, 255, 0.25)';
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLElement).style.transform = 'scale(1) rotate(0deg)';
-            (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.08)';
-            (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255, 255, 255, 0.15)';
-          }}
-        >
-          {theme === 'system' ? (
-            <Palette size={20} style={{ color: 'rgba(255, 255, 255, 0.9)' }} />
-          ) : resolvedTheme === 'dark' ? (
-            <Moon size={20} style={{ color: 'rgba(255, 255, 255, 0.9)' }} />
-          ) : (
-            <Sun size={20} style={{ color: 'rgba(255, 255, 255, 0.9)' }} />
-          )}
-        </div>
 
         {/* Hero Section with enhanced glass card */}
         <div style={{
