@@ -170,9 +170,6 @@ export default function Portfolio() {
           right: 0,
           zIndex: 50,
           height: scrolled ? '54px' : '60px',
-          opacity: pastHero ? 1 : 0,
-          transform: pastHero ? 'translateY(0)' : 'translateY(-100%)',
-          pointerEvents: pastHero ? 'auto' : 'none',
           transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
         }}>
           {/* Multi-layer glass effect */}
@@ -346,17 +343,21 @@ export default function Portfolio() {
         <section style={{
           height: '100vh',
           width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '0 2rem',
           position: 'relative',
           boxSizing: 'border-box',
         }}>
           <div style={{
-            position: 'relative',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
             width: '100%',
             maxWidth: '720px',
+            padding: '0 2rem',
+          }}>
+            <div style={{
+              position: 'relative',
+              width: '100%',
             padding: '3rem',
             borderRadius: '36px',
             animation: 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1), breathe 8s ease-in-out infinite',
