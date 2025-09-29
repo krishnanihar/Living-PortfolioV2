@@ -359,8 +359,8 @@ export default function Portfolio() {
             <div style={{
               position: 'relative',
               width: '100%',
-            padding: '3rem',
-            borderRadius: '36px',
+              padding: '3rem',
+              borderRadius: '36px',
             animation: 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1), breathe 8s ease-in-out infinite',
             transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
             transformStyle: 'preserve-3d' as const,
