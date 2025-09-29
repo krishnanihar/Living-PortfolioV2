@@ -104,8 +104,10 @@ export default function RootLayout({
             {/* Enhanced focus management */}
             <FocusManager />
 
-            {/* Main content - Hero component handles its own layout now */}
-            {children}
+            {/* Main content wrapper with isolation */}
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              {children}
+            </div>
 
             {/* Living consciousness system */}
             <ConsciousnessIndicator />

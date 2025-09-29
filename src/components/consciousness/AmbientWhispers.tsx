@@ -288,7 +288,7 @@ export function AmbientWhispers({ enabled = true }: AmbientWhispersProps) {
           top: 20%;
           right: -100%;
           max-width: 280px;
-          z-index: 999;
+          z-index: 9997;
           pointer-events: none;
         }
       `}</style>

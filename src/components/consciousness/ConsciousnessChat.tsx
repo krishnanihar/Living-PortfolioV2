@@ -170,7 +170,7 @@ export function ConsciousnessChat({ isOpen, onClose }: ConsciousnessChatProps) {
           background: 'rgba(0, 0, 0, 0.4)',
           backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)',
-          zIndex: 9999,
+          zIndex: 9998,
         }}
         onClick={onClose}
       />
@@ -191,7 +191,7 @@ export function ConsciousnessChat({ isOpen, onClose }: ConsciousnessChatProps) {
           WebkitBackdropFilter: 'blur(20px) saturate(150%)',
           border: '1px solid var(--border-primary)',
           borderRadius: '16px',
-          zIndex: 10000,
+          zIndex: 9999,
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',

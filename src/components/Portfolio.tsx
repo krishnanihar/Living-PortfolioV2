@@ -61,6 +61,31 @@ export default function Portfolio() {
           box-sizing: border-box;
         }
 
+        .portfolio-container {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          position: relative;
+          display: block;
+        }
+
+        .hero-section {
+          margin: 0;
+          padding: 0;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          position: relative !important;
+          width: 100% !important;
+          box-sizing: border-box !important;
+        }
+
+        .hero-card {
+          margin: 0 auto !important;
+          position: relative !important;
+          box-sizing: border-box !important;
+        }
+
         @keyframes slideDown {
           from {
             transform: translateY(-100%) translateZ(0);
@@ -131,11 +156,13 @@ export default function Portfolio() {
         }
       `}</style>
 
-      <div style={{
+      <div className="portfolio-container" style={{
         minHeight: '100vh',
         background: 'var(--bg-primary)',
         fontFamily: 'Inter, sans-serif',
         position: 'relative',
+        width: '100%',
+        overflow: 'hidden',
       }}>
         {/* Dark translucent overlay with mouse tracking */}
         <div style={{
@@ -327,7 +354,7 @@ export default function Portfolio() {
 
 
         {/* Hero Section with enhanced glass card */}
-        <div style={{
+        <section className="hero-section" style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -335,11 +362,17 @@ export default function Portfolio() {
           padding: '1.5rem',
           paddingTop: '100px',
           perspective: '1000px',
+          width: '100%',
+          position: 'relative',
+          boxSizing: 'border-box',
+          left: 0,
+          top: 0,
         }}>
-          <div style={{
+          <div className="hero-card" style={{
             position: 'relative',
             width: '100%',
             maxWidth: '720px',
+            margin: '0 auto',
             padding: '3rem',
             borderRadius: '36px',
             animation: 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1), breathe 8s ease-in-out infinite',
@@ -608,7 +641,7 @@ export default function Portfolio() {
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </>
   );
