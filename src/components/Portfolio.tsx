@@ -151,6 +151,8 @@ export default function Portfolio() {
         fontFamily: 'Inter, sans-serif',
         position: 'relative',
         width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
       }}>
         {/* Dark translucent overlay with mouse tracking */}
         <div style={{
@@ -351,6 +353,9 @@ export default function Portfolio() {
           alignItems: 'center !important' as any,
           justifyContent: 'center !important' as any,
           minHeight: '100vh',
+          flex: '1',
+          alignContent: 'center',
+          placeItems: 'center',
         }}>
           <div style={{
             transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
@@ -361,6 +366,8 @@ export default function Portfolio() {
             animation: 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1), breathe 8s ease-in-out infinite',
             transformStyle: 'preserve-3d' as const,
             transition: 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
+            position: 'relative',
+            margin: '0 auto',
           }}>
             {/* Primary glass layer */}
             <div style={{
