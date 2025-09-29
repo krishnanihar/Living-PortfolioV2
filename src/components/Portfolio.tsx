@@ -195,6 +195,7 @@ export default function Portfolio() {
             WebkitBackdropFilter: 'blur(40px) saturate(150%)',
             borderBottom: '1px solid var(--border-primary)',
             boxShadow: scrolled ? '0 4px 12px rgba(0, 0, 0, 0.2)' : 'none',
+            pointerEvents: 'none',
           }}>
             {/* Animated shimmer overlay */}
             <div style={{
@@ -451,12 +452,12 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Additional Living Consciousness Experience for post-hero interactions */}
-        <LivingConsciousnessExperience
+        {/* TEMPORARILY DISABLED FOR DEBUGGING CLICK ISSUES */}
+        {/* <LivingConsciousnessExperience
           pastHero={pastHero}
           showExperience={showChatbot}
           selectedIntent={selectedIntent}
-        />
+        /> */}
       </div>
     </>
   );
