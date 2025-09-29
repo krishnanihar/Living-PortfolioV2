@@ -96,25 +96,31 @@ export function ConversationStarter({ onIntentSelect }: ConversationStarterProps
 
   return (
     <div>
-      {/* Debug Indicator */}
+      {/* Intent Selection Debug */}
       {process.env.NODE_ENV === 'development' && (
         <div style={{
           position: 'fixed',
-          top: '10px',
-          left: '10px',
-          background: 'rgba(0, 0, 0, 0.8)',
+          bottom: '20px',
+          left: '20px',
+          background: 'rgba(0, 0, 0, 0.9)',
           color: '#00ff00',
-          padding: '0.5rem',
+          padding: '1rem',
           borderRadius: '8px',
           fontSize: '0.75rem',
           fontFamily: 'monospace',
-          zIndex: 99999,
+          zIndex: 99998,
           border: '1px solid #333',
+          minWidth: '250px',
         }}>
-          <div>ConversationStarter Status:</div>
-          <div>Selected Intent: {selectedIntent || 'none'}</div>
-          <div>Buttons Visible: {!selectedIntent ? 'YES' : 'NO'}</div>
-          <div>Input Visible: {selectedIntent ? 'YES' : 'NO'}</div>
+          <div style={{ color: '#ffffff', marginBottom: '0.5rem' }}>🎯 Intent Selection</div>
+          <div>Selected Intent: <span style={{ color: selectedIntent ? '#00ff00' : '#ff6666' }}>{selectedIntent || 'NONE'}</span></div>
+          <div>Buttons Visible: <span style={{ color: !selectedIntent ? '#00ff00' : '#ffff00' }}>{!selectedIntent ? 'YES' : 'NO'}</span></div>
+          <div>Input Visible: <span style={{ color: selectedIntent ? '#00ff00' : '#ffff00' }}>{selectedIntent ? 'YES' : 'NO'}</span></div>
+          {!selectedIntent && (
+            <div style={{ fontSize: '0.7rem', color: '#cccccc', marginTop: '0.5rem' }}>
+              ⚠️ Click an intent button above to continue
+            </div>
+          )}
         </div>
       )}
 
