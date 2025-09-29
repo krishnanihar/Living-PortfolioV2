@@ -3,8 +3,8 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/effects/ThemeProvider';
 // TEMPORARILY DISABLED FOR DEBUGGING CLICK ISSUES
-// import { FocusManager } from '@/components/effects/FocusManager';
-// import { MicroInteractionProvider } from '@/components/effects/MicroInteractionProvider';
+import { FocusManager } from '@/components/effects/FocusManager';
+import { MicroInteractionProvider } from '@/components/effects/MicroInteractionProvider';
 // import { ConsciousnessProvider } from '@/components/effects/ConsciousnessProvider';
 
 const inter = Inter({
@@ -99,10 +99,10 @@ export default function RootLayout({
           {/* TEMPORARILY DISABLED FOR DEBUGGING CLICK ISSUES */}
           {/* <ConsciousnessProvider> */}
             {/* Micro-interactions system */}
-            {/* <MicroInteractionProvider /> */}
+            <MicroInteractionProvider />
 
             {/* Enhanced focus management */}
-            {/* <FocusManager /> */}
+            <FocusManager />
 
             {/* Main content */}
             {children}
