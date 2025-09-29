@@ -337,15 +337,12 @@ export default function Portfolio() {
 
         {/* Hero Section with Beautiful Design */}
         <section style={{
-          position: 'fixed',
-          top: '0',
-          left: '0',
-          width: '100vw',
-          height: '100vh',
+          position: 'relative',
+          minHeight: '100vh',
+          width: '100%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          zIndex: 99999,
           padding: '2rem',
           paddingTop: '6rem', // Account for navigation
           boxSizing: 'border-box',
