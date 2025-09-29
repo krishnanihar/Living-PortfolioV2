@@ -69,23 +69,6 @@ export default function Portfolio() {
           display: block;
         }
 
-        .hero-section {
-          margin: 0;
-          padding: 0;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          position: relative !important;
-          width: 100% !important;
-          box-sizing: border-box !important;
-        }
-
-        .hero-card {
-          margin: 0 auto !important;
-          position: relative !important;
-          box-sizing: border-box !important;
-        }
-
         @keyframes slideDown {
           from {
             transform: translateY(-100%) translateZ(0);
@@ -353,33 +336,40 @@ export default function Portfolio() {
         </nav>
 
 
-        {/* Hero Section with enhanced glass card */}
-        <section className="hero-section" style={{
+        {/* Hero Section with bulletproof centering */}
+        <section style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          minHeight: '100vh',
-          padding: '1.5rem',
-          paddingTop: '100px',
-          perspective: '1000px',
-          width: '100%',
-          position: 'relative',
+          padding: '2rem',
           boxSizing: 'border-box',
-          left: 0,
-          top: 0,
+          zIndex: 0,
         }}>
-          <div className="hero-card" style={{
+          <div style={{
             position: 'relative',
             width: '100%',
             maxWidth: '720px',
-            margin: '0 auto',
             padding: '3rem',
             borderRadius: '36px',
             animation: 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1), breathe 8s ease-in-out infinite',
-            transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
+            perspective: '1000px',
             transformStyle: 'preserve-3d' as const,
-            transition: 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
           }}>
+            {/* 3D Tilt Container */}
+            <div style={{
+              transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
+              transformOrigin: 'center center',
+              transition: 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
+              transformStyle: 'preserve-3d' as const,
+              position: 'relative',
+              width: '100%',
+              height: '100%',
+            }}>
             {/* Primary glass layer */}
             <div style={{
               position: 'absolute',
@@ -640,8 +630,12 @@ export default function Portfolio() {
                 ))}
               </div>
             </div>
+            </div>
           </div>
         </section>
+
+        {/* Spacer to account for fixed hero section */}
+        <div style={{ height: '100vh', width: '100%' }} />
       </div>
     </>
   );
