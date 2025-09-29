@@ -173,3 +173,67 @@ TypeScript path mapping configured:
 4. Ensure accessibility for interactive components
 5. Follow the existing project data structure for new portfolio items
 6. Consider performance impact of animations and effects
+
+## Critical Implementation Notes
+
+### Hero Card Centering
+**⚠️ IMPORTANT: Transform Conflicts**
+- **Problem**: Multiple transform properties in parent/child hierarchy don't combine correctly
+- **Solution**: Combine all transforms in single property
+```jsx
+// ❌ WRONG - Causes centering issues
+<div style={{ transform: 'translate(-50%, -50%)' }}>
+  <div style={{ transform: 'rotateX(5deg) rotateY(5deg)' }}>
+
+// ✅ CORRECT - Perfect centering with 3D effects
+<div style={{
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%) rotateX(5deg) rotateY(5deg)'
+}}>
+```
+
+### Navigation Fade-In System
+**Scroll-Based Visibility Implementation:**
+- Uses `pastHero` state with 80% viewport threshold (`window.innerHeight * 0.8`)
+- **Navigation opacity**: `40%` during hero (clickable), `100%` after scroll
+- **Critical**: Never use `pointerEvents: 'none'` - breaks navigation between pages
+- **Consciousness system**: Fades with navigation using same `pastHero` state
+
+### CSS Specificity Issues
+**When Tailwind Classes Don't Work:**
+- CSS-in-JS and component styles can override Tailwind
+- **Solution**: Use inline styles for critical positioning elements
+- **Example**: Hero section requires inline styles to override `.portfolio-container` CSS
+
+## Common Build Issues & Solutions
+
+### JSX Compilation Errors
+1. **Missing commas in style objects**
+   ```jsx
+   // ❌ Syntax error
+   style={{
+     width: '100%',
+     padding: '3rem'  // Missing comma
+     borderRadius: '36px'
+   }}
+   ```
+
+2. **Unbalanced div tags**
+   - Always match opening/closing divs when restructuring components
+   - Use editor bracket matching to verify structure
+
+3. **Transform property syntax**
+   - Template literals require backticks: `transform: \`translate(-50%, -50%)\``
+   - Combine multiple transforms with spaces: `translate() rotateX() rotateY()`
+
+### Production Build Fixes
+- **@next/font deprecation**: Remove from package.json, use built-in `next/font`
+- **Clear caches**: Delete `.next` and `node_modules` when encountering persistent warnings
+- **Vercel deployment**: Local `npm run build` must pass before pushing
+
+### Consciousness System Architecture
+- **Location**: ConsciousnessIndicator and AmbientWhispers moved to Portfolio.tsx
+- **Reason**: Enables scroll-based visibility control with `pastHero` state
+- **Context**: ConsciousnessProvider remains in layout.tsx for global state management
