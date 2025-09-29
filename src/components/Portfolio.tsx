@@ -4,12 +4,15 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Send, Sparkles, Briefcase, User, Zap, Moon, Sun, Palette } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
-import { ConsciousnessIndicator } from '@/components/consciousness/ConsciousnessIndicator';
-import { AmbientWhispers } from '@/components/consciousness/AmbientWhispers';
+// EMERGENCY: Consciousness imports disabled to fix click issues
+// import { ConsciousnessIndicator } from '@/components/consciousness/ConsciousnessIndicator';
+// import { AmbientWhispers } from '@/components/consciousness/AmbientWhispers';
 
 export default function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
   const [pastHero, setPastHero] = useState(false);
+  const [showChatbot, setShowChatbot] = useState(false);
+  const [heroMessageSent, setHeroMessageSent] = useState(false);
   const [inputFocused, setInputFocused] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
@@ -18,9 +21,11 @@ export default function Portfolio() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const heroThreshold = window.innerHeight * 0.8; // 80% of viewport
+      const heroThreshold = window.innerHeight * 0.8; // 80% of viewport (for navigation)
+      const chatThreshold = window.innerHeight; // 100% of viewport (for chatbot)
       setScrolled(window.scrollY > 20);
-      setPastHero(window.scrollY > heroThreshold);
+      setPastHero(window.scrollY > heroThreshold); // Navigation visibility (80%)
+      setShowChatbot(window.scrollY > chatThreshold || heroMessageSent); // Chatbot visibility (100% or hero message)
     };
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -150,8 +155,6 @@ export default function Portfolio() {
         fontFamily: 'Inter, sans-serif',
         position: 'relative',
         width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
       }}>
         {/* Dark translucent overlay with mouse tracking */}
         <div style={{
@@ -524,6 +527,14 @@ export default function Portfolio() {
                         ? 'rgba(218, 14, 41, 0.25)'
                         : 'rgba(255, 255, 255, 0.08)';
                     }}
+                    onClick={() => {
+                      if (inputValue.trim()) {
+                        setHeroMessageSent(true);
+                        setShowChatbot(true);
+                        // Optional: Clear input after sending
+                        setInputValue('');
+                      }
+                    }}
                   >
                     Send
                   </button>
@@ -631,15 +642,15 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Consciousness system - scroll-based visibility */}
-        <div style={{
-          opacity: pastHero ? 1 : 0,
-          pointerEvents: pastHero ? 'auto' : 'none',
+        {/* EMERGENCY: Consciousness system disabled to fix click issues */}
+        {/* <div style={{
+          opacity: showChatbot ? 1 : 0,
+          pointerEvents: showChatbot ? 'auto' : 'none',
           transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
         }}>
           <ConsciousnessIndicator />
           <AmbientWhispers />
-        </div>
+        </div> */}
       </div>
     </>
   );
