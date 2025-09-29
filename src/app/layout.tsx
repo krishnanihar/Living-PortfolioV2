@@ -4,6 +4,9 @@ import './globals.css';
 import { ThemeProvider } from '@/components/effects/ThemeProvider';
 import { FocusManager } from '@/components/effects/FocusManager';
 import { MicroInteractionProvider } from '@/components/effects/MicroInteractionProvider';
+import { ConsciousnessProvider } from '@/components/effects/ConsciousnessProvider';
+import { ConsciousnessIndicator } from '@/components/consciousness/ConsciousnessIndicator';
+import { AmbientWhispers } from '@/components/consciousness/AmbientWhispers';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -94,17 +97,20 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <ThemeProvider defaultTheme="dark" attribute="data-theme">
-          {/* Micro-interactions system */}
-          <MicroInteractionProvider />
+          <ConsciousnessProvider>
+            {/* Micro-interactions system */}
+            <MicroInteractionProvider />
 
+            {/* Enhanced focus management */}
+            <FocusManager />
 
-          {/* Enhanced focus management */}
-          <FocusManager />
+            {/* Main content - Hero component handles its own layout now */}
+            {children}
 
-
-          {/* Main content - Hero component handles its own layout now */}
-          {children}
-
+            {/* Living consciousness system */}
+            <ConsciousnessIndicator />
+            <AmbientWhispers />
+          </ConsciousnessProvider>
         </ThemeProvider>
       </body>
     </html>
