@@ -20,11 +20,10 @@ export default function Portfolio() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const heroThreshold = window.innerHeight * 0.8; // 80% of viewport (for navigation)
-      const chatThreshold = window.innerHeight; // 100% of viewport (for chatbot)
+      const heroThreshold = window.innerHeight * 0.8; // 80% of viewport (for BOTH nav and bot)
       setScrolled(window.scrollY > 20);
       setPastHero(window.scrollY > heroThreshold); // Navigation visibility (80%)
-      setShowChatbot(window.scrollY > chatThreshold || heroMessageSent); // Chatbot visibility (100% or hero message)
+      setShowChatbot(window.scrollY > heroThreshold || heroMessageSent); // Chatbot visibility (SAME 80% or hero message)
     };
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -348,15 +347,10 @@ export default function Portfolio() {
         <section style={{
           height: '100vh',
           width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           position: 'relative',
-          boxSizing: 'border-box',
-          display: 'flex !important' as any,
-          alignItems: 'center !important' as any,
-          justifyContent: 'center !important' as any,
-          minHeight: '100vh',
-          flex: '1',
-          alignContent: 'center',
-          placeItems: 'center',
         }}>
           <div style={{
             transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
@@ -368,7 +362,6 @@ export default function Portfolio() {
             transformStyle: 'preserve-3d' as const,
             transition: 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
             position: 'relative',
-            margin: '0 auto',
           }}>
             {/* Primary glass layer */}
             <div style={{

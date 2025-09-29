@@ -149,6 +149,11 @@ class ConsciousnessManager {
   }[] = [];
 
   private setupTracking(): void {
+    // EMERGENCY: Disable all event tracking to fix click interference
+    return;
+
+    // Original tracking code disabled until click issues are resolved
+    /*
     if (typeof window === 'undefined' || this.eventListeners.length > 0) return;
 
     // Track scroll depth
@@ -191,6 +196,7 @@ class ConsciousnessManager {
       element.addEventListener(event, handler, options);
       this.eventListeners.push({ element, event, handler, options });
     });
+    */
   }
 
   private recordPageVisit(): void {
