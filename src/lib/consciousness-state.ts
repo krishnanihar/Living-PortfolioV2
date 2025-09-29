@@ -141,8 +141,15 @@ class ConsciousnessManager {
     }
   }
 
+  private eventListeners: {
+    element: Window | Document;
+    event: string;
+    handler: EventListener;
+    options?: AddEventListenerOptions;
+  }[] = [];
+
   private setupTracking(): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || this.eventListeners.length > 0) return;
 
     // Track scroll depth
     const handleScroll = () => {
@@ -152,25 +159,35 @@ class ConsciousnessManager {
       this.scrollDepth = Math.max(this.scrollDepth, scrollPercent || 0);
     };
 
-    // Track interactions
+    // Track interactions - NON-INTERFERING passive listeners
     const handleInteraction = (event: Event) => {
+      // Only track, don't interfere with event propagation
       this.interactions.push(`${event.type}:${Date.now()}`);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('click', handleInteraction);
-    window.addEventListener('keydown', handleInteraction);
-
-    // Page visibility changes
-    document.addEventListener('visibilitychange', () => {
+    const handleVisibilityChange = () => {
       if (document.hidden) {
         this.recordPageVisit();
       }
-    });
+    };
 
-    // Before unload
-    window.addEventListener('beforeunload', () => {
+    const handleBeforeUnload = () => {
       this.recordPageVisit();
+    };
+
+    // Store listeners for cleanup
+    const listeners = [
+      { element: window, event: 'scroll', handler: handleScroll, options: { passive: true } },
+      { element: window, event: 'click', handler: handleInteraction, options: { passive: true } },
+      { element: window, event: 'keydown', handler: handleInteraction, options: { passive: true } },
+      { element: document, event: 'visibilitychange', handler: handleVisibilityChange },
+      { element: window, event: 'beforeunload', handler: handleBeforeUnload }
+    ];
+
+    // Add all listeners and store references
+    listeners.forEach(({ element, event, handler, options }) => {
+      element.addEventListener(event, handler, options);
+      this.eventListeners.push({ element, event, handler, options });
     });
   }
 
@@ -400,6 +417,13 @@ class ConsciousnessManager {
 
   shutdown(): void {
     this.recordPageVisit();
+
+    // Clean up all event listeners
+    this.eventListeners.forEach(({ element, event, handler, options }) => {
+      element.removeEventListener(event, handler, options);
+    });
+    this.eventListeners = [];
+
     this.state.isActive = false;
     this.saveState();
   }
