@@ -4,9 +4,12 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Send, Sparkles, Briefcase, User, Zap, Moon, Sun, Palette } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
+import { ConsciousnessIndicator } from '@/components/consciousness/ConsciousnessIndicator';
+import { AmbientWhispers } from '@/components/consciousness/AmbientWhispers';
 
 export default function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const [inputFocused, setInputFocused] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
@@ -15,7 +18,9 @@ export default function Portfolio() {
 
   useEffect(() => {
     const handleScroll = () => {
+      const heroThreshold = window.innerHeight * 0.8; // 80% of viewport
       setScrolled(window.scrollY > 20);
+      setPastHero(window.scrollY > heroThreshold);
     };
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -165,8 +170,10 @@ export default function Portfolio() {
           right: 0,
           zIndex: 50,
           height: scrolled ? '54px' : '60px',
+          opacity: pastHero ? 1 : 0,
+          transform: pastHero ? 'translateY(0)' : 'translateY(-100%)',
+          pointerEvents: pastHero ? 'auto' : 'none',
           transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-          animation: 'slideDown 1s cubic-bezier(0.16, 1, 0.3, 1)',
         }}>
           {/* Multi-layer glass effect */}
           <div style={{
@@ -336,7 +343,7 @@ export default function Portfolio() {
 
 
         {/* Hero Section with Beautiful Design */}
-        <section className="h-screen w-full flex items-center justify-center pt-16 px-8 relative" style={{
+        <section className="h-screen w-full flex items-center justify-center px-8 relative" style={{
           boxSizing: 'border-box',
         }}>
           <div style={{
@@ -612,6 +619,16 @@ export default function Portfolio() {
             </div>
           </div>
         </section>
+
+        {/* Living consciousness system - only show after hero */}
+        <div style={{
+          opacity: pastHero ? 1 : 0,
+          pointerEvents: pastHero ? 'auto' : 'none',
+          transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+        }}>
+          <ConsciousnessIndicator />
+          <AmbientWhispers />
+        </div>
       </div>
     </>
   );

@@ -5,8 +5,6 @@ import { ThemeProvider } from '@/components/effects/ThemeProvider';
 import { FocusManager } from '@/components/effects/FocusManager';
 import { MicroInteractionProvider } from '@/components/effects/MicroInteractionProvider';
 import { ConsciousnessProvider } from '@/components/effects/ConsciousnessProvider';
-import { ConsciousnessIndicator } from '@/components/consciousness/ConsciousnessIndicator';
-import { AmbientWhispers } from '@/components/consciousness/AmbientWhispers';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -106,10 +104,6 @@ export default function RootLayout({
 
             {/* Main content */}
             {children}
-
-            {/* Living consciousness system */}
-            <ConsciousnessIndicator />
-            <AmbientWhispers />
           </ConsciousnessProvider>
         </ThemeProvider>
       </body>
