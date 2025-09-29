@@ -343,7 +343,14 @@ export default function Portfolio() {
 
 
         {/* Hero Section with Beautiful Design */}
-        <section className="h-screen w-full flex items-center justify-center px-8 relative" style={{
+        <section style={{
+          height: '100vh',
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '0 2rem',
+          position: 'relative',
           boxSizing: 'border-box',
         }}>
           <div style={{
