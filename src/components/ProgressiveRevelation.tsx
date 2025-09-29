@@ -126,7 +126,7 @@ export function ProgressiveRevelation({ selectedIntent, currentContent, onConten
 
     const interval = setInterval(checkUnlockConditions, 1000);
     return () => clearInterval(interval);
-  }, [selectedIntent, currentContent, userProgress, revealedContent, onContentUnlock]);
+  }, [selectedIntent, currentContent, revealedContent, onContentUnlock]); // FIXED: Removed userProgress from dependencies
 
   // Track user engagement
   useEffect(() => {

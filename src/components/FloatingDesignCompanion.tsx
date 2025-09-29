@@ -72,7 +72,7 @@ export function FloatingDesignCompanion({ selectedIntent, onReveal }: FloatingDe
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [mounted, mouseX, mouseY]);
+  }, [mounted]); // FIXED: Removed mouseX, mouseY from dependencies
 
   // Generate contextual messages based on intent and content
   useEffect(() => {
