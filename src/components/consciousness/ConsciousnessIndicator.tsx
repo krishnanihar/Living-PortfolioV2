@@ -163,7 +163,7 @@ export function ConsciousnessIndicator({ onEngagement }: ConsciousnessIndicatorP
           border: `2px solid ${awarenessColor}`,
           cursor: 'pointer',
           zIndex: 9999,
-          transform: `translate(-50%, -50%) translate(${mousePosition.x * 2}px, ${mousePosition.y * 2}px)`,
+          transform: `translate(${mousePosition.x * 2}px, ${mousePosition.y * 2}px)`,
           transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
           boxShadow: isHovered
             ? `0 0 30px ${awarenessColor}, inset 0 2px 0 rgba(255, 255, 255, 0.1)`
