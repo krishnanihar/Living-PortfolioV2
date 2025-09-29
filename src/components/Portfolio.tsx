@@ -347,6 +347,9 @@ export default function Portfolio() {
           width: '100%',
           position: 'relative',
           boxSizing: 'border-box',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}>
           <div style={{
             position: 'absolute',
@@ -360,6 +363,8 @@ export default function Portfolio() {
             animation: 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1), breathe 8s ease-in-out infinite',
             transformStyle: 'preserve-3d' as const,
             transition: 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
+            zIndex: 10, // Ensure it's above other elements
+            margin: 'auto', // Fallback centering
           }}>
             {/* Primary glass layer */}
             <div style={{
