@@ -332,8 +332,8 @@ export function FloatingDesignCompanion({ selectedIntent, onReveal }: FloatingDe
           pointerEvents: 'none',
         }}
         animate={{
-          opacity: selectedIntent ? 0.3 : 0,
-          scale: selectedIntent ? 1 : 0,
+          opacity: 0.3,
+          scale: 1,
         }}
       >
         <div style={{

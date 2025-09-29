@@ -180,6 +180,7 @@ export default function Portfolio() {
           zIndex: 9999,
           height: scrolled ? '54px' : '60px',
           opacity: pastHero ? 1 : 0,
+          pointerEvents: pastHero ? 'auto' : 'none',
           transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
         }}>
           {/* Multi-layer glass effect */}
