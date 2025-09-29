@@ -104,10 +104,8 @@ export default function RootLayout({
             {/* Enhanced focus management */}
             <FocusManager />
 
-            {/* Main content wrapper with isolation */}
-            <div style={{ position: 'relative', zIndex: 1 }}>
-              {children}
-            </div>
+            {/* Main content */}
+            {children}
 
             {/* Living consciousness system */}
             <ConsciousnessIndicator />

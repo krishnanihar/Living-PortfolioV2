@@ -336,40 +336,41 @@ export default function Portfolio() {
         </nav>
 
 
-        {/* Hero Section with bulletproof centering */}
+        {/* Hero Section with enhanced glass card */}
         <section style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '2rem',
+          minHeight: '100vh',
+          padding: '1.5rem',
+          paddingTop: '100px',
+          perspective: '1000px',
+          width: '100%',
+          position: 'relative',
           boxSizing: 'border-box',
-          zIndex: 0,
+          left: 0,
+          top: 0,
         }}>
           <div style={{
             position: 'relative',
             width: '100%',
             maxWidth: '720px',
+            margin: '0 auto',
             padding: '3rem',
             borderRadius: '36px',
             animation: 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1), breathe 8s ease-in-out infinite',
-            perspective: '1000px',
+            transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
             transformStyle: 'preserve-3d' as const,
+            transition: 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
+            // Debugging & fallback styles
+            backgroundColor: 'rgba(255, 255, 255, 0.02)', // Fallback background
+            contain: 'layout style paint', // CSS containment
+            willChange: 'transform', // Optimize transforms
+            isolation: 'isolate', // Create new stacking context
+            zIndex: 10, // Ensure it's above other content
+            border: '2px solid rgba(218, 14, 41, 0.5)', // DEBUG: Temporary visible border
+            minHeight: '400px', // DEBUG: Ensure minimum height
           }}>
-            {/* 3D Tilt Container */}
-            <div style={{
-              transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
-              transformOrigin: 'center center',
-              transition: 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
-              transformStyle: 'preserve-3d' as const,
-              position: 'relative',
-              width: '100%',
-              height: '100%',
-            }}>
             {/* Primary glass layer */}
             <div style={{
               position: 'absolute',
@@ -630,12 +631,8 @@ export default function Portfolio() {
                 ))}
               </div>
             </div>
-            </div>
           </div>
         </section>
-
-        {/* Spacer to account for fixed hero section */}
-        <div style={{ height: '100vh', width: '100%' }} />
       </div>
     </>
   );
