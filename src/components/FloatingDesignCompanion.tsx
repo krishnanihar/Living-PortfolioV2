@@ -13,7 +13,7 @@ export function FloatingDesignCompanion({ selectedIntent, onReveal }: FloatingDe
   const [mounted, setMounted] = useState(false);
   const [currentState, setCurrentState] = useState<'idle' | 'attentive' | 'speaking'>('idle');
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [companionPosition, setCompanionPosition] = useState({ x: 50, y: 50 });
+  const [companionPosition, setCompanionPosition] = useState({ x: 50, y: 25 });
   const [isHovered, setIsHovered] = useState(false);
   const [contextualMessage, setContextualMessage] = useState<string | null>(null);
   const [nearbyContent, setNearbyContent] = useState<string | null>(null);
@@ -44,10 +44,11 @@ export function FloatingDesignCompanion({ selectedIntent, onReveal }: FloatingDe
       mouseY.set(e.clientY);
 
       // Update companion position with slight delay and offset
+      // Avoid navigation area (top 8% of screen)
       setTimeout(() => {
         setCompanionPosition({
           x: Math.max(5, Math.min(95, x + (Math.random() - 0.5) * 10)),
-          y: Math.max(5, Math.min(95, y + (Math.random() - 0.5) * 10))
+          y: Math.max(8, Math.min(95, y + (Math.random() - 0.5) * 10))
         });
       }, 800);
 
@@ -162,7 +163,7 @@ export function FloatingDesignCompanion({ selectedIntent, onReveal }: FloatingDe
           top: 0,
           left: 0,
           transform: 'translate(-50%, -50%)',
-          zIndex: 9995,
+          zIndex: 9998,
           pointerEvents: 'none',
         }}
         onMouseEnter={() => setIsHovered(true)}
@@ -192,25 +193,49 @@ export function FloatingDesignCompanion({ selectedIntent, onReveal }: FloatingDe
             position: 'relative',
             pointerEvents: 'auto',
             cursor: 'pointer',
+            filter: isHovered ? 'brightness(1.2)' : 'brightness(1)',
+            boxShadow: isHovered
+              ? `0 0 20px ${getStateColor()}, 0 0 40px ${getStateColor().replace('0.', '0.3')}`
+              : `0 0 10px ${getStateColor()}`,
           }}
         >
           {/* Breathing animation */}
           <motion.div
             animate={{
-              scale: [1, 1.1, 1],
-              opacity: [0.7, 1, 0.7],
+              scale: [1, 1.15, 1],
+              opacity: [0.5, 1, 0.5],
             }}
             transition={{
-              duration: currentState === 'speaking' ? 1 : 3,
+              duration: currentState === 'speaking' ? 1.5 : 4,
               repeat: Infinity,
               ease: "easeInOut"
             }}
             style={{
               position: 'absolute',
-              inset: -4,
+              inset: -6,
+              borderRadius: '50%',
+              border: `2px solid ${getStateColor()}`,
+              opacity: 0.4,
+            }}
+          />
+
+          {/* Outer pulse ring */}
+          <motion.div
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.3, 0, 0.3],
+            }}
+            transition={{
+              duration: currentState === 'speaking' ? 2 : 5,
+              repeat: Infinity,
+              ease: "easeOut"
+            }}
+            style={{
+              position: 'absolute',
+              inset: -12,
               borderRadius: '50%',
               border: `1px solid ${getStateColor()}`,
-              opacity: 0.3,
+              opacity: 0.2,
             }}
           />
 

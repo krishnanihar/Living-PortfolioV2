@@ -324,7 +324,7 @@ export function Work() {
               <div
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
-                onClick={project.url ? () => window.location.href = project.url : undefined}
+                onClick={project.links?.[0]?.url ? () => window.location.href = project.links[0].url : undefined}
                 style={{
                   width: '100%',
                   maxWidth: '1400px',
@@ -334,7 +334,7 @@ export function Work() {
                   transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
                   transformStyle: 'preserve-3d',
                   transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-                  cursor: project.url ? 'pointer' : 'default',
+                  cursor: project.links?.[0]?.url ? 'pointer' : 'default',
                 }}
               >
                 {/* Card Background Layers */}
@@ -624,8 +624,8 @@ export function Work() {
                     <div style={{
                       animation: isActive ? 'slideInLeft 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both' : 'none',
                     }}>
-                      {project.url ? (
-                        <Link href={project.url as any} style={{ textDecoration: 'none' }}>
+                      {project.links?.[0]?.url ? (
+                        <Link href={project.links[0].url} style={{ textDecoration: 'none' }}>
                           <button
                             style={{
                               display: 'flex',
