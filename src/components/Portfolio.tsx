@@ -170,6 +170,7 @@ export default function Portfolio() {
           right: 0,
           zIndex: 50,
           height: scrolled ? '54px' : '60px',
+          opacity: pastHero ? 1 : 0.4,
           transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
         }}>
           {/* Multi-layer glass effect */}
