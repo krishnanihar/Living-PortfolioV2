@@ -347,15 +347,13 @@ export default function Portfolio() {
           width: '100%',
           position: 'relative',
           boxSizing: 'border-box',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          display: 'flex !important' as any,
+          alignItems: 'center !important' as any,
+          justifyContent: 'center !important' as any,
+          minHeight: '100vh',
         }}>
           <div style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: `translate(-50%, -50%) rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
+            transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
             width: '100%',
             maxWidth: '720px',
             padding: '3rem',
@@ -363,8 +361,6 @@ export default function Portfolio() {
             animation: 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1), breathe 8s ease-in-out infinite',
             transformStyle: 'preserve-3d' as const,
             transition: 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
-            zIndex: 10, // Ensure it's above other elements
-            margin: 'auto', // Fallback centering
           }}>
             {/* Primary glass layer */}
             <div style={{
