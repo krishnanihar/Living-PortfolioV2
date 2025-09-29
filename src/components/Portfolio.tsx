@@ -337,69 +337,69 @@ export default function Portfolio() {
 
         {/* NUCLEAR VISIBILITY HERO SECTION */}
         <section style={{
-          position: 'fixed !important' as any,
-          top: '0 !important' as any,
-          left: '0 !important' as any,
-          width: '100vw !important' as any,
-          height: '100vh !important' as any,
-          display: 'flex !important' as any,
-          alignItems: 'center !important' as any,
-          justifyContent: 'center !important' as any,
-          backgroundColor: '#FF00FF !important' as any, // NEON MAGENTA BACKGROUND
-          zIndex: '9999 !important' as any,
-          padding: '2rem !important' as any,
-          boxSizing: 'border-box !important' as any,
+          position: 'fixed',
+          top: '0',
+          left: '0',
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#FF00FF', // NEON MAGENTA BACKGROUND
+          zIndex: 99999, // MUCH HIGHER THAN NAVIGATION
+          padding: '2rem',
+          boxSizing: 'border-box',
         }}>
           <div style={{
-            position: 'relative !important' as any,
-            width: '90% !important' as any,
-            maxWidth: '800px !important' as any,
-            padding: '4rem !important' as any,
-            backgroundColor: '#00FFFF !important' as any, // NEON CYAN BACKGROUND
-            border: '10px solid #FFFF00 !important' as any, // NEON YELLOW BORDER
-            borderRadius: '20px !important' as any,
-            minHeight: '600px !important' as any,
-            display: 'flex !important' as any,
-            flexDirection: 'column !important' as any,
-            alignItems: 'center !important' as any,
-            justifyContent: 'center !important' as any,
+            position: 'relative',
+            width: '90%',
+            maxWidth: '800px',
+            padding: '4rem',
+            backgroundColor: '#00FFFF', // NEON CYAN BACKGROUND
+            border: '10px solid #FFFF00', // NEON YELLOW BORDER
+            borderRadius: '20px',
+            minHeight: '600px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}>
             {/* ULTRA VISIBLE CONTENT */}
             <h1 style={{
-              fontSize: '4rem !important' as any,
-              fontWeight: '900 !important' as any,
-              color: '#FF0000 !important' as any, // BRIGHT RED TEXT
-              textAlign: 'center !important' as any,
-              marginBottom: '2rem !important' as any,
-              textShadow: '0 0 20px #FFFFFF !important' as any, // WHITE GLOW
-              fontFamily: 'Arial, sans-serif !important' as any,
-              zIndex: '10000 !important' as any,
-              position: 'relative !important' as any,
+              fontSize: '4rem',
+              fontWeight: '900',
+              color: '#FF0000', // BRIGHT RED TEXT
+              textAlign: 'center',
+              marginBottom: '2rem',
+              textShadow: '0 0 20px #FFFFFF', // WHITE GLOW
+              fontFamily: 'Arial, sans-serif',
+              zIndex: 10000,
+              position: 'relative',
             }}>
               🚨 HERO CARD IS NOW VISIBLE 🚨
             </h1>
 
             <div style={{
-              fontSize: '2rem !important' as any,
-              fontWeight: '700 !important' as any,
-              color: '#000000 !important' as any, // BLACK TEXT
-              textAlign: 'center !important' as any,
-              backgroundColor: '#FFFFFF !important' as any, // WHITE BACKGROUND
-              padding: '1rem !important' as any,
-              borderRadius: '10px !important' as any,
-              border: '5px solid #FF0000 !important' as any, // RED BORDER
-              marginBottom: '2rem !important' as any,
+              fontSize: '2rem',
+              fontWeight: '700',
+              color: '#000000', // BLACK TEXT
+              textAlign: 'center',
+              backgroundColor: '#FFFFFF', // WHITE BACKGROUND
+              padding: '1rem',
+              borderRadius: '10px',
+              border: '5px solid #FF0000', // RED BORDER
+              marginBottom: '2rem',
             }}>
               If you can see this, the hero card is working!
             </div>
 
             <div style={{
-              fontSize: '1.5rem !important' as any,
-              color: '#000000 !important' as any,
-              textAlign: 'center !important' as any,
-              backgroundColor: '#FFFF00 !important' as any, // YELLOW BACKGROUND
-              padding: '1rem !important' as any,
-              borderRadius: '10px !important' as any,
+              fontSize: '1.5rem',
+              color: '#000000',
+              textAlign: 'center',
+              backgroundColor: '#FFFF00', // YELLOW BACKGROUND
+              padding: '1rem',
+              borderRadius: '10px',
             }}>
               This is the nuclear visibility test
             </div>
