@@ -145,7 +145,6 @@ export default function Portfolio() {
         fontFamily: 'Inter, sans-serif',
         position: 'relative',
         width: '100%',
-        overflow: 'hidden',
       }}>
         {/* Dark translucent overlay with mouse tracking */}
         <div style={{
@@ -336,300 +335,73 @@ export default function Portfolio() {
         </nav>
 
 
-        {/* Hero Section with enhanced glass card */}
+        {/* NUCLEAR VISIBILITY HERO SECTION */}
         <section style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '100vh',
-          padding: '1.5rem',
-          paddingTop: '100px',
-          perspective: '1000px',
-          width: '100%',
-          position: 'relative',
-          boxSizing: 'border-box',
-          left: 0,
-          top: 0,
+          position: 'fixed !important' as any,
+          top: '0 !important' as any,
+          left: '0 !important' as any,
+          width: '100vw !important' as any,
+          height: '100vh !important' as any,
+          display: 'flex !important' as any,
+          alignItems: 'center !important' as any,
+          justifyContent: 'center !important' as any,
+          backgroundColor: '#FF00FF !important' as any, // NEON MAGENTA BACKGROUND
+          zIndex: '9999 !important' as any,
+          padding: '2rem !important' as any,
+          boxSizing: 'border-box !important' as any,
         }}>
           <div style={{
-            position: 'relative',
-            width: '100%',
-            maxWidth: '720px',
-            margin: '0 auto',
-            padding: '3rem',
-            borderRadius: '36px',
-            animation: 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1), breathe 8s ease-in-out infinite',
-            transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
-            transformStyle: 'preserve-3d' as const,
-            transition: 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
-            // Debugging & fallback styles
-            backgroundColor: 'rgba(255, 255, 255, 0.02)', // Fallback background
-            contain: 'layout style paint', // CSS containment
-            willChange: 'transform', // Optimize transforms
-            isolation: 'isolate', // Create new stacking context
-            zIndex: 10, // Ensure it's above other content
-            border: '2px solid rgba(218, 14, 41, 0.5)', // DEBUG: Temporary visible border
-            minHeight: '400px', // DEBUG: Ensure minimum height
+            position: 'relative !important' as any,
+            width: '90% !important' as any,
+            maxWidth: '800px !important' as any,
+            padding: '4rem !important' as any,
+            backgroundColor: '#00FFFF !important' as any, // NEON CYAN BACKGROUND
+            border: '10px solid #FFFF00 !important' as any, // NEON YELLOW BORDER
+            borderRadius: '20px !important' as any,
+            minHeight: '600px !important' as any,
+            display: 'flex !important' as any,
+            flexDirection: 'column !important' as any,
+            alignItems: 'center !important' as any,
+            justifyContent: 'center !important' as any,
           }}>
-            {/* Primary glass layer */}
+            {/* ULTRA VISIBLE CONTENT */}
+            <h1 style={{
+              fontSize: '4rem !important' as any,
+              fontWeight: '900 !important' as any,
+              color: '#FF0000 !important' as any, // BRIGHT RED TEXT
+              textAlign: 'center !important' as any,
+              marginBottom: '2rem !important' as any,
+              textShadow: '0 0 20px #FFFFFF !important' as any, // WHITE GLOW
+              fontFamily: 'Arial, sans-serif !important' as any,
+              zIndex: '10000 !important' as any,
+              position: 'relative !important' as any,
+            }}>
+              🚨 HERO CARD IS NOW VISIBLE 🚨
+            </h1>
+
             <div style={{
-              position: 'absolute',
-              inset: 0,
-              borderRadius: '36px',
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%)',
-              backdropFilter: 'blur(60px) saturate(120%) brightness(0.9)',
-              WebkitBackdropFilter: 'blur(60px) saturate(120%) brightness(0.9)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              boxShadow: `
-                inset 0 1px 0 rgba(255, 255, 255, 0.03),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.2),
-                0 8px 16px rgba(0, 0, 0, 0.3),
-                0 0 40px rgba(218, 14, 41, 0.005)
-              `,
-            }} />
+              fontSize: '2rem !important' as any,
+              fontWeight: '700 !important' as any,
+              color: '#000000 !important' as any, // BLACK TEXT
+              textAlign: 'center !important' as any,
+              backgroundColor: '#FFFFFF !important' as any, // WHITE BACKGROUND
+              padding: '1rem !important' as any,
+              borderRadius: '10px !important' as any,
+              border: '5px solid #FF0000 !important' as any, // RED BORDER
+              marginBottom: '2rem !important' as any,
+            }}>
+              If you can see this, the hero card is working!
+            </div>
 
-            {/* Theme-aware translucent layer */}
             <div style={{
-              position: 'absolute',
-              inset: '1px',
-              borderRadius: '35px',
-              background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.05) 100%)',
-              pointerEvents: 'none',
-              opacity: 0.3,
-            }} />
-
-            {/* Top shine */}
-            <div style={{
-              position: 'absolute',
-              top: 0,
-              left: '10%',
-              right: '10%',
-              height: '1px',
-              background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
-              borderRadius: '50%',
-              filter: 'blur(0.5px)',
-            }} />
-
-            {/* Content */}
-            <div style={{ position: 'relative', zIndex: 1 }}>
-              <div style={{
-                fontSize: '0.825rem',
-                color: 'var(--text-muted)',
-                marginBottom: '1.25rem',
-                letterSpacing: '0.025em',
-                fontWeight: '200',
-                animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both',
-              }}>
-                Good evening.
-              </div>
-
-              <h1 style={{
-                fontSize: 'clamp(1.75rem, 4.5vw, 2.75rem)',
-                fontWeight: '200',
-                color: 'var(--text-primary)',
-                marginBottom: '2.5rem',
-                lineHeight: '1.1',
-                letterSpacing: '-0.02em',
-                position: 'relative',
-                animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both',
-              }}>
-                I build living interfaces
-
-                <div style={{
-                  position: 'absolute',
-                  top: '-8px',
-                  right: '42%',
-                  width: '18px',
-                  height: '18px',
-                  pointerEvents: 'none',
-                }}>
-                  <Sparkles size={18} style={{
-                    color: 'rgba(218, 14, 41, 0.7)',
-                    animation: 'sparkle 3s ease-in-out infinite',
-                  }} />
-                </div>
-              </h1>
-
-              {/* Ultra-smooth glass input */}
-              <div style={{
-                position: 'relative',
-                marginBottom: '2.5rem',
-                animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both',
-              }}>
-                <div style={{
-                  position: 'relative',
-                  display: 'flex',
-                  alignItems: 'center',
-                  background: inputFocused
-                    ? 'rgba(255, 255, 255, 0.05)'
-                    : 'rgba(255, 255, 255, 0.02)',
-                  backdropFilter: 'blur(30px) brightness(0.8)',
-                  WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
-                  border: `1px solid ${inputFocused
-                    ? 'rgba(218, 14, 41, 0.3)'
-                    : 'rgba(255, 255, 255, 0.06)'}`,
-                  borderRadius: '28px',
-                  padding: '0.875rem 1.25rem',
-                  transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                  transform: inputFocused ? 'scale(1.01)' : 'scale(1)',
-                  boxShadow: inputFocused
-                    ? '0 8px 16px rgba(218, 14, 41, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
-                    : 'inset 0 1px 0 rgba(255, 255, 255, 0.02)',
-                }}>
-                  <input
-                    type="text"
-                    placeholder="Ask: What are you building next?"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onFocus={() => setInputFocused(true)}
-                    onBlur={() => setInputFocused(false)}
-                    style={{
-                      flex: 1,
-                      background: 'none',
-                      border: 'none',
-                      outline: 'none',
-                      color: 'var(--text-primary)',
-                      fontSize: '0.875rem',
-                      fontFamily: 'Inter, sans-serif',
-                      fontWeight: '300',
-                      letterSpacing: '0.01em',
-                    }}
-                  />
-                  <button
-                    style={{
-                      background: inputValue
-                        ? 'rgba(218, 14, 41, 0.25)'
-                        : 'rgba(255, 255, 255, 0.08)',
-                      backdropFilter: 'blur(20px)',
-                      WebkitBackdropFilter: 'blur(20px)',
-                      border: `1px solid ${inputValue
-                        ? 'rgba(218, 14, 41, 0.5)'
-                        : 'rgba(255, 255, 255, 0.12)'}`,
-                      borderRadius: '20px',
-                      padding: '0.5rem 1.25rem',
-                      color: inputValue
-                        ? 'var(--text-primary)'
-                        : 'var(--text-muted)',
-                      fontSize: '0.825rem',
-                      fontWeight: '400',
-                      transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                      animation: inputValue ? 'glow 2s ease-in-out infinite' : 'none',
-                    }}
-                    onMouseEnter={(e) => {
-                      if (inputValue) {
-                        (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)';
-                        (e.currentTarget as HTMLElement).style.background = 'rgba(218, 14, 41, 0.35)';
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
-                      (e.currentTarget as HTMLElement).style.background = inputValue
-                        ? 'rgba(218, 14, 41, 0.25)'
-                        : 'rgba(255, 255, 255, 0.08)';
-                    }}
-                  >
-                    Send
-                  </button>
-                </div>
-              </div>
-
-              {/* Sleek glass buttons */}
-              <div style={{
-                display: 'flex',
-                gap: '0.875rem',
-                marginBottom: '2.5rem',
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-                animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both',
-              }}>
-                {[
-                  { text: 'Quick Tour', icon: Zap, primary: true },
-                  { text: 'Show me work', icon: Briefcase },
-                  { text: 'About me', icon: User }
-                ].map((button, index) => (
-                  <button
-                    key={button.text}
-                    style={{
-                      background: button.primary
-                        ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.2) 0%, rgba(218, 14, 41, 0.1) 100%)'
-                        : 'rgba(255, 255, 255, 0.03)',
-                      backdropFilter: 'blur(30px) saturate(120%) brightness(0.8)',
-                      WebkitBackdropFilter: 'blur(30px) saturate(120%) brightness(0.8)',
-                      border: `1px solid ${button.primary
-                        ? 'rgba(218, 14, 41, 0.3)'
-                        : 'rgba(255, 255, 255, 0.06)'}`,
-                      borderRadius: '24px',
-                      padding: '0.75rem 1.5rem',
-                      color: 'var(--text-primary)',
-                      fontSize: '0.825rem',
-                      fontWeight: '400',
-                      transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                      boxShadow: button.primary
-                        ? 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 4px 8px rgba(218, 14, 41, 0.15)'
-                        : 'inset 0 1px 0 rgba(255, 255, 255, 0.04)',
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.transform = 'translateY(-3px) scale(1.02)';
-                      (e.currentTarget as HTMLElement).style.boxShadow = button.primary
-                        ? '0 8px 16px rgba(218, 14, 41, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                        : '0 8px 12px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.06)';
-                      if (button.primary) {
-                        (e.currentTarget as HTMLElement).style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.25) 0%, rgba(218, 14, 41, 0.15) 100%)';
-                      } else {
-                        (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.06)';
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.transform = 'translateY(0) scale(1)';
-                      (e.currentTarget as HTMLElement).style.boxShadow = button.primary
-                        ? 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 4px 8px rgba(218, 14, 41, 0.15)'
-                        : 'inset 0 1px 0 rgba(255, 255, 255, 0.04)';
-                      if (button.primary) {
-                        (e.currentTarget as HTMLElement).style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.2) 0%, rgba(218, 14, 41, 0.1) 100%)';
-                      } else {
-                        (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.03)';
-                      }
-                    }}
-                  >
-                    {button.text}
-                  </button>
-                ))}
-              </div>
-
-              {/* Company credits with glass separator */}
-              <div style={{
-                display: 'flex',
-                gap: '1.75rem',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-                paddingTop: '1.75rem',
-                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 1s both',
-              }}>
-                {companies.map((company) => (
-                  <div
-                    key={company}
-                    style={{
-                      color: 'var(--text-muted)',
-                      fontSize: '0.7rem',
-                      fontWeight: '300',
-                      letterSpacing: '0.03em',
-                      transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.color = 'rgba(255, 255, 255, 0.8)';
-                      (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.color = 'rgba(255, 255, 255, 0.4)';
-                      (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                    }}
-                  >
-                    {company}
-                  </div>
-                ))}
-              </div>
+              fontSize: '1.5rem !important' as any,
+              color: '#000000 !important' as any,
+              textAlign: 'center !important' as any,
+              backgroundColor: '#FFFF00 !important' as any, // YELLOW BACKGROUND
+              padding: '1rem !important' as any,
+              borderRadius: '10px !important' as any,
+            }}>
+              This is the nuclear visibility test
             </div>
           </div>
         </section>
