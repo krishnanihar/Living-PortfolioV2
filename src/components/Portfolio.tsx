@@ -627,6 +627,7 @@ export default function Portfolio() {
               </div>
             </div>
           </div>
+          </div>
         </section>
 
         {/* Living consciousness system - only show after hero */}
