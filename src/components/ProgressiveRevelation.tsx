@@ -214,7 +214,7 @@ export function ProgressiveRevelation({ selectedIntent, currentContent, onConten
               borderRadius: '16px',
               padding: '1.5rem',
               maxWidth: '320px',
-              zIndex: 9998,
+              zIndex: 9996,
               boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
               pointerEvents: 'auto',
             }}
@@ -318,7 +318,7 @@ export function ProgressiveRevelation({ selectedIntent, currentContent, onConten
             display: 'flex',
             flexDirection: 'column',
             gap: '0.5rem',
-            zIndex: 9997,
+            zIndex: 9995,
             pointerEvents: 'none',
           }}
         >
@@ -376,7 +376,7 @@ export function ProgressiveRevelation({ selectedIntent, currentContent, onConten
         display: 'flex',
         flexDirection: 'column',
         gap: '0.5rem',
-        zIndex: 9996,
+        zIndex: 9994,
         opacity: revealedContent.size > 0 ? 1 : 0,
         transition: 'opacity 0.5s ease',
         pointerEvents: 'none',

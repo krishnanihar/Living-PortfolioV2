@@ -162,9 +162,8 @@ export function FloatingDesignCompanion({ selectedIntent, onReveal }: FloatingDe
           top: 0,
           left: 0,
           transform: 'translate(-50%, -50%)',
-          zIndex: 9997,
-          pointerEvents: 'auto',
-          cursor: 'pointer',
+          zIndex: 9995,
+          pointerEvents: 'none',
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -191,6 +190,8 @@ export function FloatingDesignCompanion({ selectedIntent, onReveal }: FloatingDe
             alignItems: 'center',
             justifyContent: 'center',
             position: 'relative',
+            pointerEvents: 'auto',
+            cursor: 'pointer',
           }}
         >
           {/* Breathing animation */}
@@ -272,6 +273,7 @@ export function FloatingDesignCompanion({ selectedIntent, onReveal }: FloatingDe
                 maxWidth: '200px',
                 textAlign: 'center',
                 boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+                pointerEvents: 'none',
               }}
             >
               {contextualMessage}
@@ -328,7 +330,7 @@ export function FloatingDesignCompanion({ selectedIntent, onReveal }: FloatingDe
           x: springX,
           y: springY,
           transform: 'translate(-50%, -50%)',
-          zIndex: 9996,
+          zIndex: 9994,
           pointerEvents: 'none',
         }}
         animate={{
