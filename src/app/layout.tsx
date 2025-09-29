@@ -4,8 +4,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/effects/ThemeProvider';
 import { FocusManager } from '@/components/effects/FocusManager';
 import { MicroInteractionProvider } from '@/components/effects/MicroInteractionProvider';
-// EMERGENCY: ConsciousnessProvider import disabled to fix click issues
-// import { ConsciousnessProvider } from '@/components/effects/ConsciousnessProvider';
+import { ConsciousnessProvider } from '@/components/effects/ConsciousnessProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -96,8 +95,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <ThemeProvider defaultTheme="dark" attribute="data-theme">
-          {/* EMERGENCY: ConsciousnessProvider disabled to fix click issues */}
-          {/* <ConsciousnessProvider> */}
+          <ConsciousnessProvider>
             {/* Micro-interactions system */}
             <MicroInteractionProvider />
 
@@ -106,7 +104,7 @@ export default function RootLayout({
 
             {/* Main content */}
             {children}
-          {/* </ConsciousnessProvider> */}
+          </ConsciousnessProvider>
         </ThemeProvider>
       </body>
     </html>

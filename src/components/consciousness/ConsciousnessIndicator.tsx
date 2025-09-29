@@ -162,7 +162,7 @@ export function ConsciousnessIndicator({ onEngagement }: ConsciousnessIndicatorP
           WebkitBackdropFilter: 'blur(20px) saturate(150%)',
           border: `2px solid ${awarenessColor}`,
           cursor: 'pointer',
-          zIndex: 9999,
+          zIndex: 9998, // Below navigation (9999) to avoid conflicts
           transform: `translate(${mousePosition.x * 2}px, ${mousePosition.y * 2}px)`,
           transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
           boxShadow: isHovered

@@ -159,10 +159,12 @@ class ConsciousnessManager {
       this.scrollDepth = Math.max(this.scrollDepth, scrollPercent || 0);
     };
 
-    // Track interactions - NON-INTERFERING passive listeners
+    // Track interactions - COMPLETELY NON-INTERFERING passive listeners
     const handleInteraction = (event: Event) => {
-      // Only track, don't interfere with event propagation
-      this.interactions.push(`${event.type}:${Date.now()}`);
+      // CRITICAL: Use setTimeout to ensure this runs AFTER React's event handling
+      setTimeout(() => {
+        this.interactions.push(`${event.type}:${Date.now()}`);
+      }, 0);
     };
 
     const handleVisibilityChange = () => {
@@ -175,13 +177,13 @@ class ConsciousnessManager {
       this.recordPageVisit();
     };
 
-    // Store listeners for cleanup
+    // Store listeners for cleanup - ALL PASSIVE AND NON-INTERFERING
     const listeners = [
-      { element: window, event: 'scroll', handler: handleScroll, options: { passive: true } },
-      { element: window, event: 'click', handler: handleInteraction, options: { passive: true } },
-      { element: window, event: 'keydown', handler: handleInteraction, options: { passive: true } },
-      { element: document, event: 'visibilitychange', handler: handleVisibilityChange },
-      { element: window, event: 'beforeunload', handler: handleBeforeUnload }
+      { element: window, event: 'scroll', handler: handleScroll, options: { passive: true, capture: false } },
+      { element: window, event: 'click', handler: handleInteraction, options: { passive: true, capture: false } },
+      { element: window, event: 'keydown', handler: handleInteraction, options: { passive: true, capture: false } },
+      { element: document, event: 'visibilitychange', handler: handleVisibilityChange, options: { passive: true } },
+      { element: window, event: 'beforeunload', handler: handleBeforeUnload, options: { passive: true } }
     ];
 
     // Add all listeners and store references
