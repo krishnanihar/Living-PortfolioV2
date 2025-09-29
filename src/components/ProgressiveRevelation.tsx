@@ -216,6 +216,7 @@ export function ProgressiveRevelation({ selectedIntent, currentContent, onConten
               maxWidth: '320px',
               zIndex: 9998,
               boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+              pointerEvents: 'auto',
             }}
           >
             <div style={{
@@ -318,6 +319,7 @@ export function ProgressiveRevelation({ selectedIntent, currentContent, onConten
             flexDirection: 'column',
             gap: '0.5rem',
             zIndex: 9997,
+            pointerEvents: 'none',
           }}
         >
           {getRevealedContents().map((content, index) => {
@@ -344,6 +346,7 @@ export function ProgressiveRevelation({ selectedIntent, currentContent, onConten
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  pointerEvents: 'auto',
                 }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLElement).style.background = 'rgba(218, 14, 41, 0.1)';
@@ -376,6 +379,7 @@ export function ProgressiveRevelation({ selectedIntent, currentContent, onConten
         zIndex: 9996,
         opacity: revealedContent.size > 0 ? 1 : 0,
         transition: 'opacity 0.5s ease',
+        pointerEvents: 'none',
       }}>
         {revealableContents.map((content, index) => (
           <div
