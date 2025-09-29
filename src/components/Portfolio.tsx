@@ -404,7 +404,7 @@ export default function Portfolio() {
             {/* Revolutionary Consciousness Experience Content */}
             <div style={{ position: 'relative', zIndex: 1 }}>
               <LivingConsciousnessExperience
-                pastHero={false}
+                pastHero={pastHero}
                 showExperience={false}
               />
 

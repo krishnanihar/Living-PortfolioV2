@@ -99,16 +99,16 @@ export function LivingConsciousnessExperience({
         </div>
       )}
 
-      {/* Floating Design Companion - appears after intent selection */}
-      {selectedIntent && showExperience && (
+      {/* Floating Design Companion - ONLY appears after scroll past hero */}
+      {selectedIntent && showExperience && pastHero && (
         <FloatingDesignCompanion
           selectedIntent={selectedIntent}
           onReveal={handleCompanionReveal}
         />
       )}
 
-      {/* Progressive Revelation System */}
-      {selectedIntent && showExperience && (
+      {/* Progressive Revelation System - ONLY active after scroll past hero */}
+      {selectedIntent && showExperience && pastHero && (
         <ProgressiveRevelation
           selectedIntent={selectedIntent}
           currentContent={currentContent}
