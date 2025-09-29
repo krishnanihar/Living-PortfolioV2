@@ -108,6 +108,7 @@ export function LivingConsciousnessExperience({
           fontFamily: 'monospace',
           zIndex: 10000,
           maxWidth: '200px',
+          pointerEvents: 'none',
         }}>
           <div>Intent: {selectedIntent || 'none'}</div>
           <div>Content: {currentContent || 'none'}</div>
