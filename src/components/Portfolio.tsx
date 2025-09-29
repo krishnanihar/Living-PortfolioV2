@@ -351,18 +351,12 @@ export default function Portfolio() {
             position: 'absolute',
             top: '50%',
             left: '50%',
-            transform: 'translate(-50%, -50%)',
+            transform: `translate(-50%, -50%) rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
             width: '100%',
             maxWidth: '720px',
-            padding: '0 2rem',
-          }}>
-            <div style={{
-              position: 'relative',
-              width: '100%',
-              padding: '3rem',
-              borderRadius: '36px',
+            padding: '3rem',
+            borderRadius: '36px',
             animation: 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1), breathe 8s ease-in-out infinite',
-            transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
             transformStyle: 'preserve-3d' as const,
             transition: 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
           }}>
@@ -626,7 +620,6 @@ export default function Portfolio() {
                 ))}
               </div>
             </div>
-          </div>
           </div>
         </section>
 
