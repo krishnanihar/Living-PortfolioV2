@@ -452,12 +452,11 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* TEMPORARILY DISABLED FOR DEBUGGING CLICK ISSUES */}
-        {/* <LivingConsciousnessExperience
+        <LivingConsciousnessExperience
           pastHero={pastHero}
           showExperience={showChatbot}
           selectedIntent={selectedIntent}
-        /> */}
+        />
       </div>
     </>
   );

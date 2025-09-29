@@ -5,7 +5,7 @@ import { ThemeProvider } from '@/components/effects/ThemeProvider';
 // TEMPORARILY DISABLED FOR DEBUGGING CLICK ISSUES
 import { FocusManager } from '@/components/effects/FocusManager';
 import { MicroInteractionProvider } from '@/components/effects/MicroInteractionProvider';
-// import { ConsciousnessProvider } from '@/components/effects/ConsciousnessProvider';
+import { ConsciousnessProvider } from '@/components/effects/ConsciousnessProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -97,7 +97,7 @@ export default function RootLayout({
       >
         <ThemeProvider defaultTheme="dark" attribute="data-theme">
           {/* TEMPORARILY DISABLED FOR DEBUGGING CLICK ISSUES */}
-          {/* <ConsciousnessProvider> */}
+          <ConsciousnessProvider>
             {/* Micro-interactions system */}
             <MicroInteractionProvider />
 
@@ -106,7 +106,7 @@ export default function RootLayout({
 
             {/* Main content */}
             {children}
-          {/* </ConsciousnessProvider> */}
+          </ConsciousnessProvider>
         </ThemeProvider>
       </body>
     </html>
