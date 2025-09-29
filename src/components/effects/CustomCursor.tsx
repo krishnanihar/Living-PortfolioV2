@@ -183,7 +183,7 @@ export function CustomCursor({ className = '' }: CursorProps) {
   };
 
   return (
-    <div className={`fixed inset-0 pointer-events-none z-[9999] ${className}`}>
+    <div className={`fixed inset-0 pointer-events-none z-[10000] ${className}`}>
       {/* Main cursor */}
       <motion.div
         ref={cursorRef}
