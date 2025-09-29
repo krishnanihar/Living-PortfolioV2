@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { User, GraduationCap, Award } from 'lucide-react';
 
 interface SimpleAboutSectionProps {
@@ -9,30 +9,6 @@ interface SimpleAboutSectionProps {
 
 export default function SimpleAboutSection({ className = '' }: SimpleAboutSectionProps) {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
-
-  useEffect(() => {
-    let rafId: number;
-    let isThrottled = false;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (isThrottled) return;
-
-      isThrottled = true;
-      rafId = requestAnimationFrame(() => {
-        const x = (e.clientX / window.innerWidth) * 100;
-        const y = (e.clientY / window.innerHeight) * 100;
-        setMousePos({ x, y });
-        isThrottled = false;
-      });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      if (rafId) cancelAnimationFrame(rafId);
-    };
-  }, []);
 
   const aboutCards = [
     {
@@ -93,16 +69,6 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
         padding: '3rem 1.5rem',
         position: 'relative',
       }} className={className}>
-        {/* Subtle background gradient */}
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          background: `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%,
-            rgba(218, 14, 41, 0.01) 0%,
-            transparent 40%)`,
-          pointerEvents: 'none',
-          transition: 'background 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
-        }} />
 
         {/* Section Header */}
         <div style={{

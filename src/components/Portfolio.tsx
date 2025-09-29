@@ -168,7 +168,7 @@ export default function Portfolio() {
           top: 0,
           left: 0,
           right: 0,
-          zIndex: 50,
+          zIndex: 9999,
           height: scrolled ? '54px' : '60px',
           opacity: pastHero ? 1 : 0,
           transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
