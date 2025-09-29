@@ -71,8 +71,10 @@ export function ConversationStarter({ onIntentSelect }: ConversationStarterProps
   ];
 
   const handleIntentSelect = (intentId: string) => {
+    console.log('🎯 ConversationStarter: Intent button clicked:', intentId);
     setSelectedIntent(intentId);
     onIntentSelect(intentId);
+    console.log('🎯 ConversationStarter: Intent selection complete, state updated');
   };
 
   const getHeroContent = () => {
@@ -94,6 +96,28 @@ export function ConversationStarter({ onIntentSelect }: ConversationStarterProps
 
   return (
     <div>
+      {/* Debug Indicator */}
+      {process.env.NODE_ENV === 'development' && (
+        <div style={{
+          position: 'fixed',
+          top: '10px',
+          left: '10px',
+          background: 'rgba(0, 0, 0, 0.8)',
+          color: '#00ff00',
+          padding: '0.5rem',
+          borderRadius: '8px',
+          fontSize: '0.75rem',
+          fontFamily: 'monospace',
+          zIndex: 99999,
+          border: '1px solid #333',
+        }}>
+          <div>ConversationStarter Status:</div>
+          <div>Selected Intent: {selectedIntent || 'none'}</div>
+          <div>Buttons Visible: {!selectedIntent ? 'YES' : 'NO'}</div>
+          <div>Input Visible: {selectedIntent ? 'YES' : 'NO'}</div>
+        </div>
+      )}
+
       {/* Dynamic Hero Content */}
       <div style={{
         textAlign: 'center',

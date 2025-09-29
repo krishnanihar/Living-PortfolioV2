@@ -94,27 +94,52 @@ export function LivingConsciousnessExperience({
         />
       )}
 
-      {/* Experience State Indicator (for debugging/monitoring) */}
+      {/* Enhanced Experience State Indicator */}
       {process.env.NODE_ENV === 'development' && (
         <div style={{
           position: 'fixed',
-          bottom: '1rem',
-          right: '1rem',
-          background: 'rgba(0, 0, 0, 0.8)',
-          color: 'white',
-          padding: '0.5rem',
+          top: '10px',
+          right: '10px',
+          background: 'rgba(0, 0, 0, 0.9)',
+          color: '#00ff00',
+          padding: '1rem',
           borderRadius: '8px',
           fontSize: '0.75rem',
           fontFamily: 'monospace',
-          zIndex: 10000,
-          maxWidth: '200px',
-          pointerEvents: 'none',
+          zIndex: 99997,
+          border: '1px solid #333',
+          minWidth: '320px',
         }}>
-          <div>Intent: {selectedIntent || 'none'}</div>
-          <div>Content: {currentContent || 'none'}</div>
-          <div>Past Hero: {pastHero ? 'yes' : 'no'}</div>
-          <div>Show Experience: {showExperience ? 'yes' : 'no'}</div>
-          <div>Unlocked: {unlockedContent.length}</div>
+          <div style={{ fontSize: '0.875rem', marginBottom: '0.5rem', color: '#ffffff' }}>
+            🧠 Living Consciousness Experience
+          </div>
+          <div>Selected Intent: <span style={{ color: selectedIntent ? '#00ff00' : '#ff6666' }}>{selectedIntent || 'NONE'}</span></div>
+          <div>Show Experience: <span style={{ color: showExperience ? '#00ff00' : '#ff6666' }}>{showExperience ? 'TRUE' : 'FALSE'}</span></div>
+          <div>Past Hero: <span style={{ color: pastHero ? '#00ff00' : '#ff6666' }}>{pastHero ? 'TRUE' : 'FALSE'}</span></div>
+          <div>Current Content: <span style={{ color: '#ffff00' }}>{currentContent || 'NONE'}</span></div>
+          <div>Unlocked Content: <span style={{ color: '#00ffff' }}>{unlockedContent.length}</span></div>
+          <div style={{ marginTop: '0.5rem', fontSize: '0.7rem', color: '#cccccc' }}>
+            Conditions for activation:
+          </div>
+          <div style={{ fontSize: '0.7rem', color: selectedIntent ? '#00ff00' : '#ff6666' }}>
+            ✓ Intent Selected: {selectedIntent ? 'YES' : 'MISSING'}
+          </div>
+          <div style={{ fontSize: '0.7rem', color: showExperience ? '#00ff00' : '#ff6666' }}>
+            ✓ Experience Enabled: {showExperience ? 'YES' : 'MISSING'}
+          </div>
+          <div style={{ fontSize: '0.7rem', color: pastHero ? '#00ff00' : '#ff6666' }}>
+            ✓ Scrolled Past Hero: {pastHero ? 'YES' : 'MISSING'}
+          </div>
+          {selectedIntent && showExperience && pastHero && (
+            <div style={{ marginTop: '0.5rem', color: '#00ff00', fontWeight: 'bold' }}>
+              🎉 CONSCIOUSNESS ACTIVE!
+            </div>
+          )}
+          {(!selectedIntent || !showExperience || !pastHero) && (
+            <div style={{ marginTop: '0.5rem', color: '#ff6666', fontWeight: 'bold' }}>
+              ⚠️ Waiting for activation...
+            </div>
+          )}
         </div>
       )}
     </>

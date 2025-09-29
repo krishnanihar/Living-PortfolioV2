@@ -19,9 +19,22 @@ export default function Portfolio() {
   useEffect(() => {
     const handleScroll = () => {
       const heroThreshold = window.innerHeight * 0.8; // 80% of viewport (for BOTH nav and bot)
-      setScrolled(window.scrollY > 20);
-      setPastHero(window.scrollY > heroThreshold); // Navigation visibility (80%)
-      setShowChatbot(window.scrollY > heroThreshold); // Chatbot visibility (80%)
+      const scrollY = window.scrollY;
+      const isPastHero = scrollY > heroThreshold;
+
+      setScrolled(scrollY > 20);
+      setPastHero(isPastHero);
+      setShowChatbot(isPastHero);
+
+      // Debug logging for scroll events
+      if (isPastHero) {
+        console.log('📜 Scroll past hero threshold!', {
+          scrollY,
+          heroThreshold,
+          pastHero: isPastHero,
+          showChatbot: isPastHero
+        });
+      }
     };
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -45,8 +58,10 @@ export default function Portfolio() {
   }, []);
 
   const handleIntentSelect = (intentId: string) => {
+    console.log('🎯 Intent Selected:', intentId);
     setSelectedIntent(intentId);
     setShowChatbot(true);
+    console.log('🤖 Chatbot enabled, selectedIntent set to:', intentId);
   };
 
   const navItems = [
@@ -457,6 +472,46 @@ export default function Portfolio() {
           showExperience={showChatbot}
           selectedIntent={selectedIntent}
         />
+
+        {/* Debug Console for Development */}
+        {process.env.NODE_ENV === 'development' && (
+          <div style={{
+            position: 'fixed',
+            top: '1rem',
+            right: '1rem',
+            background: 'rgba(0, 0, 0, 0.9)',
+            color: 'white',
+            padding: '1rem',
+            borderRadius: '8px',
+            fontSize: '0.75rem',
+            fontFamily: 'monospace',
+            zIndex: 10001,
+            maxWidth: '300px',
+            lineHeight: 1.4,
+          }}>
+            <div style={{ color: '#00ff00', marginBottom: '0.5rem' }}>🚀 Consciousness Debug</div>
+            <div>Selected Intent: <span style={{ color: selectedIntent ? '#00ff00' : '#ff0000' }}>{selectedIntent || 'NONE'}</span></div>
+            <div>Past Hero: <span style={{ color: pastHero ? '#00ff00' : '#ff0000' }}>{pastHero ? 'YES' : 'NO'}</span></div>
+            <div>Show Experience: <span style={{ color: showChatbot ? '#00ff00' : '#ff0000' }}>{showChatbot ? 'YES' : 'NO'}</span></div>
+            <div style={{
+              marginTop: '0.5rem',
+              padding: '0.5rem',
+              background: selectedIntent && showChatbot && pastHero ? 'rgba(0, 255, 0, 0.2)' : 'rgba(255, 0, 0, 0.2)',
+              borderRadius: '4px'
+            }}>
+              Consciousness Active: <span style={{
+                color: selectedIntent && showChatbot && pastHero ? '#00ff00' : '#ff0000'
+              }}>
+                {selectedIntent && showChatbot && pastHero ? 'YES ✓' : 'NO ✗'}
+              </span>
+            </div>
+            <div style={{ fontSize: '0.6rem', color: '#888', marginTop: '0.5rem' }}>
+              1. Click intent button in hero<br/>
+              2. Scroll down past 80% of screen<br/>
+              3. Look for blue orb
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
