@@ -4,8 +4,9 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Send, Sparkles, Briefcase, User, Zap, Moon, Sun, Palette } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
-import { ConsciousnessIndicator } from '@/components/consciousness/ConsciousnessIndicator';
-import { AmbientWhispers } from '@/components/consciousness/AmbientWhispers';
+// TEMPORARY: Consciousness imports disabled
+// import { ConsciousnessIndicator } from '@/components/consciousness/ConsciousnessIndicator';
+// import { AmbientWhispers } from '@/components/consciousness/AmbientWhispers';
 
 export default function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
@@ -623,15 +624,15 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Living consciousness system - only show after hero */}
-        <div style={{
+        {/* TEMPORARY: Consciousness system disabled to fix click issues */}
+        {/* <div style={{
           opacity: pastHero ? 1 : 0,
           pointerEvents: pastHero ? 'auto' : 'none',
           transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
         }}>
           <ConsciousnessIndicator />
           <AmbientWhispers />
-        </div>
+        </div> */}
       </div>
     </>
   );
