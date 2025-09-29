@@ -4,6 +4,21 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ArrowDown, ArrowUpRight, Circle, Hexagon, Grid3x3, Heart } from 'lucide-react';
 
+interface LocalProject {
+  id: number;
+  number: string;
+  icon: any;
+  title: string;
+  category: string;
+  description: string;
+  metric: string;
+  tags: string[];
+  status: string;
+  year: string;
+  color: string;
+  url?: string;
+}
+
 export function Work() {
   const [currentProject, setCurrentProject] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
@@ -48,7 +63,7 @@ export function Work() {
     };
   }, []);
 
-  const projects = [
+  const projects: LocalProject[] = [
     {
       id: 1,
       number: '01',
@@ -103,7 +118,7 @@ export function Work() {
       status: 'Active',
       year: '2024',
       color: '255, 100, 150',
-      url: undefined,
+      url: '/',
     }
   ];
 
@@ -324,7 +339,7 @@ export function Work() {
               <div
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
-                onClick={project.links?.[0]?.url ? () => window.location.href = project.links[0].url : undefined}
+                onClick={project.url ? () => window.location.href = project.url! : undefined}
                 style={{
                   width: '100%',
                   maxWidth: '1400px',
@@ -334,7 +349,7 @@ export function Work() {
                   transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
                   transformStyle: 'preserve-3d',
                   transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-                  cursor: project.links?.[0]?.url ? 'pointer' : 'default',
+                  cursor: project.url ? 'pointer' : 'default',
                 }}
               >
                 {/* Card Background Layers */}
@@ -624,8 +639,8 @@ export function Work() {
                     <div style={{
                       animation: isActive ? 'slideInLeft 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both' : 'none',
                     }}>
-                      {project.links?.[0]?.url ? (
-                        <Link href={project.links[0].url} style={{ textDecoration: 'none' }}>
+                      {project.url ? (
+                        <Link href={project.url as any} style={{ textDecoration: 'none' }}>
                           <button
                             style={{
                               display: 'flex',
