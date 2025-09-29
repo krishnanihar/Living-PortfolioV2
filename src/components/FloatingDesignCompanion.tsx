@@ -146,8 +146,8 @@ export function FloatingDesignCompanion({ selectedIntent, onReveal }: FloatingDe
         ref={companionRef}
         initial={{ opacity: 0, scale: 0 }}
         animate={{
-          opacity: selectedIntent ? 1 : 0,
-          scale: selectedIntent ? 1 : 0,
+          opacity: 1,
+          scale: 1,
           x: companionPosition.x + '%',
           y: companionPosition.y + '%'
         }}
