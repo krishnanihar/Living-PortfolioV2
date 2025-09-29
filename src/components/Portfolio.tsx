@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { Briefcase, User, Moon, Sun, Palette } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
 import { LivingConsciousnessExperience } from '@/components/LivingConsciousnessExperience';
+import { ConversationStarter } from '@/components/ConversationStarter';
 
 export default function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
   const [pastHero, setPastHero] = useState(false);
   const [showChatbot, setShowChatbot] = useState(false);
+  const [selectedIntent, setSelectedIntent] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [cardTilt, setCardTilt] = useState({ x: 0, y: 0 });
   const { theme, resolvedTheme, toggleTheme } = useTheme();
@@ -41,6 +43,11 @@ export default function Portfolio() {
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
+
+  const handleIntentSelect = (intentId: string) => {
+    setSelectedIntent(intentId);
+    setShowChatbot(true);
+  };
 
   const navItems = [
     { name: 'Work', icon: Briefcase, href: '/work' as const },
@@ -403,10 +410,7 @@ export default function Portfolio() {
 
             {/* Revolutionary Consciousness Experience Content */}
             <div style={{ position: 'relative', zIndex: 1 }}>
-              <LivingConsciousnessExperience
-                pastHero={pastHero}
-                showExperience={false}
-              />
+              <ConversationStarter onIntentSelect={handleIntentSelect} />
 
               {/* Company credits with glass separator */}
               <div style={{
@@ -450,6 +454,7 @@ export default function Portfolio() {
         <LivingConsciousnessExperience
           pastHero={pastHero}
           showExperience={showChatbot}
+          selectedIntent={selectedIntent}
         />
       </div>
     </>

@@ -1,20 +1,20 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { ConversationStarter } from './ConversationStarter';
 import { FloatingDesignCompanion } from './FloatingDesignCompanion';
 import { ProgressiveRevelation } from './ProgressiveRevelation';
 
 interface LivingConsciousnessExperienceProps {
   pastHero?: boolean;
   showExperience?: boolean;
+  selectedIntent?: string | null;
 }
 
 export function LivingConsciousnessExperience({
   pastHero = false,
-  showExperience = false
+  showExperience = false,
+  selectedIntent = null
 }: LivingConsciousnessExperienceProps) {
-  const [selectedIntent, setSelectedIntent] = useState<string | null>(null);
   const [currentContent, setCurrentContent] = useState<string | null>(null);
   const [unlockedContent, setUnlockedContent] = useState<string[]>([]);
   const [companionMessage, setCompanionMessage] = useState<string | null>(null);
@@ -53,19 +53,6 @@ export function LivingConsciousnessExperience({
     return () => window.removeEventListener('scroll', detectCurrentContent);
   }, []);
 
-  const handleIntentSelect = (intentId: string) => {
-    setSelectedIntent(intentId);
-
-    // Update companion state when intent is selected
-    const intentMessages = {
-      hiring: "Great choice! I'll show you my professional impact and leadership experience.",
-      inspiration: "Perfect! Let me reveal the creative process behind these living interfaces.",
-      learning: "Excellent! I'll guide you through the methodology and thinking behind each design.",
-      collaboration: "Wonderful! I'll share insights about working together and open projects."
-    };
-
-    setCompanionMessage(intentMessages[intentId as keyof typeof intentMessages] || null);
-  };
 
   const handleCompanionReveal = (content: string) => {
     // Handle when the companion wants to reveal something
@@ -89,15 +76,6 @@ export function LivingConsciousnessExperience({
 
   return (
     <>
-      {/* Hero Section with Conversation Starter */}
-      {!pastHero && (
-        <div style={{
-          position: 'relative',
-          zIndex: 1,
-        }}>
-          <ConversationStarter onIntentSelect={handleIntentSelect} />
-        </div>
-      )}
 
       {/* Floating Design Companion - ONLY appears after scroll past hero */}
       {selectedIntent && showExperience && pastHero && (
