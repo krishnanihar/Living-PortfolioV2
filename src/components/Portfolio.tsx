@@ -11,11 +11,13 @@ export default function Portfolio() {
   const [selectedIntent, setSelectedIntent] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [cardTilt, setCardTilt] = useState({ x: 0, y: 0 });
+  const [pastHero, setPastHero] = useState(false);
   const { theme, resolvedTheme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
+      setPastHero(window.scrollY > window.innerHeight * 0.8);
     };
 
     const handleMouseMove = (e: MouseEvent) => {

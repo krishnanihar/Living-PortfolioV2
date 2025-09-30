@@ -2,10 +2,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/effects/ThemeProvider';
-// TEMPORARILY DISABLED FOR DEBUGGING CLICK ISSUES
 import { FocusManager } from '@/components/effects/FocusManager';
 import { MicroInteractionProvider } from '@/components/effects/MicroInteractionProvider';
-import { ConsciousnessProvider } from '@/components/effects/ConsciousnessProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -96,17 +94,14 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <ThemeProvider defaultTheme="dark" attribute="data-theme">
-          {/* TEMPORARILY DISABLED FOR DEBUGGING CLICK ISSUES */}
-          <ConsciousnessProvider>
-            {/* Micro-interactions system */}
-            <MicroInteractionProvider />
+          {/* Micro-interactions system */}
+          <MicroInteractionProvider />
 
-            {/* Enhanced focus management */}
-            <FocusManager />
+          {/* Enhanced focus management */}
+          <FocusManager />
 
-            {/* Main content */}
-            {children}
-          </ConsciousnessProvider>
+          {/* Main content */}
+          {children}
         </ThemeProvider>
       </body>
     </html>
