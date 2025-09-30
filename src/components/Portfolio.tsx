@@ -4,13 +4,10 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Briefcase, User, Moon, Sun, Palette } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
-import { LivingConsciousnessExperience } from '@/components/LivingConsciousnessExperience';
 import { ConversationStarter } from '@/components/ConversationStarter';
 
 export default function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
-  const [pastHero, setPastHero] = useState(false);
-  const [showChatbot, setShowChatbot] = useState(false);
   const [selectedIntent, setSelectedIntent] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [cardTilt, setCardTilt] = useState({ x: 0, y: 0 });
@@ -18,23 +15,7 @@ export default function Portfolio() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const heroThreshold = window.innerHeight * 0.8; // 80% of viewport (for BOTH nav and bot)
-      const scrollY = window.scrollY;
-      const isPastHero = scrollY > heroThreshold;
-
-      setScrolled(scrollY > 20);
-      setPastHero(isPastHero);
-      setShowChatbot(isPastHero);
-
-      // Debug logging for scroll events
-      if (isPastHero) {
-        console.log('📜 Scroll past hero threshold!', {
-          scrollY,
-          heroThreshold,
-          pastHero: isPastHero,
-          showChatbot: isPastHero
-        });
-      }
+      setScrolled(window.scrollY > 20);
     };
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -58,10 +39,7 @@ export default function Portfolio() {
   }, []);
 
   const handleIntentSelect = (intentId: string) => {
-    console.log('🎯 Intent Selected:', intentId);
     setSelectedIntent(intentId);
-    setShowChatbot(true);
-    console.log('🤖 Chatbot enabled, selectedIntent set to:', intentId);
   };
 
   const navItems = [
@@ -467,11 +445,6 @@ export default function Portfolio() {
           </div>
         </section>
 
-        <LivingConsciousnessExperience
-          pastHero={pastHero}
-          showExperience={showChatbot}
-          selectedIntent={selectedIntent}
-        />
 
       </div>
     </>
