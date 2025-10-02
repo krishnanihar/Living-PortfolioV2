@@ -42,8 +42,8 @@ export function FlowerOfLifeSVG({
     // 6 circles around center at 60° intervals
     for (let i = 0; i < 6; i++) {
       const angle = (i * 60) * (Math.PI / 180);
-      const cx = centerX + radius * Math.cos(angle);
-      const cy = centerY + radius * Math.sin(angle);
+      const cx = parseFloat((centerX + radius * Math.cos(angle)).toFixed(3));
+      const cy = parseFloat((centerY + radius * Math.sin(angle)).toFixed(3));
       circles.push({ cx, cy, r: radius });
     }
   } else {
@@ -54,8 +54,8 @@ export function FlowerOfLifeSVG({
     // First ring - 6 circles at 60° intervals
     for (let i = 0; i < 6; i++) {
       const angle = (i * 60) * (Math.PI / 180);
-      const cx = centerX + radius * Math.cos(angle);
-      const cy = centerY + radius * Math.sin(angle);
+      const cx = parseFloat((centerX + radius * Math.cos(angle)).toFixed(3));
+      const cy = parseFloat((centerY + radius * Math.sin(angle)).toFixed(3));
       circles.push({ cx, cy, r: radius });
     }
 
@@ -63,8 +63,8 @@ export function FlowerOfLifeSVG({
     for (let i = 0; i < 12; i++) {
       const angle = (i * 30) * (Math.PI / 180);
       const distance = radius * Math.sqrt(3); // Distance for perfect overlap
-      const cx = centerX + distance * Math.cos(angle);
-      const cy = centerY + distance * Math.sin(angle);
+      const cx = parseFloat((centerX + distance * Math.cos(angle)).toFixed(3));
+      const cy = parseFloat((centerY + distance * Math.sin(angle)).toFixed(3));
       circles.push({ cx, cy, r: radius });
     }
   }
