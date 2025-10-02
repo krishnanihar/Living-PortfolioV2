@@ -40,25 +40,25 @@ export function SacredCursor({ enabled = true }: SacredCursorProps) {
 
     setIsActive(true);
 
-    // Mouse move handler
-    const handleMouseMove = (e: MouseEvent) => {
+    // Read position from CSS variables set by useAmbientConsciousness
+    const updatePositionFromCSS = () => {
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current);
       }
 
       rafRef.current = requestAnimationFrame(() => {
-        setPosition({ x: e.clientX, y: e.clientY });
+        const root = document.documentElement;
+        const x = parseFloat(root.style.getPropertyValue('--companion-x')) || 0;
+        const y = parseFloat(root.style.getPropertyValue('--companion-y')) || 0;
+        const color = root.style.getPropertyValue('--companion-color').trim() || 'rgba(59, 130, 246, 0.7)';
 
-        // Update cursor color from CSS variable (set by useAmbientConsciousness)
-        const color = getComputedStyle(document.documentElement)
-          .getPropertyValue('--companion-color')
-          .trim();
-
-        if (color) {
-          setCursorColor(color);
-        }
+        setPosition({ x, y });
+        setCursorColor(color);
       });
     };
+
+    // Poll for updates (lightweight since we're just reading CSS variables)
+    const intervalId = setInterval(updatePositionFromCSS, 16); // ~60fps
 
     // ESC key toggle
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -97,11 +97,10 @@ export function SacredCursor({ enabled = true }: SacredCursorProps) {
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+      clearInterval(intervalId);
       window.removeEventListener('keydown', handleKeyDown);
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current);
@@ -125,46 +124,23 @@ export function SacredCursor({ enabled = true }: SacredCursorProps) {
   if (!isActive) return null;
 
   return (
-    <>
-      <style jsx>{`
-        .sacred-cursor {
-          position: fixed;
-          pointer-events: none;
-          z-index: 10000;
-          will-change: transform;
-          mix-blend-mode: difference;
-          filter: drop-shadow(0 0 4px currentColor);
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .sacred-cursor {
-            display: none !important;
-          }
-        }
-
-        @media (hover: none) {
-          .sacred-cursor {
-            display: none !important;
-          }
-        }
-      `}</style>
-
-      <div
-        ref={cursorRef}
-        className="sacred-cursor"
-        style={{
-          left: `${position.x}px`,
-          top: `${position.y}px`,
-          transform: 'translate(-50%, -50%)',
-          color: cursorColor,
-        }}
-      >
-        <FlowerOfLifeSVG
-          size={16}
-          color={cursorColor}
-          variant="cursor"
-        />
-      </div>
-    </>
+    <div
+      ref={cursorRef}
+      className="fixed pointer-events-none z-[10000] mix-blend-difference"
+      style={{
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        transform: 'translate(-50%, -50%)',
+        color: cursorColor,
+        willChange: 'transform',
+        filter: `drop-shadow(0 0 4px ${cursorColor})`,
+      }}
+    >
+      <FlowerOfLifeSVG
+        size={16}
+        color={cursorColor}
+        variant="cursor"
+      />
+    </div>
   );
 }
