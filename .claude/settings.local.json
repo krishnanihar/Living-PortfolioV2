@@ -22,7 +22,8 @@
       "Bash(claude mcp add:*)",
       "Bash(claude mcp:*)",
       "Read(//Users/krishnaniharsunkara/**)",
-      "Bash(kill:*)"
+      "Bash(kill:*)",
+      "Bash(rm:*)"
     ],
     "deny": [],
     "ask": []

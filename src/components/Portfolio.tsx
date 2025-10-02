@@ -311,7 +311,9 @@ export default function Portfolio() {
           justifyContent: 'center',
           position: 'relative',
         }}>
-          <div style={{
+          <div
+            data-project="living-organism"
+            style={{
             transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
             width: '100%',
             maxWidth: '720px',

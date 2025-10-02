@@ -10,11 +10,11 @@ interface GeometricCompanionProps {
 /**
  * Geometric Companion - Isometric cube that follows mouse
  *
- * KEY ANTI-PATTERNS AVOIDED:
- * - pointer-events: none (never blocks clicks)
- * - Pure CSS animations (no useState for animations)
- * - CSS custom properties for positioning (set by hook)
- * - No Framer Motion MotionValues
+ * FIXED:
+ * - 2D rotation only (no 3D transform)
+ * - Working color states via CSS variables
+ * - Tooltips appear on hover
+ * - Proper data-project detection
  */
 export function GeometricCompanion({ enabled = true }: GeometricCompanionProps) {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
@@ -65,23 +65,21 @@ export function GeometricCompanion({ enabled = true }: GeometricCompanionProps) 
   return (
     <>
       <style jsx>{`
-        @keyframes rotate-cube {
+        @keyframes rotate-flat {
           from {
-            transform: rotateX(30deg) rotateY(0deg) rotateZ(45deg);
+            transform: rotate(0deg);
           }
           to {
-            transform: rotateX(30deg) rotateY(360deg) rotateZ(45deg);
+            transform: rotate(360deg);
           }
         }
 
         @keyframes breathe-companion {
           0%, 100% {
             opacity: 0.8;
-            transform: scale(1);
           }
           50% {
             opacity: 1;
-            transform: scale(1.05);
           }
         }
 
@@ -98,33 +96,32 @@ export function GeometricCompanion({ enabled = true }: GeometricCompanionProps) 
 
         .geometric-companion {
           position: fixed;
-          width: 24px;
-          height: 24px;
+          width: 28px;
+          height: 28px;
           pointer-events: none;
           z-index: 9998;
-          will-change: transform;
-          transition: left 0.15s cubic-bezier(0.16, 1, 0.3, 1),
-                      top 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-          left: var(--companion-x, 50%);
-          top: var(--companion-y, 50%);
-          transform: translate(40px, 40px); /* Offset from cursor */
+          will-change: left, top;
+          transition: left 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+                      top 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+          left: calc(var(--companion-x, 50%) + 40px);
+          top: calc(var(--companion-y, 50%) + 40px);
           animation: breathe-companion 3s ease-in-out infinite;
         }
 
         .geometric-cube {
           width: 100%;
           height: 100%;
-          animation: rotate-cube var(--companion-rotation-speed, 15s) linear infinite;
-          transform-style: preserve-3d;
+          animation: rotate-flat var(--companion-rotation-speed, 15s) linear infinite;
         }
 
-        .geometric-cube line {
+        .geometric-cube line,
+        .geometric-cube path {
           stroke: var(--companion-color, rgba(59, 130, 246, 0.7));
           stroke-width: 1.5;
           stroke-linecap: round;
           stroke-linejoin: round;
-          vector-effect: non-scaling-stroke;
-          transition: stroke 0.3s ease;
+          fill: none;
+          transition: stroke 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .contextual-tooltip {
@@ -132,14 +129,14 @@ export function GeometricCompanion({ enabled = true }: GeometricCompanionProps) 
           pointer-events: none;
           z-index: 9999;
           padding: 0.625rem 1rem;
-          background: var(--surface-secondary);
+          background: rgba(10, 10, 10, 0.85);
           backdrop-filter: blur(30px) saturate(180%);
           -webkit-backdrop-filter: blur(30px) saturate(180%);
-          border: 1px solid var(--border-primary);
+          border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: 12px;
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
           font-size: 0.75rem;
-          color: var(--text-secondary);
+          color: rgba(255, 255, 255, 0.8);
           white-space: nowrap;
           animation: fade-in-tooltip 0.2s cubic-bezier(0.16, 1, 0.3, 1);
           max-width: 300px;
@@ -158,28 +155,24 @@ export function GeometricCompanion({ enabled = true }: GeometricCompanionProps) 
       <div className="geometric-companion">
         <svg
           className="geometric-cube"
-          viewBox="0 0 24 24"
+          viewBox="0 0 32 32"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Isometric cube outline */}
-          {/* Bottom face */}
-          <line x1="12" y1="18" x2="6" y2="14" />
-          <line x1="12" y1="18" x2="18" y2="14" />
-          <line x1="6" y1="14" x2="12" y2="10" />
-          <line x1="18" y1="14" x2="12" y2="10" />
+          {/* Isometric cube - flat 2D design */}
+          {/* Top diamond */}
+          <path d="M 16 4 L 26 10 L 16 16 L 6 10 Z" />
 
-          {/* Top face */}
-          <line x1="12" y1="10" x2="6" y2="6" />
-          <line x1="12" y1="10" x2="18" y2="6" />
-          <line x1="6" y1="6" x2="12" y2="2" />
-          <line x1="18" y1="6" x2="12" y2="2" />
+          {/* Left face */}
+          <path d="M 6 10 L 6 22 L 16 28 L 16 16 Z" />
 
-          {/* Vertical edges */}
-          <line x1="6" y1="14" x2="6" y2="6" />
-          <line x1="18" y1="14" x2="18" y2="6" />
-          <line x1="12" y1="18" x2="12" y2="10" />
-          <line x1="12" y1="10" x2="12" y2="2" />
+          {/* Right face */}
+          <path d="M 26 10 L 26 22 L 16 28 L 16 16 Z" />
+
+          {/* Internal lines for detail */}
+          <line x1="16" y1="16" x2="16" y2="28" />
+          <line x1="6" y1="10" x2="16" y2="16" />
+          <line x1="26" y1="10" x2="16" y2="16" />
         </svg>
       </div>
 
