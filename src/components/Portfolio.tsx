@@ -390,9 +390,9 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Consciousness System - positioned outside main content flow */}
-        <SimplifiedConsciousnessOrb onChatOpen={() => setIsChatOpen(true)} />
-        <ConsciousnessChat isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
+        {/* Consciousness System - temporarily disabled for deployment */}
+        {/* <SimplifiedConsciousnessOrb onChatOpen={() => setIsChatOpen(true)} /> */}
+        {/* <ConsciousnessChat isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} /> */}
 
       </div>
     </>
