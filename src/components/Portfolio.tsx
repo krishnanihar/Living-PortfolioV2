@@ -5,12 +5,17 @@ import Link from 'next/link';
 import { Briefcase, User, Moon, Sun, Palette } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
 import { CustomCursor } from '@/components/effects/CustomCursor';
+import { ConversationStarter } from '@/components/ConversationStarter';
+import { Chatbot } from '@/components/Chatbot';
 
 export default function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [cardTilt, setCardTilt] = useState({ x: 0, y: 0 });
   const [pastHero, setPastHero] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [initialMessage, setInitialMessage] = useState('');
+  const [intentContext, setIntentContext] = useState('');
   const { theme, resolvedTheme, toggleTheme } = useTheme();
 
   useEffect(() => {
@@ -359,69 +364,30 @@ export default function Portfolio() {
               filter: 'blur(0.5px)',
             }} />
 
-            {/* Hero Content */}
-            <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', marginBottom: '3rem' }}>
-              <div style={{
-                fontSize: '0.825rem',
-                color: 'var(--text-muted)',
-                marginBottom: '1.25rem',
-                letterSpacing: '0.025em',
-                fontWeight: '200',
-              }}>
-                Good evening.
-              </div>
-
-              <h1 style={{
-                fontSize: 'clamp(1.75rem, 4.5vw, 2.75rem)',
-                fontWeight: '200',
-                color: 'var(--text-primary)',
-                marginBottom: '2.5rem',
-                lineHeight: '1.1',
-                letterSpacing: '-0.02em',
-              }}>
-                I build living interfaces
-              </h1>
-
-              {/* Company credits with glass separator */}
-              <div style={{
-                display: 'flex',
-                gap: '1.75rem',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-                paddingTop: '1.75rem',
-                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 1s both',
-              }}>
-                {companies.map((company) => (
-                  <div
-                    key={company}
-                    style={{
-                      color: 'var(--text-muted)',
-                      fontSize: '0.7rem',
-                      fontWeight: '300',
-                      letterSpacing: '0.03em',
-                      transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.color = 'rgba(255, 255, 255, 0.8)';
-                      (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.color = 'rgba(255, 255, 255, 0.4)';
-                      (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                    }}
-                  >
-                    {company}
-                  </div>
-                ))}
-              </div>
-            </div>
+            {/* Conversation Starter */}
+            <ConversationStarter
+              onMessageSubmit={(message, intent) => {
+                setInitialMessage(message);
+                setIntentContext(intent);
+                setChatOpen(true);
+              }}
+            />
           </div>
         </section>
 
         {/* Simple Dot Cursor */}
         <CustomCursor />
+
+        {/* AI Chatbot */}
+        <Chatbot
+          isOpen={chatOpen}
+          onClose={() => {
+            setChatOpen(false);
+            setInitialMessage('');
+          }}
+          initialMessage={initialMessage}
+          intentContext={intentContext}
+        />
 
       </div>
     </>
