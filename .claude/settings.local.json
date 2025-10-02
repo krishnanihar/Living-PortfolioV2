@@ -18,7 +18,11 @@
       "Bash(timeout 10 npm run dev:*)",
       "Bash(curl:*)",
       "Bash(node -e \"require(''''./src/components/SimplifiedConsciousnessOrb.tsx'''')\")",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(claude mcp add:*)",
+      "Bash(claude mcp:*)",
+      "Read(//Users/krishnaniharsunkara/**)",
+      "Bash(kill:*)"
     ],
     "deny": [],
     "ask": []

@@ -4,19 +4,18 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Briefcase, User, Moon, Sun, Palette } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
-import { ConversationStarter } from '@/components/ConversationStarter';
-import { SmartNavigation } from '@/components/SmartNavigation';
-import { SimplifiedConsciousnessOrb } from '@/components/SimplifiedConsciousnessOrb';
-import { ConsciousnessChat } from '@/components/ConsciousnessChat';
+import { useAmbientConsciousness } from '@/hooks/useAmbientConsciousness';
+import { GeometricCompanion } from '@/components/GeometricCompanion';
 
 export default function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
-  const [selectedIntent, setSelectedIntent] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [cardTilt, setCardTilt] = useState({ x: 0, y: 0 });
   const [pastHero, setPastHero] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
   const { theme, resolvedTheme, toggleTheme } = useTheme();
+
+  // Initialize ambient consciousness system
+  useAmbientConsciousness();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,10 +42,6 @@ export default function Portfolio() {
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
-
-  const handleIntentSelect = (intentId: string) => {
-    setSelectedIntent(intentId);
-  };
 
   const navItems = [
     { name: 'Work', icon: Briefcase, href: '/work' as const },
@@ -245,7 +240,25 @@ export default function Portfolio() {
               alignItems: 'center',
               gap: '2rem',
             }}>
-              <SmartNavigation navItems={navItems} />
+              {/* Navigation Items */}
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link key={item.href} href={item.href} style={{ textDecoration: 'none' }}>
+                    <div style={{
+                      padding: '0.5rem 1.25rem',
+                      borderRadius: '24px',
+                      fontSize: '0.825rem',
+                      fontWeight: '400',
+                      color: 'var(--text-secondary)',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                    }}>
+                      {item.name}
+                    </div>
+                  </Link>
+                );
+              })}
 
               <div style={{
                 width: '1px',
@@ -348,9 +361,28 @@ export default function Portfolio() {
               filter: 'blur(0.5px)',
             }} />
 
-            {/* Revolutionary Consciousness Experience Content */}
-            <div style={{ position: 'relative', zIndex: 1 }}>
-              <ConversationStarter onIntentSelect={handleIntentSelect} />
+            {/* Hero Content */}
+            <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', marginBottom: '3rem' }}>
+              <div style={{
+                fontSize: '0.825rem',
+                color: 'var(--text-muted)',
+                marginBottom: '1.25rem',
+                letterSpacing: '0.025em',
+                fontWeight: '200',
+              }}>
+                Good evening.
+              </div>
+
+              <h1 style={{
+                fontSize: 'clamp(1.75rem, 4.5vw, 2.75rem)',
+                fontWeight: '200',
+                color: 'var(--text-primary)',
+                marginBottom: '2.5rem',
+                lineHeight: '1.1',
+                letterSpacing: '-0.02em',
+              }}>
+                I build living interfaces
+              </h1>
 
               {/* Company credits with glass separator */}
               <div style={{
@@ -390,9 +422,8 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Consciousness System - temporarily disabled for deployment */}
-        {/* <SimplifiedConsciousnessOrb onChatOpen={() => setIsChatOpen(true)} /> */}
-        {/* <ConsciousnessChat isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} /> */}
+        {/* Geometric Consciousness Companion */}
+        <GeometricCompanion enabled={true} />
 
       </div>
     </>

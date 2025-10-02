@@ -216,9 +216,9 @@ export class SpotlightEffect {
       height: 480px;
       pointer-events: none;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(180, 210, 240, 0.06) 0%, transparent 60%);
+      background: radial-gradient(circle, rgba(180, 210, 240, 0.03) 0%, transparent 60%);
       transform: translate(-50%, -50%);
-      z-index: 9999;
+      z-index: 9997;
       opacity: 0;
       transition: opacity 0.3s ease;
       will-change: transform;
