@@ -6,7 +6,8 @@ import { Briefcase, User, Moon, Sun, Palette } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
 import { ConversationStarter } from '@/components/ConversationStarter';
 import { SmartNavigation } from '@/components/SmartNavigation';
-import { ConsciousnessIndicator } from '@/components/ConsciousnessIndicator';
+import { SimplifiedConsciousnessOrb } from '@/components/SimplifiedConsciousnessOrb';
+import { ConsciousnessChat } from '@/components/ConsciousnessChat';
 
 export default function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
@@ -14,6 +15,7 @@ export default function Portfolio() {
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [cardTilt, setCardTilt] = useState({ x: 0, y: 0 });
   const [pastHero, setPastHero] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const { theme, resolvedTheme, toggleTheme } = useTheme();
 
   useEffect(() => {
@@ -388,8 +390,9 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Consciousness Indicator - positioned outside main content flow */}
-        <ConsciousnessIndicator enabled={true} />
+        {/* Consciousness System - positioned outside main content flow */}
+        <SimplifiedConsciousnessOrb onChatOpen={() => setIsChatOpen(true)} />
+        <ConsciousnessChat isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
 
       </div>
     </>

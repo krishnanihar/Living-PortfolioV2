@@ -14,7 +14,11 @@
       "Bash(git commit:*)",
       "Bash(git reset:*)",
       "Bash(npm run lint)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(timeout 10 npm run dev:*)",
+      "Bash(curl:*)",
+      "Bash(node -e \"require(''''./src/components/SimplifiedConsciousnessOrb.tsx'''')\")",
+      "Bash(pkill:*)"
     ],
     "deny": [],
     "ask": []
