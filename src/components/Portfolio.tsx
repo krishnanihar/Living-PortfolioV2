@@ -6,6 +6,7 @@ import { Briefcase, User, Moon, Sun, Palette } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
 import { useAmbientConsciousness } from '@/hooks/useAmbientConsciousness';
 import { GeometricCompanion } from '@/components/GeometricCompanion';
+import { SacredCursor } from '@/components/SacredCursor';
 
 export default function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
@@ -424,7 +425,8 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Geometric Consciousness Companion */}
+        {/* Sacred Geometry Consciousness System */}
+        <SacredCursor enabled={true} />
         <GeometricCompanion enabled={true} />
 
       </div>

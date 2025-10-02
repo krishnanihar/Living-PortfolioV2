@@ -386,3 +386,40 @@ button {
     background-size: 128px 128px;
   }
 }
+
+/* === SACRED CURSOR MANAGEMENT === */
+
+/* Restore cursors for specific elements (higher specificity) */
+input, textarea, [contenteditable="true"] {
+  cursor: text !important;
+}
+
+a, button, [role="button"], [role="link"] {
+  cursor: pointer !important;
+}
+
+select {
+  cursor: pointer !important;
+}
+
+[draggable="true"] {
+  cursor: grab !important;
+}
+
+[draggable="true"]:active {
+  cursor: grabbing !important;
+}
+
+/* Disable custom cursor for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  body {
+    cursor: auto !important;
+  }
+}
+
+/* Touch devices fallback */
+@media (hover: none) and (pointer: coarse) {
+  body {
+    cursor: auto !important;
+  }
+}

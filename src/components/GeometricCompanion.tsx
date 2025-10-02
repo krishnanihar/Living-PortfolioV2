@@ -2,19 +2,20 @@
 
 import React, { useEffect, useState } from 'react';
 import { getProjectInsight } from '@/data/projectInsights';
+import { FlowerOfLifeSVG } from './FlowerOfLifeSVG';
 
 interface GeometricCompanionProps {
   enabled?: boolean;
 }
 
 /**
- * Geometric Companion - Isometric cube that follows mouse
+ * Geometric Companion - Flower of Life sacred geometry that follows mouse
  *
- * FIXED:
- * - 2D rotation only (no 3D transform)
- * - Working color states via CSS variables
- * - Tooltips appear on hover
- * - Proper data-project detection
+ * FEATURES:
+ * - Full Flower of Life pattern (19 circles)
+ * - Rotation + breathing animations combined
+ * - Color states via CSS variables
+ * - Contextual tooltips on hover
  */
 export function GeometricCompanion({ enabled = true }: GeometricCompanionProps) {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
@@ -65,7 +66,7 @@ export function GeometricCompanion({ enabled = true }: GeometricCompanionProps) 
   return (
     <>
       <style jsx>{`
-        @keyframes rotate-flat {
+        @keyframes rotate-sacred {
           from {
             transform: rotate(0deg);
           }
@@ -74,12 +75,23 @@ export function GeometricCompanion({ enabled = true }: GeometricCompanionProps) 
           }
         }
 
-        @keyframes breathe-companion {
+        @keyframes breathe-flower {
           0%, 100% {
             opacity: 0.8;
+            transform: scale(1);
           }
           50% {
             opacity: 1;
+            transform: scale(1.08);
+          }
+        }
+
+        @keyframes pulse-petals {
+          0%, 100% {
+            stroke-opacity: 0.6;
+          }
+          50% {
+            stroke-opacity: 1;
           }
         }
 
@@ -94,10 +106,10 @@ export function GeometricCompanion({ enabled = true }: GeometricCompanionProps) 
           }
         }
 
-        .geometric-companion {
+        .flower-companion {
           position: fixed;
-          width: 28px;
-          height: 28px;
+          width: 36px;
+          height: 36px;
           pointer-events: none;
           z-index: 9998;
           will-change: left, top;
@@ -105,23 +117,19 @@ export function GeometricCompanion({ enabled = true }: GeometricCompanionProps) 
                       top 0.18s cubic-bezier(0.16, 1, 0.3, 1);
           left: calc(var(--companion-x, 50%) + 40px);
           top: calc(var(--companion-y, 50%) + 40px);
-          animation: breathe-companion 3s ease-in-out infinite;
+          animation: breathe-flower 3s ease-in-out infinite;
         }
 
-        .geometric-cube {
+        .flower-svg-container {
           width: 100%;
           height: 100%;
-          animation: rotate-flat var(--companion-rotation-speed, 15s) linear infinite;
+          animation: rotate-sacred var(--companion-rotation-speed, 15s) linear infinite;
         }
 
-        .geometric-cube line,
-        .geometric-cube path {
+        .flower-svg-container :global(circle) {
           stroke: var(--companion-color, rgba(59, 130, 246, 0.7));
-          stroke-width: 1.5;
-          stroke-linecap: round;
-          stroke-linejoin: round;
-          fill: none;
           transition: stroke 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          animation: pulse-petals 2s ease-in-out infinite;
         }
 
         .contextual-tooltip {
@@ -143,37 +151,24 @@ export function GeometricCompanion({ enabled = true }: GeometricCompanionProps) 
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .geometric-companion,
-          .geometric-cube,
+          .flower-companion,
+          .flower-svg-container,
+          .flower-svg-container :global(circle),
           .contextual-tooltip {
             animation: none !important;
           }
         }
       `}</style>
 
-      {/* Geometric Companion */}
-      <div className="geometric-companion">
-        <svg
-          className="geometric-cube"
-          viewBox="0 0 32 32"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* Isometric cube - flat 2D design */}
-          {/* Top diamond */}
-          <path d="M 16 4 L 26 10 L 16 16 L 6 10 Z" />
-
-          {/* Left face */}
-          <path d="M 6 10 L 6 22 L 16 28 L 16 16 Z" />
-
-          {/* Right face */}
-          <path d="M 26 10 L 26 22 L 16 28 L 16 16 Z" />
-
-          {/* Internal lines for detail */}
-          <line x1="16" y1="16" x2="16" y2="28" />
-          <line x1="6" y1="10" x2="16" y2="16" />
-          <line x1="26" y1="10" x2="16" y2="16" />
-        </svg>
+      {/* Flower of Life Companion */}
+      <div className="flower-companion">
+        <div className="flower-svg-container">
+          <FlowerOfLifeSVG
+            size={36}
+            variant="full"
+            className="flower-pattern"
+          />
+        </div>
       </div>
 
       {/* Contextual Tooltip */}
