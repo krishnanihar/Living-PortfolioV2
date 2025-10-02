@@ -4,9 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Briefcase, User, Moon, Sun, Palette } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
-import { useAmbientConsciousness } from '@/hooks/useAmbientConsciousness';
-import { GeometricCompanion } from '@/components/GeometricCompanion';
-import { SacredCursor } from '@/components/SacredCursor';
+import { CustomCursor } from '@/components/effects/CustomCursor';
 
 export default function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
@@ -14,9 +12,6 @@ export default function Portfolio() {
   const [cardTilt, setCardTilt] = useState({ x: 0, y: 0 });
   const [pastHero, setPastHero] = useState(false);
   const { theme, resolvedTheme, toggleTheme } = useTheme();
-
-  // Initialize ambient consciousness system
-  useAmbientConsciousness();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -425,9 +420,8 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Sacred Geometry Consciousness System */}
-        <SacredCursor enabled={true} />
-        <GeometricCompanion enabled={true} />
+        {/* Simple Dot Cursor */}
+        <CustomCursor />
 
       </div>
     </>
