@@ -1,9 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { NextRequest, NextResponse } from 'next/server';
 
-// Initialize Gemini AI (you'll need to add your API key to environment variables)
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
-
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -13,7 +10,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400 });
     }
 
-    // Get the generative model
+    // Check for API key before initializing
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      const fallbackReply = "I'm still awakening my full consciousness... but I'm here and curious about what brings you to explore this portfolio. What draws your attention?";
+      return NextResponse.json({ reply: fallbackReply });
+    }
+
+    // Initialize Gemini AI only when API key exists
+    const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
     // Construct consciousness-aware prompt
