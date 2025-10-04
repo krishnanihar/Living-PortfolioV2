@@ -430,14 +430,14 @@ export default function Portfolio() {
                 });
               }}
               style={{
-                position: 'absolute',
-                bottom: '-60px',
-                left: '50%',
-                transform: 'translateX(-50%)',
+                position: 'relative',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: '0.5rem',
+                marginTop: '2.5rem',
+                paddingTop: '1.5rem',
+                borderTop: '1px solid rgba(255, 255, 255, 0.06)',
                 opacity: scrollIndicatorOpacity,
                 animation: 'scrollFadeIn 1s ease-out 2s both',
                 cursor: 'pointer',
@@ -446,11 +446,11 @@ export default function Portfolio() {
               }}
               onMouseEnter={(e) => {
                 if (scrollIndicatorOpacity > 0.1) {
-                  (e.currentTarget as HTMLElement).style.transform = 'translateX(-50%) scale(1.1)';
+                  (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)';
                 }
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.transform = 'translateX(-50%) scale(1)';
+                (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
               }}
             >
               <span style={{
@@ -458,7 +458,6 @@ export default function Portfolio() {
                 fontWeight: '300',
                 letterSpacing: '0.1em',
                 color: 'var(--text-muted)',
-                opacity: 0.6,
                 textTransform: 'uppercase',
               }}>
                 Scroll to explore
@@ -467,17 +466,9 @@ export default function Portfolio() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: '36px',
-                height: '36px',
-                borderRadius: '50%',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                background: 'rgba(255, 255, 255, 0.03)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
                 animation: 'scrollBounce 3s ease-in-out infinite',
-                transition: 'all 0.3s ease',
               }}>
-                <ChevronDown size={18} style={{ color: 'var(--text-muted)', opacity: 0.8 }} />
+                <ChevronDown size={18} style={{ color: 'var(--text-muted)', opacity: 0.6 }} />
               </div>
             </div>
           </div>
