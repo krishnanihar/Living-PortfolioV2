@@ -11,6 +11,8 @@ export default function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [pastHero, setPastHero] = useState(false);
+  const [navOpacity, setNavOpacity] = useState(0);
+  const [navTranslateY, setNavTranslateY] = useState(-100);
   const [chatOpen, setChatOpen] = useState(false);
   const [initialMessage, setInitialMessage] = useState('');
   const [intentContext, setIntentContext] = useState('');
@@ -18,8 +20,27 @@ export default function Portfolio() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-      setPastHero(window.scrollY > window.innerHeight * 0.8);
+      const scrollY = window.scrollY;
+      const heroHeight = window.innerHeight;
+
+      setScrolled(scrollY > 20);
+      setPastHero(scrollY > heroHeight * 0.8);
+
+      // Progressive reveal: starts at 200px, fully visible at 500px
+      const revealStart = 200;
+      const revealEnd = 500;
+
+      if (scrollY < revealStart) {
+        setNavOpacity(0);
+        setNavTranslateY(-100);
+      } else if (scrollY >= revealStart && scrollY <= revealEnd) {
+        const progress = (scrollY - revealStart) / (revealEnd - revealStart);
+        setNavOpacity(progress);
+        setNavTranslateY(-100 + (progress * 100));
+      } else {
+        setNavOpacity(1);
+        setNavTranslateY(0);
+      }
     };
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -168,8 +189,9 @@ export default function Portfolio() {
           right: 0,
           zIndex: 9999,
           height: scrolled ? '54px' : '60px',
-          opacity: pastHero ? 1 : 0.4,
-          pointerEvents: 'auto',
+          opacity: navOpacity,
+          transform: `translateY(${navTranslateY}%)`,
+          pointerEvents: navOpacity > 0.1 ? 'auto' : 'none',
           transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
         }}>
           {/* Multi-layer glass effect */}
