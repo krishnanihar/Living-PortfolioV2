@@ -16,6 +16,10 @@ import {
 export function AboutSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const [activeTimeline, setActiveTimeline] = useState<string | null>(null);
+  const [avatarEmoji, setAvatarEmoji] = useState('👋');
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
@@ -36,12 +40,66 @@ export function AboutSection() {
     };
   }, []);
 
+  // Scroll progress indicator
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  // Avatar emoji rotation (every 3 seconds)
+  useEffect(() => {
+    const emojis = ['👋', '🎨', '💻', '✨'];
+    let currentIndex = 0;
+
+    const interval = setInterval(() => {
+      currentIndex = (currentIndex + 1) % emojis.length;
+      setAvatarEmoji(emojis[currentIndex]);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const journeyMilestones = [
-    { year: '2005', label: 'The Spark', id: 'hyderabad-roots' },
-    { year: '2018', label: 'BFA', id: 'undergrad-2018' },
-    { year: '2021', label: 'NID', id: 'nid-2021' },
-    { year: '2024', label: 'Air India', id: 'air-india-2024' },
+    {
+      year: '2005',
+      label: 'The Spark',
+      id: 'hyderabad-roots',
+      detail: 'Growing up in Hyderabad, tinkering with computers and flashing custom ROMs. The beginning of a lifelong curiosity.'
+    },
+    {
+      year: '2018',
+      label: 'BFA',
+      id: 'undergrad-2018',
+      detail: 'Bachelor of Fine Arts - exploring visual design, typography, and the foundations of creative thinking.'
+    },
+    {
+      year: '2021',
+      label: 'NID',
+      id: 'nid-2021',
+      detail: 'National Institute of Design Masters program - learning to build interfaces that breathe and systems thinking.'
+    },
+    {
+      year: '2024',
+      label: 'Air India',
+      id: 'air-india-2024',
+      detail: 'Leading design transformation at Air India DesignLAB - building systems that serve 450+ daily users in aviation operations.'
+    },
   ];
+
+  const handleEmailCopy = () => {
+    navigator.clipboard.writeText('nihar@example.com');
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2000);
+  };
 
   const featuredWork = [
     {
@@ -97,10 +155,64 @@ export function AboutSection() {
           }
         }
 
+        @keyframes toastSlideIn {
+          from {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
         .animate-fade-in-up {
           animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
       `}</style>
+
+      {/* Scroll Progress Indicator */}
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '3px',
+        background: 'rgba(255, 255, 255, 0.05)',
+        zIndex: 100,
+      }}>
+        <div style={{
+          height: '100%',
+          width: `${scrollProgress}%`,
+          background: 'linear-gradient(90deg, var(--brand-red), rgba(218, 14, 41, 0.6))',
+          transition: 'width 0.1s ease-out',
+          boxShadow: '0 0 8px rgba(218, 14, 41, 0.5)',
+        }} />
+      </div>
+
+      {/* Toast Notification */}
+      {showToast && (
+        <div style={{
+          position: 'fixed',
+          top: '80px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          padding: '0.75rem 1.5rem',
+          background: 'var(--surface-primary)',
+          backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+          WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+          border: '1px solid rgba(34, 197, 94, 0.3)',
+          borderRadius: '16px',
+          color: 'var(--text-primary)',
+          fontSize: '0.875rem',
+          fontWeight: '400',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.02)',
+          zIndex: 1000,
+          animation: 'toastSlideIn 0.3s ease-out',
+        }}>
+          <span style={{ color: 'rgba(34, 197, 94, 1)' }}>✓</span> Email copied to clipboard
+        </div>
+      )}
 
       {/* Mouse tracking background gradient */}
       <div style={{
@@ -141,7 +253,7 @@ export function AboutSection() {
               alignItems: 'center',
               marginBottom: '2.5rem',
             }}>
-              {/* Avatar Placeholder */}
+              {/* Avatar with Rotating Emoji */}
               <div style={{
                 width: '120px',
                 height: '120px',
@@ -153,8 +265,14 @@ export function AboutSection() {
                 justifyContent: 'center',
                 fontSize: '3rem',
                 boxShadow: '0 8px 32px rgba(218, 14, 41, 0.2)',
+                transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
               }}>
-                👋
+                <span style={{
+                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  display: 'inline-block',
+                }}>
+                  {avatarEmoji}
+                </span>
               </div>
 
               {/* Introduction */}
@@ -184,62 +302,102 @@ export function AboutSection() {
 
             {/* Interactive Journey Timeline */}
             <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1rem',
               paddingTop: '2rem',
               borderTop: '1px solid rgba(255, 255, 255, 0.06)',
             }}>
-              {journeyMilestones.map((milestone, index) => (
-                <React.Fragment key={milestone.id}>
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    flex: 1,
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1rem',
+              }}>
+                {journeyMilestones.map((milestone, index) => (
+                  <React.Fragment key={milestone.id}>
+                    <div
+                      onClick={() => setActiveTimeline(activeTimeline === milestone.id ? null : milestone.id)}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        flex: 1,
+                        cursor: 'pointer',
+                        transition: 'transform 0.3s ease',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'translateY(0)';
+                      }}
+                    >
+                      <div style={{
+                        width: activeTimeline === milestone.id ? '16px' : '12px',
+                        height: activeTimeline === milestone.id ? '16px' : '12px',
+                        borderRadius: '50%',
+                        background: index === journeyMilestones.length - 1 || activeTimeline === milestone.id
+                          ? 'var(--brand-red)'
+                          : 'rgba(255, 255, 255, 0.3)',
+                        border: index === journeyMilestones.length - 1 || activeTimeline === milestone.id
+                          ? '2px solid rgba(218, 14, 41, 0.5)'
+                          : '2px solid rgba(255, 255, 255, 0.2)',
+                        boxShadow: index === journeyMilestones.length - 1 || activeTimeline === milestone.id
+                          ? '0 0 12px rgba(218, 14, 41, 0.5)'
+                          : 'none',
+                        transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                      }} />
+                      <div style={{
+                        fontSize: '0.875rem',
+                        fontWeight: '600',
+                        color: activeTimeline === milestone.id || index === journeyMilestones.length - 1
+                          ? 'var(--text-primary)'
+                          : 'var(--text-muted)',
+                        transition: 'color 0.3s ease',
+                      }}>
+                        {milestone.year}
+                      </div>
+                      <div style={{
+                        fontSize: '0.75rem',
+                        color: activeTimeline === milestone.id ? 'var(--brand-red)' : 'var(--text-muted)',
+                        fontWeight: activeTimeline === milestone.id ? '400' : '300',
+                        transition: 'all 0.3s ease',
+                      }}>
+                        {milestone.label}
+                      </div>
+                    </div>
+                    {index < journeyMilestones.length - 1 && (
+                      <div style={{
+                        flex: 1,
+                        height: '1px',
+                        background: 'linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05))',
+                      }} />
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
+
+              {/* Timeline Detail Expansion */}
+              {activeTimeline && (
+                <div style={{
+                  marginTop: '1.5rem',
+                  padding: '1.5rem',
+                  background: 'rgba(218, 14, 41, 0.05)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  borderRadius: '16px',
+                  border: '1px solid rgba(218, 14, 41, 0.2)',
+                  animation: 'fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                }}>
+                  <p style={{
+                    fontSize: '0.9375rem',
+                    color: 'var(--text-secondary)',
+                    lineHeight: '1.7',
+                    fontWeight: '300',
+                    margin: 0,
                   }}>
-                    <div style={{
-                      width: '12px',
-                      height: '12px',
-                      borderRadius: '50%',
-                      background: index === journeyMilestones.length - 1
-                        ? 'var(--brand-red)'
-                        : 'rgba(255, 255, 255, 0.3)',
-                      border: index === journeyMilestones.length - 1
-                        ? '2px solid rgba(218, 14, 41, 0.5)'
-                        : '2px solid rgba(255, 255, 255, 0.2)',
-                      boxShadow: index === journeyMilestones.length - 1
-                        ? '0 0 12px rgba(218, 14, 41, 0.5)'
-                        : 'none',
-                      transition: 'all 0.3s ease',
-                    }} />
-                    <div style={{
-                      fontSize: '0.875rem',
-                      fontWeight: '600',
-                      color: index === journeyMilestones.length - 1
-                        ? 'var(--text-primary)'
-                        : 'var(--text-muted)',
-                    }}>
-                      {milestone.year}
-                    </div>
-                    <div style={{
-                      fontSize: '0.75rem',
-                      color: 'var(--text-muted)',
-                      fontWeight: '300',
-                    }}>
-                      {milestone.label}
-                    </div>
-                  </div>
-                  {index < journeyMilestones.length - 1 && (
-                    <div style={{
-                      flex: 1,
-                      height: '1px',
-                      background: 'linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05))',
-                    }} />
-                  )}
-                </React.Fragment>
-              ))}
+                    {journeyMilestones.find(m => m.id === activeTimeline)?.detail}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -581,8 +739,8 @@ export function AboutSection() {
               gap: '1rem',
               flexWrap: 'wrap',
             }}>
-              <a
-                href="mailto:nihar@example.com"
+              <button
+                onClick={handleEmailCopy}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -593,9 +751,9 @@ export function AboutSection() {
                   fontSize: '0.9375rem',
                   fontWeight: '500',
                   borderRadius: '20px',
-                  textDecoration: 'none',
-                  transition: 'all 0.3s ease',
                   border: '1px solid rgba(218, 14, 41, 0.5)',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'scale(1.05)';
@@ -607,8 +765,8 @@ export function AboutSection() {
                 }}
               >
                 <Mail size={18} />
-                Email Me
-              </a>
+                Copy Email
+              </button>
               <a
                 href="https://linkedin.com"
                 target="_blank"
