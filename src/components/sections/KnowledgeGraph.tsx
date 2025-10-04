@@ -158,7 +158,7 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
       if (container) {
         setDimensions({
           width: container.clientWidth,
-          height: Math.min(700, window.innerHeight * 0.7),
+          height: 550, // Fixed height for side-by-side layout
         });
       }
     };
@@ -557,14 +557,20 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
         linkCanvasObject={drawLink}
         onNodeClick={handleNodeClick}
         onNodeHover={handleNodeHover}
-        cooldownTicks={150}
-        warmupTicks={100}
-        d3AlphaDecay={0.015}
-        d3VelocityDecay={0.25}
-        enableNodeDrag={true}
+        cooldownTicks={50}
+        warmupTicks={30}
+        d3AlphaDecay={0.05}
+        d3VelocityDecay={0.4}
+        d3AlphaMin={0.001}
+        enableNodeDrag={false}
         enableZoomInteraction={true}
         enablePanInteraction={true}
         backgroundColor="transparent"
+        onEngineStop={() => {
+          if (graphRef.current) {
+            graphRef.current.pauseAnimation();
+          }
+        }}
       />
     </div>
   );

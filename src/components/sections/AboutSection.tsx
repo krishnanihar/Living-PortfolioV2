@@ -16,7 +16,8 @@ import {
   ChevronDown,
   Clock,
   Calendar,
-  Network
+  Network,
+  Filter
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { KnowledgeGraph } from './KnowledgeGraph';
@@ -901,12 +902,210 @@ export function AboutSection() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.4 }}
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '45% 1fr',
+                    gap: '2rem',
+                  }}
                 >
-                  <KnowledgeGraph
-                    books={currentlyReading}
-                    games={currentlyPlaying}
-                    onNodeClick={(node) => setSelectedGraphNode(node)}
-                  />
+                  {/* LEFT: Knowledge Graph */}
+                  <div style={{ position: 'sticky', top: '2rem', alignSelf: 'start' }}>
+                    <KnowledgeGraph
+                      books={currentlyReading}
+                      games={currentlyPlaying}
+                      onNodeClick={(node) => setSelectedGraphNode(node)}
+                    />
+                  </div>
+
+                  {/* RIGHT: Filtered Cards */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    {/* Filter Indicator */}
+                    {selectedGraphNode && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          padding: '0.75rem 1rem',
+                          background: 'rgba(218, 14, 41, 0.1)',
+                          backdropFilter: 'blur(20px)',
+                          WebkitBackdropFilter: 'blur(20px)',
+                          borderRadius: '16px',
+                          border: '1px solid rgba(218, 14, 41, 0.2)',
+                          fontSize: '0.875rem',
+                          fontWeight: '500',
+                          color: 'var(--brand-red)',
+                          alignSelf: 'flex-start',
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => setSelectedGraphNode(null)}
+                      >
+                        <Filter size={16} />
+                        <span>Showing: {selectedGraphNode.name}</span>
+                        <span style={{ marginLeft: '0.5rem', opacity: 0.6, fontSize: '0.75rem' }}>Click to clear</span>
+                      </motion.div>
+                    )}
+
+                    {/* Books */}
+                    {(!selectedGraphNode || selectedGraphNode.type === 'book' ||
+                      (selectedGraphNode.type === 'concept' && currentlyReading.some(b => b.tags.includes(selectedGraphNode.name)))) && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                        {currentlyReading
+                          .filter(book => !selectedGraphNode ||
+                            (selectedGraphNode.type === 'concept' && book.tags.includes(selectedGraphNode.name)) ||
+                            (selectedGraphNode.type === 'book' && selectedGraphNode.name === book.title))
+                          .map((book, index) => (
+                            <motion.div
+                              key={index}
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.1 }}
+                              style={{
+                                position: 'relative',
+                                background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.08), rgba(147, 51, 234, 0.02))',
+                                backdropFilter: 'blur(40px) saturate(150%) brightness(1.05)',
+                                WebkitBackdropFilter: 'blur(40px) saturate(150%) brightness(1.05)',
+                                borderRadius: '24px',
+                                padding: '1.5rem',
+                                border: '1px solid rgba(147, 51, 234, 0.15)',
+                                borderLeft: '3px solid rgba(147, 51, 234, 0.6)',
+                                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 24px rgba(147, 51, 234, 0.12)',
+                                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'translateY(-4px)';
+                                e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 32px rgba(147, 51, 234, 0.2)';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'translateY(0)';
+                                e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 24px rgba(147, 51, 234, 0.12)';
+                              }}
+                            >
+                              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1rem' }}>
+                                <BookOpen size={20} style={{ color: '#A855F7', flexShrink: 0, marginTop: '0.25rem' }} />
+                                <div style={{ flex: 1 }}>
+                                  <h4 style={{
+                                    fontSize: '1.125rem',
+                                    fontWeight: '500',
+                                    marginBottom: '0.25rem',
+                                    color: 'var(--text-primary)',
+                                  }}>
+                                    {book.title}
+                                  </h4>
+                                  <p style={{
+                                    fontSize: '0.875rem',
+                                    color: 'var(--text-muted)',
+                                    fontWeight: '300',
+                                  }}>
+                                    {book.author}
+                                  </p>
+                                </div>
+                                <div style={{
+                                  fontSize: '0.875rem',
+                                  fontWeight: '600',
+                                  color: book.progress === 100 ? '#10b981' : '#A855F7',
+                                  padding: '0.25rem 0.75rem',
+                                  borderRadius: '12px',
+                                  background: book.progress === 100 ? 'rgba(16, 185, 129, 0.1)' : 'rgba(168, 85, 247, 0.1)',
+                                }}>
+                                  {book.progress}%
+                                </div>
+                              </div>
+                              <p style={{
+                                fontSize: '0.9375rem',
+                                color: 'var(--text-secondary)',
+                                lineHeight: '1.6',
+                                fontWeight: '300',
+                                fontStyle: 'italic',
+                              }}>
+                                {book.impact}
+                              </p>
+                            </motion.div>
+                          ))}
+                      </div>
+                    )}
+
+                    {/* Games */}
+                    {(!selectedGraphNode || selectedGraphNode.type === 'game' ||
+                      (selectedGraphNode.type === 'concept' && currentlyPlaying.some(g => g.tags.includes(selectedGraphNode.name)))) && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                        {currentlyPlaying
+                          .filter(game => !selectedGraphNode ||
+                            (selectedGraphNode.type === 'concept' && game.tags.includes(selectedGraphNode.name)) ||
+                            (selectedGraphNode.type === 'game' && selectedGraphNode.name === game.title))
+                          .map((game, index) => (
+                            <motion.div
+                              key={index}
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.1 + 0.2 }}
+                              style={{
+                                position: 'relative',
+                                background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(245, 158, 11, 0.02))',
+                                backdropFilter: 'blur(40px) saturate(150%) brightness(1.05)',
+                                WebkitBackdropFilter: 'blur(40px) saturate(150%) brightness(1.05)',
+                                borderRadius: '24px',
+                                padding: '1.5rem',
+                                border: '1px solid rgba(245, 158, 11, 0.15)',
+                                borderLeft: '3px solid rgba(245, 158, 11, 0.6)',
+                                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 24px rgba(245, 158, 11, 0.12)',
+                                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'translateY(-4px)';
+                                e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 32px rgba(245, 158, 11, 0.2)';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'translateY(0)';
+                                e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 24px rgba(245, 158, 11, 0.12)';
+                              }}
+                            >
+                              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1rem' }}>
+                                <Gamepad2 size={20} style={{ color: '#F59E0B', flexShrink: 0, marginTop: '0.25rem' }} />
+                                <div style={{ flex: 1 }}>
+                                  <h4 style={{
+                                    fontSize: '1.125rem',
+                                    fontWeight: '500',
+                                    marginBottom: '0.25rem',
+                                    color: 'var(--text-primary)',
+                                  }}>
+                                    {game.title}
+                                  </h4>
+                                  <p style={{
+                                    fontSize: '0.875rem',
+                                    color: 'var(--text-muted)',
+                                    fontWeight: '300',
+                                  }}>
+                                    {game.studio}
+                                  </p>
+                                </div>
+                                <div style={{
+                                  fontSize: '0.875rem',
+                                  fontWeight: '600',
+                                  color: '#F59E0B',
+                                  padding: '0.25rem 0.75rem',
+                                  borderRadius: '12px',
+                                  background: 'rgba(245, 158, 11, 0.1)',
+                                }}>
+                                  {game.hoursPlayed}h
+                                </div>
+                              </div>
+                              <p style={{
+                                fontSize: '0.9375rem',
+                                color: 'var(--text-secondary)',
+                                lineHeight: '1.6',
+                                fontWeight: '300',
+                                fontStyle: 'italic',
+                              }}>
+                                {game.impact}
+                              </p>
+                            </motion.div>
+                          ))}
+                      </div>
+                    )}
+                  </div>
                 </motion.div>
               ) : activeTab === 'books' ? (
                 <motion.div
