@@ -15,9 +15,11 @@ import {
   Gamepad2,
   ChevronDown,
   Clock,
-  Calendar
+  Calendar,
+  Network
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { KnowledgeGraph } from './KnowledgeGraph';
 
 export function AboutSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -26,8 +28,9 @@ export function AboutSection() {
   const [avatarEmoji, setAvatarEmoji] = useState('👋');
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showToast, setShowToast] = useState(false);
-  const [activeTab, setActiveTab] = useState<'books' | 'games'>('books');
+  const [activeTab, setActiveTab] = useState<'everything' | 'books' | 'games'>('everything');
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
+  const [selectedGraphNode, setSelectedGraphNode] = useState<any | null>(null);
 
   useEffect(() => {
     setIsVisible(true);
@@ -124,7 +127,8 @@ export function AboutSection() {
         'Strange loops appear in music, art, and consciousness',
         'Formal systems have inherent limitations (Gödel\'s theorem)'
       ],
-      relatedWork: 'Air India Design System - recursive component patterns'
+      relatedWork: 'Air India Design System - recursive component patterns',
+      tags: ['Systems', 'Design', 'Narrative']
     },
     {
       title: 'I Am a Strange Loop',
@@ -140,7 +144,8 @@ export function AboutSection() {
         'The "I" is a strange loop in the brain',
         'Pattern recognition creates meaning from symbols'
       ],
-      relatedWork: 'Latent Space - exploring emergent AI consciousness patterns'
+      relatedWork: 'Latent Space - exploring emergent AI consciousness patterns',
+      tags: ['Systems', 'Narrative', 'Experience']
     },
     {
       title: 'The Design of Everyday Things',
@@ -156,7 +161,8 @@ export function AboutSection() {
         'Affordances guide users without explicit instruction',
         'Feedback loops reduce user uncertainty'
       ],
-      relatedWork: 'All projects - core philosophy of interface design'
+      relatedWork: 'All projects - core philosophy of interface design',
+      tags: ['Design', 'Experience']
     },
     {
       title: 'Thinking in Systems',
@@ -172,7 +178,8 @@ export function AboutSection() {
         'System behavior emerges from structure, not events',
         'Feedback delays cause oscillation and instability'
       ],
-      relatedWork: 'Design systems architecture - holistic thinking'
+      relatedWork: 'Design systems architecture - holistic thinking',
+      tags: ['Systems', 'Design']
     },
   ];
 
@@ -191,7 +198,8 @@ export function AboutSection() {
         'Dice rolls as visible decision-making feedback',
         'Consequence trees branch from every choice'
       ],
-      relatedWork: 'Journey timeline - branching narrative visualization'
+      relatedWork: 'Journey timeline - branching narrative visualization',
+      tags: ['Systems', 'Narrative', 'Strategy']
     },
     {
       title: 'Red Dead Redemption 2',
@@ -207,7 +215,8 @@ export function AboutSection() {
         'World responds to player actions with delays',
         'Micro-interactions create sense of presence'
       ],
-      relatedWork: 'Metamorphic Fractals - detail-oriented world-building'
+      relatedWork: 'Metamorphic Fractals - detail-oriented world-building',
+      tags: ['World Building', 'Experience', 'Narrative']
     },
     {
       title: 'Half-Life: Alyx',
@@ -223,7 +232,8 @@ export function AboutSection() {
         'Physical interactions replace abstract menus',
         'Presence through consistent physics simulation'
       ],
-      relatedWork: 'Future VR prototyping - spatial design thinking'
+      relatedWork: 'Future VR prototyping - spatial design thinking',
+      tags: ['Immersion', 'Design', 'Mechanics']
     },
     {
       title: 'Detroit: Become Human',
@@ -239,7 +249,8 @@ export function AboutSection() {
         'Choice architecture creates meaningful decisions',
         'Branching paths as design documentation'
       ],
-      relatedWork: 'Latent Space - decision tree visualization'
+      relatedWork: 'Latent Space - decision tree visualization',
+      tags: ['Narrative', 'Strategy', 'Experience']
     },
   ];
 
@@ -759,6 +770,47 @@ export function AboutSection() {
             }}>
               <button
                 onClick={() => {
+                  setActiveTab('everything');
+                  setExpandedItem(null);
+                  setSelectedGraphNode(null);
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: '0.5rem 0',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  fontSize: '0.875rem',
+                  fontWeight: '500',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  color: activeTab === 'everything' ? 'var(--brand-red)' : 'var(--text-muted)',
+                  transition: 'color 0.3s ease',
+                  position: 'relative',
+                }}
+              >
+                <Network size={18} />
+                Everything
+                {activeTab === 'everything' && (
+                  <motion.div
+                    layoutId="activeTab"
+                    style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: '2px',
+                      background: 'var(--brand-red)',
+                    }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                  />
+                )}
+              </button>
+
+              <button
+                onClick={() => {
                   setActiveTab('books');
                   setExpandedItem(null);
                 }}
@@ -840,9 +892,23 @@ export function AboutSection() {
           </div>
 
           {/* Content Area with AnimatePresence */}
-          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+          <div style={{ maxWidth: activeTab === 'everything' ? '100%' : '800px', margin: '0 auto' }}>
             <AnimatePresence mode="wait">
-              {activeTab === 'books' ? (
+              {activeTab === 'everything' ? (
+                <motion.div
+                  key="everything"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <KnowledgeGraph
+                    books={currentlyReading}
+                    games={currentlyPlaying}
+                    onNodeClick={(node) => setSelectedGraphNode(node)}
+                  />
+                </motion.div>
+              ) : activeTab === 'books' ? (
                 <motion.div
                   key="books"
                   initial={{ opacity: 0, x: -20 }}
