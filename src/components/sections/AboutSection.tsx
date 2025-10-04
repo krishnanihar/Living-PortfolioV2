@@ -746,7 +746,7 @@ export function AboutSection() {
             WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
             borderRadius: '32px',
             border: '1px solid var(--border-primary)',
-            padding: '3rem',
+            padding: '4rem',
             boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 20px 60px rgba(0, 0, 0, 0.3)',
           }}
         >
@@ -772,8 +772,8 @@ export function AboutSection() {
           {/* Tab Navigation */}
           <div style={{
             display: 'flex',
-            gap: '1rem',
-            marginBottom: '2rem',
+            gap: '2.5rem',
+            marginBottom: '3rem',
             borderBottom: '1px solid var(--border-primary)',
             paddingBottom: '1rem',
           }}>
@@ -913,7 +913,7 @@ export function AboutSection() {
                   style={{
                     display: 'grid',
                     gridTemplateColumns: '50% 1fr',
-                    gap: '2rem',
+                    gap: '3rem',
                   }}
                 >
                   {/* LEFT: Knowledge Graph */}

@@ -168,6 +168,22 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     return () => window.removeEventListener('resize', updateDimensions);
   }, []);
 
+  // Configure d3 forces for better spacing
+  useEffect(() => {
+    if (graphRef.current) {
+      const fg = graphRef.current;
+
+      // Increase link distance for more spacing between nodes
+      fg.d3Force('link')?.distance(120);
+
+      // Increase charge strength (more negative = stronger repulsion)
+      fg.d3Force('charge')?.strength(-300);
+
+      // Reduce link strength for looser connections
+      fg.d3Force('link')?.strength(0.3);
+    }
+  }, [graphData]);
+
   // Pulse animation for concept nodes
   useEffect(() => {
     const interval = setInterval(() => {
