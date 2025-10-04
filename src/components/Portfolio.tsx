@@ -389,6 +389,7 @@ export default function Portfolio() {
           alignItems: 'center',
           justifyContent: 'center',
           position: 'relative',
+          paddingBottom: '80px',
         }}>
           <div
             data-tour="hero-card"
