@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Briefcase, User, Moon, Sun, Palette, HelpCircle } from 'lucide-react';
+import { Briefcase, User, Moon, Sun, Palette, HelpCircle, ChevronDown } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
 import { ConversationStarter } from '@/components/ConversationStarter';
 import { Chatbot } from '@/components/Chatbot';
@@ -13,6 +13,7 @@ export default function Portfolio() {
   const [pastHero, setPastHero] = useState(false);
   const [navOpacity, setNavOpacity] = useState(0);
   const [navTranslateY, setNavTranslateY] = useState(-100);
+  const [scrollIndicatorOpacity, setScrollIndicatorOpacity] = useState(0);
   const [chatOpen, setChatOpen] = useState(false);
   const [initialMessage, setInitialMessage] = useState('');
   const [intentContext, setIntentContext] = useState('');
@@ -40,6 +41,13 @@ export default function Portfolio() {
       } else {
         setNavOpacity(1);
         setNavTranslateY(0);
+      }
+
+      // Scroll indicator fade-out: visible until 100px, then fades out
+      if (scrollY < 100) {
+        setScrollIndicatorOpacity(1 - (scrollY / 100));
+      } else {
+        setScrollIndicatorOpacity(0);
       }
     };
 
@@ -159,6 +167,26 @@ export default function Portfolio() {
           }
           50% {
             transform: scale(1.02);
+          }
+        }
+
+        @keyframes scrollBounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(8px);
+          }
+        }
+
+        @keyframes scrollFadeIn {
+          0% {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          100% {
+            opacity: 0.6;
+            transform: translateY(0);
           }
         }
       `}</style>
@@ -392,6 +420,66 @@ export default function Portfolio() {
                 setChatOpen(true);
               }}
             />
+          </div>
+
+          {/* Scroll to Explore Indicator */}
+          <div
+            onClick={() => {
+              window.scrollTo({
+                top: window.innerHeight,
+                behavior: 'smooth'
+              });
+            }}
+            style={{
+              position: 'absolute',
+              bottom: '40px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '0.5rem',
+              opacity: scrollIndicatorOpacity,
+              animation: 'scrollFadeIn 1s ease-out 2s both',
+              cursor: 'pointer',
+              transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+              pointerEvents: scrollIndicatorOpacity > 0.1 ? 'auto' : 'none',
+            }}
+            onMouseEnter={(e) => {
+              if (scrollIndicatorOpacity > 0.1) {
+                (e.currentTarget as HTMLElement).style.transform = 'translateX(-50%) scale(1.1)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.transform = 'translateX(-50%) scale(1)';
+            }}
+          >
+            <span style={{
+              fontSize: '0.75rem',
+              fontWeight: '300',
+              letterSpacing: '0.1em',
+              color: 'var(--text-muted)',
+              opacity: 0.6,
+              textTransform: 'uppercase',
+            }}>
+              Scroll to explore
+            </span>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              background: 'rgba(255, 255, 255, 0.03)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              animation: 'scrollBounce 3s ease-in-out infinite',
+              transition: 'all 0.3s ease',
+            }}>
+              <ChevronDown size={18} style={{ color: 'var(--text-muted)', opacity: 0.8 }} />
+            </div>
           </div>
         </section>
 
