@@ -898,7 +898,6 @@ export function AboutSection() {
                 )}
               </button>
             </div>
-          </div>
 
           {/* Content Area with AnimatePresence */}
           <div>
@@ -1962,6 +1961,7 @@ export function AboutSection() {
             </div>
           </div>
         </div>
+      </div>
     </section>
   );
 }

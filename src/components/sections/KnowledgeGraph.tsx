@@ -64,11 +64,10 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
   const graphRef = useRef<any>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const animationFrameRef = useRef<number | undefined>(undefined);
+  const hoveredNodeRef = useRef<string | null>(null);
   const [graphData, setGraphData] = useState<GraphData>({ nodes: [], links: [] });
-  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 700 });
-  const [particles, setParticles] = useState<Particle[]>([]);
   const [pulsePhase, setPulsePhase] = useState(0);
 
   // Extract all unique concepts/tags from books and games
@@ -190,20 +189,20 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     const nodeSize = baseSize / Math.pow(globalScale, 0.3);
 
     // Determine node appearance based on state
-    const isHovered = hoveredNode === node.id;
+    const isHovered = hoveredNodeRef.current === node.id;
     const isSelected = selectedNode === node.id;
-    const isConnectedToHovered = hoveredNode && graphData.links.some(
+    const isConnectedToHovered = hoveredNodeRef.current && graphData.links.some(
       link => {
         const source = typeof link.source === 'object' ? link.source.id : link.source;
         const target = typeof link.target === 'object' ? link.target.id : link.target;
-        return (source === hoveredNode && target === node.id) ||
-               (target === hoveredNode && source === node.id);
+        return (source === hoveredNodeRef.current && target === node.id) ||
+               (target === hoveredNodeRef.current && source === node.id);
       }
     );
 
     let opacity = 1;
     let scale = 1;
-    if (hoveredNode && !isHovered && !isConnectedToHovered) {
+    if (hoveredNodeRef.current && !isHovered && !isConnectedToHovered) {
       opacity = 0.2;
     }
     if (isHovered || isSelected) {
@@ -298,7 +297,7 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
 
     ctx.shadowBlur = 0;
     ctx.restore();
-  }, [hoveredNode, selectedNode, graphData.links, pulsePhase]);
+  }, [selectedNode, graphData.links, pulsePhase]);
 
   // Watch Dogs-inspired link rendering - straight thin neon lines
   const drawLink = useCallback((link: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
@@ -311,8 +310,8 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
       return;
     }
 
-    const isConnectedToHovered = hoveredNode &&
-      (source.id === hoveredNode || target.id === hoveredNode);
+    const isConnectedToHovered = hoveredNodeRef.current &&
+      (source.id === hoveredNodeRef.current || target.id === hoveredNodeRef.current);
     const isConnectedToSelected = selectedNode &&
       (source.id === selectedNode || target.id === selectedNode);
 
@@ -345,7 +344,7 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     ctx.stroke();
 
     ctx.restore();
-  }, [hoveredNode, selectedNode]);
+  }, [selectedNode]);
 
   // Handle node click
   const handleNodeClick = useCallback((node: any) => {
@@ -355,14 +354,21 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     }
   }, [selectedNode, onNodeClick]);
 
-  // Handle node hover - only update when actually over a node
+  // Handle node hover - use ref to avoid re-renders
   const handleNodeHover = useCallback((node: any) => {
     if (node) {
-      setHoveredNode(node.id);
+      hoveredNodeRef.current = node.id;
       document.body.style.cursor = 'pointer';
+      // Force redraw without re-rendering
+      if (graphRef.current) {
+        graphRef.current.refresh();
+      }
     } else {
-      setHoveredNode(null);
+      hoveredNodeRef.current = null;
       document.body.style.cursor = 'default';
+      if (graphRef.current) {
+        graphRef.current.refresh();
+      }
     }
   }, []);
 
@@ -426,15 +432,7 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
         textTransform: 'uppercase',
         letterSpacing: '0.1em',
       }}>
-        {hoveredNode ? (
-          graphData.nodes.find(n => n.id === hoveredNode)?.type === 'concept'
-            ? '>> CONCEPT NODE'
-            : graphData.nodes.find(n => n.id === hoveredNode)?.type === 'book'
-            ? '>> BOOK NODE'
-            : '>> GAME NODE'
-        ) : (
-          'KNOWLEDGE NETWORK'
-        )}
+        KNOWLEDGE NETWORK
       </div>
 
       {/* Graph */}
