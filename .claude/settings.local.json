@@ -23,7 +23,10 @@
       "Bash(claude mcp:*)",
       "Read(//Users/krishnaniharsunkara/**)",
       "Bash(kill:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(/dev/null)"
     ],
     "deny": [],
     "ask": []

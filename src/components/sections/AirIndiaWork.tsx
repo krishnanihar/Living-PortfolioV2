@@ -760,6 +760,43 @@ export function AirIndiaWork() {
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="air-india-hero-content">
+          {/* Journey Breadcrumb */}
+          <Link
+            href="/journey#air-india-2024"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              fontSize: '0.875rem',
+              color: 'var(--text-muted)',
+              textDecoration: 'none',
+              marginBottom: 'var(--space-6)',
+              padding: '0.5rem 1rem',
+              background: 'rgba(218, 14, 41, 0.08)',
+              border: '1px solid rgba(218, 14, 41, 0.2)',
+              borderRadius: '20px',
+              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(218, 14, 41, 0.12)';
+              e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.4)';
+              e.currentTarget.style.color = 'var(--text-primary)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(218, 14, 41, 0.08)';
+              e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.2)';
+              e.currentTarget.style.color = 'var(--text-muted)';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+            </svg>
+            <span>Part of: Designing at 40,000 Feet</span>
+          </Link>
+
           <h1 className="air-india-hero-title">
             I build <strong>systems</strong> that help teams ship better products, faster.
           </h1>

@@ -4,14 +4,12 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Briefcase, User, Moon, Sun, Palette, HelpCircle } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
-import { CustomCursor } from '@/components/effects/CustomCursor';
 import { ConversationStarter } from '@/components/ConversationStarter';
 import { Chatbot } from '@/components/Chatbot';
 
 export default function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
-  const [cardTilt, setCardTilt] = useState({ x: 0, y: 0 });
   const [pastHero, setPastHero] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [initialMessage, setInitialMessage] = useState('');
@@ -29,10 +27,6 @@ export default function Portfolio() {
       const y = (e.clientY / window.innerHeight) * 100;
       requestAnimationFrame(() => {
         setMousePos({ x, y });
-        // Calculate tilt based on mouse position (very subtle)
-        const tiltX = ((y - 50) / 50) * 2; // Max 2 degrees
-        const tiltY = ((x - 50) / 50) * -2; // Max 2 degrees, inverted
-        setCardTilt({ x: tiltX, y: tiltY });
       });
     };
 
@@ -337,7 +331,7 @@ export default function Portfolio() {
         </nav>
 
 
-        {/* Hero Section with Revolutionary Consciousness Experience */}
+        {/* Hero Section */}
         <section style={{
           height: '100vh',
           width: '100%',
@@ -347,56 +341,25 @@ export default function Portfolio() {
           position: 'relative',
         }}>
           <div
-            data-project="living-organism"
             data-tour="hero-card"
             style={{
-            transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
             width: '100%',
             maxWidth: '720px',
-            padding: '3rem',
-            borderRadius: '36px',
+            padding: '2.5rem',
+            borderRadius: '28px',
             animation: 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1), breathe 8s ease-in-out infinite',
-            transformStyle: 'preserve-3d' as const,
-            transition: 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
             position: 'relative',
           }}>
-            {/* Primary glass layer */}
+            {/* Simplified glass layer - matching WorkSection */}
             <div style={{
               position: 'absolute',
               inset: 0,
-              borderRadius: '36px',
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%)',
-              backdropFilter: 'blur(60px) saturate(120%) brightness(0.9)',
-              WebkitBackdropFilter: 'blur(60px) saturate(120%) brightness(0.9)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              boxShadow: `
-                inset 0 1px 0 rgba(255, 255, 255, 0.03),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.2),
-                0 8px 16px rgba(0, 0, 0, 0.3),
-                0 0 40px rgba(218, 14, 41, 0.005)
-              `,
-            }} />
-
-            {/* Theme-aware translucent layer */}
-            <div style={{
-              position: 'absolute',
-              inset: '1px',
-              borderRadius: '35px',
-              background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.05) 100%)',
-              pointerEvents: 'none',
-              opacity: 0.3,
-            }} />
-
-            {/* Top shine */}
-            <div style={{
-              position: 'absolute',
-              top: 0,
-              left: '10%',
-              right: '10%',
-              height: '1px',
-              background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
-              borderRadius: '50%',
-              filter: 'blur(0.5px)',
+              borderRadius: '28px',
+              background: 'linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
+              backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+              WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+              border: '1px solid var(--border-primary)',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
             }} />
 
             {/* Conversation Starter */}
@@ -409,9 +372,6 @@ export default function Portfolio() {
             />
           </div>
         </section>
-
-        {/* Simple Dot Cursor */}
-        <CustomCursor />
 
         {/* AI Chatbot */}
         <Chatbot

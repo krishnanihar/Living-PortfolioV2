@@ -1,13 +1,18 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Send, Sparkles, ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
+import { Send, Sparkles, ArrowLeft, Briefcase, BookOpen, Users, Map, User } from 'lucide-react';
+import { projects } from '@/data/projects';
 
 interface Intent {
   id: 'hiring' | 'inspiration' | 'learning' | 'collaboration';
   label: string;
-  icon: string;
+  icon: React.ElementType;
+  accentColor: string;
   description: string;
+  ctaText: string;
+  featuredProjects?: string[];
   heroContent: {
     greeting: string;
     title: string;
@@ -27,7 +32,10 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
     {
       id: 'hiring',
       label: 'Hiring',
-      icon: '👔',
+      icon: Briefcase,
+      accentColor: '#3B82F6', // Professional blue
+      ctaText: 'Discuss opportunity',
+      featuredProjects: ['aviation-analytics', 'token-architecture', 'mobile-ux-patterns'],
       description: 'Looking to hire or collaborate',
       heroContent: {
         greeting: 'Perfect timing.',
@@ -38,7 +46,10 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
     {
       id: 'inspiration',
       label: 'Inspiration',
-      icon: '✨',
+      icon: Sparkles,
+      accentColor: '#8B5CF6', // Creative purple
+      ctaText: 'Explore ideas',
+      featuredProjects: ['living-organism', 'metamorphic-fractal-reflections', 'latent-space'],
       description: 'Seeking creative inspiration',
       heroContent: {
         greeting: 'Welcome, fellow creator.',
@@ -49,7 +60,10 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
     {
       id: 'learning',
       label: 'Learning',
-      icon: '🧠',
+      icon: BookOpen,
+      accentColor: '#10B981', // Growth green
+      ctaText: 'Start learning',
+      featuredProjects: ['pixel-radar', 'aviation-analytics', 'token-architecture'],
       description: 'Want to learn and grow',
       heroContent: {
         greeting: 'Let\'s explore together.',
@@ -60,7 +74,10 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
     {
       id: 'collaboration',
       label: 'Collaboration',
-      icon: '🤝',
+      icon: Users,
+      accentColor: '#F59E0B', // Partnership orange
+      ctaText: 'Let\'s collaborate',
+      featuredProjects: ['internal-innovation-sprint', 'microsoft-air-india', 'living-organism'],
       description: 'Interested in working together',
       heroContent: {
         greeting: 'Let\'s build something.',
@@ -87,10 +104,18 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
     }
   };
 
+  const getTimeBasedGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good morning';
+    if (hour < 17) return 'Good afternoon';
+    if (hour < 21) return 'Good evening';
+    return 'Working late';
+  };
+
   const getHeroContent = () => {
     if (!selectedIntent) {
       return {
-        greeting: 'Good evening.',
+        greeting: `${getTimeBasedGreeting()}.`,
         title: 'What brings you here today?',
         subtitle: 'Choose your path to explore this living portfolio'
       };
@@ -98,13 +123,29 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
 
     const intent = intents.find(i => i.id === selectedIntent);
     return intent?.heroContent || {
-      greeting: 'Good evening.',
+      greeting: `${getTimeBasedGreeting()}.`,
       title: 'I build living interfaces',
       subtitle: 'Product & New Media Designer'
     };
   };
 
   const content = getHeroContent();
+  const selectedIntentData = intents.find(i => i.id === selectedIntent);
+  const accentColor = selectedIntentData?.accentColor || 'rgba(218, 14, 41, 0.7)';
+  const SelectedIcon = selectedIntentData?.icon || Sparkles;
+
+  const getPlaceholder = () => {
+    if (!selectedIntent) return '';
+
+    const placeholders: Record<string, string> = {
+      'hiring': 'Tell me about your role or project...',
+      'inspiration': 'What kind of experience are you dreaming up?...',
+      'learning': 'What would you like to explore?...',
+      'collaboration': 'What are we building together?...',
+    };
+
+    return placeholders[selectedIntent] || `Let's discuss ${selectedIntentData?.label.toLowerCase()}...`;
+  };
 
   return (
     <div data-tour="conversation-starter" style={{ position: 'relative', zIndex: 1 }}>
@@ -140,16 +181,17 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
         }}>
           {content.title}
 
-          {/* Sparkle icon */}
+          {/* Dynamic Intent Icon - Hidden when selected */}
           <div style={{
             position: 'absolute',
             top: '-10px',
             right: '-30px',
-            opacity: selectedIntent ? 1 : 0,
-            transition: 'opacity 0.8s ease',
+            opacity: 0,
+            transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+            pointerEvents: 'none',
           }}>
-            <Sparkles size={18} style={{
-              color: 'rgba(218, 14, 41, 0.7)',
+            <SelectedIcon size={18} style={{
+              color: accentColor,
             }} />
           </div>
         </h1>
@@ -210,10 +252,10 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
               }}
             >
               <div style={{
-                fontSize: '1.5rem',
                 marginBottom: '0.5rem',
+                color: 'var(--text-secondary)',
               }}>
-                {intent.icon}
+                <intent.icon size={20} strokeWidth={1.5} />
               </div>
               <div style={{
                 fontSize: '0.875rem',
@@ -244,42 +286,152 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
           opacity: 0,
           animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both',
         }}>
-          {/* Back Button */}
-          <button
-            onClick={() => setSelectedIntent(null)}
-            style={{
-              background: 'rgba(255, 255, 255, 0.02)',
-              backdropFilter: 'blur(30px) brightness(0.8)',
-              WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
-              border: '1px solid rgba(255, 255, 255, 0.06)',
-              borderRadius: '20px',
-              padding: '0.5rem 1rem',
-              color: 'var(--text-secondary)',
-              fontSize: '0.825rem',
-              fontWeight: '400',
-              cursor: 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              marginBottom: '1rem',
-              transition: 'all 0.3s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-              e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.12)';
-              e.currentTarget.style.color = 'var(--text-primary)';
-              e.currentTarget.style.transform = 'translateX(-2px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
-              e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.06)';
-              e.currentTarget.style.color = 'var(--text-secondary)';
-              e.currentTarget.style.transform = 'translateX(0)';
-            }}
-          >
-            <ArrowLeft size={14} />
-            Back
-          </button>
+          {/* Navigation Links */}
+          <div style={{
+            display: 'flex',
+            gap: '0.5rem',
+            marginBottom: '1rem',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+          }}>
+            {/* Back Button */}
+            <button
+              onClick={() => setSelectedIntent(null)}
+              style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                backdropFilter: 'blur(30px) brightness(0.8)',
+                WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
+                border: `1px solid ${accentColor}15`,
+                borderRadius: '20px',
+                padding: '0.5rem 1rem',
+                color: 'var(--text-secondary)',
+                fontSize: '0.825rem',
+                fontWeight: '400',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                transition: 'all 0.3s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                e.currentTarget.style.border = `1px solid ${accentColor}30`;
+                e.currentTarget.style.color = 'var(--text-primary)';
+                e.currentTarget.style.transform = 'translateX(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+                e.currentTarget.style.border = `1px solid ${accentColor}15`;
+                e.currentTarget.style.color = 'var(--text-secondary)';
+                e.currentTarget.style.transform = 'translateX(0)';
+              }}
+            >
+              <ArrowLeft size={14} />
+              Choose different path
+            </button>
+
+            {/* View Work Link */}
+            <Link
+              href="/work"
+              style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                backdropFilter: 'blur(30px) brightness(0.8)',
+                WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
+                border: `1px solid ${accentColor}30`,
+                borderRadius: '20px',
+                padding: '0.5rem 1rem',
+                color: 'var(--text-primary)',
+                fontSize: '0.825rem',
+                fontWeight: '400',
+                textDecoration: 'none',
+                transition: 'all 0.3s ease',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = `${accentColor}20`;
+                e.currentTarget.style.border = `1px solid ${accentColor}60`;
+                e.currentTarget.style.transform = 'scale(1.02)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+                e.currentTarget.style.border = `1px solid ${accentColor}30`;
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+            >
+              <Briefcase size={14} />
+              View Work
+            </Link>
+
+            {/* My Journey Link */}
+            <Link
+              href="/journey"
+              style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                backdropFilter: 'blur(30px) brightness(0.8)',
+                WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
+                border: `1px solid ${accentColor}30`,
+                borderRadius: '20px',
+                padding: '0.5rem 1rem',
+                color: 'var(--text-primary)',
+                fontSize: '0.825rem',
+                fontWeight: '400',
+                textDecoration: 'none',
+                transition: 'all 0.3s ease',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = `${accentColor}20`;
+                e.currentTarget.style.border = `1px solid ${accentColor}60`;
+                e.currentTarget.style.transform = 'scale(1.02)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+                e.currentTarget.style.border = `1px solid ${accentColor}30`;
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+            >
+              <Map size={14} />
+              My Journey
+            </Link>
+
+            {/* About Me Link */}
+            <Link
+              href="/about"
+              style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                backdropFilter: 'blur(30px) brightness(0.8)',
+                WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
+                border: `1px solid ${accentColor}30`,
+                borderRadius: '20px',
+                padding: '0.5rem 1rem',
+                color: 'var(--text-primary)',
+                fontSize: '0.825rem',
+                fontWeight: '400',
+                textDecoration: 'none',
+                transition: 'all 0.3s ease',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = `${accentColor}20`;
+                e.currentTarget.style.border = `1px solid ${accentColor}60`;
+                e.currentTarget.style.transform = 'scale(1.02)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+                e.currentTarget.style.border = `1px solid ${accentColor}30`;
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+            >
+              <User size={14} />
+              About Me
+            </Link>
+          </div>
 
           <div style={{
             position: 'relative',
@@ -289,21 +441,21 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
             background: 'rgba(255, 255, 255, 0.02)',
             backdropFilter: 'blur(30px) brightness(0.8)',
             WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
-            border: '1px solid rgba(255, 255, 255, 0.06)',
+            border: `1px solid ${accentColor}20`,
             borderRadius: '28px',
             padding: '0.875rem 1.25rem',
             transition: 'all 0.3s ease',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.border = '1px solid rgba(218, 14, 41, 0.15)';
+            e.currentTarget.style.border = `1px solid ${accentColor}40`;
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.06)';
+            e.currentTarget.style.border = `1px solid ${accentColor}20`;
           }}
           >
             <input
               type="text"
-              placeholder={`Let's discuss ${intents.find(i => i.id === selectedIntent)?.label.toLowerCase()}...`}
+              placeholder={getPlaceholder()}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
@@ -324,8 +476,8 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
               onClick={handleSendMessage}
               disabled={!inputValue.trim()}
               style={{
-                background: inputValue.trim() ? 'rgba(218, 14, 41, 0.25)' : 'rgba(255, 255, 255, 0.05)',
-                border: inputValue.trim() ? '1px solid rgba(218, 14, 41, 0.5)' : '1px solid rgba(255, 255, 255, 0.1)',
+                background: inputValue.trim() ? `${accentColor}40` : 'rgba(255, 255, 255, 0.05)',
+                border: inputValue.trim() ? `1px solid ${accentColor}80` : '1px solid rgba(255, 255, 255, 0.1)',
                 borderRadius: '20px',
                 padding: '0.5rem 1.25rem',
                 color: inputValue.trim() ? 'var(--text-primary)' : 'var(--text-muted)',
@@ -340,19 +492,19 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
               }}
               onMouseEnter={(e) => {
                 if (inputValue.trim()) {
-                  e.currentTarget.style.background = 'rgba(218, 14, 41, 0.35)';
+                  e.currentTarget.style.background = `${accentColor}60`;
                   e.currentTarget.style.transform = 'scale(1.05)';
                 }
               }}
               onMouseLeave={(e) => {
                 if (inputValue.trim()) {
-                  e.currentTarget.style.background = 'rgba(218, 14, 41, 0.25)';
+                  e.currentTarget.style.background = `${accentColor}40`;
                   e.currentTarget.style.transform = 'scale(1)';
                 }
               }}
             >
               <Send size={14} />
-              Continue
+              {selectedIntentData?.ctaText || 'Continue'}
             </button>
           </div>
         </div>

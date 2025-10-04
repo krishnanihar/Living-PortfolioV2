@@ -223,10 +223,10 @@ export function AnimatedHeading({
   // For reduced motion, render simplified version
   if (prefersReducedMotion()) {
     const Tag = `h${level}` as keyof React.JSX.IntrinsicElements;
-    return (
-      <Tag className={baseStyles} style={style}>
-        {variant === 'morphing' && texts ? texts[0] : children}
-      </Tag>
+    return React.createElement(
+      Tag,
+      { className: baseStyles, style },
+      variant === 'morphing' && texts ? texts[0] : children
     );
   }
 

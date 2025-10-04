@@ -6,7 +6,7 @@ export function useScrollVelocity() {
   const [velocity, setVelocity] = useState(0);
   const lastScrollY = useRef(0);
   const lastTimestamp = useRef(Date.now());
-  const rafId = useRef<number>();
+  const rafId = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     let ticking = false;

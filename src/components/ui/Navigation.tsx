@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion, useMotionValue, useSpring, useScroll } from 'framer-motion';
-import { Moon, Sun, Palette, Home, User, Mail, Briefcase } from 'lucide-react';
+import { Moon, Sun, Palette, Home, User, Mail, Briefcase, Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/components/effects/ThemeProvider';
 import { useMagneticEffect } from '@/lib/micro-interactions';
@@ -16,6 +16,7 @@ export interface NavigationProps {
 const navigationItems = [
   { href: '/' as const, label: 'Home', icon: Home },
   { href: '/work' as const, label: 'Work', icon: Briefcase },
+  { href: '/journey' as const, label: 'Journey', icon: Compass },
   { href: '/about' as const, label: 'About', icon: User },
   { href: '/contact' as const, label: 'Contact', icon: Mail },
 ];
@@ -68,13 +69,13 @@ function NavItem({ href, label, icon: Icon, isActive, isCompact, index }: NavIte
           WebkitBackdropFilter: isActive ? 'blur(16px) saturate(180%)' : 'blur(12px)',
         }}
       >
-        <Icon
-          size={isCompact ? 16 : 15}
-          className={cn(
+        {React.createElement(Icon, {
+          size: isCompact ? 16 : 15,
+          className: cn(
             'transition-all duration-300',
             isActive ? 'drop-shadow-sm' : ''
-          )}
-        />
+          )
+        })}
         {!isCompact && (
           <span className={cn(
             'text-sm font-medium tracking-wide transition-all duration-300',

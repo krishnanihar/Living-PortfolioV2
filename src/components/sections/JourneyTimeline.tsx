@@ -1,15 +1,15 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { MousePointer2, ArrowDown } from 'lucide-react';
+import Link from 'next/link';
+import { MousePointer2, ArrowDown, Check, ChevronDown, ExternalLink, Image as ImageIcon } from 'lucide-react';
 import { timelineMilestones, iconMap } from '@/data/timeline';
+import Image from 'next/image';
 import { useScrollProgress } from '@/hooks/useScrollProgress';
-import { useScrollVelocity } from '@/hooks/useScrollVelocity';
 import dynamic from 'next/dynamic';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import SplitType from 'split-type';
 
 // Register GSAP plugins
 if (typeof window !== 'undefined') {
@@ -24,14 +24,47 @@ const HeroScene3D = dynamic(() => import('@/components/HeroScene3D').then(mod =>
 
 export function JourneyTimeline() {
   const scrollProgress = useScrollProgress();
-  const scrollVelocity = useScrollVelocity();
   const [visibleMilestones, setVisibleMilestones] = useState<Set<number>>(new Set());
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState(0);
+  const [expandedMilestones, setExpandedMilestones] = useState<Set<number>>(new Set());
+  const [cardHovers, setCardHovers] = useState<Record<number, boolean>>({});
   const milestonesRef = useRef<(HTMLElement | null)[]>([]);
   const heroRef = useRef<HTMLDivElement>(null);
   const timelineLineRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Hash navigation - scroll to anchor on page load or hash change
+  useEffect(() => {
+    const handleHashNavigation = () => {
+      const hash = window.location.hash;
+      if (!hash) return;
+
+      const targetId = hash.substring(1); // Remove the '#'
+      const targetElement = document.getElementById(targetId);
+
+      if (targetElement) {
+        // Wait for layout to settle
+        setTimeout(() => {
+          const navHeight = 120; // Account for fixed navigation
+          const elementPosition = targetElement.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - navHeight;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }, 100);
+      }
+    };
+
+    // Handle on initial load
+    handleHashNavigation();
+
+    // Handle hash changes
+    window.addEventListener('hashchange', handleHashNavigation);
+    return () => window.removeEventListener('hashchange', handleHashNavigation);
+  }, []);
 
   // GSAP Hero Animation
   useGSAP(() => {
@@ -75,7 +108,7 @@ export function JourneyTimeline() {
     });
   }, { scope: containerRef, dependencies: [] });
 
-  // GSAP Milestone Animations with Text Split
+  // GSAP Milestone Animations - Simplified & Subtle
   useGSAP(() => {
     milestonesRef.current.forEach((milestone, index) => {
       if (!milestone) return;
@@ -86,12 +119,6 @@ export function JourneyTimeline() {
       const title = milestone.querySelector('h3');
       const content = milestone.querySelectorAll('p, [data-tags]');
       const dot = milestone.querySelector('[data-dot]');
-
-      // Split title text into characters
-      let splitTitle: SplitType | null = null;
-      if (title) {
-        splitTitle = new SplitType(title, { types: 'chars' });
-      }
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -105,64 +132,59 @@ export function JourneyTimeline() {
         }
       });
 
-      // Stagger animation for card elements
+      // Simple card fade + slide animation
       if (card) {
         tl.fromTo(card,
           {
-            x: index % 2 === 0 ? -100 : 100,
+            y: 40,
             opacity: 0,
-            rotateY: index % 2 === 0 ? -15 : 15,
           },
           {
-            x: 0,
+            y: 0,
             opacity: 1,
-            rotateY: 0,
             duration: 1,
             ease: 'power3.out',
           }
         );
       }
 
+      // Year, icon, title, content - all simple fade & slide
       if (year) {
         tl.fromTo(year,
-          { x: -20, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.6, ease: 'power2.out' },
-          '-=0.6'
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' },
+          '-=0.8'
         );
       }
 
       if (icon) {
         tl.fromTo(icon,
-          { scale: 0, rotation: -180, opacity: 0 },
-          { scale: 1, rotation: 0, opacity: 1, duration: 0.8, ease: 'elastic.out(1, 0.5)' },
-          '-=0.4'
+          { scale: 0.8, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.8, ease: 'power2.out' },
+          '-=0.6'
         );
       }
 
-      // Animate title characters
-      if (splitTitle && splitTitle.chars) {
-        tl.from(splitTitle.chars, {
-          y: 30,
-          opacity: 0,
-          rotateX: -90,
-          stagger: 0.03,
-          duration: 0.6,
-          ease: 'back.out(1.7)',
-        }, '-=0.5');
+      if (title) {
+        tl.fromTo(title,
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' },
+          '-=0.6'
+        );
       }
 
       if (content && content.length > 0) {
         tl.fromTo(content,
           { y: 15, opacity: 0 },
-          { y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: 'power2.out' },
-          '-=0.4'
+          { y: 0, opacity: 1, stagger: 0.15, duration: 0.8, ease: 'power2.out' },
+          '-=0.6'
         );
       }
 
       if (dot) {
         tl.fromTo(dot,
-          { scale: 0, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(2)' },
+          { scale: 0.5, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.6, ease: 'power2.out' },
           0
         );
       }
@@ -179,24 +201,25 @@ export function JourneyTimeline() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Handle milestone card mouse move for magnetic effect
-  const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = (e.clientX - rect.left - rect.width / 2) / 20;
-    const y = (e.clientY - rect.top - rect.height / 2) / 20;
-
-    card.style.transform = `
-      translate(${x}px, ${y}px)
-      scale(1.02)
-      rotateY(${x * 0.5}deg)
-      rotateX(${-y * 0.5}deg)
-    `;
+  // Card interaction handlers
+  const handleCardMouseEnter = (index: number) => {
+    setCardHovers(prev => ({ ...prev, [index]: true }));
   };
 
-  const handleCardMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
-    const card = e.currentTarget;
-    card.style.transform = '';
+  const handleCardMouseLeave = (index: number) => {
+    setCardHovers(prev => ({ ...prev, [index]: false }));
+  };
+
+  const toggleMilestone = (index: number) => {
+    setExpandedMilestones(prev => {
+      const next = new Set(prev);
+      if (next.has(index)) {
+        next.delete(index);
+      } else {
+        next.add(index);
+      }
+      return next;
+    });
   };
 
   return (
@@ -206,55 +229,30 @@ export function JourneyTimeline() {
       position: 'relative',
       overflow: 'hidden',
     }}>
-      {/* Animated Background with Parallax */}
+      {/* Simple Background Gradient */}
       <div style={{
         position: 'absolute',
         inset: 0,
         minHeight: '100%',
         pointerEvents: 'none',
-        transform: `translateY(${scrollProgress * -200}px)`,
-        background: `
-          radial-gradient(
-            circle at 50% ${50 + scrollProgress * 50}%,
-            rgba(218, 14, 41, 0.08),
-            transparent
-          ),
-          linear-gradient(180deg, #0a0a0a 0%, #111111 100%)
-        `,
-        transition: 'background 0.3s ease',
+        background: 'linear-gradient(180deg, #0a0a0a 0%, #111111 100%)',
       }} />
 
-      {/* Animated Film Grain Overlay */}
-      <div style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\' opacity=\'0.08\'/%3E%3C/svg%3E")',
-        backgroundSize: '120%',
-        opacity: 0.15,
-        pointerEvents: 'none',
-        animation: 'filmGrain 8s steps(10) infinite',
-        mixBlendMode: 'overlay',
-      }} />
-
-      {/* Progress Bar */}
+      {/* Progress Bar - Simplified */}
       <div style={{
         position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
-        height: '4px',
+        height: '2px',
         background: 'rgba(255, 255, 255, 0.05)',
         zIndex: 10000,
-        backdropFilter: 'blur(10px)',
       }}>
         <div style={{
           height: '100%',
           width: `${scrollProgress * 100}%`,
-          background: 'linear-gradient(90deg, rgba(218, 14, 41, 0.8), rgba(218, 14, 41, 0.4))',
-          boxShadow: scrollProgress > 0.25 && scrollProgress < 0.26 ? '0 0 20px rgba(218, 14, 41, 0.8)' :
-                     scrollProgress > 0.5 && scrollProgress < 0.51 ? '0 0 20px rgba(218, 14, 41, 0.8)' :
-                     scrollProgress > 0.75 && scrollProgress < 0.76 ? '0 0 20px rgba(218, 14, 41, 0.8)' : 'none',
-          transition: 'width 0.1s ease-out, box-shadow 0.3s ease',
+          background: 'rgba(218, 14, 41, 0.6)',
+          transition: 'width 0.1s ease-out',
         }} />
       </div>
 
@@ -279,7 +277,7 @@ export function JourneyTimeline() {
           marginBottom: '1.5rem',
           textAlign: 'center',
         }}>
-          The Journey
+          My Journey
         </h1>
 
         <p style={{
@@ -288,9 +286,9 @@ export function JourneyTimeline() {
           color: 'var(--text-secondary)',
           textAlign: 'center',
           maxWidth: '600px',
-          lineHeight: '1.6',
+          lineHeight: '1.7',
         }}>
-          From experimenting with interfaces to designing at scale
+          From curiosity to craft—designing systems that serve people
         </p>
 
         {/* Scroll Indicator */}
@@ -328,10 +326,10 @@ export function JourneyTimeline() {
         position: 'relative',
         maxWidth: '1400px',
         margin: '0 auto',
-        padding: '8rem 2rem 20rem 2rem',
+        padding: 'clamp(4rem, 8vw, 8rem) clamp(1rem, 4vw, 2rem) clamp(10rem, 20vw, 20rem) clamp(1rem, 4vw, 2rem)',
         zIndex: 10,
       }}>
-        {/* Center Timeline Line */}
+        {/* Center Timeline Line - Simplified */}
         <div style={{
           position: 'absolute',
           left: '50%',
@@ -342,14 +340,6 @@ export function JourneyTimeline() {
           transform: 'translateX(-50%)',
           overflow: 'hidden',
         }}>
-          {/* Shimmer Effect */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
-            animation: 'shimmer 2s linear infinite',
-          }} />
-
           {/* Progress Line */}
           <div ref={timelineLineRef} style={{
             position: 'absolute',
@@ -357,30 +347,10 @@ export function JourneyTimeline() {
             left: 0,
             right: 0,
             height: '100%',
-            background: 'linear-gradient(180deg, rgba(218, 14, 41, 0.8), rgba(218, 14, 41, 0.4))',
-            boxShadow: '0 0 20px rgba(218, 14, 41, 0.5)',
+            background: 'rgba(218, 14, 41, 0.5)',
             transformOrigin: 'top',
-            scaleY: 0,
+            transform: 'scaleY(0)',
           }} />
-
-          {/* Progress Particles */}
-          {[...Array(5)].map((_, i) => (
-            <div
-              key={i}
-              style={{
-                position: 'absolute',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '4px',
-                height: '4px',
-                borderRadius: '50%',
-                background: 'rgba(218, 14, 41, 0.8)',
-                boxShadow: '0 0 8px rgba(218, 14, 41, 0.6)',
-                animation: `particleFloat 3s ease-in infinite ${i * 0.6}s`,
-                opacity: scrollProgress > 0.1 ? 1 : 0,
-              }}
-            />
-          ))}
         </div>
 
         {/* Milestones */}
@@ -389,59 +359,103 @@ export function JourneyTimeline() {
           const isVisible = visibleMilestones.has(index);
           const isActive = activeSection === index;
           const isPast = visibleMilestones.has(index) && activeSection > index;
+          const isHovered = cardHovers[index] || false;
+          const isExpanded = expandedMilestones.has(index);
 
-          // Calculate scroll velocity effects
-          const blurAmount = Math.min(scrollVelocity * 2, 8);
-          const skewAmount = Math.min(scrollVelocity * 0.5, 2);
-          const chromaticOffset = Math.min(scrollVelocity * 0.3, 1.5);
+          // Count expandable items for better label
+          const expandableCount = [
+            (milestone.achievements?.length ?? 0) > 0,
+            (milestone.metrics?.length ?? 0) > 0,
+            milestone.media || (milestone.artifacts?.length ?? 0) > 0,
+            milestone.details
+          ].filter(Boolean).length;
 
           return (
             <article
               key={milestone.id}
+              id={milestone.id}
               ref={(el) => { milestonesRef.current[index] = el; }}
+              className="journey-milestone"
               style={{
                 position: 'relative',
                 display: 'grid',
-                gridTemplateColumns: milestone.side === 'left' ? '1fr auto 1fr' : '1fr auto 1fr',
-                gap: '3rem',
-                marginBottom: index === timelineMilestones.length - 1 ? 0 : '10rem',
+                gridTemplateColumns: 'minmax(0, 1fr) auto minmax(0, 1fr)',
+                gap: 'clamp(1.5rem, 4vw, 3rem)',
+                marginBottom: index === timelineMilestones.length - 1 ? 0 : 'clamp(5rem, 10vw, 10rem)',
+                scrollMarginTop: '100px',
               }}
             >
+              {/* Connection Line to Next Milestone */}
+              {index < timelineMilestones.length - 1 && (
+                <svg
+                  style={{
+                    position: 'absolute',
+                    top: '100%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '200px',
+                    height: 'clamp(5rem, 10vw, 10rem)',
+                    pointerEvents: 'none',
+                    zIndex: 0,
+                    opacity: isVisible ? 0.3 : 0,
+                    transition: 'opacity 0.8s ease-out',
+                  }}
+                  viewBox="0 0 200 100"
+                  preserveAspectRatio="none"
+                >
+                  <defs>
+                    <linearGradient id={`gradient-${index}`} x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: 'rgba(218, 14, 41, 0.6)', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: 'rgba(218, 14, 41, 0.2)', stopOpacity: 1 }} />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d={milestone.side === 'left'
+                      ? 'M 100 0 Q 150 50, 100 100'
+                      : 'M 100 0 Q 50 50, 100 100'
+                    }
+                    stroke={`url(#gradient-${index})`}
+                    strokeWidth="2"
+                    fill="none"
+                    strokeDasharray="5,5"
+                    style={{
+                      animation: isActive ? 'dashMove 2s linear infinite' : 'none',
+                    }}
+                  />
+                </svg>
+              )}
               {/* Left Side (Card or Empty) */}
-              <div style={{ gridColumn: milestone.side === 'left' ? '1' : '3' }}>
+              <div className="journey-milestone-card-wrapper" style={{ gridColumn: milestone.side === 'left' ? '1' : '3' }}>
                 {milestone.side === 'left' && (
                   <div
                     data-milestone-card
-                    onMouseMove={handleCardMouseMove}
-                    onMouseLeave={handleCardMouseLeave}
+                    className="journey-milestone-card-wrapper"
+                    onMouseEnter={() => handleCardMouseEnter(index)}
+                    onMouseLeave={() => handleCardMouseLeave(index)}
+                    role="article"
+                    aria-label={`${milestone.title} - ${milestone.year}`}
                     style={{
-                      background: 'rgba(255, 255, 255, 0.03)',
-                      backdropFilter: 'blur(60px) saturate(140%) brightness(0.95)',
-                      WebkitBackdropFilter: 'blur(60px) saturate(140%) brightness(0.95)',
-                      border: `1px solid rgba(255, 255, 255, ${isActive ? 0.15 : 0.08})`,
-                      borderRadius: '32px',
-                      padding: '2.5rem',
-                      boxShadow: isActive
-                        ? `
-                          inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                          inset 0 -1px 0 rgba(0, 0, 0, 0.15),
-                          0 24px 80px rgba(0, 0, 0, 0.4),
-                          0 0 60px rgba(218, 14, 41, 0.2)
-                        `
-                        : `
-                          inset 0 1px 0 rgba(255, 255, 255, 0.05),
-                          inset 0 -1px 0 rgba(0, 0, 0, 0.15),
-                          0 24px 80px rgba(0, 0, 0, 0.4)
-                        `,
-                      filter: blurAmount > 2
-                        ? `blur(${blurAmount * 0.5}px)`
-                        : 'none',
-                      transform: skewAmount > 0.5
-                        ? `skewY(${skewAmount * (milestone.side === 'left' ? -1 : 1)}deg)`
-                        : '',
-                      transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                      background: `
+                        linear-gradient(135deg,
+                          rgba(218, 14, 41, ${isActive ? 0.08 : isHovered ? 0.05 : 0.02}),
+                          rgba(255, 255, 255, 0.03)
+                        )
+                      `,
+                      backdropFilter: `blur(${isHovered ? 24 : 20}px)`,
+                      WebkitBackdropFilter: `blur(${isHovered ? 24 : 20}px)`,
+                      border: `1px solid rgba(255, 255, 255, ${isActive ? 0.14 : isHovered ? 0.12 : 0.08})`,
+                      borderRadius: '24px',
+                      padding: 'clamp(1.5rem, 3vw, 2.5rem)',
+                      boxShadow: isHovered
+                        ? `0 12px 40px rgba(0, 0, 0, 0.35),
+                           0 0 0 1px rgba(218, 14, 41, 0.1),
+                           inset 0 1px 0 rgba(255, 255, 255, 0.08)`
+                        : isActive
+                        ? '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(218, 14, 41, 0.1)'
+                        : '0 8px 32px rgba(0, 0, 0, 0.2)',
+                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                      transform: isHovered ? 'scale(1.01)' : 'scale(1)',
                       cursor: 'pointer',
-                      willChange: 'transform, filter',
                     }}
                   >
                     <span data-year style={{
@@ -455,7 +469,9 @@ export function JourneyTimeline() {
                       {milestone.year}
                     </span>
 
-                    <div data-icon style={{ marginBottom: '1.5rem' }}>
+                    <div data-icon style={{
+                      marginBottom: '1.5rem',
+                    }}>
                       <IconComponent
                         size={32}
                         style={{
@@ -478,21 +494,289 @@ export function JourneyTimeline() {
                     <p style={{
                       fontSize: '0.9rem',
                       color: 'var(--text-muted)',
-                      marginBottom: '1.5rem',
+                      marginBottom: '1rem',
                       fontWeight: '300',
                     }}>
                       {milestone.subtitle}
                     </p>
 
+                    {/* Lesson Badge - Moved to top for prominence */}
+                    {milestone.lesson && (
+                      <div style={{
+                        background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(255, 255, 255, 0.08))',
+                        border: '2px solid rgba(218, 14, 41, 0.4)',
+                        borderRadius: '12px',
+                        padding: '1.25rem',
+                        marginBottom: '1.5rem',
+                      }}>
+                        <div style={{
+                          fontSize: '0.7rem',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.12em',
+                          color: 'rgba(218, 14, 41, 0.9)',
+                          marginBottom: '0.5rem',
+                          fontWeight: '600',
+                        }}>
+                          Key Takeaway
+                        </div>
+                        <div style={{
+                          fontSize: '1.1rem',
+                          fontWeight: '500',
+                          color: 'var(--text-primary)',
+                          lineHeight: '1.5',
+                        }}>
+                          {milestone.lesson}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Hook */}
+                    {milestone.hook && (
+                      <p style={{
+                        fontSize: '1.05rem',
+                        fontStyle: 'italic',
+                        color: 'var(--text-secondary)',
+                        marginBottom: '1rem',
+                        borderLeft: '4px solid rgba(218, 14, 41, 0.6)',
+                        paddingLeft: '1.25rem',
+                        lineHeight: '1.7',
+                        fontWeight: '400',
+                      }}>
+                        "{milestone.hook}"
+                      </p>
+                    )}
+
                     <p style={{
-                      fontSize: '0.9rem',
+                      fontSize: '0.95rem',
                       color: 'var(--text-secondary)',
-                      lineHeight: '1.6',
+                      lineHeight: '1.7',
                       marginBottom: '1.5rem',
                       fontWeight: '300',
                     }}>
                       {milestone.description}
                     </p>
+
+                    {/* Expandable Details Section */}
+                    {expandableCount > 0 && (
+                      <>
+                        <button
+                          onClick={() => toggleMilestone(index)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              toggleMilestone(index);
+                            }
+                          }}
+                          aria-expanded={isExpanded}
+                          aria-controls={`milestone-details-${index}`}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            marginBottom: isExpanded ? '1.5rem' : '1rem',
+                            background: 'rgba(255, 255, 255, 0.04)',
+                            border: '1px solid rgba(255, 255, 255, 0.12)',
+                            borderRadius: '10px',
+                            padding: '0.875rem 1.25rem',
+                            color: 'var(--text-secondary)',
+                            cursor: 'pointer',
+                            fontSize: '0.9rem',
+                            transition: 'all 0.3s ease',
+                            width: '100%',
+                            justifyContent: 'space-between',
+                            fontWeight: '500',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
+                            e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.4)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+                          }}
+                        >
+                          <span>{isExpanded ? 'Hide' : 'View'} Details {expandableCount > 0 && `(${expandableCount} items)`}</span>
+                          <ChevronDown size={18} style={{
+                            transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)',
+                            transition: 'transform 0.3s ease',
+                          }} />
+                        </button>
+
+                        {isExpanded && (
+                          <div id={`milestone-details-${index}`} style={{
+                            marginBottom: '1.5rem',
+                          }}>
+                            {/* Achievements */}
+                            {milestone.achievements && milestone.achievements.length > 0 && (
+                              <ul style={{
+                                marginBottom: '1.5rem',
+                                listStyle: 'none',
+                                padding: 0,
+                              }}>
+                                {milestone.achievements.map((achievement, idx) => (
+                                  <li key={idx} style={{
+                                    display: 'flex',
+                                    gap: '0.75rem',
+                                    marginBottom: '0.75rem',
+                                    alignItems: 'flex-start',
+                                  }}>
+                                    <Check size={16} style={{
+                                      color: 'rgba(218, 14, 41, 0.8)',
+                                      flexShrink: 0,
+                                      marginTop: '0.2rem',
+                                    }} />
+                                    <span style={{
+                                      fontSize: '0.9rem',
+                                      color: 'var(--text-secondary)',
+                                      lineHeight: '1.6',
+                                    }}>
+                                      {achievement}
+                                    </span>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+
+                            {/* Metrics Grid */}
+                            {milestone.metrics && milestone.metrics.length > 0 && (
+                              <div className="journey-metrics-grid" style={{
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
+                                gap: '1rem',
+                                marginBottom: '1.5rem',
+                              }}>
+                                {milestone.metrics.map((metric, idx) => (
+                                  <div key={idx} style={{
+                                    background: 'rgba(255, 255, 255, 0.04)',
+                                    borderRadius: '12px',
+                                    padding: '1rem',
+                                    textAlign: 'center',
+                                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                                  }}>
+                                    <div style={{
+                                      fontSize: '1.5rem',
+                                      fontWeight: '600',
+                                      color: 'rgba(218, 14, 41, 0.9)',
+                                      marginBottom: '0.25rem',
+                                    }}>
+                                      {metric.value}
+                                    </div>
+                                    <div style={{
+                                      fontSize: '0.75rem',
+                                      color: 'var(--text-muted)',
+                                      textTransform: 'uppercase',
+                                      letterSpacing: '0.05em',
+                                    }}>
+                                      {metric.label}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Media Placeholder */}
+                            {milestone.media ? (
+                              <div style={{
+                                position: 'relative',
+                                width: '100%',
+                                aspectRatio: '4/3',
+                                marginBottom: '1.5rem',
+                                borderRadius: '16px',
+                                overflow: 'hidden',
+                                background: 'rgba(255, 255, 255, 0.03)',
+                              }}>
+                                <Image
+                                  src={milestone.media}
+                                  alt={milestone.title}
+                                  fill
+                                  style={{ objectFit: 'cover' }}
+                                  onError={(e) => {
+                                    e.currentTarget.style.display = 'none';
+                                  }}
+                                />
+                              </div>
+                            ) : (
+                              <div style={{
+                                width: '100%',
+                                aspectRatio: '4/3',
+                                background: `linear-gradient(135deg, rgba(218, 14, 41, ${index * 0.05 + 0.05}), rgba(255, 255, 255, 0.05))`,
+                                borderRadius: '16px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginBottom: '1.5rem',
+                                border: '1px solid rgba(255, 255, 255, 0.08)',
+                              }}>
+                                <ImageIcon size={48} style={{ color: 'rgba(255, 255, 255, 0.2)' }} />
+                              </div>
+                            )}
+
+                            {/* Artifact Gallery */}
+                            {milestone.artifacts && milestone.artifacts.length > 0 && (
+                              <div className="journey-artifact-gallery" style={{
+                                display: 'flex',
+                                gap: '0.75rem',
+                                overflowX: 'auto',
+                                marginBottom: '1.5rem',
+                                padding: '0.5rem 0',
+                                scrollbarWidth: 'thin',
+                              }}>
+                                {milestone.artifacts.map((artifact, idx) => (
+                                  <div key={idx} className="journey-artifact-item" style={{
+                                    minWidth: '140px',
+                                    aspectRatio: '4/3',
+                                    background: `linear-gradient(135deg, rgba(218, 14, 41, ${0.08 - idx * 0.02}), rgba(255, 255, 255, 0.05))`,
+                                    borderRadius: '12px',
+                                    cursor: 'pointer',
+                                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    padding: '1rem',
+                                    transition: 'all 0.3s ease',
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(-4px)';
+                                    e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                                  }}
+                                  >
+                                    <ImageIcon size={24} style={{ color: 'rgba(255, 255, 255, 0.3)', marginBottom: '0.5rem' }} />
+                                    <span style={{
+                                      fontSize: '0.7rem',
+                                      color: 'var(--text-muted)',
+                                      textAlign: 'center',
+                                      lineHeight: '1.3',
+                                    }}>
+                                      {artifact.caption}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Full Story */}
+                            {milestone.details && (
+                              <div style={{
+                                fontSize: '0.95rem',
+                                color: 'var(--text-secondary)',
+                                lineHeight: '1.8',
+                                padding: '1.5rem',
+                                background: 'rgba(255, 255, 255, 0.03)',
+                                borderRadius: '12px',
+                                border: '1px solid rgba(255, 255, 255, 0.08)',
+                              }}>
+                                {milestone.details}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </>
+                    )}
 
                     <div data-tags style={{
                       display: 'flex',
@@ -502,6 +786,8 @@ export function JourneyTimeline() {
                       {milestone.tags.map((tag) => (
                         <span
                           key={tag}
+                          role="button"
+                          tabIndex={0}
                           style={{
                             padding: '0.4rem 1rem',
                             borderRadius: '16px',
@@ -512,17 +798,69 @@ export function JourneyTimeline() {
                             transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                             cursor: 'pointer',
                           }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(218, 14, 41, 0.15)';
+                            e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
+                            e.currentTarget.style.color = 'rgba(255, 255, 255, 0.95)';
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                            e.currentTarget.style.color = 'var(--text-secondary)';
+                            e.currentTarget.style.transform = 'translateY(0)';
+                          }}
                         >
                           {tag}
                         </span>
                       ))}
                     </div>
+
+                    {/* Related Work CTA */}
+                    {milestone.relatedWork && (
+                      <Link
+                        href={milestone.relatedWork}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginTop: '1.5rem',
+                          padding: '1rem 1.25rem',
+                          background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))',
+                          border: '1px solid rgba(218, 14, 41, 0.3)',
+                          borderRadius: '14px',
+                          color: 'var(--text-primary)',
+                          textDecoration: 'none',
+                          fontSize: '0.9rem',
+                          fontWeight: '500',
+                          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(255, 255, 255, 0.08))';
+                          e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.5)';
+                          e.currentTarget.style.transform = 'translateY(-2px)';
+                          e.currentTarget.style.boxShadow = '0 8px 24px rgba(218, 14, 41, 0.2)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))';
+                          e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = 'none';
+                        }}
+                      >
+                        <span>View Full Case Study</span>
+                        <ExternalLink size={16} style={{
+                          color: 'rgba(218, 14, 41, 0.8)',
+                          flexShrink: 0,
+                        }} />
+                      </Link>
+                    )}
                   </div>
                 )}
               </div>
 
               {/* Center Dot */}
-              <div style={{
+              <div className="journey-timeline-dot-wrapper" style={{
                 gridColumn: '2',
                 display: 'flex',
                 alignItems: 'center',
@@ -543,40 +881,37 @@ export function JourneyTimeline() {
               </div>
 
               {/* Right Side (Card or Empty) */}
-              <div style={{ gridColumn: milestone.side === 'right' ? '3' : '1' }}>
+              <div className="journey-milestone-card-wrapper" style={{ gridColumn: milestone.side === 'right' ? '3' : '1' }}>
                 {milestone.side === 'right' && (
                   <div
                     data-milestone-card
-                    onMouseMove={handleCardMouseMove}
-                    onMouseLeave={handleCardMouseLeave}
+                    className="journey-milestone-card-wrapper"
+                    onMouseEnter={() => handleCardMouseEnter(index)}
+                    onMouseLeave={() => handleCardMouseLeave(index)}
+                    role="article"
+                    aria-label={`${milestone.title} - ${milestone.year}`}
                     style={{
-                      background: 'rgba(255, 255, 255, 0.03)',
-                      backdropFilter: 'blur(60px) saturate(140%) brightness(0.95)',
-                      WebkitBackdropFilter: 'blur(60px) saturate(140%) brightness(0.95)',
-                      border: `1px solid rgba(255, 255, 255, ${isActive ? 0.15 : 0.08})`,
-                      borderRadius: '32px',
-                      padding: '2.5rem',
-                      boxShadow: isActive
-                        ? `
-                          inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                          inset 0 -1px 0 rgba(0, 0, 0, 0.15),
-                          0 24px 80px rgba(0, 0, 0, 0.4),
-                          0 0 60px rgba(218, 14, 41, 0.2)
-                        `
-                        : `
-                          inset 0 1px 0 rgba(255, 255, 255, 0.05),
-                          inset 0 -1px 0 rgba(0, 0, 0, 0.15),
-                          0 24px 80px rgba(0, 0, 0, 0.4)
-                        `,
-                      filter: blurAmount > 2
-                        ? `blur(${blurAmount * 0.5}px)`
-                        : 'none',
-                      transform: skewAmount > 0.5
-                        ? `skewY(${skewAmount * (milestone.side === 'left' ? -1 : 1)}deg)`
-                        : '',
-                      transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                      background: `
+                        linear-gradient(135deg,
+                          rgba(218, 14, 41, ${isActive ? 0.08 : isHovered ? 0.05 : 0.02}),
+                          rgba(255, 255, 255, 0.03)
+                        )
+                      `,
+                      backdropFilter: `blur(${isHovered ? 24 : 20}px)`,
+                      WebkitBackdropFilter: `blur(${isHovered ? 24 : 20}px)`,
+                      border: `1px solid rgba(255, 255, 255, ${isActive ? 0.14 : isHovered ? 0.12 : 0.08})`,
+                      borderRadius: '24px',
+                      padding: 'clamp(1.5rem, 3vw, 2.5rem)',
+                      boxShadow: isHovered
+                        ? `0 12px 40px rgba(0, 0, 0, 0.35),
+                           0 0 0 1px rgba(218, 14, 41, 0.1),
+                           inset 0 1px 0 rgba(255, 255, 255, 0.08)`
+                        : isActive
+                        ? '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(218, 14, 41, 0.1)'
+                        : '0 8px 32px rgba(0, 0, 0, 0.2)',
+                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                      transform: isHovered ? 'scale(1.01)' : 'scale(1)',
                       cursor: 'pointer',
-                      willChange: 'transform, filter',
                     }}
                   >
                     <span data-year style={{
@@ -590,7 +925,9 @@ export function JourneyTimeline() {
                       {milestone.year}
                     </span>
 
-                    <div data-icon style={{ marginBottom: '1.5rem' }}>
+                    <div data-icon style={{
+                      marginBottom: '1.5rem',
+                    }}>
                       <IconComponent
                         size={32}
                         style={{
@@ -613,21 +950,289 @@ export function JourneyTimeline() {
                     <p style={{
                       fontSize: '0.9rem',
                       color: 'var(--text-muted)',
-                      marginBottom: '1.5rem',
+                      marginBottom: '1rem',
                       fontWeight: '300',
                     }}>
                       {milestone.subtitle}
                     </p>
 
+                    {/* Lesson Badge - Moved to top for prominence */}
+                    {milestone.lesson && (
+                      <div style={{
+                        background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(255, 255, 255, 0.08))',
+                        border: '2px solid rgba(218, 14, 41, 0.4)',
+                        borderRadius: '12px',
+                        padding: '1.25rem',
+                        marginBottom: '1.5rem',
+                      }}>
+                        <div style={{
+                          fontSize: '0.7rem',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.12em',
+                          color: 'rgba(218, 14, 41, 0.9)',
+                          marginBottom: '0.5rem',
+                          fontWeight: '600',
+                        }}>
+                          Key Takeaway
+                        </div>
+                        <div style={{
+                          fontSize: '1.1rem',
+                          fontWeight: '500',
+                          color: 'var(--text-primary)',
+                          lineHeight: '1.5',
+                        }}>
+                          {milestone.lesson}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Hook */}
+                    {milestone.hook && (
+                      <p style={{
+                        fontSize: '1.05rem',
+                        fontStyle: 'italic',
+                        color: 'var(--text-secondary)',
+                        marginBottom: '1rem',
+                        borderLeft: '4px solid rgba(218, 14, 41, 0.6)',
+                        paddingLeft: '1.25rem',
+                        lineHeight: '1.7',
+                        fontWeight: '400',
+                      }}>
+                        "{milestone.hook}"
+                      </p>
+                    )}
+
                     <p style={{
-                      fontSize: '0.9rem',
+                      fontSize: '0.95rem',
                       color: 'var(--text-secondary)',
-                      lineHeight: '1.6',
+                      lineHeight: '1.7',
                       marginBottom: '1.5rem',
                       fontWeight: '300',
                     }}>
                       {milestone.description}
                     </p>
+
+                    {/* Expandable Details Section */}
+                    {expandableCount > 0 && (
+                      <>
+                        <button
+                          onClick={() => toggleMilestone(index)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              toggleMilestone(index);
+                            }
+                          }}
+                          aria-expanded={isExpanded}
+                          aria-controls={`milestone-details-${index}`}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            marginBottom: isExpanded ? '1.5rem' : '1rem',
+                            background: 'rgba(255, 255, 255, 0.04)',
+                            border: '1px solid rgba(255, 255, 255, 0.12)',
+                            borderRadius: '10px',
+                            padding: '0.875rem 1.25rem',
+                            color: 'var(--text-secondary)',
+                            cursor: 'pointer',
+                            fontSize: '0.9rem',
+                            transition: 'all 0.3s ease',
+                            width: '100%',
+                            justifyContent: 'space-between',
+                            fontWeight: '500',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
+                            e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.4)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+                          }}
+                        >
+                          <span>{isExpanded ? 'Hide' : 'View'} Details {expandableCount > 0 && `(${expandableCount} items)`}</span>
+                          <ChevronDown size={18} style={{
+                            transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)',
+                            transition: 'transform 0.3s ease',
+                          }} />
+                        </button>
+
+                        {isExpanded && (
+                          <div id={`milestone-details-${index}`} style={{
+                            marginBottom: '1.5rem',
+                          }}>
+                            {/* Achievements */}
+                            {milestone.achievements && milestone.achievements.length > 0 && (
+                              <ul style={{
+                                marginBottom: '1.5rem',
+                                listStyle: 'none',
+                                padding: 0,
+                              }}>
+                                {milestone.achievements.map((achievement, idx) => (
+                                  <li key={idx} style={{
+                                    display: 'flex',
+                                    gap: '0.75rem',
+                                    marginBottom: '0.75rem',
+                                    alignItems: 'flex-start',
+                                  }}>
+                                    <Check size={16} style={{
+                                      color: 'rgba(218, 14, 41, 0.8)',
+                                      flexShrink: 0,
+                                      marginTop: '0.2rem',
+                                    }} />
+                                    <span style={{
+                                      fontSize: '0.9rem',
+                                      color: 'var(--text-secondary)',
+                                      lineHeight: '1.6',
+                                    }}>
+                                      {achievement}
+                                    </span>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+
+                            {/* Metrics Grid */}
+                            {milestone.metrics && milestone.metrics.length > 0 && (
+                              <div className="journey-metrics-grid" style={{
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
+                                gap: '1rem',
+                                marginBottom: '1.5rem',
+                              }}>
+                                {milestone.metrics.map((metric, idx) => (
+                                  <div key={idx} style={{
+                                    background: 'rgba(255, 255, 255, 0.04)',
+                                    borderRadius: '12px',
+                                    padding: '1rem',
+                                    textAlign: 'center',
+                                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                                  }}>
+                                    <div style={{
+                                      fontSize: '1.5rem',
+                                      fontWeight: '600',
+                                      color: 'rgba(218, 14, 41, 0.9)',
+                                      marginBottom: '0.25rem',
+                                    }}>
+                                      {metric.value}
+                                    </div>
+                                    <div style={{
+                                      fontSize: '0.75rem',
+                                      color: 'var(--text-muted)',
+                                      textTransform: 'uppercase',
+                                      letterSpacing: '0.05em',
+                                    }}>
+                                      {metric.label}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Media Placeholder */}
+                            {milestone.media ? (
+                              <div style={{
+                                position: 'relative',
+                                width: '100%',
+                                aspectRatio: '4/3',
+                                marginBottom: '1.5rem',
+                                borderRadius: '16px',
+                                overflow: 'hidden',
+                                background: 'rgba(255, 255, 255, 0.03)',
+                              }}>
+                                <Image
+                                  src={milestone.media}
+                                  alt={milestone.title}
+                                  fill
+                                  style={{ objectFit: 'cover' }}
+                                  onError={(e) => {
+                                    e.currentTarget.style.display = 'none';
+                                  }}
+                                />
+                              </div>
+                            ) : (
+                              <div style={{
+                                width: '100%',
+                                aspectRatio: '4/3',
+                                background: `linear-gradient(135deg, rgba(218, 14, 41, ${index * 0.05 + 0.05}), rgba(255, 255, 255, 0.05))`,
+                                borderRadius: '16px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginBottom: '1.5rem',
+                                border: '1px solid rgba(255, 255, 255, 0.08)',
+                              }}>
+                                <ImageIcon size={48} style={{ color: 'rgba(255, 255, 255, 0.2)' }} />
+                              </div>
+                            )}
+
+                            {/* Artifact Gallery */}
+                            {milestone.artifacts && milestone.artifacts.length > 0 && (
+                              <div className="journey-artifact-gallery" style={{
+                                display: 'flex',
+                                gap: '0.75rem',
+                                overflowX: 'auto',
+                                marginBottom: '1.5rem',
+                                padding: '0.5rem 0',
+                                scrollbarWidth: 'thin',
+                              }}>
+                                {milestone.artifacts.map((artifact, idx) => (
+                                  <div key={idx} className="journey-artifact-item" style={{
+                                    minWidth: '140px',
+                                    aspectRatio: '4/3',
+                                    background: `linear-gradient(135deg, rgba(218, 14, 41, ${0.08 - idx * 0.02}), rgba(255, 255, 255, 0.05))`,
+                                    borderRadius: '12px',
+                                    cursor: 'pointer',
+                                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    padding: '1rem',
+                                    transition: 'all 0.3s ease',
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(-4px)';
+                                    e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                                  }}
+                                  >
+                                    <ImageIcon size={24} style={{ color: 'rgba(255, 255, 255, 0.3)', marginBottom: '0.5rem' }} />
+                                    <span style={{
+                                      fontSize: '0.7rem',
+                                      color: 'var(--text-muted)',
+                                      textAlign: 'center',
+                                      lineHeight: '1.3',
+                                    }}>
+                                      {artifact.caption}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Full Story */}
+                            {milestone.details && (
+                              <div style={{
+                                fontSize: '0.95rem',
+                                color: 'var(--text-secondary)',
+                                lineHeight: '1.8',
+                                padding: '1.5rem',
+                                background: 'rgba(255, 255, 255, 0.03)',
+                                borderRadius: '12px',
+                                border: '1px solid rgba(255, 255, 255, 0.08)',
+                              }}>
+                                {milestone.details}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </>
+                    )}
 
                     <div data-tags style={{
                       display: 'flex',
@@ -637,6 +1242,8 @@ export function JourneyTimeline() {
                       {milestone.tags.map((tag) => (
                         <span
                           key={tag}
+                          role="button"
+                          tabIndex={0}
                           style={{
                             padding: '0.4rem 1rem',
                             borderRadius: '16px',
@@ -646,6 +1253,18 @@ export function JourneyTimeline() {
                             color: 'var(--text-secondary)',
                             transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                             cursor: 'pointer',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(218, 14, 41, 0.15)';
+                            e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
+                            e.currentTarget.style.color = 'rgba(255, 255, 255, 0.95)';
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                            e.currentTarget.style.color = 'var(--text-secondary)';
+                            e.currentTarget.style.transform = 'translateY(0)';
                           }}
                         >
                           {tag}

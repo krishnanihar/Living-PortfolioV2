@@ -22,6 +22,8 @@ interface WorkSectionProps {
 
 export default function WorkSection({ className = '' }: WorkSectionProps) {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [cardTilts, setCardTilts] = useState<Record<number, { x: number; y: number }>>({});
+  const cardRefs = React.useRef<Record<number, HTMLElement | null>>({});
 
   const projects: Project[] = [
     {
@@ -70,14 +72,14 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
     }
   ];
 
-  const calculateTilt = (e: React.MouseEvent, cardRef: HTMLElement | null) => {
-    if (!cardRef) return { x: 0, y: 0 };
+  const calculateTilt = (e: React.MouseEvent, cardRef: HTMLElement | null, projectId: number) => {
+    if (!cardRef) return;
     const rect = cardRef.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     const x = ((e.clientY - centerY) / (rect.height / 2)) * 2.5; // Max 2.5 degrees
     const y = ((e.clientX - centerX) / (rect.width / 2)) * -2.5; // Max 2.5 degrees, inverted
-    return { x, y };
+    setCardTilts(prev => ({ ...prev, [projectId]: { x, y } }));
   };
 
   return (
@@ -198,23 +200,21 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
           perspective: '2000px',
         }}>
           {projects.map((project, index) => {
-            const Icon = project.icon;
+            const Icon = project.icon as React.ElementType;
             const isHovered = hoveredCard === project.id;
-            const [cardTilt, setCardTilt] = useState({ x: 0, y: 0 });
-            const [cardRef, setCardRef] = useState<HTMLElement | null>(null);
+            const cardTilt = cardTilts[project.id] || { x: 0, y: 0 };
 
             const cardContent = (
               <div
-                ref={(ref) => setCardRef(ref)}
+                ref={(ref) => { cardRefs.current[project.id] = ref; }}
                 onMouseEnter={() => setHoveredCard(project.id)}
                 onMouseLeave={() => {
                   setHoveredCard(null);
-                  setCardTilt({ x: 0, y: 0 });
+                  setCardTilts(prev => ({ ...prev, [project.id]: { x: 0, y: 0 } }));
                 }}
                 onMouseMove={(e) => {
                   if (isHovered) {
-                    const tilt = calculateTilt(e, cardRef);
-                    setCardTilt(tilt);
+                    calculateTilt(e, cardRefs.current[project.id], project.id);
                   }
                 }}
                 style={{
@@ -458,11 +458,14 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                         alignItems: 'center',
                         gap: '0.5rem',
                       }}>
-                        <Icon size={14} style={{
-                          color: 'var(--text-secondary)',
-                          opacity: isHovered ? 0.7 : 0.6,
-                          transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                        }} />
+                        {React.createElement(Icon, {
+                          size: 14,
+                          style: {
+                            color: 'var(--text-secondary)',
+                            opacity: isHovered ? 0.7 : 0.6,
+                            transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                          }
+                        })}
                         <span style={{
                           fontSize: '0.75rem',
                           fontWeight: '400',
