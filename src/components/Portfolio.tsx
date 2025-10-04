@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Briefcase, User, Moon, Sun, Palette } from 'lucide-react';
+import { Briefcase, User, Moon, Sun, Palette, HelpCircle } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
 import { CustomCursor } from '@/components/effects/CustomCursor';
 import { ConversationStarter } from '@/components/ConversationStarter';
@@ -167,7 +167,7 @@ export default function Portfolio() {
         }} />
 
         {/* Navigation with enhanced glass */}
-        <nav style={{
+        <nav data-tour="navigation" style={{
           position: 'fixed',
           top: 0,
           left: 0,
@@ -298,6 +298,40 @@ export default function Portfolio() {
                 {theme === 'system' ? <Palette size={15} /> : (resolvedTheme === 'dark' ? <Moon size={15} /> : <Sun size={15} />)}
               </div>
 
+              {/* Help/Journey Button */}
+              <Link href="/journey" style={{ textDecoration: 'none' }}>
+                <div
+                  style={{
+                    position: 'relative',
+                    borderRadius: '50%',
+                    width: '34px',
+                    height: '34px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'var(--text-secondary)',
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    backdropFilter: 'blur(20px) brightness(0.8)',
+                    WebkitBackdropFilter: 'blur(20px) brightness(0.8)',
+                    border: '1px solid rgba(255, 255, 255, 0.06)',
+                    transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                    cursor: 'pointer',
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.transform = 'scale(1.1)';
+                    (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.1)';
+                    (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)';
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
+                    (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.03)';
+                    (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)';
+                  }}
+                >
+                  <HelpCircle size={15} />
+                </div>
+              </Link>
+
             </div>
           </div>
         </nav>
@@ -314,6 +348,7 @@ export default function Portfolio() {
         }}>
           <div
             data-project="living-organism"
+            data-tour="hero-card"
             style={{
             transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
             width: '100%',

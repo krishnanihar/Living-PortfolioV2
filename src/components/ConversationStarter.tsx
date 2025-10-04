@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Send, Sparkles } from 'lucide-react';
+import { Send, Sparkles, ArrowLeft } from 'lucide-react';
 
 interface Intent {
   id: 'hiring' | 'inspiration' | 'learning' | 'collaboration';
@@ -107,7 +107,7 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
   const content = getHeroContent();
 
   return (
-    <div style={{ position: 'relative', zIndex: 1 }}>
+    <div data-tour="conversation-starter" style={{ position: 'relative', zIndex: 1 }}>
       {/* Dynamic Hero Content */}
       <div style={{
         textAlign: 'center',
@@ -244,6 +244,43 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
           opacity: 0,
           animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both',
         }}>
+          {/* Back Button */}
+          <button
+            onClick={() => setSelectedIntent(null)}
+            style={{
+              background: 'rgba(255, 255, 255, 0.02)',
+              backdropFilter: 'blur(30px) brightness(0.8)',
+              WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              borderRadius: '20px',
+              padding: '0.5rem 1rem',
+              color: 'var(--text-secondary)',
+              fontSize: '0.825rem',
+              fontWeight: '400',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              marginBottom: '1rem',
+              transition: 'all 0.3s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+              e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.12)';
+              e.currentTarget.style.color = 'var(--text-primary)';
+              e.currentTarget.style.transform = 'translateX(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+              e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.06)';
+              e.currentTarget.style.color = 'var(--text-secondary)';
+              e.currentTarget.style.transform = 'translateX(0)';
+            }}
+          >
+            <ArrowLeft size={14} />
+            Back
+          </button>
+
           <div style={{
             position: 'relative',
             display: 'flex',
