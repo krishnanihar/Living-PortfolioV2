@@ -1,80 +1,24 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import {
   Briefcase,
-  GraduationCap,
-  Calendar,
-  MapPin,
-  Code2,
-  Palette,
-  Brain,
-  Layers,
-  BarChart3,
   Sparkles,
+  Layers,
   ArrowRight,
-  Award,
-  Users,
-  Zap
+  Mail,
+  Linkedin,
+  Twitter,
+  Map
 } from 'lucide-react';
 
-interface Stat {
-  value: string;
-  label: string;
-  icon: React.ReactNode;
-  gradient: string;
-}
-
-interface Skill {
-  name: string;
-  level: number;
-  icon: React.ReactNode;
-}
-
-interface Experience {
-  role: string;
-  company: string;
-  period: string;
-  location?: string;
-  description: string;
-  tags: string[];
-  current?: boolean;
-  type: 'fulltime' | 'contract' | 'internship';
-}
-
-interface Education {
-  degree: string;
-  school: string;
-  period: string;
-  type: string;
-  skills: string[];
-}
-
 export function AboutSection() {
-  const [activeSkill, setActiveSkill] = useState<number | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
-  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
+    setIsVisible(true);
   }, []);
 
   useEffect(() => {
@@ -92,97 +36,53 @@ export function AboutSection() {
     };
   }, []);
 
-  const stats: Stat[] = [
-    {
-      value: "4+",
-      label: "Years Experience",
-      icon: <Award style={{ width: '20px', height: '20px' }} />,
-      gradient: "rgba(147, 51, 234, 0.1), rgba(59, 130, 246, 0.1)"
-    },
-    {
-      value: "12",
-      label: "Products Shipped",
-      icon: <Zap style={{ width: '20px', height: '20px' }} />,
-      gradient: "rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1)"
-    },
-    {
-      value: "450+",
-      label: "Daily Active Users",
-      icon: <Users style={{ width: '20px', height: '20px' }} />,
-      gradient: "rgba(6, 182, 212, 0.1), rgba(147, 51, 234, 0.1)"
-    }
+  const journeyMilestones = [
+    { year: '2005', label: 'The Spark', id: 'hyderabad-roots' },
+    { year: '2018', label: 'BFA', id: 'undergrad-2018' },
+    { year: '2021', label: 'NID', id: 'nid-2021' },
+    { year: '2024', label: 'Air India', id: 'air-india-2024' },
   ];
 
-  const skills: Skill[] = [
-    { name: "Design Systems", level: 95, icon: <Layers style={{ width: '20px', height: '20px' }} /> },
-    { name: "Data Viz", level: 90, icon: <BarChart3 style={{ width: '20px', height: '20px' }} /> },
-    { name: "HCI", level: 85, icon: <Brain style={{ width: '20px', height: '20px' }} /> },
-    { name: "Prototyping", level: 92, icon: <Code2 style={{ width: '20px', height: '20px' }} /> },
-    { name: "Creative Coding", level: 88, icon: <Sparkles style={{ width: '20px', height: '20px' }} /> }
-  ];
-
-  const experience: Experience[] = [
+  const featuredWork = [
     {
-      role: "Product Designer",
-      company: "Air India Limited",
-      period: "Aug 2024 - Present",
-      location: "Mumbai, India",
-      description: "Leading design transformation for India's flag carrier. Building scalable design systems and reimagining digital experiences.",
-      tags: ["Design Systems", "Aviation UX", "Digital Transformation"],
-      current: true,
-      type: "fulltime"
+      title: 'Air India Design System',
+      description: 'Scalable design system serving 450+ daily users',
+      link: '/work',
+      gradient: 'linear-gradient(135deg, rgba(218, 14, 41, 0.2), rgba(218, 14, 41, 0.05))',
     },
     {
-      role: "Digital Learning Designer",
-      company: "Indian School of Business",
-      period: "Sep - Dec 2023",
-      description: "Designed digital learning experiences and interactive educational interfaces for executive education programs.",
-      tags: ["EdTech", "Learning Design", "Interactive Media"],
-      type: "contract"
+      title: 'Pixel Radar',
+      description: 'Real-time data visualization dashboard',
+      link: '/work',
+      gradient: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.05))',
     },
     {
-      role: "UX Researcher",
-      company: "WONGDOODY",
-      period: "Mar - Oct 2021",
-      description: "Conducted user research and created wireframes for digital products. Focused on HCI principles and usability testing.",
-      tags: ["UX Research", "User Testing", "Wireframing"],
-      type: "internship"
-    }
-  ];
-
-  const education: Education[] = [
-    {
-      degree: "Master's in New Media Design",
-      school: "National Institute of Design",
-      period: "2021-2023",
-      type: "Masters",
-      skills: ["Prototyping", "Systems Thinking", "Creative Coding"]
+      title: 'Metamorphic Fractal Reflections',
+      description: 'Generative art installation with particle systems',
+      link: '/work/metamorphic-fractal-reflections',
+      gradient: 'linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(147, 51, 234, 0.05))',
     },
     {
-      degree: "BFA in Design & Applied Arts",
-      school: "JNTU",
-      period: "2016-2020",
-      type: "Bachelors",
-      skills: ["Visual Design", "Typography", "Adobe Suite"]
-    }
+      title: 'Latent Space',
+      description: 'Speculative design exploring AI consciousness',
+      link: '/work/latent-space',
+      gradient: 'linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(6, 182, 212, 0.05))',
+    },
   ];
 
   return (
-    <section
-      ref={sectionRef}
-      style={{
-        minHeight: '100vh',
-        background: '#000000',
-        color: 'rgba(255, 255, 255, 0.95)',
-        paddingTop: '100px',
-        paddingBottom: '6rem',
-        paddingLeft: '1.5rem',
-        paddingRight: '1.5rem',
-        position: 'relative',
-        overflow: 'hidden',
-        fontFamily: 'Inter, sans-serif',
-      }}
-    >
+    <section style={{
+      minHeight: '100vh',
+      background: 'var(--bg-primary)',
+      color: 'var(--text-primary)',
+      paddingTop: '120px',
+      paddingBottom: '6rem',
+      paddingLeft: '1.5rem',
+      paddingRight: '1.5rem',
+      position: 'relative',
+      overflow: 'hidden',
+      fontFamily: 'Inter, sans-serif',
+    }}>
       <style jsx>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap');
 
@@ -197,56 +97,8 @@ export function AboutSection() {
           }
         }
 
-        @keyframes fadeInLeft {
-          from {
-            opacity: 0;
-            transform: translateX(-30px) translateZ(0);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0) translateZ(0);
-          }
-        }
-
-        @keyframes fadeInRight {
-          from {
-            opacity: 0;
-            transform: translateX(30px) translateZ(0);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0) translateZ(0);
-          }
-        }
-
-        @keyframes shimmer {
-          0% {
-            transform: translateX(-100%);
-          }
-          100% {
-            transform: translateX(100%);
-          }
-        }
-
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 0.3;
-          }
-          50% {
-            opacity: 0.8;
-          }
-        }
-
         .animate-fade-in-up {
           animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .animate-fade-in-left {
-          animation: fadeInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .animate-fade-in-right {
-          animation: fadeInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
       `}</style>
 
@@ -258,582 +110,569 @@ export function AboutSection() {
           rgba(218, 14, 41, 0.02) 0%,
           transparent 40%)`,
         pointerEvents: 'none',
-        transition: 'background 1.5s cubic-bezier(0.16, 1, 0.3, 1)',
+        transition: 'background 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
       }} />
 
-      {/* Animated gradient background */}
-      <div style={{ position: 'absolute', inset: 0, opacity: 0.3 }}>
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: '-10rem',
-          width: '24rem',
-          height: '24rem',
-          background: 'rgba(147, 51, 234, 0.4)',
-          borderRadius: '50%',
-          filter: 'blur(128px)',
-          animation: 'pulse 4s ease-in-out infinite',
-        }} />
-        <div style={{
-          position: 'absolute',
-          bottom: 0,
-          right: 0,
-          width: '24rem',
-          height: '24rem',
-          background: 'rgba(59, 130, 246, 0.4)',
-          borderRadius: '50%',
-          filter: 'blur(128px)',
-          animation: 'pulse 4s ease-in-out infinite',
-          animationDelay: '2s',
-        }} />
-      </div>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
 
-      <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
-        {/* Section Header */}
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <h2 style={{
-            fontSize: 'clamp(3rem, 8vw, 4rem)',
-            fontWeight: '200',
-            marginBottom: '1rem',
-            background: 'linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.6))',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            letterSpacing: '-0.02em',
-          }}>
-            About
-          </h2>
-          <p style={{
-            color: 'rgba(255, 255, 255, 0.6)',
-            fontSize: '1.125rem',
-            fontWeight: '300',
-            letterSpacing: '0.025em',
-          }}>
-            Building living interfaces at the intersection of design & code
-          </p>
-        </div>
-
-        {/* Stats Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '1.5rem',
-          marginBottom: '5rem'
-        }}>
-          {stats.map((stat, index) => (
-            <div
-              key={index}
-              className={isVisible ? 'animate-fade-in-up' : ''}
-              style={{
-                animationDelay: `${index * 100}ms`,
-                opacity: isVisible ? 1 : 0,
-                position: 'relative',
-              }}
-            >
-              <div
-                style={{
-                  position: 'relative',
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  borderRadius: '24px',
-                  padding: '2rem',
-                  border: '1px solid rgba(255, 255, 255, 0.04)',
-                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.02)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)';
-                }}
-              >
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: '1rem'
-                }}>
-                  <div style={{
-                    fontSize: '3rem',
-                    fontWeight: '700',
-                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.6))',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}>
-                    {stat.value}
-                  </div>
-                  <div style={{ color: 'rgba(255, 255, 255, 0.4)' }}>{stat.icon}</div>
-                </div>
-                <div style={{
-                  color: 'rgba(255, 255, 255, 0.4)',
-                  fontSize: '0.875rem',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
-                  fontWeight: '300',
-                }}>
-                  {stat.label}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Current Role & Philosophy */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-          gap: '3rem',
-          marginBottom: '5rem'
-        }}>
-          <div
-            className={isVisible ? 'animate-fade-in-left' : ''}
-            style={{ opacity: isVisible ? 1 : 0, position: 'relative' }}
-          >
-            <div
-              style={{
-                position: 'relative',
-                background: 'rgba(255, 255, 255, 0.02)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                borderRadius: '24px',
-                padding: '2.5rem',
-                border: '1px solid rgba(255, 255, 255, 0.04)',
-                height: '100%',
-                transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
-              }}
-            >
-              <div style={{
-                color: 'rgba(147, 51, 234, 0.6)',
-                fontSize: '0.75rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.15em',
-                marginBottom: '0.5rem',
-                fontWeight: '400',
-              }}>Current Role</div>
-              <h3 style={{
-                fontSize: '1.5rem',
-                fontWeight: '300',
-                marginBottom: '1.5rem',
-                color: 'rgba(255, 255, 255, 0.95)',
-              }}>Position</h3>
-              <p style={{
-                color: 'rgba(255, 255, 255, 0.8)',
-                lineHeight: '1.7',
-                fontSize: '1rem',
-                fontWeight: '300',
-                letterSpacing: '0.01em',
-              }}>
-                I'm <span style={{ fontWeight: '600', color: 'rgba(255, 255, 255, 1)' }}>Nihar</span>, building living interfaces at{' '}
-                <span style={{ fontWeight: '600', color: 'rgba(255, 255, 255, 1)' }}>Air India DesignLAB</span>. I specialize in design systems
-                and data visualization that reduce decision latency.
-              </p>
-              <div style={{
-                marginTop: '1.5rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                color: 'rgba(147, 51, 234, 0.8)',
-              }}>
-                <Briefcase style={{ width: '16px', height: '16px' }} />
-                <span style={{ fontSize: '0.875rem', fontWeight: '300' }}>Open to opportunities</span>
-              </div>
-            </div>
-          </div>
-
-          <div
-            className={isVisible ? 'animate-fade-in-right' : ''}
-            style={{ opacity: isVisible ? 1 : 0, position: 'relative' }}
-          >
-            <div
-              style={{
-                position: 'relative',
-                background: 'rgba(255, 255, 255, 0.02)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                borderRadius: '24px',
-                padding: '2.5rem',
-                border: '1px solid rgba(255, 255, 255, 0.04)',
-                height: '100%',
-                transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
-              }}
-            >
-              <div style={{
-                color: 'rgba(59, 130, 246, 0.6)',
-                fontSize: '0.75rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.15em',
-                marginBottom: '0.5rem',
-                fontWeight: '400',
-              }}>Design Philosophy</div>
-              <h3 style={{
-                fontSize: '1.5rem',
-                fontWeight: '300',
-                marginBottom: '1.5rem',
-                color: 'rgba(255, 255, 255, 0.95)',
-              }}>Approach</h3>
-              <p style={{
-                color: 'rgba(255, 255, 255, 0.8)',
-                lineHeight: '1.7',
-                fontSize: '1rem',
-                fontWeight: '300',
-                letterSpacing: '0.01em',
-              }}>
-                Interfaces should breathe, remember, and evolve. Every system should reduce the time between
-                thought and action.
-              </p>
-              <div style={{
-                marginTop: '1.5rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                color: 'rgba(59, 130, 246, 0.8)',
-              }}>
-                <Sparkles style={{ width: '16px', height: '16px' }} />
-                <span style={{ fontSize: '0.875rem', fontWeight: '300' }}>Human-centered design</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Skills */}
-        <div style={{ marginBottom: '5rem' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <div style={{
-              color: 'rgba(147, 51, 234, 0.6)',
-              fontSize: '0.75rem',
-              textTransform: 'uppercase',
-              letterSpacing: '0.15em',
-              marginBottom: '0.5rem',
-              fontWeight: '400',
-            }}>Core Expertise</div>
-            <h2 style={{
-              fontSize: '1.875rem',
-              fontWeight: '300',
-              color: 'rgba(255, 255, 255, 0.95)',
-            }}>Skills</h2>
-          </div>
+        {/* Hero Introduction Card */}
+        <div
+          className={isVisible ? 'animate-fade-in-up' : ''}
+          style={{
+            opacity: isVisible ? 1 : 0,
+            marginBottom: '4rem',
+          }}
+        >
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '1rem'
+            position: 'relative',
+            background: 'linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
+            backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            borderRadius: '28px',
+            padding: '3rem',
+            border: '1px solid var(--border-primary)',
+            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
+            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}>
-            {skills.map((skill, index) => (
-              <div
-                key={index}
-                className={isVisible ? 'animate-fade-in-up' : ''}
-                style={{
-                  animationDelay: `${index * 50}ms`,
-                  opacity: isVisible ? 1 : 0,
-                  position: 'relative',
-                  cursor: 'pointer',
-                }}
-                onMouseEnter={() => setActiveSkill(index)}
-                onMouseLeave={() => setActiveSkill(null)}
-              >
-                <div
-                  style={{
-                    position: 'relative',
-                    background: 'rgba(255, 255, 255, 0.02)',
-                    backdropFilter: 'blur(20px)',
-                    WebkitBackdropFilter: 'blur(20px)',
-                    borderRadius: '16px',
-                    padding: '1.5rem',
-                    border: activeSkill === index ? '1px solid rgba(255, 255, 255, 0.06)' : '1px solid rgba(255, 255, 255, 0.04)',
-                    transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                    transform: activeSkill === index ? 'scale(1.05)' : 'scale(1)',
-                  }}
-                >
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: '0.75rem',
-                    color: 'rgba(147, 51, 234, 0.8)',
-                  }}>
-                    {skill.icon}
-                  </div>
-                  <div style={{
-                    fontSize: '0.875rem',
-                    textAlign: 'center',
-                    color: 'rgba(255, 255, 255, 0.8)',
-                    marginBottom: '0.75rem',
-                    fontWeight: '300',
-                  }}>{skill.name}</div>
-                  <div style={{
-                    height: '4px',
-                    background: 'rgba(255, 255, 255, 0.06)',
-                    borderRadius: '2px',
-                    overflow: 'hidden',
-                  }}>
-                    <div
-                      style={{
-                        height: '100%',
-                        background: 'linear-gradient(to right, rgba(147, 51, 234, 1), rgba(59, 130, 246, 1))',
-                        borderRadius: '2px',
-                        width: activeSkill === index ? `${skill.level}%` : '0%',
-                        transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1)',
-                      }}
-                    />
-                  </div>
-                </div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'auto 1fr',
+              gap: '2rem',
+              alignItems: 'center',
+              marginBottom: '2.5rem',
+            }}>
+              {/* Avatar Placeholder */}
+              <div style={{
+                width: '120px',
+                height: '120px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.2), rgba(218, 14, 41, 0.05))',
+                border: '2px solid rgba(218, 14, 41, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '3rem',
+                boxShadow: '0 8px 32px rgba(218, 14, 41, 0.2)',
+              }}>
+                👋
               </div>
-            ))}
-          </div>
-        </div>
 
-        {/* Experience Timeline */}
-        <div style={{ marginBottom: '5rem' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <h2 style={{
-              fontSize: '1.875rem',
-              fontWeight: '300',
-              color: 'rgba(255, 255, 255, 0.95)',
-            }}>Experience</h2>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            {experience.map((exp, index) => (
-              <div
-                key={index}
-                className={isVisible ? 'animate-fade-in-left' : ''}
-                style={{
-                  animationDelay: `${index * 150}ms`,
-                  opacity: isVisible ? 1 : 0,
-                  position: 'relative',
-                }}
-              >
-                <div
-                  style={{
-                    position: 'relative',
-                    background: 'rgba(255, 255, 255, 0.02)',
-                    backdropFilter: 'blur(20px)',
-                    WebkitBackdropFilter: 'blur(20px)',
-                    borderRadius: '24px',
-                    padding: '2rem',
-                    border: '1px solid rgba(255, 255, 255, 0.04)',
-                    transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)';
-                    const bg = e.currentTarget.previousElementSibling as HTMLElement;
-                    if (bg) bg.style.opacity = '1';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)';
-                    const bg = e.currentTarget.previousElementSibling as HTMLElement;
-                    if (bg) bg.style.opacity = '0';
-                  }}
-                >
+              {/* Introduction */}
+              <div>
+                <h1 style={{
+                  fontSize: 'clamp(2rem, 5vw, 3rem)',
+                  fontWeight: '200',
+                  marginBottom: '0.75rem',
+                  letterSpacing: '-0.02em',
+                }}>
+                  Hi, I'm Nihar
+                </h1>
+                <p style={{
+                  fontSize: '1.125rem',
+                  color: 'var(--text-secondary)',
+                  fontWeight: '300',
+                  lineHeight: '1.7',
+                  letterSpacing: '0.01em',
+                }}>
+                  Product Designer building living interfaces at{' '}
+                  <span style={{ color: 'var(--brand-red)', fontWeight: '500' }}>Air India DesignLAB</span>.
+                  <br />
+                  I specialize in design systems that reduce decision latency.
+                </p>
+              </div>
+            </div>
+
+            {/* Interactive Journey Timeline */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem',
+              paddingTop: '2rem',
+              borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+            }}>
+              {journeyMilestones.map((milestone, index) => (
+                <React.Fragment key={milestone.id}>
                   <div style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '1rem'
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    flex: 1,
                   }}>
                     <div style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '1rem'
-                    }}>
-                      <div>
-                        <div style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.75rem',
-                          marginBottom: '0.5rem',
-                        }}>
-                          <h3 style={{
-                            fontSize: '1.25rem',
-                            fontWeight: '300',
-                            color: 'rgba(255, 255, 255, 1)',
-                          }}>{exp.role}</h3>
-                          {exp.current && (
-                            <span style={{
-                              padding: '0.25rem 0.5rem',
-                              fontSize: '0.75rem',
-                              background: 'rgba(34, 197, 94, 0.2)',
-                              color: 'rgba(34, 197, 94, 1)',
-                              borderRadius: '12px',
-                              border: '1px solid rgba(34, 197, 94, 0.3)',
-                            }}>
-                              Current
-                            </span>
-                          )}
-                          <span style={{
-                            padding: '0.25rem 0.5rem',
-                            fontSize: '0.75rem',
-                            background: 'rgba(255, 255, 255, 0.06)',
-                            color: 'rgba(255, 255, 255, 0.4)',
-                            borderRadius: '12px',
-                            border: '1px solid rgba(255, 255, 255, 0.04)',
-                            textTransform: 'capitalize',
-                          }}>
-                            {exp.type}
-                          </span>
-                        </div>
-                        <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '1rem' }}>{exp.company}</div>
-                      </div>
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        color: 'rgba(255, 255, 255, 0.4)',
-                        fontSize: '0.875rem',
-                      }}>
-                        <Calendar style={{ width: '16px', height: '16px' }} />
-                        {exp.period}
-                      </div>
-                    </div>
-                    <p style={{
-                      color: 'rgba(255, 255, 255, 0.7)',
-                      lineHeight: '1.6',
-                      fontSize: '0.95rem',
-                      fontWeight: '300',
-                    }}>{exp.description}</p>
+                      width: '12px',
+                      height: '12px',
+                      borderRadius: '50%',
+                      background: index === journeyMilestones.length - 1
+                        ? 'var(--brand-red)'
+                        : 'rgba(255, 255, 255, 0.3)',
+                      border: index === journeyMilestones.length - 1
+                        ? '2px solid rgba(218, 14, 41, 0.5)'
+                        : '2px solid rgba(255, 255, 255, 0.2)',
+                      boxShadow: index === journeyMilestones.length - 1
+                        ? '0 0 12px rgba(218, 14, 41, 0.5)'
+                        : 'none',
+                      transition: 'all 0.3s ease',
+                    }} />
                     <div style={{
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                      gap: '0.5rem',
+                      fontSize: '0.875rem',
+                      fontWeight: '600',
+                      color: index === journeyMilestones.length - 1
+                        ? 'var(--text-primary)'
+                        : 'var(--text-muted)',
                     }}>
-                      {exp.tags.map((tag, tagIndex) => (
-                        <span key={tagIndex} style={{
-                          padding: '0.375rem 0.75rem',
-                          fontSize: '0.75rem',
-                          background: 'rgba(255, 255, 255, 0.06)',
-                          color: 'rgba(255, 255, 255, 0.6)',
-                          borderRadius: '12px',
-                          border: '1px solid rgba(255, 255, 255, 0.04)',
-                          fontWeight: '300',
-                        }}>
-                          {tag}
-                        </span>
-                      ))}
+                      {milestone.year}
+                    </div>
+                    <div style={{
+                      fontSize: '0.75rem',
+                      color: 'var(--text-muted)',
+                      fontWeight: '300',
+                    }}>
+                      {milestone.label}
                     </div>
                   </div>
+                  {index < journeyMilestones.length - 1 && (
+                    <div style={{
+                      flex: 1,
+                      height: '1px',
+                      background: 'linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05))',
+                    }} />
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Story Section */}
+        <div
+          className={isVisible ? 'animate-fade-in-up' : ''}
+          style={{
+            opacity: isVisible ? 1 : 0,
+            animationDelay: '100ms',
+            marginBottom: '4rem',
+          }}
+        >
+          <div style={{
+            position: 'relative',
+            background: 'linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
+            backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            borderRadius: '28px',
+            padding: '3rem',
+            border: '1px solid var(--border-primary)',
+            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
+          }}>
+            <h2 style={{
+              fontSize: '1.5rem',
+              fontWeight: '300',
+              marginBottom: '1.5rem',
+              color: 'var(--text-primary)',
+            }}>
+              The Journey
+            </h2>
+            <p style={{
+              fontSize: '1.125rem',
+              color: 'var(--text-secondary)',
+              lineHeight: '1.8',
+              fontWeight: '300',
+              letterSpacing: '0.01em',
+              marginBottom: '1.5rem',
+            }}>
+              I grew up in <span style={{ color: 'var(--text-primary)', fontWeight: '400' }}>Hyderabad</span>,
+              taking apart computers and flashing custom ROMs. That curiosity led me to <span style={{ color: 'var(--brand-red)', fontWeight: '400' }}>NID</span>,
+              where I learned to build interfaces that breathe.
+            </p>
+            <p style={{
+              fontSize: '1.125rem',
+              color: 'var(--text-secondary)',
+              lineHeight: '1.8',
+              fontWeight: '300',
+              letterSpacing: '0.01em',
+              marginBottom: '1.5rem',
+            }}>
+              Now at <span style={{ color: 'var(--brand-red)', fontWeight: '400' }}>Air India</span>,
+              I'm designing for <span style={{ color: 'var(--text-primary)', fontWeight: '400' }}>450+ daily users</span>,
+              creating systems that help airline operations move faster.
+            </p>
+            <Link href="/journey" style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              color: 'var(--brand-red)',
+              fontSize: '0.9375rem',
+              fontWeight: '400',
+              textDecoration: 'none',
+              transition: 'all 0.3s ease',
+            }}>
+              <Map size={16} />
+              Explore full journey timeline
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+
+        {/* Three Pillars Grid */}
+        <div
+          className={isVisible ? 'animate-fade-in-up' : ''}
+          style={{
+            opacity: isVisible ? 1 : 0,
+            animationDelay: '200ms',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '1.5rem',
+            marginBottom: '4rem',
+          }}
+        >
+          {/* Current Focus Card */}
+          <div style={{
+            position: 'relative',
+            background: 'linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
+            backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            borderRadius: '28px',
+            padding: '2.5rem',
+            border: '1px solid var(--border-primary)',
+            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
+            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.02)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+          }}>
+            <Briefcase size={32} style={{ color: 'var(--brand-red)', marginBottom: '1rem' }} />
+            <h3 style={{
+              fontSize: '1.125rem',
+              fontWeight: '500',
+              marginBottom: '0.75rem',
+              color: 'var(--text-primary)',
+            }}>
+              Right Now
+            </h3>
+            <p style={{
+              fontSize: '0.9375rem',
+              color: 'var(--text-secondary)',
+              lineHeight: '1.6',
+              fontWeight: '300',
+              marginBottom: '1rem',
+            }}>
+              Building design systems at Air India. 450+ daily users. Aviation UX.
+            </p>
+            <div style={{
+              display: 'inline-block',
+              padding: '0.375rem 0.75rem',
+              background: 'rgba(34, 197, 94, 0.1)',
+              color: 'rgba(34, 197, 94, 1)',
+              fontSize: '0.8125rem',
+              borderRadius: '12px',
+              border: '1px solid rgba(34, 197, 94, 0.2)',
+              fontWeight: '400',
+            }}>
+              Open to opportunities
+            </div>
+          </div>
+
+          {/* Philosophy Card */}
+          <div style={{
+            position: 'relative',
+            background: 'linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
+            backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            borderRadius: '28px',
+            padding: '2.5rem',
+            border: '1px solid var(--border-primary)',
+            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
+            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.02)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+          }}>
+            <Sparkles size={32} style={{ color: 'rgba(147, 51, 234, 0.8)', marginBottom: '1rem' }} />
+            <h3 style={{
+              fontSize: '1.125rem',
+              fontWeight: '500',
+              marginBottom: '0.75rem',
+              color: 'var(--text-primary)',
+            }}>
+              Belief
+            </h3>
+            <p style={{
+              fontSize: '0.9375rem',
+              color: 'var(--text-secondary)',
+              lineHeight: '1.6',
+              fontWeight: '300',
+            }}>
+              Interfaces should breathe, remember, and evolve. Reduce time between thought and action.
+            </p>
+          </div>
+
+          {/* Approach Card */}
+          <div style={{
+            position: 'relative',
+            background: 'linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
+            backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            borderRadius: '28px',
+            padding: '2.5rem',
+            border: '1px solid var(--border-primary)',
+            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
+            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.02)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+          }}>
+            <Layers size={32} style={{ color: 'rgba(59, 130, 246, 0.8)', marginBottom: '1rem' }} />
+            <h3 style={{
+              fontSize: '1.125rem',
+              fontWeight: '500',
+              marginBottom: '0.75rem',
+              color: 'var(--text-primary)',
+            }}>
+              How I Work
+            </h3>
+            <p style={{
+              fontSize: '0.9375rem',
+              color: 'var(--text-secondary)',
+              lineHeight: '1.6',
+              fontWeight: '300',
+            }}>
+              Systems thinking. Creative coding. Data-driven design. Prototyping first.
+            </p>
+          </div>
+        </div>
+
+        {/* Featured Work Preview */}
+        <div
+          className={isVisible ? 'animate-fade-in-up' : ''}
+          style={{
+            opacity: isVisible ? 1 : 0,
+            animationDelay: '300ms',
+            marginBottom: '4rem',
+          }}
+        >
+          <h2 style={{
+            fontSize: '1.5rem',
+            fontWeight: '300',
+            marginBottom: '2rem',
+            color: 'var(--text-primary)',
+            textAlign: 'center',
+          }}>
+            Featured Work
+          </h2>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gap: '1.5rem',
+          }}>
+            {featuredWork.map((work, index) => (
+              <Link
+                key={index}
+                href={work.link as any}
+                style={{
+                  textDecoration: 'none',
+                  color: 'inherit',
+                }}
+              >
+                <div style={{
+                  position: 'relative',
+                  background: work.gradient,
+                  backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+                  WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+                  borderRadius: '20px',
+                  padding: '2rem',
+                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  cursor: 'pointer',
+                  height: '100%',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                }}>
+                  <h3 style={{
+                    fontSize: '1rem',
+                    fontWeight: '500',
+                    marginBottom: '0.5rem',
+                    color: 'var(--text-primary)',
+                  }}>
+                    {work.title}
+                  </h3>
+                  <p style={{
+                    fontSize: '0.875rem',
+                    color: 'var(--text-muted)',
+                    lineHeight: '1.5',
+                    fontWeight: '300',
+                    marginBottom: '1rem',
+                  }}>
+                    {work.description}
+                  </p>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    color: 'var(--brand-red)',
+                    fontSize: '0.875rem',
+                    fontWeight: '400',
+                  }}>
+                    View case study
+                    <ArrowRight size={14} />
+                  </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
 
-        {/* Education */}
-        <div>
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <div style={{
-              color: 'rgba(147, 51, 234, 0.6)',
-              fontSize: '0.75rem',
-              textTransform: 'uppercase',
-              letterSpacing: '0.15em',
-              marginBottom: '0.5rem',
-              fontWeight: '400',
-            }}>Background</div>
-            <h2 style={{
-              fontSize: '1.875rem',
-              fontWeight: '300',
-              color: 'rgba(255, 255, 255, 0.95)',
-            }}>Education</h2>
-          </div>
+        {/* Contact CTA Card */}
+        <div
+          className={isVisible ? 'animate-fade-in-up' : ''}
+          style={{
+            opacity: isVisible ? 1 : 0,
+            animationDelay: '400ms',
+          }}
+        >
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-            gap: '1.5rem'
+            position: 'relative',
+            background: 'linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
+            backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            borderRadius: '28px',
+            padding: '3rem',
+            border: '1px solid var(--border-primary)',
+            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
+            textAlign: 'center',
           }}>
-            {education.map((edu, index) => (
-              <div
-                key={index}
-                className={isVisible ? 'animate-fade-in-up' : ''}
+            <h2 style={{
+              fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
+              fontWeight: '200',
+              marginBottom: '1rem',
+              letterSpacing: '-0.02em',
+            }}>
+              Let's build something together
+            </h2>
+            <p style={{
+              fontSize: '1.0625rem',
+              color: 'var(--text-secondary)',
+              lineHeight: '1.7',
+              fontWeight: '300',
+              marginBottom: '2rem',
+              maxWidth: '600px',
+              margin: '0 auto 2rem',
+            }}>
+              Whether you're hiring, collaborating, or just want to chat about design systems and living interfaces.
+            </p>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '1rem',
+              flexWrap: 'wrap',
+            }}>
+              <a
+                href="mailto:nihar@example.com"
                 style={{
-                  animationDelay: `${index * 200}ms`,
-                  opacity: isVisible ? 1 : 0,
-                  position: 'relative',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.875rem 1.75rem',
+                  background: 'var(--brand-red)',
+                  color: 'white',
+                  fontSize: '0.9375rem',
+                  fontWeight: '500',
+                  borderRadius: '20px',
+                  textDecoration: 'none',
+                  transition: 'all 0.3s ease',
+                  border: '1px solid rgba(218, 14, 41, 0.5)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(218, 14, 41, 0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               >
-                <div
-                  style={{
-                    position: 'relative',
-                    background: 'rgba(255, 255, 255, 0.02)',
-                    backdropFilter: 'blur(20px)',
-                    WebkitBackdropFilter: 'blur(20px)',
-                    borderRadius: '24px',
-                    padding: '2rem',
-                    border: '1px solid rgba(255, 255, 255, 0.04)',
-                    transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.02)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'scale(1)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)';
-                  }}
-                >
-                  <GraduationCap style={{
-                    width: '32px',
-                    height: '32px',
-                    color: 'rgba(147, 51, 234, 0.8)',
-                    marginBottom: '1rem',
-                  }} />
-                  <div style={{
-                    fontSize: '0.75rem',
-                    color: 'rgba(147, 51, 234, 0.6)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.15em',
-                    marginBottom: '0.25rem',
-                    fontWeight: '400',
-                  }}>
-                    {edu.type}
-                  </div>
-                  <h3 style={{
-                    fontSize: '1.125rem',
-                    fontWeight: '300',
-                    color: 'rgba(255, 255, 255, 1)',
-                    marginBottom: '0.5rem',
-                  }}>{edu.degree}</h3>
-                  <div style={{
-                    color: 'rgba(255, 255, 255, 0.6)',
-                    marginBottom: '0.5rem',
-                    fontSize: '1rem',
-                  }}>{edu.school}</div>
-                  <div style={{
-                    color: 'rgba(255, 255, 255, 0.4)',
-                    fontSize: '0.875rem',
-                    marginBottom: '1rem',
-                  }}>{edu.period}</div>
-                  <div style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: '0.5rem',
-                  }}>
-                    {edu.skills.map((skill, skillIndex) => (
-                      <span key={skillIndex} style={{
-                        fontSize: '0.75rem',
-                        color: 'rgba(255, 255, 255, 0.4)',
-                        fontWeight: '300',
-                      }}>
-                        {skill}{skillIndex < edu.skills.length - 1 && ' • '}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
+                <Mail size={18} />
+                Email Me
+              </a>
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.875rem 1.5rem',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  color: 'var(--text-primary)',
+                  fontSize: '0.9375rem',
+                  fontWeight: '400',
+                  borderRadius: '20px',
+                  textDecoration: 'none',
+                  transition: 'all 0.3s ease',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                }}
+              >
+                <Linkedin size={18} />
+                LinkedIn
+              </a>
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.875rem 1.5rem',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  color: 'var(--text-primary)',
+                  fontSize: '0.9375rem',
+                  fontWeight: '400',
+                  borderRadius: '20px',
+                  textDecoration: 'none',
+                  transition: 'all 0.3s ease',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                }}
+              >
+                <Twitter size={18} />
+                Twitter
+              </a>
+            </div>
           </div>
         </div>
+
       </div>
     </section>
   );
