@@ -190,9 +190,10 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
             transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
             pointerEvents: 'none',
           }}>
-            <SelectedIcon size={18} style={{
-              color: accentColor,
-            }} />
+            {React.createElement(SelectedIcon, {
+              size: 18,
+              style: { color: accentColor }
+            })}
           </div>
         </h1>
 
@@ -255,7 +256,10 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
                 marginBottom: '0.5rem',
                 color: 'var(--text-secondary)',
               }}>
-                <intent.icon size={20} strokeWidth={1.5} />
+                {React.createElement(intent.icon, {
+                  size: 20,
+                  strokeWidth: 1.5
+                })}
               </div>
               <div style={{
                 fontSize: '0.875rem',

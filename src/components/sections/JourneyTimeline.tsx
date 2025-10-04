@@ -819,7 +819,7 @@ export function JourneyTimeline() {
                     {/* Related Work CTA */}
                     {milestone.relatedWork && (
                       <Link
-                        href={milestone.relatedWork}
+                        href={milestone.relatedWork as any}
                         style={{
                           display: 'flex',
                           alignItems: 'center',
