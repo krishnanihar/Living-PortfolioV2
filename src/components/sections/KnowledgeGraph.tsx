@@ -225,7 +225,7 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     };
   }, [particles.length]);
 
-  // Custom node rendering with beautiful gradients and glows
+  // Watch Dogs-inspired technical node rendering
   const drawNode = useCallback((node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
     // Safety check: nodes need valid positions before rendering
     if (!node.x || !node.y || !isFinite(node.x) || !isFinite(node.y)) {
@@ -233,10 +233,10 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     }
 
     const label = node.name;
-    const fontSize = node.type === 'concept' ? 11 : 12;
+    const fontSize = node.type === 'concept' ? 10 : 11;
     const scaledFontSize = fontSize / globalScale;
-    const baseSize = Math.sqrt(node.val) * 1.8; // Slightly larger multiplier
-    const nodeSize = baseSize / Math.pow(globalScale, 0.3); // Scale more gracefully with zoom
+    const baseSize = Math.sqrt(node.val) * 1.5;
+    const nodeSize = baseSize / Math.pow(globalScale, 0.3);
 
     // Determine node appearance based on state
     const isHovered = hoveredNode === node.id;
@@ -253,159 +253,103 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     let opacity = 1;
     let scale = 1;
     if (hoveredNode && !isHovered && !isConnectedToHovered) {
-      opacity = 0.15;
+      opacity = 0.2;
     }
-    if (isHovered) {
-      scale = 1.3;
+    if (isHovered || isSelected) {
+      scale = 1.15;
     }
 
     const finalSize = nodeSize * scale;
 
-    // Pulsing effect for concept nodes
-    let pulseScale = 1;
-    if (node.type === 'concept') {
-      pulseScale = 1 + Math.sin(pulsePhase) * 0.05;
-    }
-
     ctx.save();
+    ctx.globalAlpha = opacity;
 
-    // Outer glow (aura)
+    // Watch Dogs style: Square nodes with technical edges
+    const squareSize = finalSize * 2;
+
+    // Outer glow for hovered/selected
     if (isHovered || isSelected) {
-      const gradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, finalSize * 2.5 * pulseScale);
-      gradient.addColorStop(0, `${node.color}60`);
-      gradient.addColorStop(0.5, `${node.color}20`);
-      gradient.addColorStop(1, `${node.color}00`);
-      ctx.fillStyle = gradient;
-      ctx.beginPath();
-      ctx.arc(node.x, node.y, finalSize * 2.5 * pulseScale, 0, 2 * Math.PI);
-      ctx.fill();
+      ctx.shadowColor = node.color;
+      ctx.shadowBlur = 20;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 0;
     }
 
-    // Main glow
-    const glowGradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, finalSize * 1.8 * pulseScale);
-    glowGradient.addColorStop(0, `${node.color}${Math.round(opacity * 200).toString(16).padStart(2, '0')}`);
-    glowGradient.addColorStop(0.5, `${node.color}${Math.round(opacity * 120).toString(16).padStart(2, '0')}`);
-    glowGradient.addColorStop(1, `${node.color}00`);
-    ctx.fillStyle = glowGradient;
+    // Draw square/diamond shape based on type
     ctx.beginPath();
-    ctx.arc(node.x, node.y, finalSize * 1.8 * pulseScale, 0, 2 * Math.PI);
+    if (node.type === 'concept') {
+      // Diamond shape for concepts
+      ctx.moveTo(node.x, node.y - squareSize);
+      ctx.lineTo(node.x + squareSize, node.y);
+      ctx.lineTo(node.x, node.y + squareSize);
+      ctx.lineTo(node.x - squareSize, node.y);
+      ctx.closePath();
+    } else {
+      // Square for books/games
+      ctx.rect(
+        node.x - squareSize / 2,
+        node.y - squareSize / 2,
+        squareSize,
+        squareSize
+      );
+    }
+
+    // Fill with dark background
+    ctx.fillStyle = 'rgba(10, 10, 10, 0.8)';
     ctx.fill();
 
-    // Core gradient (bright center)
-    const coreGradient = ctx.createRadialGradient(
-      node.x - finalSize * 0.3,
-      node.y - finalSize * 0.3,
-      0,
-      node.x,
-      node.y,
-      finalSize * pulseScale
-    );
-    coreGradient.addColorStop(0, `${node.color}FF`);
-    coreGradient.addColorStop(0.6, `${node.color}${Math.round(opacity * 240).toString(16).padStart(2, '0')}`);
-    coreGradient.addColorStop(1, `${node.color}${Math.round(opacity * 180).toString(16).padStart(2, '0')}`);
+    // Neon border
+    ctx.strokeStyle = node.color;
+    ctx.lineWidth = (isHovered || isSelected) ? 2.5 : 1.5;
+    ctx.stroke();
 
-    ctx.fillStyle = coreGradient;
-    ctx.beginPath();
-    ctx.arc(node.x, node.y, finalSize * pulseScale, 0, 2 * Math.PI);
-    ctx.fill();
-
-    // Outer ring for books/games (showing progress/completion)
-    if (node.type !== 'concept') {
-      const progress = node.metadata?.progress ?? node.metadata?.hoursPlayed ?? 0;
-      const ringProgress = node.type === 'book' ? progress / 100 : Math.min(progress / 150, 1);
-
-      ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.4})`;
-      ctx.lineWidth = 2 / globalScale;
+    // Inner accent lines (technical detail)
+    if (node.type === 'concept') {
       ctx.beginPath();
-      ctx.arc(node.x, node.y, finalSize * pulseScale + 3, -Math.PI / 2, -Math.PI / 2 + ringProgress * Math.PI * 2);
+      ctx.moveTo(node.x - squareSize * 0.5, node.y);
+      ctx.lineTo(node.x + squareSize * 0.5, node.y);
+      ctx.strokeStyle = `${node.color}40`;
+      ctx.lineWidth = 0.5;
       ctx.stroke();
     }
 
-    // Inner highlight (shimmer)
-    if (isHovered || isSelected) {
-      const highlightGradient = ctx.createRadialGradient(
-        node.x - finalSize * 0.4,
-        node.y - finalSize * 0.4,
-        0,
-        node.x,
-        node.y,
-        finalSize * 0.5
-      );
-      highlightGradient.addColorStop(0, 'rgba(255, 255, 255, 0.6)');
-      highlightGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-      ctx.fillStyle = highlightGradient;
-      ctx.beginPath();
-      ctx.arc(node.x, node.y, finalSize * 0.5 * pulseScale, 0, 2 * Math.PI);
-      ctx.fill();
-    }
-
+    ctx.shadowBlur = 0;
     ctx.restore();
 
-    // Draw labels
+    // Technical label - always visible
     ctx.save();
-    ctx.font = `600 ${scaledFontSize}px Inter, sans-serif`;
+    ctx.font = `${scaledFontSize}px "Courier New", monospace`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
-    // Text shadow for readability
-    ctx.shadowBlur = 4;
-    ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+    const labelY = node.type === 'concept' ? node.y + squareSize + 12 : node.y + squareSize / 2 + 14;
 
-    // Concept nodes: always show label
-    if (node.type === 'concept') {
-      ctx.fillStyle = `rgba(255, 255, 255, ${opacity * 0.95})`;
-      ctx.fillText(label.toUpperCase(), node.x, node.y + finalSize + scaledFontSize * 1.5);
+    // Label background
+    const textMetrics = ctx.measureText(label);
+    const textWidth = textMetrics.width;
+    const padding = 4;
+
+    ctx.fillStyle = 'rgba(10, 10, 10, 0.85)';
+    ctx.fillRect(
+      node.x - textWidth / 2 - padding,
+      labelY - scaledFontSize / 2 - padding / 2,
+      textWidth + padding * 2,
+      scaledFontSize + padding
+    );
+
+    // Label text with neon effect
+    if (isHovered || isSelected) {
+      ctx.shadowColor = node.color;
+      ctx.shadowBlur = 8;
     }
+    ctx.fillStyle = node.color;
+    ctx.fillText(label, node.x, labelY);
 
-    // Books/Games: show on hover with glassmorphic card
-    if (node.type !== 'concept' && (isHovered || isSelected)) {
-      const cardPadding = 12;
-      const cardWidth = Math.max(label.length * 7, 120);
-      const cardHeight = node.description ? 44 : 32;
-      const cardX = node.x - cardWidth / 2;
-      const cardY = node.y + finalSize + 15;
-
-      // Glass card background
-      ctx.shadowBlur = 12;
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-      ctx.fillStyle = 'rgba(10, 10, 10, 0.85)';
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-      ctx.lineWidth = 1;
-
-      // Rounded rectangle
-      const radius = 8;
-      ctx.beginPath();
-      ctx.moveTo(cardX + radius, cardY);
-      ctx.lineTo(cardX + cardWidth - radius, cardY);
-      ctx.quadraticCurveTo(cardX + cardWidth, cardY, cardX + cardWidth, cardY + radius);
-      ctx.lineTo(cardX + cardWidth, cardY + cardHeight - radius);
-      ctx.quadraticCurveTo(cardX + cardWidth, cardY + cardHeight, cardX + cardWidth - radius, cardY + cardHeight);
-      ctx.lineTo(cardX + radius, cardY + cardHeight);
-      ctx.quadraticCurveTo(cardX, cardY + cardHeight, cardX, cardY + cardHeight - radius);
-      ctx.lineTo(cardX, cardY + radius);
-      ctx.quadraticCurveTo(cardX, cardY, cardX + radius, cardY);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
-
-      // Title
-      ctx.shadowBlur = 0;
-      ctx.font = `600 ${scaledFontSize * 1.1}px Inter, sans-serif`;
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
-      ctx.fillText(label, node.x, cardY + (node.description ? 14 : cardHeight / 2));
-
-      // Subtitle
-      if (node.description) {
-        ctx.font = `400 ${scaledFontSize * 0.85}px Inter, sans-serif`;
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        ctx.fillText(node.description, node.x, cardY + 30);
-      }
-    }
-
+    ctx.shadowBlur = 0;
     ctx.restore();
   }, [hoveredNode, selectedNode, graphData.links, pulsePhase]);
 
-  // Custom link rendering with curves and gradients
+  // Watch Dogs-inspired link rendering - straight thin neon lines
   const drawLink = useCallback((link: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
     const source = link.source;
     const target = link.target;
@@ -421,77 +365,36 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     const isConnectedToSelected = selectedNode &&
       (source.id === selectedNode || target.id === selectedNode);
 
-    let opacity = 0.08;
-    let width = 1.5;
-    let useGradient = false;
+    let opacity = 0.15;
+    let width = 0.8;
 
     if (isConnectedToHovered || isConnectedToSelected) {
-      opacity = 0.35;
-      width = 2.5;
-      useGradient = true;
+      opacity = 0.6;
+      width = 1.5;
     }
-
-    // Calculate control point for curve
-    const dx = target.x - source.x;
-    const dy = target.y - source.y;
-    const dr = Math.sqrt(dx * dx + dy * dy);
-    const curvature = 0.15;
-    const cpx = (source.x + target.x) / 2 + dy * curvature;
-    const cpy = (source.y + target.y) / 2 - dx * curvature;
 
     ctx.save();
     ctx.globalAlpha = opacity;
 
-    if (useGradient) {
-      const gradient = ctx.createLinearGradient(source.x, source.y, target.x, target.y);
-      gradient.addColorStop(0, source.color || 'rgba(255, 255, 255, 0.8)');
-      gradient.addColorStop(1, target.color || 'rgba(255, 255, 255, 0.8)');
-      ctx.strokeStyle = gradient;
+    // Thin neon cyan line
+    ctx.strokeStyle = '#06B6D4';
 
-      // Add glow
-      ctx.shadowBlur = 6;
-      ctx.shadowColor = source.color || 'rgba(255, 255, 255, 0.5)';
-    } else {
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+    if (isConnectedToHovered || isConnectedToSelected) {
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#06B6D4';
     }
 
     ctx.lineWidth = width / globalScale;
-    ctx.lineCap = 'round';
+    ctx.lineCap = 'square';
 
-    // Draw curved line
+    // Draw straight line (no curve)
     ctx.beginPath();
     ctx.moveTo(source.x, source.y);
-    ctx.quadraticCurveTo(cpx, cpy, target.x, target.y);
+    ctx.lineTo(target.x, target.y);
     ctx.stroke();
 
     ctx.restore();
-
-    // Draw particles on active links
-    if (useGradient && particles.length > 0) {
-      particles.forEach(particle => {
-        const particleLink = particle.link;
-        const pSource = typeof particleLink.source === 'object' ? particleLink.source : null;
-        const pTarget = typeof particleLink.target === 'object' ? particleLink.target : null;
-
-        if (!pSource || !pTarget) return;
-        if (pSource.id !== source.id || pTarget.id !== target.id) return;
-
-        const t = particle.progress;
-        const x = Math.pow(1 - t, 2) * source.x + 2 * (1 - t) * t * cpx + Math.pow(t, 2) * target.x;
-        const y = Math.pow(1 - t, 2) * source.y + 2 * (1 - t) * t * cpy + Math.pow(t, 2) * target.y;
-
-        ctx.save();
-        const particleGradient = ctx.createRadialGradient(x, y, 0, x, y, 4);
-        particleGradient.addColorStop(0, `${source.color}FF`);
-        particleGradient.addColorStop(1, `${source.color}00`);
-        ctx.fillStyle = particleGradient;
-        ctx.beginPath();
-        ctx.arc(x, y, 4, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.restore();
-      });
-    }
-  }, [hoveredNode, selectedNode, particles]);
+  }, [hoveredNode, selectedNode]);
 
   // Handle node click
   const handleNodeClick = useCallback((node: any) => {
@@ -513,65 +416,100 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
       style={{
         width: '100%',
         height: dimensions.height,
-        background: 'radial-gradient(ellipse at center, rgba(15, 15, 15, 0.6) 0%, rgba(0, 0, 0, 0.9) 100%)',
+        background: '#0A0A0A',
         borderRadius: '24px',
-        border: '1px solid rgba(255, 255, 255, 0.06)',
+        border: '1px solid rgba(6, 182, 212, 0.2)',
         overflow: 'hidden',
         position: 'relative',
-        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 20px 60px rgba(0, 0, 0, 0.4)',
+        boxShadow: 'inset 0 0 100px rgba(6, 182, 212, 0.05), 0 20px 60px rgba(0, 0, 0, 0.6)',
       }}
     >
-      {/* Floating subtitle */}
+      {/* Watch Dogs Grid Overlay */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        backgroundImage: `
+          linear-gradient(rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px)
+        `,
+        backgroundSize: '40px 40px',
+        pointerEvents: 'none',
+        zIndex: 1,
+      }} />
+
+      {/* Scan Line Animation */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: 'linear-gradient(180deg, transparent 0%, rgba(6, 182, 212, 0.1) 50%, transparent 100%)',
+        height: '200px',
+        animation: 'scanLine 8s linear infinite',
+        pointerEvents: 'none',
+        zIndex: 2,
+      }} />
+
+      <style jsx>{`
+        @keyframes scanLine {
+          0% { transform: translateY(-200px); }
+          100% { transform: translateY(${dimensions.height + 200}px); }
+        }
+      `}</style>
+
+      {/* Technical HUD Label */}
       <div style={{
         position: 'absolute',
         top: '1.5rem',
         right: '1.5rem',
-        fontSize: '0.8125rem',
-        color: 'var(--text-muted)',
-        fontStyle: 'italic',
+        fontSize: '0.75rem',
+        color: '#06B6D4',
+        fontFamily: '"Courier New", monospace',
         textAlign: 'right',
         pointerEvents: 'none',
         zIndex: 10,
         opacity: 0.7,
+        textTransform: 'uppercase',
+        letterSpacing: '0.1em',
       }}>
         {hoveredNode ? (
           graphData.nodes.find(n => n.id === hoveredNode)?.type === 'concept'
-            ? 'Concept connecting ideas...'
+            ? '>> CONCEPT NODE'
             : graphData.nodes.find(n => n.id === hoveredNode)?.type === 'book'
-            ? 'Book shaping thinking...'
-            : 'Game teaching mechanics...'
+            ? '>> BOOK NODE'
+            : '>> GAME NODE'
         ) : (
-          'Interactive knowledge constellation'
+          'KNOWLEDGE NETWORK'
         )}
       </div>
 
       {/* Graph */}
-      <ForceGraph2D
-        ref={graphRef}
-        graphData={graphData}
-        width={dimensions.width}
-        height={dimensions.height}
-        nodeVal="val"
-        nodeColor="color"
-        nodeCanvasObject={drawNode}
-        linkCanvasObject={drawLink}
-        onNodeClick={handleNodeClick}
-        onNodeHover={handleNodeHover}
-        cooldownTicks={50}
-        warmupTicks={30}
-        d3AlphaDecay={0.05}
-        d3VelocityDecay={0.4}
-        d3AlphaMin={0.001}
-        enableNodeDrag={false}
-        enableZoomInteraction={true}
-        enablePanInteraction={true}
-        backgroundColor="transparent"
-        onEngineStop={() => {
-          if (graphRef.current) {
-            graphRef.current.pauseAnimation();
-          }
-        }}
-      />
+      <div style={{ position: 'relative', zIndex: 5 }}>
+        <ForceGraph2D
+          ref={graphRef}
+          graphData={graphData}
+          width={dimensions.width}
+          height={dimensions.height}
+          nodeVal="val"
+          nodeColor="color"
+          nodeCanvasObject={drawNode}
+          linkCanvasObject={drawLink}
+          onNodeClick={handleNodeClick}
+          onNodeHover={handleNodeHover}
+          cooldownTicks={50}
+          warmupTicks={30}
+          d3AlphaDecay={0.05}
+          d3VelocityDecay={0.4}
+          d3AlphaMin={0.001}
+          enableNodeDrag={false}
+          enableZoomInteraction={true}
+          enablePanInteraction={true}
+          backgroundColor="transparent"
+          onEngineStop={() => {
+            if (graphRef.current) {
+              graphRef.current.pauseAnimation();
+            }
+          }}
+        />
+      </div>
     </div>
   );
 }

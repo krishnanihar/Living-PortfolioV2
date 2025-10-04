@@ -734,41 +734,49 @@ export function AboutSection() {
           </div>
         </div>
 
-        {/* Currently Reading & Playing - Interactive Visualization */}
+        {/* Currently Reading & Playing - Card Container */}
         <div
           className={isVisible ? 'animate-fade-in-up' : ''}
           style={{
             opacity: isVisible ? 1 : 0,
             animationDelay: '300ms',
             marginBottom: '4rem',
+            background: 'var(--surface-primary)',
+            backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            borderRadius: '32px',
+            border: '1px solid var(--border-primary)',
+            padding: '3rem',
+            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 20px 60px rgba(0, 0, 0, 0.3)',
           }}
         >
           {/* Section Header */}
-          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+          <div style={{ marginBottom: '2rem' }}>
             <h2 style={{
               fontSize: '1.5rem',
-              fontWeight: '300',
-              marginBottom: '0.75rem',
+              fontWeight: '500',
+              marginBottom: '0.5rem',
               color: 'var(--text-primary)',
             }}>
               Currently Reading & Playing
             </h2>
             <p style={{
               fontSize: '0.9375rem',
-              color: 'var(--text-muted)',
+              color: 'var(--text-secondary)',
               fontWeight: '300',
-              maxWidth: '600px',
-              margin: '0 auto 2rem',
             }}>
               Books and games shaping how I think about design, systems, and storytelling
             </p>
+          </div>
 
-            {/* Tab Navigation */}
-            <div style={{
-              display: 'inline-flex',
-              gap: '2rem',
-              position: 'relative',
-            }}>
+          {/* Tab Navigation */}
+          <div style={{
+            display: 'flex',
+            gap: '1rem',
+            marginBottom: '2rem',
+            borderBottom: '1px solid var(--border-primary)',
+            paddingBottom: '1rem',
+          }}>
               <button
                 onClick={() => {
                   setActiveTab('everything');
@@ -893,23 +901,23 @@ export function AboutSection() {
           </div>
 
           {/* Content Area with AnimatePresence */}
-          <div style={{ maxWidth: activeTab === 'everything' ? '100%' : '800px', margin: '0 auto' }}>
+          <div>
             <AnimatePresence mode="wait">
               {activeTab === 'everything' ? (
                 <motion.div
                   key="everything"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.4 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: '45% 1fr',
+                    gridTemplateColumns: '50% 1fr',
                     gap: '2rem',
                   }}
                 >
                   {/* LEFT: Knowledge Graph */}
-                  <div style={{ position: 'sticky', top: '2rem', alignSelf: 'start' }}>
+                  <div>
                     <KnowledgeGraph
                       books={currentlyReading}
                       games={currentlyPlaying}
@@ -917,77 +925,45 @@ export function AboutSection() {
                     />
                   </div>
 
-                  {/* RIGHT: Filtered Cards */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                    {/* Filter Indicator */}
-                    {selectedGraphNode && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.5rem',
-                          padding: '0.75rem 1rem',
-                          background: 'rgba(218, 14, 41, 0.1)',
-                          backdropFilter: 'blur(20px)',
-                          WebkitBackdropFilter: 'blur(20px)',
-                          borderRadius: '16px',
-                          border: '1px solid rgba(218, 14, 41, 0.2)',
-                          fontSize: '0.875rem',
-                          fontWeight: '500',
-                          color: 'var(--brand-red)',
-                          alignSelf: 'flex-start',
-                          cursor: 'pointer',
-                        }}
-                        onClick={() => setSelectedGraphNode(null)}
-                      >
-                        <Filter size={16} />
-                        <span>Showing: {selectedGraphNode.name}</span>
-                        <span style={{ marginLeft: '0.5rem', opacity: 0.6, fontSize: '0.75rem' }}>Click to clear</span>
-                      </motion.div>
-                    )}
-
-                    {/* Books */}
-                    {(!selectedGraphNode || selectedGraphNode.type === 'book' ||
-                      (selectedGraphNode.type === 'concept' && currentlyReading.some(b => b.tags.includes(selectedGraphNode.name)))) && (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                        {currentlyReading
-                          .filter(book => !selectedGraphNode ||
-                            (selectedGraphNode.type === 'concept' && book.tags.includes(selectedGraphNode.name)) ||
-                            (selectedGraphNode.type === 'book' && selectedGraphNode.name === book.title))
+                  {/* RIGHT: Minimal Clean Cards */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    {/* Show Selected or Featured Items */}
+                    {selectedGraphNode ? (
+                      // When a node is clicked, show only that item
+                      <>
+                        {selectedGraphNode.type === 'book' && currentlyReading
+                          .filter(book => book.title === selectedGraphNode.name)
                           .map((book, index) => (
                             <motion.div
                               key={index}
-                              initial={{ opacity: 0, x: 20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: index * 0.1 }}
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
                               style={{
-                                position: 'relative',
-                                background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.08), rgba(147, 51, 234, 0.02))',
-                                backdropFilter: 'blur(40px) saturate(150%) brightness(1.05)',
-                                WebkitBackdropFilter: 'blur(40px) saturate(150%) brightness(1.05)',
-                                borderRadius: '24px',
+                                background: 'var(--surface-secondary)',
+                                backdropFilter: 'blur(40px)',
+                                WebkitBackdropFilter: 'blur(40px)',
+                                borderRadius: '20px',
                                 padding: '1.5rem',
-                                border: '1px solid rgba(147, 51, 234, 0.15)',
-                                borderLeft: '3px solid rgba(147, 51, 234, 0.6)',
-                                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 24px rgba(147, 51, 234, 0.12)',
-                                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                              }}
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.transform = 'translateY(-4px)';
-                                e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 32px rgba(147, 51, 234, 0.2)';
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.transform = 'translateY(0)';
-                                e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 24px rgba(147, 51, 234, 0.12)';
+                                border: '1px solid var(--border-primary)',
+                                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.1)',
                               }}
                             >
-                              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1rem' }}>
-                                <BookOpen size={20} style={{ color: '#A855F7', flexShrink: 0, marginTop: '0.25rem' }} />
+                              <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                                <div style={{
+                                  width: '40px',
+                                  height: '40px',
+                                  borderRadius: '12px',
+                                  background: 'var(--surface-active)',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  flexShrink: 0,
+                                }}>
+                                  <BookOpen size={20} style={{ color: 'var(--text-primary)' }} />
+                                </div>
                                 <div style={{ flex: 1 }}>
                                   <h4 style={{
-                                    fontSize: '1.125rem',
+                                    fontSize: '1rem',
                                     fontWeight: '500',
                                     marginBottom: '0.25rem',
                                     color: 'var(--text-primary)',
@@ -999,16 +975,17 @@ export function AboutSection() {
                                     color: 'var(--text-muted)',
                                     fontWeight: '300',
                                   }}>
-                                    {book.author}
+                                    by {book.author}
                                   </p>
                                 </div>
                                 <div style={{
-                                  fontSize: '0.875rem',
+                                  fontSize: '0.8125rem',
                                   fontWeight: '600',
-                                  color: book.progress === 100 ? '#10b981' : '#A855F7',
-                                  padding: '0.25rem 0.75rem',
-                                  borderRadius: '12px',
-                                  background: book.progress === 100 ? 'rgba(16, 185, 129, 0.1)' : 'rgba(168, 85, 247, 0.1)',
+                                  color: 'var(--text-primary)',
+                                  padding: '0.25rem 0.5rem',
+                                  borderRadius: '8px',
+                                  background: 'var(--surface-active)',
+                                  height: 'fit-content',
                                 }}>
                                   {book.progress}%
                                 </div>
@@ -1018,55 +995,45 @@ export function AboutSection() {
                                 color: 'var(--text-secondary)',
                                 lineHeight: '1.6',
                                 fontWeight: '300',
-                                fontStyle: 'italic',
                               }}>
                                 {book.impact}
                               </p>
                             </motion.div>
                           ))}
-                      </div>
-                    )}
 
-                    {/* Games */}
-                    {(!selectedGraphNode || selectedGraphNode.type === 'game' ||
-                      (selectedGraphNode.type === 'concept' && currentlyPlaying.some(g => g.tags.includes(selectedGraphNode.name)))) && (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                        {currentlyPlaying
-                          .filter(game => !selectedGraphNode ||
-                            (selectedGraphNode.type === 'concept' && game.tags.includes(selectedGraphNode.name)) ||
-                            (selectedGraphNode.type === 'game' && selectedGraphNode.name === game.title))
+                        {selectedGraphNode.type === 'game' && currentlyPlaying
+                          .filter(game => game.title === selectedGraphNode.name)
                           .map((game, index) => (
                             <motion.div
                               key={index}
-                              initial={{ opacity: 0, x: 20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: index * 0.1 + 0.2 }}
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
                               style={{
-                                position: 'relative',
-                                background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(245, 158, 11, 0.02))',
-                                backdropFilter: 'blur(40px) saturate(150%) brightness(1.05)',
-                                WebkitBackdropFilter: 'blur(40px) saturate(150%) brightness(1.05)',
-                                borderRadius: '24px',
+                                background: 'var(--surface-secondary)',
+                                backdropFilter: 'blur(40px)',
+                                WebkitBackdropFilter: 'blur(40px)',
+                                borderRadius: '20px',
                                 padding: '1.5rem',
-                                border: '1px solid rgba(245, 158, 11, 0.15)',
-                                borderLeft: '3px solid rgba(245, 158, 11, 0.6)',
-                                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 24px rgba(245, 158, 11, 0.12)',
-                                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                              }}
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.transform = 'translateY(-4px)';
-                                e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 32px rgba(245, 158, 11, 0.2)';
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.transform = 'translateY(0)';
-                                e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 24px rgba(245, 158, 11, 0.12)';
+                                border: '1px solid var(--border-primary)',
+                                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.1)',
                               }}
                             >
-                              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1rem' }}>
-                                <Gamepad2 size={20} style={{ color: '#F59E0B', flexShrink: 0, marginTop: '0.25rem' }} />
+                              <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                                <div style={{
+                                  width: '40px',
+                                  height: '40px',
+                                  borderRadius: '12px',
+                                  background: 'var(--surface-active)',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  flexShrink: 0,
+                                }}>
+                                  <Gamepad2 size={20} style={{ color: 'var(--text-primary)' }} />
+                                </div>
                                 <div style={{ flex: 1 }}>
                                   <h4 style={{
-                                    fontSize: '1.125rem',
+                                    fontSize: '1rem',
                                     fontWeight: '500',
                                     marginBottom: '0.25rem',
                                     color: 'var(--text-primary)',
@@ -1078,16 +1045,17 @@ export function AboutSection() {
                                     color: 'var(--text-muted)',
                                     fontWeight: '300',
                                   }}>
-                                    {game.studio}
+                                    by {game.studio}
                                   </p>
                                 </div>
                                 <div style={{
-                                  fontSize: '0.875rem',
+                                  fontSize: '0.8125rem',
                                   fontWeight: '600',
-                                  color: '#F59E0B',
-                                  padding: '0.25rem 0.75rem',
-                                  borderRadius: '12px',
-                                  background: 'rgba(245, 158, 11, 0.1)',
+                                  color: 'var(--text-primary)',
+                                  padding: '0.25rem 0.5rem',
+                                  borderRadius: '8px',
+                                  background: 'var(--surface-active)',
+                                  height: 'fit-content',
                                 }}>
                                   {game.hoursPlayed}h
                                 </div>
@@ -1097,13 +1065,277 @@ export function AboutSection() {
                                 color: 'var(--text-secondary)',
                                 lineHeight: '1.6',
                                 fontWeight: '300',
-                                fontStyle: 'italic',
                               }}>
                                 {game.impact}
                               </p>
                             </motion.div>
                           ))}
-                      </div>
+
+                        {selectedGraphNode.type === 'concept' && (
+                          <>
+                            {currentlyReading
+                              .filter(book => book.tags.includes(selectedGraphNode.name))
+                              .slice(0, 1)
+                              .map((book, index) => (
+                                <motion.div
+                                  key={index}
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  style={{
+                                    background: 'var(--surface-secondary)',
+                                    backdropFilter: 'blur(40px)',
+                                    WebkitBackdropFilter: 'blur(40px)',
+                                    borderRadius: '20px',
+                                    padding: '1.5rem',
+                                    border: '1px solid var(--border-primary)',
+                                    boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.1)',
+                                  }}
+                                >
+                                  <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                                    <div style={{
+                                      width: '40px',
+                                      height: '40px',
+                                      borderRadius: '12px',
+                                      background: 'var(--surface-active)',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      flexShrink: 0,
+                                    }}>
+                                      <BookOpen size={20} style={{ color: 'var(--text-primary)' }} />
+                                    </div>
+                                    <div style={{ flex: 1 }}>
+                                      <h4 style={{
+                                        fontSize: '1rem',
+                                        fontWeight: '500',
+                                        marginBottom: '0.25rem',
+                                        color: 'var(--text-primary)',
+                                      }}>
+                                        {book.title}
+                                      </h4>
+                                      <p style={{
+                                        fontSize: '0.875rem',
+                                        color: 'var(--text-muted)',
+                                        fontWeight: '300',
+                                      }}>
+                                        by {book.author}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <p style={{
+                                    fontSize: '0.875rem',
+                                    color: 'var(--text-secondary)',
+                                    lineHeight: '1.5',
+                                    fontWeight: '300',
+                                  }}>
+                                    {book.impact}
+                                  </p>
+                                </motion.div>
+                              ))}
+
+                            {currentlyPlaying
+                              .filter(game => game.tags.includes(selectedGraphNode.name))
+                              .slice(0, 1)
+                              .map((game, index) => (
+                                <motion.div
+                                  key={index}
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: 0.1 }}
+                                  style={{
+                                    background: 'var(--surface-secondary)',
+                                    backdropFilter: 'blur(40px)',
+                                    WebkitBackdropFilter: 'blur(40px)',
+                                    borderRadius: '20px',
+                                    padding: '1.5rem',
+                                    border: '1px solid var(--border-primary)',
+                                    boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.1)',
+                                  }}
+                                >
+                                  <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                                    <div style={{
+                                      width: '40px',
+                                      height: '40px',
+                                      borderRadius: '12px',
+                                      background: 'var(--surface-active)',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      flexShrink: 0,
+                                    }}>
+                                      <Gamepad2 size={20} style={{ color: 'var(--text-primary)' }} />
+                                    </div>
+                                    <div style={{ flex: 1 }}>
+                                      <h4 style={{
+                                        fontSize: '1rem',
+                                        fontWeight: '500',
+                                        marginBottom: '0.25rem',
+                                        color: 'var(--text-primary)',
+                                      }}>
+                                        {game.title}
+                                      </h4>
+                                      <p style={{
+                                        fontSize: '0.875rem',
+                                        color: 'var(--text-muted)',
+                                        fontWeight: '300',
+                                      }}>
+                                        by {game.studio}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <p style={{
+                                    fontSize: '0.875rem',
+                                    color: 'var(--text-secondary)',
+                                    lineHeight: '1.5',
+                                    fontWeight: '300',
+                                  }}>
+                                    {game.impact}
+                                  </p>
+                                </motion.div>
+                              ))}
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      // Default: Show 1 featured book + 1 featured game
+                      <>
+                        {currentlyReading.slice(0, 1).map((book, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            style={{
+                              background: 'var(--surface-secondary)',
+                              backdropFilter: 'blur(40px)',
+                              WebkitBackdropFilter: 'blur(40px)',
+                              borderRadius: '20px',
+                              padding: '1.5rem',
+                              border: '1px solid var(--border-primary)',
+                              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.1)',
+                            }}
+                          >
+                            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                              <div style={{
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '12px',
+                                background: 'var(--surface-active)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexShrink: 0,
+                              }}>
+                                <BookOpen size={20} style={{ color: 'var(--text-primary)' }} />
+                              </div>
+                              <div style={{ flex: 1 }}>
+                                <h4 style={{
+                                  fontSize: '1rem',
+                                  fontWeight: '500',
+                                  marginBottom: '0.25rem',
+                                  color: 'var(--text-primary)',
+                                }}>
+                                  {book.title}
+                                </h4>
+                                <p style={{
+                                  fontSize: '0.875rem',
+                                  color: 'var(--text-muted)',
+                                  fontWeight: '300',
+                                }}>
+                                  by {book.author}
+                                </p>
+                              </div>
+                              <div style={{
+                                fontSize: '0.8125rem',
+                                fontWeight: '600',
+                                color: 'var(--text-primary)',
+                                padding: '0.25rem 0.5rem',
+                                borderRadius: '8px',
+                                background: 'var(--surface-active)',
+                                height: 'fit-content',
+                              }}>
+                                {book.progress}%
+                              </div>
+                            </div>
+                            <p style={{
+                              fontSize: '0.9375rem',
+                              color: 'var(--text-secondary)',
+                              lineHeight: '1.6',
+                              fontWeight: '300',
+                            }}>
+                              {book.impact}
+                            </p>
+                          </motion.div>
+                        ))}
+
+                        {currentlyPlaying.slice(0, 1).map((game, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                            style={{
+                              background: 'var(--surface-secondary)',
+                              backdropFilter: 'blur(40px)',
+                              WebkitBackdropFilter: 'blur(40px)',
+                              borderRadius: '20px',
+                              padding: '1.5rem',
+                              border: '1px solid var(--border-primary)',
+                              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.1)',
+                            }}
+                          >
+                            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                              <div style={{
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '12px',
+                                background: 'var(--surface-active)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexShrink: 0,
+                              }}>
+                                <Gamepad2 size={20} style={{ color: 'var(--text-primary)' }} />
+                              </div>
+                              <div style={{ flex: 1 }}>
+                                <h4 style={{
+                                  fontSize: '1rem',
+                                  fontWeight: '500',
+                                  marginBottom: '0.25rem',
+                                  color: 'var(--text-primary)',
+                                }}>
+                                  {game.title}
+                                </h4>
+                                <p style={{
+                                  fontSize: '0.875rem',
+                                  color: 'var(--text-muted)',
+                                  fontWeight: '300',
+                                }}>
+                                  by {game.studio}
+                                </p>
+                              </div>
+                              <div style={{
+                                fontSize: '0.8125rem',
+                                fontWeight: '600',
+                                color: 'var(--text-primary)',
+                                padding: '0.25rem 0.5rem',
+                                borderRadius: '8px',
+                                background: 'var(--surface-active)',
+                                height: 'fit-content',
+                              }}>
+                                {game.hoursPlayed}h
+                              </div>
+                            </div>
+                            <p style={{
+                              fontSize: '0.9375rem',
+                              color: 'var(--text-secondary)',
+                              lineHeight: '1.6',
+                              fontWeight: '300',
+                            }}>
+                              {game.impact}
+                            </p>
+                          </motion.div>
+                        ))}
+                      </>
                     )}
                   </div>
                 </motion.div>
@@ -1730,8 +1962,6 @@ export function AboutSection() {
             </div>
           </div>
         </div>
-
-      </div>
     </section>
   );
 }
