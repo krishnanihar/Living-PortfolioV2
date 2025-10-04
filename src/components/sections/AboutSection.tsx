@@ -10,7 +10,9 @@ import {
   Mail,
   Linkedin,
   Twitter,
-  Map
+  Map,
+  BookOpen,
+  Gamepad2
 } from 'lucide-react';
 
 export function AboutSection() {
@@ -101,30 +103,57 @@ export function AboutSection() {
     setTimeout(() => setShowToast(false), 2000);
   };
 
-  const featuredWork = [
+  const currentlyReading = [
     {
-      title: 'Air India Design System',
-      description: 'Scalable design system serving 450+ daily users',
-      link: '/work',
-      gradient: 'linear-gradient(135deg, rgba(218, 14, 41, 0.2), rgba(218, 14, 41, 0.05))',
-    },
-    {
-      title: 'Pixel Radar',
-      description: 'Real-time data visualization dashboard',
-      link: '/work',
-      gradient: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.05))',
-    },
-    {
-      title: 'Metamorphic Fractal Reflections',
-      description: 'Generative art installation with particle systems',
-      link: '/work/metamorphic-fractal-reflections',
+      title: 'Gödel, Escher, Bach',
+      author: 'Douglas Hofstadter',
+      impact: 'Strange loops and self-reference shape how I think about recursive design systems and emergent complexity.',
       gradient: 'linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(147, 51, 234, 0.05))',
     },
     {
-      title: 'Latent Space',
-      description: 'Speculative design exploring AI consciousness',
-      link: '/work/latent-space',
+      title: 'I Am a Strange Loop',
+      author: 'Douglas Hofstadter',
+      impact: 'Consciousness emerging from patterns. Every interface is a loop between user intention and system feedback.',
+      gradient: 'linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0.05))',
+    },
+    {
+      title: 'The Design of Everyday Things',
+      author: 'Don Norman',
+      impact: 'Affordances and signifiers. The foundation of my belief that interfaces should reduce cognitive load.',
+      gradient: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.05))',
+    },
+    {
+      title: 'Thinking in Systems',
+      author: 'Donella Meadows',
+      impact: 'Systems thinking informs every design decision—seeing connections, feedback loops, and leverage points.',
+      gradient: 'linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(168, 85, 247, 0.05))',
+    },
+  ];
+
+  const currentlyPlaying = [
+    {
+      title: "Baldur's Gate 3",
+      studio: 'Larian Studios',
+      impact: 'Emergent narratives from systemic design. Every choice branches into consequence trees—pure systems thinking.',
+      gradient: 'linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.05))',
+    },
+    {
+      title: 'Red Dead Redemption 2',
+      studio: 'Rockstar Games',
+      impact: 'Attention to detail and world-building. Every animation, every interaction designed to feel alive and breathing.',
+      gradient: 'linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.05))',
+    },
+    {
+      title: 'Half-Life: Alyx',
+      studio: 'Valve',
+      impact: 'Spatial interfaces and presence. VR taught me how physical affordances translate to digital interactions.',
       gradient: 'linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(6, 182, 212, 0.05))',
+    },
+    {
+      title: 'Detroit: Become Human',
+      studio: 'Quantic Dream',
+      impact: 'Choice architecture and consequence visualization. Flowcharts as narrative design systems.',
+      gradient: 'linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.05))',
     },
   ];
 
@@ -607,7 +636,7 @@ export function AboutSection() {
           </div>
         </div>
 
-        {/* Featured Work Preview */}
+        {/* Currently Reading & Playing */}
         <div
           className={isVisible ? 'animate-fade-in-up' : ''}
           style={{
@@ -616,81 +645,184 @@ export function AboutSection() {
             marginBottom: '4rem',
           }}
         >
-          <h2 style={{
-            fontSize: '1.5rem',
-            fontWeight: '300',
-            marginBottom: '2rem',
-            color: 'var(--text-primary)',
-            textAlign: 'center',
-          }}>
-            Featured Work
-          </h2>
+          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+            <h2 style={{
+              fontSize: '1.5rem',
+              fontWeight: '300',
+              marginBottom: '0.75rem',
+              color: 'var(--text-primary)',
+            }}>
+              Currently Reading & Playing
+            </h2>
+            <p style={{
+              fontSize: '0.9375rem',
+              color: 'var(--text-muted)',
+              fontWeight: '300',
+              maxWidth: '600px',
+              margin: '0 auto',
+            }}>
+              Books and games shaping how I think about design, systems, and storytelling
+            </p>
+          </div>
+
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-            gap: '1.5rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '3rem',
           }}>
-            {featuredWork.map((work, index) => (
-              <Link
-                key={index}
-                href={work.link as any}
-                style={{
-                  textDecoration: 'none',
-                  color: 'inherit',
-                }}
-              >
-                <div style={{
-                  position: 'relative',
-                  background: work.gradient,
-                  backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
-                  WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
-                  borderRadius: '20px',
-                  padding: '2rem',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
-                  boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  cursor: 'pointer',
-                  height: '100%',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
+            {/* Books Column */}
+            <div>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                marginBottom: '1.5rem',
+              }}>
+                <BookOpen size={20} style={{ color: 'var(--brand-red)' }} />
+                <h3 style={{
+                  fontSize: '1rem',
+                  fontWeight: '500',
+                  color: 'var(--text-primary)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
                 }}>
-                  <h3 style={{
-                    fontSize: '1rem',
-                    fontWeight: '500',
-                    marginBottom: '0.5rem',
-                    color: 'var(--text-primary)',
-                  }}>
-                    {work.title}
-                  </h3>
-                  <p style={{
-                    fontSize: '0.875rem',
-                    color: 'var(--text-muted)',
-                    lineHeight: '1.5',
-                    fontWeight: '300',
-                    marginBottom: '1rem',
-                  }}>
-                    {work.description}
-                  </p>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    color: 'var(--brand-red)',
-                    fontSize: '0.875rem',
-                    fontWeight: '400',
-                  }}>
-                    View case study
-                    <ArrowRight size={14} />
+                  Books
+                </h3>
+              </div>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1.25rem',
+              }}>
+                {currentlyReading.map((book, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      position: 'relative',
+                      background: book.gradient,
+                      backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+                      WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+                      borderRadius: '20px',
+                      padding: '1.5rem',
+                      border: '1px solid rgba(255, 255, 255, 0.06)',
+                      boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
+                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-4px)';
+                      e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                    }}
+                  >
+                    <h4 style={{
+                      fontSize: '1rem',
+                      fontWeight: '500',
+                      marginBottom: '0.25rem',
+                      color: 'var(--text-primary)',
+                    }}>
+                      {book.title}
+                    </h4>
+                    <p style={{
+                      fontSize: '0.8125rem',
+                      color: 'var(--text-muted)',
+                      fontWeight: '300',
+                      marginBottom: '0.75rem',
+                    }}>
+                      {book.author}
+                    </p>
+                    <p style={{
+                      fontSize: '0.875rem',
+                      color: 'var(--text-secondary)',
+                      lineHeight: '1.6',
+                      fontWeight: '300',
+                      fontStyle: 'italic',
+                    }}>
+                      {book.impact}
+                    </p>
                   </div>
-                </div>
-              </Link>
-            ))}
+                ))}
+              </div>
+            </div>
+
+            {/* Games Column */}
+            <div>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                marginBottom: '1.5rem',
+              }}>
+                <Gamepad2 size={20} style={{ color: 'var(--brand-red)' }} />
+                <h3 style={{
+                  fontSize: '1rem',
+                  fontWeight: '500',
+                  color: 'var(--text-primary)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                }}>
+                  Games
+                </h3>
+              </div>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1.25rem',
+              }}>
+                {currentlyPlaying.map((game, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      position: 'relative',
+                      background: game.gradient,
+                      backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+                      WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+                      borderRadius: '20px',
+                      padding: '1.5rem',
+                      border: '1px solid rgba(255, 255, 255, 0.06)',
+                      boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
+                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-4px)';
+                      e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                    }}
+                  >
+                    <h4 style={{
+                      fontSize: '1rem',
+                      fontWeight: '500',
+                      marginBottom: '0.25rem',
+                      color: 'var(--text-primary)',
+                    }}>
+                      {game.title}
+                    </h4>
+                    <p style={{
+                      fontSize: '0.8125rem',
+                      color: 'var(--text-muted)',
+                      fontWeight: '300',
+                      marginBottom: '0.75rem',
+                    }}>
+                      {game.studio}
+                    </p>
+                    <p style={{
+                      fontSize: '0.875rem',
+                      color: 'var(--text-secondary)',
+                      lineHeight: '1.6',
+                      fontWeight: '300',
+                      fontStyle: 'italic',
+                    }}>
+                      {game.impact}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
