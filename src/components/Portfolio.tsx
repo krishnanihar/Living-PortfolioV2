@@ -14,6 +14,9 @@ export default function Portfolio() {
   const [navOpacity, setNavOpacity] = useState(0);
   const [navTranslateY, setNavTranslateY] = useState(-100);
   const [scrollIndicatorOpacity, setScrollIndicatorOpacity] = useState(0);
+  const [heroCardOpacity, setHeroCardOpacity] = useState(1);
+  const [heroCardScale, setHeroCardScale] = useState(1);
+  const [heroCardBlur, setHeroCardBlur] = useState(0);
   const [chatOpen, setChatOpen] = useState(false);
   const [initialMessage, setInitialMessage] = useState('');
   const [intentContext, setIntentContext] = useState('');
@@ -48,6 +51,25 @@ export default function Portfolio() {
         setScrollIndicatorOpacity(1 - (scrollY / 100));
       } else {
         setScrollIndicatorOpacity(0);
+      }
+
+      // Hero card exit animation: 100px-400px range
+      const exitStart = 100;
+      const exitEnd = 400;
+
+      if (scrollY < exitStart) {
+        setHeroCardOpacity(1);
+        setHeroCardScale(1);
+        setHeroCardBlur(0);
+      } else if (scrollY >= exitStart && scrollY <= exitEnd) {
+        const progress = (scrollY - exitStart) / (exitEnd - exitStart);
+        setHeroCardOpacity(1 - progress);
+        setHeroCardScale(1 - (progress * 0.05));
+        setHeroCardBlur(progress * 10);
+      } else {
+        setHeroCardOpacity(0);
+        setHeroCardScale(0.95);
+        setHeroCardBlur(10);
       }
     };
 
@@ -399,6 +421,11 @@ export default function Portfolio() {
             borderRadius: '28px',
             animation: 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1), breathe 8s ease-in-out infinite',
             position: 'relative',
+            opacity: heroCardOpacity,
+            transform: `scale(${heroCardScale})`,
+            filter: `blur(${heroCardBlur}px)`,
+            transition: 'opacity 0.1s linear, transform 0.1s linear, filter 0.1s linear',
+            pointerEvents: heroCardOpacity < 0.1 ? 'none' : 'auto',
           }}>
             {/* Simplified glass layer - matching WorkSection */}
             <div style={{
