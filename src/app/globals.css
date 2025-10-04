@@ -48,7 +48,7 @@ button {
   --bg-secondary: #111111;
   --bg-tertiary: #1a1a1a;
 
-  --surface-primary: rgba(255, 255, 255, 0.04);
+  --surface-primary: rgba(255, 255, 255, 0.08);
   --surface-secondary: rgba(255, 255, 255, 0.06);
   --surface-hover: rgba(255, 255, 255, 0.08);
   --surface-active: rgba(255, 255, 255, 0.12);

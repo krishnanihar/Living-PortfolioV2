@@ -168,22 +168,6 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     return () => window.removeEventListener('resize', updateDimensions);
   }, []);
 
-  // Configure d3 forces for better spacing
-  useEffect(() => {
-    if (graphRef.current) {
-      const fg = graphRef.current;
-
-      // Increase link distance for more spacing between nodes
-      fg.d3Force('link')?.distance(120);
-
-      // Increase charge strength (more negative = stronger repulsion)
-      fg.d3Force('charge')?.strength(-300);
-
-      // Reduce link strength for looser connections
-      fg.d3Force('link')?.strength(0.3);
-    }
-  }, [graphData]);
-
   // Pulse animation for concept nodes
   useEffect(() => {
     const interval = setInterval(() => {
@@ -191,55 +175,6 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     }, 30);
     return () => clearInterval(interval);
   }, []);
-
-  // Particle system for active connections
-  useEffect(() => {
-    if (!hoveredNode && !selectedNode) {
-      setParticles([]);
-      return;
-    }
-
-    const activeNode = hoveredNode || selectedNode;
-    const relevantLinks = graphData.links.filter(
-      link => {
-        const source = typeof link.source === 'string' ? link.source : link.source.id;
-        const target = typeof link.target === 'string' ? link.target : link.target.id;
-        return source === activeNode || target === activeNode;
-      }
-    );
-
-    const newParticles: Particle[] = relevantLinks.flatMap(link =>
-      Array.from({ length: 2 }, (_, i) => ({
-        link,
-        progress: i * 0.5,
-        speed: 0.01 + Math.random() * 0.01,
-      }))
-    );
-
-    setParticles(newParticles);
-  }, [hoveredNode, selectedNode, graphData.links]);
-
-  // Animate particles
-  useEffect(() => {
-    if (particles.length === 0) return;
-
-    const animate = () => {
-      setParticles(prev =>
-        prev.map(p => ({
-          ...p,
-          progress: (p.progress + p.speed) % 1,
-        }))
-      );
-      animationFrameRef.current = requestAnimationFrame(animate);
-    };
-
-    animationFrameRef.current = requestAnimationFrame(animate);
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, [particles.length]);
 
   // Watch Dogs-inspired technical node rendering
   const drawNode = useCallback((node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
@@ -420,10 +355,15 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     }
   }, [selectedNode, onNodeClick]);
 
-  // Handle node hover (with debounce)
+  // Handle node hover - only update when actually over a node
   const handleNodeHover = useCallback((node: any) => {
-    setHoveredNode(node ? node.id : null);
-    document.body.style.cursor = node ? 'pointer' : 'default';
+    if (node) {
+      setHoveredNode(node.id);
+      document.body.style.cursor = 'pointer';
+    } else {
+      setHoveredNode(null);
+      document.body.style.cursor = 'default';
+    }
   }, []);
 
   return (
@@ -516,12 +456,18 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
           d3VelocityDecay={0.4}
           d3AlphaMin={0.001}
           enableNodeDrag={false}
-          enableZoomInteraction={true}
-          enablePanInteraction={true}
+          enableZoomInteraction={false}
+          enablePanInteraction={false}
           backgroundColor="transparent"
           onEngineStop={() => {
             if (graphRef.current) {
               graphRef.current.pauseAnimation();
+
+              // Configure d3 forces ONCE after simulation stops
+              const fg = graphRef.current;
+              fg.d3Force('link')?.distance(120);
+              fg.d3Force('charge')?.strength(-300);
+              fg.d3Force('link')?.strength(0.3);
             }
           }}
         />
