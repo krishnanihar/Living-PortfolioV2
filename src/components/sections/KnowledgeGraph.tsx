@@ -227,6 +227,11 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
 
   // Custom node rendering with beautiful gradients and glows
   const drawNode = useCallback((node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
+    // Safety check: nodes need valid positions before rendering
+    if (!node.x || !node.y || !isFinite(node.x) || !isFinite(node.y)) {
+      return;
+    }
+
     const label = node.name;
     const fontSize = node.type === 'concept' ? 11 : 12;
     const scaledFontSize = fontSize / globalScale;
@@ -404,6 +409,12 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
   const drawLink = useCallback((link: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
     const source = link.source;
     const target = link.target;
+
+    // Safety check: both nodes need valid positions
+    if (!source || !target || !source.x || !source.y || !target.x || !target.y ||
+        !isFinite(source.x) || !isFinite(source.y) || !isFinite(target.x) || !isFinite(target.y)) {
+      return;
+    }
 
     const isConnectedToHovered = hoveredNode &&
       (source.id === hoveredNode || target.id === hoveredNode);
