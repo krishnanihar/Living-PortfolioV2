@@ -303,6 +303,15 @@ button {
   100% { background-position: 200% 0; }
 }
 
+@keyframes shimmerTransform {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 /* === RESPONSIVE UTILITIES === */
 
 /* iOS Safe Area Support */
