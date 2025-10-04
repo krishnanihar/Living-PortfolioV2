@@ -389,7 +389,6 @@ export default function Portfolio() {
           alignItems: 'center',
           justifyContent: 'center',
           position: 'relative',
-          paddingBottom: '80px',
         }}>
           <div
             data-tour="hero-card"
@@ -421,65 +420,65 @@ export default function Portfolio() {
                 setChatOpen(true);
               }}
             />
-          </div>
 
-          {/* Scroll to Explore Indicator */}
-          <div
-            onClick={() => {
-              window.scrollTo({
-                top: window.innerHeight,
-                behavior: 'smooth'
-              });
-            }}
-            style={{
-              position: 'absolute',
-              bottom: '40px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '0.5rem',
-              opacity: scrollIndicatorOpacity,
-              animation: 'scrollFadeIn 1s ease-out 2s both',
-              cursor: 'pointer',
-              transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-              pointerEvents: scrollIndicatorOpacity > 0.1 ? 'auto' : 'none',
-            }}
-            onMouseEnter={(e) => {
-              if (scrollIndicatorOpacity > 0.1) {
-                (e.currentTarget as HTMLElement).style.transform = 'translateX(-50%) scale(1.1)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.transform = 'translateX(-50%) scale(1)';
-            }}
-          >
-            <span style={{
-              fontSize: '0.75rem',
-              fontWeight: '300',
-              letterSpacing: '0.1em',
-              color: 'var(--text-muted)',
-              opacity: 0.6,
-              textTransform: 'uppercase',
-            }}>
-              Scroll to explore
-            </span>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '36px',
-              height: '36px',
-              borderRadius: '50%',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              background: 'rgba(255, 255, 255, 0.03)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              animation: 'scrollBounce 3s ease-in-out infinite',
-              transition: 'all 0.3s ease',
-            }}>
-              <ChevronDown size={18} style={{ color: 'var(--text-muted)', opacity: 0.8 }} />
+            {/* Scroll to Explore Indicator */}
+            <div
+              onClick={() => {
+                window.scrollTo({
+                  top: window.innerHeight,
+                  behavior: 'smooth'
+                });
+              }}
+              style={{
+                position: 'absolute',
+                bottom: '-60px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '0.5rem',
+                opacity: scrollIndicatorOpacity,
+                animation: 'scrollFadeIn 1s ease-out 2s both',
+                cursor: 'pointer',
+                transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                pointerEvents: scrollIndicatorOpacity > 0.1 ? 'auto' : 'none',
+              }}
+              onMouseEnter={(e) => {
+                if (scrollIndicatorOpacity > 0.1) {
+                  (e.currentTarget as HTMLElement).style.transform = 'translateX(-50%) scale(1.1)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.transform = 'translateX(-50%) scale(1)';
+              }}
+            >
+              <span style={{
+                fontSize: '0.75rem',
+                fontWeight: '300',
+                letterSpacing: '0.1em',
+                color: 'var(--text-muted)',
+                opacity: 0.6,
+                textTransform: 'uppercase',
+              }}>
+                Scroll to explore
+              </span>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '36px',
+                height: '36px',
+                borderRadius: '50%',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                background: 'rgba(255, 255, 255, 0.03)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                animation: 'scrollBounce 3s ease-in-out infinite',
+                transition: 'all 0.3s ease',
+              }}>
+                <ChevronDown size={18} style={{ color: 'var(--text-muted)', opacity: 0.8 }} />
+              </div>
             </div>
           </div>
         </section>
