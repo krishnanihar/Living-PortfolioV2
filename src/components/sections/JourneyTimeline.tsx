@@ -895,20 +895,18 @@ export function JourneyTimeline() {
                     role="article"
                     aria-label={`${milestone.title} - ${milestone.year}`}
                     style={{
-                      background: milestone.isCollaboration
-                        ? 'transparent'
-                        : `linear-gradient(135deg,
+                      background: `
+                        linear-gradient(135deg,
                           rgba(218, 14, 41, ${isActive ? 0.08 : isHovered ? 0.05 : 0.02}),
                           rgba(255, 255, 255, 0.03)
-                        )`,
-                      backdropFilter: milestone.isCollaboration ? 'none' : `blur(${isHovered ? 24 : 20}px)`,
-                      WebkitBackdropFilter: milestone.isCollaboration ? 'none' : `blur(${isHovered ? 24 : 20}px)`,
-                      border: milestone.isCollaboration ? 'none' : `1px solid rgba(255, 255, 255, ${isActive ? 0.14 : isHovered ? 0.12 : 0.08})`,
-                      borderRadius: milestone.isCollaboration ? '0' : '24px',
-                      padding: milestone.isCollaboration ? '2rem 0' : 'clamp(1.5rem, 3vw, 2.5rem)',
-                      boxShadow: milestone.isCollaboration
-                        ? 'none'
-                        : isHovered
+                        )
+                      `,
+                      backdropFilter: `blur(${isHovered ? 24 : 20}px)`,
+                      WebkitBackdropFilter: `blur(${isHovered ? 24 : 20}px)`,
+                      border: `1px solid rgba(255, 255, 255, ${isActive ? 0.14 : isHovered ? 0.12 : 0.08})`,
+                      borderRadius: '24px',
+                      padding: 'clamp(1.5rem, 3vw, 2.5rem)',
+                      boxShadow: isHovered
                         ? `0 12px 40px rgba(0, 0, 0, 0.35),
                            0 0 0 1px rgba(218, 14, 41, 0.1),
                            inset 0 1px 0 rgba(255, 255, 255, 0.08)`
@@ -916,31 +914,61 @@ export function JourneyTimeline() {
                         ? '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(218, 14, 41, 0.1)'
                         : '0 8px 32px rgba(0, 0, 0, 0.2)',
                       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                      transform: milestone.isCollaboration ? 'scale(1)' : (isHovered ? 'scale(1.01)' : 'scale(1)'),
-                      cursor: milestone.isCollaboration ? 'default' : 'pointer',
+                      transform: isHovered ? 'scale(1.01)' : 'scale(1)',
+                      cursor: 'pointer',
                     }}
                   >
                     {milestone.isCollaboration ? (
                       // Collaboration milestone - render chat interface
-                      <div style={{ textAlign: 'center' }}>
-                        <h2 style={{
-                          fontSize: 'clamp(2rem, 4vw, 2.75rem)',
-                          fontWeight: '200',
+                      <>
+                        <span data-year style={{
+                          display: 'inline-block',
+                          fontSize: '0.75rem',
+                          color: 'var(--text-muted)',
+                          letterSpacing: '0.1em',
+                          textTransform: 'uppercase',
+                          marginBottom: '1.5rem',
+                        }}>
+                          {milestone.year}
+                        </span>
+
+                        <div data-icon style={{
+                          marginBottom: '1.5rem',
+                        }}>
+                          <IconComponent
+                            size={32}
+                            style={{
+                              color: 'rgba(218, 14, 41, 0.8)',
+                              filter: 'drop-shadow(0 0 10px rgba(218, 14, 41, 0.3))',
+                            }}
+                          />
+                        </div>
+
+                        <h3 style={{
+                          fontSize: '1.5rem',
+                          fontWeight: '500',
                           color: 'var(--text-primary)',
-                          marginBottom: '1rem',
-                          lineHeight: '1.1',
-                          letterSpacing: '-0.02em',
+                          marginBottom: '0.5rem',
+                          letterSpacing: '-0.01em',
                         }}>
                           {milestone.title}
-                        </h2>
+                        </h3>
 
                         <p style={{
-                          fontSize: '1rem',
-                          color: 'var(--text-secondary)',
-                          marginBottom: '2.5rem',
+                          fontSize: '0.9rem',
+                          color: 'var(--text-muted)',
+                          marginBottom: '1rem',
                           fontWeight: '300',
-                          letterSpacing: '0.01em',
-                          lineHeight: '1.6',
+                        }}>
+                          {milestone.subtitle}
+                        </p>
+
+                        <p style={{
+                          fontSize: '0.95rem',
+                          color: 'var(--text-secondary)',
+                          lineHeight: '1.7',
+                          marginBottom: '1.5rem',
+                          fontWeight: '300',
                         }}>
                           {milestone.description}
                         </p>
@@ -949,7 +977,7 @@ export function JourneyTimeline() {
                           setInitialMessage(message);
                           setChatOpen(true);
                         }} />
-                      </div>
+                      </>
                     ) : (
                       // Normal milestone
                       <>
