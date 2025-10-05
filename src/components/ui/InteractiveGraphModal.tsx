@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
-import { KnowledgeGraph } from '../sections/KnowledgeGraph';
+import { SimpleKnowledgeGraph } from '../sections/SimpleKnowledgeGraph';
 
 interface Book {
   title: string;
@@ -22,8 +22,17 @@ interface Game {
 
 interface GraphNode {
   id: string;
-  name: string;
+  label: string;
+  x: number;
+  y: number;
   type: 'book' | 'game' | 'concept';
+  color: string;
+  metadata?: {
+    author?: string;
+    studio?: string;
+    progress?: number;
+    hoursPlayed?: number;
+  };
 }
 
 interface InteractiveGraphModalProps {
@@ -173,7 +182,7 @@ export function InteractiveGraphModal({
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-              <KnowledgeGraph
+              <SimpleKnowledgeGraph
                 books={books}
                 games={games}
                 onNodeClick={onNodeClick}
