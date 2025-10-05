@@ -1285,8 +1285,8 @@ export function JourneyTimeline() {
 
       {/* Let's Build Something Together Section */}
       <div style={{
-        marginTop: '2rem',
-        padding: '5rem 2rem',
+        marginTop: '0',
+        padding: '3rem 2rem 5rem',
         textAlign: 'center',
         position: 'relative',
       }}>
