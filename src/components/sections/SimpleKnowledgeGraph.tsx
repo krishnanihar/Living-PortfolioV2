@@ -75,7 +75,7 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
     });
 
     // Create book nodes on left side
-    const bookRadius = 240;
+    const bookRadius = 280;
     books.forEach((book, i) => {
       const bookId = `book-${i}`;
       const angle = Math.PI - (i / (books.length - 1 || 1)) * Math.PI;
@@ -86,7 +86,7 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
         x: centerX + Math.cos(angle) * bookRadius,
         y: centerY + Math.sin(angle) * bookRadius,
         type: 'book',
-        color: '#A855F7',
+        color: 'rgba(255, 255, 255, 0.8)',
         metadata: {
           author: book.author,
           progress: book.progress,
@@ -102,7 +102,7 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
     });
 
     // Create game nodes on right side
-    const gameRadius = 240;
+    const gameRadius = 280;
     games.forEach((game, i) => {
       const gameId = `game-${i}`;
       const angle = -(i / (games.length - 1 || 1)) * Math.PI;
@@ -113,7 +113,7 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
         x: centerX + Math.cos(angle) * gameRadius,
         y: centerY + Math.sin(angle) * gameRadius,
         type: 'game',
-        color: '#F59E0B',
+        color: 'rgba(255, 255, 255, 0.6)',
         metadata: {
           studio: game.studio,
           hoursPlayed: game.hoursPlayed,
@@ -261,9 +261,15 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
             const isConnected = hoveredNode && connectedNodes.has(node.id);
             const isDimmed = hoveredNode && !isConnected && !isSelected;
 
-            const size = node.type === 'concept' ? 20 : 16;
+            const size = node.type === 'concept' ? 18 : 14;
             const scale = isHovered || isSelected ? 1.15 : 1;
             const finalSize = size * scale;
+
+            // Truncate label if too long
+            const maxLabelLength = 20;
+            const displayLabel = node.label.length > maxLabelLength
+              ? node.label.substring(0, maxLabelLength) + '...'
+              : node.label;
 
             return (
               <g
@@ -272,7 +278,7 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
                 onMouseLeave={() => setHoveredNode(null)}
                 onClick={() => handleNodeClick(node)}
                 style={{ cursor: 'pointer' }}
-                opacity={isDimmed ? 0.2 : 1}
+                opacity={isDimmed ? 0.15 : 1}
               >
                 {/* Node shape */}
                 {node.type === 'concept' ? (
@@ -284,27 +290,30 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
                       ${node.x},${node.y + finalSize}
                       ${node.x - finalSize},${node.y}
                     `}
-                    fill="rgba(10, 10, 10, 0.8)"
+                    fill="rgba(10, 10, 10, 0.9)"
                     stroke={node.color}
-                    strokeWidth={isHovered || isSelected ? 2.5 : 1.5}
+                    strokeWidth={isHovered || isSelected ? 1.2 : 0.8}
+                    strokeOpacity={isHovered || isSelected ? 1 : 0.6}
                     style={{
-                      transition: 'all 0.2s ease',
-                      filter: isHovered || isSelected ? `drop-shadow(0 0 20px ${node.color})` : 'none',
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                      filter: isHovered || isSelected ? `drop-shadow(0 0 12px ${node.color})` : 'none',
                     }}
                   />
                 ) : (
-                  // Square for books/games
+                  // Square for books/games with rounded corners
                   <rect
                     x={node.x - finalSize}
                     y={node.y - finalSize}
                     width={finalSize * 2}
                     height={finalSize * 2}
-                    fill="rgba(10, 10, 10, 0.8)"
+                    rx="2"
+                    fill="rgba(10, 10, 10, 0.9)"
                     stroke={node.color}
-                    strokeWidth={isHovered || isSelected ? 2.5 : 1.5}
+                    strokeWidth={isHovered || isSelected ? 1.2 : 0.8}
+                    strokeOpacity={isHovered || isSelected ? 1 : 0.6}
                     style={{
-                      transition: 'all 0.2s ease',
-                      filter: isHovered || isSelected ? `drop-shadow(0 0 20px ${node.color})` : 'none',
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                      filter: isHovered || isSelected ? `drop-shadow(0 0 12px ${node.color})` : 'none',
                     }}
                   />
                 )}
@@ -312,18 +321,20 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
                 {/* Label */}
                 <text
                   x={node.x}
-                  y={node.y + finalSize + 16}
+                  y={node.y + finalSize + 18}
                   textAnchor="middle"
                   fill={node.color}
-                  fontSize="11"
-                  fontFamily='"Courier New", monospace'
+                  fontSize="10"
+                  fontFamily="Inter, system-ui, -apple-system, sans-serif"
+                  fontWeight="300"
+                  letterSpacing="0.02em"
                   style={{
-                    transition: 'all 0.2s ease',
-                    filter: isHovered || isSelected ? `drop-shadow(0 0 8px ${node.color})` : 'none',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    filter: isHovered || isSelected ? `drop-shadow(0 0 6px ${node.color})` : 'none',
                     pointerEvents: 'none',
                   }}
                 >
-                  {node.label}
+                  {displayLabel}
                 </text>
               </g>
             );
