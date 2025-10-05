@@ -1,4 +1,4 @@
-import { Briefcase, GraduationCap, Code2, Sparkles, Brain, Palette, Zap } from 'lucide-react';
+import { Briefcase, GraduationCap, Code2, Sparkles, Brain, Palette, Zap, MessageSquarePlus } from 'lucide-react';
 
 export interface TimelineMilestone {
   id: string;
@@ -22,6 +22,7 @@ export interface TimelineMilestone {
   tags: string[];
   icon: string; // Icon name as string
   side: 'left' | 'right';
+  isCollaboration?: boolean; // Special flag for collaboration milestone
 }
 
 export const timelineMilestones: TimelineMilestone[] = [
@@ -377,6 +378,19 @@ export const timelineMilestones: TimelineMilestone[] = [
     tags: ['Philosophy', 'Systems Thinking', 'Impact'],
     icon: 'Palette',
     side: 'left'
+  },
+
+  // Phase 10: Collaboration
+  {
+    id: 'lets-collaborate',
+    year: 'Next',
+    title: 'Let\'s build something together',
+    subtitle: 'Your Project · Future Collaboration',
+    description: 'Tell me about your project, and let\'s explore how we can collaborate',
+    tags: ['Collaboration', 'Future', 'Projects'],
+    icon: 'MessageSquarePlus',
+    side: 'right',
+    isCollaboration: true
   }
 ];
 
@@ -388,5 +402,6 @@ export const iconMap: Record<string, typeof Briefcase> = {
   GraduationCap,
   Sparkles,
   Palette,
-  Zap
+  Zap,
+  MessageSquarePlus
 };
