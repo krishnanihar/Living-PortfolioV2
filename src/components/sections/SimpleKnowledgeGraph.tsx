@@ -70,7 +70,7 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
         x: centerX + Math.cos(angle) * conceptRadius,
         y: centerY + Math.sin(angle) * conceptRadius,
         type: 'concept',
-        color: '#06B6D4',
+        color: 'rgba(255, 255, 255, 0.4)',
       });
     });
 
@@ -86,7 +86,7 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
         x: centerX + Math.cos(angle) * bookRadius,
         y: centerY + Math.sin(angle) * bookRadius,
         type: 'book',
-        color: 'rgba(255, 255, 255, 0.8)',
+        color: 'rgba(255, 255, 255, 0.95)',
         metadata: {
           author: book.author,
           progress: book.progress,
@@ -113,7 +113,7 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
         x: centerX + Math.cos(angle) * gameRadius,
         y: centerY + Math.sin(angle) * gameRadius,
         type: 'game',
-        color: 'rgba(255, 255, 255, 0.6)',
+        color: 'rgba(255, 255, 255, 0.95)',
         metadata: {
           studio: game.studio,
           hoursPlayed: game.hoursPlayed,
@@ -155,62 +155,13 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
       style={{
         width: '100%',
         height: 550,
-        background: '#0A0A0A',
-        borderRadius: '24px',
-        border: '1px solid rgba(6, 182, 212, 0.2)',
+        background: 'transparent',
+        borderRadius: '20px',
+        border: '1px solid rgba(255, 255, 255, 0.06)',
         overflow: 'hidden',
         position: 'relative',
-        boxShadow: 'inset 0 0 100px rgba(6, 182, 212, 0.05), 0 20px 60px rgba(0, 0, 0, 0.6)',
       }}
     >
-      {/* Watch Dogs Grid Overlay */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        backgroundImage: `
-          linear-gradient(rgba(6, 182, 212, 0.03) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px)
-        `,
-        backgroundSize: '40px 40px',
-        pointerEvents: 'none',
-        zIndex: 1,
-      }} />
-
-      {/* Scan Line Animation */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'linear-gradient(180deg, transparent 0%, rgba(6, 182, 212, 0.1) 50%, transparent 100%)',
-        height: '200px',
-        animation: 'scanLine 8s linear infinite',
-        pointerEvents: 'none',
-        zIndex: 2,
-      }} />
-
-      <style jsx>{`
-        @keyframes scanLine {
-          0% { transform: translateY(-200px); }
-          100% { transform: translateY(750px); }
-        }
-      `}</style>
-
-      {/* Technical HUD Label */}
-      <div style={{
-        position: 'absolute',
-        top: '1.5rem',
-        right: '1.5rem',
-        fontSize: '0.75rem',
-        color: '#06B6D4',
-        fontFamily: '"Courier New", monospace',
-        textAlign: 'right',
-        pointerEvents: 'none',
-        zIndex: 10,
-        opacity: 0.7,
-        textTransform: 'uppercase',
-        letterSpacing: '0.1em',
-      }}>
-        KNOWLEDGE NETWORK
-      </div>
 
       {/* SVG Graph */}
       <svg
@@ -241,12 +192,11 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
                 y1={sourceNode.y}
                 x2={targetNode.x}
                 y2={targetNode.y}
-                stroke="#06B6D4"
-                strokeWidth={isConnected || isSelectedConnection ? 1.5 : 0.8}
-                opacity={isConnected || isSelectedConnection ? 0.6 : 0.15}
+                stroke="rgba(255, 255, 255, 0.08)"
+                strokeWidth={isConnected || isSelectedConnection ? 0.8 : 0.5}
+                opacity={isConnected || isSelectedConnection ? 0.15 : 1}
                 style={{
-                  transition: 'all 0.2s ease',
-                  filter: isConnected || isSelectedConnection ? 'drop-shadow(0 0 8px #06B6D4)' : 'none',
+                  transition: 'all 0.4s ease-out',
                 }}
               />
             );
@@ -261,9 +211,10 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
             const isConnected = hoveredNode && connectedNodes.has(node.id);
             const isDimmed = hoveredNode && !isConnected && !isSelected;
 
-            const size = node.type === 'concept' ? 18 : 14;
-            const scale = isHovered || isSelected ? 1.15 : 1;
-            const finalSize = size * scale;
+            // Minimal circle sizing
+            const radius = node.type === 'concept' ? 4 : 6;
+            const scale = isHovered || isSelected ? 1.08 : 1;
+            const finalRadius = radius * scale;
 
             // Truncate label if too long
             const maxLabelLength = 20;
@@ -278,59 +229,34 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
                 onMouseLeave={() => setHoveredNode(null)}
                 onClick={() => handleNodeClick(node)}
                 style={{ cursor: 'pointer' }}
-                opacity={isDimmed ? 0.15 : 1}
+                opacity={isDimmed ? 0.3 : 1}
               >
-                {/* Node shape */}
-                {node.type === 'concept' ? (
-                  // Diamond for concepts
-                  <polygon
-                    points={`
-                      ${node.x},${node.y - finalSize}
-                      ${node.x + finalSize},${node.y}
-                      ${node.x},${node.y + finalSize}
-                      ${node.x - finalSize},${node.y}
-                    `}
-                    fill="rgba(10, 10, 10, 0.9)"
-                    stroke={node.color}
-                    strokeWidth={isHovered || isSelected ? 1.2 : 0.8}
-                    strokeOpacity={isHovered || isSelected ? 1 : 0.6}
-                    style={{
-                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                      filter: isHovered || isSelected ? `drop-shadow(0 0 12px ${node.color})` : 'none',
-                    }}
-                  />
-                ) : (
-                  // Square for books/games with rounded corners
-                  <rect
-                    x={node.x - finalSize}
-                    y={node.y - finalSize}
-                    width={finalSize * 2}
-                    height={finalSize * 2}
-                    rx="2"
-                    fill="rgba(10, 10, 10, 0.9)"
-                    stroke={node.color}
-                    strokeWidth={isHovered || isSelected ? 1.2 : 0.8}
-                    strokeOpacity={isHovered || isSelected ? 1 : 0.6}
-                    style={{
-                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                      filter: isHovered || isSelected ? `drop-shadow(0 0 12px ${node.color})` : 'none',
-                    }}
-                  />
-                )}
+                {/* Minimal circle node */}
+                <circle
+                  cx={node.x}
+                  cy={node.y}
+                  r={finalRadius}
+                  fill={node.color}
+                  stroke={node.type === 'concept' ? 'none' : 'rgba(255, 255, 255, 0.1)'}
+                  strokeWidth="0.5"
+                  style={{
+                    transition: 'all 0.4s ease-out',
+                  }}
+                />
 
                 {/* Label */}
                 <text
                   x={node.x}
-                  y={node.y + finalSize + 18}
+                  y={node.y + finalRadius + 14}
                   textAnchor="middle"
-                  fill={node.color}
-                  fontSize="10"
+                  fill="rgba(255, 255, 255, 0.7)"
+                  fontSize="9"
                   fontFamily="Inter, system-ui, -apple-system, sans-serif"
-                  fontWeight="300"
-                  letterSpacing="0.02em"
+                  fontWeight="400"
+                  letterSpacing="0.01em"
                   style={{
-                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                    filter: isHovered || isSelected ? `drop-shadow(0 0 6px ${node.color})` : 'none',
+                    transition: 'all 0.4s ease-out',
+                    opacity: isHovered || isSelected ? 1 : 0.7,
                     pointerEvents: 'none',
                   }}
                 >
