@@ -46,6 +46,17 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
 
+  // Zoom and Pan state
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [isPanning, setIsPanning] = useState(false);
+  const [panStart, setPanStart] = useState({ x: 0, y: 0 });
+
+  // Drag state
+  const [draggedNode, setDraggedNode] = useState<string | null>(null);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [nodePositions, setNodePositions] = useState<Map<string, { x: number; y: number }>>(new Map());
+
   // Build graph data with static positions
   const { nodes, links } = useMemo(() => {
     const concepts = new Set<string>();
@@ -143,11 +154,66 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
   }, [hoveredNode, links]);
 
   const handleNodeClick = (node: GraphNode) => {
+    if (draggedNode) return; // Don't click if dragging
     const newSelected = selectedNode === node.id ? null : node.id;
     setSelectedNode(newSelected);
     if (onNodeClick) {
       onNodeClick(newSelected ? node : null);
     }
+  };
+
+  // Get node position (from state or original)
+  const getNodePosition = (node: GraphNode) => {
+    return nodePositions.get(node.id) || { x: node.x, y: node.y };
+  };
+
+  // Zoom handler
+  const handleWheel = (e: React.WheelEvent<SVGSVGElement>) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? 0.9 : 1.1;
+    setZoom(prev => Math.min(Math.max(prev * delta, 0.5), 3));
+  };
+
+  // Pan and drag handlers
+  const handleMouseDown = (e: React.MouseEvent<SVGSVGElement>) => {
+    const target = e.target as SVGElement;
+    if (target.tagName === 'svg' || target.tagName === 'g') {
+      setIsPanning(true);
+      setPanStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
+    if (isPanning) {
+      setPan({ x: e.clientX - panStart.x, y: e.clientY - panStart.y });
+    } else if (draggedNode) {
+      const svgRect = (e.currentTarget as SVGSVGElement).getBoundingClientRect();
+      const svgX = ((e.clientX - svgRect.left - pan.x) / zoom) * (900 / svgRect.width);
+      const svgY = ((e.clientY - svgRect.top - pan.y) / zoom) * (550 / svgRect.height);
+
+      setNodePositions(prev => new Map(prev).set(draggedNode, { x: svgX, y: svgY }));
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsPanning(false);
+    setDraggedNode(null);
+  };
+
+  const handleNodeMouseDown = (e: React.MouseEvent, nodeId: string) => {
+    e.stopPropagation();
+    setDraggedNode(nodeId);
+    const node = nodes.find(n => n.id === nodeId);
+    if (node) {
+      const pos = getNodePosition(node);
+      setDragStart({ x: pos.x, y: pos.y });
+    }
+  };
+
+  // Reset view
+  const handleReset = () => {
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
   };
 
   return (
@@ -178,7 +244,12 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
         height="100%"
         viewBox="0 0 900 550"
         preserveAspectRatio="xMidYMid meet"
-        style={{ position: 'relative', zIndex: 5 }}
+        style={{ position: 'relative', zIndex: 5, cursor: isPanning ? 'grabbing' : 'grab' }}
+        onWheel={handleWheel}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
       >
         <defs>
           <style>{`
@@ -189,12 +260,16 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
           `}</style>
         </defs>
 
+        <g transform={`translate(${pan.x}, ${pan.y}) scale(${zoom})`}>
         {/* Links */}
         <g>
           {links.map((link, i) => {
             const sourceNode = nodes.find(n => n.id === link.source);
             const targetNode = nodes.find(n => n.id === link.target);
             if (!sourceNode || !targetNode) return null;
+
+            const sourcePos = getNodePosition(sourceNode);
+            const targetPos = getNodePosition(targetNode);
 
             const isConnected = hoveredNode && (
               connectedNodes.has(link.source) && connectedNodes.has(link.target)
@@ -206,10 +281,10 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
             return (
               <line
                 key={`link-${i}`}
-                x1={sourceNode.x}
-                y1={sourceNode.y}
-                x2={targetNode.x}
-                y2={targetNode.y}
+                x1={sourcePos.x}
+                y1={sourcePos.y}
+                x2={targetPos.x}
+                y2={targetPos.y}
                 stroke="rgba(255, 255, 255, 0.08)"
                 strokeWidth={isConnected || isSelectedConnection ? 0.8 : 0.5}
                 opacity={isConnected || isSelectedConnection ? 0.15 : 1}
@@ -224,10 +299,12 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
         {/* Nodes */}
         <g>
           {nodes.map(node => {
+            const pos = getNodePosition(node);
             const isHovered = hoveredNode === node.id;
             const isSelected = selectedNode === node.id;
             const isConnected = hoveredNode && connectedNodes.has(node.id);
             const isDimmed = hoveredNode && !isConnected && !isSelected;
+            const isDragging = draggedNode === node.id;
 
             // Layered concentric circle sizing
             const baseRadius = node.type === 'concept' ? 4 : 8;
@@ -245,8 +322,9 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
                 key={node.id}
                 onMouseEnter={() => setHoveredNode(node.id)}
                 onMouseLeave={() => setHoveredNode(null)}
+                onMouseDown={(e) => handleNodeMouseDown(e, node.id)}
                 onClick={() => handleNodeClick(node)}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
                 opacity={isDimmed ? 0.3 : 1}
               >
                 {/* Layered circle nodes with depth */}
@@ -255,8 +333,8 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
                   <>
                     {/* Outer pulsing ring */}
                     <circle
-                      cx={node.x}
-                      cy={node.y}
+                      cx={pos.x}
+                      cy={pos.y}
                       r={finalRadius * 2}
                       fill="none"
                       stroke="rgba(218, 14, 41, 0.3)"
@@ -269,8 +347,8 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
                     />
                     {/* Inner dot with glow */}
                     <circle
-                      cx={node.x}
-                      cy={node.y}
+                      cx={pos.x}
+                      cy={pos.y}
                       r={finalRadius + 2}
                       fill={node.color}
                       opacity={isHovered || isSelected ? 0.3 : 0}
@@ -280,8 +358,8 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
                       }}
                     />
                     <circle
-                      cx={node.x}
-                      cy={node.y}
+                      cx={pos.x}
+                      cy={pos.y}
                       r={finalRadius}
                       fill={node.color}
                       style={{
@@ -295,8 +373,8 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
                     {/* Outer glow ring on hover */}
                     {(isHovered || isSelected) && (
                       <circle
-                        cx={node.x}
-                        cy={node.y}
+                        cx={pos.x}
+                        cy={pos.y}
                         r={finalRadius + 4}
                         fill="none"
                         stroke="rgba(255, 255, 255, 0.3)"
@@ -308,8 +386,8 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
                     )}
                     {/* Outer circle */}
                     <circle
-                      cx={node.x}
-                      cy={node.y}
+                      cx={pos.x}
+                      cy={pos.y}
                       r={finalRadius}
                       fill={node.color}
                       stroke="rgba(255, 255, 255, 0.2)"
@@ -320,8 +398,8 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
                     />
                     {/* Inner ring for depth */}
                     <circle
-                      cx={node.x}
-                      cy={node.y}
+                      cx={pos.x}
+                      cy={pos.y}
                       r={finalRadius * 0.75}
                       fill="none"
                       stroke="rgba(255, 255, 255, 0.3)"
@@ -336,8 +414,8 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
                 {/* Label with glow effect and slide-up */}
                 {/* Glow layer */}
                 <text
-                  x={node.x}
-                  y={node.y + finalRadius + (isHovered || isSelected ? 12 : 14)}
+                  x={pos.x}
+                  y={pos.y + finalRadius + (isHovered || isSelected ? 12 : 14)}
                   textAnchor="middle"
                   fill={node.color}
                   fontSize="10"
@@ -355,8 +433,8 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
                 </text>
                 {/* Main text layer */}
                 <text
-                  x={node.x}
-                  y={node.y + finalRadius + (isHovered || isSelected ? 12 : 14)}
+                  x={pos.x}
+                  y={pos.y + finalRadius + (isHovered || isSelected ? 12 : 14)}
                   textAnchor="middle"
                   fill="rgba(255, 255, 255, 0.95)"
                   fontSize="10"
@@ -375,7 +453,61 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
             );
           })}
         </g>
+        </g>
       </svg>
+
+      {/* Reset button */}
+      <button
+        onClick={handleReset}
+        onDoubleClick={handleReset}
+        style={{
+          position: 'absolute',
+          bottom: '1rem',
+          right: '1rem',
+          padding: '0.5rem 1rem',
+          background: 'rgba(255, 255, 255, 0.05)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          borderRadius: '8px',
+          color: 'rgba(255, 255, 255, 0.7)',
+          fontSize: '0.75rem',
+          fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+          fontWeight: '500',
+          cursor: 'pointer',
+          zIndex: 10,
+          transition: 'all 0.3s ease',
+          opacity: zoom !== 1 || pan.x !== 0 || pan.y !== 0 ? 1 : 0.3,
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+          e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+          e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+        }}
+      >
+        Reset View
+      </button>
+
+      {/* Zoom indicator */}
+      <div style={{
+        position: 'absolute',
+        bottom: '1rem',
+        left: '1rem',
+        padding: '0.5rem 0.75rem',
+        background: 'rgba(255, 255, 255, 0.05)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        borderRadius: '8px',
+        color: 'rgba(255, 255, 255, 0.5)',
+        fontSize: '0.6875rem',
+        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+        fontWeight: '400',
+        zIndex: 10,
+        opacity: zoom !== 1 ? 1 : 0.3,
+        transition: 'opacity 0.3s ease',
+      }}>
+        {Math.round(zoom * 100)}%
+      </div>
     </div>
   );
 }
