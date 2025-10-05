@@ -86,16 +86,16 @@ export function InteractiveGraphModal({
 
           {/* Modal */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             style={{
               position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
+              inset: 0,
+              margin: 'auto',
               width: 'min(1000px, 90vw)',
+              height: 'fit-content',
               maxHeight: '90vh',
               background: 'var(--surface-primary)',
               backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
