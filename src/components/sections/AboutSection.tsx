@@ -587,20 +587,22 @@ export function AboutSection() {
           {/* Current Focus Card */}
           <div style={{
             position: 'relative',
-            background: 'linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
-            backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
-            WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            background: 'rgba(255, 255, 255, 0.02)',
+            backdropFilter: 'blur(30px) brightness(0.8)',
+            WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
             borderRadius: '28px',
             padding: '2.5rem',
-            border: '1px solid var(--border-primary)',
-            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'scale(1.02)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
           }}>
             <Briefcase size={32} style={{ color: 'var(--brand-red)', marginBottom: '1rem' }} />
             <h3 style={{
@@ -637,20 +639,22 @@ export function AboutSection() {
           {/* Philosophy Card */}
           <div style={{
             position: 'relative',
-            background: 'linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
-            backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
-            WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            background: 'rgba(255, 255, 255, 0.02)',
+            backdropFilter: 'blur(30px) brightness(0.8)',
+            WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
             borderRadius: '28px',
             padding: '2.5rem',
-            border: '1px solid var(--border-primary)',
-            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'scale(1.02)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
           }}>
             <Sparkles size={32} style={{ color: 'rgba(147, 51, 234, 0.8)', marginBottom: '1rem' }} />
             <h3 style={{
@@ -674,20 +678,22 @@ export function AboutSection() {
           {/* Approach Card */}
           <div style={{
             position: 'relative',
-            background: 'linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
-            backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
-            WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            background: 'rgba(255, 255, 255, 0.02)',
+            backdropFilter: 'blur(30px) brightness(0.8)',
+            WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
             borderRadius: '28px',
             padding: '2.5rem',
-            border: '1px solid var(--border-primary)',
-            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'scale(1.02)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
           }}>
             <Layers size={32} style={{ color: 'rgba(59, 130, 246, 0.8)', marginBottom: '1rem' }} />
             <h3 style={{
