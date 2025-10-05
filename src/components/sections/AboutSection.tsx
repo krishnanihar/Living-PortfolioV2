@@ -31,7 +31,6 @@ export function AboutSection() {
   const [activeTimeline, setActiveTimeline] = useState<string | null>(null);
   const [avatarEmoji, setAvatarEmoji] = useState('👋');
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [showToast, setShowToast] = useState(false);
   const [activeTab, setActiveTab] = useState<'everything' | 'books' | 'games'>('everything');
   const [isGraphModalOpen, setIsGraphModalOpen] = useState(false);
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
@@ -112,12 +111,6 @@ export function AboutSection() {
       detail: 'Leading design transformation at Air India DesignLAB - building systems that serve 450+ daily users in aviation operations.'
     },
   ];
-
-  const handleEmailCopy = () => {
-    navigator.clipboard.writeText('nihar@example.com');
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 2000);
-  };
 
   const currentlyReading = [
     {
@@ -322,30 +315,6 @@ export function AboutSection() {
           boxShadow: '0 0 8px rgba(218, 14, 41, 0.5)',
         }} />
       </div>
-
-      {/* Toast Notification */}
-      {showToast && (
-        <div style={{
-          position: 'fixed',
-          top: '80px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          padding: '0.75rem 1.5rem',
-          background: 'var(--surface-primary)',
-          backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
-          WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
-          border: '1px solid rgba(34, 197, 94, 0.3)',
-          borderRadius: '16px',
-          color: 'var(--text-primary)',
-          fontSize: '0.875rem',
-          fontWeight: '400',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.02)',
-          zIndex: 1000,
-          animation: 'toastSlideIn 0.3s ease-out',
-        }}>
-          <span style={{ color: 'rgba(34, 197, 94, 1)' }}>✓</span> Email copied to clipboard
-        </div>
-      )}
 
       {/* Mouse tracking background gradient */}
       <div style={{
@@ -1831,142 +1800,6 @@ export function AboutSection() {
           </div>
         </div>
 
-        {/* Contact CTA Card */}
-        <div
-          className={isVisible ? 'animate-fade-in-up' : ''}
-          style={{
-            opacity: isVisible ? 1 : 0,
-            animationDelay: '400ms',
-          }}
-        >
-          <div style={{
-            position: 'relative',
-            background: 'linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
-            backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
-            WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
-            borderRadius: '28px',
-            padding: '3rem',
-            border: '1px solid var(--border-primary)',
-            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
-            textAlign: 'center',
-          }}>
-            <h2 style={{
-              fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-              fontWeight: '200',
-              marginBottom: '1rem',
-              letterSpacing: '-0.02em',
-            }}>
-              Let's build something together
-            </h2>
-            <p style={{
-              fontSize: '1.0625rem',
-              color: 'var(--text-secondary)',
-              lineHeight: '1.7',
-              fontWeight: '300',
-              marginBottom: '2rem',
-              maxWidth: '600px',
-              margin: '0 auto 2rem',
-            }}>
-              Whether you're hiring, collaborating, or just want to chat about design systems and living interfaces.
-            </p>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '1rem',
-              flexWrap: 'wrap',
-            }}>
-              <button
-                onClick={handleEmailCopy}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.875rem 1.75rem',
-                  background: 'var(--brand-red)',
-                  color: 'white',
-                  fontSize: '0.9375rem',
-                  fontWeight: '500',
-                  borderRadius: '20px',
-                  border: '1px solid rgba(218, 14, 41, 0.5)',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(218, 14, 41, 0.3)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              >
-                <Mail size={18} />
-                Copy Email
-              </button>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.875rem 1.5rem',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  color: 'var(--text-primary)',
-                  fontSize: '0.9375rem',
-                  fontWeight: '400',
-                  borderRadius: '20px',
-                  textDecoration: 'none',
-                  transition: 'all 0.3s ease',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                }}
-              >
-                <Linkedin size={18} />
-                LinkedIn
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.875rem 1.5rem',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  color: 'var(--text-primary)',
-                  fontSize: '0.9375rem',
-                  fontWeight: '400',
-                  borderRadius: '20px',
-                  textDecoration: 'none',
-                  transition: 'all 0.3s ease',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                }}
-              >
-                <Twitter size={18} />
-                Twitter
-              </a>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Let's Build Something Together Section */}
