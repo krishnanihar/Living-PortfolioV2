@@ -155,11 +155,20 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
       style={{
         width: '100%',
         height: 550,
-        background: 'transparent',
-        borderRadius: '20px',
-        border: '1px solid rgba(255, 255, 255, 0.06)',
+        background: 'radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.015) 0%, transparent 60%)',
+        borderRadius: '24px',
+        border: '1px solid rgba(255, 255, 255, 0.08)',
         overflow: 'hidden',
         position: 'relative',
+        padding: '40px',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+        transition: 'border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
       }}
     >
 
@@ -171,6 +180,15 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
         preserveAspectRatio="xMidYMid meet"
         style={{ position: 'relative', zIndex: 5 }}
       >
+        <defs>
+          <style>{`
+            @keyframes pulse {
+              0%, 100% { opacity: 0.6; }
+              50% { opacity: 0.9; }
+            }
+          `}</style>
+        </defs>
+
         {/* Links */}
         <g>
           {links.map((link, i) => {
@@ -211,10 +229,10 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
             const isConnected = hoveredNode && connectedNodes.has(node.id);
             const isDimmed = hoveredNode && !isConnected && !isSelected;
 
-            // Minimal circle sizing
-            const radius = node.type === 'concept' ? 4 : 6;
-            const scale = isHovered || isSelected ? 1.08 : 1;
-            const finalRadius = radius * scale;
+            // Layered concentric circle sizing
+            const baseRadius = node.type === 'concept' ? 4 : 8;
+            const scale = isHovered || isSelected ? 1.12 : 1;
+            const finalRadius = baseRadius * scale;
 
             // Truncate label if too long
             const maxLabelLength = 20;
@@ -231,31 +249,122 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
                 style={{ cursor: 'pointer' }}
                 opacity={isDimmed ? 0.3 : 1}
               >
-                {/* Minimal circle node */}
-                <circle
-                  cx={node.x}
-                  cy={node.y}
-                  r={finalRadius}
-                  fill={node.color}
-                  stroke={node.type === 'concept' ? 'none' : 'rgba(255, 255, 255, 0.1)'}
-                  strokeWidth="0.5"
-                  style={{
-                    transition: 'all 0.4s ease-out',
-                  }}
-                />
+                {/* Layered circle nodes with depth */}
+                {node.type === 'concept' ? (
+                  // Concept: Orbital design (outer ring + inner dot)
+                  <>
+                    {/* Outer pulsing ring */}
+                    <circle
+                      cx={node.x}
+                      cy={node.y}
+                      r={finalRadius * 2}
+                      fill="none"
+                      stroke="rgba(255, 255, 255, 0.15)"
+                      strokeWidth="1"
+                      style={{
+                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                        opacity: isHovered || isSelected ? 1 : 0.6,
+                        animation: 'pulse 4s ease-in-out infinite',
+                      }}
+                    />
+                    {/* Inner dot with glow */}
+                    <circle
+                      cx={node.x}
+                      cy={node.y}
+                      r={finalRadius + 2}
+                      fill={node.color}
+                      opacity={isHovered || isSelected ? 0.3 : 0}
+                      filter="blur(4px)"
+                      style={{
+                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                      }}
+                    />
+                    <circle
+                      cx={node.x}
+                      cy={node.y}
+                      r={finalRadius}
+                      fill={node.color}
+                      style={{
+                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                      }}
+                    />
+                  </>
+                ) : (
+                  // Books/Games: Concentric circles with depth
+                  <>
+                    {/* Outer glow ring on hover */}
+                    {(isHovered || isSelected) && (
+                      <circle
+                        cx={node.x}
+                        cy={node.y}
+                        r={finalRadius + 4}
+                        fill="none"
+                        stroke="rgba(255, 255, 255, 0.3)"
+                        strokeWidth="1"
+                        style={{
+                          transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                        }}
+                      />
+                    )}
+                    {/* Outer circle */}
+                    <circle
+                      cx={node.x}
+                      cy={node.y}
+                      r={finalRadius}
+                      fill={node.color}
+                      stroke="rgba(255, 255, 255, 0.2)"
+                      strokeWidth="0.5"
+                      style={{
+                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                      }}
+                    />
+                    {/* Inner ring for depth */}
+                    <circle
+                      cx={node.x}
+                      cy={node.y}
+                      r={finalRadius * 0.75}
+                      fill="none"
+                      stroke="rgba(255, 255, 255, 0.3)"
+                      strokeWidth="1"
+                      style={{
+                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                      }}
+                    />
+                  </>
+                )}
 
-                {/* Label */}
+                {/* Label with glow effect and slide-up */}
+                {/* Glow layer */}
                 <text
                   x={node.x}
-                  y={node.y + finalRadius + 14}
+                  y={node.y + finalRadius + (isHovered || isSelected ? 12 : 14)}
                   textAnchor="middle"
-                  fill="rgba(255, 255, 255, 0.7)"
-                  fontSize="9"
+                  fill={node.color}
+                  fontSize="10"
                   fontFamily="Inter, system-ui, -apple-system, sans-serif"
-                  fontWeight="400"
-                  letterSpacing="0.01em"
+                  fontWeight="500"
+                  letterSpacing="0.03em"
+                  filter="blur(6px)"
                   style={{
-                    transition: 'all 0.4s ease-out',
+                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                    opacity: isHovered || isSelected ? 0.6 : 0,
+                    pointerEvents: 'none',
+                  }}
+                >
+                  {displayLabel}
+                </text>
+                {/* Main text layer */}
+                <text
+                  x={node.x}
+                  y={node.y + finalRadius + (isHovered || isSelected ? 12 : 14)}
+                  textAnchor="middle"
+                  fill="rgba(255, 255, 255, 0.95)"
+                  fontSize="10"
+                  fontFamily="Inter, system-ui, -apple-system, sans-serif"
+                  fontWeight="500"
+                  letterSpacing="0.03em"
+                  style={{
+                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                     opacity: isHovered || isSelected ? 1 : 0.7,
                     pointerEvents: 'none',
                   }}

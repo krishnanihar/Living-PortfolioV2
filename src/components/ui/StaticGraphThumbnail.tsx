@@ -52,7 +52,7 @@ export function StaticGraphThumbnail({ books, games, onClick }: StaticGraphThumb
       type: 'concept' as const,
       x: centerX + Math.cos(angle) * conceptRadius,
       y: centerY + Math.sin(angle) * conceptRadius,
-      color: '#06B6D4'
+      color: 'rgba(255, 255, 255, 0.4)'
     };
   });
 
@@ -65,7 +65,7 @@ export function StaticGraphThumbnail({ books, games, onClick }: StaticGraphThumb
       type: 'book' as const,
       x: centerX + Math.cos(angle) * itemRadius,
       y: centerY + Math.sin(angle) * itemRadius,
-      color: '#A855F7',
+      color: 'rgba(255, 255, 255, 0.95)',
       tags: book.tags
     };
   });
@@ -79,7 +79,7 @@ export function StaticGraphThumbnail({ books, games, onClick }: StaticGraphThumb
       type: 'game' as const,
       x: centerX + Math.cos(angle) * itemRadius,
       y: centerY + Math.sin(angle) * itemRadius,
-      color: '#F59E0B',
+      color: 'rgba(255, 255, 255, 0.95)',
       tags: game.tags
     };
   });
@@ -117,31 +117,19 @@ export function StaticGraphThumbnail({ books, games, onClick }: StaticGraphThumb
       style={{
         width: '100%',
         height: '400px',
-        background: '#0A0A0A',
-        borderRadius: '24px',
-        border: '1px solid rgba(6, 182, 212, 0.2)',
+        background: 'radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.015) 0%, transparent 60%)',
+        borderRadius: '20px',
+        border: '1px solid rgba(255, 255, 255, 0.08)',
         overflow: 'hidden',
         position: 'relative',
         cursor: 'pointer',
-        transition: 'all 0.3s ease',
+        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+        transform: isHovered ? 'scale(1.02)' : 'scale(1)',
         boxShadow: isHovered
-          ? 'inset 0 0 100px rgba(6, 182, 212, 0.1), 0 20px 60px rgba(0, 0, 0, 0.6)'
-          : 'inset 0 0 100px rgba(6, 182, 212, 0.05), 0 20px 60px rgba(0, 0, 0, 0.6)',
+          ? '0 12px 48px rgba(0, 0, 0, 0.5)'
+          : '0 8px 32px rgba(0, 0, 0, 0.4)',
       }}
     >
-      {/* Grid overlay */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        backgroundImage: `
-          linear-gradient(rgba(6, 182, 212, 0.03) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px)
-        `,
-        backgroundSize: '40px 40px',
-        pointerEvents: 'none',
-        opacity: isHovered ? 1 : 0.7,
-        transition: 'opacity 0.3s ease',
-      }} />
 
       {/* SVG Graph */}
       <svg width={width} height={height} style={{ position: 'relative', zIndex: 5 }}>
@@ -153,63 +141,78 @@ export function StaticGraphThumbnail({ books, games, onClick }: StaticGraphThumb
             y1={link.source.y}
             x2={link.target.x}
             y2={link.target.y}
-            stroke="#06B6D4"
-            strokeWidth="1"
-            opacity={isHovered ? 0.3 : 0.15}
-            style={{ transition: 'opacity 0.3s ease' }}
+            stroke="rgba(255, 255, 255, 0.08)"
+            strokeWidth="0.5"
+            opacity={isHovered ? 0.15 : 1}
+            style={{ transition: 'all 0.4s ease-out' }}
           />
         ))}
 
         {/* Nodes */}
         {allNodes.map((node) => {
-          const size = node.type === 'concept' ? 12 : 10;
+          const baseRadius = node.type === 'concept' ? 3 : 6;
+          const finalRadius = baseRadius;
 
           if (node.type === 'concept') {
-            // Diamond for concepts
-            const points = `
-              ${node.x},${node.y - size}
-              ${node.x + size},${node.y}
-              ${node.x},${node.y + size}
-              ${node.x - size},${node.y}
-            `;
+            // Concept: Orbital design (outer ring + inner dot)
             return (
               <g key={node.id}>
-                <polygon
-                  points={points}
-                  fill="rgba(10, 10, 10, 0.8)"
-                  stroke={node.color}
-                  strokeWidth="1.5"
-                  opacity={isHovered ? 1 : 0.8}
-                  style={{ transition: 'opacity 0.3s ease' }}
+                <circle
+                  cx={node.x}
+                  cy={node.y}
+                  r={finalRadius * 2}
+                  fill="none"
+                  stroke="rgba(255, 255, 255, 0.15)"
+                  strokeWidth="0.8"
+                  opacity={0.6}
+                  style={{ transition: 'all 0.3s ease' }}
+                />
+                <circle
+                  cx={node.x}
+                  cy={node.y}
+                  r={finalRadius}
+                  fill={node.color}
+                  style={{ transition: 'all 0.3s ease' }}
                 />
                 <text
                   x={node.x}
-                  y={node.y + size + 14}
+                  y={node.y + finalRadius * 2 + 12}
                   textAnchor="middle"
                   fill={node.color}
-                  fontSize="9"
-                  fontFamily="Courier New, monospace"
-                  opacity={isHovered ? 0.9 : 0.6}
-                  style={{ transition: 'opacity 0.3s ease' }}
+                  fontSize="8"
+                  fontFamily="Inter, system-ui, -apple-system, sans-serif"
+                  fontWeight="400"
+                  letterSpacing="0.02em"
+                  opacity={0.5}
+                  style={{ transition: 'opacity 0.3s ease', pointerEvents: 'none' }}
                 >
                   {node.name}
                 </text>
               </g>
             );
           } else {
-            // Square for books/games
+            // Books/Games: Concentric circles with depth
             return (
               <g key={node.id}>
-                <rect
-                  x={node.x - size / 2}
-                  y={node.y - size / 2}
-                  width={size}
-                  height={size}
-                  fill="rgba(10, 10, 10, 0.8)"
-                  stroke={node.color}
-                  strokeWidth="1.5"
-                  opacity={isHovered ? 1 : 0.8}
-                  style={{ transition: 'opacity 0.3s ease' }}
+                {/* Outer circle */}
+                <circle
+                  cx={node.x}
+                  cy={node.y}
+                  r={finalRadius}
+                  fill={node.color}
+                  stroke="rgba(255, 255, 255, 0.2)"
+                  strokeWidth="0.4"
+                  style={{ transition: 'all 0.3s ease' }}
+                />
+                {/* Inner ring for depth */}
+                <circle
+                  cx={node.x}
+                  cy={node.y}
+                  r={finalRadius * 0.7}
+                  fill="none"
+                  stroke="rgba(255, 255, 255, 0.25)"
+                  strokeWidth="0.8"
+                  style={{ transition: 'all 0.3s ease' }}
                 />
               </g>
             );
@@ -225,22 +228,23 @@ export function StaticGraphThumbnail({ books, games, onClick }: StaticGraphThumb
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'rgba(0, 0, 0, 0.6)',
-          backdropFilter: 'blur(8px)',
+          background: 'rgba(0, 0, 0, 0.7)',
+          backdropFilter: 'blur(12px)',
           zIndex: 10,
         }}>
           <div style={{
-            padding: '1rem 2rem',
-            background: 'rgba(6, 182, 212, 0.1)',
-            border: '1px solid rgba(6, 182, 212, 0.3)',
+            padding: '0.875rem 1.75rem',
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
             borderRadius: '12px',
-            color: '#06B6D4',
-            fontSize: '0.875rem',
-            fontFamily: 'Courier New, monospace',
+            color: 'rgba(255, 255, 255, 0.6)',
+            fontSize: '0.8125rem',
+            fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+            fontWeight: '400',
             textTransform: 'uppercase',
-            letterSpacing: '0.1em',
+            letterSpacing: '0.08em',
           }}>
-            {'>> Click to Explore Network'}
+            Explore Network →
           </div>
         </div>
       )}
@@ -250,15 +254,16 @@ export function StaticGraphThumbnail({ books, games, onClick }: StaticGraphThumb
         position: 'absolute',
         top: '1.5rem',
         right: '1.5rem',
-        fontSize: '0.75rem',
-        color: '#06B6D4',
-        fontFamily: 'Courier New, monospace',
+        fontSize: '0.6875rem',
+        color: 'rgba(255, 255, 255, 0.35)',
+        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+        fontWeight: '400',
         textAlign: 'right',
         pointerEvents: 'none',
         zIndex: 10,
-        opacity: 0.7,
+        opacity: 0.8,
         textTransform: 'uppercase',
-        letterSpacing: '0.1em',
+        letterSpacing: '0.08em',
       }}>
         KNOWLEDGE NETWORK
       </div>
