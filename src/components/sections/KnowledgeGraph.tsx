@@ -64,6 +64,7 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
   const graphRef = useRef<any>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const animationFrameRef = useRef<number | undefined>(undefined);
+  const hoveredNodeRef = useRef<string | null>(null);
   const [graphData, setGraphData] = useState<GraphData>({ nodes: [], links: [] });
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [dimensions, setDimensions] = useState({ width: 900, height: 700 });
@@ -174,6 +175,33 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     return () => clearInterval(interval);
   }, []);
 
+  // Freeze node positions after simulation settles to prevent stuttering
+  useEffect(() => {
+    if (graphRef.current && graphData.nodes.length > 0) {
+      const timer = setTimeout(() => {
+        const fg = graphRef.current;
+
+        // Configure forces first
+        fg.d3Force('link')?.distance(80);
+        fg.d3Force('charge')?.strength(-200);
+        fg.d3Force('link')?.strength(0.4);
+
+        // Freeze all node positions permanently (fx/fy = fixed x/y)
+        graphData.nodes.forEach((node: any) => {
+          if (node.x && node.y && isFinite(node.x) && isFinite(node.y)) {
+            node.fx = node.x;
+            node.fy = node.y;
+          }
+        });
+
+        // Stop the simulation
+        fg.pauseAnimation();
+      }, 1000); // Let simulation settle for 1 second
+
+      return () => clearTimeout(timer);
+    }
+  }, [graphData.nodes.length]);
+
   // Watch Dogs-inspired technical node rendering
   const drawNode = useCallback((node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
     // Safety check: nodes need valid positions before rendering
@@ -189,8 +217,26 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
 
     // Determine node appearance based on state
     const isSelected = selectedNode === node.id;
-    const opacity = 1;
-    const scale = isSelected ? 1.15 : 1;
+    const isHovered = hoveredNodeRef.current === node.id;
+    const isConnectedToHovered = hoveredNodeRef.current && graphData.links.some((link: any) => {
+      const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+      const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+      return (sourceId === hoveredNodeRef.current && targetId === node.id) ||
+             (targetId === hoveredNodeRef.current && sourceId === node.id);
+    });
+
+    let opacity = 1;
+    let scale = 1;
+
+    // Dim unrelated nodes when hovering
+    if (hoveredNodeRef.current && !isHovered && !isConnectedToHovered && !isSelected) {
+      opacity = 0.2;
+    }
+
+    // Enlarge hovered or selected nodes
+    if (isHovered || isSelected) {
+      scale = 1.15;
+    }
 
     const finalSize = nodeSize * scale;
 
@@ -200,8 +246,8 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     // Watch Dogs style: Square nodes with technical edges
     const squareSize = finalSize * 2;
 
-    // Outer glow for selected
-    if (isSelected) {
+    // Outer glow for selected or hovered
+    if (isSelected || isHovered) {
       ctx.shadowColor = node.color;
       ctx.shadowBlur = 20;
       ctx.shadowOffsetX = 0;
@@ -233,7 +279,7 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
 
     // Neon border
     ctx.strokeStyle = node.color;
-    ctx.lineWidth = isSelected ? 2.5 : 1.5;
+    ctx.lineWidth = (isSelected || isHovered) ? 2.5 : 1.5;
     ctx.stroke();
 
     // Inner accent lines (technical detail)
@@ -271,7 +317,7 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     );
 
     // Label text with neon effect
-    if (isSelected) {
+    if (isSelected || isHovered) {
       ctx.shadowColor = node.color;
       ctx.shadowBlur = 8;
     }
@@ -295,11 +341,13 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
 
     const isConnectedToSelected = selectedNode &&
       (source.id === selectedNode || target.id === selectedNode);
+    const isConnectedToHovered = hoveredNodeRef.current &&
+      (source.id === hoveredNodeRef.current || target.id === hoveredNodeRef.current);
 
     let opacity = 0.15;
     let width = 0.8;
 
-    if (isConnectedToSelected) {
+    if (isConnectedToSelected || isConnectedToHovered) {
       opacity = 0.6;
       width = 1.5;
     }
@@ -310,7 +358,7 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     // Thin neon cyan line
     ctx.strokeStyle = '#06B6D4';
 
-    if (isConnectedToSelected) {
+    if (isConnectedToSelected || isConnectedToHovered) {
       ctx.shadowBlur = 8;
       ctx.shadowColor = '#06B6D4';
     }
@@ -335,9 +383,15 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     }
   }, [selectedNode, onNodeClick]);
 
-  // Handle node hover - simplified (no state updates to prevent jittering)
+  // Handle node hover - use ref to avoid re-renders
   const handleNodeHover = useCallback((node: any) => {
+    hoveredNodeRef.current = node ? node.id : null;
     document.body.style.cursor = node ? 'pointer' : 'default';
+
+    // Force canvas redraw WITHOUT restarting simulation
+    if (graphRef.current) {
+      graphRef.current.refresh?.();
+    }
   }, []);
 
   return (
