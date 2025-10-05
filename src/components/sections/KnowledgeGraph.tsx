@@ -64,10 +64,10 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
   const graphRef = useRef<any>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const animationFrameRef = useRef<number | undefined>(undefined);
-  const hoveredNodeRef = useRef<string | null>(null);
   const [graphData, setGraphData] = useState<GraphData>({ nodes: [], links: [] });
+  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
-  const [dimensions, setDimensions] = useState({ width: 800, height: 700 });
+  const [dimensions, setDimensions] = useState({ width: 900, height: 700 });
   const [pulsePhase, setPulsePhase] = useState(0);
 
   // Extract all unique concepts/tags from books and games
@@ -189,20 +189,20 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     const nodeSize = baseSize / Math.pow(globalScale, 0.3);
 
     // Determine node appearance based on state
-    const isHovered = hoveredNodeRef.current === node.id;
+    const isHovered = hoveredNode === node.id;
     const isSelected = selectedNode === node.id;
-    const isConnectedToHovered = hoveredNodeRef.current && graphData.links.some(
+    const isConnectedToHovered = hoveredNode && graphData.links.some(
       link => {
         const source = typeof link.source === 'object' ? link.source.id : link.source;
         const target = typeof link.target === 'object' ? link.target.id : link.target;
-        return (source === hoveredNodeRef.current && target === node.id) ||
-               (target === hoveredNodeRef.current && source === node.id);
+        return (source === hoveredNode && target === node.id) ||
+               (target === hoveredNode && source === node.id);
       }
     );
 
     let opacity = 1;
     let scale = 1;
-    if (hoveredNodeRef.current && !isHovered && !isConnectedToHovered) {
+    if (hoveredNode && !isHovered && !isConnectedToHovered) {
       opacity = 0.2;
     }
     if (isHovered || isSelected) {
@@ -297,7 +297,7 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
 
     ctx.shadowBlur = 0;
     ctx.restore();
-  }, [selectedNode, graphData.links, pulsePhase]);
+  }, [hoveredNode, selectedNode, graphData.links, pulsePhase]);
 
   // Watch Dogs-inspired link rendering - straight thin neon lines
   const drawLink = useCallback((link: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
@@ -310,8 +310,8 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
       return;
     }
 
-    const isConnectedToHovered = hoveredNodeRef.current &&
-      (source.id === hoveredNodeRef.current || target.id === hoveredNodeRef.current);
+    const isConnectedToHovered = hoveredNode &&
+      (source.id === hoveredNode || target.id === hoveredNode);
     const isConnectedToSelected = selectedNode &&
       (source.id === selectedNode || target.id === selectedNode);
 
@@ -344,7 +344,7 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     ctx.stroke();
 
     ctx.restore();
-  }, [selectedNode]);
+  }, [hoveredNode, selectedNode]);
 
   // Handle node click
   const handleNodeClick = useCallback((node: any) => {
@@ -354,22 +354,10 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
     }
   }, [selectedNode, onNodeClick]);
 
-  // Handle node hover - use ref to avoid re-renders
+  // Handle node hover
   const handleNodeHover = useCallback((node: any) => {
-    if (node) {
-      hoveredNodeRef.current = node.id;
-      document.body.style.cursor = 'pointer';
-      // Force redraw without re-rendering
-      if (graphRef.current) {
-        graphRef.current.refresh();
-      }
-    } else {
-      hoveredNodeRef.current = null;
-      document.body.style.cursor = 'default';
-      if (graphRef.current) {
-        graphRef.current.refresh();
-      }
-    }
+    setHoveredNode(node ? node.id : null);
+    document.body.style.cursor = node ? 'pointer' : 'default';
   }, []);
 
   return (
@@ -463,9 +451,9 @@ export function KnowledgeGraph({ books, games, onNodeClick }: KnowledgeGraphProp
 
               // Configure d3 forces ONCE after simulation stops
               const fg = graphRef.current;
-              fg.d3Force('link')?.distance(120);
-              fg.d3Force('charge')?.strength(-300);
-              fg.d3Force('link')?.strength(0.3);
+              fg.d3Force('link')?.distance(80);
+              fg.d3Force('charge')?.strength(-200);
+              fg.d3Force('link')?.strength(0.4);
             }
           }}
         />

@@ -20,7 +20,8 @@ import {
   Filter
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { KnowledgeGraph } from './KnowledgeGraph';
+import { StaticGraphThumbnail } from '../ui/StaticGraphThumbnail';
+import { InteractiveGraphModal } from '../ui/InteractiveGraphModal';
 
 export function AboutSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -30,6 +31,7 @@ export function AboutSection() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showToast, setShowToast] = useState(false);
   const [activeTab, setActiveTab] = useState<'everything' | 'books' | 'games'>('everything');
+  const [isGraphModalOpen, setIsGraphModalOpen] = useState(false);
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
   const [selectedGraphNode, setSelectedGraphNode] = useState<any | null>(null);
 
@@ -915,12 +917,12 @@ export function AboutSection() {
                     gap: '3rem',
                   }}
                 >
-                  {/* LEFT: Knowledge Graph */}
+                  {/* LEFT: Static Graph Thumbnail */}
                   <div>
-                    <KnowledgeGraph
+                    <StaticGraphThumbnail
                       books={currentlyReading}
                       games={currentlyPlaying}
-                      onNodeClick={(node) => setSelectedGraphNode(node)}
+                      onClick={() => setIsGraphModalOpen(true)}
                     />
                   </div>
 
@@ -1962,6 +1964,15 @@ export function AboutSection() {
           </div>
         </div>
       </div>
+
+      {/* Interactive Graph Modal */}
+      <InteractiveGraphModal
+        isOpen={isGraphModalOpen}
+        onClose={() => setIsGraphModalOpen(false)}
+        books={currentlyReading}
+        games={currentlyPlaying}
+        onNodeClick={(node) => setSelectedGraphNode(node)}
+      />
     </section>
   );
 }
