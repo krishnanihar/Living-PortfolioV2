@@ -10,6 +10,8 @@ import dynamic from 'next/dynamic';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ContactChat } from '../ContactChat';
+import { Chatbot } from '../Chatbot';
 
 // Register GSAP plugins
 if (typeof window !== 'undefined') {
@@ -33,6 +35,8 @@ export function JourneyTimeline() {
   const heroRef = useRef<HTMLDivElement>(null);
   const timelineLineRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [initialMessage, setInitialMessage] = useState('');
 
   // Hash navigation - scroll to anchor on page load or hash change
   useEffect(() => {
@@ -1278,6 +1282,71 @@ export function JourneyTimeline() {
           );
         })}
       </div>
+
+      {/* Let's Build Something Together Section */}
+      <div style={{
+        marginTop: '8rem',
+        padding: '5rem 2rem',
+        textAlign: 'center',
+        position: 'relative',
+      }}>
+        {/* Background gradient */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '600px',
+          height: '600px',
+          background: 'radial-gradient(circle, rgba(218, 14, 41, 0.06) 0%, transparent 70%)',
+          filter: 'blur(60px)',
+          pointerEvents: 'none',
+        }} />
+
+        <div style={{
+          position: 'relative',
+          zIndex: 1,
+          maxWidth: '800px',
+          margin: '0 auto',
+        }}>
+          <h2 style={{
+            fontSize: 'clamp(2rem, 4vw, 2.75rem)',
+            fontWeight: '200',
+            color: 'var(--text-primary)',
+            marginBottom: '1rem',
+            lineHeight: '1.1',
+            letterSpacing: '-0.02em',
+          }}>
+            Let's build something together
+          </h2>
+
+          <p style={{
+            fontSize: '1rem',
+            color: 'var(--text-secondary)',
+            marginBottom: '2.5rem',
+            fontWeight: '300',
+            letterSpacing: '0.01em',
+            lineHeight: '1.6',
+          }}>
+            Tell me about your project, and let's explore how we can collaborate
+          </p>
+
+          <ContactChat onMessageSubmit={(message, intent) => {
+            setInitialMessage(message);
+            setChatOpen(true);
+          }} />
+        </div>
+      </div>
+
+      {/* Chatbot Modal */}
+      {chatOpen && (
+        <Chatbot
+          isOpen={chatOpen}
+          onClose={() => setChatOpen(false)}
+          initialMessage={initialMessage}
+          intentContext="collaboration"
+        />
+      )}
     </div>
   );
 }

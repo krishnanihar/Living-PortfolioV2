@@ -26,7 +26,10 @@
       "Bash(rm:*)",
       "Bash(netstat:*)",
       "Bash(findstr:*)",
-      "Bash(/dev/null)"
+      "Bash(/dev/null)",
+      "Bash(git log:*)",
+      "Bash(git pull:*)",
+      "Bash(npm uninstall:*)"
     ],
     "deny": [],
     "ask": []
