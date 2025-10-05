@@ -22,6 +22,8 @@ import {
 import { AnimatePresence, motion } from 'framer-motion';
 import { StaticGraphThumbnail } from '../ui/StaticGraphThumbnail';
 import { InteractiveGraphModal } from '../ui/InteractiveGraphModal';
+import { ContactChat } from '../ContactChat';
+import { Chatbot } from '../Chatbot';
 
 export function AboutSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -34,6 +36,8 @@ export function AboutSection() {
   const [isGraphModalOpen, setIsGraphModalOpen] = useState(false);
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
   const [selectedGraphNode, setSelectedGraphNode] = useState<any | null>(null);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [initialMessage, setInitialMessage] = useState('');
 
   useEffect(() => {
     setIsVisible(true);
@@ -1965,6 +1969,61 @@ export function AboutSection() {
         </div>
       </div>
 
+      {/* Let's Build Something Together Section */}
+      <div style={{
+        marginTop: '8rem',
+        padding: '5rem 2rem',
+        textAlign: 'center',
+        position: 'relative',
+      }}>
+        {/* Background gradient */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '600px',
+          height: '600px',
+          background: 'radial-gradient(circle, rgba(218, 14, 41, 0.06) 0%, transparent 70%)',
+          filter: 'blur(60px)',
+          pointerEvents: 'none',
+        }} />
+
+        <div style={{
+          position: 'relative',
+          zIndex: 1,
+          maxWidth: '800px',
+          margin: '0 auto',
+        }}>
+          <h2 style={{
+            fontSize: 'clamp(2rem, 4vw, 2.75rem)',
+            fontWeight: '200',
+            color: 'var(--text-primary)',
+            marginBottom: '1rem',
+            lineHeight: '1.1',
+            letterSpacing: '-0.02em',
+          }}>
+            Let's build something together
+          </h2>
+
+          <p style={{
+            fontSize: '1rem',
+            color: 'var(--text-secondary)',
+            marginBottom: '2.5rem',
+            fontWeight: '300',
+            letterSpacing: '0.01em',
+            lineHeight: '1.6',
+          }}>
+            Tell me about your project, and let's explore how we can collaborate
+          </p>
+
+          <ContactChat onMessageSubmit={(message, intent) => {
+            setInitialMessage(message);
+            setChatOpen(true);
+          }} />
+        </div>
+      </div>
+
       {/* Interactive Graph Modal */}
       <InteractiveGraphModal
         isOpen={isGraphModalOpen}
@@ -1973,6 +2032,16 @@ export function AboutSection() {
         games={currentlyPlaying}
         onNodeClick={(node) => setSelectedGraphNode(node)}
       />
+
+      {/* Chatbot Modal */}
+      {chatOpen && (
+        <Chatbot
+          isOpen={chatOpen}
+          onClose={() => setChatOpen(false)}
+          initialMessage={initialMessage}
+          intentContext="collaboration"
+        />
+      )}
     </section>
   );
 }
