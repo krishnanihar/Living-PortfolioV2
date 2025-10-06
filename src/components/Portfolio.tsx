@@ -94,12 +94,38 @@ export default function Portfolio() {
     { name: 'About', icon: User, href: '/about' as const },
   ];
 
-  const companies = [
-    'Air India DesignLAB',
-    'National Institute of Design',
-    'Indian School of Business',
-    'Microsoft'
+  const credentials = [
+    {
+      name: 'Air India DesignLAB',
+      role: 'Product Designer',
+      period: '2023 - Present',
+      metric: '450+ daily users',
+      color: '#DA0E29'
+    },
+    {
+      name: 'National Institute of Design',
+      role: 'Design Education',
+      period: '2019 - 2023',
+      metric: 'Bachelor of Design',
+      color: '#3B82F6'
+    },
+    {
+      name: 'Indian School of Business',
+      role: 'YLP Fellow',
+      period: '2023',
+      metric: 'Leadership Program',
+      color: '#10B981'
+    },
+    {
+      name: 'Microsoft',
+      role: 'Design Systems',
+      period: '2022',
+      metric: 'Collaboration',
+      color: '#8B5CF6'
+    }
   ];
+
+  const [hoveredCredential, setHoveredCredential] = useState<number | null>(null);
 
 
 
