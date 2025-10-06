@@ -792,7 +792,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                         pointerEvents: 'none',
                       }} />
                     )}
-                    <span>About Page</span>
+                    <span>About Me</span>
                     <ArrowRight size={16} />
                   </Link>
                 </div>
