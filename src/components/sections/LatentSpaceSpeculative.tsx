@@ -3176,22 +3176,39 @@ function VisionSection() {
 function InterfaceSpeculationSection() {
   const [currentScreen, setCurrentScreen] = useState(0);
   const [isRotating, setIsRotating] = useState(false);
+  const [hoveredPrinciple, setHoveredPrinciple] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const interfaceScreens = [
     {
       title: "Dream Capture",
       description: "Non-invasive consciousness monitoring",
-      features: ["EEG Integration", "Privacy First", "Local Processing"]
+      features: ["EEG Integration", "Privacy First", "Local Processing"],
+      icon: Brain,
+      color: "rgba(147, 51, 234, 0.6)"
     },
     {
       title: "Pattern Recognition",
       description: "Understanding without invasiveness",
-      features: ["Personal Patterns", "No Cloud Storage", "Your Data Only"]
+      features: ["Personal Patterns", "No Cloud Storage", "Your Data Only"],
+      icon: Network,
+      color: "rgba(14, 165, 233, 0.6)"
     },
     {
       title: "Gentle Interaction",
       description: "Respecting the mystery of dreams",
-      features: ["Opt-in Analysis", "Preserve Wonder", "Human Dignity"]
+      features: ["Opt-in Analysis", "Preserve Wonder", "Human Dignity"],
+      icon: Heart,
+      color: "rgba(99, 102, 241, 0.6)"
     }
   ];
 
@@ -3199,22 +3216,30 @@ function InterfaceSpeculationSection() {
     {
       icon: Shield,
       title: "Privacy by Design",
-      description: "All processing happens locally. Your dreams never leave your device."
+      description: "All processing happens locally. Your dreams never leave your device.",
+      expanded: "Zero-knowledge architecture ensures that dream data is encrypted end-to-end. Even we can't access your consciousness data—it exists only on your device, processed in real-time without cloud storage.",
+      color: "rgba(147, 51, 234, 0.6)"
     },
     {
       icon: Heart,
       title: "Human Dignity",
-      description: "Technology serves consciousness, not the other way around."
+      description: "Technology serves consciousness, not the other way around.",
+      expanded: "Every design decision prioritizes human experience over efficiency metrics. We build interfaces that respect the sacred nature of consciousness, never reducing dreams to mere data points.",
+      color: "rgba(14, 165, 233, 0.6)"
     },
     {
       icon: Lock,
       title: "Consent First",
-      description: "Every interaction requires explicit, informed consent."
+      description: "Every interaction requires explicit, informed consent.",
+      expanded: "Granular permission controls mean you decide exactly what gets analyzed, when, and how. Opt-in by default, with the power to revoke access instantly. Your consciousness, your rules.",
+      color: "rgba(99, 102, 241, 0.6)"
     },
     {
       icon: Eye,
       title: "Transparency",
-      description: "Open algorithms, clear processes, no black boxes."
+      description: "Open algorithms, clear processes, no black boxes.",
+      expanded: "Every algorithm is auditable, every process is documented. We believe in radical transparency—you deserve to know exactly how your dreams are being interpreted and why.",
+      color: "rgba(236, 72, 153, 0.6)"
     }
   ];
 
@@ -3272,7 +3297,7 @@ function InterfaceSpeculationSection() {
 
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+        gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(400px, 1fr))',
         gap: '4rem',
         alignItems: 'center',
       }}>
@@ -3336,6 +3361,31 @@ function InterfaceSpeculationSection() {
                     textAlign: 'center' as const,
                   }}
                 >
+                  {/* Icon */}
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      marginBottom: '1.5rem',
+                    }}
+                  >
+                    <div style={{
+                      background: `${interfaceScreens[currentScreen].color}`,
+                      borderRadius: '50%',
+                      padding: '1.25rem',
+                      display: 'inline-flex',
+                      boxShadow: `0 0 30px ${interfaceScreens[currentScreen].color}`,
+                    }}>
+                      {React.createElement(interfaceScreens[currentScreen].icon, {
+                        size: 32,
+                        color: 'rgba(255, 255, 255, 0.95)'
+                      })}
+                    </div>
+                  </motion.div>
+
                   <h3 style={{
                     fontSize: '1.25rem',
                     fontWeight: '300',
@@ -3367,14 +3417,23 @@ function InterfaceSpeculationSection() {
                         transition={{ delay: index * 0.1 }}
                         style={{
                           padding: '0.75rem',
-                          background: 'rgba(218, 14, 41, 0.1)',
-                          border: '1px solid rgba(218, 14, 41, 0.3)',
+                          background: `${interfaceScreens[currentScreen].color}15`,
+                          border: `1px solid ${interfaceScreens[currentScreen].color}`,
                           borderRadius: '12px',
                           fontSize: '0.75rem',
                           color: 'rgba(255, 255, 255, 0.9)',
+                          position: 'relative',
+                          overflow: 'hidden',
                         }}
                       >
-                        {feature}
+                        {/* Subtle shimmer effect */}
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: `linear-gradient(90deg, transparent, ${interfaceScreens[currentScreen].color}30, transparent)`,
+                          animation: 'borderShimmer 3s ease-in-out infinite',
+                        }} />
+                        <span style={{ position: 'relative' }}>{feature}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -3390,17 +3449,22 @@ function InterfaceSpeculationSection() {
                 display: 'flex',
                 gap: '0.5rem',
               }}>
-                {interfaceScreens.map((_, index) => (
-                  <div
+                {interfaceScreens.map((screen, index) => (
+                  <motion.div
                     key={index}
+                    onClick={() => setCurrentScreen(index)}
+                    whileHover={{ scale: 1.2 }}
+                    whileTap={{ scale: 0.9 }}
                     style={{
-                      width: '8px',
+                      width: currentScreen === index ? '24px' : '8px',
                       height: '8px',
-                      borderRadius: '50%',
+                      borderRadius: '4px',
                       background: currentScreen === index
-                        ? 'var(--brand-red)'
+                        ? screen.color
                         : 'rgba(255, 255, 255, 0.3)',
                       transition: 'all 0.3s ease',
+                      cursor: 'pointer',
+                      boxShadow: currentScreen === index ? `0 0 10px ${screen.color}` : 'none',
                     }}
                   />
                 ))}
@@ -3432,6 +3496,7 @@ function InterfaceSpeculationSection() {
           }}>
             {designPrinciples.map((principle, index) => {
               const Icon = principle.icon;
+              const isHovered = hoveredPrinciple === index;
               return (
                 <motion.div
                   key={principle.title}
@@ -3439,27 +3504,58 @@ function InterfaceSpeculationSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1, duration: 0.6 }}
+                  onMouseEnter={() => setHoveredPrinciple(index)}
+                  onMouseLeave={() => setHoveredPrinciple(null)}
                   style={{
                     ...baseStyles.glassCard,
                     padding: '1.5rem',
                     display: 'flex',
                     alignItems: 'flex-start',
                     gap: '1rem',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    background: isHovered ? 'rgba(255, 255, 255, 0.04)' : 'rgba(255, 255, 255, 0.02)',
+                    transform: isHovered ? 'translateX(8px)' : 'translateX(0)',
+                    position: 'relative',
+                    overflow: 'hidden',
                   }}
                 >
-                  <div style={{
-                    background: 'rgba(14, 165, 233, 0.1)',
-                    border: '1px solid rgba(14, 165, 233, 0.3)',
-                    borderRadius: '12px',
-                    padding: '0.75rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                    <Icon size={20} color="rgba(14, 165, 233, 0.8)" />
-                  </div>
+                  {/* Animated border on hover */}
+                  {isHovered && (
+                    <div style={{
+                      position: 'absolute',
+                      inset: 0,
+                      borderRadius: '16px',
+                      padding: '1px',
+                      background: `linear-gradient(135deg, ${principle.color}, transparent)`,
+                      WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                      WebkitMaskComposite: 'xor',
+                      maskComposite: 'exclude',
+                      pointerEvents: 'none',
+                    }} />
+                  )}
 
-                  <div>
+                  <motion.div
+                    animate={{
+                      scale: isHovered ? 1.1 : 1,
+                      rotate: isHovered ? 5 : 0,
+                    }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                    style={{
+                      background: `${principle.color}20`,
+                      border: `1px solid ${principle.color}`,
+                      borderRadius: '12px',
+                      padding: '0.75rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <Icon size={20} style={{ color: principle.color }} />
+                  </motion.div>
+
+                  <div style={{ flex: 1 }}>
                     <h4 style={{
                       fontSize: '1rem',
                       fontWeight: '400',
@@ -3473,9 +3569,32 @@ function InterfaceSpeculationSection() {
                       fontSize: '0.875rem',
                       color: 'rgba(255, 255, 255, 0.6)',
                       lineHeight: '1.5',
+                      marginBottom: isHovered ? '0.75rem' : 0,
+                      transition: 'margin 0.3s ease',
                     }}>
                       {principle.description}
                     </p>
+
+                    {/* Expanded content on hover */}
+                    <AnimatePresence>
+                      {isHovered && (
+                        <motion.p
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          style={{
+                            fontSize: '0.8rem',
+                            color: 'rgba(255, 255, 255, 0.5)',
+                            lineHeight: '1.6',
+                            paddingTop: '0.75rem',
+                            borderTop: `1px solid ${principle.color}30`,
+                          }}
+                        >
+                          {principle.expanded}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </motion.div>
               );
