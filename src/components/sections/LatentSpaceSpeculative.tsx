@@ -1661,46 +1661,166 @@ function SixPillarsSection() {
 function SystemArchitectureSection() {
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [dataFlowActive, setDataFlowActive] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const architectureLayers = [
     {
       name: "Input Layer",
       color: "rgba(218, 14, 41, 0.6)",
       components: [
-        { id: "eeg", name: "EEG Sensors", description: "Non-invasive brainwave detection" },
-        { id: "env", name: "Environment", description: "Sleep stage and ambient monitoring" },
-        { id: "bio", name: "Biometrics", description: "Heart rate, movement, breathing" },
-        { id: "user", name: "User Input", description: "Conscious dream intentions" }
+        {
+          id: "eeg",
+          name: "EEG Sensors",
+          description: "Non-invasive brainwave detection",
+          icon: Activity,
+          details: "Measures electrical activity, but misses subtle neurochemical states",
+          specs: { latency: "~10ms", dataRate: "256 Hz", invasive: "Non-invasive" }
+        },
+        {
+          id: "env",
+          name: "Environment",
+          description: "Sleep stage and ambient monitoring",
+          icon: Moon,
+          details: "Tracks light, sound, temperature—but context isn't consciousness",
+          specs: { latency: "~100ms", dataRate: "1 Hz", invasive: "Non-invasive" }
+        },
+        {
+          id: "bio",
+          name: "Biometrics",
+          description: "Heart rate, movement, breathing",
+          icon: Heart,
+          details: "Correlates with states but can't decode subjective experience",
+          specs: { latency: "~50ms", dataRate: "100 Hz", invasive: "Non-invasive" }
+        },
+        {
+          id: "user",
+          name: "User Input",
+          description: "Conscious dream intentions",
+          icon: Brain,
+          details: "Can you truly consent while unconscious?",
+          specs: { latency: "Variable", dataRate: "Event-based", invasive: "Non-invasive" }
+        }
       ]
     },
     {
       name: "Processing Layer",
       color: "rgba(147, 51, 234, 0.6)",
       components: [
-        { id: "filter", name: "Signal Filter", description: "Noise reduction and amplification" },
-        { id: "pattern", name: "Pattern Detection", description: "REM cycle and dream state recognition" },
-        { id: "ml", name: "ML Analysis", description: "Learning user-specific patterns" },
-        { id: "sync", name: "Synchronization", description: "Real-time processing coordination" }
+        {
+          id: "filter",
+          name: "Signal Filter",
+          description: "Noise reduction and amplification",
+          icon: Waves,
+          details: "Filtering decisions shape what reality we can detect",
+          specs: { latency: "~5ms", dataRate: "Real-time", invasive: "N/A" }
+        },
+        {
+          id: "pattern",
+          name: "Pattern Detection",
+          description: "REM cycle and dream state recognition",
+          icon: Eye,
+          details: "Recognizes sleep stages, but dreams are more than REM",
+          specs: { latency: "~50ms", dataRate: "1 Hz", invasive: "N/A" }
+        },
+        {
+          id: "ml",
+          name: "ML Analysis",
+          description: "Learning user-specific patterns",
+          icon: Network,
+          details: "Can detect patterns, but risks imposing meaning where none exists",
+          specs: { latency: "~200ms", dataRate: "Variable", invasive: "N/A" }
+        },
+        {
+          id: "sync",
+          name: "Synchronization",
+          description: "Real-time processing coordination",
+          icon: Timer,
+          details: "Perfect timing, but consciousness doesn't run on a clock",
+          specs: { latency: "~1ms", dataRate: "Real-time", invasive: "N/A" }
+        }
       ]
     },
     {
       name: "Interface Layer",
       color: "rgba(14, 165, 233, 0.6)",
       components: [
-        { id: "render", name: "Visualization", description: "Dream state rendering" },
-        { id: "control", name: "Controls", description: "User interaction interfaces" },
-        { id: "feedback", name: "Feedback", description: "Gentle lucidity guidance" },
-        { id: "record", name: "Recording", description: "Memory capture and storage" }
+        {
+          id: "render",
+          name: "Visualization",
+          description: "Dream state rendering",
+          icon: Eye,
+          details: "Visual representation, but dreams aren't just images",
+          specs: { latency: "~16ms", dataRate: "60 FPS", invasive: "N/A" }
+        },
+        {
+          id: "control",
+          name: "Controls",
+          description: "User interaction interfaces",
+          icon: Layers,
+          details: "Who's in control: the dreamer, the system, or both?",
+          specs: { latency: "~50ms", dataRate: "Event-based", invasive: "N/A" }
+        },
+        {
+          id: "feedback",
+          name: "Feedback",
+          description: "Gentle lucidity guidance",
+          icon: Zap,
+          details: "Nudging consciousness—is it enhancement or manipulation?",
+          specs: { latency: "~100ms", dataRate: "Adaptive", invasive: "Minimal" }
+        },
+        {
+          id: "record",
+          name: "Recording",
+          description: "Memory capture and storage",
+          icon: FileText,
+          details: "Recorded dreams lose the ineffable quality of lived experience",
+          specs: { latency: "~10ms", dataRate: "Variable", invasive: "N/A" }
+        }
       ]
     },
     {
       name: "Output Layer",
       color: "rgba(255, 255, 255, 0.6)",
       components: [
-        { id: "display", name: "Dream Display", description: "Visual dream representation" },
-        { id: "insights", name: "Insights", description: "Pattern analysis and meaning" },
-        { id: "export", name: "Export", description: "Save and share capabilities" },
-        { id: "privacy", name: "Privacy", description: "Encryption and local storage" }
+        {
+          id: "display",
+          name: "Dream Display",
+          description: "Visual dream representation",
+          icon: Eye,
+          details: "Representation is interpretation, interpretation is transformation",
+          specs: { latency: "~16ms", dataRate: "60 FPS", invasive: "N/A" }
+        },
+        {
+          id: "insights",
+          name: "Insights",
+          description: "Pattern analysis and meaning",
+          icon: Sparkles,
+          details: "Algorithm-derived meaning vs. personal significance",
+          specs: { latency: "Variable", dataRate: "Batch", invasive: "N/A" }
+        },
+        {
+          id: "export",
+          name: "Export",
+          description: "Save and share capabilities",
+          icon: FileText,
+          details: "Once shared, dream data can never be unshared",
+          specs: { latency: "~100ms", dataRate: "On-demand", invasive: "N/A" }
+        },
+        {
+          id: "privacy",
+          name: "Privacy",
+          description: "Encryption and local storage",
+          icon: Lock,
+          details: "Local encryption prevents cloud storage, but limits sharing",
+          specs: { latency: "~50ms", dataRate: "Continuous", invasive: "N/A" }
+        }
       ]
     }
   ];
@@ -1753,7 +1873,7 @@ function SystemArchitectureSection() {
       {/* Architecture Grid */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
+        gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))',
         gap: '2rem',
         marginBottom: '3rem',
         position: 'relative',
@@ -1839,6 +1959,19 @@ function SystemArchitectureSection() {
                     }} />
                   )}
 
+                  {/* Component Icon */}
+                  {(() => {
+                    const Icon = component.icon;
+                    return (
+                      <div style={{ textAlign: 'center' as const, marginBottom: '0.75rem' }}>
+                        <Icon size={24} style={{
+                          color: layer.color,
+                          filter: `drop-shadow(0 0 6px ${layer.color})`,
+                        }} />
+                      </div>
+                    );
+                  })()}
+
                   <div style={{ textAlign: 'center' as const }}>
                     <h4 style={{
                       fontSize: '0.875rem',
@@ -1852,6 +1985,7 @@ function SystemArchitectureSection() {
                       fontSize: '0.75rem',
                       color: 'rgba(255, 255, 255, 0.6)',
                       lineHeight: '1.4',
+                      marginBottom: '0.5rem',
                     }}>
                       {component.description}
                     </p>
@@ -1871,13 +2005,37 @@ function SystemArchitectureSection() {
                           borderTop: `1px solid ${layer.color}`,
                         }}
                       >
+                        {/* Critical detail */}
                         <p style={{
                           fontSize: '0.75rem',
-                          color: 'var(--text-secondary)',
+                          color: 'rgba(255, 255, 255, 0.7)',
                           lineHeight: '1.5',
+                          marginBottom: '1rem',
+                          fontStyle: 'italic',
                         }}>
-                          Critical Question: How do we ensure this component respects human dignity and mental sovereignty?
+                          {component.details}
                         </p>
+
+                        {/* Tech specs */}
+                        <div style={{
+                          display: 'flex',
+                          flexDirection: 'column' as const,
+                          gap: '0.5rem',
+                          fontSize: '0.6875rem',
+                        }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>Latency:</span>
+                            <span style={{ color: layer.color, fontWeight: '500' }}>{component.specs.latency}</span>
+                          </div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>Data Rate:</span>
+                            <span style={{ color: layer.color, fontWeight: '500' }}>{component.specs.dataRate}</span>
+                          </div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>Method:</span>
+                            <span style={{ color: layer.color, fontWeight: '500' }}>{component.specs.invasive}</span>
+                          </div>
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
