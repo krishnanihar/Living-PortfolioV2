@@ -166,7 +166,7 @@ export function MetamorphicFractalWork() {
           display: flex;
           align-items: center;
           justify-content: center;
-          min-height: 80vh;
+          min-height: 100vh;
           padding: 60px 24px;
           overflow: hidden;
           background: radial-gradient(ellipse at top center, rgba(181,131,255,.08) 0%, transparent 50%);
