@@ -371,50 +371,6 @@ export function AirIndiaWork() {
         }} />
       </div>
 
-      {/* Back Navigation */}
-      <div style={{
-        maxWidth: '1400px',
-        margin: '0 auto',
-        padding: '1.5rem 1.5rem 0',
-        position: 'relative',
-        zIndex: 1,
-      }}>
-        <Link
-          href="/work"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            padding: '0.5rem 1rem',
-            background: 'var(--surface-primary)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid var(--border-primary)',
-            borderRadius: '12px',
-            color: 'var(--text-secondary)',
-            textDecoration: 'none',
-            fontSize: '0.875rem',
-            fontWeight: '300',
-            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'var(--surface-hover)';
-            e.currentTarget.style.borderColor = 'var(--border-hover)';
-            e.currentTarget.style.color = 'var(--text-primary)';
-            e.currentTarget.style.transform = 'translateX(-4px)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'var(--surface-primary)';
-            e.currentTarget.style.borderColor = 'var(--border-primary)';
-            e.currentTarget.style.color = 'var(--text-secondary)';
-            e.currentTarget.style.transform = 'translateX(0)';
-          }}
-        >
-          <ArrowLeft size={16} />
-          Back to Work
-        </Link>
-      </div>
-
       {/* Hero Section */}
       <header style={{
         minHeight: '90vh',
