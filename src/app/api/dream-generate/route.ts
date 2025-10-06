@@ -42,23 +42,22 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { mood, theme, symbols } = body;
+    const { dreamInput } = body;
 
-    if (!mood && !theme && !symbols) {
+    if (!dreamInput || !dreamInput.trim()) {
       return new Response(
         JSON.stringify({
           error: 'MISSING_INPUT',
-          message: 'Please provide at least one input (mood, theme, or symbols)'
+          message: 'Please describe your dream to generate'
         }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
     // Build user prompt
-    const userPrompt = `Generate a dream fragment with these elements:
-${mood ? `Mood: ${mood}` : ''}
-${theme ? `Theme: ${theme}` : ''}
-${symbols ? `Symbols: ${symbols}` : ''}
+    const userPrompt = `Generate a dream fragment based on this description:
+
+${dreamInput}
 
 Create a vivid, surreal dream experience.`;
 

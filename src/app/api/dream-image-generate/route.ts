@@ -19,9 +19,7 @@ Create a single cohesive dream image that feels like a memory from another reali
 `;
 
 interface DreamImageRequest {
-  mood?: string;
-  theme?: string;
-  symbols?: string;
+  dreamInput?: string;
   aspectRatio?: string;
 }
 
@@ -47,25 +45,21 @@ export async function POST(request: NextRequest) {
     }
 
     const body: DreamImageRequest = await request.json();
-    const { mood, theme, symbols, aspectRatio = '1:1' } = body;
+    const { dreamInput, aspectRatio = '1:1' } = body;
 
-    if (!mood && !theme && !symbols) {
+    if (!dreamInput || !dreamInput.trim()) {
       return NextResponse.json({
         error: 'MISSING_INPUT',
-        message: 'Please provide at least one input (mood, theme, or symbols)'
+        message: 'Please describe your dream to generate'
       }, { status: 400 });
     }
 
     // Build image prompt with hyper-specific details
-    const elements = [];
-    if (mood) elements.push(`Mood and atmosphere: ${mood}`);
-    if (theme) elements.push(`Central theme: ${theme}`);
-    if (symbols) elements.push(`Symbolic elements to include: ${symbols}`);
-
     const userPrompt = `${DREAM_IMAGE_CONTEXT}
 
-Create a dreamlike photograph with these elements:
-${elements.join('\n')}
+Create a dreamlike photograph based on this description:
+
+${dreamInput}
 
 Use cinematic composition, surreal lighting, and dream logic. Make it feel like a memory from the subconscious.`;
 
@@ -125,9 +119,7 @@ Use cinematic composition, surreal lighting, and dream logic. Make it feel like 
         aspectRatio: aspectRatio,
       },
       prompt: {
-        mood,
-        theme,
-        symbols,
+        dreamInput,
       },
     });
 
