@@ -56,11 +56,9 @@ export function DreamFragmentGenerator({ className = '' }: DreamFragmentGenerato
     abortControllerRef.current = new AbortController();
 
     try {
-      // Start both text and image generation simultaneously
-      const textPromise = generateText();
-      const imagePromise = generateImage();
-
-      await Promise.all([textPromise, imagePromise]);
+      // Generate text first, then image (sequential to avoid rate limits)
+      await generateText();
+      await generateImage();
     } catch (error: any) {
       if (error.name !== 'AbortError') {
         console.error('Dream generation error:', error);
