@@ -46,6 +46,7 @@ export function AirIndiaWork() {
   const [ripplePosition, setRipplePosition] = useState<{ x: number; y: number } | null>(null);
   const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0);
   const [hoveredCTA, setHoveredCTA] = useState<string | null>(null);
+  const [hoveredProject, setHoveredProject] = useState<string | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
 
@@ -870,34 +871,49 @@ export function AirIndiaWork() {
 
         {projects.map((project, index) => {
           const isExpanded = expandedProject === project.id;
+          const isHovered = hoveredProject === project.id;
 
           return (
             <div
               key={project.id}
+              onMouseEnter={() => setHoveredProject(project.id)}
+              onMouseLeave={() => setHoveredProject(null)}
               style={{
+                position: 'relative',
                 marginBottom: '2rem',
                 borderRadius: '20px',
                 background: 'var(--surface-primary)',
                 backdropFilter: 'blur(40px)',
                 WebkitBackdropFilter: 'blur(40px)',
-                border: '1px solid var(--border-primary)',
+                border: '1px solid transparent',
                 overflow: 'hidden',
                 animation: inView ? `scrollRevealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${1.1 + index * 0.2}s both` : 'none',
+                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
               }}
             >
+              {/* Animated Outline Effect - Shows on hover OR when expanded */}
+              {(isHovered || isExpanded) && (
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: '20px',
+                  padding: '1px',
+                  background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.6), rgba(218, 14, 41, 0.2), rgba(218, 14, 41, 0.6))',
+                  backgroundSize: '200% 200%',
+                  animation: 'borderShimmer 3s ease-in-out infinite',
+                  WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                  WebkitMaskComposite: 'xor',
+                  maskComposite: 'exclude',
+                  pointerEvents: 'none',
+                }} />
+              )}
+
               {/* Project Header - Clickable */}
               <div
                 onClick={() => setExpandedProject(isExpanded ? null : project.id)}
                 style={{
                   padding: '2rem',
                   cursor: 'pointer',
-                  transition: 'background 0.3s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'var(--surface-hover)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
                 }}
               >
                 <div style={{
