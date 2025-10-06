@@ -270,17 +270,9 @@ export default function MythOSExperience() {
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-2px)';
-                const imgContainer = e.currentTarget.querySelector('div') as HTMLElement;
-                if (imgContainer) {
-                  imgContainer.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)';
-                }
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'translateY(0)';
-                const imgContainer = e.currentTarget.querySelector('div') as HTMLElement;
-                if (imgContainer) {
-                  imgContainer.style.boxShadow = 'none';
-                }
               }}
             >
               <div style={{
@@ -291,7 +283,6 @@ export default function MythOSExperience() {
                 marginBottom: '0.75rem',
                 overflow: 'hidden',
                 borderRadius: '3px',
-                transition: 'box-shadow 0.2s ease',
               }}>
                 <Image
                   src={artwork.imageUrl}
@@ -359,7 +350,6 @@ export default function MythOSExperience() {
           </h2>
           <div style={{
             lineHeight: '1.7',
-            letterSpacing: '0.005em',
             color: '#606060',
             fontSize: '0.9375rem',
           }}>
@@ -368,7 +358,7 @@ export default function MythOSExperience() {
             </p>
             <p style={{ marginBottom: '1rem' }}>
               Inspired by <a href="https://digitalcurator.art/" target="_blank" rel="noopener noreferrer"
-              style={{ color: '#1A1A1A', textDecoration: 'underline', transition: 'color 0.15s ease' }}>Digital Curator</a>, mythOS explores algorithmic curation—letting AI discover patterns that might take human curators years to notice. But unlike traditional search, mythOS understands abstract concepts like "loneliness" or "triumph" and translates them into visual characteristics.
+              style={{ color: '#1A1A1A', textDecoration: 'underline' }}>Digital Curator</a>, mythOS explores algorithmic curation—letting AI discover patterns that might take human curators years to notice. But unlike traditional search, mythOS understands abstract concepts like "loneliness" or "triumph" and translates them into visual characteristics.
             </p>
             <p style={{ marginBottom: '1rem' }}>
               Click any artwork to see AI-generated analysis including symbolism, historical context, and cultural significance. The system explains not just what you're seeing, but why it matters.

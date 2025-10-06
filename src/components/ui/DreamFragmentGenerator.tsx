@@ -56,8 +56,13 @@ export function DreamFragmentGenerator({ className = '' }: DreamFragmentGenerato
     abortControllerRef.current = new AbortController();
 
     try {
-      // Generate text first, then image (sequential to avoid rate limits)
+      // Generate text first
       await generateText();
+
+      // Wait 2 seconds before generating image to avoid API rate limits
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Then generate image
       await generateImage();
     } catch (error: any) {
       if (error.name !== 'AbortError') {

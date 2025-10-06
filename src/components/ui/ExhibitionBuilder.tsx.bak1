@@ -107,7 +107,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
           <h2 style={{
             fontSize: '0.8125rem',
             fontWeight: '500',
-            color: '#606060',
+            color: '#666666',
             textTransform: 'uppercase',
             letterSpacing: '0.05em',
             marginBottom: '0.5rem',
@@ -116,7 +116,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
           </h2>
           <p style={{
             fontSize: '0.875rem',
-            color: '#9E9E9E',
+            color: '#999999',
             lineHeight: '1.5',
           }}>
             Describe the art experience you want, and AI will curate a thematic exhibition
@@ -141,12 +141,11 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                 width: '100%',
                 padding: '0.75rem 1rem',
                 fontSize: '0.9375rem',
-                border: '1px solid #D0D0D0', outline: 'none',
+                border: '1px solid #CACACA',
                 borderRadius: '4px',
                 backgroundColor: '#FFFFFF',
-                color: '#1A1A1A',
+                color: '#2C2C2C',
                 fontFamily: 'inherit',
-                letterSpacing: '0.005em',
                 resize: 'none',
                 minHeight: '80px',
                 lineHeight: '1.5',
@@ -181,14 +180,13 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                 fontSize: '0.9375rem',
                 fontWeight: '500',
                 backgroundColor: '#FFFFFF',
-                color: '#1A1A1A',
-                border: '1px solid #D0D0D0', outline: 'none',
+                color: '#2C2C2C',
+                border: '1px solid #CACACA',
                 borderRadius: '4px',
                 cursor: isGenerating ? 'not-allowed' : 'pointer',
                 opacity: isGenerating ? 0.6 : 1,
                 whiteSpace: 'nowrap',
                 fontFamily: 'inherit',
-                letterSpacing: '0.005em',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
@@ -205,7 +203,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                 padding: '0.75rem 1.5rem',
                 fontSize: '0.9375rem',
                 fontWeight: '500',
-                backgroundColor: '#1A1A1A',
+                backgroundColor: '#2C2C2C',
                 color: '#FFFFFF',
                 border: 'none',
                 borderRadius: '4px',
@@ -213,7 +211,6 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                 opacity: (isGenerating || !prompt.trim()) ? 0.6 : 1,
                 whiteSpace: 'nowrap',
                 fontFamily: 'inherit',
-                letterSpacing: '0.005em',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
@@ -239,7 +236,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
           <div style={{ marginTop: '1rem' }}>
             <div style={{
               fontSize: '0.75rem',
-              color: '#9E9E9E',
+              color: '#999999',
               marginBottom: '0.5rem',
             }}>
               Try these:
@@ -257,20 +254,17 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                     padding: '0.375rem 0.75rem',
                     fontSize: '0.8125rem',
                     backgroundColor: '#F5F5F5',
-                    color: '#606060',
-                    border: '1px solid #EBEBEB',
+                    color: '#666666',
+                    border: '1px solid #E5E5E5',
                     borderRadius: '4px',
-                    cursor: 'pointer', transition: 'all 0.15s ease',
+                    cursor: 'pointer',
                     fontFamily: 'inherit',
-                letterSpacing: '0.005em',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.backgroundColor = '#EBEBEB';
-                    e.currentTarget.style.borderColor = '#D0D0D0';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.backgroundColor = '#F5F5F5';
-                    e.currentTarget.style.borderColor = '#EBEBEB';
                   }}
                 >
                   {example}
