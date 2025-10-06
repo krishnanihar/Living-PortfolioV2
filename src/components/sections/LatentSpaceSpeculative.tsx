@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { DreamFragmentGenerator } from '@/components/ui/DreamFragmentGenerator';
+import { PatternAnalyzer } from '@/components/ui/PatternAnalyzer';
 import {
   ChevronDown,
   ChevronRight,
@@ -142,8 +144,116 @@ export default function LatentSpaceSpeculative() {
 
       <SectionDivider />
 
+      {/* Dream Fragment Generator - AI-Powered */}
+      <section style={baseStyles.section}>
+        <div style={{ textAlign: 'center' as const, marginBottom: '4rem' }}>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={stagger}
+          >
+            <motion.div variants={fadeInUp} style={{ marginBottom: '1rem' }}>
+              <span style={{
+                fontSize: '0.75rem',
+                fontWeight: '500',
+                letterSpacing: '0.3em',
+                textTransform: 'uppercase' as const,
+                color: 'rgba(255, 255, 255, 0.5)',
+              }}>
+                Generative AI Prototype
+              </span>
+            </motion.div>
+            <motion.h2 variants={fadeInUp} style={{
+              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+              fontWeight: '300',
+              letterSpacing: '-0.02em',
+              lineHeight: '1.1',
+              color: 'var(--text-primary)',
+              marginBottom: '1rem',
+            }}>
+              Generate Dream Fragments with AI
+            </motion.h2>
+            <motion.p variants={fadeInUp} style={{
+              fontSize: '1.125rem',
+              color: 'rgba(255, 255, 255, 0.6)',
+              maxWidth: '700px',
+              margin: '0 auto',
+              lineHeight: '1.7',
+            }}>
+              Experience real-time AI-generated dream narratives. Provide a mood, theme, or symbols, and watch as Gemini creates surreal, vivid dream experiences that feel both impossible and familiar.
+            </motion.p>
+          </motion.div>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <DreamFragmentGenerator />
+        </motion.div>
+      </section>
+
+      <SectionDivider />
+
       {/* Science Exploration */}
       <ScienceExplorationSection />
+
+      <SectionDivider />
+
+      {/* Pattern Analyzer - AI-Powered */}
+      <section style={baseStyles.section}>
+        <div style={{ textAlign: 'center' as const, marginBottom: '4rem' }}>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={stagger}
+          >
+            <motion.div variants={fadeInUp} style={{ marginBottom: '1rem' }}>
+              <span style={{
+                fontSize: '0.75rem',
+                fontWeight: '500',
+                letterSpacing: '0.3em',
+                textTransform: 'uppercase' as const,
+                color: 'rgba(255, 255, 255, 0.5)',
+              }}>
+                Pattern Recognition AI
+              </span>
+            </motion.div>
+            <motion.h2 variants={fadeInUp} style={{
+              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+              fontWeight: '300',
+              letterSpacing: '-0.02em',
+              lineHeight: '1.1',
+              color: 'var(--text-primary)',
+              marginBottom: '1rem',
+            }}>
+              Discover Hidden Patterns in Your Dreams
+            </motion.h2>
+            <motion.p variants={fadeInUp} style={{
+              fontSize: '1.125rem',
+              color: 'rgba(255, 255, 255, 0.6)',
+              maxWidth: '700px',
+              margin: '0 auto',
+              lineHeight: '1.7',
+            }}>
+              Describe your dreams and let AI identify recurring themes, symbolic elements, and emotional signatures. See what patterns emerge from your subconscious.
+            </motion.p>
+          </motion.div>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <PatternAnalyzer />
+        </motion.div>
+      </section>
 
       <SectionDivider />
 
