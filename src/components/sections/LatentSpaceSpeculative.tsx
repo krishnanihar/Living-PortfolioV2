@@ -1594,7 +1594,10 @@ function SixPillarsSection() {
           <div style={{
             fontSize: '4rem',
             fontWeight: '200',
-            color: 'rgba(218, 14, 41, 0.8)',
+            background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.9), rgba(14, 165, 233, 0.9))',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
             marginBottom: '1rem',
           }}>
             {String(activePillar + 1).padStart(2, '0')}
@@ -1644,7 +1647,7 @@ function SixPillarsSection() {
               borderRadius: '50%',
               border: 'none',
               background: index === activePillar
-                ? 'rgba(218, 14, 41, 0.8)'
+                ? 'rgba(147, 51, 234, 0.9)'
                 : 'rgba(255, 255, 255, 0.2)',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
@@ -2348,13 +2351,13 @@ function InteractivePrototypesSection() {
                 fontWeight: '400',
                 transition: 'all 0.3s ease',
                 border: activePrototype === prototype.id
-                  ? '2px solid var(--brand-red)'
+                  ? '2px solid rgba(147, 51, 234, 0.6)'
                   : '1px solid rgba(255, 255, 255, 0.2)',
                 background: activePrototype === prototype.id
-                  ? 'rgba(218, 14, 41, 0.1)'
+                  ? 'rgba(147, 51, 234, 0.1)'
                   : 'rgba(255, 255, 255, 0.02)',
                 color: activePrototype === prototype.id
-                  ? 'var(--brand-red)'
+                  ? 'rgba(147, 51, 234, 0.9)'
                   : 'var(--text-secondary)',
                 cursor: 'pointer',
                 backdropFilter: 'blur(20px)',
@@ -2422,8 +2425,8 @@ function InteractivePrototypesSection() {
                     left: `${fragment.x}%`,
                     top: `${fragment.y}%`,
                     transform: 'translate(-50%, -50%)',
-                    background: 'rgba(218, 14, 41, 0.2)',
-                    border: '1px solid rgba(218, 14, 41, 0.4)',
+                    background: 'rgba(147, 51, 234, 0.2)',
+                    border: '1px solid rgba(147, 51, 234, 0.4)',
                     borderRadius: '999px',
                     padding: '0.5rem 1rem',
                     fontSize: '0.75rem',
@@ -2459,7 +2462,7 @@ function InteractivePrototypesSection() {
                       y1={`${fragment.y}%`}
                       x2={`${otherFragment.x}%`}
                       y2={`${otherFragment.y}%`}
-                      stroke="rgba(218, 14, 41, 0.3)"
+                      stroke="rgba(147, 51, 234, 0.3)"
                       strokeWidth="1"
                       initial={{ pathLength: 0 }}
                       animate={{ pathLength: 1 }}
@@ -2496,10 +2499,10 @@ function InteractivePrototypesSection() {
                   height: '120px',
                   borderRadius: '50%',
                   background: isRecording
-                    ? 'rgba(218, 14, 41, 0.2)'
+                    ? 'rgba(147, 51, 234, 0.2)'
                     : 'rgba(255, 255, 255, 0.05)',
                   border: isRecording
-                    ? '3px solid var(--brand-red)'
+                    ? '3px solid rgba(147, 51, 234, 0.6)'
                     : '2px solid rgba(255, 255, 255, 0.2)',
                   display: 'flex',
                   alignItems: 'center',
@@ -2511,11 +2514,11 @@ function InteractivePrototypesSection() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 animate={isRecording ? {
-                  boxShadow: ['0 0 0 0 rgba(218, 14, 41, 0.4)', '0 0 0 20px rgba(218, 14, 41, 0)']
+                  boxShadow: ['0 0 0 0 rgba(147, 51, 234, 0.4)', '0 0 0 20px rgba(147, 51, 234, 0)']
                 } : {}}
                 transition={isRecording ? { duration: 1.5, repeat: Infinity } : {}}
               >
-                <Mic size={32} color={isRecording ? 'var(--brand-red)' : 'rgba(255, 255, 255, 0.6)'} />
+                <Mic size={32} color={isRecording ? 'rgba(147, 51, 234, 0.9)' : 'rgba(255, 255, 255, 0.6)'} />
               </motion.button>
 
               {/* Waveform Visualization */}
@@ -2537,7 +2540,7 @@ function InteractivePrototypesSection() {
                       key={i}
                       style={{
                         width: '3px',
-                        background: 'var(--brand-red)',
+                        background: 'rgba(147, 51, 234, 0.8)',
                         borderRadius: '1px',
                       }}
                       animate={{
