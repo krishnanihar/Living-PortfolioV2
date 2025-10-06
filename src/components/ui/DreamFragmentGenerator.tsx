@@ -1,18 +1,29 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Sparkles, Loader, AlertCircle } from 'lucide-react';
+import { Sparkles, Loader, AlertCircle, Image as ImageIcon, FileText, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+type GenerationMode = 'text' | 'image';
 
 interface DreamFragmentGeneratorProps {
   className?: string;
 }
 
+interface GeneratedImage {
+  data: string;
+  mimeType: string;
+  aspectRatio: string;
+}
+
 export function DreamFragmentGenerator({ className = '' }: DreamFragmentGeneratorProps) {
+  const [mode, setMode] = useState<GenerationMode>('text');
   const [mood, setMood] = useState('');
   const [theme, setTheme] = useState('');
   const [symbols, setSymbols] = useState('');
+  const [aspectRatio, setAspectRatio] = useState('1:1');
   const [dreamFragment, setDreamFragment] = useState('');
+  const [generatedImage, setGeneratedImage] = useState<GeneratedImage | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState('');
   const [isMobile, setIsMobile] = useState(false);
@@ -131,11 +142,59 @@ export function DreamFragmentGenerator({ className = '' }: DreamFragmentGenerato
     setIsGenerating(false);
   };
 
+  const generateImage = async () => {
+    if (!mood && !theme && !symbols) {
+      setError('Please provide at least one input to generate an image');
+      return;
+    }
+
+    setError('');
+    setGeneratedImage(null);
+    setIsGenerating(true);
+
+    try {
+      const response = await fetch('/api/dream-image-generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mood, theme, symbols, aspectRatio }),
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        throw new Error(data.message || 'Failed to generate image');
+      }
+
+      if (!data.success || !data.image) {
+        throw new Error('Invalid response format');
+      }
+
+      setGeneratedImage(data.image);
+    } catch (error: any) {
+      console.error('Dream image generation error:', error);
+      setError(error.message || 'Failed to generate dream image');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const downloadImage = () => {
+    if (!generatedImage) return;
+
+    const link = document.createElement('a');
+    link.href = `data:${generatedImage.mimeType};base64,${generatedImage.data}`;
+    link.download = `dream-${Date.now()}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const clearAll = () => {
     setMood('');
     setTheme('');
     setSymbols('');
     setDreamFragment('');
+    setGeneratedImage(null);
     setError('');
   };
 
@@ -187,8 +246,120 @@ export function DreamFragmentGenerator({ className = '' }: DreamFragmentGenerato
           marginBottom: '1.5rem',
           lineHeight: '1.6',
         }}>
-          Provide a mood, theme, or symbols to generate a unique dream fragment using AI. The generator creates surreal, vivid dream experiences in real-time.
+          Provide a mood, theme, or symbols to generate a unique dream fragment using AI. Choose between text or image generation.
         </p>
+
+        {/* Mode Toggle */}
+        <div style={{
+          display: 'flex',
+          gap: '0.75rem',
+          marginBottom: '1.5rem',
+          padding: '0.5rem',
+          background: 'rgba(255, 255, 255, 0.03)',
+          borderRadius: '12px',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+        }}>
+          <button
+            onClick={() => setMode('text')}
+            disabled={isGenerating}
+            style={{
+              flex: 1,
+              padding: '0.75rem 1rem',
+              background: mode === 'text' ? 'linear-gradient(135deg, rgba(147, 51, 234, 0.3), rgba(14, 165, 233, 0.3))' : 'transparent',
+              border: mode === 'text' ? '1px solid rgba(147, 51, 234, 0.5)' : '1px solid transparent',
+              borderRadius: '8px',
+              color: mode === 'text' ? 'var(--text-primary)' : 'var(--text-muted)',
+              fontSize: '0.875rem',
+              fontWeight: '500',
+              cursor: isGenerating ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              transition: 'all 0.3s ease',
+            }}
+          >
+            <FileText size={16} />
+            Text Dream
+          </button>
+          <button
+            onClick={() => setMode('image')}
+            disabled={isGenerating}
+            style={{
+              flex: 1,
+              padding: '0.75rem 1rem',
+              background: mode === 'image' ? 'linear-gradient(135deg, rgba(147, 51, 234, 0.3), rgba(14, 165, 233, 0.3))' : 'transparent',
+              border: mode === 'image' ? '1px solid rgba(147, 51, 234, 0.5)' : '1px solid transparent',
+              borderRadius: '8px',
+              color: mode === 'image' ? 'var(--text-primary)' : 'var(--text-muted)',
+              fontSize: '0.875rem',
+              fontWeight: '500',
+              cursor: isGenerating ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              transition: 'all 0.3s ease',
+            }}
+          >
+            <ImageIcon size={16} />
+            Image Dream
+          </button>
+        </div>
+
+        {/* Aspect Ratio Selector (Image mode only) */}
+        {mode === 'image' && (
+          <div style={{
+            marginBottom: '1.5rem',
+          }}>
+            <label style={{
+              display: 'block',
+              fontSize: '0.8rem',
+              color: 'var(--text-muted)',
+              marginBottom: '0.75rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+            }}>
+              Aspect Ratio
+            </label>
+            <div style={{
+              display: 'flex',
+              gap: '0.5rem',
+              flexWrap: 'wrap',
+            }}>
+              {['1:1', '16:9', '9:16', '3:2', '2:3'].map((ratio) => (
+                <button
+                  key={ratio}
+                  onClick={() => setAspectRatio(ratio)}
+                  disabled={isGenerating}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    background: aspectRatio === ratio ? 'rgba(147, 51, 234, 0.2)' : 'rgba(255, 255, 255, 0.05)',
+                    border: aspectRatio === ratio ? '1px solid rgba(147, 51, 234, 0.5)' : '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '8px',
+                    color: aspectRatio === ratio ? 'var(--text-primary)' : 'var(--text-muted)',
+                    fontSize: '0.8rem',
+                    fontWeight: '500',
+                    cursor: isGenerating ? 'not-allowed' : 'pointer',
+                    transition: 'all 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isGenerating && aspectRatio !== ratio) {
+                      e.currentTarget.style.background = 'rgba(147, 51, 234, 0.1)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (aspectRatio !== ratio) {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                    }
+                  }}
+                >
+                  {ratio}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Input Fields */}
         <div style={{
@@ -433,7 +604,7 @@ export function DreamFragmentGenerator({ className = '' }: DreamFragmentGenerato
           flexWrap: 'wrap',
         }}>
           <button
-            onClick={generateDream}
+            onClick={mode === 'text' ? generateDream : generateImage}
             disabled={isGenerating || (!mood && !theme && !symbols)}
             style={{
               flex: 1,
@@ -474,8 +645,8 @@ export function DreamFragmentGenerator({ className = '' }: DreamFragmentGenerato
               </>
             ) : (
               <>
-                <Sparkles size={16} />
-                Generate Dream
+                {mode === 'text' ? <Sparkles size={16} /> : <ImageIcon size={16} />}
+                Generate {mode === 'text' ? 'Text' : 'Image'}
               </>
             )}
           </button>
@@ -505,7 +676,7 @@ export function DreamFragmentGenerator({ className = '' }: DreamFragmentGenerato
             </button>
           )}
 
-          {!isGenerating && (mood || theme || symbols || dreamFragment) && (
+          {!isGenerating && (mood || theme || symbols || dreamFragment || generatedImage) && (
             <button
               onClick={clearAll}
               style={{
@@ -672,6 +843,156 @@ export function DreamFragmentGenerator({ className = '' }: DreamFragmentGenerato
                 }} />
               )}
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Generated Image Display */}
+      <AnimatePresence>
+        {(generatedImage || (isGenerating && mode === 'image')) && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            style={{
+              position: 'relative',
+              background: 'rgba(255, 255, 255, 0.03)',
+              backdropFilter: 'blur(20px) saturate(150%) brightness(0.85)',
+              WebkitBackdropFilter: 'blur(20px) saturate(150%) brightness(0.85)',
+              border: '1px solid rgba(147, 51, 234, 0.3)',
+              borderRadius: '20px',
+              padding: '2rem',
+              overflow: 'hidden',
+            }}
+          >
+            {/* Animated border shimmer */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: '20px',
+              padding: '1px',
+              background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.5), rgba(14, 165, 233, 0.5), rgba(147, 51, 234, 0.5))',
+              backgroundSize: '200% 200%',
+              animation: 'borderShimmer 4s ease-in-out infinite',
+              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+              WebkitMaskComposite: 'xor',
+              maskComposite: 'exclude',
+              pointerEvents: 'none',
+            }} />
+
+            {/* Loading state with animated orbs */}
+            {isGenerating && !generatedImage && (
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '2rem',
+                padding: '2rem 0',
+              }}>
+                {/* Animated consciousness orbs */}
+                <div style={{
+                  position: 'relative',
+                  width: '80px',
+                  height: '80px',
+                }}>
+                  {[0, 1, 2].map((i) => (
+                    <div
+                      key={i}
+                      style={{
+                        position: 'absolute',
+                        width: '100%',
+                        height: '100%',
+                        borderRadius: '50%',
+                        border: '2px solid rgba(147, 51, 234, 0.5)',
+                        animation: `pulse${i} 2s ease-in-out infinite`,
+                        animationDelay: `${i * 0.3}s`,
+                      }}
+                    />
+                  ))}
+                  <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    background: 'radial-gradient(circle, rgba(147, 51, 234, 0.6), rgba(14, 165, 233, 0.3))',
+                    filter: 'blur(8px)',
+                    animation: 'float 3s ease-in-out infinite',
+                  }} />
+                </div>
+
+                {/* Loading text */}
+                <div style={{
+                  textAlign: 'center',
+                  color: 'var(--text-muted)',
+                  fontSize: '0.875rem',
+                }}>
+                  <span>Weaving consciousness into imagery</span>
+                  <span style={{ animation: 'dots 1.5s steps(4, end) infinite' }}>...</span>
+                </div>
+              </div>
+            )}
+
+            {/* Generated image */}
+            {generatedImage && (
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1.5rem',
+              }}>
+                <div style={{
+                  width: '100%',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  background: 'rgba(0, 0, 0, 0.3)',
+                }}>
+                  <img
+                    src={`data:${generatedImage.mimeType};base64,${generatedImage.data}`}
+                    alt="Generated dream visualization"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      display: 'block',
+                    }}
+                  />
+                </div>
+
+                {/* Download button */}
+                <button
+                  onClick={downloadImage}
+                  style={{
+                    padding: '0.875rem 1.5rem',
+                    background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.3), rgba(14, 165, 233, 0.3))',
+                    border: '1px solid rgba(147, 51, 234, 0.5)',
+                    borderRadius: '12px',
+                    color: 'var(--text-primary)',
+                    fontSize: '0.875rem',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.5rem',
+                    transition: 'all 0.3s ease',
+                    width: '100%',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(147, 51, 234, 0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
+                  <Download size={16} />
+                  Download Dream Image
+                </button>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
