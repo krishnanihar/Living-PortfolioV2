@@ -205,6 +205,14 @@ export function JourneyTimeline() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Prevent auto-scroll on page load - always start at top
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.history.scrollRestoration = 'manual';
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
   // Card interaction handlers
   const handleCardMouseEnter = (index: number) => {
     setCardHovers(prev => ({ ...prev, [index]: true }));
