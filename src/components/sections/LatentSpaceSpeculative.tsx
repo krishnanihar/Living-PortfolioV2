@@ -1912,11 +1912,21 @@ function SystemArchitectureSection() {
               {layer.components.map((component, componentIndex) => (
                 <motion.div
                   key={component.id}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${component.name} component in ${layer.name}. ${component.description}. Click to view details.`}
+                  aria-expanded={selectedNode === component.id}
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: (layerIndex * 4 + componentIndex) * 0.1 }}
                   onClick={() => setSelectedNode(selectedNode === component.id ? null : component.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setSelectedNode(selectedNode === component.id ? null : component.id);
+                    }
+                  }}
                   style={{
                     ...baseStyles.glassCard,
                     padding: '1rem',
@@ -1926,6 +1936,7 @@ function SystemArchitectureSection() {
                     border: selectedNode === component.id
                       ? `2px solid ${layer.color}`
                       : '1px solid rgba(255, 255, 255, 0.1)',
+                    outline: 'none',
                     ...(dataFlowActive ? {
                       boxShadow: `0 0 20px ${layer.color}`,
                       animation: `pulse-${layerIndex} 2s ease-in-out infinite alternate`,
@@ -1942,6 +1953,13 @@ function SystemArchitectureSection() {
                       (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.02)';
                       (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255, 255, 255, 0.1)';
                     }
+                  }}
+                  onFocus={(e) => {
+                    (e.currentTarget as HTMLElement).style.outline = `2px solid ${layer.color}`;
+                    (e.currentTarget as HTMLElement).style.outlineOffset = '2px';
+                  }}
+                  onBlur={(e) => {
+                    (e.currentTarget as HTMLElement).style.outline = 'none';
                   }}
                 >
                   {/* Data flow indicator */}
@@ -2046,17 +2064,128 @@ function SystemArchitectureSection() {
         ))}
       </div>
 
+      {/* Performance Metrics Overlay */}
+      <AnimatePresence>
+        {dataFlowActive && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            style={{
+              ...baseStyles.glassCard,
+              padding: '1.5rem',
+              marginBottom: '2rem',
+              border: '1px solid rgba(147, 51, 234, 0.4)',
+            }}
+          >
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)',
+              gap: '2rem',
+              textAlign: 'center' as const,
+            }}>
+              <div>
+                <div style={{
+                  fontSize: '2rem',
+                  fontWeight: '200',
+                  color: 'rgba(147, 51, 234, 0.9)',
+                  marginBottom: '0.5rem',
+                }}>
+                  ~92ms
+                </div>
+                <div style={{
+                  fontSize: '0.75rem',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  textTransform: 'uppercase' as const,
+                  letterSpacing: '0.1em',
+                }}>
+                  Total Latency
+                </div>
+              </div>
+              <div>
+                <div style={{
+                  fontSize: '2rem',
+                  fontWeight: '200',
+                  color: 'rgba(14, 165, 233, 0.9)',
+                  marginBottom: '0.5rem',
+                }}>
+                  256 Hz
+                </div>
+                <div style={{
+                  fontSize: '0.75rem',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  textTransform: 'uppercase' as const,
+                  letterSpacing: '0.1em',
+                }}>
+                  Sample Rate
+                </div>
+              </div>
+              <div>
+                <div style={{
+                  fontSize: '2rem',
+                  fontWeight: '200',
+                  color: 'rgba(218, 14, 41, 0.9)',
+                  marginBottom: '0.5rem',
+                }}>
+                  4
+                </div>
+                <div style={{
+                  fontSize: '0.75rem',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  textTransform: 'uppercase' as const,
+                  letterSpacing: '0.1em',
+                }}>
+                  Processing Layers
+                </div>
+              </div>
+              <div>
+                <div style={{
+                  fontSize: '2rem',
+                  fontWeight: '200',
+                  color: 'rgba(255, 255, 255, 0.9)',
+                  marginBottom: '0.5rem',
+                }}>
+                  100%
+                </div>
+                <div style={{
+                  fontSize: '0.75rem',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  textTransform: 'uppercase' as const,
+                  letterSpacing: '0.1em',
+                }}>
+                  Local Processing
+                </div>
+              </div>
+            </div>
+            <div style={{
+              marginTop: '1rem',
+              paddingTop: '1rem',
+              borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+              fontSize: '0.75rem',
+              color: 'rgba(255, 255, 255, 0.5)',
+              textAlign: 'center' as const,
+              fontStyle: 'italic',
+            }}>
+              But can milliseconds measure the depth of a dream?
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Data Flow Control */}
       <div style={{ textAlign: 'center' as const }}>
         <motion.button
           onClick={() => setDataFlowActive(!dataFlowActive)}
+          aria-label={dataFlowActive ? 'Stop data flow animation' : 'Start data flow animation to visualize system architecture'}
+          aria-pressed={dataFlowActive}
           style={{
             ...baseStyles.glassCard,
             padding: '1rem 2rem',
             fontSize: '1rem',
             fontWeight: '400',
-            color: dataFlowActive ? 'var(--brand-red)' : 'var(--text-secondary)',
-            border: dataFlowActive ? '2px solid var(--brand-red)' : '1px solid rgba(255, 255, 255, 0.2)',
+            color: dataFlowActive ? 'rgba(147, 51, 234, 0.9)' : 'var(--text-secondary)',
+            border: dataFlowActive ? '2px solid rgba(147, 51, 234, 0.6)' : '1px solid rgba(255, 255, 255, 0.2)',
             cursor: 'pointer',
             transition: 'all 0.3s ease',
             display: 'flex',
@@ -2067,7 +2196,7 @@ function SystemArchitectureSection() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <Activity size={16} />
+          <Activity size={16} aria-hidden="true" />
           {dataFlowActive ? 'Stop Data Flow' : 'Start Data Flow'}
         </motion.button>
       </div>
