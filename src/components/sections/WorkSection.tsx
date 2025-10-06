@@ -46,6 +46,18 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
     {
       id: 2,
       icon: Hexagon,
+      title: 'mythOS',
+      category: 'AI Art Curator',
+      description: 'An AI-powered digital art curator that explores visual motifs across art history. Uses computer vision and machine learning to generate thematic exhibitions and discover hidden patterns.',
+      metric: 'Algorithmic Curation',
+      tags: ['Computer Vision', 'AI/ML', 'Art History'],
+      status: 'Research',
+      year: '2024',
+      orbColor: '236, 72, 153'
+    },
+    {
+      id: 3,
+      icon: Hexagon,
       title: 'Latent Space',
       category: 'Speculative Design',
       description: 'Speculative design exploration of dream technology ethics. Interactive prototype exploring the boundaries between consciousness, privacy, and AI through dream interface concepts.',
@@ -56,7 +68,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
       orbColor: '140, 100, 255'
     },
     {
-      id: 3,
+      id: 4,
       icon: Grid3X3,
       title: 'Metamorphic Fractal Reflections',
       category: 'Psychedelic Journey',
@@ -68,7 +80,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
       orbColor: '50, 200, 150'
     },
     {
-      id: 4,
+      id: 5,
       icon: Heart,
       title: 'Living Organism',
       category: 'Meta Design',
@@ -395,7 +407,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     : 'rotateX(0) rotateY(0) translateZ(0) scale(1)',
                   transformStyle: 'preserve-3d' as const,
                   transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                  cursor: project.id === 1 || project.id === 3 ? 'pointer' : 'default',
+                  cursor: 'pointer',
                   // Bento grid: Air India spans 2 columns on desktop
                   gridColumn: project.id === 1 && isDesktop ? 'span 2' : 'span 1',
                 }}
@@ -491,9 +503,16 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                       <g>
                         <polygon points="60,20 100,40 100,80 60,100 20,80 20,40" stroke="white" strokeWidth="0.5" fill="none" />
                         <polygon points="60,35 85,47.5 85,72.5 60,85 35,72.5 35,47.5" stroke="white" strokeWidth="0.5" fill="none" />
+                        <circle cx="60" cy="60" r="15" stroke="white" strokeWidth="0.5" fill="none" />
                       </g>
                     )}
                     {project.id === 3 && (
+                      <g>
+                        <polygon points="60,20 100,40 100,80 60,100 20,80 20,40" stroke="white" strokeWidth="0.5" fill="none" />
+                        <polygon points="60,35 85,47.5 85,72.5 60,85 35,72.5 35,47.5" stroke="white" strokeWidth="0.5" fill="none" />
+                      </g>
+                    )}
+                    {project.id === 4 && (
                       <g>
                         {[...Array(9)].map((_, i) => (
                           <rect
@@ -740,8 +759,9 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
             const getProjectUrl = (id: number) => {
               switch (id) {
                 case 1: return '/work/air-india';
-                case 2: return '/work/latent-space';
-                case 3: return '/work/metamorphic-fractal-reflections';
+                case 2: return '/work/mythos';
+                case 3: return '/work/latent-space';
+                case 4: return '/work/metamorphic-fractal-reflections';
                 default: return null;
               }
             };
