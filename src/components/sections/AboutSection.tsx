@@ -566,7 +566,7 @@ export function AboutSection() {
                 background: 'rgba(218, 14, 41, 0.1)',
                 border: '1px solid rgba(218, 14, 41, 0.3)',
                 borderRadius: '12px',
-                color: 'var(--brand-red)',
+                color: 'rgba(255, 255, 255, 0.92)',
                 fontSize: '0.9375rem',
                 fontWeight: '500',
                 textDecoration: 'none',
@@ -587,9 +587,9 @@ export function AboutSection() {
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              <Map size={18} style={{ strokeWidth: 2 }} />
+              <Map size={18} style={{ strokeWidth: 2, color: 'rgba(255, 255, 255, 0.92)' }} />
               Explore full journey timeline
-              <ArrowRight size={18} style={{ strokeWidth: 2 }} />
+              <ArrowRight size={18} style={{ strokeWidth: 2, color: 'rgba(255, 255, 255, 0.92)' }} />
             </Link>
           </div>
         </div>
