@@ -100,19 +100,25 @@ Create a vivid, surreal dream experience.`;
     });
 
   } catch (error: any) {
-    console.error('Dream generation error:', error);
+    console.error('[Dream Generator] Error details:', {
+      message: error?.message,
+      status: error?.status,
+      response: error?.response?.data,
+      stack: error?.stack?.substring(0, 500)
+    });
 
-    if (error?.message?.includes('API key')) {
+    if (error?.message?.includes('API key') || error?.status === 400) {
       return new Response(
         JSON.stringify({
           error: 'API_KEY_INVALID',
-          message: 'The dream gateway is misconfigured. Try again later...'
+          message: 'The dream gateway is misconfigured. Try again later...',
+          details: process.env.NODE_ENV === 'development' ? error.message : undefined
         }),
         { status: 200, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    if (error?.message?.includes('quota') || error?.message?.includes('rate limit')) {
+    if (error?.message?.includes('quota') || error?.message?.includes('rate limit') || error?.status === 429) {
       return new Response(
         JSON.stringify({
           error: 'RATE_LIMIT',
@@ -122,12 +128,25 @@ Create a vivid, surreal dream experience.`;
       );
     }
 
+    if (error?.message?.includes('model') || error?.message?.includes('not found')) {
+      return new Response(
+        JSON.stringify({
+          error: 'MODEL_ERROR',
+          message: 'The AI model is temporarily unavailable. Try again in a moment...',
+          details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Return 200 with error message instead of 500 for better UX
     return new Response(
       JSON.stringify({
         error: 'UNKNOWN_ERROR',
-        message: 'The dream fragmented unexpectedly. Try again...'
+        message: 'The dream fragmented unexpectedly. Try again...',
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
       }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      { status: 200, headers: { 'Content-Type': 'application/json' } } // Changed from 500 to 200
     );
   }
 }

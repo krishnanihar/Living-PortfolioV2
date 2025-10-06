@@ -154,19 +154,25 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error: any) {
-    console.error('Pattern analysis error:', error);
+    console.error('[Pattern Analyzer] Error details:', {
+      message: error?.message,
+      status: error?.status,
+      response: error?.response?.data,
+      stack: error?.stack?.substring(0, 500)
+    });
 
-    if (error?.message?.includes('API key')) {
+    if (error?.message?.includes('API key') || error?.status === 400) {
       return NextResponse.json(
         {
           error: 'API_KEY_INVALID',
-          message: 'The pattern matrix is misconfigured. Try again later...'
+          message: 'The pattern matrix is misconfigured. Try again later...',
+          details: process.env.NODE_ENV === 'development' ? error.message : undefined
         },
         { status: 200 }
       );
     }
 
-    if (error?.message?.includes('quota') || error?.message?.includes('rate limit')) {
+    if (error?.message?.includes('quota') || error?.message?.includes('rate limit') || error?.status === 429) {
       return NextResponse.json(
         {
           error: 'RATE_LIMIT',
@@ -176,13 +182,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (error?.message?.includes('model') || error?.message?.includes('not found')) {
+      return NextResponse.json(
+        {
+          error: 'MODEL_ERROR',
+          message: 'The AI model is temporarily unavailable. Try again in a moment...',
+          details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        },
+        { status: 200 }
+      );
+    }
+
+    // Return 200 with error message instead of 500 for better UX
     return NextResponse.json(
       {
         error: 'UNKNOWN_ERROR',
-        message: 'The analysis fragmented unexpectedly. Try again...',
-        details: error.message || 'Unknown error'
+        message: 'The analysis encountered an issue. Try again or simplify your input...',
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
       },
-      { status: 500 }
+      { status: 200 } // Changed from 500 to 200 for graceful degradation
     );
   }
 }
