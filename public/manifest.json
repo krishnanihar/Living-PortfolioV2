@@ -1,0 +1,16 @@
+{
+  "name": "Nihar Sunkara Portfolio",
+  "short_name": "Nihar",
+  "description": "A living portfolio that breathes, remembers, and evolves with you",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0A0A",
+  "theme_color": "#DA0E29",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}

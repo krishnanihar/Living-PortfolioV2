@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
 
     // Initialize Gemini AI (lazy-loaded to avoid build issues)
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     // Build context-aware prompt
     const contextPrefix = context ? `\n\nUser's area of interest: ${context}\n\n` : '';
