@@ -302,13 +302,89 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
           opacity: 0,
           animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both',
         }}>
-          {/* Navigation Links */}
+          {/* Input Field First */}
+          <div style={{
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            background: 'rgba(255, 255, 255, 0.02)',
+            backdropFilter: 'blur(30px) brightness(0.8)',
+            WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
+            border: `1px solid ${accentColor}20`,
+            borderRadius: '28px',
+            padding: '0.875rem 1.25rem',
+            transition: 'all 0.3s ease',
+            marginBottom: '1.5rem',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.border = `1px solid ${accentColor}40`;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.border = `1px solid ${accentColor}20`;
+          }}
+          >
+            <input
+              type="text"
+              placeholder={getPlaceholder()}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={handleKeyPress}
+              autoFocus
+              style={{
+                flex: 1,
+                background: 'none',
+                border: 'none',
+                outline: 'none',
+                color: 'var(--text-primary)',
+                fontSize: '0.875rem',
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: '300',
+                letterSpacing: '0.01em',
+              }}
+            />
+            <button
+              onClick={handleSendMessage}
+              disabled={!inputValue.trim()}
+              style={{
+                background: inputValue.trim() ? `${accentColor}40` : 'rgba(255, 255, 255, 0.05)',
+                border: inputValue.trim() ? `1px solid ${accentColor}80` : '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '20px',
+                padding: '0.5rem 1.25rem',
+                color: inputValue.trim() ? 'var(--text-primary)' : 'var(--text-muted)',
+                fontSize: '0.825rem',
+                fontWeight: '400',
+                cursor: inputValue.trim() ? 'pointer' : 'not-allowed',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                transition: 'all 0.3s ease',
+                opacity: inputValue.trim() ? 1 : 0.5,
+              }}
+              onMouseEnter={(e) => {
+                if (inputValue.trim()) {
+                  e.currentTarget.style.background = `${accentColor}60`;
+                  e.currentTarget.style.transform = 'scale(1.02)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = inputValue.trim() ? `${accentColor}40` : 'rgba(255, 255, 255, 0.05)';
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+            >
+              <Send size={14} />
+              {selectedIntentData?.ctaText || 'Send'}
+            </button>
+          </div>
+
+          {/* Navigation Links - Centered Below Input */}
           <div style={{
             display: 'flex',
-            gap: '0.5rem',
-            marginBottom: '1rem',
+            gap: '0.75rem',
+            marginBottom: '0',
             flexWrap: 'wrap',
             alignItems: 'center',
+            justifyContent: 'center',
           }}>
             {/* Back Button */}
             <button
@@ -447,81 +523,6 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
               <User size={14} />
               About Me
             </Link>
-          </div>
-
-          <div style={{
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.75rem',
-            background: 'rgba(255, 255, 255, 0.02)',
-            backdropFilter: 'blur(30px) brightness(0.8)',
-            WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
-            border: `1px solid ${accentColor}20`,
-            borderRadius: '28px',
-            padding: '0.875rem 1.25rem',
-            transition: 'all 0.3s ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.border = `1px solid ${accentColor}40`;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.border = `1px solid ${accentColor}20`;
-          }}
-          >
-            <input
-              type="text"
-              placeholder={getPlaceholder()}
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyPress={handleKeyPress}
-              autoFocus
-              style={{
-                flex: 1,
-                background: 'none',
-                border: 'none',
-                outline: 'none',
-                color: 'var(--text-primary)',
-                fontSize: '0.875rem',
-                fontFamily: 'Inter, sans-serif',
-                fontWeight: '300',
-                letterSpacing: '0.01em',
-              }}
-            />
-            <button
-              onClick={handleSendMessage}
-              disabled={!inputValue.trim()}
-              style={{
-                background: inputValue.trim() ? `${accentColor}40` : 'rgba(255, 255, 255, 0.05)',
-                border: inputValue.trim() ? `1px solid ${accentColor}80` : '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '20px',
-                padding: '0.5rem 1.25rem',
-                color: inputValue.trim() ? 'var(--text-primary)' : 'var(--text-muted)',
-                fontSize: '0.825rem',
-                fontWeight: '400',
-                cursor: inputValue.trim() ? 'pointer' : 'not-allowed',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                transition: 'all 0.3s ease',
-                opacity: inputValue.trim() ? 1 : 0.5,
-              }}
-              onMouseEnter={(e) => {
-                if (inputValue.trim()) {
-                  e.currentTarget.style.background = `${accentColor}60`;
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (inputValue.trim()) {
-                  e.currentTarget.style.background = `${accentColor}40`;
-                  e.currentTarget.style.transform = 'scale(1)';
-                }
-              }}
-            >
-              <Send size={14} />
-              {selectedIntentData?.ctaText || 'Continue'}
-            </button>
           </div>
         </div>
       )}
