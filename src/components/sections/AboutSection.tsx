@@ -555,19 +555,41 @@ export function AboutSection() {
               I'm designing for <span style={{ color: 'var(--text-primary)', fontWeight: '400' }}>450+ daily users</span>,
               creating systems that help airline operations move faster.
             </p>
-            <Link href="/journey" style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              color: 'var(--brand-red)',
-              fontSize: '0.9375rem',
-              fontWeight: '400',
-              textDecoration: 'none',
-              transition: 'all 0.3s ease',
-            }}>
-              <Map size={16} />
+            <Link
+              href="/journey"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                marginTop: '1rem',
+                padding: '0.875rem 1.5rem',
+                background: 'rgba(218, 14, 41, 0.1)',
+                border: '1px solid rgba(218, 14, 41, 0.3)',
+                borderRadius: '12px',
+                color: 'var(--brand-red)',
+                fontSize: '0.9375rem',
+                fontWeight: '500',
+                textDecoration: 'none',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(218, 14, 41, 0.15)';
+                e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.5)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px rgba(218, 14, 41, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(218, 14, 41, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              <Map size={18} style={{ strokeWidth: 2 }} />
               Explore full journey timeline
-              <ArrowRight size={16} />
+              <ArrowRight size={18} style={{ strokeWidth: 2 }} />
             </Link>
           </div>
         </div>
