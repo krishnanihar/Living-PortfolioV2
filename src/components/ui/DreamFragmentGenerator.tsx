@@ -54,9 +54,17 @@ export function DreamFragmentGenerator({ className = '' }: DreamFragmentGenerato
         signal: abortControllerRef.current.signal,
       });
 
-      if (!response.ok) {
+      // Check if response is JSON error (for non-streaming errors)
+      const contentType = response.headers.get('content-type');
+      if (contentType?.includes('application/json')) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to generate dream');
+        if (errorData.error) {
+          throw new Error(errorData.message || 'Failed to generate dream');
+        }
+      }
+
+      if (!response.ok) {
+        throw new Error('Failed to generate dream');
       }
 
       // Handle streaming response

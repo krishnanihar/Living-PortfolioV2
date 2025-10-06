@@ -197,6 +197,39 @@ export const projects: Project[] = [
 
   // Research Projects
   {
+    id: 'mythos',
+    title: 'mythOS',
+    company: 'Personal Research',
+    description: 'An AI-powered digital art curator that explores visual motifs across art history. Like Digital Curator but with a consciousness - uses computer vision and machine learning to generate thematic exhibitions, discover hidden patterns in artistic movements, and create random explorations through curated art collections.',
+    category: 'research',
+    status: 'development',
+    tags: [
+      { id: 'computer-vision', label: 'Computer Vision' },
+      { id: 'ai-curation', label: 'AI Curation' },
+      { id: 'art-history', label: 'Art History' },
+      { id: 'machine-learning', label: 'Machine Learning' },
+      { id: 'generative-exhibitions', label: 'Generative Exhibitions' },
+      { id: 'interactive-prototype', label: 'Interactive Prototype' },
+      { id: 'nextjs', label: 'Next.js' },
+      { id: 'data-visualization', label: 'Data Visualization' },
+    ],
+    meta: {
+      year: '2024',
+      role: 'Designer & Developer',
+      team: 'Solo Project',
+      duration: 'Ongoing',
+    },
+    metrics: {
+      impact: 'Algorithmic art discovery & pattern recognition',
+      improvement: 'Democratizing art curation through AI',
+    },
+    links: [
+      { type: 'case-study', url: '/work/mythos', label: 'Explore Exhibitions' },
+    ],
+    featured: true,
+    order: 9,
+  },
+  {
     id: 'latent-space',
     title: 'Latent Space',
     company: 'MIT Media Lab',
@@ -227,7 +260,7 @@ export const projects: Project[] = [
       { type: 'case-study', url: '/work/latent-space', label: 'Explore the Speculation' },
     ],
     featured: true,
-    order: 9,
+    order: 10,
   },
   {
     id: 'metamorphic-fractal-reflections',
@@ -259,7 +292,7 @@ export const projects: Project[] = [
       { type: 'case-study', url: '/work/metamorphic-fractal-reflections', label: 'View Case Study' },
     ],
     featured: true,
-    order: 10,
+    order: 11,
   },
 
   // IFE Projects
