@@ -925,12 +925,49 @@ function ScienceExplorationSection() {
 
 // Sleep Stages Tab
 function SleepStagesTab() {
+  const [hoveredStage, setHoveredStage] = useState<number | null>(null);
+
   const stages = [
-    { name: "Wake", duration: "10%", description: "Conscious awareness", color: "rgba(34, 197, 94, 0.2)" },
-    { name: "N1", duration: "5%", description: "Light sleep transition", color: "rgba(59, 130, 246, 0.2)" },
-    { name: "N2", duration: "45%", description: "Deeper sleep with spindles", color: "rgba(99, 102, 241, 0.2)" },
-    { name: "N3", duration: "25%", description: "Deep restorative sleep", color: "rgba(236, 72, 153, 0.2)" },
-    { name: "REM", duration: "20%", description: "Rapid eye movement dreams", color: "rgba(251, 146, 60, 0.2)" },
+    {
+      name: "Wake",
+      duration: "10%",
+      description: "Conscious awareness",
+      color: "rgba(34, 197, 94, 0.2)",
+      accentColor: "rgba(34, 197, 94, 0.8)",
+      details: "Full alertness and sensory processing"
+    },
+    {
+      name: "N1",
+      duration: "5%",
+      description: "Light sleep transition",
+      color: "rgba(59, 130, 246, 0.2)",
+      accentColor: "rgba(59, 130, 246, 0.8)",
+      details: "Theta waves begin, hypnagogic imagery"
+    },
+    {
+      name: "N2",
+      duration: "45%",
+      description: "Deeper sleep with spindles",
+      color: "rgba(99, 102, 241, 0.2)",
+      accentColor: "rgba(99, 102, 241, 0.8)",
+      details: "Sleep spindles and K-complexes emerge"
+    },
+    {
+      name: "N3",
+      duration: "25%",
+      description: "Deep restorative sleep",
+      color: "rgba(236, 72, 153, 0.2)",
+      accentColor: "rgba(236, 72, 153, 0.8)",
+      details: "Delta waves dominate, tissue repair occurs"
+    },
+    {
+      name: "REM",
+      duration: "20%",
+      description: "Rapid eye movement dreams",
+      color: "rgba(251, 146, 60, 0.2)",
+      accentColor: "rgba(251, 146, 60, 0.8)",
+      details: "Vivid dreams, memory consolidation, paralysis"
+    },
   ];
 
   return (
@@ -963,28 +1000,53 @@ function SleepStagesTab() {
           But what ethical questions arise if we could consciously control these transitions?
         </p>
         <div style={{ display: 'flex', flexDirection: 'column' as const, gap: '1rem' }}>
-          {stages.map((stage, index) => (
+          {stages.map((stage, index) => {
+            const isHovered = hoveredStage === index;
+            return (
             <motion.div
               key={stage.name}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
+              onMouseEnter={() => setHoveredStage(index)}
+              onMouseLeave={() => setHoveredStage(null)}
               style={{
                 ...baseStyles.glassCard,
                 padding: '1.5rem',
-                background: `linear-gradient(90deg, ${stage.color} 0%, rgba(255, 255, 255, 0.02) 100%)`,
+                background: isHovered
+                  ? `linear-gradient(90deg, ${stage.color.replace('0.2', '0.3')} 0%, rgba(255, 255, 255, 0.04) 100%)`
+                  : `linear-gradient(90deg, ${stage.color} 0%, rgba(255, 255, 255, 0.02) 100%)`,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                transform: isHovered ? 'translateX(8px)' : 'translateX(0)',
+                position: 'relative' as const,
               }}
             >
+              {/* Accent bar */}
+              <div style={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: '3px',
+                background: stage.accentColor,
+                opacity: isHovered ? 1 : 0,
+                transition: 'opacity 0.3s ease',
+              }} />
+
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
+                marginBottom: isHovered ? '0.75rem' : '0',
+                transition: 'margin 0.3s ease',
               }}>
                 <div>
                   <h4 style={{
                     fontSize: '1.125rem',
                     fontWeight: '300',
-                    color: 'rgba(255, 255, 255, 0.9)',
+                    color: isHovered ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0.9)',
+                    transition: 'color 0.3s ease',
                   }}>
                     {stage.name}
                   </h4>
@@ -998,13 +1060,34 @@ function SleepStagesTab() {
                 <div style={{
                   fontSize: '1.5rem',
                   fontWeight: '300',
-                  color: 'var(--text-secondary)',
+                  color: isHovered ? stage.accentColor : 'var(--text-secondary)',
+                  transition: 'color 0.3s ease',
                 }}>
                   {stage.duration}
                 </div>
               </div>
+
+              {/* Additional details on hover */}
+              {isHovered && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    paddingTop: '0.75rem',
+                    borderTop: `1px solid ${stage.accentColor.replace('0.8', '0.3')}`,
+                    fontSize: '0.8125rem',
+                    color: 'rgba(255, 255, 255, 0.6)',
+                    fontStyle: 'italic',
+                  }}
+                >
+                  {stage.details}
+                </motion.div>
+              )}
             </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </motion.div>
@@ -1121,43 +1204,117 @@ function BrainWavesTab() {
 
 // Detection Tab
 function DetectionTab() {
+  const detectionMethods = [
+    {
+      name: "EEG Sensors",
+      accuracy: "92%",
+      latency: "~50ms",
+      invasiveness: "Non-invasive",
+      icon: Activity,
+      description: "Surface-level brainwave detection"
+    },
+    {
+      name: "Eye Tracking",
+      accuracy: "87%",
+      latency: "~30ms",
+      invasiveness: "Non-invasive",
+      icon: Eye,
+      description: "REM detection via eye movement"
+    },
+    {
+      name: "Biometric Fusion",
+      accuracy: "95%",
+      latency: "~100ms",
+      invasiveness: "Non-invasive",
+      icon: Heart,
+      description: "Combined vital sign analysis"
+    },
+  ];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.4 }}
-      style={{ textAlign: 'center' as const }}
     >
-      <h3 style={{
-        fontSize: '1.5rem',
-        fontWeight: '300',
-        color: 'rgba(255, 255, 255, 0.9)',
-        marginBottom: '1.5rem',
-      }}>
-        What patterns would reveal our inner worlds?
-      </h3>
-      <p style={{
-        color: 'rgba(255, 255, 255, 0.7)',
-        marginBottom: '2rem',
-        maxWidth: '600px',
-        margin: '0 auto 2rem',
-        lineHeight: '1.6',
-      }}>
-        Detection algorithms might identify dream states, but what happens to the mystery and
-        ineffability of consciousness when it becomes measurable data?
-      </p>
+      <div style={{ marginBottom: '3rem', textAlign: 'center' as const }}>
+        <h3 style={{
+          fontSize: '1.5rem',
+          fontWeight: '300',
+          color: 'rgba(255, 255, 255, 0.9)',
+          marginBottom: '1.5rem',
+        }}>
+          What patterns would reveal our inner worlds?
+        </h3>
+        <p style={{
+          color: 'rgba(255, 255, 255, 0.7)',
+          marginBottom: '2rem',
+          maxWidth: '600px',
+          margin: '0 auto',
+          lineHeight: '1.6',
+        }}>
+          Detection algorithms might identify dream states, but what happens to the mystery and
+          ineffability of consciousness when it becomes measurable data?
+        </p>
+      </div>
+
       <div style={{
-        ...baseStyles.glassCard,
-        height: '16rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+        gap: '1.5rem',
       }}>
-        <div style={{ textAlign: 'center' as const }}>
-          <Eye size={48} style={{ color: 'rgba(255, 255, 255, 0.3)', marginBottom: '1rem' }} />
-          <p style={{ color: 'rgba(255, 255, 255, 0.5)' }}>Pattern recognition speculation</p>
-        </div>
+        {detectionMethods.map((method, index) => {
+          const Icon = method.icon;
+          return (
+            <motion.div
+              key={method.name}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 + 0.2 }}
+              style={{
+                ...baseStyles.glassCard,
+                padding: '2rem',
+              }}
+            >
+              <Icon size={32} style={{
+                color: 'rgba(147, 51, 234, 0.8)',
+                marginBottom: '1rem',
+                filter: 'drop-shadow(0 0 8px rgba(147, 51, 234, 0.5))'
+              }} />
+              <h4 style={{
+                fontSize: '1.125rem',
+                fontWeight: '300',
+                color: 'rgba(255, 255, 255, 0.9)',
+                marginBottom: '0.5rem',
+              }}>
+                {method.name}
+              </h4>
+              <p style={{
+                fontSize: '0.8125rem',
+                color: 'rgba(255, 255, 255, 0.6)',
+                marginBottom: '1.5rem',
+                fontStyle: 'italic',
+              }}>
+                {method.description}
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column' as const, gap: '0.75rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.5)' }}>Accuracy</span>
+                  <span style={{ fontSize: '0.875rem', color: 'rgba(14, 165, 233, 0.9)', fontWeight: '500' }}>{method.accuracy}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.5)' }}>Latency</span>
+                  <span style={{ fontSize: '0.875rem', color: 'rgba(147, 51, 234, 0.9)', fontWeight: '500' }}>{method.latency}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.5)' }}>Method</span>
+                  <span style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.7)' }}>{method.invasiveness}</span>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
     </motion.div>
   );
@@ -1165,43 +1322,153 @@ function DetectionTab() {
 
 // Processing Tab
 function ProcessingTab() {
+  const processingStages = [
+    {
+      stage: "01",
+      name: "Signal Filtering",
+      process: "Raw EEG → Clean Data",
+      complexity: "Low",
+      icon: Waves,
+      color: "rgba(34, 197, 94, 0.6)"
+    },
+    {
+      stage: "02",
+      name: "Pattern Recognition",
+      process: "Data → Sleep Stage",
+      complexity: "Medium",
+      icon: Network,
+      color: "rgba(59, 130, 246, 0.6)"
+    },
+    {
+      stage: "03",
+      name: "Dream Detection",
+      process: "Stage → REM Onset",
+      complexity: "Medium",
+      icon: Eye,
+      color: "rgba(147, 51, 234, 0.6)"
+    },
+    {
+      stage: "04",
+      name: "Interpretation",
+      process: "Neural → Meaning",
+      complexity: "Impossible?",
+      icon: Brain,
+      color: "rgba(236, 72, 153, 0.6)"
+    },
+  ];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.4 }}
-      style={{ textAlign: 'center' as const }}
     >
-      <h3 style={{
-        fontSize: '1.5rem',
-        fontWeight: '300',
-        color: 'rgba(255, 255, 255, 0.9)',
-        marginBottom: '1.5rem',
-      }}>
-        How do you process a dream?
-      </h3>
-      <p style={{
-        color: 'rgba(255, 255, 255, 0.7)',
-        marginBottom: '2rem',
-        maxWidth: '600px',
-        margin: '0 auto 2rem',
-        lineHeight: '1.6',
-      }}>
-        The gap between neural activity and subjective experience remains vast.
-        What would be lost in translation from consciousness to code?
-      </p>
-      <div style={{
-        ...baseStyles.glassCard,
-        height: '16rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-        <div style={{ textAlign: 'center' as const }}>
-          <Layers size={48} style={{ color: 'rgba(255, 255, 255, 0.3)', marginBottom: '1rem' }} />
-          <p style={{ color: 'rgba(255, 255, 255, 0.5)' }}>Processing pipeline speculation</p>
-        </div>
+      <div style={{ marginBottom: '3rem', textAlign: 'center' as const }}>
+        <h3 style={{
+          fontSize: '1.5rem',
+          fontWeight: '300',
+          color: 'rgba(255, 255, 255, 0.9)',
+          marginBottom: '1.5rem',
+        }}>
+          How do you process a dream?
+        </h3>
+        <p style={{
+          color: 'rgba(255, 255, 255, 0.7)',
+          maxWidth: '600px',
+          margin: '0 auto',
+          lineHeight: '1.6',
+        }}>
+          The gap between neural activity and subjective experience remains vast.
+          What would be lost in translation from consciousness to code?
+        </p>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column' as const, gap: '1rem' }}>
+        {processingStages.map((stage, index) => {
+          const Icon = stage.icon;
+          return (
+            <motion.div
+              key={stage.stage}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.1 + 0.2 }}
+              style={{
+                ...baseStyles.glassCard,
+                padding: '1.5rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '2rem',
+                position: 'relative' as const,
+              }}
+            >
+              {/* Stage number */}
+              <div style={{
+                fontSize: '2rem',
+                fontWeight: '200',
+                color: stage.color,
+                minWidth: '3rem',
+                textAlign: 'center' as const,
+              }}>
+                {stage.stage}
+              </div>
+
+              {/* Icon */}
+              <Icon size={32} style={{
+                color: stage.color,
+                filter: `drop-shadow(0 0 8px ${stage.color})`,
+                minWidth: '32px',
+              }} />
+
+              {/* Content */}
+              <div style={{ flex: 1 }}>
+                <h4 style={{
+                  fontSize: '1.125rem',
+                  fontWeight: '300',
+                  color: 'rgba(255, 255, 255, 0.9)',
+                  marginBottom: '0.25rem',
+                }}>
+                  {stage.name}
+                </h4>
+                <p style={{
+                  fontSize: '0.875rem',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  fontFamily: 'monospace',
+                }}>
+                  {stage.process}
+                </p>
+              </div>
+
+              {/* Complexity badge */}
+              <div style={{
+                padding: '0.375rem 0.875rem',
+                borderRadius: '999px',
+                background: `${stage.color.replace('0.6', '0.15')}`,
+                border: `1px solid ${stage.color.replace('0.6', '0.4')}`,
+                fontSize: '0.75rem',
+                color: stage.color.replace('0.6', '1'),
+                fontWeight: '500',
+                whiteSpace: 'nowrap' as const,
+              }}>
+                {stage.complexity}
+              </div>
+
+              {/* Connecting arrow */}
+              {index < processingStages.length - 1 && (
+                <div style={{
+                  position: 'absolute',
+                  bottom: '-1rem',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  color: 'rgba(255, 255, 255, 0.2)',
+                  fontSize: '1.5rem',
+                }}>
+                  ↓
+                </div>
+              )}
+            </motion.div>
+          );
+        })}
       </div>
     </motion.div>
   );
