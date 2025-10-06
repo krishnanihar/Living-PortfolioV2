@@ -191,12 +191,29 @@ button {
 
 .glass-hero {
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(var(--blur-2xl)) saturate(150%);
-  -webkit-backdrop-filter: blur(var(--blur-2xl)) saturate(150%);
+  backdrop-filter: blur(var(--blur-3xl)) saturate(150%) brightness(1.1);
+  -webkit-backdrop-filter: blur(var(--blur-3xl)) saturate(150%) brightness(1.1);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.15),
-    0 1px 0 rgba(255, 255, 255, 0.1) inset;
+    0 1px 0 rgba(255, 255, 255, 0.1) inset,
+    0 0 0 1px rgba(218, 14, 41, 0.05);
+}
+
+.glass-hero-inner {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(var(--blur-lg));
+  -webkit-backdrop-filter: blur(var(--blur-lg));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-2xl);
+}
+
+.glass-hero-accent {
+  background: linear-gradient(135deg, rgba(218, 14, 41, 0.08), rgba(255, 255, 255, 0.04));
+  backdrop-filter: blur(var(--blur-md));
+  -webkit-backdrop-filter: blur(var(--blur-md));
+  border: 1px solid rgba(218, 14, 41, 0.15);
+  border-radius: var(--radius-xl);
 }
 
 /* === TYPOGRAPHY SYSTEM === */
@@ -241,10 +258,27 @@ button {
   text-transform: uppercase;
 }
 
+.text-gradient-animated {
+  background: linear-gradient(
+    90deg,
+    var(--text-primary) 0%,
+    var(--brand-red) 25%,
+    var(--text-secondary) 50%,
+    var(--brand-red) 75%,
+    var(--text-primary) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 8s ease-in-out infinite;
+}
+
 /* === BUTTON SYSTEM === */
 
 .btn-primary {
   background: linear-gradient(135deg, var(--brand-red), rgba(218, 14, 41, 0.8));
+  background-size: 150% 150%;
   color: white;
   border: none;
   border-radius: var(--radius-full);
@@ -257,11 +291,31 @@ button {
   overflow: hidden;
 }
 
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-primary:active::before {
+  width: 300px;
+  height: 300px;
+}
+
 .btn-primary:hover {
   transform: translateY(-2px);
+  background-position: 100% 50%;
   box-shadow:
-    0 20px 40px rgba(218, 14, 41, 0.3),
-    0 10px 20px rgba(0, 0, 0, 0.2);
+    0 20px 40px rgba(218, 14, 41, 0.4),
+    0 10px 20px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
 .btn-secondary {
@@ -276,13 +330,35 @@ button {
   cursor: pointer;
   backdrop-filter: blur(var(--blur-md));
   -webkit-backdrop-filter: blur(var(--blur-md));
+  position: relative;
+}
+
+.btn-secondary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity var(--duration-base);
 }
 
 .btn-secondary:hover {
   background: var(--surface-hover);
   border-color: var(--border-hover);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-lg);
+  box-shadow:
+    var(--shadow-lg),
+    0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.btn-secondary:hover::after {
+  opacity: 1;
+  animation: borderShimmer 2s ease-in-out infinite;
 }
 
 /* === ANIMATIONS === */
@@ -310,6 +386,35 @@ button {
   100% {
     transform: translateX(100%);
   }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes floatOrb {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(30px, -30px); }
+  66% { transform: translate(-20px, 20px); }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+@keyframes borderShimmer {
+  0% { border-color: var(--border-primary); }
+  50% { border-color: var(--border-hover); }
+  100% { border-color: var(--border-primary); }
 }
 
 /* === RESPONSIVE UTILITIES === */
