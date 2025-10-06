@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
-import { Target, Trophy, TrendingUp, CheckCircle, ArrowLeft, ChevronDown, ChevronUp, ArrowRight, type LucideIcon } from 'lucide-react';
+import { Target, Trophy, TrendingUp, CheckCircle, ArrowLeft, ChevronDown, ChevronUp, Circle, Hexagon, Grid3X3, Heart, type LucideIcon } from 'lucide-react';
 
 interface StatItem {
   value: string;
@@ -47,8 +47,42 @@ export function AirIndiaWork() {
   const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0);
   const [hoveredCTA, setHoveredCTA] = useState<string | null>(null);
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
+  const [hoveredOtherProject, setHoveredOtherProject] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
+
+  const otherProjects = [
+    {
+      id: 2,
+      icon: Hexagon,
+      title: 'Latent Space',
+      category: 'Speculative Design',
+      description: 'Speculative design exploration of dream technology ethics.',
+      year: '2024',
+      href: '/work/latent-space' as const,
+      orbColor: '140, 100, 255'
+    },
+    {
+      id: 3,
+      icon: Grid3X3,
+      title: 'Metamorphic Fractal Reflections',
+      category: 'Psychedelic Journey',
+      description: 'An immersive installation exploring consciousness through ego dissolution.',
+      year: '2023',
+      href: '/work/metamorphic-fractal-reflections' as const,
+      orbColor: '50, 200, 150'
+    },
+    {
+      id: 4,
+      icon: Heart,
+      title: 'Living Organism',
+      category: 'Meta Design',
+      description: 'This portfolio website - architected to feel like a living organism.',
+      year: '2024',
+      href: '/' as const,
+      orbColor: '255, 255, 255'
+    }
+  ] as const;
 
   const stats: StatItem[] = [
     {
@@ -1066,7 +1100,7 @@ export function AirIndiaWork() {
         })}
       </section>
 
-      {/* Navigation CTAs */}
+      {/* More Projects */}
       <section style={{
         maxWidth: '1400px',
         margin: '0 auto',
@@ -1074,20 +1108,23 @@ export function AirIndiaWork() {
         position: 'relative',
         zIndex: 1,
       }}>
+        {/* Section Header */}
         <div style={{
+          marginBottom: '3rem',
           display: 'flex',
-          flexDirection: isMobile ? 'column' : 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          gap: '2rem',
-          padding: '3rem',
-          borderRadius: '24px',
-          background: 'var(--surface-primary)',
-          backdropFilter: 'blur(40px)',
-          WebkitBackdropFilter: 'blur(40px)',
-          border: '1px solid var(--border-primary)',
+          flexWrap: 'wrap',
+          gap: '1rem',
         }}>
-          {/* Back to All Work */}
+          <h2 style={{
+            fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
+            fontWeight: '400',
+            letterSpacing: '-0.02em',
+            color: 'var(--text-primary)',
+          }}>
+            More Projects
+          </h2>
           <Link
             href="/work"
             onMouseEnter={() => setHoveredCTA('back')}
@@ -1095,56 +1132,145 @@ export function AirIndiaWork() {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '0.75rem',
-              padding: '1rem 1.5rem',
-              borderRadius: '16px',
+              gap: '0.5rem',
+              padding: '0.75rem 1.25rem',
+              borderRadius: '12px',
               background: hoveredCTA === 'back'
                 ? 'var(--surface-secondary)'
                 : 'transparent',
               border: '1px solid var(--border-primary)',
               color: 'var(--text-secondary)',
               textDecoration: 'none',
-              fontSize: '0.9375rem',
+              fontSize: '0.875rem',
               fontWeight: '400',
               transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-              transform: hoveredCTA === 'back' ? 'translateX(-4px)' : 'translateX(0)',
             }}
           >
-            <ArrowLeft size={18} />
+            <ArrowLeft size={16} />
             <span>All Work</span>
           </Link>
+        </div>
 
-          {/* Next Project */}
-          <Link
-            href="/work/metamorphic-fractal-reflections"
-            onMouseEnter={() => setHoveredCTA('next')}
-            onMouseLeave={() => setHoveredCTA(null)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.75rem',
-              padding: '1rem 2rem',
-              borderRadius: '16px',
-              background: hoveredCTA === 'next'
-                ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(255, 255, 255, 0.08))'
-                : 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))',
-              border: hoveredCTA === 'next'
-                ? '1px solid rgba(218, 14, 41, 0.5)'
-                : '1px solid rgba(218, 14, 41, 0.3)',
-              color: 'var(--text-primary)',
-              textDecoration: 'none',
-              fontSize: '0.9375rem',
-              fontWeight: '500',
-              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-              transform: hoveredCTA === 'next' ? 'translateX(4px) translateY(-2px)' : 'translateX(0) translateY(0)',
-              boxShadow: hoveredCTA === 'next'
-                ? '0 12px 32px rgba(218, 14, 41, 0.2)'
-                : 'none',
-            }}
-          >
-            <span>Next Project</span>
-            <ArrowRight size={18} />
-          </Link>
+        {/* Project Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: '1.5rem',
+        }}>
+          {otherProjects.map((project) => {
+            const Icon = project.icon;
+            const isHovered = hoveredOtherProject === project.id;
+
+            return (
+              <Link
+                key={project.id}
+                href={project.href}
+                onMouseEnter={() => setHoveredOtherProject(project.id)}
+                onMouseLeave={() => setHoveredOtherProject(null)}
+                style={{
+                  position: 'relative',
+                  display: 'block',
+                  padding: '2rem',
+                  borderRadius: '20px',
+                  background: 'var(--surface-primary)',
+                  backdropFilter: 'blur(40px)',
+                  WebkitBackdropFilter: 'blur(40px)',
+                  border: '1px solid var(--border-primary)',
+                  textDecoration: 'none',
+                  overflow: 'hidden',
+                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                  transform: isHovered ? 'translateY(-8px)' : 'translateY(0)',
+                  boxShadow: isHovered
+                    ? `0 20px 40px rgba(${project.orbColor}, 0.15)`
+                    : '0 4px 8px rgba(0, 0, 0, 0.2)',
+                }}
+              >
+                {/* Animated Outline on Hover */}
+                {isHovered && (
+                  <div style={{
+                    position: 'absolute',
+                    inset: 0,
+                    borderRadius: '20px',
+                    padding: '1px',
+                    background: `linear-gradient(135deg, rgba(${project.orbColor}, 0.6), rgba(${project.orbColor}, 0.2), rgba(${project.orbColor}, 0.6))`,
+                    backgroundSize: '200% 200%',
+                    animation: 'borderShimmer 3s ease-in-out infinite',
+                    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                    WebkitMaskComposite: 'xor',
+                    maskComposite: 'exclude',
+                    pointerEvents: 'none',
+                  }} />
+                )}
+
+                {/* Icon */}
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '12px',
+                  background: `rgba(${project.orbColor}, 0.1)`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '1.5rem',
+                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                  transform: isHovered ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
+                }}>
+                  <Icon size={24} style={{ color: `rgb(${project.orbColor})` }} />
+                </div>
+
+                {/* Category & Year */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  marginBottom: '0.75rem',
+                }}>
+                  <span style={{
+                    fontSize: '0.75rem',
+                    fontWeight: '400',
+                    color: 'var(--text-muted)',
+                    letterSpacing: '0.05em',
+                    textTransform: 'uppercase',
+                  }}>
+                    {project.category}
+                  </span>
+                  <span style={{
+                    fontSize: '0.75rem',
+                    color: 'var(--text-muted)',
+                    opacity: 0.5,
+                  }}>
+                    •
+                  </span>
+                  <span style={{
+                    fontSize: '0.75rem',
+                    color: 'var(--text-muted)',
+                  }}>
+                    {project.year}
+                  </span>
+                </div>
+
+                {/* Title */}
+                <h3 style={{
+                  fontSize: '1.25rem',
+                  fontWeight: '500',
+                  color: 'var(--text-primary)',
+                  marginBottom: '0.75rem',
+                  letterSpacing: '-0.01em',
+                }}>
+                  {project.title}
+                </h3>
+
+                {/* Description */}
+                <p style={{
+                  fontSize: '0.875rem',
+                  color: 'var(--text-tertiary)',
+                  lineHeight: '1.6',
+                }}>
+                  {project.description}
+                </p>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
