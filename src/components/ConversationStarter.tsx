@@ -106,7 +106,11 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
 
   const getTimeBasedGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return 'Good morning';
+    const isWeekend = new Date().getDay() === 0 || new Date().getDay() === 6;
+    const isLateNight = hour >= 22 || hour < 5;
+
+    if (isLateNight) return 'Burning the midnight oil';
+    if (hour < 12) return isWeekend ? 'Good morning, weekend warrior' : 'Good morning';
     if (hour < 17) return 'Good afternoon';
     if (hour < 21) return 'Good evening';
     return 'Working late';
@@ -166,10 +170,10 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
           {content.greeting}
         </div>
 
-        <h1 style={{
+        <h1 className={!selectedIntent ? "text-gradient-animated" : ""} style={{
           fontSize: 'clamp(1.75rem, 4.5vw, 2.75rem)',
           fontWeight: '200',
-          color: 'var(--text-primary)',
+          color: !selectedIntent ? 'transparent' : 'var(--text-primary)',
           marginBottom: selectedIntent ? '1rem' : '2.5rem',
           lineHeight: '1.1',
           letterSpacing: '-0.02em',
@@ -177,7 +181,7 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
           display: 'inline-block',
           opacity: 0,
           animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both',
-          transition: 'margin-bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+          transition: 'margin-bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.6s ease',
         }}>
           {content.title}
 

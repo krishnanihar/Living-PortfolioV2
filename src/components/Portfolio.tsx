@@ -220,15 +220,93 @@ export default function Portfolio() {
         position: 'relative',
         width: '100%',
       }}>
+        {/* Skip to main content - Accessibility */}
+        <a
+          href="#main-content"
+          style={{
+            position: 'absolute',
+            left: '-9999px',
+            zIndex: 10000,
+            padding: '1rem 1.5rem',
+            background: 'var(--brand-red)',
+            color: 'white',
+            textDecoration: 'none',
+            borderRadius: '8px',
+            fontWeight: '500',
+            fontSize: '0.9rem',
+            boxShadow: '0 4px 12px rgba(218, 14, 41, 0.4)',
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.left = '1rem';
+            e.currentTarget.style.top = '1rem';
+          }}
+          onBlur={(e) => {
+            e.currentTarget.style.left = '-9999px';
+          }}
+        >
+          Skip to main content
+        </a>
+
+        {/* Ambient background elements */}
+        <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+          {/* Floating orbs */}
+          <div style={{
+            position: 'absolute',
+            top: '20%',
+            left: '10%',
+            width: '400px',
+            height: '400px',
+            background: 'radial-gradient(circle, rgba(218, 14, 41, 0.06), transparent 70%)',
+            borderRadius: '50%',
+            filter: 'blur(80px)',
+            animation: 'floatOrb 25s ease-in-out infinite',
+          }} />
+          <div style={{
+            position: 'absolute',
+            top: '60%',
+            right: '15%',
+            width: '300px',
+            height: '300px',
+            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.03), transparent 70%)',
+            borderRadius: '50%',
+            filter: 'blur(60px)',
+            animation: 'floatOrb 30s ease-in-out infinite 8s',
+          }} />
+          <div style={{
+            position: 'absolute',
+            bottom: '10%',
+            left: '25%',
+            width: '250px',
+            height: '250px',
+            background: 'radial-gradient(circle, rgba(218, 14, 41, 0.04), transparent 70%)',
+            borderRadius: '50%',
+            filter: 'blur(70px)',
+            animation: 'floatOrb 35s ease-in-out infinite 15s',
+          }} />
+
+          {/* Subtle grid pattern */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: `
+              linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px)
+            `,
+            backgroundSize: '50px 50px',
+            opacity: 0.3,
+          }} />
+        </div>
+
         {/* Dark translucent overlay with mouse tracking */}
         <div style={{
           position: 'fixed',
           inset: 0,
           background: `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%,
-            rgba(218, 14, 41, 0.02) 0%,
-            transparent 40%)`,
+            rgba(218, 14, 41, 0.03) 0%,
+            transparent 50%)`,
           pointerEvents: 'none',
           transition: 'background 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+          zIndex: 1,
         }} />
 
         {/* Navigation with enhanced glass */}
@@ -404,7 +482,7 @@ export default function Portfolio() {
 
 
         {/* Hero Section */}
-        <section style={{
+        <section id="main-content" style={{
           height: '100vh',
           width: '100%',
           display: 'flex',
