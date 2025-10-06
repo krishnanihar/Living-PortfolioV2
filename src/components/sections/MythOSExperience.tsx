@@ -1,254 +1,327 @@
 'use client';
 
 import { useState } from 'react';
-import { Brain, Sparkles, Grid3x3, Shuffle, Search, Palette, Eye, Zap } from 'lucide-react';
+import { Shuffle, ChevronDown } from 'lucide-react';
+import Image from 'next/image';
 
 interface ExhibitionMotif {
   id: string;
   name: string;
-  description: string;
   artworkCount: number;
-  color: string;
+}
+
+interface ArtworkItem {
+  id: string;
+  title: string;
+  artist: string;
+  year: string;
+  museum: string;
+  imageUrl: string;
 }
 
 const SAMPLE_MOTIFS: ExhibitionMotif[] = [
-  { id: 'celestial', name: 'Celestial Bodies', description: 'Moons, stars, and cosmic imagery across movements', artworkCount: 247, color: '#3B82F6' },
-  { id: 'hands', name: 'Gestures & Hands', description: 'The language of touch and movement', artworkCount: 432, color: '#EC4899' },
-  { id: 'water', name: 'Water & Fluidity', description: 'Oceans, rivers, and liquid forms', artworkCount: 389, color: '#06B6D4' },
-  { id: 'architecture', name: 'Sacred Architecture', description: 'Temples, churches, and spiritual spaces', artworkCount: 156, color: '#8B5CF6' },
-  { id: 'nature', name: 'Natural Forms', description: 'Organic patterns and botanical studies', artworkCount: 521, color: '#10B981' },
-  { id: 'portraits', name: 'Human Gaze', description: 'Eyes, faces, and identity across time', artworkCount: 678, color: '#F59E0B' },
+  { id: 'celestial', name: 'Celestial Bodies', artworkCount: 247 },
+  { id: 'hands', name: 'Gestures & Hands', artworkCount: 432 },
+  { id: 'water', name: 'Water & Fluidity', artworkCount: 389 },
+  { id: 'architecture', name: 'Sacred Architecture', artworkCount: 156 },
+  { id: 'nature', name: 'Natural Forms', artworkCount: 521 },
+  { id: 'portraits', name: 'Human Gaze', artworkCount: 678 },
+  { id: 'geometric', name: 'Geometric Patterns', artworkCount: 312 },
+  { id: 'animals', name: 'Animal Forms', artworkCount: 445 },
+];
+
+// Sample artwork data
+const SAMPLE_ARTWORKS: ArtworkItem[] = [
+  { id: '1', title: 'Starry Night', artist: 'Vincent van Gogh', year: '1889', museum: 'MoMA', imageUrl: 'https://images.unsplash.com/photo-1549887534-1541e9326642?w=800&q=80' },
+  { id: '2', title: 'The Great Wave', artist: 'Katsushika Hokusai', year: '1831', museum: 'Various', imageUrl: 'https://images.unsplash.com/photo-1578301978162-7aae4d755744?w=800&q=80' },
+  { id: '3', title: 'Composition VIII', artist: 'Wassily Kandinsky', year: '1923', museum: 'Guggenheim', imageUrl: 'https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=800&q=80' },
+  { id: '4', title: 'Water Lilies', artist: 'Claude Monet', year: '1906', museum: 'Musée de l\'Orangerie', imageUrl: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800&q=80' },
+  { id: '5', title: 'The Kiss', artist: 'Gustav Klimt', year: '1908', museum: 'Belvedere', imageUrl: 'https://images.unsplash.com/photo-1578926078716-e9a044a5a0d6?w=800&q=80' },
+  { id: '6', title: 'Girl with Pearl', artist: 'Johannes Vermeer', year: '1665', museum: 'Mauritshuis', imageUrl: 'https://images.unsplash.com/photo-1577083552431-6e5fd01988ec?w=800&q=80' },
+  { id: '7', title: 'The Scream', artist: 'Edvard Munch', year: '1893', museum: 'National Gallery', imageUrl: 'https://images.unsplash.com/photo-1577720643272-265f89f6ceb0?w=800&q=80' },
+  { id: '8', title: 'Birth of Venus', artist: 'Sandro Botticelli', year: '1485', museum: 'Uffizi Gallery', imageUrl: 'https://images.unsplash.com/photo-1580116219976-82b82c7b6625?w=800&q=80' },
+  { id: '9', title: 'Las Meninas', artist: 'Diego Velázquez', year: '1656', museum: 'Museo del Prado', imageUrl: 'https://images.unsplash.com/photo-1577720643272-265f89f6ceb0?w=800&q=80' },
 ];
 
 export default function MythOSExperience() {
-  const [selectedMotif, setSelectedMotif] = useState<ExhibitionMotif | null>(null);
+  const [selectedMotif, setSelectedMotif] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showGallery, setShowGallery] = useState(false);
 
   const generateRandomExhibition = () => {
     setIsGenerating(true);
     setTimeout(() => {
       const randomMotif = SAMPLE_MOTIFS[Math.floor(Math.random() * SAMPLE_MOTIFS.length)];
-      setSelectedMotif(randomMotif);
+      setSelectedMotif(randomMotif.id);
+      setShowGallery(true);
       setIsGenerating(false);
-    }, 1200);
+    }, 800);
   };
 
+  const handleMotifSelect = (motifId: string) => {
+    setSelectedMotif(motifId);
+    setShowGallery(motifId !== '');
+  };
+
+  const selectedMotifData = SAMPLE_MOTIFS.find(m => m.id === selectedMotif);
+
   return (
-    <div className="min-h-screen bg-[var(--color-surface-primary)] pt-24 pb-16">
-      {/* Hero Section */}
-      <section className="px-6 max-w-7xl mx-auto mb-20">
-        <div className="mb-8">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4" style={{ color: 'var(--color-text-primary)' }}>
-            myth<span style={{ color: 'var(--color-brand-primary)' }}>OS</span>
+    <div style={{
+      minHeight: '100vh',
+      backgroundColor: '#FFFFFF',
+      color: '#1A1A1A',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif',
+    }}>
+      {/* Simple Header */}
+      <header style={{
+        borderBottom: '1px solid #E5E5E5',
+        padding: '2rem 1.5rem',
+        position: 'sticky',
+        top: '56px',
+        backgroundColor: '#FFFFFF',
+        zIndex: 10,
+      }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <h1 style={{
+            fontSize: '2rem',
+            fontWeight: '600',
+            marginBottom: '0.5rem',
+            color: '#1A1A1A',
+          }}>
+            mythOS
           </h1>
-          <p className="text-xl md:text-2xl" style={{ color: 'var(--color-text-secondary)' }}>
-            An AI that sees patterns humans might miss
+          <p style={{
+            fontSize: '1rem',
+            color: '#666666',
+            fontWeight: '400',
+          }}>
+            AI-powered art curator exploring visual motifs across art history
           </p>
         </div>
+      </header>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          <div className="glass-card p-6 rounded-3xl">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-600/20 flex items-center justify-center mb-4">
-              <Brain className="w-6 h-6 text-blue-400" />
-            </div>
-            <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>Computer Vision</h3>
-            <p style={{ color: 'var(--color-text-tertiary)' }}>
-              Deep learning models analyze visual motifs, compositions, and artistic techniques
-            </p>
-          </div>
+      {/* Main Content */}
+      <main style={{ maxWidth: '1400px', margin: '0 auto', padding: '3rem 1.5rem' }}>
 
-          <div className="glass-card p-6 rounded-3xl">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 flex items-center justify-center mb-4">
-              <Sparkles className="w-6 h-6 text-purple-400" />
-            </div>
-            <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>Pattern Discovery</h3>
-            <p style={{ color: 'var(--color-text-tertiary)' }}>
-              Uncover hidden connections across centuries of art history
-            </p>
-          </div>
-
-          <div className="glass-card p-6 rounded-3xl">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-pink-500/20 to-pink-600/20 flex items-center justify-center mb-4">
-              <Grid3x3 className="w-6 h-6 text-pink-400" />
-            </div>
-            <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>Generative Exhibitions</h3>
-            <p style={{ color: 'var(--color-text-tertiary)' }}>
-              Algorithmic curation creates unique thematic journeys
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Interactive Exhibition Generator */}
-      <section className="px-6 max-w-7xl mx-auto mb-20">
-        <div className="glass-card p-8 md:p-12 rounded-[36px]">
-          <div className="flex items-center gap-3 mb-8">
-            <Palette className="w-7 h-7" style={{ color: 'var(--color-brand-primary)' }} />
-            <h2 className="text-3xl font-bold" style={{ color: 'var(--color-text-primary)' }}>
-              Generate Exhibition
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
+        {/* Controls Section */}
+        <section style={{ marginBottom: '4rem' }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr auto',
+            gap: '1rem',
+            maxWidth: '800px',
+            alignItems: 'end',
+          }}>
+            {/* Motif Selector */}
             <div>
-              <label className="block mb-3 text-sm font-medium" style={{ color: 'var(--color-text-secondary)' }}>
-                Select Motif
+              <label style={{
+                display: 'block',
+                marginBottom: '0.5rem',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                color: '#666666',
+              }}>
+                Select Visual Motif
               </label>
-              <div className="relative">
+              <div style={{ position: 'relative' }}>
                 <select
-                  className="w-full px-4 py-3 rounded-2xl bg-[var(--color-surface-secondary)] border border-[var(--color-border)] text-[var(--color-text-primary)] appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]/50"
-                  value={selectedMotif?.id || ''}
-                  onChange={(e) => {
-                    const motif = SAMPLE_MOTIFS.find(m => m.id === e.target.value);
-                    setSelectedMotif(motif || null);
+                  value={selectedMotif}
+                  onChange={(e) => handleMotifSelect(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 2.5rem 0.75rem 1rem',
+                    fontSize: '1rem',
+                    border: '1px solid #D1D1D1',
+                    borderRadius: '4px',
+                    backgroundColor: '#FFFFFF',
+                    color: '#1A1A1A',
+                    cursor: 'pointer',
+                    appearance: 'none',
+                    fontFamily: 'inherit',
                   }}
                 >
-                  <option value="">Choose a visual motif...</option>
+                  <option value="">Choose a motif...</option>
                   {SAMPLE_MOTIFS.map((motif) => (
                     <option key={motif.id} value={motif.id}>
                       {motif.name} ({motif.artworkCount} works)
                     </option>
                   ))}
                 </select>
-                <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 pointer-events-none" style={{ color: 'var(--color-text-tertiary)' }} />
+                <ChevronDown style={{
+                  position: 'absolute',
+                  right: '1rem',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  pointerEvents: 'none',
+                  color: '#666666',
+                  width: '20px',
+                  height: '20px',
+                }} />
               </div>
             </div>
 
-            <div className="flex items-end">
-              <button
-                onClick={generateRandomExhibition}
-                disabled={isGenerating}
-                className="w-full px-6 py-3 rounded-2xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
-                style={{
-                  background: 'var(--color-brand-primary)',
-                  color: 'white',
-                }}
-              >
-                {isGenerating ? (
-                  <>
-                    <Zap className="w-5 h-5 animate-pulse" />
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <Shuffle className="w-5 h-5" />
-                    Random Exhibition
-                  </>
-                )}
-              </button>
-            </div>
+            {/* Random Button */}
+            <button
+              onClick={generateRandomExhibition}
+              disabled={isGenerating}
+              style={{
+                padding: '0.75rem 1.5rem',
+                fontSize: '1rem',
+                fontWeight: '500',
+                backgroundColor: '#1A1A1A',
+                color: '#FFFFFF',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: isGenerating ? 'not-allowed' : 'pointer',
+                opacity: isGenerating ? 0.6 : 1,
+                transition: 'all 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                whiteSpace: 'nowrap',
+                fontFamily: 'inherit',
+              }}
+              onMouseEnter={(e) => {
+                if (!isGenerating) e.currentTarget.style.backgroundColor = '#333333';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#1A1A1A';
+              }}
+            >
+              <Shuffle size={18} />
+              {isGenerating ? 'Generating...' : 'Random Exhibition'}
+            </button>
           </div>
 
-          {selectedMotif && (
-            <div className="p-6 rounded-2xl bg-[var(--color-surface-secondary)] border border-[var(--color-border)] animate-fadeIn">
-              <div className="flex items-start gap-4 mb-4">
-                <div
-                  className="w-3 h-3 rounded-full mt-2"
-                  style={{ backgroundColor: selectedMotif.color }}
-                />
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-1" style={{ color: 'var(--color-text-primary)' }}>
-                    {selectedMotif.name}
-                  </h3>
-                  <p className="mb-3" style={{ color: 'var(--color-text-secondary)' }}>
-                    {selectedMotif.description}
-                  </p>
-                  <div className="flex items-center gap-2" style={{ color: 'var(--color-text-tertiary)' }}>
-                    <Eye className="w-4 h-4" />
-                    <span className="text-sm">{selectedMotif.artworkCount} artworks analyzed</span>
-                  </div>
-                </div>
-              </div>
+          {/* Selected Motif Info */}
+          {selectedMotifData && (
+            <div style={{
+              marginTop: '1.5rem',
+              padding: '1rem',
+              backgroundColor: '#F9F9F9',
+              borderLeft: '3px solid #1A1A1A',
+              maxWidth: '800px',
+            }}>
+              <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.25rem' }}>
+                {selectedMotifData.name}
+              </h3>
+              <p style={{ fontSize: '0.875rem', color: '#666666' }}>
+                {selectedMotifData.artworkCount} artworks in collection
+              </p>
             </div>
           )}
-        </div>
-      </section>
+        </section>
 
-      {/* How It Works */}
-      <section className="px-6 max-w-7xl mx-auto mb-20">
-        <h2 className="text-3xl font-bold mb-8" style={{ color: 'var(--color-text-primary)' }}>
-          How It Works
-        </h2>
+        {/* Gallery Grid */}
+        {showGallery && (
+          <section>
+            <hr style={{ border: 'none', borderTop: '1px solid #E5E5E5', marginBottom: '3rem' }} />
 
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="glass-card p-8 rounded-3xl">
-            <div className="text-4xl font-bold mb-4 opacity-20">01</div>
-            <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--color-text-primary)' }}>
-              Visual Analysis
-            </h3>
-            <p style={{ color: 'var(--color-text-secondary)' }}>
-              Computer vision models process thousands of artworks, extracting features like composition, color palette, subject matter, and artistic techniques. Each piece becomes a vector in a high-dimensional space.
-            </p>
-          </div>
+            <h2 style={{
+              fontSize: '1.5rem',
+              fontWeight: '600',
+              marginBottom: '2rem',
+              color: '#1A1A1A',
+            }}>
+              Exhibition: {selectedMotifData?.name}
+            </h2>
 
-          <div className="glass-card p-8 rounded-3xl">
-            <div className="text-4xl font-bold mb-4 opacity-20">02</div>
-            <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--color-text-primary)' }}>
-              Pattern Recognition
-            </h3>
-            <p style={{ color: 'var(--color-text-secondary)' }}>
-              Machine learning algorithms identify recurring motifs across different periods, artists, and movements. The system discovers visual echoes that span centuries.
-            </p>
-          </div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+              gap: '2rem',
+            }}>
+              {SAMPLE_ARTWORKS.map((artwork) => (
+                <article
+                  key={artwork.id}
+                  style={{
+                    cursor: 'pointer',
+                    transition: 'transform 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
+                >
+                  <div style={{
+                    position: 'relative',
+                    width: '100%',
+                    paddingBottom: '75%',
+                    backgroundColor: '#F5F5F5',
+                    marginBottom: '1rem',
+                    overflow: 'hidden',
+                  }}>
+                    <Image
+                      src={artwork.imageUrl}
+                      alt={artwork.title}
+                      fill
+                      style={{ objectFit: 'cover' }}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
+                  <h3 style={{
+                    fontSize: '1rem',
+                    fontWeight: '600',
+                    marginBottom: '0.25rem',
+                    color: '#1A1A1A',
+                  }}>
+                    {artwork.title}
+                  </h3>
+                  <p style={{
+                    fontSize: '0.875rem',
+                    color: '#666666',
+                    marginBottom: '0.125rem',
+                  }}>
+                    {artwork.artist}
+                  </p>
+                  <p style={{
+                    fontSize: '0.875rem',
+                    color: '#999999',
+                  }}>
+                    {artwork.year} • {artwork.museum}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
 
-          <div className="glass-card p-8 rounded-3xl">
-            <div className="text-4xl font-bold mb-4 opacity-20">03</div>
-            <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--color-text-primary)' }}>
-              Thematic Clustering
-            </h3>
-            <p style={{ color: 'var(--color-text-secondary)' }}>
-              Artworks are grouped by visual themes rather than traditional categories. A Renaissance painting and a modern photograph might share more in common than you'd think.
-            </p>
-          </div>
+        {/* About Section */}
+        <section style={{ marginTop: '6rem' }}>
+          <hr style={{ border: 'none', borderTop: '1px solid #E5E5E5', marginBottom: '3rem' }} />
 
-          <div className="glass-card p-8 rounded-3xl">
-            <div className="text-4xl font-bold mb-4 opacity-20">04</div>
-            <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--color-text-primary)' }}>
-              Exhibition Generation
-            </h3>
-            <p style={{ color: 'var(--color-text-secondary)' }}>
-              The curator algorithm assembles exhibitions that tell visual stories, creating narrative flows that feel curated by a human but discover connections only AI can see.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Project Context */}
-      <section className="px-6 max-w-7xl mx-auto">
-        <div className="glass-card p-8 md:p-12 rounded-[36px]">
-          <h2 className="text-3xl font-bold mb-6" style={{ color: 'var(--color-text-primary)' }}>
-            Project Context
+          <h2 style={{
+            fontSize: '1.5rem',
+            fontWeight: '600',
+            marginBottom: '1.5rem',
+            color: '#1A1A1A',
+          }}>
+            About the Project
           </h2>
 
-          <div className="prose prose-invert max-w-none">
-            <p style={{ color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
-              Inspired by projects like Digital Curator, mythOS explores what happens when we give AI curatorial agency.
-              Rather than simply organizing art by artist or period, the system sees connections based on visual DNA.
+          <div style={{
+            maxWidth: '800px',
+            lineHeight: '1.6',
+            color: '#666666',
+          }}>
+            <p style={{ marginBottom: '1rem' }}>
+              mythOS uses computer vision and machine learning to analyze visual patterns across thousands
+              of artworks. Rather than organizing art by traditional categories like period or artist,
+              it discovers connections based on visual DNA.
             </p>
-
-            <p style={{ color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
-              The goal isn't to replace human curators but to augment them—revealing patterns and connections that might
-              take years of study to notice. It's about democratizing art discovery and making the vast ocean of art history
-              more navigable.
+            <p style={{ marginBottom: '1rem' }}>
+              Inspired by <a href="https://digitalcurator.art/" target="_blank" rel="noopener noreferrer" style={{ color: '#1A1A1A', textDecoration: 'underline' }}>Digital Curator</a>,
+              this project explores what happens when we give AI curatorial agency—revealing patterns
+              that might take human curators years to notice.
             </p>
-
-            <div className="grid md:grid-cols-3 gap-6 mt-8">
-              <div>
-                <div className="text-sm font-semibold mb-2" style={{ color: 'var(--color-text-tertiary)' }}>Tech Stack</div>
-                <p style={{ color: 'var(--color-text-secondary)' }}>Next.js, TensorFlow.js, OpenAI Vision API, Pinecone Vector DB</p>
-              </div>
-              <div>
-                <div className="text-sm font-semibold mb-2" style={{ color: 'var(--color-text-tertiary)' }}>Status</div>
-                <p style={{ color: 'var(--color-text-secondary)' }}>Active Development • Research Phase</p>
-              </div>
-              <div>
-                <div className="text-sm font-semibold mb-2" style={{ color: 'var(--color-text-tertiary)' }}>Timeline</div>
-                <p style={{ color: 'var(--color-text-secondary)' }}>2024 – Ongoing</p>
-              </div>
-            </div>
+            <p>
+              Status: <strong>Research & Development</strong> • Built with Next.js, TensorFlow.js, and OpenAI Vision API
+            </p>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
     </div>
   );
 }
