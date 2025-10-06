@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import Link from 'next/link';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import {
   ChevronDown,
@@ -23,7 +24,10 @@ import {
   Camera,
   FileText,
   Moon,
-  Zap
+  Zap,
+  ArrowLeft,
+  Circle,
+  Grid3X3
 } from 'lucide-react';
 
 /**
@@ -140,6 +144,9 @@ export default function LatentSpaceSpeculative() {
 
       {/* Team as Perspectives */}
       <TeamPerspectivesSection />
+
+      {/* More Projects */}
+      <MoreProjectsSection />
 
       {/* Footer */}
       <FooterSection />
@@ -2730,49 +2737,210 @@ function TeamPerspectivesSection() {
   );
 }
 
-function FooterSection() {
+function MoreProjectsSection() {
+  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const [hoveredCTA, setHoveredCTA] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const otherProjects = [
+    {
+      id: 1,
+      icon: Circle,
+      title: 'Design at Air India',
+      category: 'Design Systems',
+      description: 'Leading design transformation for India\'s flag carrier.',
+      year: '2024',
+      href: '/work/air-india' as const,
+      orbColor: '218, 14, 41'
+    },
+    {
+      id: 3,
+      icon: Grid3X3,
+      title: 'Metamorphic Fractal Reflections',
+      category: 'Psychedelic Journey',
+      description: 'An immersive installation exploring consciousness through ego dissolution.',
+      year: '2023',
+      href: '/work/metamorphic-fractal-reflections' as const,
+      orbColor: '50, 200, 150'
+    }
+  ] as const;
+
   return (
     <section style={{
       ...baseStyles.section,
-      textAlign: 'center' as const,
       paddingTop: '6rem',
       paddingBottom: '4rem',
     }}>
       <div style={{
-        ...baseStyles.glassCard,
-        padding: '3rem',
-        maxWidth: '800px',
-        margin: '0 auto',
+        marginBottom: '3rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap' as const,
+        gap: '1rem',
       }}>
-        <h3 style={{
-          fontSize: '1.5rem',
-          fontWeight: '300',
-          color: 'rgba(255, 255, 255, 0.9)',
-          marginBottom: '1rem',
+        <h2 style={{
+          fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
+          fontWeight: '400',
+          letterSpacing: '-0.02em',
+          color: 'var(--text-primary)',
         }}>
-          The Questions Continue
-        </h3>
-        <p style={{
-          color: 'rgba(255, 255, 255, 0.7)',
-          lineHeight: '1.6',
-          marginBottom: '2rem',
-        }}>
-          This speculative exploration raises more questions than it answers.
-          As we stand at the threshold of consciousness technology, the conversations we have today
-          will shape the ethical frameworks of tomorrow.
-        </p>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '0.5rem',
-          color: 'rgba(255, 255, 255, 0.5)',
-          fontSize: '0.875rem',
-        }}>
-          <span>⚠</span>
-          <span>Speculative design • Critical fiction • Ethical questioning</span>
-        </div>
+          More Projects
+        </h2>
+        <Link
+          href="/work"
+          onMouseEnter={() => setHoveredCTA(true)}
+          onMouseLeave={() => setHoveredCTA(false)}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            padding: '0.75rem 1.25rem',
+            borderRadius: '12px',
+            background: hoveredCTA ? 'var(--surface-secondary)' : 'transparent',
+            border: '1px solid var(--border-primary)',
+            color: 'var(--text-secondary)',
+            textDecoration: 'none',
+            fontSize: '0.875rem',
+            fontWeight: '400',
+            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+        >
+          <ArrowLeft size={16} />
+          <span>All Work</span>
+        </Link>
+      </div>
+
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(320px, 1fr))',
+        gap: '1.5rem',
+      }}>
+        {otherProjects.map((project) => {
+          const Icon = project.icon;
+          const isHovered = hoveredProject === project.id;
+
+          return (
+            <Link
+              key={project.id}
+              href={project.href}
+              onMouseEnter={() => setHoveredProject(project.id)}
+              onMouseLeave={() => setHoveredProject(null)}
+              style={{
+                position: 'relative' as const,
+                display: 'block',
+                padding: '2rem',
+                borderRadius: '20px',
+                background: 'var(--surface-primary)',
+                backdropFilter: 'blur(40px)',
+                WebkitBackdropFilter: 'blur(40px)',
+                border: '1px solid var(--border-primary)',
+                textDecoration: 'none',
+                overflow: 'hidden' as const,
+                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                transform: isHovered ? 'translateY(-8px)' : 'translateY(0)',
+                boxShadow: isHovered
+                  ? `0 20px 40px rgba(${project.orbColor}, 0.15)`
+                  : '0 4px 8px rgba(0, 0, 0, 0.2)',
+              }}
+            >
+              {isHovered && (
+                <div style={{
+                  position: 'absolute' as const,
+                  inset: 0,
+                  borderRadius: '20px',
+                  padding: '1px',
+                  background: `linear-gradient(135deg, rgba(${project.orbColor}, 0.6), rgba(${project.orbColor}, 0.2), rgba(${project.orbColor}, 0.6))`,
+                  backgroundSize: '200% 200%',
+                  animation: 'borderShimmer 3s ease-in-out infinite',
+                  WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                  WebkitMaskComposite: 'xor',
+                  maskComposite: 'exclude',
+                  pointerEvents: 'none' as const,
+                }} />
+              )}
+
+              <div style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '12px',
+                background: `rgba(${project.orbColor}, 0.1)`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '1.5rem',
+                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                transform: isHovered ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
+              }}>
+                <Icon size={24} style={{ color: `rgb(${project.orbColor})` }} />
+              </div>
+
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                marginBottom: '0.75rem',
+              }}>
+                <span style={{
+                  fontSize: '0.75rem',
+                  fontWeight: '400',
+                  color: 'var(--text-muted)',
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase' as const,
+                }}>
+                  {project.category}
+                </span>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', opacity: 0.5 }}>•</span>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                  {project.year}
+                </span>
+              </div>
+
+              <h3 style={{
+                fontSize: '1.25rem',
+                fontWeight: '500',
+                color: 'var(--text-primary)',
+                marginBottom: '0.75rem',
+                letterSpacing: '-0.01em',
+              }}>
+                {project.title}
+              </h3>
+
+              <p style={{
+                fontSize: '0.875rem',
+                color: 'var(--text-tertiary)',
+                lineHeight: '1.6',
+              }}>
+                {project.description}
+              </p>
+            </Link>
+          );
+        })}
       </div>
     </section>
+  );
+}
+
+function FooterSection() {
+  return (
+    <footer style={{
+      padding: '3rem 1.5rem',
+      textAlign: 'center' as const,
+      borderTop: '1px solid var(--border-primary)',
+    }}>
+      <div style={{
+        color: 'var(--text-muted)',
+        fontSize: '0.875rem',
+      }}>
+        Latent Space · 2024
+      </div>
+    </footer>
   );
 }
