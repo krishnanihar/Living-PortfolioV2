@@ -27,6 +27,12 @@ interface ConversationStarterProps {
 export function ConversationStarter({ onMessageSubmit }: ConversationStarterProps) {
   const [selectedIntent, setSelectedIntent] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState('');
+  const [isClient, setIsClient] = useState(false);
+
+  // Prevent hydration mismatch by only rendering time-based content on client
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const intents: Intent[] = [
     {
@@ -117,9 +123,11 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
   };
 
   const getHeroContent = () => {
+    const greeting = isClient ? `${getTimeBasedGreeting()}.` : 'Welcome.';
+
     if (!selectedIntent) {
       return {
-        greeting: `${getTimeBasedGreeting()}.`,
+        greeting,
         title: 'What brings you here today?',
         subtitle: 'Choose your path to explore this living portfolio'
       };
@@ -127,7 +135,7 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
 
     const intent = intents.find(i => i.id === selectedIntent);
     return intent?.heroContent || {
-      greeting: `${getTimeBasedGreeting()}.`,
+      greeting,
       title: 'I build living interfaces',
       subtitle: 'Product & New Media Designer'
     };
