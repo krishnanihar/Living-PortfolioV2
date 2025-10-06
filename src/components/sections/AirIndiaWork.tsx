@@ -159,6 +159,62 @@ export function AirIndiaWork() {
       tags: ['React', 'D3.js', 'Data Viz', 'UX Research']
     },
     {
+      id: 'mobile-patterns',
+      category: 'Mobile Experience',
+      title: 'UX Pattern Library',
+      badge: 'iOS + Android',
+      description: 'Inconsistent mobile experiences across Air India\'s apps were causing user friction and development delays. Teams needed unified patterns for both platforms.',
+      contribution: {
+        owned: 'Pattern documentation, state matrices, gesture guidelines',
+        collaborated: 'Mobile developers on constraints, QA on edge cases',
+      },
+      outcome: 'Faster mobile prototyping with consistent handoffs. Complete coverage of all states.',
+      link: '#',
+      tags: ['React Native', 'iOS', 'Android', 'Pattern Library', 'State Machines']
+    },
+    {
+      id: 'token-architecture',
+      category: 'Design Systems',
+      title: 'Token Architecture',
+      badge: 'Foundation',
+      description: 'Beyond Pixel Radar, established comprehensive token architecture supporting themes, brands, and platforms. Created the foundation for scalable design decisions.',
+      contribution: {
+        owned: 'Token taxonomy, naming conventions, inheritance model',
+        collaborated: 'Design leadership on governance, engineering on implementation',
+      },
+      outcome: 'Single source of truth for design decisions. Teams share common language and systematic approach.',
+      link: '#',
+      tags: ['Design Tokens', 'Theming', 'Architecture', 'Documentation']
+    },
+    {
+      id: 'ife-concepts',
+      category: 'In-Flight Entertainment',
+      title: 'IFE Concepts',
+      badge: 'Cabin Experience',
+      description: 'Fragmented discovery and continuity experiences in-flight. Passengers struggled with content navigation and cross-device handoffs.',
+      contribution: {
+        owned: 'Continuity flows, readability standards, offline resilience',
+        collaborated: 'Content team on catalog, backend on sync architecture',
+      },
+      outcome: 'Stakeholder alignment on modernized IFE journey. Seamless experience with robust offline support.',
+      link: '#',
+      tags: ['Offline-First', 'Content Discovery', 'Cross-Device', 'UX Flows']
+    },
+    {
+      id: 'liftoff-program',
+      category: 'Team Enablement',
+      title: 'Liftoff Program',
+      badge: 'Culture Building',
+      description: 'Design team needed structured growth paths and visible progress indicators. Traditional mentorship wasn\'t scaling with team expansion.',
+      contribution: {
+        owned: 'Program design, mentorship mapping, weekly missions',
+        collaborated: 'Design leadership on goals, team on feedback loops',
+      },
+      outcome: 'Visible skill progression across team. Weekly demos created momentum and knowledge sharing.',
+      link: '#',
+      tags: ['Mentorship', 'Team Growth', 'Knowledge Sharing', 'Program Design']
+    },
+    {
       id: 'hackathon',
       category: 'Innovation Sprint',
       title: 'Internal Hackathon',
@@ -172,6 +228,21 @@ export function AirIndiaWork() {
       link: '#',
       isWinner: true,
       tags: ['Rapid Prototyping', 'Innovation', 'Team Collaboration']
+    },
+    {
+      id: 'microsoft-hackathon',
+      category: 'Partnership Innovation',
+      title: 'Microsoft × Air India',
+      badge: 'Winner',
+      description: 'Joint hackathon with Microsoft to explore Azure AI services for aviation. Challenge: reimagine customer service with cloud-native solutions.',
+      contribution: {
+        owned: 'UX flows, conversational design, prototype interface',
+        collaborated: 'Microsoft architects on Azure, Air India ops on use cases',
+      },
+      outcome: 'Winner in customer experience category. Prototype demonstrated 70% query resolution potential.',
+      link: '#',
+      isWinner: true,
+      tags: ['Azure AI', 'Conversational Design', 'Cloud Architecture', 'Hackathon']
     },
   ];
 
