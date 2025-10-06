@@ -15,9 +15,11 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
   const [inView, setInView] = useState(false);
   const [hoveredFactIndex, setHoveredFactIndex] = useState<number | null>(null);
   const [ripplePosition, setRipplePosition] = useState<{ x: number; y: number } | null>(null);
+  const [ripplePositionAbout, setRipplePositionAbout] = useState<{ x: number; y: number } | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const ctaRef = useRef<HTMLAnchorElement>(null);
+  const aboutRef = useRef<HTMLAnchorElement>(null);
 
   const journeyMilestones = [
     {
@@ -115,6 +117,15 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
     const y = e.clientY - rect.top;
     setRipplePosition({ x, y });
     setTimeout(() => setRipplePosition(null), 600);
+  };
+
+  const handleAboutClick = (e: React.MouseEvent) => {
+    if (!aboutRef.current) return;
+    const rect = aboutRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setRipplePositionAbout({ x, y });
+    setTimeout(() => setRipplePositionAbout(null), 600);
   };
 
   return (
@@ -677,56 +688,114 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                 borderTop: '1px solid var(--border-primary)',
                 animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both' : 'none',
               }}>
-                <Link
-                  ref={ctaRef}
-                  href="/journey"
-                  onClick={handleCtaClick}
-                  style={{
-                    position: 'relative',
-                    overflow: 'hidden',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    padding: '0.75rem 1.5rem',
-                    background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))',
-                    border: '1px solid rgba(218, 14, 41, 0.3)',
-                    borderRadius: '16px',
-                    color: 'var(--text-primary)',
-                    textDecoration: 'none',
-                    fontSize: '0.875rem',
-                    fontWeight: '400',
-                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(255, 255, 255, 0.08))';
-                    e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.5)';
-                    e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-                    e.currentTarget.style.boxShadow = '0 12px 32px rgba(218, 14, 41, 0.2)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))';
-                    e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
-                    e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                    e.currentTarget.style.boxShadow = 'none';
-                  }}
-                >
-                  {/* Ripple Effect */}
-                  {ripplePosition && (
-                    <div style={{
-                      position: 'absolute',
-                      top: ripplePosition.y,
-                      left: ripplePosition.x,
-                      width: '20px',
-                      height: '20px',
-                      borderRadius: '50%',
-                      background: 'rgba(218, 14, 41, 0.4)',
-                      animation: 'aboutRipple 0.6s ease-out',
-                      pointerEvents: 'none',
-                    }} />
-                  )}
-                  <span>Explore the Full Journey</span>
-                  <ArrowRight size={16} />
-                </Link>
+                <div style={{
+                  display: 'flex',
+                  gap: '1rem',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                }}>
+                  <Link
+                    ref={ctaRef}
+                    href="/journey"
+                    onClick={handleCtaClick}
+                    style={{
+                      position: 'relative',
+                      overflow: 'hidden',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      padding: '0.75rem 1.5rem',
+                      background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))',
+                      border: '1px solid rgba(218, 14, 41, 0.3)',
+                      borderRadius: '16px',
+                      color: 'var(--text-primary)',
+                      textDecoration: 'none',
+                      fontSize: '0.875rem',
+                      fontWeight: '400',
+                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(255, 255, 255, 0.08))';
+                      e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.5)';
+                      e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+                      e.currentTarget.style.boxShadow = '0 12px 32px rgba(218, 14, 41, 0.2)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))';
+                      e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
+                      e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
+                  >
+                    {/* Ripple Effect */}
+                    {ripplePosition && (
+                      <div style={{
+                        position: 'absolute',
+                        top: ripplePosition.y,
+                        left: ripplePosition.x,
+                        width: '20px',
+                        height: '20px',
+                        borderRadius: '50%',
+                        background: 'rgba(218, 14, 41, 0.4)',
+                        animation: 'aboutRipple 0.6s ease-out',
+                        pointerEvents: 'none',
+                      }} />
+                    )}
+                    <span>Explore the Full Journey</span>
+                    <ArrowRight size={16} />
+                  </Link>
+
+                  <Link
+                    ref={aboutRef}
+                    href="/about"
+                    onClick={handleAboutClick}
+                    style={{
+                      position: 'relative',
+                      overflow: 'hidden',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      padding: '0.75rem 1.5rem',
+                      background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(255, 255, 255, 0.04))',
+                      border: '1px solid rgba(251, 191, 36, 0.25)',
+                      borderRadius: '16px',
+                      color: 'var(--text-primary)',
+                      textDecoration: 'none',
+                      fontSize: '0.875rem',
+                      fontWeight: '400',
+                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(255, 255, 255, 0.06))';
+                      e.currentTarget.style.borderColor = 'rgba(251, 191, 36, 0.4)';
+                      e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+                      e.currentTarget.style.boxShadow = '0 12px 32px rgba(251, 191, 36, 0.15)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(255, 255, 255, 0.04))';
+                      e.currentTarget.style.borderColor = 'rgba(251, 191, 36, 0.25)';
+                      e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
+                  >
+                    {/* Ripple Effect */}
+                    {ripplePositionAbout && (
+                      <div style={{
+                        position: 'absolute',
+                        top: ripplePositionAbout.y,
+                        left: ripplePositionAbout.x,
+                        width: '20px',
+                        height: '20px',
+                        borderRadius: '50%',
+                        background: 'rgba(251, 191, 36, 0.4)',
+                        animation: 'aboutRipple 0.6s ease-out',
+                        pointerEvents: 'none',
+                      }} />
+                    )}
+                    <span>About Page</span>
+                    <ArrowRight size={16} />
+                  </Link>
+                </div>
               </div>
 
             </div>
