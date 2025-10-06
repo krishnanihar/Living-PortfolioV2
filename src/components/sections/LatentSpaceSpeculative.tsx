@@ -91,6 +91,18 @@ const baseStyles = {
   }
 };
 
+// Section Divider Component
+function SectionDivider() {
+  return (
+    <div style={{
+      width: '100%',
+      height: '1px',
+      background: 'linear-gradient(90deg, transparent, rgba(147, 51, 234, 0.3), rgba(14, 165, 233, 0.3), transparent)',
+      margin: '6rem 0',
+    }} />
+  );
+}
+
 export default function LatentSpaceSpeculative() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -118,32 +130,52 @@ export default function LatentSpaceSpeculative() {
       {/* Hero Section */}
       <HeroSection isLoaded={isLoaded} />
 
+      <SectionDivider />
+
       {/* Design Research Overview */}
       <DesignResearchSection />
+
+      <SectionDivider />
 
       {/* Narrative Arc */}
       <NarrativeArcSection />
 
+      <SectionDivider />
+
       {/* Science Exploration */}
       <ScienceExplorationSection />
+
+      <SectionDivider />
 
       {/* System Architecture Visualization */}
       <SystemArchitectureSection />
 
+      <SectionDivider />
+
       {/* Interactive Prototypes */}
       <InteractivePrototypesSection />
+
+      <SectionDivider />
 
       {/* Vision Section */}
       <VisionSection />
 
+      <SectionDivider />
+
       {/* Interface Speculation */}
       <InterfaceSpeculationSection />
+
+      <SectionDivider />
 
       {/* Six Pillars */}
       <SixPillarsSection />
 
+      <SectionDivider />
+
       {/* Team as Perspectives */}
       <TeamPerspectivesSection />
+
+      <SectionDivider />
 
       {/* More Projects */}
       <MoreProjectsSection />
@@ -225,7 +257,7 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
         {/* Hero Card */}
         <div style={{
           ...baseStyles.heroGlass,
-          padding: '4rem 3rem',
+          padding: 'clamp(2rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3rem)',
           maxWidth: '900px',
           margin: '0 auto',
           position: 'relative' as const,
@@ -816,6 +848,8 @@ function ScienceExplorationSection() {
       }}>
         {tabs.map((tab, index) => {
           const Icon = tab.icon;
+          const isActive = activeTab === tab.id;
+
           return (
             <motion.button
               key={tab.id}
@@ -834,30 +868,42 @@ function ScienceExplorationSection() {
                 transition: 'all 0.3s ease',
                 border: '1px solid',
                 cursor: 'pointer',
-                ...(activeTab === tab.id ? {
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  borderColor: 'rgba(218, 14, 41, 0.4)',
-                  color: 'rgba(255, 255, 255, 0.9)',
-                } : {
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  borderColor: 'rgba(255, 255, 255, 0.1)',
-                  color: 'rgba(255, 255, 255, 0.7)',
-                })
+                position: 'relative' as const,
+                background: isActive ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.02)',
+                borderColor: isActive ? 'rgba(147, 51, 234, 0.5)' : 'rgba(255, 255, 255, 0.1)',
+                color: isActive ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.7)',
               }}
               onMouseEnter={(e) => {
-                if (activeTab !== tab.id) {
+                if (!isActive) {
                   (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.04)';
                   (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255, 255, 255, 0.2)';
                 }
               }}
               onMouseLeave={(e) => {
-                if (activeTab !== tab.id) {
+                if (!isActive) {
                   (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.02)';
                   (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255, 255, 255, 0.1)';
                 }
               }}
             >
-              <Icon size={16} />
+              {/* Animated underline for active tab */}
+              {isActive && (
+                <div style={{
+                  position: 'absolute',
+                  bottom: '-2px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: '60%',
+                  height: '2px',
+                  background: 'linear-gradient(90deg, rgba(147, 51, 234, 0.8), rgba(14, 165, 233, 0.8))',
+                  borderRadius: '2px',
+                  animation: 'slideInFromLeft 0.3s ease-out',
+                }} />
+              )}
+              <Icon size={16} style={{
+                filter: isActive ? 'drop-shadow(0 0 8px rgba(147, 51, 234, 0.5))' : 'none',
+                transition: 'filter 0.3s ease'
+              }} />
               {tab.label}
             </motion.button>
           );
@@ -1049,6 +1095,7 @@ function BrainWavesTab() {
                 background: 'rgba(255, 255, 255, 0.1)',
                 borderRadius: '4px',
                 overflow: 'hidden' as const,
+                position: 'relative' as const,
               }}>
                 <motion.div
                   initial={{ width: 0 }}
@@ -1056,8 +1103,11 @@ function BrainWavesTab() {
                   transition={{ delay: index * 0.1 + 0.3, duration: 0.8 }}
                   style={{
                     height: '100%',
-                    background: 'linear-gradient(90deg, var(--brand-red), rgba(218, 14, 41, 0.6))',
+                    background: 'linear-gradient(90deg, rgba(147, 51, 234, 0.8), rgba(14, 165, 233, 0.6))',
                     borderRadius: '4px',
+                    boxShadow: '0 0 10px rgba(147, 51, 234, 0.4)',
+                    animation: 'thoughtPulse 2s ease-in-out infinite',
+                    animationDelay: `${index * 0.2}s`,
                   }}
                 />
               </div>
