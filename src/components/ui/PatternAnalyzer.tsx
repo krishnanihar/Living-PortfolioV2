@@ -348,6 +348,83 @@ export function PatternAnalyzer({ className = '' }: PatternAnalyzerProps) {
         </AnimatePresence>
       </div>
 
+      {/* Loading State */}
+      {isAnalyzing && !analysis && (
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.03)',
+          backdropFilter: 'blur(20px) saturate(150%) brightness(0.85)',
+          WebkitBackdropFilter: 'blur(20px) saturate(150%) brightness(0.85)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          borderRadius: '20px',
+          padding: '3rem 2rem',
+          marginBottom: '2rem',
+        }}>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '2rem',
+          }}>
+            {/* Animated consciousness orbs */}
+            <div style={{
+              position: 'relative',
+              width: '80px',
+              height: '80px',
+            }}>
+              {[0, 1, 2].map((i) => (
+                <div
+                  key={i}
+                  style={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: '50%',
+                    border: '2px solid rgba(147, 51, 234, 0.5)',
+                    animation: `pulse${i} 2s ease-in-out infinite`,
+                    animationDelay: `${i * 0.3}s`,
+                  }}
+                />
+              ))}
+              <div style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(147, 51, 234, 0.6), rgba(14, 165, 233, 0.3))',
+                filter: 'blur(8px)',
+                animation: 'float 3s ease-in-out infinite',
+              }} />
+            </div>
+
+            <div style={{
+              textAlign: 'center',
+              color: 'var(--text-muted)',
+              fontSize: '0.95rem',
+            }}>
+              <span>Analyzing dream patterns</span>
+              <span style={{ animation: 'dots 1.5s steps(4, end) infinite' }}>...</span>
+            </div>
+
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '0.5rem',
+              fontSize: '0.75rem',
+              color: 'var(--text-muted)',
+              opacity: 0.6,
+            }}>
+              <span>Identifying recurring themes</span>
+              <span>Mapping symbolic elements</span>
+              <span>Detecting emotional patterns</span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Analysis Results */}
       <AnimatePresence>
         {analysis && (
@@ -798,6 +875,60 @@ export function PatternAnalyzer({ className = '' }: PatternAnalyzerProps) {
         @keyframes spin {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse0 {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: scale(1.3);
+            opacity: 0.3;
+          }
+        }
+
+        @keyframes pulse1 {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 0.7;
+          }
+          50% {
+            transform: scale(1.5);
+            opacity: 0.2;
+          }
+        }
+
+        @keyframes pulse2 {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 0.5;
+          }
+          50% {
+            transform: scale(1.7);
+            opacity: 0.1;
+          }
+        }
+
+        @keyframes float {
+          0%, 100% {
+            transform: translate(-50%, -50%) translateY(0);
+          }
+          50% {
+            transform: translate(-50%, -50%) translateY(-10px);
+          }
+        }
+
+        @keyframes dots {
+          0%, 20% {
+            content: '.';
+          }
+          40% {
+            content: '..';
+          }
+          60%, 100% {
+            content: '...';
+          }
         }
       `}</style>
     </div>
