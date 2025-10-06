@@ -1,12 +1,26 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { BookOpen, Lightbulb, Box, Wrench, Home, Sparkles, Cpu, TestTube, Circle, Hexagon, Heart, ArrowLeft, type LucideIcon } from 'lucide-react';
 
 export function MetamorphicFractalWork() {
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const [visibleElements, setVisibleElements] = useState(new Set<string>());
+  const [isMobile, setIsMobile] = useState(false);
+  const [hoveredOtherProject, setHoveredOtherProject] = useState<number | null>(null);
+  const [hoveredCTA, setHoveredCTA] = useState<string | null>(null);
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Intersection Observer for reveal animations
   useEffect(() => {
@@ -33,57 +47,88 @@ export function MetamorphicFractalWork() {
     return () => observer.disconnect();
   }, []);
 
-  // Cursor tracking
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setCursorPos({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  const otherProjects = [
+    {
+      id: 1,
+      icon: Circle,
+      title: 'Design at Air India',
+      category: 'Design Systems',
+      description: 'Leading design transformation for India\'s flag carrier.',
+      year: '2024',
+      href: '/work/air-india' as const,
+      orbColor: '218, 14, 41'
+    },
+    {
+      id: 2,
+      icon: Hexagon,
+      title: 'Latent Space',
+      category: 'Speculative Design',
+      description: 'Speculative design exploration of dream technology ethics.',
+      year: '2024',
+      href: '/work/latent-space' as const,
+      orbColor: '140, 100, 255'
+    },
+    {
+      id: 4,
+      icon: Heart,
+      title: 'Living Organism',
+      category: 'Meta Design',
+      description: 'This portfolio website - architected to feel like a living organism.',
+      year: '2024',
+      href: '/' as const,
+      orbColor: '255, 255, 255'
+    }
+  ] as const;
 
   const processSteps = [
     {
+      icon: BookOpen,
       title: "Research",
       description: "Reading Timothy Leary, Terence McKenna, and Ram Dass; exploring psychedelic subreddits; browsing Erowid for trip reports and safety learnings.",
-      imageUrl: "https://picsum.photos/600/400?random=10"
+      color: '255, 0, 122' // Pink
     },
     {
+      icon: Lightbulb,
       title: "Conceptualization",
       description: "Ideating across mediums to distill a bathroom–mirror portal motif and an ego-dissolution arc. Mapping sensory stages and consent guardrails.",
       hasLink: true,
-      imageUrl: "https://picsum.photos/600/400?random=11"
+      color: '255, 184, 0' // Orange
     },
     {
+      icon: Box,
       title: "3D Modelling",
       description: "Blocking the environment in 3D and reviewing the flow in VR to validate spatial pacing before fabrication.",
-      imageUrl: "https://picsum.photos/600/400?random=12"
+      color: '0, 255, 255' // Cyan
     },
     {
+      icon: Wrench,
       title: "Construction of Metal Frame",
       description: "Welding a stable metal skeleton to support panels, mirror assembly, and embedded sensors.",
-      imageUrl: "https://picsum.photos/600/400?random=13"
+      color: '102, 255, 0' // Green
     },
     {
+      icon: Home,
       title: "Building the Bathroom",
       description: "Plywood superstructure with granite finishes for realistic tactility; concealed cable runs to keep the illusion intact.",
-      imageUrl: "https://picsum.photos/600/400?random=14"
+      color: '181, 131, 255' // Purple
     },
     {
+      icon: Sparkles,
       title: "Visuals",
       description: "Generating video sequences using Deforum Stable Diffusion; comparing models, samplers, steps, prompt embeddings for the most organic motion feel.",
-      imageUrl: "https://picsum.photos/600/400?random=15"
+      color: '255, 0, 170' // Magenta
     },
     {
+      icon: Cpu,
       title: "TouchDesigner + Arduino",
       description: "Tap-sensor input triggers the mirror dissolve; TouchDesigner orchestrates video, audio and light; Arduino handles IO and safety failsafes.",
-      imageUrl: "https://picsum.photos/600/400?random=16"
+      color: '0, 200, 255' // Light Blue
     },
     {
+      icon: TestTube,
       title: "Testing",
       description: "Every viewer experiences different visuals and timing. Iterative tests tuned thresholds, volume and fade-curves to keep it safe yet profound.",
-      imageUrl: "https://picsum.photos/600/400?random=17"
+      color: '140, 255, 180' // Mint
     }
   ];
 
@@ -102,76 +147,21 @@ export function MetamorphicFractalWork() {
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600&display=swap');
 
-        :root {
-          --bg: #000;
-          --fg: rgba(255,255,255,.95);
-          --fg-dim: rgba(255,255,255,.70);
-          --fg-soft: rgba(255,255,255,.50);
-          --card: rgba(255,255,255,.02);
-          --card-hover: rgba(255,255,255,.04);
-          --border: rgba(255,255,255,.06);
-          --glow: conic-gradient(from 0deg at 50% 50%, #ff007a 0deg, #ffb800 72deg, #60f 144deg, #0ff 216deg, #0fa 288deg, #ff007a 360deg);
-          --accent: #b583ff;
-          --radius: 20px;
-          --shadow: 0 20px 40px rgba(0,0,0,.8);
-          --max: 1200px;
+        .psychedelic-page {
+          background: var(--bg-primary);
+          color: var(--text-primary);
+          font-family: 'Inter', -apple-system, system-ui, sans-serif;
+          min-height: 100vh;
+          overflow-x: hidden;
         }
 
-        @property --angle {
-          syntax: '<angle>';
-          initial-value: 0deg;
-          inherits: false;
-        }
-
-        /* CSS Reset and Isolation - Override global styles */
-        .metamorphic-container * {
-          box-sizing: border-box;
-          margin: 0;
-          padding: 0;
-        }
-
-        .metamorphic-container {
-          background: var(--bg) !important;
-          color: var(--fg) !important;
-          font-family: 'Inter', -apple-system, system-ui, sans-serif !important;
-          font-weight: 300 !important;
-          line-height: 1.7 !important;
-          letter-spacing: 0.01em !important;
-          -webkit-font-smoothing: antialiased !important;
-          text-rendering: optimizeLegibility !important;
-          overflow-x: hidden !important;
-          min-height: 100vh !important;
-          width: 100% !important;
-          position: relative !important;
-        }
-
-        /* Override any global body/html styles that might interfere */
-        body:has(.metamorphic-container) {
-          background: var(--bg) !important;
-          overflow-x: hidden !important;
-        }
-
-        .cursor {
-          position: fixed;
-          width: 300px;
-          height: 300px;
-          border-radius: 50%;
-          pointer-events: none;
-          mix-blend-mode: screen;
-          background: radial-gradient(closest-side, rgba(181,131,255,.15), var(--overlay-transparent));
-          filter: blur(30px) saturate(150%);
-          opacity: .4;
-          transition: opacity .3s ease;
-          z-index: 9999;
-        }
-
-        .wrap {
-          width: min(100%, var(--max));
+        .psych-wrap {
+          width: min(100%, 1200px);
           margin-inline: auto;
           padding: 0 24px;
         }
 
-        header {
+        .psych-header {
           position: relative;
           display: flex;
           align-items: center;
@@ -182,14 +172,13 @@ export function MetamorphicFractalWork() {
           background: radial-gradient(ellipse at top center, rgba(181,131,255,.08) 0%, transparent 50%);
         }
 
-        .hero-content {
+        .psych-hero-content {
           text-align: center;
           max-width: 1000px;
           width: 100%;
         }
 
-        .title {
-          font-family: 'Inter', -apple-system, sans-serif;
+        .psych-title {
           font-weight: 200;
           letter-spacing: -0.03em;
           line-height: 1.05;
@@ -197,26 +186,26 @@ export function MetamorphicFractalWork() {
           margin: 25px 0;
         }
 
-        .kicker {
+        .psych-kicker {
           display: inline-block;
           font-size: 0.75rem;
           font-weight: 400;
           letter-spacing: .2em;
           text-transform: uppercase;
-          color: var(--fg-soft);
+          color: var(--text-muted);
           margin-bottom: 15px;
         }
 
-        .sub {
+        .psych-sub {
           max-width: 900px;
-          color: var(--fg-dim);
+          color: var(--text-secondary);
           font-size: clamp(1rem, .6vw + .9rem, 1.15rem);
           font-weight: 300;
-          margin: 30px 0;
+          margin: 30px auto;
           line-height: 1.8;
         }
 
-        .meta {
+        .psych-meta {
           display: flex;
           flex-wrap: wrap;
           gap: 12px 16px;
@@ -224,71 +213,73 @@ export function MetamorphicFractalWork() {
           justify-content: center;
         }
 
-        .pill {
-          border: 1px solid var(--border);
-          background: var(--card);
+        .psych-pill {
+          border: 1px solid var(--border-primary);
+          background: var(--surface-primary);
           padding: 10px 16px;
           border-radius: 100px;
-          color: var(--fg-dim);
+          color: var(--text-secondary);
           font-size: 0.875rem;
           font-weight: 300;
         }
 
-        .pill strong {
+        .psych-pill strong {
           font-weight: 500;
+          color: var(--text-primary);
         }
 
-        .aura {
+        .psych-aura {
           position: relative;
           display: inline;
         }
 
-        .aura::after {
+        .psych-aura::after {
           content: attr(data-text);
           position: absolute;
           inset: 0;
           pointer-events: none;
           mix-blend-mode: screen;
           filter: blur(8px) saturate(150%);
-          background: var(--glow);
+          background: conic-gradient(from 0deg at 50% 50%, #ff007a 0deg, #ffb800 72deg, #60f 144deg, #0ff 216deg, #0fa 288deg, #ff007a 360deg);
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
           opacity: .18;
-          animation: hue 12s linear infinite;
+          animation: psych-hue 12s linear infinite;
         }
 
-        @keyframes hue {
+        @keyframes psych-hue {
           to { filter: hue-rotate(360deg) blur(8px) saturate(150%); }
         }
 
-        .cta {
+        .psych-cta {
           display: flex;
           gap: 16px;
           margin-top: 40px;
           justify-content: center;
+          flex-wrap: wrap;
         }
 
-        .btn {
+        .psych-btn {
           position: relative;
           display: inline-flex;
           align-items: center;
           gap: 10px;
           padding: 14px 24px;
           border-radius: 100px;
-          border: 1px solid var(--border);
-          color: var(--fg);
+          border: 1px solid var(--border-primary);
+          color: var(--text-primary);
           text-decoration: none;
           font-weight: 400;
           font-size: 0.9rem;
           letter-spacing: 0.02em;
           transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
-          background: var(--card);
+          background: var(--surface-primary);
           cursor: pointer;
           overflow: hidden;
         }
 
-        .btn::before {
+        .psych-btn::before {
           content: '';
           position: absolute;
           inset: 0;
@@ -303,23 +294,23 @@ export function MetamorphicFractalWork() {
           transition: transform 0.5s ease;
         }
 
-        .btn:hover::before {
+        .psych-btn:hover::before {
           transform: translateX(100%);
         }
 
-        .btn:hover {
+        .psych-btn:hover {
           transform: translateY(-2px);
-          border-color: rgba(255,255,255,.15);
-          background: rgba(255,255,255,.04);
+          border-color: rgba(181,131,255,.3);
+          background: var(--surface-secondary);
           box-shadow: 0 10px 30px rgba(181, 131, 255, 0.15);
         }
 
-        .btn.primary {
+        .psych-btn.primary {
           background: radial-gradient(100% 100% at 0% 0%, rgba(181,131,255,.15), transparent);
           border-color: rgba(181,131,255,.3);
         }
 
-        .btn.primary::before {
+        .psych-btn.primary::before {
           background: linear-gradient(90deg,
             transparent,
             rgba(255, 0, 122, 0.3),
@@ -329,13 +320,13 @@ export function MetamorphicFractalWork() {
           );
         }
 
-        .btn.primary:hover {
+        .psych-btn.primary:hover {
           background: radial-gradient(100% 100% at 0% 0%, rgba(181,131,255,.25), transparent);
           border-color: rgba(181,131,255,.5);
           box-shadow: 0 10px 40px rgba(181, 131, 255, 0.25);
         }
 
-        .ribbon {
+        .psych-ribbon {
           position: absolute;
           inset: auto -20vw -50% -20vw;
           height: 60vh;
@@ -345,51 +336,41 @@ export function MetamorphicFractalWork() {
           opacity: .5;
           pointer-events: none;
           transform: skewY(-8deg);
-          animation: ribbonFlow 25s ease-in-out infinite;
+          animation: psych-ribbonFlow 25s ease-in-out infinite;
         }
 
-        @keyframes ribbonFlow {
+        @keyframes psych-ribbonFlow {
           0%, 100% { transform: skewY(-8deg) scale(1) translateY(0); }
           50% { transform: skewY(-8deg) scale(1.05) translateY(-20px); }
         }
 
-        /* Gradient transition from hero to experience */
-        .gradient-transition {
+        .psych-gradient-transition {
           height: 200px;
           background: linear-gradient(to bottom,
             transparent 0%,
             rgba(181,131,255,.03) 30%,
             rgba(181,131,255,.05) 60%,
-            var(--overlay-transparent) 100%
+            transparent 100%
           );
           margin-top: -100px;
           pointer-events: none;
         }
 
-        section {
-          padding: 160px 0;
+        .psych-section {
+          padding: 100px 0;
         }
 
-        section:not(#experience) {
-          padding: 150px 0;
-        }
-
-        section#experience {
-          padding-top: 0;
-          background: radial-gradient(ellipse at top center, rgba(181,131,255,.03) 0%, transparent 40%);
-        }
-
-        h2 {
-          font-family: 'Inter', -apple-system, sans-serif;
+        .psych-section-title {
           font-size: clamp(1.8rem, 2vw + 1rem, 2.5rem);
           font-weight: 200;
           letter-spacing: -0.02em;
           margin-bottom: 25px;
           text-align: center;
+          color: var(--text-primary);
         }
 
-        .lead {
-          color: var(--fg-dim);
+        .psych-lead {
+          color: var(--text-secondary);
           max-width: 900px;
           margin: 0 auto 40px auto;
           font-weight: 300;
@@ -397,70 +378,51 @@ export function MetamorphicFractalWork() {
           text-align: center;
         }
 
-        .video-wrap {
+        .psych-video-wrap {
           position: relative;
-          border-radius: var(--radius);
+          border-radius: 20px;
           overflow: hidden;
-          background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
-          border: 1px solid var(--border);
-          box-shadow: var(--shadow);
+          background: var(--surface-primary);
+          border: 1px solid var(--border-primary);
+          box-shadow: 0 20px 40px rgba(0,0,0,.3);
         }
 
-        .video-veil {
+        .psych-video-veil {
           position: absolute;
           inset: 0;
-          background: radial-gradient(100% 80% at 50% 0%, transparent, rgba(0,0,0,.4) 90%);
+          background: radial-gradient(100% 80% at 50% 0%, transparent, rgba(0,0,0,.2) 90%);
           pointer-events: none;
         }
 
-        video {
-          display: block;
-          width: 100%;
-          height: auto;
-          aspect-ratio: 16/9;
-          background: var(--bg-primary);
-        }
-
-        .caption {
-          color: var(--fg-soft);
+        .psych-caption {
+          color: var(--text-muted);
           font-size: 0.875rem;
           margin-top: 15px;
           font-weight: 300;
           text-align: center;
         }
 
-        /* Process Section with Cards */
-        .process-header {
-          margin-bottom: 60px;
-          text-align: center;
-        }
-
-        .process-grid {
+        .psych-process-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 500px), 1fr));
           gap: 30px;
         }
 
-        @media (max-width: 1100px) {
-          .process-grid {
-            grid-template-columns: 1fr;
-          }
-        }
-
-        .process-card {
-          background: var(--card);
-          border: 1px solid var(--border);
-          border-radius: var(--radius);
+        .psych-process-card {
+          background: var(--surface-primary);
+          border: 1px solid transparent;
+          border-radius: 20px;
           overflow: hidden;
           transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
           position: relative;
+          text-align: center;
         }
 
-        .process-card::before {
+        .psych-process-card::before {
           content: '';
           position: absolute;
           inset: -2px;
-          border-radius: var(--radius);
+          border-radius: 20px;
           padding: 2px;
           background: linear-gradient(45deg,
             transparent,
@@ -473,136 +435,95 @@ export function MetamorphicFractalWork() {
             transparent
           );
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-          -webkit-mask-composite: exclude;
+          -webkit-mask-composite: xor;
           mask-composite: exclude;
           opacity: 0;
           transition: opacity 0.5s ease;
-          animation: borderRotate 4s linear infinite paused;
         }
 
-        .process-card:hover::before {
+        .psych-process-card:hover::before {
           opacity: 1;
-          animation-play-state: running;
+          animation: psych-borderRotate 4s linear infinite;
         }
 
-        @keyframes borderRotate {
-          0% {
-            background-position: 0% 50%;
-          }
-          100% {
-            background-position: 200% 50%;
-          }
+        @keyframes psych-borderRotate {
+          0% { background-position: 0% 50%; }
+          100% { background-position: 200% 50%; }
         }
 
-        .process-card::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          border-radius: var(--radius);
-          background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-            rgba(181, 131, 255, 0.1) 0%,
-            transparent 50%);
-          opacity: 0;
-          transition: opacity 0.3s ease;
-          pointer-events: none;
-        }
-
-        .process-card:hover::after {
-          opacity: 1;
-        }
-
-        .process-card:hover {
+        .psych-process-card:hover {
           transform: translateY(-4px);
-          background: var(--card-hover);
-          box-shadow: 0 30px 60px rgba(0,0,0,.5),
-                      0 0 40px rgba(181, 131, 255, 0.1);
+          background: var(--surface-secondary);
+          box-shadow: 0 30px 60px rgba(0,0,0,.3), 0 0 40px rgba(181, 131, 255, 0.1);
         }
 
-        .process-image {
-          width: 100%;
-          height: 250px;
-          background: linear-gradient(135deg, rgba(181,131,255,.1), rgba(0,255,255,.05));
-          overflow: hidden;
-          position: relative;
+        .psych-process-icon {
+          width: 80px;
+          height: 80px;
+          margin: 30px auto 20px;
+          border-radius: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .process-image img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          filter: saturate(80%) brightness(0.9);
-          transition: transform 0.4s ease, filter 0.4s ease;
+        .psych-process-card:hover .psych-process-icon {
+          transform: scale(1.1) rotate(5deg);
         }
 
-        .process-card:hover .process-image img {
-          transform: scale(1.05);
-          filter: saturate(100%) brightness(1);
+        .psych-process-content {
+          padding: 0 30px 30px;
         }
 
-        .process-content {
-          padding: 30px;
-          text-align: center;
-        }
-
-        .process-number {
+        .psych-process-number {
           display: inline-block;
           font-size: 0.75rem;
           font-weight: 500;
           letter-spacing: 0.2em;
-          color: var(--accent);
+          color: #b583ff;
           margin-bottom: 12px;
           opacity: 0.7;
         }
 
-        .process-card h3 {
+        .psych-process-card h3 {
           font-size: 1.3rem;
           font-weight: 400;
           letter-spacing: -0.01em;
           margin-bottom: 15px;
+          color: var(--text-primary);
         }
 
-        .process-card p {
-          color: var(--fg-dim);
+        .psych-process-card p {
+          color: var(--text-secondary);
           font-weight: 300;
           line-height: 1.7;
           font-size: 0.95rem;
         }
 
-        .process-card a {
-          color: var(--accent);
-          text-decoration: none;
-          font-weight: 400;
-          transition: opacity 0.2s;
-        }
-
-        .process-card a:hover {
-          opacity: 0.8;
-        }
-
-        .grid {
+        .psych-grid {
           display: grid;
-          grid-template-columns: repeat(12,1fr);
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
           gap: 20px;
         }
 
-        .card {
-          grid-column: span 12;
-          border: 1px solid var(--border);
-          border-radius: var(--radius);
-          background: var(--card);
+        .psych-card {
+          border: 1px solid var(--border-primary);
+          border-radius: 20px;
+          background: var(--surface-primary);
           padding: 28px;
           transition: all 0.3s ease;
           position: relative;
           text-align: center;
         }
 
-        .card::before {
+        .psych-card::before {
           content: '';
           position: absolute;
           inset: -1px;
-          border-radius: var(--radius);
+          border-radius: 20px;
           padding: 1px;
-          background: conic-gradient(from var(--angle, 0deg),
+          background: conic-gradient(from 0deg,
             rgba(255, 0, 122, 0.5),
             rgba(255, 184, 0, 0.5),
             rgba(0, 255, 255, 0.5),
@@ -610,129 +531,46 @@ export function MetamorphicFractalWork() {
             rgba(255, 0, 122, 0.5)
           );
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-          -webkit-mask-composite: exclude;
+          -webkit-mask-composite: xor;
           mask-composite: exclude;
           opacity: 0;
           transition: opacity 0.4s ease;
         }
 
-        .card:hover::before {
+        .psych-card:hover::before {
           opacity: 0.6;
-          animation: borderSpin 3s linear infinite;
+          animation: psych-borderSpin 3s linear infinite;
         }
 
-        @keyframes borderSpin {
-          from {
-            --angle: 0deg;
-          }
-          to {
-            --angle: 360deg;
-          }
+        @keyframes psych-borderSpin {
+          from { background-position: 0% 50%; }
+          to { background-position: 200% 50%; }
         }
 
-        .card:hover {
-          background: var(--card-hover);
+        .psych-card:hover {
+          background: var(--surface-secondary);
           transform: translateY(-2px);
-          box-shadow: 0 20px 40px rgba(0,0,0,.5),
-                      0 0 30px rgba(181, 131, 255, 0.08);
+          box-shadow: 0 20px 40px rgba(0,0,0,.3), 0 0 30px rgba(181, 131, 255, 0.08);
         }
 
-        @media (min-width: 720px) {
-          .card {
-            grid-column: span 6;
-          }
+        .psych-card p {
+          color: var(--text-secondary);
+          line-height: 1.7;
         }
 
-        .gallery {
-          display: grid;
-          grid-template-columns: repeat(12,1fr);
-          gap: 20px;
-        }
-
-        .shot {
-          grid-column: span 12;
-          border-radius: var(--radius);
-          overflow: hidden;
-          border: 1px solid var(--border);
-          background: var(--card);
-          transition: all 0.3s ease;
-          position: relative;
-        }
-
-        .shot::before {
-          content: '';
-          position: absolute;
-          inset: -2px;
-          border-radius: var(--radius);
-          background: linear-gradient(90deg,
-            rgba(255, 0, 122, 0.4),
-            rgba(0, 255, 255, 0.4),
-            rgba(181, 131, 255, 0.4),
-            rgba(255, 184, 0, 0.4),
-            rgba(255, 0, 122, 0.4)
-          );
-          opacity: 0;
-          transition: opacity 0.4s ease;
-          z-index: -1;
-          filter: blur(2px);
-        }
-
-        .shot:hover::before {
-          opacity: 0.7;
-          animation: shimmer 2s ease-in-out infinite;
-        }
-
-        @keyframes shimmer {
-          0%, 100% {
-            transform: translateX(-5%) scale(1);
-          }
-          50% {
-            transform: translateX(5%) scale(1.02);
-          }
-        }
-
-        @media(min-width:720px) {
-          .shot {
-            grid-column: span 6;
-          }
-        }
-
-        .shot img {
-          display: block;
-          width: 100%;
-          height: auto;
-          aspect-ratio: 16/10;
-          object-fit: cover;
-          filter: saturate(90%);
-          transition: transform 0.4s ease, filter 0.4s ease;
-          position: relative;
-          z-index: 1;
-        }
-
-        .shot:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 25px 50px rgba(0,0,0,.6),
-                      0 0 50px rgba(181, 131, 255, 0.15);
-        }
-
-        .shot:hover img {
-          transform: scale(1.08);
-          filter: saturate(110%);
-        }
-
-        .chips {
+        .psych-chips {
           display: flex;
           flex-wrap: wrap;
           gap: 12px;
           justify-content: center;
         }
 
-        .chip {
-          border: 1px solid var(--border);
+        .psych-chip {
+          border: 1px solid var(--border-primary);
           padding: 10px 18px;
           border-radius: 100px;
-          background: var(--card);
-          color: var(--fg-dim);
+          background: var(--surface-primary);
+          color: var(--text-secondary);
           font-size: 0.875rem;
           font-weight: 300;
           transition: all 0.2s ease;
@@ -740,7 +578,7 @@ export function MetamorphicFractalWork() {
           overflow: hidden;
         }
 
-        .chip::before {
+        .psych-chip::before {
           content: '';
           position: absolute;
           inset: 0;
@@ -755,14 +593,14 @@ export function MetamorphicFractalWork() {
           transition: transform 0.6s ease;
         }
 
-        .chip:hover::before {
+        .psych-chip:hover::before {
           transform: translateX(100%);
         }
 
-        .chip:hover {
+        .psych-chip:hover {
           border-color: rgba(181, 131, 255, 0.3);
           transform: translateY(-2px);
-          background: var(--card-hover);
+          background: var(--surface-secondary);
           box-shadow: 0 5px 15px rgba(181, 131, 255, 0.1);
         }
 
@@ -777,23 +615,17 @@ export function MetamorphicFractalWork() {
           transform: none;
         }
 
-        footer {
-          padding: 60px 24px 40px;
-          border-top: 1px solid var(--border);
-          text-align: center;
-        }
-
-        /* Psychedelic orbs */
-        .orb {
+        .psych-orb {
           position: fixed;
           border-radius: 50%;
           filter: blur(80px);
           opacity: 0.2;
           pointer-events: none;
-          animation: float 25s ease-in-out infinite;
+          animation: psych-float 25s ease-in-out infinite;
+          z-index: 0;
         }
 
-        .orb1 {
+        .psych-orb1 {
           width: 500px;
           height: 500px;
           background: radial-gradient(circle, #ff007a, transparent);
@@ -801,7 +633,7 @@ export function MetamorphicFractalWork() {
           right: -150px;
         }
 
-        .orb2 {
+        .psych-orb2 {
           width: 400px;
           height: 400px;
           background: radial-gradient(circle, #0ff, transparent);
@@ -810,7 +642,7 @@ export function MetamorphicFractalWork() {
           animation-delay: -8s;
         }
 
-        .orb3 {
+        .psych-orb3 {
           width: 350px;
           height: 350px;
           background: radial-gradient(circle, #ffb800, transparent);
@@ -819,97 +651,88 @@ export function MetamorphicFractalWork() {
           animation-delay: -16s;
         }
 
-        @keyframes float {
-          0%, 100% {
-            transform: translate(0, 0) scale(1);
-          }
-          25% {
-            transform: translate(40px, -80px) scale(1.1);
-          }
-          50% {
-            transform: translate(-30px, 60px) scale(0.95);
-          }
-          75% {
-            transform: translate(20px, -40px) scale(1.05);
-          }
+        @keyframes psych-float {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          25% { transform: translate(40px, -80px) scale(1.1); }
+          50% { transform: translate(-30px, 60px) scale(0.95); }
+          75% { transform: translate(20px, -40px) scale(1.05); }
         }
 
-        /* Section borders with gradient */
-        .section-border {
+        .psych-section-border {
           height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,.05), transparent);
+          background: linear-gradient(90deg, transparent, var(--border-primary), transparent);
           margin: 0 auto;
-          max-width: var(--max);
+          max-width: 1200px;
         }
 
+        .psych-footer {
+          padding: 60px 24px 40px;
+          border-top: 1px solid var(--border-primary);
+          text-align: center;
+        }
+
+        @media (max-width: 768px) {
+          .psych-process-grid {
+            grid-template-columns: 1fr;
+          }
+        }
       `}</style>
 
-      {/* Isolated Container */}
-      <div className="metamorphic-container">
-
-        {/* Cursor prism effect */}
-        <div
-          className="cursor"
-          aria-hidden="true"
-          style={{
-            transform: `translate(${cursorPos.x - 150}px, ${cursorPos.y - 150}px)`
-          }}
-        />
-
+      <div className="psychedelic-page">
         {/* Floating orbs */}
-        <div className="orb orb1" />
-        <div className="orb orb2" />
-        <div className="orb orb3" />
+        <div className="psych-orb psych-orb1" />
+        <div className="psych-orb psych-orb2" />
+        <div className="psych-orb psych-orb3" />
 
         {/* Header */}
-        <header>
-          <div className="ribbon" aria-hidden="true" />
-          <div className="hero-content">
-            <span className="kicker">Classroom Project · Immersive Installation</span>
-            <h1 className="title">
-              <span className="aura" data-text="Metamorphic Fractal Reflections">
+        <header className="psych-header">
+          <div className="psych-ribbon" aria-hidden="true" />
+          <div className="psych-hero-content">
+            <span className="psych-kicker">Classroom Project · Immersive Installation</span>
+            <h1 className="psych-title">
+              <span className="psych-aura" data-text="Metamorphic Fractal Reflections">
                 Metamorphic Fractal Reflections
               </span>
             </h1>
-            <h2 style={{ fontWeight: 200, fontSize: 'clamp(1.2rem, 2vw + 0.5rem, 2rem)', marginTop: '-10px' }}>
+            <h2 style={{ fontWeight: 200, fontSize: 'clamp(1.2rem, 2vw + 0.5rem, 2rem)', marginTop: '-10px', color: 'var(--text-primary)' }}>
               A Psychedelic Journey towards Ego Death
             </h2>
-            <p className="sub">
+            <p className="psych-sub">
               The participant steps into a bathroom, turns on the tap, and watches their reflection dissolve.
               Pulled through the mirror, they traverse a trippy multiverse of liquid color, pattern-creatures
               and structureless yet beautiful music, guided by a fading companion until reality calls them home.
             </p>
-            <div className="meta" role="list">
-              <span className="pill" role="listitem">Duration: <strong>Two months</strong></span>
-              <span className="pill" role="listitem">
+            <div className="psych-meta" role="list">
+              <span className="psych-pill" role="listitem">Duration: <strong>Two months</strong></span>
+              <span className="psych-pill" role="listitem">
                 Guide: Jignesh Khakar · Shoban Shah · Kaushal Sapre · Mochu · Suvani Suri · Arshad Pathan · Ravishekhar Aradhya
               </span>
-              <span className="pill" role="listitem">
+              <span className="psych-pill" role="listitem">
                 Based on: Timothy Leary's <em>The Psychedelic Experience</em>
               </span>
-              <span className="pill" role="listitem">Goal: Safe, accessible ego-dissolution themes</span>
+              <span className="psych-pill" role="listitem">Goal: Safe, accessible ego-dissolution themes</span>
             </div>
-            <div className="cta">
-              <a className="btn primary" href="#experience">Watch experience ▶</a>
-              <a className="btn" href="#process">See process</a>
+            <div className="psych-cta">
+              <a className="psych-btn primary" href="#experience">Watch experience ▶</a>
+              <a className="psych-btn" href="#process">See process</a>
             </div>
           </div>
         </header>
 
         {/* Gradient transition */}
-        <div className="gradient-transition" />
+        <div className="psych-gradient-transition" />
 
         <main>
           {/* Experience / Video */}
-          <section id="experience">
-            <div className="wrap">
-              <h2 id="exp-title" className={`reveal ${visibleElements.has('exp-title') ? 'on' : ''}`}>
+          <section id="experience" className="psych-section" style={{ paddingTop: 0, background: 'radial-gradient(ellipse at top center, rgba(181,131,255,.03) 0%, transparent 40%)' }}>
+            <div className="psych-wrap">
+              <h2 id="exp-title" className={`psych-section-title reveal ${visibleElements.has('exp-title') ? 'on' : ''}`}>
                 Experience Film
               </h2>
-              <p id="exp-lead" className={`lead reveal ${visibleElements.has('exp-lead') ? 'on' : ''}`}>
+              <p id="exp-lead" className={`psych-lead reveal ${visibleElements.has('exp-lead') ? 'on' : ''}`}>
                 A short capture of the installation and the mirror-portal moment.
               </p>
-              <div id="exp-video" className={`video-wrap reveal ${visibleElements.has('exp-video') ? 'on' : ''}`}>
+              <div id="exp-video" className={`psych-video-wrap reveal ${visibleElements.has('exp-video') ? 'on' : ''}`}>
                 <iframe
                   width="100%"
                   height="100%"
@@ -922,27 +745,27 @@ export function MetamorphicFractalWork() {
                   style={{
                     aspectRatio: '16/9',
                     background: 'var(--bg-primary)',
-                    borderRadius: 'var(--radius)'
+                    borderRadius: '20px'
                   }}
                 />
-                <div className="video-veil" aria-hidden="true" />
+                <div className="psych-video-veil" aria-hidden="true" />
               </div>
-              <div className="caption">
+              <div className="psych-caption">
                 Experience film showing the installation and mirror-portal interaction.
               </div>
             </div>
           </section>
 
-          <div className="section-border" />
+          <div className="psych-section-border" />
 
           {/* Concept */}
-          <section id="concept">
-            <div className="wrap">
-              <h2 id="concept-title" className={`reveal ${visibleElements.has('concept-title') ? 'on' : ''}`}>
+          <section id="concept" className="psych-section">
+            <div className="psych-wrap">
+              <h2 id="concept-title" className={`psych-section-title reveal ${visibleElements.has('concept-title') ? 'on' : ''}`}>
                 Concept
               </h2>
-              <div className="grid">
-                <article id="concept-1" className={`card reveal ${visibleElements.has('concept-1') ? 'on' : ''}`}>
+              <div className="psych-grid">
+                <article id="concept-1" className={`psych-card reveal ${visibleElements.has('concept-1') ? 'on' : ''}`}>
                   <p>
                     The viewers confront death-like states within an immersive environment. The design intentionally
                     mirrors bardo-like passages: loss of ordinary identity, surrender to sensory overload, and
@@ -950,7 +773,7 @@ export function MetamorphicFractalWork() {
                     participants to form meaning without prescriptive narrative.
                   </p>
                 </article>
-                <article id="concept-2" className={`card reveal ${visibleElements.has('concept-2') ? 'on' : ''}`}>
+                <article id="concept-2" className={`psych-card reveal ${visibleElements.has('concept-2') ? 'on' : ''}`}>
                   <p>
                     Soundscapes avoid rigid structure—free-flowing, emergent, and deeply textural—while visuals
                     behave like sentient reflections (pattern-creatures) born from light itself. The guide archetype
@@ -962,111 +785,88 @@ export function MetamorphicFractalWork() {
             </div>
           </section>
 
-          <div className="section-border" />
+          <div className="psych-section-border" />
 
-          {/* Process with Expanded Cards */}
-          <section id="process">
-            <div className="wrap">
-              <div className="process-header">
-                <h2>Process</h2>
-                <p className="lead">
+          {/* Process with Icons */}
+          <section id="process" className="psych-section">
+            <div className="psych-wrap">
+              <div style={{ marginBottom: '60px', textAlign: 'center' }}>
+                <h2 className="psych-section-title">Process</h2>
+                <p className="psych-lead">
                   Eight stages of creation, from research to final testing.
                 </p>
               </div>
-              <div className="process-grid">
-                {processSteps.map((step, index) => (
-                  <div
-                    key={index}
-                    id={`step-${index}`}
-                    className={`process-card reveal ${visibleElements.has(`step-${index}`) ? 'on' : ''}`}
-                  >
-                    <div className="process-image">
-                      <img src={step.imageUrl} alt={step.title} />
+              <div className="psych-process-grid">
+                {processSteps.map((step, index) => {
+                  const Icon = step.icon;
+                  return (
+                    <div
+                      key={index}
+                      id={`step-${index}`}
+                      className={`psych-process-card reveal ${visibleElements.has(`step-${index}`) ? 'on' : ''}`}
+                    >
+                      <div className="psych-process-icon" style={{
+                        background: `rgba(${step.color}, 0.1)`
+                      }}>
+                        <Icon size={40} style={{ color: `rgb(${step.color})` }} />
+                      </div>
+                      <div className="psych-process-content">
+                        <span className="psych-process-number">STAGE {String(index + 1).padStart(2, '0')}</span>
+                        <h3>{step.title}</h3>
+                        <p>
+                          {step.description}
+                          {step.hasLink && (
+                            <>
+                              <br/><br/>
+                              <a href="#" rel="noopener" style={{ color: '#b583ff', textDecoration: 'none', fontWeight: 400 }}>→ View MIRO Board</a>
+                            </>
+                          )}
+                        </p>
+                      </div>
                     </div>
-                    <div className="process-content">
-                      <span className="process-number">STAGE {String(index + 1).padStart(2, '0')}</span>
-                      <h3>{step.title}</h3>
-                      <p>
-                        {step.description}
-                        {step.hasLink && (
-                          <>
-                            <br/><br/>
-                            <a href="#" rel="noopener">→ View MIRO Board</a>
-                          </>
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </section>
 
-          <div className="section-border" />
-
-          {/* Visuals Gallery */}
-          <section id="visuals">
-            <div className="wrap">
-              <h2 id="vis-title" className={`reveal ${visibleElements.has('vis-title') ? 'on' : ''}`}>
-                Stills & Frames
-              </h2>
-              <p id="vis-lead" className={`lead reveal ${visibleElements.has('vis-lead') ? 'on' : ''}`}>
-                Documentation stills and renders from the installation.
-              </p>
-              <div className="gallery">
-                {[1, 2, 3, 4].map(num => (
-                  <figure
-                    key={num}
-                    id={`shot-${num}`}
-                    className={`shot reveal ${visibleElements.has(`shot-${num}`) ? 'on' : ''}`}
-                  >
-                    <img
-                      src={`https://picsum.photos/1280/800?random=${num}`}
-                      alt={`Fractal still ${num}`}
-                    />
-                  </figure>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          <div className="section-border" />
+          <div className="psych-section-border" />
 
           {/* Tech Stack */}
-          <section id="stack">
-            <div className="wrap">
-              <h2 id="tech-title" className={`reveal ${visibleElements.has('tech-title') ? 'on' : ''}`}>
+          <section id="stack" className="psych-section">
+            <div className="psych-wrap">
+              <h2 id="tech-title" className={`psych-section-title reveal ${visibleElements.has('tech-title') ? 'on' : ''}`}>
                 Tech Stack
               </h2>
               <div
                 id="tech-chips"
-                className={`chips reveal ${visibleElements.has('tech-chips') ? 'on' : ''}`}
+                className={`psych-chips reveal ${visibleElements.has('tech-chips') ? 'on' : ''}`}
                 aria-label="Technologies used"
               >
                 {techStack.map((tech, index) => (
-                  <span key={index} className="chip">{tech}</span>
+                  <span key={index} className="psych-chip">{tech}</span>
                 ))}
               </div>
             </div>
           </section>
 
-          <div className="section-border" />
+          <div className="psych-section-border" />
 
           {/* Ethics */}
-          <section id="ethics">
-            <div className="wrap">
-              <h2 id="ethics-title" className={`reveal ${visibleElements.has('ethics-title') ? 'on' : ''}`}>
+          <section id="ethics" className="psych-section">
+            <div className="psych-wrap">
+              <h2 id="ethics-title" className={`psych-section-title reveal ${visibleElements.has('ethics-title') ? 'on' : ''}`}>
                 Notes on Ethics & Safety
               </h2>
-              <div className="grid">
-                <article id="ethics-1" className={`card reveal ${visibleElements.has('ethics-1') ? 'on' : ''}`}>
+              <div className="psych-grid">
+                <article id="ethics-1" className={`psych-card reveal ${visibleElements.has('ethics-1') ? 'on' : ''}`}>
                   <p>
                     Inspired by <em>The Psychedelic Experience</em> (Leary et al.), the installation frames
                     ego-dissolution symbolically—no substances involved. The environment includes clear opt-out,
                     calming lights on exit, and staff-visible safety indicators.
                   </p>
                 </article>
-                <article id="ethics-2" className={`card reveal ${visibleElements.has('ethics-2') ? 'on' : ''}`}>
+                <article id="ethics-2" className={`psych-card reveal ${visibleElements.has('ethics-2') ? 'on' : ''}`}>
                   <p>
                     Accessibility: subtitles for audio sequences, path lighting, and a seated option near the mirror.
                     Motion intensity respects <code>prefers-reduced-motion</code>.
@@ -1075,12 +875,164 @@ export function MetamorphicFractalWork() {
               </div>
             </div>
           </section>
+
+          <div className="psych-section-border" />
+
+          {/* More Projects */}
+          <section className="psych-section">
+            <div className="psych-wrap">
+              <div style={{
+                marginBottom: '3rem',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '1rem',
+              }}>
+                <h2 className="psych-section-title" style={{ marginBottom: 0 }}>
+                  More Projects
+                </h2>
+                <Link
+                  href="/work"
+                  onMouseEnter={() => setHoveredCTA('back')}
+                  onMouseLeave={() => setHoveredCTA(null)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.75rem 1.25rem',
+                    borderRadius: '12px',
+                    background: hoveredCTA === 'back'
+                      ? 'var(--surface-secondary)'
+                      : 'transparent',
+                    border: '1px solid var(--border-primary)',
+                    color: 'var(--text-secondary)',
+                    textDecoration: 'none',
+                    fontSize: '0.875rem',
+                    fontWeight: '400',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                >
+                  <ArrowLeft size={16} />
+                  <span>All Work</span>
+                </Link>
+              </div>
+
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(320px, 1fr))',
+                gap: '1.5rem',
+              }}>
+                {otherProjects.map((project) => {
+                  const Icon = project.icon;
+                  const isHovered = hoveredOtherProject === project.id;
+
+                  return (
+                    <Link
+                      key={project.id}
+                      href={project.href}
+                      onMouseEnter={() => setHoveredOtherProject(project.id)}
+                      onMouseLeave={() => setHoveredOtherProject(null)}
+                      style={{
+                        position: 'relative',
+                        display: 'block',
+                        padding: '2rem',
+                        borderRadius: '20px',
+                        background: 'var(--surface-primary)',
+                        backdropFilter: 'blur(40px)',
+                        WebkitBackdropFilter: 'blur(40px)',
+                        border: '1px solid var(--border-primary)',
+                        textDecoration: 'none',
+                        overflow: 'hidden',
+                        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                        transform: isHovered ? 'translateY(-8px)' : 'translateY(0)',
+                        boxShadow: isHovered
+                          ? `0 20px 40px rgba(${project.orbColor}, 0.15)`
+                          : '0 4px 8px rgba(0, 0, 0, 0.2)',
+                      }}
+                    >
+                      {/* Animated Outline */}
+                      {isHovered && (
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          borderRadius: '20px',
+                          padding: '1px',
+                          background: `linear-gradient(135deg, rgba(${project.orbColor}, 0.6), rgba(${project.orbColor}, 0.2), rgba(${project.orbColor}, 0.6))`,
+                          backgroundSize: '200% 200%',
+                          animation: 'borderShimmer 3s ease-in-out infinite',
+                          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                          WebkitMaskComposite: 'xor',
+                          maskComposite: 'exclude',
+                          pointerEvents: 'none',
+                        }} />
+                      )}
+
+                      <div style={{
+                        width: '48px',
+                        height: '48px',
+                        borderRadius: '12px',
+                        background: `rgba(${project.orbColor}, 0.1)`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginBottom: '1.5rem',
+                        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                        transform: isHovered ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
+                      }}>
+                        <Icon size={24} style={{ color: `rgb(${project.orbColor})` }} />
+                      </div>
+
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        marginBottom: '0.75rem',
+                      }}>
+                        <span style={{
+                          fontSize: '0.75rem',
+                          fontWeight: '400',
+                          color: 'var(--text-muted)',
+                          letterSpacing: '0.05em',
+                          textTransform: 'uppercase',
+                        }}>
+                          {project.category}
+                        </span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', opacity: 0.5 }}>•</span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                          {project.year}
+                        </span>
+                      </div>
+
+                      <h3 style={{
+                        fontSize: '1.25rem',
+                        fontWeight: '500',
+                        color: 'var(--text-primary)',
+                        marginBottom: '0.75rem',
+                        letterSpacing: '-0.01em',
+                      }}>
+                        {project.title}
+                      </h3>
+
+                      <p style={{
+                        fontSize: '0.875rem',
+                        color: 'var(--text-tertiary)',
+                        lineHeight: '1.6',
+                      }}>
+                        {project.description}
+                      </p>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
         </main>
 
-        <footer>
-          <div className="wrap">
-            <div style={{ color: 'var(--fg-soft)', fontSize: '0.875rem' }}>
-              Metamorphic Fractal Reflections · 2024
+        <footer className="psych-footer">
+          <div className="psych-wrap">
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+              Metamorphic Fractal Reflections · 2023
             </div>
           </div>
         </footer>
