@@ -29,7 +29,8 @@
       "Bash(/dev/null)",
       "Bash(git log:*)",
       "Bash(git pull:*)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(wc:*)"
     ],
     "deny": [],
     "ask": []

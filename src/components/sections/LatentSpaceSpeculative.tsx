@@ -158,6 +158,7 @@ export default function LatentSpaceSpeculative() {
 function HeroSection({ isLoaded }: { isLoaded: boolean }) {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 150]);
+  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   return (
     <section style={{
@@ -169,9 +170,54 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
       textAlign: 'center' as const,
       paddingTop: '8rem',
       paddingBottom: '4rem',
+      position: 'relative' as const,
     }}>
+      {/* Floating Consciousness Orbs */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        pointerEvents: 'none',
+        overflow: 'hidden',
+      }}>
+        <div style={{
+          position: 'absolute',
+          top: '20%',
+          left: '10%',
+          width: '120px',
+          height: '120px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(147, 51, 234, 0.3), transparent)',
+          filter: 'blur(40px)',
+          animation: 'consciousnessOrb 20s ease-in-out infinite',
+        }} />
+        <div style={{
+          position: 'absolute',
+          top: '60%',
+          right: '15%',
+          width: '150px',
+          height: '150px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(14, 165, 233, 0.3), transparent)',
+          filter: 'blur(40px)',
+          animation: 'consciousnessOrb 25s ease-in-out infinite',
+          animationDelay: '5s',
+        }} />
+        <div style={{
+          position: 'absolute',
+          bottom: '20%',
+          left: '50%',
+          width: '100px',
+          height: '100px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(147, 51, 234, 0.2), transparent)',
+          filter: 'blur(30px)',
+          animation: 'consciousnessOrb 18s ease-in-out infinite',
+          animationDelay: '10s',
+        }} />
+      </div>
+
       <motion.div
-        style={{ y }}
+        style={{ y, opacity }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
@@ -182,7 +228,24 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
           padding: '4rem 3rem',
           maxWidth: '900px',
           margin: '0 auto',
+          position: 'relative' as const,
         }}>
+          {/* Animated Gradient Border */}
+          {isLoaded && (
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: '24px',
+              padding: '1px',
+              background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.5), rgba(14, 165, 233, 0.5), rgba(147, 51, 234, 0.5))',
+              backgroundSize: '200% 200%',
+              animation: 'borderShimmer 4s ease-in-out infinite',
+              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+              WebkitMaskComposite: 'xor',
+              maskComposite: 'exclude',
+              pointerEvents: 'none',
+            }} />
+          )}
           {/* Floating badge */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -251,15 +314,17 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 20 }}
             transition={{ delay: 0.8, duration: 0.8 }}
-            style={{ marginBottom: '3rem' }}
+            style={{ marginBottom: '4rem' }}
           >
             <p style={{
-              fontSize: 'clamp(1.25rem, 3vw, 2rem)',
+              fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
               fontWeight: '300',
               letterSpacing: '-0.01em',
-              lineHeight: '1.3',
+              lineHeight: '1.4',
               color: 'var(--text-secondary)',
-              marginBottom: '1rem',
+              marginBottom: '1.5rem',
+              maxWidth: '800px',
+              margin: '0 auto 1.5rem',
             }}>
               What if we could navigate our dreams through technology while preserving the mystery of consciousness?
             </p>
@@ -268,6 +333,8 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
               fontWeight: '400',
               lineHeight: '1.6',
               color: 'rgba(255, 255, 255, 0.6)',
+              maxWidth: '700px',
+              margin: '0 auto',
             }}>
               A speculative exploration questioning the ethics of consciousness interfaces.
             </p>
@@ -310,6 +377,7 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
 // Design Research Section
 function DesignResearchSection() {
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   const researchAreas = [
     {
@@ -375,7 +443,11 @@ function DesignResearchSection() {
         gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
         gap: '2rem',
       }}>
-        {researchAreas.map((area, index) => (
+        {researchAreas.map((area, index) => {
+          const isHovered = hoveredCard === index;
+          const isExpanded = expandedCard === index;
+
+          return (
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 40 }}
@@ -384,36 +456,43 @@ function DesignResearchSection() {
             transition={{ delay: index * 0.1, duration: 0.6 }}
           >
             <div
-              onClick={() => setExpandedCard(expandedCard === index ? null : index)}
+              onClick={() => setExpandedCard(isExpanded ? null : index)}
+              onMouseEnter={() => setHoveredCard(index)}
+              onMouseLeave={() => setHoveredCard(null)}
               style={{
                 ...baseStyles.glassCard,
                 padding: '2rem',
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
-                ...(expandedCard === index ? {
-                  background: 'rgba(255, 255, 255, 0.04)',
-                  borderColor: 'rgba(218, 14, 41, 0.3)',
-                } : {})
-              }}
-              onMouseEnter={(e) => {
-                if (expandedCard !== index) {
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)';
-                  (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.03)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (expandedCard !== index) {
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                  (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.02)';
-                }
+                position: 'relative' as const,
+                transform: (isHovered && !isExpanded) ? 'translateY(-4px)' : 'translateY(0)',
+                background: isExpanded ? 'rgba(255, 255, 255, 0.04)' : (isHovered ? 'rgba(255, 255, 255, 0.03)' : 'rgba(255, 255, 255, 0.02)'),
               }}
             >
-              <div style={{ textAlign: 'center' as const }}>
+              {/* Animated Outline Effect */}
+              {(isHovered || isExpanded) && (
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: '16px',
+                  padding: '1px',
+                  background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.6), rgba(14, 165, 233, 0.4), rgba(147, 51, 234, 0.6))',
+                  backgroundSize: '200% 200%',
+                  animation: 'borderShimmer 3s ease-in-out infinite',
+                  WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                  WebkitMaskComposite: 'xor',
+                  maskComposite: 'exclude',
+                  pointerEvents: 'none',
+                }} />
+              )}
+              <div style={{ textAlign: 'center' as const, position: 'relative' as const }}>
                 <div style={{
                   fontSize: '3rem',
                   fontWeight: '200',
                   color: 'rgba(255, 255, 255, 0.9)',
                   marginBottom: '0.5rem',
+                  filter: isHovered ? 'drop-shadow(0 0 20px rgba(147, 51, 234, 0.6))' : 'none',
+                  transition: 'filter 0.3s ease',
                 }}>
                   {area.count}
                 </div>
@@ -460,7 +539,8 @@ function DesignResearchSection() {
               </AnimatePresence>
             </div>
           </motion.div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
