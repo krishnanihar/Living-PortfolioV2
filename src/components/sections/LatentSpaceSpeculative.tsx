@@ -2562,38 +2562,241 @@ function InteractivePrototypesSection() {
             </motion.div>
           )}
 
-          {(activePrototype === 'timeline' || activePrototype === 'patterns') && (
+          {activePrototype === 'timeline' && (
             <motion.div
-              key={activePrototype}
+              key="timeline"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
-              style={{ textAlign: 'center' as const }}
             >
-              <h3 style={{
-                fontSize: '1.5rem',
-                fontWeight: '300',
-                color: 'rgba(255, 255, 255, 0.9)',
-                marginBottom: '1.5rem',
-              }}>
-                {activePrototype === 'timeline' ? 'Sleep Timeline Visualization' : 'Pattern Recognition Engine'}
-              </h3>
-              <div style={{
-                height: '200px',
-                background: 'rgba(255, 255, 255, 0.02)',
-                borderRadius: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: '1px dashed rgba(255, 255, 255, 0.2)',
-              }}>
+              <div style={{ textAlign: 'center' as const, marginBottom: '2rem' }}>
+                <h3 style={{
+                  fontSize: '1.5rem',
+                  fontWeight: '300',
+                  color: 'rgba(255, 255, 255, 0.9)',
+                  marginBottom: '0.5rem',
+                }}>
+                  Sleep Timeline Visualization
+                </h3>
                 <p style={{
                   fontSize: '0.875rem',
-                  color: 'rgba(255, 255, 255, 0.5)',
+                  color: 'rgba(255, 255, 255, 0.6)',
                 }}>
-                  Interactive {activePrototype === 'timeline' ? 'timeline' : 'analysis'} prototype would appear here
+                  Hourly breakdown of a typical sleep cycle (22:00 - 06:00)
                 </p>
+              </div>
+
+              {/* Timeline visualization */}
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column' as const,
+                gap: '0.5rem',
+                marginBottom: '2rem',
+              }}>
+                {[
+                  { hour: '22:00', stage: 'Wake', duration: 30, color: 'rgba(34, 197, 94, 0.6)' },
+                  { hour: '22:30', stage: 'N1', duration: 15, color: 'rgba(59, 130, 246, 0.6)' },
+                  { hour: '23:00', stage: 'N2', duration: 90, color: 'rgba(99, 102, 241, 0.6)' },
+                  { hour: '00:30', stage: 'N3', duration: 60, color: 'rgba(236, 72, 153, 0.6)' },
+                  { hour: '01:30', stage: 'N2', duration: 45, color: 'rgba(99, 102, 241, 0.6)' },
+                  { hour: '02:15', stage: 'REM', duration: 30, color: 'rgba(251, 146, 60, 0.6)' },
+                  { hour: '03:00', stage: 'N2', duration: 90, color: 'rgba(99, 102, 241, 0.6)' },
+                  { hour: '04:30', stage: 'REM', duration: 45, color: 'rgba(251, 146, 60, 0.6)' },
+                  { hour: '05:15', stage: 'N2', duration: 30, color: 'rgba(99, 102, 241, 0.6)' },
+                  { hour: '05:45', stage: 'Wake', duration: 15, color: 'rgba(34, 197, 94, 0.6)' },
+                ].map((block, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, scaleX: 0 }}
+                    animate={{ opacity: 1, scaleX: 1 }}
+                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '1rem',
+                    }}
+                  >
+                    <span style={{
+                      fontSize: '0.75rem',
+                      color: 'rgba(255, 255, 255, 0.5)',
+                      minWidth: '50px',
+                      fontFamily: 'monospace',
+                    }}>
+                      {block.hour}
+                    </span>
+                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <div style={{
+                        height: '24px',
+                        width: `${(block.duration / 120) * 100}%`,
+                        background: block.color,
+                        borderRadius: '4px',
+                        position: 'relative' as const,
+                        overflow: 'hidden' as const,
+                      }}>
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: `linear-gradient(90deg, transparent, ${block.color.replace('0.6', '0.3')}, transparent)`,
+                          animation: 'borderShimmer 3s ease-in-out infinite',
+                        }} />
+                      </div>
+                      <span style={{
+                        fontSize: '0.75rem',
+                        color: block.color,
+                        minWidth: '60px',
+                        fontWeight: '500',
+                      }}>
+                        {block.stage}
+                      </span>
+                    </div>
+                    <span style={{
+                      fontSize: '0.6875rem',
+                      color: 'rgba(255, 255, 255, 0.4)',
+                      minWidth: '50px',
+                      textAlign: 'right' as const,
+                    }}>
+                      {block.duration}min
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Legend */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                gap: '1.5rem',
+                flexWrap: 'wrap' as const,
+                fontSize: '0.75rem',
+              }}>
+                {[
+                  { name: 'Wake', color: 'rgba(34, 197, 94, 0.6)' },
+                  { name: 'N1', color: 'rgba(59, 130, 246, 0.6)' },
+                  { name: 'N2', color: 'rgba(99, 102, 241, 0.6)' },
+                  { name: 'N3', color: 'rgba(236, 72, 153, 0.6)' },
+                  { name: 'REM', color: 'rgba(251, 146, 60, 0.6)' },
+                ].map((stage) => (
+                  <div key={stage.name} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <div style={{
+                      width: '12px',
+                      height: '12px',
+                      borderRadius: '2px',
+                      background: stage.color,
+                    }} />
+                    <span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>{stage.name}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {activePrototype === 'patterns' && (
+            <motion.div
+              key="patterns"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+            >
+              <div style={{ textAlign: 'center' as const, marginBottom: '2rem' }}>
+                <h3 style={{
+                  fontSize: '1.5rem',
+                  fontWeight: '300',
+                  color: 'rgba(255, 255, 255, 0.9)',
+                  marginBottom: '0.5rem',
+                }}>
+                  Pattern Recognition Engine
+                </h3>
+                <p style={{
+                  fontSize: '0.875rem',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                }}>
+                  Recurring themes detected across 30 nights of dream data
+                </p>
+              </div>
+
+              {/* Pattern bars */}
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column' as const,
+                gap: '1.5rem',
+              }}>
+                {[
+                  { theme: 'Flying/Floating', frequency: 87, count: 26, color: 'rgba(147, 51, 234, 0.6)' },
+                  { theme: 'Being Chased', frequency: 73, count: 22, color: 'rgba(14, 165, 233, 0.6)' },
+                  { theme: 'Lost/Searching', frequency: 67, count: 20, color: 'rgba(99, 102, 241, 0.6)' },
+                  { theme: 'Childhood Places', frequency: 53, count: 16, color: 'rgba(236, 72, 153, 0.6)' },
+                  { theme: 'Water/Ocean', frequency: 47, count: 14, color: 'rgba(14, 165, 233, 0.6)' },
+                  { theme: 'Exam/Test Anxiety', frequency: 40, count: 12, color: 'rgba(251, 146, 60, 0.6)' },
+                ].map((pattern, index) => (
+                  <motion.div
+                    key={pattern.theme}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '0.5rem',
+                    }}>
+                      <span style={{
+                        fontSize: '0.875rem',
+                        color: 'rgba(255, 255, 255, 0.9)',
+                      }}>
+                        {pattern.theme}
+                      </span>
+                      <span style={{
+                        fontSize: '0.75rem',
+                        color: pattern.color,
+                        fontWeight: '500',
+                      }}>
+                        {pattern.count}/30 nights
+                      </span>
+                    </div>
+                    <div style={{
+                      height: '8px',
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      borderRadius: '4px',
+                      overflow: 'hidden' as const,
+                      position: 'relative' as const,
+                    }}>
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${pattern.frequency}%` }}
+                        transition={{ delay: index * 0.1 + 0.3, duration: 0.8 }}
+                        style={{
+                          height: '100%',
+                          background: `linear-gradient(90deg, ${pattern.color}, ${pattern.color.replace('0.6', '0.4')})`,
+                          borderRadius: '4px',
+                          position: 'relative' as const,
+                        }}
+                      >
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: `linear-gradient(90deg, transparent, ${pattern.color.replace('0.6', '0.3')}, transparent)`,
+                          animation: 'borderShimmer 3s ease-in-out infinite',
+                        }} />
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Critical question */}
+              <div style={{
+                marginTop: '2rem',
+                padding: '1rem',
+                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                fontSize: '0.75rem',
+                color: 'rgba(255, 255, 255, 0.5)',
+                fontStyle: 'italic',
+                textAlign: 'center' as const,
+              }}>
+                But do patterns reveal truth, or impose order where none exists?
               </div>
             </motion.div>
           )}
