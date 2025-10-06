@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
-import { Target, Trophy, TrendingUp, CheckCircle, ArrowLeft, ChevronDown, ChevronUp, type LucideIcon } from 'lucide-react';
+import { Target, Trophy, TrendingUp, CheckCircle, ArrowLeft, ChevronDown, ChevronUp, ArrowRight, type LucideIcon } from 'lucide-react';
 
 interface StatItem {
   value: string;
@@ -43,7 +43,11 @@ export function AirIndiaWork() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [expandedProject, setExpandedProject] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [ripplePosition, setRipplePosition] = useState<{ x: number; y: number } | null>(null);
+  const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0);
+  const [hoveredCTA, setHoveredCTA] = useState<string | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   const stats: StatItem[] = [
     {
@@ -198,6 +202,22 @@ export function AirIndiaWork() {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Carousel scroll detection
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel || !isMobile) return;
+
+    const handleScroll = () => {
+      const scrollLeft = carousel.scrollLeft;
+      const cardWidth = carousel.offsetWidth;
+      const index = Math.round(scrollLeft / cardWidth);
+      setCurrentCarouselIndex(index);
+    };
+
+    carousel.addEventListener('scroll', handleScroll);
+    return () => carousel.removeEventListener('scroll', handleScroll);
+  }, [isMobile]);
 
   return (
     <div
@@ -519,77 +539,231 @@ export function AirIndiaWork() {
           </p>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '1.5rem',
-        }}>
-          {impactCards.map((card, index) => {
-            const isHovered = hoveredCard === card.id;
+        {/* Desktop: Bento Grid */}
+        {!isMobile && (
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '1.5rem',
+          }}>
+            {impactCards.map((card, index) => {
+              const isHovered = hoveredCard === card.id;
+              const isFeatured = card.id === 1;
 
-            return (
-              <div
-                key={card.id}
-                onMouseEnter={() => setHoveredCard(card.id)}
-                onMouseLeave={() => setHoveredCard(null)}
-                style={{
-                  position: 'relative',
-                  padding: '2rem',
-                  borderRadius: '20px',
-                  background: isHovered
-                    ? `linear-gradient(135deg, rgba(${card.color}, 0.06), var(--surface-primary))`
-                    : 'var(--surface-primary)',
-                  backdropFilter: 'blur(40px)',
-                  WebkitBackdropFilter: 'blur(40px)',
-                  border: `1px solid ${isHovered ? `rgba(${card.color}, 0.3)` : 'var(--border-primary)'}`,
-                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                  transform: isHovered ? 'translateY(-4px) scale(1.01)' : 'translateY(0) scale(1)',
-                  cursor: 'pointer',
-                  animation: inView ? `scrollRevealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.7 + index * 0.1}s both` : 'none',
-                  boxShadow: isHovered
-                    ? `0 20px 40px rgba(${card.color}, 0.15)`
-                    : '0 4px 8px rgba(0, 0, 0, 0.2)',
-                }}
-              >
-                <div style={{
-                  fontSize: '0.75rem',
-                  fontWeight: '600',
-                  color: `rgb(${card.color})`,
-                  marginBottom: '1rem',
-                  letterSpacing: '0.1em',
-                  opacity: 0.8,
-                }}>
-                  {card.label}
+              return (
+                <div
+                  key={card.id}
+                  onMouseEnter={() => setHoveredCard(card.id)}
+                  onMouseLeave={() => {
+                    setHoveredCard(null);
+                    setRipplePosition(null);
+                  }}
+                  onClick={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    setRipplePosition({
+                      x: e.clientX - rect.left,
+                      y: e.clientY - rect.top,
+                    });
+                  }}
+                  style={{
+                    position: 'relative',
+                    padding: '2rem',
+                    borderRadius: '20px',
+                    gridColumn: isFeatured ? 'span 2' : 'span 1',
+                    background: isHovered
+                      ? `linear-gradient(135deg, rgba(${card.color}, 0.06), var(--surface-primary))`
+                      : 'var(--surface-primary)',
+                    backdropFilter: 'blur(40px)',
+                    WebkitBackdropFilter: 'blur(40px)',
+                    border: `1px solid transparent`,
+                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                    transform: isHovered ? 'translateY(-4px) scale(1.01)' : 'translateY(0) scale(1)',
+                    cursor: 'pointer',
+                    animation: inView ? `scrollRevealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.7 + index * 0.1}s both` : 'none',
+                    boxShadow: isHovered
+                      ? `0 20px 40px rgba(${card.color}, 0.15)`
+                      : '0 4px 8px rgba(0, 0, 0, 0.2)',
+                    overflow: 'hidden',
+                  }}
+                >
+                  {/* Border Shimmer Effect */}
+                  {isHovered && (
+                    <div style={{
+                      position: 'absolute',
+                      inset: 0,
+                      borderRadius: '20px',
+                      padding: '1px',
+                      background: `linear-gradient(90deg, transparent, rgba(${card.color}, 0.8), transparent)`,
+                      backgroundSize: '200% 100%',
+                      animation: 'borderShimmer 3s ease-in-out infinite',
+                      WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                      WebkitMaskComposite: 'xor',
+                      maskComposite: 'exclude',
+                      pointerEvents: 'none',
+                    }} />
+                  )}
+
+                  {/* Ripple Effect */}
+                  {isHovered && ripplePosition && hoveredCard === card.id && (
+                    <div style={{
+                      position: 'absolute',
+                      left: ripplePosition.x,
+                      top: ripplePosition.y,
+                      width: '20px',
+                      height: '20px',
+                      borderRadius: '50%',
+                      background: `rgba(${card.color}, 0.4)`,
+                      animation: 'ripple 0.6s ease-out',
+                      pointerEvents: 'none',
+                    }} />
+                  )}
+
+                  <div style={{
+                    fontSize: '0.75rem',
+                    fontWeight: '600',
+                    color: `rgb(${card.color})`,
+                    marginBottom: '1rem',
+                    letterSpacing: '0.1em',
+                    opacity: 0.8,
+                  }}>
+                    {card.label}
+                  </div>
+                  <h3 style={{
+                    fontSize: isFeatured ? '1.5rem' : '1.25rem',
+                    fontWeight: '500',
+                    color: 'var(--text-primary)',
+                    marginBottom: '0.75rem',
+                    letterSpacing: '-0.01em',
+                  }}>
+                    {card.title}
+                  </h3>
+                  <p style={{
+                    fontSize: '0.875rem',
+                    color: 'var(--text-tertiary)',
+                    lineHeight: '1.6',
+                    marginBottom: '1.5rem',
+                  }}>
+                    {card.description}
+                  </p>
+                  <div style={{
+                    fontSize: '0.813rem',
+                    fontWeight: '500',
+                    color: `rgb(${card.color})`,
+                    letterSpacing: '0.02em',
+                  }}>
+                    {card.metric}
+                  </div>
                 </div>
-                <h3 style={{
-                  fontSize: '1.25rem',
-                  fontWeight: '500',
-                  color: 'var(--text-primary)',
-                  marginBottom: '0.75rem',
-                  letterSpacing: '-0.01em',
-                }}>
-                  {card.title}
-                </h3>
-                <p style={{
-                  fontSize: '0.875rem',
-                  color: 'var(--text-tertiary)',
-                  lineHeight: '1.6',
-                  marginBottom: '1.5rem',
-                }}>
-                  {card.description}
-                </p>
-                <div style={{
-                  fontSize: '0.813rem',
-                  fontWeight: '500',
-                  color: `rgb(${card.color})`,
-                  letterSpacing: '0.02em',
-                }}>
-                  {card.metric}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Mobile: Horizontal Carousel */}
+        {isMobile && (
+          <>
+            <div
+              ref={carouselRef}
+              style={{
+                display: 'flex',
+                gap: '1rem',
+                overflowX: 'auto',
+                scrollSnapType: 'x mandatory',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch',
+              }}
+            >
+              {impactCards.map((card, index) => {
+                const isHovered = hoveredCard === card.id;
+
+                return (
+                  <div
+                    key={card.id}
+                    onMouseEnter={() => setHoveredCard(card.id)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                    style={{
+                      flex: '0 0 85%',
+                      scrollSnapAlign: 'center',
+                      position: 'relative',
+                      padding: '2rem',
+                      borderRadius: '20px',
+                      background: isHovered
+                        ? `linear-gradient(135deg, rgba(${card.color}, 0.06), var(--surface-primary))`
+                        : 'var(--surface-primary)',
+                      backdropFilter: 'blur(40px)',
+                      WebkitBackdropFilter: 'blur(40px)',
+                      border: `1px solid ${isHovered ? `rgba(${card.color}, 0.3)` : 'var(--border-primary)'}`,
+                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                      boxShadow: isHovered
+                        ? `0 20px 40px rgba(${card.color}, 0.15)`
+                        : '0 4px 8px rgba(0, 0, 0, 0.2)',
+                    }}
+                  >
+                    <div style={{
+                      fontSize: '0.75rem',
+                      fontWeight: '600',
+                      color: `rgb(${card.color})`,
+                      marginBottom: '1rem',
+                      letterSpacing: '0.1em',
+                      opacity: 0.8,
+                    }}>
+                      {card.label}
+                    </div>
+                    <h3 style={{
+                      fontSize: '1.25rem',
+                      fontWeight: '500',
+                      color: 'var(--text-primary)',
+                      marginBottom: '0.75rem',
+                      letterSpacing: '-0.01em',
+                    }}>
+                      {card.title}
+                    </h3>
+                    <p style={{
+                      fontSize: '0.875rem',
+                      color: 'var(--text-tertiary)',
+                      lineHeight: '1.6',
+                      marginBottom: '1.5rem',
+                    }}>
+                      {card.description}
+                    </p>
+                    <div style={{
+                      fontSize: '0.813rem',
+                      fontWeight: '500',
+                      color: `rgb(${card.color})`,
+                      letterSpacing: '0.02em',
+                    }}>
+                      {card.metric}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Carousel Progress Dots */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              marginTop: '2rem',
+            }}>
+              {impactCards.map((_, index) => (
+                <div
+                  key={index}
+                  style={{
+                    width: currentCarouselIndex === index ? '24px' : '8px',
+                    height: '8px',
+                    borderRadius: '4px',
+                    background: currentCarouselIndex === index
+                      ? 'var(--accent-primary)'
+                      : 'var(--border-primary)',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </section>
 
       {/* Project Details with Accordions */}
@@ -803,6 +977,88 @@ export function AirIndiaWork() {
             </div>
           );
         })}
+      </section>
+
+      {/* Navigation CTAs */}
+      <section style={{
+        maxWidth: '1400px',
+        margin: '0 auto',
+        padding: '6rem 1.5rem 4rem',
+        position: 'relative',
+        zIndex: 1,
+      }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: '2rem',
+          padding: '3rem',
+          borderRadius: '24px',
+          background: 'var(--surface-primary)',
+          backdropFilter: 'blur(40px)',
+          WebkitBackdropFilter: 'blur(40px)',
+          border: '1px solid var(--border-primary)',
+        }}>
+          {/* Back to All Work */}
+          <Link
+            href="/work"
+            onMouseEnter={() => setHoveredCTA('back')}
+            onMouseLeave={() => setHoveredCTA(null)}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              padding: '1rem 1.5rem',
+              borderRadius: '16px',
+              background: hoveredCTA === 'back'
+                ? 'var(--surface-secondary)'
+                : 'transparent',
+              border: '1px solid var(--border-primary)',
+              color: 'var(--text-secondary)',
+              textDecoration: 'none',
+              fontSize: '0.9375rem',
+              fontWeight: '400',
+              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              transform: hoveredCTA === 'back' ? 'translateX(-4px)' : 'translateX(0)',
+            }}
+          >
+            <ArrowLeft size={18} />
+            <span>All Work</span>
+          </Link>
+
+          {/* Next Project */}
+          <Link
+            href="/work/metamorphic-fractal-reflections"
+            onMouseEnter={() => setHoveredCTA('next')}
+            onMouseLeave={() => setHoveredCTA(null)}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              padding: '1rem 2rem',
+              borderRadius: '16px',
+              background: hoveredCTA === 'next'
+                ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(255, 255, 255, 0.08))'
+                : 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))',
+              border: hoveredCTA === 'next'
+                ? '1px solid rgba(218, 14, 41, 0.5)'
+                : '1px solid rgba(218, 14, 41, 0.3)',
+              color: 'var(--text-primary)',
+              textDecoration: 'none',
+              fontSize: '0.9375rem',
+              fontWeight: '500',
+              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              transform: hoveredCTA === 'next' ? 'translateX(4px) translateY(-2px)' : 'translateX(0) translateY(0)',
+              boxShadow: hoveredCTA === 'next'
+                ? '0 12px 32px rgba(218, 14, 41, 0.2)'
+                : 'none',
+            }}
+          >
+            <span>Next Project</span>
+            <ArrowRight size={18} />
+          </Link>
+        </div>
       </section>
 
       {/* Footer */}
