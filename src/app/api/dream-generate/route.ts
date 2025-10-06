@@ -21,11 +21,21 @@ export async function POST(request: NextRequest) {
   try {
     const apiKey = process.env.GEMINI_API_KEY;
 
+    // Debug logging (safe - only logs existence and masked key)
+    console.log('[Dream Generator] Environment check:', {
+      hasKey: !!apiKey,
+      keyLength: apiKey?.length || 0,
+      keyPreview: apiKey ? `${apiKey.slice(0, 4)}...${apiKey.slice(-4)}` : 'undefined',
+      env: process.env.NODE_ENV
+    });
+
     if (!apiKey || apiKey === 'your_api_key_here') {
+      console.warn('[Dream Generator] API key not configured or invalid');
       return new Response(
         JSON.stringify({
           error: 'API_KEY_NOT_CONFIGURED',
-          message: 'The dream generator is still waking up. Try again soon...'
+          message: 'The dream generator is still waking up. Try again soon...',
+          help: 'Developers: Check GEMINI_API_KEY in environment variables. On Vercel, redeploy after adding the key.'
         }),
         { status: 200, headers: { 'Content-Type': 'application/json' } }
       );
