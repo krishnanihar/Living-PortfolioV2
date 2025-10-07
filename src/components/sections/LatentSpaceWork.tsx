@@ -379,11 +379,16 @@ export default function LatentSpacePage() {
       {/* Interactive Dream Simulator Bridge */}
       <DreamSimulator onInteract={trackInteraction} />
 
+      {/* Choose Your Path Decision Point */}
+      <ChooseYourPath onInteract={trackInteraction} />
+
       {/* ACT II: THE TECHNOLOGY (Confrontation) */}
-      <NarrativeConnector act="Act II: The Technology">
-        Each future raised the same critical questions. Before we build this technology,
-        we must ask: should we?
-      </NarrativeConnector>
+      <div data-act="act-ii">
+        <NarrativeConnector act="Act II: The Technology">
+          Each future raised the same critical questions. Before we build this technology,
+          we must ask: should we?
+        </NarrativeConnector>
+      </div>
 
       <ImmersiveVision />
 
@@ -2595,6 +2600,332 @@ const DreamSimulator = ({ onInteract }: ComponentProps) => {
           </motion.div>
         </AnimatePresence>
       )}
+    </Section>
+  );
+};
+
+// ============================================================================
+// CHOOSE YOUR PATH: Branching Narrative Decision Point
+// ============================================================================
+
+type PathChoice = 'science' | 'ethics' | null;
+
+interface ChooseYourPathProps {
+  onInteract: (interaction: string) => void;
+}
+
+const ChooseYourPath = ({ onInteract }: ChooseYourPathProps) => {
+  const [selectedPath, setSelectedPath] = useState<PathChoice>(null);
+  const [isHoveringScience, setIsHoveringScience] = useState(false);
+  const [isHoveringEthics, setIsHoveringEthics] = useState(false);
+
+  const handlePathChoice = useCallback((path: PathChoice) => {
+    if (path) {
+      setSelectedPath(path);
+      onInteract(`path_chosen:${path}`);
+
+      // Scroll smoothly to Act II after choice
+      setTimeout(() => {
+        const actTwo = document.querySelector('[data-act="act-ii"]');
+        if (actTwo) {
+          actTwo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 800);
+    }
+  }, [onInteract]);
+
+  return (
+    <Section>
+      <div id="choose-path" style={{ padding: '8rem 1rem' }}>
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-5xl mx-auto"
+        >
+        {/* Main Question */}
+        <div className="text-center mb-16">
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-sm uppercase tracking-[0.3em] text-white/40 mb-6"
+          >
+            Your Journey Continues
+          </motion.p>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="text-4xl md:text-5xl font-light text-white/95 mb-6 leading-tight"
+          >
+            How would you like to<br />
+            explore this future?
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="text-base text-white/50 max-w-2xl mx-auto"
+          >
+            Choose your lens. Both paths lead to the same questions,
+            but your journey there will be different.
+          </motion.p>
+        </div>
+
+        {/* Path Choice Cards */}
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          {/* Science First Path */}
+          <motion.button
+            onClick={() => handlePathChoice('science')}
+            onMouseEnter={() => setIsHoveringScience(true)}
+            onMouseLeave={() => setIsHoveringScience(false)}
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative p-8 text-left rounded-2xl border transition-all duration-500"
+            style={{
+              background: selectedPath === 'science'
+                ? 'rgba(59, 130, 246, 0.15)'
+                : isHoveringScience
+                ? 'rgba(255, 255, 255, 0.04)'
+                : 'rgba(255, 255, 255, 0.02)',
+              borderColor: selectedPath === 'science'
+                ? 'rgba(59, 130, 246, 0.5)'
+                : isHoveringScience
+                ? 'rgba(255, 255, 255, 0.2)'
+                : 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(20px)',
+            }}
+          >
+            {/* Icon */}
+            <div
+              className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 transition-all duration-500"
+              style={{
+                background: selectedPath === 'science' || isHoveringScience
+                  ? 'rgba(59, 130, 246, 0.2)'
+                  : 'rgba(255, 255, 255, 0.05)',
+              }}
+            >
+              <Brain
+                size={32}
+                className="transition-colors duration-500"
+                style={{
+                  color: selectedPath === 'science' || isHoveringScience
+                    ? 'rgb(59, 130, 246)'
+                    : 'rgba(255, 255, 255, 0.4)',
+                }}
+              />
+            </div>
+
+            {/* Title */}
+            <h3 className="text-2xl font-light text-white/95 mb-3">
+              The Science First
+            </h3>
+
+            {/* Description */}
+            <p className="text-base text-white/60 leading-relaxed mb-6">
+              Explore the technology that makes this possible. See the hardware,
+              understand the architecture, experience the prototypes.
+            </p>
+
+            {/* Features List */}
+            <ul className="space-y-2 mb-6">
+              {['Technical architecture', 'Live prototypes', 'Hardware demos'].map((feature, i) => (
+                <li key={i} className="flex items-center text-sm text-white/50">
+                  <ChevronRight
+                    size={16}
+                    className="mr-2"
+                    style={{
+                      color: selectedPath === 'science' || isHoveringScience
+                        ? 'rgb(59, 130, 246)'
+                        : 'rgba(255, 255, 255, 0.3)',
+                    }}
+                  />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+
+            {/* Selection Indicator */}
+            {selectedPath === 'science' && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex items-center text-sm font-medium"
+                style={{ color: 'rgb(59, 130, 246)' }}
+              >
+                <Sparkles size={16} className="mr-2" />
+                Your path chosen
+              </motion.div>
+            )}
+
+            {!selectedPath && (
+              <div
+                className="text-sm font-medium transition-opacity duration-300"
+                style={{
+                  color: isHoveringScience ? 'rgb(59, 130, 246)' : 'rgba(255, 255, 255, 0.4)',
+                  opacity: isHoveringScience ? 1 : 0.6,
+                }}
+              >
+                Choose this path →
+              </div>
+            )}
+          </motion.button>
+
+          {/* Ethics First Path */}
+          <motion.button
+            onClick={() => handlePathChoice('ethics')}
+            onMouseEnter={() => setIsHoveringEthics(true)}
+            onMouseLeave={() => setIsHoveringEthics(false)}
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative p-8 text-left rounded-2xl border transition-all duration-500"
+            style={{
+              background: selectedPath === 'ethics'
+                ? 'rgba(232, 121, 249, 0.15)'
+                : isHoveringEthics
+                ? 'rgba(255, 255, 255, 0.04)'
+                : 'rgba(255, 255, 255, 0.02)',
+              borderColor: selectedPath === 'ethics'
+                ? 'rgba(232, 121, 249, 0.5)'
+                : isHoveringEthics
+                ? 'rgba(255, 255, 255, 0.2)'
+                : 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(20px)',
+            }}
+          >
+            {/* Icon */}
+            <div
+              className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 transition-all duration-500"
+              style={{
+                background: selectedPath === 'ethics' || isHoveringEthics
+                  ? 'rgba(232, 121, 249, 0.2)'
+                  : 'rgba(255, 255, 255, 0.05)',
+              }}
+            >
+              <Shield
+                size={32}
+                className="transition-colors duration-500"
+                style={{
+                  color: selectedPath === 'ethics' || isHoveringEthics
+                    ? 'rgb(232, 121, 249)'
+                    : 'rgba(255, 255, 255, 0.4)',
+                }}
+              />
+            </div>
+
+            {/* Title */}
+            <h3 className="text-2xl font-light text-white/95 mb-3">
+              The Ethics First
+            </h3>
+
+            {/* Description */}
+            <p className="text-base text-white/60 leading-relaxed mb-6">
+              Start with the critical questions. What are the implications?
+              What might we lose? Who decides?
+            </p>
+
+            {/* Features List */}
+            <ul className="space-y-2 mb-6">
+              {['Ethical frameworks', 'Privacy concerns', 'Social implications'].map((feature, i) => (
+                <li key={i} className="flex items-center text-sm text-white/50">
+                  <ChevronRight
+                    size={16}
+                    className="mr-2"
+                    style={{
+                      color: selectedPath === 'ethics' || isHoveringEthics
+                        ? 'rgb(232, 121, 249)'
+                        : 'rgba(255, 255, 255, 0.3)',
+                    }}
+                  />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+
+            {/* Selection Indicator */}
+            {selectedPath === 'ethics' && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex items-center text-sm font-medium"
+                style={{ color: 'rgb(232, 121, 249)' }}
+              >
+                <Sparkles size={16} className="mr-2" />
+                Your path chosen
+              </motion.div>
+            )}
+
+            {!selectedPath && (
+              <div
+                className="text-sm font-medium transition-opacity duration-300"
+                style={{
+                  color: isHoveringEthics ? 'rgb(232, 121, 249)' : 'rgba(255, 255, 255, 0.4)',
+                  opacity: isHoveringEthics ? 1 : 0.6,
+                }}
+              >
+                Choose this path →
+              </div>
+            )}
+          </motion.button>
+        </div>
+
+        {/* Path Indicator */}
+        <AnimatePresence>
+          {selectedPath && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="text-center"
+            >
+              <div
+                className="inline-flex items-center px-4 py-2 rounded-full text-sm"
+                style={{
+                  background: selectedPath === 'science'
+                    ? 'rgba(59, 130, 246, 0.1)'
+                    : 'rgba(232, 121, 249, 0.1)',
+                  border: '1px solid',
+                  borderColor: selectedPath === 'science'
+                    ? 'rgba(59, 130, 246, 0.3)'
+                    : 'rgba(232, 121, 249, 0.3)',
+                  color: selectedPath === 'science'
+                    ? 'rgb(59, 130, 246)'
+                    : 'rgb(232, 121, 249)',
+                }}
+              >
+                <div
+                  className="w-2 h-2 rounded-full mr-2"
+                  style={{
+                    background: selectedPath === 'science'
+                      ? 'rgb(59, 130, 246)'
+                      : 'rgb(232, 121, 249)',
+                  }}
+                />
+                Following the {selectedPath === 'science' ? 'Science' : 'Ethics'} path
+              </div>
+              <p className="text-xs text-white/40 mt-3">
+                Don't worry — you'll see everything. This just changes the order.
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        </motion.div>
+      </div>
     </Section>
   );
 };
