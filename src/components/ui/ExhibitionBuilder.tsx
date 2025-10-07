@@ -117,8 +117,9 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
 
   return (
     <div className={className} style={{
-      backgroundColor: '#FFFFFF',
-      borderBottom: '1px solid #DADADA',
+      backgroundColor: 'var(--surface-primary)',
+      backdropFilter: 'blur(var(--blur-lg))',
+      borderBottom: '1px solid var(--border-primary)',
       padding: '1.5rem 2rem',
     }}>
       <div style={{ maxWidth: '1600px', margin: '0 auto' }}>
@@ -127,7 +128,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
           <h2 style={{
             fontSize: '0.8125rem',
             fontWeight: '500',
-            color: '#606060',
+            color: 'var(--text-secondary)',
             textTransform: 'uppercase',
             letterSpacing: '0.05em',
             marginBottom: '0.5rem',
@@ -136,7 +137,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
           </h2>
           <p style={{
             fontSize: '0.875rem',
-            color: '#9E9E9E',
+            color: 'var(--text-tertiary)',
             lineHeight: '1.5',
           }}>
             Describe the art experience you want, and AI will curate a thematic exhibition
@@ -161,10 +162,10 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                 width: '100%',
                 padding: '0.75rem 1rem',
                 fontSize: '0.9375rem',
-                border: '1px solid #D0D0D0', outline: 'none',
+                border: '1px solid var(--border-secondary)', outline: 'none',
                 borderRadius: '4px',
-                backgroundColor: '#FFFFFF',
-                color: '#1A1A1A',
+                backgroundColor: 'var(--surface-primary)',
+                color: 'var(--text-primary)',
                 fontFamily: 'inherit',
                 letterSpacing: '0.005em',
                 resize: 'none',
@@ -176,11 +177,11 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
               <div style={{
                 marginTop: '0.5rem',
                 padding: '0.5rem 0.75rem',
-                backgroundColor: '#FEE',
-                border: '1px solid #FCC',
+                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                border: '1px solid rgba(239, 68, 68, 0.2)',
                 borderRadius: '4px',
                 fontSize: '0.8125rem',
-                color: '#C00',
+                color: 'rgb(239, 68, 68)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
@@ -200,9 +201,9 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                 padding: '0.75rem 1.25rem',
                 fontSize: '0.9375rem',
                 fontWeight: '500',
-                backgroundColor: '#FFFFFF',
-                color: '#1A1A1A',
-                border: '1px solid #D0D0D0', outline: 'none',
+                backgroundColor: 'var(--surface-primary)',
+                color: 'var(--text-primary)',
+                border: '1px solid var(--border-secondary)', outline: 'none',
                 borderRadius: '4px',
                 cursor: isGenerating ? 'not-allowed' : 'pointer',
                 opacity: isGenerating ? 0.6 : 1,
@@ -225,10 +226,10 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                 padding: '0.75rem 1.5rem',
                 fontSize: '0.9375rem',
                 fontWeight: '500',
-                backgroundColor: '#1A1A1A',
-                color: '#FFFFFF',
+                backgroundColor: 'var(--brand-red)',
+                color: 'var(--text-primary)',
                 border: 'none',
-                borderRadius: '4px',
+                borderRadius: 'var(--radius-base)',
                 cursor: (isGenerating || !prompt.trim()) ? 'not-allowed' : 'pointer',
                 opacity: (isGenerating || !prompt.trim()) ? 0.6 : 1,
                 whiteSpace: 'nowrap',
@@ -237,6 +238,17 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
+                transition: 'transform var(--duration-base) var(--ease-premium), box-shadow var(--duration-base) var(--ease-premium)',
+              }}
+              onMouseEnter={(e) => {
+                if (!isGenerating && prompt.trim()) {
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(218, 14, 41, 0.3)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             >
               {isGenerating ? (
@@ -259,7 +271,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
           <div style={{ marginTop: '1rem' }}>
             <div style={{
               fontSize: '0.75rem',
-              color: '#9E9E9E',
+              color: 'var(--text-tertiary)',
               marginBottom: '0.5rem',
             }}>
               Try these:
@@ -276,21 +288,21 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                   style={{
                     padding: '0.375rem 0.75rem',
                     fontSize: '0.8125rem',
-                    backgroundColor: '#F5F5F5',
-                    color: '#606060',
-                    border: '1px solid #EBEBEB',
+                    backgroundColor: 'var(--surface-secondary)',
+                    color: 'var(--text-secondary)',
+                    border: '1px solid var(--border-secondary)',
                     borderRadius: '4px',
                     cursor: 'pointer', transition: 'all 0.15s ease',
                     fontFamily: 'inherit',
                 letterSpacing: '0.005em',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#EBEBEB';
-                    e.currentTarget.style.borderColor = '#D0D0D0';
+                    e.currentTarget.style.backgroundColor = 'var(--border-secondary)';
+                    e.currentTarget.style.borderColor = 'var(--border-secondary)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#F5F5F5';
-                    e.currentTarget.style.borderColor = '#EBEBEB';
+                    e.currentTarget.style.backgroundColor = 'var(--surface-secondary)';
+                    e.currentTarget.style.borderColor = 'var(--border-secondary)';
                   }}
                 >
                   {example}
@@ -302,8 +314,8 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
           <div style={{
             marginTop: '1rem',
             padding: '1.5rem',
-            backgroundColor: '#F0F4FF',
-            border: '1px solid #C3D4F5',
+            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+            border: '1px solid rgba(99, 102, 241, 0.2)',
             borderRadius: '6px',
           }}>
             <div style={{
@@ -311,19 +323,19 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
               alignItems: 'center',
               gap: '0.75rem',
             }}>
-              <Loader size={18} className="animate-spin" style={{ color: '#606060' }} />
+              <Loader size={18} className="animate-spin" style={{ color: 'var(--text-secondary)' }} />
               <div>
                 <div style={{
                   fontSize: '0.875rem',
                   fontWeight: '500',
-                  color: '#1A1A1A',
+                  color: 'var(--text-primary)',
                   marginBottom: '0.25rem',
                 }}>
                   AI is thinking...
                 </div>
                 <div style={{
                   fontSize: '0.8125rem',
-                  color: '#606060',
+                  color: 'var(--text-secondary)',
                   fontStyle: 'italic',
                 }}>
                   {thinkingSteps[thinkingStep]}
@@ -343,7 +355,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                   style={{
                     flex: 1,
                     height: '3px',
-                    backgroundColor: i <= thinkingStep ? '#C3D4F5' : '#E8E8E8',
+                    backgroundColor: i <= thinkingStep ? 'rgba(99, 102, 241, 0.2)' : 'var(--border-primary)',
                     borderRadius: '2px',
                     transition: 'background-color 0.3s ease',
                   }}

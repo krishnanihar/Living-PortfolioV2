@@ -19,8 +19,8 @@ export function MythOSHero() {
 
   return (
     <section style={{
-      backgroundColor: '#FFFFFF',
-      borderBottom: '1px solid #E0E0E0',
+      backgroundColor: 'var(--bg-primary)',
+      borderBottom: '1px solid var(--border-primary)',
       minHeight: '85vh',
       display: 'flex',
       alignItems: 'center',
@@ -28,7 +28,7 @@ export function MythOSHero() {
       padding: '4rem 2rem',
       position: 'relative',
       opacity: isVisible ? 1 : 0,
-      transition: 'opacity 0.8s ease-in-out',
+      transition: 'opacity 0.8s var(--ease-premium)',
     }}>
       <div style={{ maxWidth: '900px', textAlign: 'center' }}>
         {/* Badge */}
@@ -37,13 +37,14 @@ export function MythOSHero() {
           alignItems: 'center',
           gap: '0.5rem',
           padding: '0.5rem 1rem',
-          backgroundColor: '#F0F4FF',
-          border: '1px solid #C3D4F5',
-          borderRadius: '24px',
+          backgroundColor: 'var(--surface-primary)',
+          border: '1px solid var(--border-primary)',
+          borderRadius: 'var(--radius-full)',
           marginBottom: '2rem',
           fontSize: '0.8125rem',
           fontWeight: '500',
-          color: '#606060',
+          color: 'var(--text-tertiary)',
+          backdropFilter: 'blur(var(--blur-md))',
         }}>
           <Sparkles size={14} />
           AI-Powered Art Curator
@@ -55,19 +56,19 @@ export function MythOSHero() {
           fontWeight: '600',
           lineHeight: '1.1',
           letterSpacing: '-0.02em',
-          color: '#1A1A1A',
+          color: 'var(--text-primary)',
           marginBottom: '1.5rem',
         }}>
           Art History Speaks
           <br />
-          <span style={{ color: '#606060' }}>Your Language</span>
+          <span style={{ color: 'var(--text-tertiary)' }}>Your Language</span>
         </h1>
 
         {/* Problem Statement */}
         <p style={{
           fontSize: '1.25rem',
           lineHeight: '1.6',
-          color: '#606060',
+          color: 'var(--text-secondary)',
           marginBottom: '2rem',
           maxWidth: '700px',
           margin: '0 auto 2rem',
@@ -75,21 +76,22 @@ export function MythOSHero() {
           Ever walked through a museum feeling lost? Art history wasn't written for you—centuries of elite knowledge, locked behind academic language.
         </p>
 
-        {/* Solution */}
+        {/* Solution - Glassmorphism Card */}
         <div style={{
-          backgroundColor: '#FAFAFA',
-          border: '1px solid #E8E8E8',
-          borderRadius: '8px',
+          backgroundColor: 'var(--surface-primary)',
+          border: '1px solid var(--border-primary)',
+          borderRadius: 'var(--radius-xl)',
           padding: '2rem',
           marginBottom: '2.5rem',
           textAlign: 'left',
+          backdropFilter: 'blur(var(--blur-lg))',
         }}>
           <div style={{
             fontSize: '0.75rem',
             fontWeight: '600',
             textTransform: 'uppercase',
             letterSpacing: '0.1em',
-            color: '#9E9E9E',
+            color: 'var(--text-muted)',
             marginBottom: '1rem',
           }}>
             What if you could just... ask?
@@ -104,26 +106,26 @@ export function MythOSHero() {
             <div>
               <div style={{
                 fontSize: '0.875rem',
-                color: '#9E9E9E',
+                color: 'var(--text-tertiary)',
                 marginBottom: '0.5rem',
               }}>
                 You say:
               </div>
               <div style={{
                 fontSize: '1rem',
-                color: '#1A1A1A',
+                color: 'var(--text-primary)',
                 fontStyle: 'italic',
               }}>
                 "Art about loneliness, but beautiful"
               </div>
             </div>
 
-            <ArrowDown size={20} color="#C0C0C0" style={{ transform: 'rotate(-90deg)' }} />
+            <ArrowDown size={20} color="var(--text-muted)" style={{ transform: 'rotate(-90deg)' }} />
 
             <div>
               <div style={{
                 fontSize: '0.875rem',
-                color: '#9E9E9E',
+                color: 'var(--text-tertiary)',
                 marginBottom: '0.5rem',
               }}>
                 AI discovers:
@@ -136,11 +138,11 @@ export function MythOSHero() {
                 {['Solitary figures', 'Empty spaces', 'Melancholic colors', '7 centuries'].map((tag) => (
                   <span key={tag} style={{
                     padding: '0.25rem 0.75rem',
-                    backgroundColor: '#E8F2FF',
-                    border: '1px solid #B8DAFF',
-                    borderRadius: '4px',
+                    backgroundColor: 'var(--surface-secondary)',
+                    border: '1px solid var(--border-primary)',
+                    borderRadius: 'var(--radius-base)',
                     fontSize: '0.8125rem',
-                    color: '#1A1A1A',
+                    color: 'var(--text-secondary)',
                   }}>
                     {tag}
                   </span>
@@ -162,14 +164,14 @@ export function MythOSHero() {
             <div style={{
               fontSize: '1.5rem',
               fontWeight: '600',
-              color: '#1A1A1A',
+              color: 'var(--text-primary)',
               marginBottom: '0.5rem',
             }}>
               Understands Intent
             </div>
             <div style={{
               fontSize: '0.9375rem',
-              color: '#606060',
+              color: 'var(--text-secondary)',
               lineHeight: '1.5',
             }}>
               Gemini AI translates abstract feelings into visual patterns across centuries
@@ -180,14 +182,14 @@ export function MythOSHero() {
             <div style={{
               fontSize: '1.5rem',
               fontWeight: '600',
-              color: '#1A1A1A',
+              color: 'var(--text-primary)',
               marginBottom: '0.5rem',
             }}>
               Sees Connections
             </div>
             <div style={{
               fontSize: '0.9375rem',
-              color: '#606060',
+              color: 'var(--text-secondary)',
               lineHeight: '1.5',
             }}>
               Discovers patterns human curators might take years to notice
@@ -198,14 +200,14 @@ export function MythOSHero() {
             <div style={{
               fontSize: '1.5rem',
               fontWeight: '600',
-              color: '#1A1A1A',
+              color: 'var(--text-primary)',
               marginBottom: '0.5rem',
             }}>
               Explains Why
             </div>
             <div style={{
               fontSize: '0.9375rem',
-              color: '#606060',
+              color: 'var(--text-secondary)',
               lineHeight: '1.5',
             }}>
               Every artwork comes with AI analysis: symbolism, context, significance
@@ -220,19 +222,19 @@ export function MythOSHero() {
             padding: '1rem 2.5rem',
             fontSize: '1rem',
             fontWeight: '500',
-            backgroundColor: '#1A1A1A',
-            color: '#FFFFFF',
+            backgroundColor: 'var(--brand-red)',
+            color: 'var(--text-primary)',
             border: 'none',
-            borderRadius: '6px',
+            borderRadius: 'var(--radius-md)',
             cursor: 'pointer',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.75rem',
-            transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+            transition: 'transform var(--duration-base) var(--ease-premium), box-shadow var(--duration-base) var(--ease-premium)',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+            e.currentTarget.style.boxShadow = '0 8px 24px rgba(218, 14, 41, 0.3)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'translateY(0)';
@@ -246,7 +248,7 @@ export function MythOSHero() {
         <div style={{
           marginTop: '1rem',
           fontSize: '0.875rem',
-          color: '#9E9E9E',
+          color: 'var(--text-muted)',
         }}>
           No art history degree required
         </div>

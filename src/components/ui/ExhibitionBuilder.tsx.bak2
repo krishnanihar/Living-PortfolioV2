@@ -41,6 +41,15 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
     setPrompt(example);
   };
 
+  const [thinkingStep, setThinkingStep] = useState(0);
+  const thinkingSteps = [
+    'Interpreting your vision...',
+    'Analyzing visual patterns...',
+    'Searching across centuries...',
+    'Discovering connections...',
+    'Curating exhibition...',
+  ];
+
   const generateExhibition = async () => {
     if (!prompt || prompt.trim().length < 5) {
       setError('Please describe what kind of art you want to explore (at least 5 characters)');
@@ -49,6 +58,15 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
 
     setError('');
     setIsGenerating(true);
+    setThinkingStep(0);
+
+    // Animate through thinking steps
+    const stepInterval = setInterval(() => {
+      setThinkingStep((prev) => {
+        if (prev < thinkingSteps.length - 1) return prev + 1;
+        return prev;
+      });
+    }, 800);
 
     try {
       const response = await fetch('/api/exhibition-generate', {
@@ -68,11 +86,13 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
       }
 
       // Pass exhibition data to parent
+      clearInterval(stepInterval);
       onExhibitionGenerated(data.exhibition);
       setIsGenerating(false);
 
     } catch (error: any) {
       console.error('Exhibition generation error:', error);
+      clearInterval(stepInterval);
       setError(error.message || 'Failed to generate exhibition');
       setIsGenerating(false);
     }
@@ -205,7 +225,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                 padding: '0.75rem 1.5rem',
                 fontSize: '0.9375rem',
                 fontWeight: '500',
-                backgroundColor: '#2C2C2C',
+                backgroundColor: '#1A1A1A',
                 color: '#FFFFFF',
                 border: 'none',
                 borderRadius: '4px',
@@ -234,8 +254,8 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
           </div>
         </div>
 
-        {/* Example Prompts */}
-        {!isGenerating && (
+        {/* Example Prompts / Thinking Animation */}
+        {!isGenerating ? (
           <div style={{ marginTop: '1rem' }}>
             <div style={{
               fontSize: '0.75rem',
@@ -266,13 +286,68 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.backgroundColor = '#EBEBEB';
+                    e.currentTarget.style.borderColor = '#D0D0D0';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.backgroundColor = '#F5F5F5';
+                    e.currentTarget.style.borderColor = '#EBEBEB';
                   }}
                 >
                   {example}
                 </button>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div style={{
+            marginTop: '1rem',
+            padding: '1.5rem',
+            backgroundColor: '#F0F4FF',
+            border: '1px solid #C3D4F5',
+            borderRadius: '6px',
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+            }}>
+              <Loader size={18} className="animate-spin" style={{ color: '#606060' }} />
+              <div>
+                <div style={{
+                  fontSize: '0.875rem',
+                  fontWeight: '500',
+                  color: '#1A1A1A',
+                  marginBottom: '0.25rem',
+                }}>
+                  AI is thinking...
+                </div>
+                <div style={{
+                  fontSize: '0.8125rem',
+                  color: '#606060',
+                  fontStyle: 'italic',
+                }}>
+                  {thinkingSteps[thinkingStep]}
+                </div>
+              </div>
+            </div>
+
+            {/* Progress Dots */}
+            <div style={{
+              display: 'flex',
+              gap: '0.5rem',
+              marginTop: '1rem',
+            }}>
+              {thinkingSteps.map((_, i) => (
+                <div
+                  key={i}
+                  style={{
+                    flex: 1,
+                    height: '3px',
+                    backgroundColor: i <= thinkingStep ? '#C3D4F5' : '#E8E8E8',
+                    borderRadius: '2px',
+                    transition: 'background-color 0.3s ease',
+                  }}
+                />
               ))}
             </div>
           </div>
