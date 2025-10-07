@@ -373,6 +373,9 @@ export default function LatentSpacePage() {
         The dream vanishes. But what if it didn't?
       </NarrativeConnector>
 
+      {/* First-Person Memory Sequence */}
+      <FirstPersonMemory onInteract={trackInteraction} />
+
       <ResearchOverview />
       <StoryActOne onInteract={trackInteraction} />
 
@@ -2926,6 +2929,279 @@ const ChooseYourPath = ({ onInteract }: ChooseYourPathProps) => {
         </AnimatePresence>
         </motion.div>
       </div>
+    </Section>
+  );
+};
+
+// ============================================================================
+// FIRST-PERSON MEMORY: Cinematic Dream Reliving Experience
+// ============================================================================
+
+interface FirstPersonMemoryProps {
+  onInteract: (interaction: string) => void;
+}
+
+const FirstPersonMemory = ({ onInteract }: FirstPersonMemoryProps) => {
+  const [currentScene, setCurrentScene] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.95, 1, 1, 0.95]);
+
+  const memoryScenes = [
+    {
+      time: "3:47 AM",
+      sensation: "weightless",
+      visual: "You're floating above a city of impossible geometry.",
+      emotion: "curiosity",
+      detail: "Buildings twist like DNA helices, their windows glowing with colors that don't exist in waking life.",
+    },
+    {
+      time: "3:51 AM",
+      sensation: "connected",
+      visual: "Someone you've never met feels like a lifelong friend.",
+      emotion: "belonging",
+      detail: "Their face shifts between familiar and foreign, but the connection is undeniable—deeper than words.",
+    },
+    {
+      time: "3:54 AM",
+      sensation: "transcendent",
+      visual: "You understand everything, for just a moment.",
+      emotion: "clarity",
+      detail: "The answer to questions you forgot you asked. A truth that feels eternal, slipping away like water through fingers.",
+    },
+    {
+      time: "4:02 AM",
+      sensation: "fading",
+      visual: "The dream is unraveling.",
+      emotion: "loss",
+      detail: "You try to hold on, but it dissolves. By 4:07 AM, only fragments remain. By 4:12 AM, even those are gone.",
+    },
+  ];
+
+  const handlePlayMemory = useCallback(() => {
+    setIsPlaying(true);
+    setCurrentScene(0);
+    onInteract('memory_sequence_started');
+
+    // Auto-advance through scenes
+    const interval = setInterval(() => {
+      setCurrentScene((prev) => {
+        if (prev < memoryScenes.length - 1) {
+          return prev + 1;
+        } else {
+          clearInterval(interval);
+          setTimeout(() => setIsPlaying(false), 2000);
+          return prev;
+        }
+      });
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [onInteract, memoryScenes.length]);
+
+  return (
+    <Section>
+      <motion.div
+        ref={sectionRef}
+        style={{ opacity, scale }}
+        className="relative min-h-screen flex items-center justify-center"
+      >
+        <div className="max-w-5xl mx-auto px-4">
+          {!isPlaying ? (
+            // Trigger screen
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1 }}
+              className="text-center"
+            >
+              <motion.p
+                className="text-sm uppercase tracking-[0.3em] text-white/30 mb-8"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                Memory Fragment #4719
+              </motion.p>
+
+              <motion.h2
+                className="text-5xl md:text-6xl font-extralight text-white/95 mb-8 leading-tight"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                What did you dream<br />
+                last night?
+              </motion.h2>
+
+              <motion.p
+                className="text-lg text-white/60 mb-12 max-w-2xl mx-auto leading-relaxed"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+              >
+                Most of us can't remember. Within five minutes of waking, 95% vanishes.
+                But what if you could relive it?
+              </motion.p>
+
+              <motion.button
+                onClick={handlePlayMemory}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="group relative px-8 py-4 rounded-full border transition-all duration-300"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  borderColor: 'rgba(255, 255, 255, 0.2)',
+                  backdropFilter: 'blur(20px)',
+                }}
+              >
+                <div className="flex items-center gap-3">
+                  <Play size={20} className="text-white/70 group-hover:text-white transition-colors" />
+                  <span className="text-white/90 font-light">Experience a memory</span>
+                </div>
+              </motion.button>
+
+              <motion.p
+                className="text-xs text-white/30 mt-6 italic"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+              >
+                A 16-second glimpse into someone's dream from last Tuesday
+              </motion.p>
+            </motion.div>
+          ) : (
+            // Memory playback
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentScene}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.8 }}
+                className="relative"
+              >
+                {/* Vignette overlay */}
+                <div
+                  className="fixed inset-0 pointer-events-none"
+                  style={{
+                    background: 'radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%)',
+                    zIndex: 1,
+                  }}
+                />
+
+                {/* Scene content */}
+                <div className="relative z-10 text-center space-y-8">
+                  {/* Timestamp */}
+                  <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="text-xs uppercase tracking-[0.4em] text-white/40"
+                  >
+                    {memoryScenes[currentScene].time}
+                  </motion.div>
+
+                  {/* Sensation badge */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4 }}
+                    className="inline-flex items-center px-4 py-2 rounded-full"
+                    style={{
+                      background: 'rgba(139, 92, 246, 0.1)',
+                      border: '1px solid rgba(139, 92, 246, 0.3)',
+                    }}
+                  >
+                    <Sparkles size={14} className="mr-2 text-purple-400" />
+                    <span className="text-sm text-purple-300 capitalize">
+                      {memoryScenes[currentScene].sensation}
+                    </span>
+                  </motion.div>
+
+                  {/* Main visual */}
+                  <motion.h3
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6, duration: 1 }}
+                    className="text-4xl md:text-5xl font-light text-white/95 leading-tight px-8"
+                  >
+                    {memoryScenes[currentScene].visual}
+                  </motion.h3>
+
+                  {/* Detail */}
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1, duration: 1.2 }}
+                    className="text-lg text-white/60 max-w-3xl mx-auto leading-relaxed px-8"
+                  >
+                    {memoryScenes[currentScene].detail}
+                  </motion.p>
+
+                  {/* Emotion indicator */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.5 }}
+                    className="flex items-center justify-center gap-2 text-sm text-white/40"
+                  >
+                    <Heart size={14} className="text-pink-400/50" />
+                    <span className="capitalize">{memoryScenes[currentScene].emotion}</span>
+                  </motion.div>
+
+                  {/* Progress dots */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.8 }}
+                    className="flex items-center justify-center gap-2 pt-8"
+                  >
+                    {memoryScenes.map((_, i) => (
+                      <div
+                        key={i}
+                        className="w-2 h-2 rounded-full transition-all duration-500"
+                        style={{
+                          background: i === currentScene
+                            ? 'rgba(139, 92, 246, 0.8)'
+                            : i < currentScene
+                            ? 'rgba(255, 255, 255, 0.3)'
+                            : 'rgba(255, 255, 255, 0.1)',
+                          transform: i === currentScene ? 'scale(1.5)' : 'scale(1)',
+                        }}
+                      />
+                    ))}
+                  </motion.div>
+
+                  {/* Final scene closing text */}
+                  {currentScene === memoryScenes.length - 1 && (
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 2.5, duration: 2 }}
+                      className="text-sm text-white/30 italic pt-12"
+                    >
+                      And then... you forget.
+                    </motion.p>
+                  )}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          )}
+        </div>
+      </motion.div>
     </Section>
   );
 };
