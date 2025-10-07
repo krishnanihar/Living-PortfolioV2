@@ -232,7 +232,7 @@ export const projects: Project[] = [
   {
     id: 'latent-space',
     title: 'Latent Space',
-    company: 'MIT Media Lab',
+    company: 'Personal Research',
     description: 'A speculative exploration of dream technology through critical design. What if we could navigate our dreams while preserving the mystery of consciousness? An interactive experience exploring ethical frameworks for brain-computer interfaces and the implications of consciousness data.',
     category: 'research',
     status: 'concept',
@@ -249,7 +249,7 @@ export const projects: Project[] = [
     meta: {
       year: '2024',
       role: 'Designer & Researcher',
-      team: 'MIT Media Lab',
+      team: 'Solo Project',
       duration: 'Four months',
     },
     metrics: {

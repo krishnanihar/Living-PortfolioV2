@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useRef, useState, useCallback, memo } from "react";
 import { motion, useMotionValue, useSpring, AnimatePresence, useTransform } from "framer-motion";
-import { Play, Download, Sparkles, CircuitBoard, Network, Shield, ArrowRight, Moon, Zap, Brain, Cpu, Activity, Waves, ChevronRight, Volume2, Mic, Camera, FileText, Lock, Cloud, Layers, BarChart3, Eye, Heart, Timer } from "lucide-react";
+import { Play, Download, Sparkles, CircuitBoard, Network, Shield, ArrowRight, Moon, Zap, Brain, Cpu, Activity, Waves, ChevronRight, ChevronDown, Volume2, Mic, Camera, FileText, Lock, Cloud, Layers, BarChart3, Eye, Heart, Timer } from "lucide-react";
 import { SleepStagesInteractive, BrainWavesInteractive, DetectionSystemInteractive, ProcessingPipelineInteractive, ResearchPapers, Hypnogram, WaveformPattern, MultiChannelEEG, DetectionVisualization, ConceptVisualization } from './LatentSpaceComponents';
 
 /**
@@ -189,7 +189,7 @@ const HeroSection = memo(({ isLoaded, onInteract }: HeroSectionProps) => {
           whileTap={{ scale: 0.98 }}
         >
           <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 animate-pulse" />
-          <span className="text-[10px] font-light tracking-[0.3em] text-white/30 uppercase">MIT Media Lab</span>
+          <span className="text-[10px] font-light tracking-[0.3em] text-white/30 uppercase">Speculative Design</span>
         </motion.div>
 
         <motion.h1
@@ -621,20 +621,218 @@ const InteractiveConceptsSection = ({ onInteract }: ComponentProps) => {
 
 // ---------- Technical Architecture ----------
 const TechnicalArchitecture = ({ onInteract }: ComponentProps) => {
+  const [selectedNode, setSelectedNode] = useState<string | null>(null);
+
+  const nodes = [
+    {
+      id: 'sensor',
+      label: 'EEG Sensor',
+      icon: <Brain className="w-6 h-6" />,
+      position: { x: 10, y: 50 },
+      details: {
+        tech: '4-channel dry electrodes',
+        sampling: '256 Hz sampling rate',
+        power: 'Low-power Bluetooth 5.0',
+        privacy: 'No cloud connectivity'
+      }
+    },
+    {
+      id: 'preprocessing',
+      label: 'Signal Processing',
+      icon: <Waves className="w-6 h-6" />,
+      position: { x: 30, y: 50 },
+      details: {
+        tech: 'Bandpass filter 0.5-45 Hz',
+        processing: 'ICA artifact removal',
+        latency: '< 5ms processing time',
+        privacy: 'On-device computation'
+      }
+    },
+    {
+      id: 'ml',
+      label: 'ML Model',
+      icon: <Cpu className="w-6 h-6" />,
+      position: { x: 50, y: 50 },
+      details: {
+        tech: 'CNN-based sleep staging',
+        model: 'Edge-optimized TensorFlow Lite',
+        accuracy: '94% stage classification',
+        privacy: 'No data leaves device'
+      }
+    },
+    {
+      id: 'storage',
+      label: 'Local Storage',
+      icon: <Lock className="w-6 h-6" />,
+      position: { x: 70, y: 50 },
+      details: {
+        tech: 'AES-256 encryption',
+        storage: 'Secure Enclave (iOS)',
+        capacity: '~50MB per night',
+        privacy: 'Zero-knowledge architecture'
+      }
+    },
+    {
+      id: 'interface',
+      label: 'User Interface',
+      icon: <Sparkles className="w-6 h-6" />,
+      position: { x: 90, y: 50 },
+      details: {
+        tech: 'React Native app',
+        features: 'Voice-first interaction',
+        offline: 'Full offline capability',
+        privacy: 'Local-only visualization'
+      }
+    }
+  ];
+
   return (
     <Section>
-      <SectionTitle eyebrow="System Architecture" title="Interactive Data Flow" />
-      <div className="max-w-4xl mx-auto">
+      <SectionTitle eyebrow="System Architecture" title="Privacy-First Data Flow" />
+      <div className="max-w-6xl mx-auto">
         <p className="text-center text-sm text-white/40 mb-12">
-          A speculative technical architecture for privacy-first dream analysis.
+          A speculative technical architecture where all processing happens on-device.
+          <br />
+          <span className="text-white/30">Click any node to explore technical details.</span>
         </p>
-        <div className="h-[500px] rounded-2xl bg-white/[0.02] border border-white/10 flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-6xl mb-4 opacity-40">🏗️</div>
-            <p className="text-sm text-white/60">Technical Architecture & Data Flow</p>
-            <p className="text-xs text-white/40 mt-2">Interactive visualization coming soon</p>
-          </div>
+
+        {/* Architecture diagram */}
+        <div className="relative h-[400px] rounded-2xl bg-white/[0.02] border border-white/10 mb-8 overflow-hidden">
+          {/* Connection lines */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none">
+            {nodes.slice(0, -1).map((node, i) => {
+              const nextNode = nodes[i + 1];
+              return (
+                <motion.line
+                  key={i}
+                  x1={`${node.position.x}%`}
+                  y1={`${node.position.y}%`}
+                  x2={`${nextNode.position.x}%`}
+                  y2={`${nextNode.position.y}%`}
+                  stroke="rgba(255,255,255,0.1)"
+                  strokeWidth="2"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1, delay: i * 0.2 }}
+                />
+              );
+            })}
+          </svg>
+
+          {/* Animated data particles */}
+          {[0, 1, 2, 3].map((i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500"
+              initial={{ left: '10%', top: '50%', opacity: 0 }}
+              animate={{
+                left: ['10%', '30%', '50%', '70%', '90%'],
+                opacity: [0, 1, 1, 1, 0]
+              }}
+              transition={{
+                duration: 4,
+                delay: i * 1,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+          ))}
+
+          {/* Interactive nodes */}
+          {nodes.map((node, i) => (
+            <motion.div
+              key={node.id}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.15, duration: 0.5 }}
+              style={{
+                position: 'absolute',
+                left: `${node.position.x}%`,
+                top: `${node.position.y}%`,
+                transform: 'translate(-50%, -50%)'
+              }}
+              onClick={() => {
+                setSelectedNode(node.id);
+                onInteract();
+              }}
+              className="cursor-pointer"
+            >
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className={cx(
+                  "relative p-4 rounded-xl transition-all duration-300",
+                  selectedNode === node.id
+                    ? "bg-white/10 border border-white/20"
+                    : "bg-white/[0.03] border border-white/10 hover:bg-white/[0.05]"
+                )}
+              >
+                <div className="flex flex-col items-center gap-2 min-w-[120px]">
+                  <div className={cx(
+                    "p-3 rounded-lg transition-colors",
+                    selectedNode === node.id ? "bg-white/10 text-white/80" : "bg-white/5 text-white/50"
+                  )}>
+                    {node.icon}
+                  </div>
+                  <span className="text-xs font-light text-white/70 text-center whitespace-nowrap">
+                    {node.label}
+                  </span>
+                </div>
+
+                {/* Selection indicator */}
+                {selectedNode === node.id && (
+                  <motion.div
+                    layoutId="nodeSelection"
+                    className="absolute -inset-1 rounded-xl border-2 border-purple-500/50"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+              </motion.div>
+            </motion.div>
+          ))}
         </div>
+
+        {/* Details panel */}
+        <AnimatePresence mode="wait">
+          {selectedNode && (
+            <motion.div
+              key={selectedNode}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="p-6 rounded-2xl bg-white/[0.03] border border-white/10"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 rounded-lg bg-white/5">
+                  {nodes.find(n => n.id === selectedNode)?.icon}
+                </div>
+                <h3 className="text-lg font-light text-white/80">
+                  {nodes.find(n => n.id === selectedNode)?.label}
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {Object.entries(nodes.find(n => n.id === selectedNode)?.details || {}).map(([key, value]) => (
+                  <div key={key} className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                    <div className="text-xs text-white/40 uppercase tracking-wider mb-1">{key}</div>
+                    <div className="text-sm text-white/70">{value}</div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Privacy guarantee badge */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="mt-8 flex items-center justify-center gap-2 text-xs text-white/40"
+        >
+          <Shield className="w-4 h-4 text-green-500/60" />
+          <span>100% on-device processing • Zero cloud storage • AES-256 encryption</span>
+        </motion.div>
       </div>
     </Section>
   );
@@ -643,6 +841,16 @@ const TechnicalArchitecture = ({ onInteract }: ComponentProps) => {
 // ---------- Live Prototypes ----------
 const LivePrototypes = ({ onInteract }: ComponentProps) => {
   const [activeProto, setActiveProto] = useState('explorer');
+  const [dreamClusters, setDreamClusters] = useState([
+    { id: 1, x: 30, y: 40, size: 60, label: 'Flying', count: 12, color: 'from-blue-500/30' },
+    { id: 2, x: 60, y: 30, size: 45, label: 'Water', count: 8, color: 'from-cyan-500/30' },
+    { id: 3, x: 45, y: 65, size: 50, label: 'People', count: 15, color: 'from-purple-500/30' },
+    { id: 4, x: 75, y: 55, size: 35, label: 'Places', count: 6, color: 'from-pink-500/30' },
+  ]);
+  const [timelineHover, setTimelineHover] = useState<number | null>(null);
+  const [patternData, setPatternData] = useState({ emotions: 65, themes: 48, symbols: 82 });
+  const [isRecording, setIsRecording] = useState(false);
+  const [voiceText, setVoiceText] = useState('');
 
   const prototypes = [
     { id: 'explorer', name: 'Dream Explorer', icon: <Sparkles className="w-4 h-4" /> },
@@ -650,6 +858,38 @@ const LivePrototypes = ({ onInteract }: ComponentProps) => {
     { id: 'patterns', name: 'Pattern Analysis', icon: <BarChart3 className="w-4 h-4" /> },
     { id: 'voice', name: 'Voice Capture', icon: <Mic className="w-4 h-4" /> },
   ];
+
+  const sleepData = [
+    { stage: 'Wake', duration: 5, color: 'bg-blue-500/60', y: 0 },
+    { stage: 'N1', duration: 10, color: 'bg-purple-500/60', y: 20 },
+    { stage: 'N2', duration: 15, color: 'bg-indigo-500/60', y: 40 },
+    { stage: 'N3', duration: 20, color: 'bg-pink-500/60', y: 60 },
+    { stage: 'REM', duration: 15, color: 'bg-orange-500/60', y: 20 },
+    { stage: 'N2', duration: 20, color: 'bg-indigo-500/60', y: 40 },
+    { stage: 'REM', duration: 15, color: 'bg-orange-500/60', y: 20 },
+  ];
+
+  useEffect(() => {
+    if (isRecording) {
+      const texts = [
+        'I was flying over a city...',
+        'I was flying over a city... buildings below...',
+        'I was flying over a city... buildings below... feeling free...',
+        'I was flying over a city... buildings below... feeling free... then water appeared...'
+      ];
+      let index = 0;
+      const interval = setInterval(() => {
+        if (index < texts.length) {
+          setVoiceText(texts[index]);
+          index++;
+        } else {
+          setIsRecording(false);
+          clearInterval(interval);
+        }
+      }, 1500);
+      return () => clearInterval(interval);
+    }
+  }, [isRecording]);
 
   return (
     <Section>
@@ -678,17 +918,238 @@ const LivePrototypes = ({ onInteract }: ComponentProps) => {
       </div>
 
       <div className="max-w-5xl mx-auto">
-        <div className="h-[600px] rounded-2xl bg-white/[0.02] border border-white/10 flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-6xl mb-4 opacity-40">
-              {activeProto === 'explorer' ? '✨' :
-               activeProto === 'timeline' ? '⏰' :
-               activeProto === 'patterns' ? '📊' : '🎙️'}
-            </div>
-            <p className="text-sm text-white/60">Interactive {prototypes.find(p => p.id === activeProto)?.name} Demo</p>
-            <p className="text-xs text-white/40 mt-2">Click to explore this speculative interface</p>
-          </div>
-        </div>
+        <AnimatePresence mode="wait">
+          {/* Dream Explorer */}
+          {activeProto === 'explorer' && (
+            <motion.div
+              key="explorer"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="relative h-[600px] rounded-2xl bg-white/[0.02] border border-white/10 overflow-hidden p-8"
+            >
+              <div className="text-sm text-white/40 mb-4">Your dream landscape • Click clusters to explore</div>
+              {dreamClusters.map((cluster) => (
+                <motion.div
+                  key={cluster.id}
+                  onClick={() => onInteract()}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{
+                    position: 'absolute',
+                    left: `${cluster.x}%`,
+                    top: `${cluster.y}%`,
+                    width: `${cluster.size}px`,
+                    height: `${cluster.size}px`,
+                  }}
+                  className="cursor-pointer"
+                >
+                  <div className={cx(
+                    "w-full h-full rounded-full bg-gradient-to-br backdrop-blur-xl border border-white/10",
+                    cluster.color,
+                    "flex items-center justify-center flex-col"
+                  )}>
+                    <div className="text-xl font-extralight text-white/80">{cluster.count}</div>
+                    <div className="text-xs text-white/60">{cluster.label}</div>
+                  </div>
+                  {/* Connection lines */}
+                  {cluster.id < 3 && (
+                    <svg className="absolute inset-0 pointer-events-none" style={{ width: '200%', height: '200%' }}>
+                      <line
+                        x1="50%"
+                        y1="50%"
+                        x2="150%"
+                        y2="80%"
+                        stroke="rgba(255,255,255,0.1)"
+                        strokeWidth="1"
+                        strokeDasharray="4 4"
+                      />
+                    </svg>
+                  )}
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+
+          {/* Sleep Timeline */}
+          {activeProto === 'timeline' && (
+            <motion.div
+              key="timeline"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="h-[600px] rounded-2xl bg-white/[0.02] border border-white/10 p-8"
+            >
+              <div className="text-sm text-white/40 mb-8">Last night's sleep architecture • Hover for details</div>
+              <div className="flex items-end gap-2 h-[400px]">
+                {sleepData.map((data, i) => (
+                  <div
+                    key={i}
+                    onMouseEnter={() => {
+                      setTimelineHover(i);
+                      onInteract();
+                    }}
+                    onMouseLeave={() => setTimelineHover(null)}
+                    className="relative flex-1 cursor-pointer"
+                  >
+                    <motion.div
+                      initial={{ height: 0 }}
+                      animate={{ height: `${data.duration * 10}%` }}
+                      transition={{ delay: i * 0.1, duration: 0.5 }}
+                      className={cx(
+                        "w-full rounded-t-lg transition-all duration-300",
+                        data.color,
+                        timelineHover === i ? "opacity-100" : "opacity-60"
+                      )}
+                    />
+                    {timelineHover === i && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="absolute -top-16 left-1/2 -translate-x-1/2 px-3 py-2 rounded-lg bg-black/80 backdrop-blur-xl border border-white/20 whitespace-nowrap"
+                      >
+                        <div className="text-xs text-white/80">{data.stage}</div>
+                        <div className="text-xs text-white/50">{data.duration} min</div>
+                      </motion.div>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-between mt-4 text-xs text-white/30">
+                <span>11:00 PM</span>
+                <span>3:00 AM</span>
+                <span>7:00 AM</span>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Pattern Analysis */}
+          {activeProto === 'patterns' && (
+            <motion.div
+              key="patterns"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="h-[600px] rounded-2xl bg-white/[0.02] border border-white/10 p-8"
+            >
+              <div className="text-sm text-white/40 mb-8">Recurring patterns across 30 nights</div>
+              <div className="space-y-8">
+                {Object.entries(patternData).map(([key, value], i) => (
+                  <div key={key}>
+                    <div className="flex justify-between items-center mb-3">
+                      <span className="text-sm text-white/70 capitalize">{key}</span>
+                      <span className="text-2xl font-extralight text-white/80">{value}%</span>
+                    </div>
+                    <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${value}%` }}
+                        transition={{ delay: i * 0.2, duration: 1 }}
+                        className="h-full bg-gradient-to-r from-purple-500/60 to-pink-500/60 rounded-full"
+                      />
+                    </div>
+                    {/* Top patterns */}
+                    <div className="flex gap-2 mt-3">
+                      {[
+                        key === 'emotions' ? ['Joy', 'Fear', 'Wonder'] :
+                        key === 'themes' ? ['Flying', 'Water', 'People'] :
+                        ['Spiral', 'Door', 'Mirror']
+                      ][0].map((tag, j) => (
+                        <motion.span
+                          key={j}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: i * 0.2 + j * 0.1 }}
+                          className="px-3 py-1 rounded-full bg-white/[0.03] border border-white/5 text-xs text-white/40"
+                        >
+                          {tag}
+                        </motion.span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Voice Capture */}
+          {activeProto === 'voice' && (
+            <motion.div
+              key="voice"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="h-[600px] rounded-2xl bg-white/[0.02] border border-white/10 p-8 flex flex-col items-center justify-center"
+            >
+              <motion.button
+                onClick={() => {
+                  setIsRecording(!isRecording);
+                  if (!isRecording) setVoiceText('');
+                  onInteract();
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={cx(
+                  "relative w-32 h-32 rounded-full transition-all duration-300",
+                  isRecording
+                    ? "bg-red-500/20 border-2 border-red-500/50"
+                    : "bg-white/5 border-2 border-white/10 hover:border-white/20"
+                )}
+              >
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Mic className={cx(
+                    "w-12 h-12 transition-colors",
+                    isRecording ? "text-red-400" : "text-white/60"
+                  )} />
+                </div>
+                {isRecording && (
+                  <motion.div
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ repeat: Infinity, duration: 1.5 }}
+                    className="absolute inset-0 rounded-full border-2 border-red-500/30"
+                  />
+                )}
+              </motion.button>
+
+              <p className="mt-6 text-sm text-white/40">
+                {isRecording ? 'Recording...' : 'Tap to start voice capture'}
+              </p>
+
+              <AnimatePresence>
+                {voiceText && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="mt-8 p-6 rounded-2xl bg-white/[0.03] border border-white/10 max-w-md"
+                  >
+                    <p className="text-base text-white/70 leading-relaxed">{voiceText}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Waveform visualization */}
+              {isRecording && (
+                <div className="mt-8 flex items-center gap-1">
+                  {[...Array(20)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      animate={{
+                        height: [10, Math.random() * 40 + 10, 10],
+                      }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 0.8,
+                        delay: i * 0.05,
+                      }}
+                      className="w-1 bg-red-400/60 rounded-full"
+                    />
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </Section>
   );
@@ -784,18 +1245,236 @@ const ImmersiveVision = () => {
 
 // ---------- Detailed App Experience ----------
 const DetailedAppExperience = ({ onInteract }: ComponentProps) => {
+  const [currentScreen, setCurrentScreen] = useState(0);
+
+  const screens = [
+    {
+      title: 'Morning Capture',
+      icon: <Mic className="w-8 h-8" />,
+      description: 'Voice-first dream recording immediately upon waking',
+      ui: (
+        <div className="flex flex-col items-center justify-center h-full p-8">
+          <motion.div
+            animate={{ scale: [1, 1.05, 1] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+            className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center mb-6"
+          >
+            <Mic className="w-12 h-12 text-white/60" />
+          </motion.div>
+          <p className="text-sm text-white/70 text-center mb-4">"Tell me about your dream..."</p>
+          <div className="w-full max-w-xs h-1 bg-white/10 rounded-full overflow-hidden">
+            <motion.div
+              animate={{ width: ['0%', '100%'] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="h-full bg-gradient-to-r from-purple-500/60 to-pink-500/60"
+            />
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Dream Journal',
+      icon: <FileText className="w-8 h-8" />,
+      description: 'Searchable dream history with semantic understanding',
+      ui: (
+        <div className="p-6 space-y-3">
+          {['Flying over ocean', 'Lost in building', 'Meeting old friend'].map((dream, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className="p-4 rounded-xl bg-white/[0.03] border border-white/10 hover:bg-white/[0.05] cursor-pointer transition-all"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-white/70">{dream}</span>
+                <span className="text-xs text-white/30">2 days ago</span>
+              </div>
+              <div className="flex gap-2">
+                {['🌊', '✈️', '😊'][i] && <span className="text-xs opacity-60">{['🌊', '✈️', '😊'][i]}</span>}
+                <span className="text-xs text-white/40">REM • 15 min</span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      )
+    },
+    {
+      title: 'Pattern Discovery',
+      icon: <BarChart3 className="w-8 h-8" />,
+      description: 'AI-detected recurring themes and symbols',
+      ui: (
+        <div className="p-6">
+          <div className="text-xs text-white/40 mb-4">Recurring themes this week:</div>
+          <div className="space-y-4">
+            {[
+              { theme: 'Water', count: 5, color: 'from-cyan-500/40' },
+              { theme: 'Flying', count: 3, color: 'from-blue-500/40' },
+              { theme: 'People', count: 7, color: 'from-purple-500/40' }
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ width: 0 }}
+                animate={{ width: '100%' }}
+                transition={{ delay: i * 0.2, duration: 0.8 }}
+              >
+                <div className="flex justify-between mb-1">
+                  <span className="text-sm text-white/70">{item.theme}</span>
+                  <span className="text-sm text-white/50">{item.count}</span>
+                </div>
+                <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${item.count * 10}%` }}
+                    transition={{ delay: i * 0.2 + 0.3, duration: 0.6 }}
+                    className={`h-full bg-gradient-to-r ${item.color} to-transparent`}
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Privacy Settings',
+      icon: <Lock className="w-8 h-8" />,
+      description: 'Full control over your consciousness data',
+      ui: (
+        <div className="p-6 space-y-4">
+          {[
+            { label: 'Local-only storage', enabled: true },
+            { label: 'Cloud backup', enabled: false },
+            { label: 'Data export', enabled: true },
+            { label: 'Sharing', enabled: false }
+          ].map((setting, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: i * 0.1 }}
+              className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] border border-white/5"
+            >
+              <span className="text-sm text-white/70">{setting.label}</span>
+              <div className={cx(
+                "w-12 h-6 rounded-full transition-colors",
+                setting.enabled ? "bg-green-500/30" : "bg-white/10"
+              )}>
+                <motion.div
+                  animate={{ x: setting.enabled ? 24 : 0 }}
+                  className={cx(
+                    "w-6 h-6 rounded-full",
+                    setting.enabled ? "bg-green-500" : "bg-white/30"
+                  )}
+                />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      )
+    }
+  ];
+
   return (
     <Section>
       <SectionTitle eyebrow="Interface Speculation" title="Imagining the Dream App" />
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <p className="text-center text-sm text-white/40 mb-12">
           If dream technology existed, how would we interact with it?
+          <br />
+          <span className="text-white/30">Swipe or click arrows to explore different screens.</span>
         </p>
-        <div className="h-[500px] rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-6xl mb-4 opacity-20">📱</div>
-            <p className="text-sm text-white/40">Interactive App Experience</p>
+
+        <div className="flex gap-8 items-center">
+          {/* Navigation arrows */}
+          <button
+            onClick={() => {
+              setCurrentScreen((prev) => (prev - 1 + screens.length) % screens.length);
+              onInteract();
+            }}
+            className="p-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
+          >
+            <ChevronRight className="w-6 h-6 text-white/60 rotate-180" />
+          </button>
+
+          {/* iPhone mockup */}
+          <div className="flex-1 flex justify-center">
+            <div className="relative">
+              {/* iPhone frame */}
+              <div className="w-[320px] h-[640px] bg-black rounded-[48px] border-8 border-gray-900 shadow-2xl overflow-hidden">
+                {/* Notch */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-7 bg-black rounded-b-3xl z-10" />
+
+                {/* Status bar */}
+                <div className="absolute top-2 left-0 right-0 flex justify-between px-8 text-xs text-white/60 z-20">
+                  <span>9:41</span>
+                  <div className="flex gap-1">
+                    <Activity className="w-3 h-3" />
+                    <span>100%</span>
+                  </div>
+                </div>
+
+                {/* Screen content */}
+                <div className="h-full bg-gradient-to-b from-gray-900 via-black to-black pt-10">
+                  {/* Header */}
+                  <div className="px-6 py-4 flex items-center gap-3 border-b border-white/5">
+                    {screens[currentScreen].icon}
+                    <div>
+                      <div className="text-base font-light text-white/90">{screens[currentScreen].title}</div>
+                      <div className="text-xs text-white/40">{screens[currentScreen].description}</div>
+                    </div>
+                  </div>
+
+                  {/* Screen UI */}
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentScreen}
+                      initial={{ opacity: 0, x: 100 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -100 }}
+                      transition={{ duration: 0.3 }}
+                      className="h-[calc(100%-100px)]"
+                    >
+                      {screens[currentScreen].ui}
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </div>
+
+              {/* Home indicator */}
+              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-white/20 rounded-full" />
+            </div>
           </div>
+
+          {/* Navigation arrows */}
+          <button
+            onClick={() => {
+              setCurrentScreen((prev) => (prev + 1) % screens.length);
+              onInteract();
+            }}
+            className="p-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
+          >
+            <ChevronRight className="w-6 h-6 text-white/60" />
+          </button>
+        </div>
+
+        {/* Screen indicators */}
+        <div className="flex justify-center gap-2 mt-8">
+          {screens.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                setCurrentScreen(i);
+                onInteract();
+              }}
+              className={cx(
+                "transition-all duration-300",
+                i === currentScreen
+                  ? "w-8 h-2 bg-white/60 rounded-full"
+                  : "w-2 h-2 bg-white/20 rounded-full hover:bg-white/30"
+              )}
+            />
+          ))}
         </div>
       </div>
     </Section>
@@ -804,17 +1483,170 @@ const DetailedAppExperience = ({ onInteract }: ComponentProps) => {
 
 // ---------- Hardware Lab ----------
 const HardwareLab = ({ onInteract }: ComponentProps) => {
+  const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
+  const [isRotating, setIsRotating] = useState(true);
+
+  const components = [
+    {
+      id: 'electrodes',
+      name: 'Dry Electrodes',
+      icon: <Activity className="w-6 h-6" />,
+      specs: { channels: '4', impedance: '< 50kΩ', material: 'Gold-plated' },
+      description: 'Medical-grade sensors that work without gel'
+    },
+    {
+      id: 'processor',
+      name: 'Edge Processor',
+      icon: <Cpu className="w-6 h-6" />,
+      specs: { chip: 'ARM Cortex-M7', freq: '216 MHz', memory: '512KB RAM' },
+      description: 'Real-time signal processing on-device'
+    },
+    {
+      id: 'battery',
+      name: 'Battery System',
+      icon: <Zap className="w-6 h-6" />,
+      specs: { capacity: '250 mAh', runtime: '8-10 hours', charging: 'USB-C fast' },
+      description: 'Lasts through full night of sleep'
+    },
+    {
+      id: 'bluetooth',
+      name: 'Bluetooth 5.0',
+      icon: <Network className="w-6 h-6" />,
+      specs: { range: '10m', power: 'Ultra-low', latency: '< 10ms' },
+      description: 'Wireless connection to smartphone'
+    }
+  ];
+
   return (
     <Section>
       <SectionTitle eyebrow="Hardware Development" title="Building the Dream Sensor" />
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <p className="text-center text-sm text-white/40 mb-12">
           Speculative hardware design for ethical brain-computer interfaces.
+          <br />
+          <span className="text-white/30">Click components to explore technical specifications.</span>
         </p>
-        <div className="h-[500px] rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-6xl mb-4 opacity-20">🔬</div>
-            <p className="text-sm text-white/40">Hardware Lab & Components</p>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* 3D Hardware Visualization */}
+          <div className="relative h-[500px] rounded-2xl bg-white/[0.02] border border-white/10 overflow-hidden">
+            <div className="absolute inset-0 flex items-center justify-center">
+              {/* Headband visualization */}
+              <motion.div
+                animate={isRotating ? { rotateY: [0, 360] } : {}}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                onClick={() => {
+                  setIsRotating(!isRotating);
+                  onInteract();
+                }}
+                className="relative cursor-pointer"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                {/* Main headband */}
+                <div className="w-64 h-64 rounded-full border-8 border-white/20 relative">
+                  {/* Electrode markers */}
+                  {[0, 90, 180, 270].map((angle, i) => (
+                    <motion.div
+                      key={i}
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, delay: i * 0.5, repeat: Infinity }}
+                      style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: `rotate(${angle}deg) translateY(-130px) translateX(-50%)`,
+                      }}
+                      className="w-4 h-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
+                    />
+                  ))}
+
+                  {/* Center processor */}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <motion.div
+                      animate={{ rotate: isRotating ? 0 : 360 }}
+                      transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                      className="w-12 h-12 bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-lg border border-white/20 flex items-center justify-center"
+                    >
+                      <Cpu className="w-6 h-6 text-white/60" />
+                    </motion.div>
+                  </div>
+                </div>
+
+                {/* Labels */}
+                <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 text-center">
+                  <p className="text-xs text-white/60">EEG Headband</p>
+                  <p className="text-xs text-white/30">Click to pause rotation</p>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Hover hint */}
+            <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-xl border border-white/10">
+              <span className="text-xs text-white/40">Speculative Design</span>
+            </div>
+          </div>
+
+          {/* Component Details */}
+          <div className="space-y-4">
+            <div className="text-sm text-white/60 mb-4">Technical Components</div>
+            {components.map((component, i) => (
+              <motion.div
+                key={component.id}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }}
+                onClick={() => {
+                  setSelectedComponent(component.id);
+                  onInteract();
+                }}
+                className={cx(
+                  "p-4 rounded-xl cursor-pointer transition-all duration-300",
+                  selectedComponent === component.id
+                    ? "bg-white/[0.05] border border-white/20"
+                    : "bg-white/[0.02] border border-white/10 hover:bg-white/[0.03]"
+                )}
+              >
+                <div className="flex items-start gap-4">
+                  <div className={cx(
+                    "p-3 rounded-lg transition-colors",
+                    selectedComponent === component.id ? "bg-white/10 text-white/70" : "bg-white/5 text-white/40"
+                  )}>
+                    {component.icon}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-sm font-light text-white/80 mb-1">{component.name}</h3>
+                    <p className="text-xs text-white/50 mb-3">{component.description}</p>
+
+                    <AnimatePresence>
+                      {selectedComponent === component.id && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="space-y-2 pt-3 border-t border-white/5"
+                        >
+                          {Object.entries(component.specs).map(([key, value]) => (
+                            <div key={key} className="flex justify-between items-center">
+                              <span className="text-xs text-white/40 capitalize">{key}</span>
+                              <span className="text-xs text-white/60 font-mono">{value}</span>
+                            </div>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+
+            {/* Sustainability badge */}
+            <div className="mt-6 p-4 rounded-xl bg-green-500/5 border border-green-500/20">
+              <div className="flex items-center gap-2 mb-2">
+                <Heart className="w-4 h-4 text-green-500/60" />
+                <span className="text-sm text-white/70">Sustainable Design</span>
+              </div>
+              <p className="text-xs text-white/40">Recyclable materials • Repairable • 3-year lifespan</p>
+            </div>
           </div>
         </div>
       </div>
@@ -824,18 +1656,218 @@ const HardwareLab = ({ onInteract }: ComponentProps) => {
 
 // ---------- Dream Explorer ----------
 const DreamExplorer = ({ onInteract }: ComponentProps) => {
+  const [selectedDream, setSelectedDream] = useState<number | null>(null);
+  const [hoveredDream, setHoveredDream] = useState<number | null>(null);
+
+  const dreams = [
+    { id: 1, x: 25, y: 30, size: 50, label: 'Ocean Flight', emotion: 'Joy', color: 'from-blue-500/40', theme: 'Freedom', connections: [2, 3] },
+    { id: 2, x: 55, y: 25, size: 45, label: 'Lost Building', emotion: 'Anxiety', color: 'from-orange-500/40', theme: 'Confusion', connections: [4] },
+    { id: 3, x: 35, y: 60, size: 40, label: 'Old Friend', emotion: 'Nostalgia', color: 'from-purple-500/40', theme: 'Connection', connections: [5] },
+    { id: 4, x: 70, y: 50, size: 55, label: 'Water World', emotion: 'Peace', color: 'from-cyan-500/40', theme: 'Flow', connections: [5] },
+    { id: 5, x: 50, y: 75, size: 35, label: 'City Lights', emotion: 'Wonder', color: 'from-pink-500/40', theme: 'Discovery', connections: [] },
+  ];
+
   return (
     <Section>
       <SectionTitle eyebrow="Final Experience" title="Your Personal Dreamscape" />
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <p className="text-center text-sm text-white/40 mb-12">
-          An interactive experience that allows you to explore the concept of mapping dreams.
+          An interactive visualization of your dream network.
+          <br />
+          <span className="text-white/30">Click any dream to see details • Related dreams are connected by lines</span>
         </p>
-        <div className="h-[600px] rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-6xl mb-4 opacity-20">🗺️</div>
-            <p className="text-sm text-white/40">Interactive Dream Explorer</p>
+
+        <div className="relative h-[600px] rounded-2xl bg-gradient-to-b from-purple-900/5 via-black to-pink-900/5 border border-white/10 overflow-hidden">
+          {/* Particle background */}
+          <div className="absolute inset-0">
+            {STATIC_PARTICLES.slice(0, 10).map((particle, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-1 h-1 bg-white/10 rounded-full"
+                initial={{
+                  x: particle.initialX + '%',
+                  y: particle.initialY + '%',
+                }}
+                animate={{
+                  x: particle.targetX + '%',
+                  y: particle.targetY + '%',
+                }}
+                transition={{
+                  duration: particle.duration,
+                  repeat: Infinity,
+                  repeatType: 'reverse',
+                }}
+              />
+            ))}
           </div>
+
+          {/* Connection lines */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none">
+            {dreams.map((dream) =>
+              dream.connections.map((targetId) => {
+                const target = dreams.find(d => d.id === targetId);
+                if (!target) return null;
+                const isActive = selectedDream === dream.id || selectedDream === targetId ||
+                                hoveredDream === dream.id || hoveredDream === targetId;
+                return (
+                  <motion.line
+                    key={`${dream.id}-${targetId}`}
+                    x1={`${dream.x}%`}
+                    y1={`${dream.y}%`}
+                    x2={`${target.x}%`}
+                    y2={`${target.y}%`}
+                    stroke={isActive ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.1)"}
+                    strokeWidth={isActive ? "2" : "1"}
+                    strokeDasharray="4 4"
+                    animate={isActive ? { strokeDashoffset: [0, 8] } : {}}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  />
+                );
+              })
+            )}
+          </svg>
+
+          {/* Dream nodes */}
+          {dreams.map((dream, i) => (
+            <motion.div
+              key={dream.id}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.15, duration: 0.5 }}
+              style={{
+                position: 'absolute',
+                left: `${dream.x}%`,
+                top: `${dream.y}%`,
+                width: `${dream.size}px`,
+                height: `${dream.size}px`,
+                transform: 'translate(-50%, -50%)',
+              }}
+              onMouseEnter={() => setHoveredDream(dream.id)}
+              onMouseLeave={() => setHoveredDream(null)}
+              onClick={() => {
+                setSelectedDream(selectedDream === dream.id ? null : dream.id);
+                onInteract();
+              }}
+              className="cursor-pointer"
+            >
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                animate={
+                  selectedDream === dream.id || hoveredDream === dream.id
+                    ? { boxShadow: '0 0 30px rgba(168, 85, 247, 0.4)' }
+                    : {}
+                }
+                className={cx(
+                  "w-full h-full rounded-full bg-gradient-to-br backdrop-blur-xl border transition-all duration-300",
+                  dream.color,
+                  selectedDream === dream.id || hoveredDream === dream.id
+                    ? "border-white/30 to-white/10"
+                    : "border-white/10 to-transparent"
+                )}
+              >
+                {/* Dream content */}
+                <div className="w-full h-full flex flex-col items-center justify-center p-2">
+                  <div className="text-xs font-light text-white/90 text-center">{dream.label}</div>
+                  {(selectedDream === dream.id || hoveredDream === dream.id) && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="text-xs text-white/60 text-center mt-1"
+                    >
+                      {dream.emotion}
+                    </motion.div>
+                  )}
+                </div>
+
+                {/* Pulse effect */}
+                {selectedDream === dream.id && (
+                  <motion.div
+                    animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="absolute inset-0 rounded-full border-2 border-purple-500/50"
+                  />
+                )}
+              </motion.div>
+            </motion.div>
+          ))}
+
+          {/* Details panel */}
+          <AnimatePresence>
+            {selectedDream !== null && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                className="absolute bottom-6 left-6 right-6 p-6 rounded-2xl bg-black/80 backdrop-blur-xl border border-white/20"
+              >
+                {dreams
+                  .filter(d => d.id === selectedDream)
+                  .map(dream => (
+                    <div key={dream.id}>
+                      <div className="flex items-start justify-between mb-4">
+                        <div>
+                          <h3 className="text-lg font-light text-white/90 mb-1">{dream.label}</h3>
+                          <p className="text-sm text-white/60">{dream.theme}</p>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedDream(null);
+                          }}
+                          className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors"
+                        >
+                          <ChevronDown className="w-4 h-4 text-white/60 rotate-180" />
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-4">
+                        <div className="p-3 rounded-lg bg-white/[0.03] border border-white/5">
+                          <div className="text-xs text-white/40 mb-1">Emotion</div>
+                          <div className="text-sm text-white/70">{dream.emotion}</div>
+                        </div>
+                        <div className="p-3 rounded-lg bg-white/[0.03] border border-white/5">
+                          <div className="text-xs text-white/40 mb-1">Theme</div>
+                          <div className="text-sm text-white/70">{dream.theme}</div>
+                        </div>
+                        <div className="p-3 rounded-lg bg-white/[0.03] border border-white/5">
+                          <div className="text-xs text-white/40 mb-1">Connected</div>
+                          <div className="text-sm text-white/70">{dream.connections.length} dreams</div>
+                        </div>
+                      </div>
+
+                      {dream.connections.length > 0 && (
+                        <div className="mt-4 flex gap-2">
+                          <span className="text-xs text-white/40">Related:</span>
+                          <div className="flex gap-2 flex-wrap">
+                            {dream.connections.map(connId => {
+                              const connDream = dreams.find(d => d.id === connId);
+                              return connDream ? (
+                                <button
+                                  key={connId}
+                                  onClick={() => setSelectedDream(connId)}
+                                  className="px-2 py-1 rounded-full bg-white/[0.05] border border-white/10 hover:border-white/20 transition-colors text-xs text-white/60"
+                                >
+                                  {connDream.label}
+                                </button>
+                              ) : null;
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Legend */}
+          {selectedDream === null && (
+            <div className="absolute top-6 left-6 px-4 py-3 rounded-xl bg-black/60 backdrop-blur-xl border border-white/10">
+              <div className="text-xs text-white/40 mb-2">30 nights of dreams</div>
+              <div className="text-xs text-white/60">5 main clusters identified</div>
+            </div>
+          )}
         </div>
       </div>
     </Section>
