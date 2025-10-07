@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState, useCallback, memo } from "react";
-import { motion, useMotionValue, useSpring, AnimatePresence, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring, AnimatePresence, useTransform, useScroll } from "framer-motion";
 import { Play, Download, Sparkles, CircuitBoard, Network, Shield, ArrowRight, Moon, Zap, Brain, Cpu, Activity, Waves, ChevronRight, ChevronDown, Volume2, Mic, Camera, FileText, Lock, Cloud, Layers, BarChart3, Eye, Heart, Timer } from "lucide-react";
 import { SleepStagesInteractive, BrainWavesInteractive, DetectionSystemInteractive, ProcessingPipelineInteractive, ResearchPapers, Hypnogram, WaveformPattern, MultiChannelEEG, DetectionVisualization, ConceptVisualization } from './LatentSpaceComponents';
 
@@ -148,8 +148,137 @@ export default function LatentSpacePage() {
   return (
     <div className="relative min-h-screen bg-black text-white antialiased">
 
-      {/* Dynamic background orbs that follow cursor */}
+      {/* Multi-Layer Parallax Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        {/* Layer 1: Distant stars (slowest) */}
+        <motion.div
+          className="absolute inset-0"
+          style={{
+            x: useTransform(smoothX, (val) => val * 0.02),
+            y: useTransform(smoothY, (val) => val * 0.02),
+          }}
+        >
+          {STATIC_PARTICLES.slice(0, 20).map((particle, i) => (
+            <motion.div
+              key={`star-${i}`}
+              className="absolute w-0.5 h-0.5 bg-white/10 rounded-full"
+              style={{
+                left: `${particle.initialX}%`,
+                top: `${particle.initialY}%`,
+              }}
+              animate={{
+                opacity: [0.1, 0.3, 0.1],
+              }}
+              transition={{
+                duration: 4 + (i % 3),
+                repeat: Infinity,
+                delay: i * 0.2,
+              }}
+            />
+          ))}
+        </motion.div>
+
+        {/* Layer 2: Floating dream fragments (medium) */}
+        <motion.div
+          className="absolute inset-0"
+          style={{
+            x: useTransform(smoothX, (val) => val * 0.05),
+            y: useTransform(smoothY, (val) => val * 0.05),
+          }}
+        >
+          {[...Array(8)].map((_, i) => (
+            <motion.div
+              key={`fragment-${i}`}
+              className="absolute w-16 h-16 rounded-lg bg-gradient-to-br from-purple-500/5 to-pink-500/5 backdrop-blur-sm border border-white/5"
+              style={{
+                left: `${15 + i * 12}%`,
+                top: `${20 + (i % 3) * 25}%`,
+              }}
+              animate={{
+                y: [0, -20, 0],
+                rotate: [-2, 2, -2],
+              }}
+              transition={{
+                duration: 6 + i,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+        </motion.div>
+
+        {/* Layer 3: EEG waveforms (faster) */}
+        <motion.div
+          className="absolute inset-0"
+          style={{
+            x: useTransform(smoothX, (val) => val * 0.08),
+            y: useTransform(smoothY, (val) => val * 0.08),
+          }}
+        >
+          <svg className="absolute w-full h-full opacity-5">
+            <path
+              d="M 0 50 Q 25 30, 50 50 T 100 50"
+              stroke="url(#waveGradient)"
+              strokeWidth="1"
+              fill="none"
+              vectorEffect="non-scaling-stroke"
+            >
+              <animate
+                attributeName="d"
+                dur="3s"
+                repeatCount="indefinite"
+                values="
+                  M 0 50 Q 25 30, 50 50 T 100 50;
+                  M 0 50 Q 25 70, 50 50 T 100 50;
+                  M 0 50 Q 25 30, 50 50 T 100 50
+                "
+              />
+            </path>
+            <defs>
+              <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="rgba(139,92,246,0.3)" />
+                <stop offset="50%" stopColor="rgba(236,72,153,0.3)" />
+                <stop offset="100%" stopColor="rgba(14,165,233,0.3)" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </motion.div>
+
+        {/* Layer 4: Neural network (fastest) */}
+        <motion.div
+          className="absolute inset-0"
+          style={{
+            x: useTransform(smoothX, (val) => val * 0.12),
+            y: useTransform(smoothY, (val) => val * 0.12),
+          }}
+        >
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={`node-${i}`}
+              className="absolute w-1.5 h-1.5 bg-white/20 rounded-full"
+              style={{
+                left: `${20 + i * 15}%`,
+                top: `${30 + (i % 2) * 40}%`,
+              }}
+            >
+              {/* Connection lines */}
+              {i < 5 && (
+                <svg className="absolute top-0 left-0 w-screen h-screen pointer-events-none">
+                  <line
+                    x1="0"
+                    y1="0"
+                    x2={`${15}%`}
+                    y2={i % 2 === 0 ? "40%" : "-40%"}
+                    stroke="rgba(255,255,255,0.05)"
+                    strokeWidth="1"
+                  />
+                </svg>
+              )}
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Layer 5: Interactive cursor orb (original) */}
         <motion.div
           className="absolute w-[600px] h-[600px] rounded-full"
           style={{
@@ -286,17 +415,35 @@ export default function LatentSpacePage() {
   );
 }
 
-// ---------- Enhanced Hero Section ----------
+// ---------- Enhanced Hero Section with Scroll Transitions ----------
 const HeroSection = memo(({ isLoaded, onInteract }: HeroSectionProps) => {
   const [hoverState, setHoverState] = useState<string | null>(null);
   const titleRef = useRef(null);
+  const heroRef = useRef<HTMLElement>(null);
+
+  // Scroll-based animations
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+
+  // Transform scroll progress into animation values
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const titleScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
+  const titleY = useTransform(scrollYProgress, [0, 0.5], [0, -100]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+
+  // Particle dispersion effect
+  const disperseX = useTransform(scrollYProgress, [0.3, 0.6], [0, 200]);
+  const disperseOpacity = useTransform(scrollYProgress, [0.3, 0.6], [0, 1]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6">
+    <section ref={heroRef} className="relative min-h-screen flex items-center justify-center px-6">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoaded ? 1 : 0 }}
         transition={{ duration: 1.5 }}
+        style={{ opacity: titleOpacity, scale: titleScale, y: titleY }}
         className="text-center max-w-5xl mx-auto"
       >
         <motion.div
@@ -312,31 +459,53 @@ const HeroSection = memo(({ isLoaded, onInteract }: HeroSectionProps) => {
           <span className="text-[10px] font-light tracking-[0.3em] text-white/30 uppercase">Speculative Design</span>
         </motion.div>
 
-        <motion.h1
-          ref={titleRef}
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4, duration: 1 }}
-          className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-extralight tracking-tight cursor-default"
-          onMouseEnter={() => setHoverState('title')}
-          onMouseLeave={() => setHoverState(null)}
-        >
-          <span className="block text-transparent bg-clip-text bg-gradient-to-b from-white to-white/50 transition-all duration-500"
-            style={{
-              filter: hoverState === 'title' ? 'blur(0px)' : 'blur(0.5px)',
-              transform: hoverState === 'title' ? 'scale(1.02)' : 'scale(1)'
-            }}
+        <div className="relative">
+          <motion.h1
+            ref={titleRef}
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 1 }}
+            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-extralight tracking-tight cursor-default"
+            onMouseEnter={() => setHoverState('title')}
+            onMouseLeave={() => setHoverState(null)}
           >
-            Latent
-          </span>
-          <span className="block text-transparent bg-clip-text bg-gradient-to-b from-white/50 to-white/20 -mt-4">
-            Space
-          </span>
-        </motion.h1>
+            <span className="block text-transparent bg-clip-text bg-gradient-to-b from-white to-white/50 transition-all duration-500"
+              style={{
+                filter: hoverState === 'title' ? 'blur(0px)' : 'blur(0.5px)',
+                transform: hoverState === 'title' ? 'scale(1.02)' : 'scale(1)'
+              }}
+            >
+              Latent
+            </span>
+            <span className="block text-transparent bg-clip-text bg-gradient-to-b from-white/50 to-white/20 -mt-4">
+              Space
+            </span>
+          </motion.h1>
+
+          {/* Particle dispersion effect on scroll */}
+          {STATIC_PARTICLES.slice(0, 12).map((particle, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-white/40 rounded-full pointer-events-none"
+              style={{
+                left: '50%',
+                top: '50%',
+                opacity: disperseOpacity,
+                x: useTransform(disperseX, (val) =>
+                  (Math.cos(i * 30 * Math.PI / 180) * val) - val/2
+                ),
+                y: useTransform(disperseX, (val) =>
+                  (Math.sin(i * 30 * Math.PI / 180) * val) - val/2
+                ),
+              }}
+            />
+          ))}
+        </div>
 
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          style={{ opacity: contentOpacity }}
           transition={{ delay: 0.6, duration: 1 }}
           className="mt-8 max-w-2xl mx-auto"
         >
@@ -356,6 +525,7 @@ const HeroSection = memo(({ isLoaded, onInteract }: HeroSectionProps) => {
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
+          style={{ opacity: contentOpacity }}
           transition={{ delay: 0.8, duration: 0.8 }}
           className="mt-12 flex gap-4 justify-center"
         >
