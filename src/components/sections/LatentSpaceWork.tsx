@@ -148,17 +148,50 @@ export default function LatentSpacePage() {
         <span className="text-[10px] text-white/30">Interactions: {globalInteractions}</span>
       </motion.div>
 
-      {/* Content */}
+      {/* Content - Three Act Structure */}
+
+      {/* ACT I: THE MYSTERY (Setup) */}
       <HeroSection isLoaded={isLoaded} onInteract={trackInteraction} />
+
+      <NarrativeConnector act="Act I: The Mystery">
+        The dream vanishes. But what if it didn't?
+      </NarrativeConnector>
+
       <ResearchOverview />
-      <DetailedStorySection onInteract={trackInteraction} />
+      <StoryActOne onInteract={trackInteraction} />
+
+      {/* ACT II: THE TECHNOLOGY (Confrontation) */}
+      <NarrativeConnector act="Act II: The Technology">
+        Each future raised the same critical questions. Before we build this technology,
+        we must ask: should we?
+      </NarrativeConnector>
+
+      <ImmersiveVision />
+
+      <NarrativeConnector>
+        If we proceed carefully, here's the science that makes it possible...
+      </NarrativeConnector>
+
       <ComprehensiveScienceSection onInteract={trackInteraction} />
       <InteractiveConceptsSection onInteract={trackInteraction} />
       <TechnicalArchitecture onInteract={trackInteraction} />
+
+      <StoryActTwo onInteract={trackInteraction} />
+
+      {/* ACT III: THE EXPERIENCE (Resolution) */}
+      <NarrativeConnector act="Act III: The Experience">
+        These principles and questions shaped every design decision.
+        Here's what responsible dream technology might look like...
+      </NarrativeConnector>
+
       <LivePrototypes onInteract={trackInteraction} />
-      <ImmersiveVision />
       <DetailedAppExperience onInteract={trackInteraction} />
       <HardwareLab onInteract={trackInteraction} />
+
+      <NarrativeConnector>
+        Ultimately, the choice is yours. Your dreams. Your data. Your consciousness.
+      </NarrativeConnector>
+
       <DreamExplorer onInteract={trackInteraction} />
       <TeamSection />
       <FooterSection interactions={globalInteractions} />
@@ -214,15 +247,23 @@ const HeroSection = memo(({ isLoaded, onInteract }: HeroSectionProps) => {
           </span>
         </motion.h1>
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 1 }}
-          className="mt-8 text-sm sm:text-base font-light text-white/30 max-w-lg mx-auto leading-relaxed"
+          className="mt-8 max-w-2xl mx-auto"
         >
-          A speculative exploration: What if we could navigate our dreams
-          through technology while preserving the mystery of consciousness?
-        </motion.p>
+          <p className="text-base font-light text-white/50 leading-relaxed mb-4">
+            Last night, you soared over impossible landscapes. You spoke with people who don't exist.
+            You felt emotions that don't have names.
+          </p>
+          <p className="text-base font-light text-white/70 leading-relaxed">
+            By morning, it was gone. <span className="text-white/40">95% of it, vanished in five minutes.</span>
+          </p>
+          <p className="mt-6 text-sm font-light text-white/40 italic leading-relaxed">
+            This is a speculation about what we'd gain—and lose—if dreams became permanent.
+          </p>
+        </motion.div>
 
         {/* CTAs */}
         <motion.div
@@ -318,8 +359,8 @@ const ResearchOverview = () => {
   );
 };
 
-// ---------- Detailed Story Section ----------
-const DetailedStorySection = ({ onInteract }: ComponentProps) => {
+// ---------- Story Act One: The Promise ----------
+const StoryActOne = ({ onInteract }: ComponentProps) => {
   const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
 
   const chapters = [
@@ -337,6 +378,77 @@ const DetailedStorySection = ({ onInteract }: ComponentProps) => {
       full: "What if EEG technology evolved to be as common as smartwatches? This concept explores a future where neural interfaces are normalized, raising questions about mental privacy, data sovereignty, and the commodification of consciousness. Who would control this technology, and what safeguards would we need?",
       stats: ["Speculative Technology", "Privacy Concerns", "Future Scenario"],
     },
+  ];
+
+  return (
+    <Section>
+      <SectionTitle eyebrow="Speculative Futures" title="The Promise" />
+      <div className="max-w-4xl mx-auto space-y-6">
+        {chapters.map((chapter, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.1 }}
+            className="group"
+          >
+            <div
+              onClick={() => {
+                setExpandedChapter(expandedChapter === i ? null : i);
+                onInteract();
+              }}
+              className="relative p-8 rounded-2xl bg-white/[0.02] border border-white/10 hover:bg-white/[0.03] transition-all duration-300 cursor-pointer"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <div className="flex items-baseline gap-4 mb-2">
+                    <span className="text-3xl font-extralight text-white/40">{chapter.num}</span>
+                    <h3 className="text-lg font-light text-white/90">{chapter.title}</h3>
+                  </div>
+                  <p className="text-sm text-white/60">{chapter.brief}</p>
+                </div>
+                <ChevronRight className={cx(
+                  "w-5 h-5 text-white/40 transition-transform duration-300",
+                  expandedChapter === i ? "rotate-90" : ""
+                )} />
+              </div>
+
+              <AnimatePresence>
+                {expandedChapter === i && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="mt-6 pt-6 border-t border-white/5"
+                  >
+                    <p className="text-sm text-white/50 leading-relaxed mb-4">
+                      {chapter.full}
+                    </p>
+                    <div className="flex gap-4 flex-wrap">
+                      {chapter.stats.map((stat, j) => (
+                        <div key={j} className="px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/5">
+                          <span className="text-xs text-white/40">{stat}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </Section>
+  );
+};
+
+// ---------- Story Act Two: The Shadow ----------
+const StoryActTwo = ({ onInteract }: ComponentProps) => {
+  const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
+
+  const chapters = [
     {
       num: "III",
       title: "The Cartography",
@@ -355,7 +467,7 @@ const DetailedStorySection = ({ onInteract }: ComponentProps) => {
 
   return (
     <Section>
-      <SectionTitle eyebrow="Narrative Arc" title="The Journey from Dreams to Data" />
+      <SectionTitle eyebrow="Design Constraints" title="The Shadow" />
       <div className="max-w-4xl mx-auto space-y-6">
         {chapters.map((chapter, i) => (
           <motion.div
@@ -872,10 +984,10 @@ const LivePrototypes = ({ onInteract }: ComponentProps) => {
   useEffect(() => {
     if (isRecording) {
       const texts = [
-        'I was flying over a city...',
-        'I was flying over a city... buildings below...',
-        'I was flying over a city... buildings below... feeling free...',
-        'I was flying over a city... buildings below... feeling free... then water appeared...'
+        "I was... floating? No, flying...",
+        "I was... floating? No, flying... over a city made of light...",
+        "I was... floating? No, flying... over a city made of light... the buildings looked like circuit boards...",
+        "I was... floating? No, flying... over a city made of light... the buildings looked like circuit boards... and I wasn't afraid. That's the strangest part. I should have been afraid, but I felt... free."
       ];
       let index = 0;
       const interval = setInterval(() => {
@@ -886,7 +998,7 @@ const LivePrototypes = ({ onInteract }: ComponentProps) => {
           setIsRecording(false);
           clearInterval(interval);
         }
-      }, 1500);
+      }, 1800);
       return () => clearInterval(interval);
     }
   }, [isRecording]);
@@ -1981,4 +2093,30 @@ const InteractiveButton = ({ children, onClick, primary = false }: InteractiveBu
       {children}
     </div>
   </button>
+);
+
+// Narrative Connector Component
+const NarrativeConnector = ({ children, act }: { children: React.ReactNode; act?: string }) => (
+  <div className="relative py-16 px-6">
+    <div className="max-w-2xl mx-auto text-center">
+      {act && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-xs font-light tracking-[0.3em] text-white/20 uppercase mb-4"
+        >
+          {act}
+        </motion.div>
+      )}
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-sm md:text-base font-light text-white/40 italic leading-relaxed"
+      >
+        {children}
+      </motion.p>
+    </div>
+  </div>
 );
