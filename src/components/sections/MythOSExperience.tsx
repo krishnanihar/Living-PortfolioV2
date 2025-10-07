@@ -5,6 +5,7 @@ import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import { ExhibitionBuilder } from '@/components/ui/ExhibitionBuilder';
 import { ArtworkModal } from '@/components/ui/ArtworkModal';
+import { MythOSHero } from '@/components/ui/MythOSHero';
 
 interface Artwork {
   id: string;
@@ -87,6 +88,7 @@ const ARTWORKS: Artwork[] = [
 export default function MythOSExperience() {
   const [currentExhibition, setCurrentExhibition] = useState<Exhibition | null>(null);
   const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null);
+  const [showReasoning, setShowReasoning] = useState(false);
 
   // Filter artworks based on AI-generated exhibition criteria
   const filteredArtworks = useMemo(() => {
@@ -125,6 +127,9 @@ export default function MythOSExperience() {
       color: '#1A1A1A',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
     }}>
+      {/* Hero Section */}
+      <MythOSHero />
+
       {/* Top Navigation */}
       <nav style={{
         borderBottom: '1px solid #E0E0E0',
@@ -176,7 +181,7 @@ export default function MythOSExperience() {
       </nav>
 
       {/* Exhibition Builder */}
-      <div style={{ position: 'sticky', top: '116px', zIndex: 99 }}>
+      <div id="exhibition-builder" style={{ position: 'sticky', top: '116px', zIndex: 99 }}>
         <ExhibitionBuilder onExhibitionGenerated={handleExhibitionGenerated} />
       </div>
 
@@ -184,55 +189,188 @@ export default function MythOSExperience() {
       <main style={{ maxWidth: '1600px', margin: '0 auto', padding: '3rem 2rem' }}>$
         {/* Exhibition Title (AI-Generated) */}
         {currentExhibition ? (
-          <div style={{ marginBottom: '3rem', paddingLeft: '0.75rem', borderLeft: '2px solid #E0E0E0' }}>$
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              marginBottom: '0.5rem',
-            }}>
-              <Sparkles size={14} color="#606060" />
-              <span style={{
-                fontSize: '0.75rem',
-                color: '#606060',
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                fontWeight: '500',
+          <div style={{ marginBottom: '3rem' }}>
+            <div style={{ paddingLeft: '0.75rem', borderLeft: '2px solid #E0E0E0', marginBottom: '1.5rem' }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                marginBottom: '0.5rem',
               }}>
-                AI-Curated Exhibition
-              </span>
-            </div>
-            <h2 style={{
-              fontSize: '1.75rem',
-              fontWeight: '600',
-              marginBottom: '0.5rem',
-              color: '#1A1A1A',
-            }}>
-              {currentExhibition.title}
-            </h2>
-            {currentExhibition.subtitle && (
+                <Sparkles size={14} color="#606060" />
+                <span style={{
+                  fontSize: '0.75rem',
+                  color: '#606060',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  fontWeight: '500',
+                }}>
+                  AI-Curated Exhibition
+                </span>
+              </div>
+              <h2 style={{
+                fontSize: '1.75rem',
+                fontWeight: '600',
+                marginBottom: '0.5rem',
+                color: '#1A1A1A',
+              }}>
+                {currentExhibition.title}
+              </h2>
+              {currentExhibition.subtitle && (
+                <p style={{
+                  fontSize: '1rem',
+                  color: '#606060',
+                  marginBottom: '0.75rem',
+                }}>
+                  {currentExhibition.subtitle}
+                </p>
+              )}
               <p style={{
-                fontSize: '1rem',
-                color: '#606060',
-                marginBottom: '0.75rem',
+                fontSize: '0.9375rem',
+                color: '#9E9E9E',
+                lineHeight: '1.6',
+                marginBottom: '0.5rem',
               }}>
-                {currentExhibition.subtitle}
+                {currentExhibition.statement}
               </p>
-            )}
-            <p style={{
-              fontSize: '0.9375rem',
-              color: '#9E9E9E',
-              lineHeight: '1.6',
-              marginBottom: '0.5rem',
+              <p style={{
+                fontSize: '0.875rem',
+                color: '#606060',
+              }}>
+                {filteredArtworks.length} artworks
+              </p>
+            </div>
+
+            {/* Curator's Reasoning - Expandable */}
+            <div style={{
+              backgroundColor: '#F9FAFB',
+              border: '1px solid #E5E7EB',
+              borderRadius: '6px',
+              overflow: 'hidden',
             }}>
-              {currentExhibition.statement}
-            </p>
-            <p style={{
-              fontSize: '0.875rem',
-              color: '#606060',
-            }}>
-              {filteredArtworks.length} artworks
-            </p>
+              <button
+                onClick={() => setShowReasoning(!showReasoning)}
+                style={{
+                  width: '100%',
+                  padding: '1rem 1.25rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '0.875rem',
+                  fontWeight: '500',
+                  color: '#1A1A1A',
+                  fontFamily: 'inherit',
+                }}
+              >
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <Sparkles size={16} color="#606060" />
+                  How did AI choose these artworks?
+                </span>
+                <span style={{
+                  transform: showReasoning ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.2s ease',
+                }}>
+                  ▼
+                </span>
+              </button>
+
+              {showReasoning && (
+                <div style={{
+                  padding: '0 1.25rem 1.25rem',
+                  borderTop: '1px solid #E5E7EB',
+                }}>
+                  <div style={{
+                    fontSize: '0.9375rem',
+                    color: '#606060',
+                    lineHeight: '1.6',
+                    marginTop: '1rem',
+                  }}>
+                    {currentExhibition.reasoning}
+                  </div>
+
+                  <div style={{ marginTop: '1.5rem' }}>
+                    <div style={{
+                      fontSize: '0.75rem',
+                      fontWeight: '600',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      color: '#9E9E9E',
+                      marginBottom: '0.75rem',
+                    }}>
+                      Visual Patterns Detected
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                      {currentExhibition.criteria.motifs.map((motif, i) => (
+                        <span key={i} style={{
+                          padding: '0.375rem 0.75rem',
+                          backgroundColor: '#FFFFFF',
+                          border: '1px solid #E0E0E0',
+                          borderRadius: '4px',
+                          fontSize: '0.8125rem',
+                          color: '#1A1A1A',
+                        }}>
+                          {motif}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ marginTop: '1rem' }}>
+                    <div style={{
+                      fontSize: '0.75rem',
+                      fontWeight: '600',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      color: '#9E9E9E',
+                      marginBottom: '0.75rem',
+                    }}>
+                      Time Periods Explored
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                      {currentExhibition.criteria.centuries.map((century, i) => (
+                        <span key={i} style={{
+                          padding: '0.375rem 0.75rem',
+                          backgroundColor: '#F0F4FF',
+                          border: '1px solid #C3D4F5',
+                          borderRadius: '4px',
+                          fontSize: '0.8125rem',
+                          color: '#1A1A1A',
+                        }}>
+                          {century}th Century
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ marginTop: '1rem' }}>
+                    <div style={{
+                      fontSize: '0.75rem',
+                      fontWeight: '600',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      color: '#9E9E9E',
+                      marginBottom: '0.75rem',
+                    }}>
+                      Emotional Quality
+                    </div>
+                    <div style={{
+                      padding: '0.75rem 1rem',
+                      backgroundColor: '#FFFFFF',
+                      border: '1px solid #E0E0E0',
+                      borderRadius: '4px',
+                      fontSize: '0.9375rem',
+                      color: '#1A1A1A',
+                      fontStyle: 'italic',
+                    }}>
+                      {currentExhibition.criteria.mood}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         ) : (
           <div style={{ marginBottom: '3rem', paddingLeft: '0.75rem', borderLeft: '2px solid #E0E0E0' }}>$
@@ -260,72 +398,107 @@ export default function MythOSExperience() {
           gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
           gap: '1.25rem',
         }}>
-          {filteredArtworks.map((artwork) => (
-            <article
-              key={artwork.id}
-              onClick={() => setSelectedArtwork(artwork)}
-              style={{
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                const imgContainer = e.currentTarget.querySelector('div') as HTMLElement;
-                if (imgContainer) {
-                  imgContainer.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                const imgContainer = e.currentTarget.querySelector('div') as HTMLElement;
-                if (imgContainer) {
-                  imgContainer.style.boxShadow = 'none';
-                }
-              }}
-            >
-              <div style={{
-                position: 'relative',
-                width: '100%',
-                paddingBottom: '133%',
-                backgroundColor: '#E8E8E8',
-                marginBottom: '0.75rem',
-                overflow: 'hidden',
-                borderRadius: '3px',
-                transition: 'box-shadow 0.2s ease',
-              }}>
-                <Image
-                  src={artwork.imageUrl}
-                  alt={artwork.title}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  sizes="(max-width: 768px) 50vw, 240px"
-                />
-              </div>
-              <h3 style={{
-                fontSize: '0.875rem',
-                fontWeight: '600',
-                marginBottom: '0.25rem',
-                color: '#1A1A1A',
-                lineHeight: '1.3',
-                letterSpacing: '-0.005em',
-              }}>
-                {artwork.title}
-              </h3>
-              <p style={{
-                fontSize: '0.8125rem',
-                color: '#606060',
-                marginBottom: '0.125rem',
-              }}>
-                {artwork.artist}
-              </p>
-              <p style={{
-                fontSize: '0.8125rem',
-                color: '#9E9E9E',
-              }}>
-                {artwork.year} • {artwork.museum}
-              </p>
-            </article>
-          ))}
+          {filteredArtworks.map((artwork) => {
+            // Find matching motifs if exhibition exists
+            const matchingMotifs = currentExhibition
+              ? artwork.motifs.filter(artMotif =>
+                  currentExhibition.criteria.motifs.some(exMotif =>
+                    artMotif.toLowerCase().includes(exMotif.toLowerCase()) ||
+                    exMotif.toLowerCase().includes(artMotif.toLowerCase())
+                  )
+                )
+              : [];
+
+            return (
+              <article
+                key={artwork.id}
+                onClick={() => setSelectedArtwork(artwork)}
+                style={{
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  position: 'relative',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  const imgContainer = e.currentTarget.querySelector('div') as HTMLElement;
+                  if (imgContainer) {
+                    imgContainer.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  const imgContainer = e.currentTarget.querySelector('div') as HTMLElement;
+                  if (imgContainer) {
+                    imgContainer.style.boxShadow = 'none';
+                  }
+                }}
+              >
+                <div style={{
+                  position: 'relative',
+                  width: '100%',
+                  paddingBottom: '133%',
+                  backgroundColor: '#E8E8E8',
+                  marginBottom: '0.75rem',
+                  overflow: 'hidden',
+                  borderRadius: '3px',
+                  transition: 'box-shadow 0.2s ease',
+                }}>
+                  <Image
+                    src={artwork.imageUrl}
+                    alt={artwork.title}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    sizes="(max-width: 768px) 50vw, 240px"
+                  />
+                  {/* Thematic Connection Badge */}
+                  {matchingMotifs.length > 0 && (
+                    <div style={{
+                      position: 'absolute',
+                      top: '0.5rem',
+                      right: '0.5rem',
+                      padding: '0.25rem 0.5rem',
+                      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                      backdropFilter: 'blur(8px)',
+                      border: '1px solid rgba(0, 0, 0, 0.1)',
+                      borderRadius: '3px',
+                      fontSize: '0.75rem',
+                      color: '#1A1A1A',
+                      fontWeight: '500',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.25rem',
+                    }}>
+                      <Sparkles size={10} color="#606060" />
+                      {matchingMotifs[0]}
+                    </div>
+                  )}
+                </div>
+                <h3 style={{
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  marginBottom: '0.25rem',
+                  color: '#1A1A1A',
+                  lineHeight: '1.3',
+                  letterSpacing: '-0.005em',
+                }}>
+                  {artwork.title}
+                </h3>
+                <p style={{
+                  fontSize: '0.8125rem',
+                  color: '#606060',
+                  marginBottom: '0.125rem',
+                }}>
+                  {artwork.artist}
+                </p>
+                <p style={{
+                  fontSize: '0.8125rem',
+                  color: '#9E9E9E',
+                }}>
+                  {artwork.year} • {artwork.museum}
+                </p>
+              </article>
+            );
+          })}
         </div>
 
         {filteredArtworks.length === 0 && (
@@ -342,42 +515,237 @@ export default function MythOSExperience() {
         )}
       </main>
 
-      {/* About Section */}
+      {/* About Section - Enhanced */}
       <section id="about" style={{
         borderTop: '1px solid #E0E0E0',
         backgroundColor: '#FFFFFF',
-        padding: '4rem 2rem',
+        padding: '5rem 2rem',
         marginTop: '4rem',
       }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <h2 style={{
-            fontSize: '1.5rem',
-            fontWeight: '600',
-            marginBottom: '1.5rem',
-          }}>
-            About mythOS
-          </h2>
+        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+          {/* Main Story */}
+          <div style={{ marginBottom: '4rem' }}>
+            <h2 style={{
+              fontSize: '2rem',
+              fontWeight: '600',
+              marginBottom: '1rem',
+              letterSpacing: '-0.01em',
+              color: '#1A1A1A',
+            }}>
+              Why mythOS Exists
+            </h2>
+            <div style={{
+              lineHeight: '1.7',
+              letterSpacing: '0.005em',
+              color: '#606060',
+              fontSize: '1.0625rem',
+            }}>
+              <p style={{ marginBottom: '1.5rem' }}>
+                Art museums are intimidating. You walk through galleries feeling like you're missing something—wall text written for scholars, references to movements you've never studied, centuries of context you don't have.
+              </p>
+              <p style={{ marginBottom: '1.5rem' }}>
+                <strong style={{ color: '#1A1A1A' }}>What if art history spoke your language?</strong>
+              </p>
+              <p style={{ marginBottom: '1.5rem' }}>
+                mythOS uses Gemini AI to bridge that gap. Tell it how you feel, what you're curious about, or what visual ideas intrigue you. The AI translates your words into visual patterns, discovers artworks across centuries that share those qualities, and explains why they matter—in language anyone can understand.
+              </p>
+            </div>
+          </div>
+
+          {/* Key Innovation */}
           <div style={{
-            lineHeight: '1.7',
-            letterSpacing: '0.005em',
-            color: '#606060',
-            fontSize: '0.9375rem',
+            backgroundColor: '#F0F4FF',
+            border: '1px solid #C3D4F5',
+            borderRadius: '8px',
+            padding: '2rem',
+            marginBottom: '4rem',
           }}>
-            <p style={{ marginBottom: '1rem' }}>
-              mythOS is an AI-powered art curator that sees patterns humans might miss. Using Gemini's advanced language understanding, it interprets your desires and curates thematic exhibitions that reveal hidden connections across centuries of art history.
+            <div style={{
+              fontSize: '0.75rem',
+              fontWeight: '600',
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              color: '#606060',
+              marginBottom: '1rem',
+            }}>
+              The Breakthrough
+            </div>
+            <div style={{ fontSize: '1.0625rem', lineHeight: '1.7', color: '#1A1A1A' }}>
+              <p style={{ marginBottom: '1rem' }}>
+                Traditional art search requires knowing <em>what to search for</em>: artist names, movement labels, specific artworks. mythOS lets you search by <strong>feeling</strong>, <strong>concept</strong>, or <strong>visual quality</strong>.
+              </p>
+              <p style={{ marginBottom: 0 }}>
+                The AI sees patterns human curators might take years to notice—connecting artworks across centuries through shared emotional resonance, compositional similarities, or thematic threads.
+              </p>
+            </div>
+          </div>
+
+          {/* Use Cases Grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '2rem',
+            marginBottom: '4rem',
+          }}>
+            <div>
+              <h3 style={{
+                fontSize: '1.125rem',
+                fontWeight: '600',
+                marginBottom: '0.75rem',
+                color: '#1A1A1A',
+              }}>
+                For Curious Minds
+              </h3>
+              <p style={{
+                fontSize: '0.9375rem',
+                lineHeight: '1.6',
+                color: '#606060',
+              }}>
+                Explore art through your own questions and curiosities. No need to know the "right" terminology or historical periods.
+              </p>
+            </div>
+
+            <div>
+              <h3 style={{
+                fontSize: '1.125rem',
+                fontWeight: '600',
+                marginBottom: '0.75rem',
+                color: '#1A1A1A',
+              }}>
+                For Visual Thinkers
+              </h3>
+              <p style={{
+                fontSize: '0.9375rem',
+                lineHeight: '1.6',
+                color: '#606060',
+              }}>
+                Discover artworks based on how they look and feel, not just who made them or when they were created.
+              </p>
+            </div>
+
+            <div>
+              <h3 style={{
+                fontSize: '1.125rem',
+                fontWeight: '600',
+                marginBottom: '0.75rem',
+                color: '#1A1A1A',
+              }}>
+                For Lifelong Learners
+              </h3>
+              <p style={{
+                fontSize: '0.9375rem',
+                lineHeight: '1.6',
+                color: '#606060',
+              }}>
+                Get expert-level analysis and context for every artwork—symbolism, history, cultural impact—without academic jargon.
+              </p>
+            </div>
+
+            <div>
+              <h3 style={{
+                fontSize: '1.125rem',
+                fontWeight: '600',
+                marginBottom: '0.75rem',
+                color: '#1A1A1A',
+              }}>
+                For Creative Projects
+              </h3>
+              <p style={{
+                fontSize: '0.9375rem',
+                lineHeight: '1.6',
+                color: '#606060',
+              }}>
+                Generate thematic art collections for mood boards, creative research, or discovering visual inspiration.
+              </p>
+            </div>
+          </div>
+
+          {/* Inspiration Credit */}
+          <div style={{
+            borderTop: '1px solid #E0E0E0',
+            paddingTop: '2rem',
+            marginBottom: '2rem',
+          }}>
+            <p style={{
+              fontSize: '0.9375rem',
+              lineHeight: '1.6',
+              color: '#606060',
+              marginBottom: '1rem',
+            }}>
+              Inspired by{' '}
+              <a
+                href="https://digitalcurator.art/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  color: '#1A1A1A',
+                  textDecoration: 'underline',
+                  transition: 'color 0.15s ease',
+                }}
+              >
+                Digital Curator
+              </a>
+              , mythOS explores what happens when AI becomes a co-curator—not replacing human insight, but making art history accessible to everyone.
             </p>
-            <p style={{ marginBottom: '1rem' }}>
-              Inspired by <a href="https://digitalcurator.art/" target="_blank" rel="noopener noreferrer"
-              style={{ color: '#1A1A1A', textDecoration: 'underline', transition: 'color 0.15s ease' }}>Digital Curator</a>, mythOS explores algorithmic curation—letting AI discover patterns that might take human curators years to notice. But unlike traditional search, mythOS understands abstract concepts like "loneliness" or "triumph" and translates them into visual characteristics.
-            </p>
-            <p style={{ marginBottom: '1rem' }}>
-              Click any artwork to see AI-generated analysis including symbolism, historical context, and cultural significance. The system explains not just what you're seeing, but why it matters.
-            </p>
-            <p>
-              <strong>Status:</strong> Research & Development<br />
-              <strong>Technology:</strong> Next.js, Google Gemini AI, Computer Vision<br />
-              <strong>Concept:</strong> Democratizing art curation through AI
-            </p>
+          </div>
+
+          {/* Technical Details */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '1.5rem',
+            padding: '1.5rem',
+            backgroundColor: '#FAFAFA',
+            borderRadius: '6px',
+            border: '1px solid #E8E8E8',
+          }}>
+            <div>
+              <div style={{
+                fontSize: '0.75rem',
+                fontWeight: '600',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                color: '#9E9E9E',
+                marginBottom: '0.5rem',
+              }}>
+                Status
+              </div>
+              <div style={{ fontSize: '0.9375rem', color: '#1A1A1A' }}>
+                Research & Development
+              </div>
+            </div>
+
+            <div>
+              <div style={{
+                fontSize: '0.75rem',
+                fontWeight: '600',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                color: '#9E9E9E',
+                marginBottom: '0.5rem',
+              }}>
+                Technology
+              </div>
+              <div style={{ fontSize: '0.9375rem', color: '#1A1A1A' }}>
+                Next.js, Gemini AI
+              </div>
+            </div>
+
+            <div>
+              <div style={{
+                fontSize: '0.75rem',
+                fontWeight: '600',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                color: '#9E9E9E',
+                marginBottom: '0.5rem',
+              }}>
+                Mission
+              </div>
+              <div style={{ fontSize: '0.9375rem', color: '#1A1A1A' }}>
+                Democratize art curation
+              </div>
+            </div>
           </div>
         </div>
       </section>
