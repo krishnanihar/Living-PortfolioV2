@@ -99,6 +99,7 @@ export default function LatentSpacePage() {
   const [activeSection, setActiveSection] = useState('hero');
   const [isLoaded, setIsLoaded] = useState(false);
   const [globalInteractions, setGlobalInteractions] = useState(0);
+  const [currentAct, setCurrentAct] = useState(1);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -116,6 +117,28 @@ export default function LatentSpacePage() {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [mouseX, mouseY]);
+
+  // Track scroll position for act indicator
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
+
+      // Divide page into three acts based on scroll position
+      if (scrollPercentage < 0.25) {
+        setCurrentAct(1);
+      } else if (scrollPercentage < 0.65) {
+        setCurrentAct(2);
+      } else {
+        setCurrentAct(3);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Track user interactions
   const trackInteraction = useCallback(() => {
@@ -146,6 +169,70 @@ export default function LatentSpacePage() {
         animate={{ opacity: globalInteractions > 0 ? 1 : 0 }}
       >
         <span className="text-[10px] text-white/30">Interactions: {globalInteractions}</span>
+      </motion.div>
+
+      {/* Story Progress Indicator */}
+      <motion.div
+        className="fixed left-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-6"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: isLoaded ? 1 : 0, x: isLoaded ? 0 : -20 }}
+        transition={{ delay: 1, duration: 0.8 }}
+      >
+        {[
+          { num: 'I', label: 'The Mystery', act: 1 },
+          { num: 'II', label: 'The Technology', act: 2 },
+          { num: 'III', label: 'The Experience', act: 3 },
+        ].map((item) => (
+          <motion.div
+            key={item.act}
+            className="group relative flex items-center gap-3 cursor-pointer"
+            whileHover={{ x: 4 }}
+            onClick={() => {
+              const percentage = (item.act - 1) / 2;
+              window.scrollTo({
+                top: percentage * (document.documentElement.scrollHeight - window.innerHeight),
+                behavior: 'smooth'
+              });
+            }}
+          >
+            {/* Line indicator */}
+            <div className="relative">
+              <div className={cx(
+                "w-0.5 h-16 rounded-full transition-all duration-500",
+                currentAct === item.act
+                  ? "bg-gradient-to-b from-purple-500/60 to-pink-500/60"
+                  : currentAct > item.act
+                  ? "bg-white/20"
+                  : "bg-white/5"
+              )} />
+
+              {/* Animated dot */}
+              {currentAct === item.act && (
+                <motion.div
+                  layoutId="actIndicator"
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white/80"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+            </div>
+
+            {/* Label (shows on hover) */}
+            <AnimatePresence>
+              <motion.div
+                initial={{ opacity: 0, x: -10, width: 0 }}
+                whileHover={{ opacity: 1, x: 0, width: "auto" }}
+                className="overflow-hidden whitespace-nowrap"
+              >
+                <div className="px-3 py-1.5 rounded-full bg-black/80 backdrop-blur-xl border border-white/10">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-light text-white/40">Act {item.num}</span>
+                    <span className="text-xs font-light text-white/70">{item.label}</span>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
+        ))}
       </motion.div>
 
       {/* Content - Three Act Structure */}
