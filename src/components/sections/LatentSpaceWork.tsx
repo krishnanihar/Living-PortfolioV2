@@ -376,6 +376,9 @@ export default function LatentSpacePage() {
       <ResearchOverview />
       <StoryActOne onInteract={trackInteraction} />
 
+      {/* Interactive Dream Simulator Bridge */}
+      <DreamSimulator onInteract={trackInteraction} />
+
       {/* ACT II: THE TECHNOLOGY (Confrontation) */}
       <NarrativeConnector act="Act II: The Technology">
         Each future raised the same critical questions. Before we build this technology,
@@ -2377,3 +2380,221 @@ const NarrativeConnector = ({ children, act }: { children: React.ReactNode; act?
     </div>
   </div>
 );
+
+// ---------- Interactive Dream Simulator ----------
+const DreamSimulator = ({ onInteract }: ComponentProps) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [dreamFragments, setDreamFragments] = useState([
+    { id: 1, text: "flying", x: 20, y: 30, size: 60, color: "from-blue-500/30" },
+    { id: 2, text: "water", x: 60, y: 20, size: 45, color: "from-cyan-500/30" },
+    { id: 3, text: "faces", x: 40, y: 60, size: 50, color: "from-purple-500/30" },
+    { id: 4, text: "light", x: 75, y: 50, size: 40, color: "from-pink-500/30" },
+    { id: 5, text: "music", x: 30, y: 75, size: 35, color: "from-indigo-500/30" },
+  ]);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isExpanded) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePosition({
+      x: ((e.clientX - rect.left) / rect.width - 0.5) * 100,
+      y: ((e.clientY - rect.top) / rect.height - 0.5) * 100,
+    });
+  }, [isExpanded]);
+
+  return (
+    <Section>
+      <SectionTitle eyebrow="Interactive Experience" title="Step Into a Dream" />
+      <div className="max-w-4xl mx-auto text-center mb-12">
+        <p className="text-sm text-white/50 mb-4">
+          What does it feel like to be inside a dream? Click the orb to experience it.
+        </p>
+      </div>
+
+      {!isExpanded ? (
+        /* Miniature Dream Orb */
+        <motion.div
+          className="flex justify-center items-center h-[400px]"
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+        >
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              setIsExpanded(true);
+              onInteract();
+            }}
+            className="relative w-64 h-64 cursor-pointer"
+          >
+            {/* Glowing orb */}
+            <motion.div
+              className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-xl border border-white/20"
+              animate={{
+                scale: [1, 1.05, 1],
+                boxShadow: [
+                  "0 0 40px rgba(168, 85, 247, 0.3)",
+                  "0 0 80px rgba(236, 72, 153, 0.4)",
+                  "0 0 40px rgba(168, 85, 247, 0.3)",
+                ],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+
+            {/* Floating particles inside */}
+            {STATIC_PARTICLES.slice(0, 8).map((particle, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-2 h-2 bg-white/40 rounded-full"
+                animate={{
+                  x: [particle.initialX + "%", particle.targetX + "%", particle.initialX + "%"],
+                  y: [particle.initialY + "%", particle.targetY + "%", particle.initialY + "%"],
+                  opacity: [0.2, 0.6, 0.2],
+                }}
+                transition={{
+                  duration: particle.duration / 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+            ))}
+
+            {/* Center text */}
+            <div className="absolute inset-0 flex items-center justify-center flex-col">
+              <Sparkles className="w-8 h-8 text-white/60 mb-2" />
+              <span className="text-sm text-white/70 font-light">Enter Dream</span>
+            </div>
+          </motion.div>
+        </motion.div>
+      ) : (
+        /* Expanded Dream Space */
+        <AnimatePresence>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black flex items-center justify-center"
+            onMouseMove={handleMouseMove}
+          >
+            {/* Close button */}
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              onClick={() => setIsExpanded(false)}
+              className="absolute top-6 right-6 p-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-colors z-10"
+            >
+              <ChevronDown className="w-6 h-6 text-white/60 rotate-180" />
+            </motion.button>
+
+            {/* Instruction */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="absolute top-6 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-black/60 backdrop-blur-xl border border-white/10"
+            >
+              <span className="text-xs text-white/40">Move your mouse to swim through the dream space</span>
+            </motion.div>
+
+            {/* Dream fragments that follow mouse */}
+            {dreamFragments.map((fragment, i) => (
+              <motion.div
+                key={fragment.id}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  x: mousePosition.x * (0.3 + i * 0.1),
+                  y: mousePosition.y * (0.3 + i * 0.1),
+                }}
+                transition={{
+                  opacity: { delay: i * 0.1, duration: 0.5 },
+                  scale: { delay: i * 0.1, duration: 0.5 },
+                  x: { type: "spring", stiffness: 50, damping: 20 },
+                  y: { type: "spring", stiffness: 50, damping: 20 },
+                }}
+                style={{
+                  position: "absolute",
+                  left: `${fragment.x}%`,
+                  top: `${fragment.y}%`,
+                  width: `${fragment.size}px`,
+                  height: `${fragment.size}px`,
+                }}
+                className="pointer-events-none"
+              >
+                <div className={cx(
+                  "w-full h-full rounded-full bg-gradient-to-br backdrop-blur-xl border border-white/20",
+                  fragment.color,
+                  "flex items-center justify-center"
+                )}>
+                  <span className="text-xs font-light text-white/80">{fragment.text}</span>
+                </div>
+
+                {/* Particle trails */}
+                {[...Array(3)].map((_, j) => (
+                  <motion.div
+                    key={j}
+                    className="absolute top-1/2 left-1/2 w-1 h-1 bg-white/30 rounded-full"
+                    animate={{
+                      x: [0, (Math.cos(j * 120 * Math.PI / 180) * 30)],
+                      y: [0, (Math.sin(j * 120 * Math.PI / 180) * 30)],
+                      opacity: [0.5, 0],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      delay: j * 0.3,
+                    }}
+                  />
+                ))}
+              </motion.div>
+            ))}
+
+            {/* Ambient particles */}
+            {STATIC_PARTICLES.map((particle, i) => (
+              <motion.div
+                key={`ambient-${i}`}
+                className="absolute w-1 h-1 bg-white/10 rounded-full"
+                animate={{
+                  x: [
+                    `${particle.initialX}vw`,
+                    `${particle.targetX}vw`,
+                    `${particle.initialX}vw`,
+                  ],
+                  y: [
+                    `${particle.initialY}vh`,
+                    `${particle.targetY}vh`,
+                    `${particle.initialY}vh`,
+                  ],
+                  opacity: [0.1, 0.4, 0.1],
+                }}
+                transition={{
+                  duration: particle.duration,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+            ))}
+
+            {/* Wake up text */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1 }}
+              className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center"
+            >
+              <p className="text-sm text-white/30 italic">This is what dreams feel like...</p>
+              <p className="text-xs text-white/20 mt-2">Click the X to wake up</p>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
+      )}
+    </Section>
+  );
+};
