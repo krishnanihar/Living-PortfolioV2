@@ -8,6 +8,7 @@ import { ArtworkModal } from '@/components/ui/ArtworkModal';
 import { MythOSHero } from '@/components/ui/MythOSHero';
 import { LiminalDivider } from '@/components/ui/LiminalDivider';
 import { ScrollReveal } from '@/components/effects/ScrollReveal';
+import { ParallaxSection } from '@/components/effects/ParallaxSection';
 
 interface Artwork {
   id: string;
@@ -537,16 +538,19 @@ export default function MythOSExperience() {
       }}>
         <div style={{ maxWidth: '900px', margin: '0 auto' }}>
           {/* Main Story */}
-          <div style={{ marginBottom: '4rem' }}>
-            <h2 style={{
-              fontSize: '2rem',
-              fontWeight: '600',
-              marginBottom: '1rem',
-              letterSpacing: '-0.01em',
-              color: 'var(--text-primary)',
-            }}>
-              Why mythOS Exists
-            </h2>
+          <ParallaxSection speed={0.2} direction="up">
+            <ScrollReveal delay={0.1}>
+              <div style={{ marginBottom: '4rem' }}>
+                <h2 style={{
+                  fontSize: '2rem',
+                  fontWeight: '600',
+                  marginBottom: '1rem',
+                  letterSpacing: '-0.01em',
+                  color: 'var(--text-primary)',
+                }}
+                className="rune-glow">
+                  Why mythOS Exists
+                </h2>
             <div style={{
               lineHeight: '1.7',
               letterSpacing: '0.005em',
@@ -563,7 +567,9 @@ export default function MythOSExperience() {
                 mythOS uses Gemini AI to bridge that gap. Tell it how you feel, what you're curious about, or what visual ideas intrigue you. The AI translates your words into visual patterns, discovers artworks across centuries that share those qualities, and explains why they matter—in language anyone can understand.
               </p>
             </div>
-          </div>
+              </div>
+            </ScrollReveal>
+          </ParallaxSection>
 
           {/* Key Innovation */}
           <div style={{
