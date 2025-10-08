@@ -18,9 +18,6 @@ html {
   font-variation-settings: 'opsz' 32;
   scroll-behavior: smooth;
   line-height: 1.6;
-  scroll-snap-type: y mandatory;
-  overflow-y: scroll;
-  height: 100%;
 }
 
 body {
@@ -31,7 +28,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
-  height: 100%;
 }
 
 button {

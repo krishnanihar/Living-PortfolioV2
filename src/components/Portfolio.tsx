@@ -21,6 +21,7 @@ export default function Portfolio() {
   const [chatOpen, setChatOpen] = useState(false);
   const [initialMessage, setInitialMessage] = useState('');
   const [intentContext, setIntentContext] = useState('');
+  const [isSnapping, setIsSnapping] = useState(false);
   const { theme, resolvedTheme, toggleTheme } = useTheme();
 
   // Stabilize particle positions
@@ -133,13 +134,34 @@ export default function Portfolio() {
       });
     };
 
+    const handleWheel = (e: WheelEvent) => {
+      const scrollY = window.scrollY;
+      const heroHeight = window.innerHeight;
+
+      // If we're in the hero section and scrolling down
+      if (scrollY < heroHeight * 0.5 && e.deltaY > 0 && !isSnapping) {
+        e.preventDefault();
+        setIsSnapping(true);
+
+        window.scrollTo({
+          top: heroHeight,
+          behavior: 'smooth'
+        });
+
+        setTimeout(() => setIsSnapping(false), 1000);
+      }
+    };
+
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('wheel', handleWheel, { passive: false });
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('wheel', handleWheel);
     };
-  }, []);
+  }, [isSnapping]);
 
   const navItems = [
     { name: 'Work', icon: Briefcase, href: '/work' as const },
@@ -743,8 +765,6 @@ export default function Portfolio() {
           alignItems: 'center',
           justifyContent: 'center',
           position: 'relative',
-          scrollSnapAlign: 'start',
-          scrollSnapStop: 'always',
         }}>
           <div
             data-tour="hero-card"

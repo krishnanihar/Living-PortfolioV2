@@ -245,8 +245,6 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
           position: 'relative',
           overflow: 'hidden',
           minHeight: '100vh',
-          scrollSnapAlign: 'start',
-          scrollSnapStop: 'always',
         }}
         className={className}
       >
