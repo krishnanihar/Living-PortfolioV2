@@ -344,13 +344,13 @@ export default function Portfolio() {
               const dy = mousePos.y - top;
               const distance = Math.sqrt(dx * dx + dy * dy);
 
-              // Attraction force (stronger when closer, max 300px radius)
-              const maxDistance = 30; // 30% of screen
+              // Very subtle attraction force
+              const maxDistance = 25; // 25% of screen
               const force = distance < maxDistance ? (1 - distance / maxDistance) : 0;
 
-              // Apply subtle attraction (max 15px movement)
-              const attractX = dx * force * 0.15;
-              const attractY = dy * force * 0.15;
+              // Drastically reduced attraction (max 5px movement)
+              const attractX = dx * force * 0.05;
+              const attractY = dy * force * 0.05;
 
               return (
                 <div
@@ -381,12 +381,12 @@ export default function Portfolio() {
               const dy = mousePos.y - top;
               const distance = Math.sqrt(dx * dx + dy * dy);
 
-              const maxDistance = 35;
+              const maxDistance = 28;
               const force = distance < maxDistance ? (1 - distance / maxDistance) : 0;
 
-              // Slightly stronger attraction for mid layer
-              const attractX = dx * force * 0.25;
-              const attractY = dy * force * 0.25;
+              // Very subtle attraction for mid layer
+              const attractX = dx * force * 0.08;
+              const attractY = dy * force * 0.08;
 
               return (
                 <div
@@ -417,12 +417,12 @@ export default function Portfolio() {
               const dy = mousePos.y - top;
               const distance = Math.sqrt(dx * dx + dy * dy);
 
-              const maxDistance = 40;
+              const maxDistance = 30;
               const force = distance < maxDistance ? (1 - distance / maxDistance) : 0;
 
-              // Strongest attraction for near layer
-              const attractX = dx * force * 0.4;
-              const attractY = dy * force * 0.4;
+              // Subtle attraction for near layer
+              const attractX = dx * force * 0.12;
+              const attractY = dy * force * 0.12;
 
               return (
                 <div
@@ -453,11 +453,11 @@ export default function Portfolio() {
               const dy = mousePos.y - top;
               const distance = Math.sqrt(dx * dx + dy * dy);
 
-              const maxDistance = 35;
+              const maxDistance = 28;
               const force = distance < maxDistance ? (1 - distance / maxDistance) : 0;
 
-              const attractX = dx * force * 0.3;
-              const attractY = dy * force * 0.3;
+              const attractX = dx * force * 0.1;
+              const attractY = dy * force * 0.1;
 
               return (
                 <div
