@@ -1092,22 +1092,22 @@ select {
   box-shadow: 0 0 6px rgba(218, 14, 41, 0.5);
 }
 
-/* Particle animations - smooth and organic */
+/* Particle animations - ultra-smooth and soft */
 @keyframes cosmicParticleFloat {
   0% {
     transform: translate(0, 0);
   }
   20% {
-    transform: translate(5px, -8px);
+    transform: translate(2px, -3px);
   }
   40% {
-    transform: translate(-4px, -15px);
+    transform: translate(-2px, -5px);
   }
   60% {
-    transform: translate(-8px, -10px);
+    transform: translate(-3px, -4px);
   }
   80% {
-    transform: translate(3px, -5px);
+    transform: translate(1px, -2px);
   }
   100% {
     transform: translate(0, 0);

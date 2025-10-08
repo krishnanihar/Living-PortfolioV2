@@ -276,76 +276,206 @@ export default function Portfolio() {
 
         {/* Cosmic Particles Background - Hero Only */}
         <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
-          {/* Particle layer - Far (slowest, smoothest) */}
+          {/* Floating Gradient Orbs */}
+          <div style={{
+            position: 'absolute',
+            top: '15%',
+            left: '8%',
+            width: '600px',
+            height: '600px',
+            background: 'radial-gradient(circle, rgba(218, 14, 41, 0.08), rgba(218, 14, 41, 0.03) 40%, transparent 70%)',
+            borderRadius: '50%',
+            filter: 'blur(100px)',
+            animation: 'floatOrb 40s ease-in-out infinite',
+            opacity: mousePos.x < 30 && mousePos.y < 30 ? 1.3 : 1,
+            transition: 'opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1)',
+          }} />
+
+          <div style={{
+            position: 'absolute',
+            top: '10%',
+            right: '10%',
+            width: '500px',
+            height: '500px',
+            background: 'radial-gradient(circle, rgba(99, 102, 241, 0.06), rgba(99, 102, 241, 0.02) 40%, transparent 70%)',
+            borderRadius: '50%',
+            filter: 'blur(90px)',
+            animation: 'floatOrb 45s ease-in-out infinite 10s',
+            opacity: mousePos.x > 70 && mousePos.y < 30 ? 1.3 : 1,
+            transition: 'opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1)',
+          }} />
+
+          <div style={{
+            position: 'absolute',
+            bottom: '10%',
+            left: '25%',
+            width: '450px',
+            height: '450px',
+            background: 'radial-gradient(circle, rgba(16, 185, 129, 0.05), rgba(16, 185, 129, 0.02) 40%, transparent 70%)',
+            borderRadius: '50%',
+            filter: 'blur(85px)',
+            animation: 'floatOrb 50s ease-in-out infinite 20s',
+            opacity: mousePos.x < 40 && mousePos.y > 60 ? 1.3 : 1,
+            transition: 'opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1)',
+          }} />
+
+          <div style={{
+            position: 'absolute',
+            top: '40%',
+            right: '15%',
+            width: '400px',
+            height: '400px',
+            background: 'radial-gradient(circle, rgba(245, 158, 11, 0.04), rgba(245, 158, 11, 0.015) 40%, transparent 70%)',
+            borderRadius: '50%',
+            filter: 'blur(80px)',
+            animation: 'floatOrb 42s ease-in-out infinite 15s',
+            opacity: mousePos.x > 60 && mousePos.y > 30 ? 1.3 : 1,
+            transition: 'opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1)',
+          }} />
+
+          {/* Particle layer - Far (slowest, smoothest) with mouse attraction */}
           <div className="cosmic-particle-layer cosmic-particle-layer-far">
-            {Array.from({ length: 50 }).map((_, i) => (
-              <div
-                key={`far-${i}`}
-                className="cosmic-particle"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  width: '1px',
-                  height: '1px',
-                  animationDelay: `${Math.random() * 30}s, ${Math.random() * 20}s`,
-                  animationDuration: `${35 + Math.random() * 25}s, ${15 + Math.random() * 10}s`,
-                }}
-              />
-            ))}
+            {Array.from({ length: 50 }).map((_, i) => {
+              const left = Math.random() * 100;
+              const top = Math.random() * 100;
+
+              // Calculate distance from mouse
+              const dx = mousePos.x - left;
+              const dy = mousePos.y - top;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+
+              // Attraction force (stronger when closer, max 300px radius)
+              const maxDistance = 30; // 30% of screen
+              const force = distance < maxDistance ? (1 - distance / maxDistance) : 0;
+
+              // Apply subtle attraction (max 15px movement)
+              const attractX = dx * force * 0.15;
+              const attractY = dy * force * 0.15;
+
+              return (
+                <div
+                  key={`far-${i}`}
+                  className="cosmic-particle"
+                  style={{
+                    left: `${left}%`,
+                    top: `${top}%`,
+                    width: '1px',
+                    height: '1px',
+                    animationDelay: `${Math.random() * 30}s, ${Math.random() * 20}s`,
+                    animationDuration: `${35 + Math.random() * 25}s, ${15 + Math.random() * 10}s`,
+                    transform: `translate(${attractX}px, ${attractY}px)`,
+                    transition: 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                />
+              );
+            })}
           </div>
 
-          {/* Particle layer - Mid (medium speed) */}
+          {/* Particle layer - Mid (medium speed) with stronger mouse attraction */}
           <div className="cosmic-particle-layer cosmic-particle-layer-mid">
-            {Array.from({ length: 30 }).map((_, i) => (
-              <div
-                key={`mid-${i}`}
-                className="cosmic-particle"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  width: '1.5px',
-                  height: '1.5px',
-                  animationDelay: `${Math.random() * 25}s, ${Math.random() * 15}s`,
-                  animationDuration: `${28 + Math.random() * 18}s, ${12 + Math.random() * 8}s`,
-                }}
-              />
-            ))}
+            {Array.from({ length: 30 }).map((_, i) => {
+              const left = Math.random() * 100;
+              const top = Math.random() * 100;
+
+              const dx = mousePos.x - left;
+              const dy = mousePos.y - top;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+
+              const maxDistance = 35;
+              const force = distance < maxDistance ? (1 - distance / maxDistance) : 0;
+
+              // Slightly stronger attraction for mid layer
+              const attractX = dx * force * 0.25;
+              const attractY = dy * force * 0.25;
+
+              return (
+                <div
+                  key={`mid-${i}`}
+                  className="cosmic-particle"
+                  style={{
+                    left: `${left}%`,
+                    top: `${top}%`,
+                    width: '1.5px',
+                    height: '1.5px',
+                    animationDelay: `${Math.random() * 25}s, ${Math.random() * 15}s`,
+                    animationDuration: `${28 + Math.random() * 18}s, ${12 + Math.random() * 8}s`,
+                    transform: `translate(${attractX}px, ${attractY}px)`,
+                    transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                />
+              );
+            })}
           </div>
 
-          {/* Particle layer - Near (faster but still smooth) */}
+          {/* Particle layer - Near (fastest attraction, most responsive) */}
           <div className="cosmic-particle-layer cosmic-particle-layer-near">
-            {Array.from({ length: 20 }).map((_, i) => (
-              <div
-                key={`near-${i}`}
-                className="cosmic-particle"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  width: '2px',
-                  height: '2px',
-                  animationDelay: `${Math.random() * 20}s, ${Math.random() * 12}s`,
-                  animationDuration: `${22 + Math.random() * 14}s, ${10 + Math.random() * 6}s`,
-                }}
-              />
-            ))}
+            {Array.from({ length: 20 }).map((_, i) => {
+              const left = Math.random() * 100;
+              const top = Math.random() * 100;
+
+              const dx = mousePos.x - left;
+              const dy = mousePos.y - top;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+
+              const maxDistance = 40;
+              const force = distance < maxDistance ? (1 - distance / maxDistance) : 0;
+
+              // Strongest attraction for near layer
+              const attractX = dx * force * 0.4;
+              const attractY = dy * force * 0.4;
+
+              return (
+                <div
+                  key={`near-${i}`}
+                  className="cosmic-particle"
+                  style={{
+                    left: `${left}%`,
+                    top: `${top}%`,
+                    width: '2px',
+                    height: '2px',
+                    animationDelay: `${Math.random() * 20}s, ${Math.random() * 12}s`,
+                    animationDuration: `${22 + Math.random() * 14}s, ${10 + Math.random() * 6}s`,
+                    transform: `translate(${attractX}px, ${attractY}px)`,
+                    transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                />
+              );
+            })}
           </div>
 
-          {/* Accent particles (slow and dreamy) */}
+          {/* Accent particles (slow and dreamy with gentle attraction) */}
           <div className="cosmic-particle-layer cosmic-particle-layer-accent">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <div
-                key={`accent-${i}`}
-                className="cosmic-particle cosmic-particle-accent"
-                style={{
-                  left: `${20 + Math.random() * 60}%`,
-                  top: `${20 + Math.random() * 60}%`,
-                  width: '1.5px',
-                  height: '1.5px',
-                  animationDelay: `${Math.random() * 15}s, ${Math.random() * 10}s`,
-                  animationDuration: `${25 + Math.random() * 15}s, ${12 + Math.random() * 8}s`,
-                }}
-              />
-            ))}
+            {Array.from({ length: 3 }).map((_, i) => {
+              const left = 20 + Math.random() * 60;
+              const top = 20 + Math.random() * 60;
+
+              const dx = mousePos.x - left;
+              const dy = mousePos.y - top;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+
+              const maxDistance = 35;
+              const force = distance < maxDistance ? (1 - distance / maxDistance) : 0;
+
+              const attractX = dx * force * 0.3;
+              const attractY = dy * force * 0.3;
+
+              return (
+                <div
+                  key={`accent-${i}`}
+                  className="cosmic-particle cosmic-particle-accent"
+                  style={{
+                    left: `${left}%`,
+                    top: `${top}%`,
+                    width: '1.5px',
+                    height: '1.5px',
+                    animationDelay: `${Math.random() * 15}s, ${Math.random() * 10}s`,
+                    animationDuration: `${25 + Math.random() * 15}s, ${12 + Math.random() * 8}s`,
+                    transform: `translate(${attractX}px, ${attractY}px)`,
+                    transition: 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                />
+              );
+            })}
           </div>
 
           {/* Subtle grid pattern */}
