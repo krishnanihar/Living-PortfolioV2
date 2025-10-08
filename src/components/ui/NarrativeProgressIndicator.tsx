@@ -20,6 +20,35 @@ export function NarrativeProgressIndicator({
 }: NarrativeProgressIndicatorProps) {
   const narrativeState = useNarrativeProgress();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const hoverTimeoutRef = React.useRef<NodeJS.Timeout | undefined>(undefined);
+
+  // Debounced hover handlers to prevent glitching
+  const handleMouseEnter = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    setIsHovering(true);
+    setIsExpanded(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    setIsHovering(false);
+    hoverTimeoutRef.current = setTimeout(() => {
+      setIsExpanded(false);
+    }, 150); // Small delay to prevent flicker
+  };
+
+  React.useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const acts = [
     {
@@ -53,8 +82,8 @@ export function NarrativeProgressIndicator({
       initial={{ opacity: 0, x: position === 'right' ? 20 : -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 1, duration: 0.8 }}
-      onMouseEnter={() => setIsExpanded(true)}
-      onMouseLeave={() => setIsExpanded(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       style={{
         position: 'fixed',
         top: '50%',
@@ -65,6 +94,7 @@ export function NarrativeProgressIndicator({
         flexDirection: position === 'right' ? 'row-reverse' : 'row',
         alignItems: 'center',
         gap: '1rem',
+        pointerEvents: 'auto',
       }}
     >
       {/* Progress track */}
@@ -164,6 +194,8 @@ export function NarrativeProgressIndicator({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: position === 'right' ? 10 : -10 }}
             transition={{ duration: 0.2 }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
             style={{
               background: 'rgba(10, 10, 10, 0.95)',
               backdropFilter: 'blur(20px)',
@@ -172,6 +204,7 @@ export function NarrativeProgressIndicator({
               borderRadius: '12px',
               padding: '1rem',
               minWidth: '180px',
+              pointerEvents: 'auto',
             }}
           >
             {acts.map((act) => {
