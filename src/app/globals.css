@@ -1053,6 +1053,95 @@ select {
   }
 }
 
+/* === COSMIC PARTICLES BACKGROUND === */
+
+/* Particle system styles */
+.cosmic-particle-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.cosmic-particle {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 0 3px rgba(255, 255, 255, 0.6);
+  animation: cosmicParticleFloat linear infinite, cosmicParticleTwinkle ease-in-out infinite;
+}
+
+/* Particle depth layers with different opacities */
+.cosmic-particle-layer-far .cosmic-particle {
+  opacity: 0.4;
+}
+
+.cosmic-particle-layer-mid .cosmic-particle {
+  opacity: 0.6;
+}
+
+.cosmic-particle-layer-near .cosmic-particle {
+  opacity: 0.8;
+}
+
+/* Brand accent particles */
+.cosmic-particle-accent {
+  background: rgba(218, 14, 41, 0.7);
+  opacity: 0.6;
+  box-shadow: 0 0 6px rgba(218, 14, 41, 0.5);
+}
+
+/* Particle animations */
+@keyframes cosmicParticleFloat {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(10px, -15px);
+  }
+  50% {
+    transform: translate(-8px, -30px);
+  }
+  75% {
+    transform: translate(-15px, -15px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes cosmicParticleTwinkle {
+  0%, 100% {
+    opacity: inherit;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+/* Accessibility - reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .cosmic-particle {
+    animation: cosmicParticleTwinkle 4s ease-in-out infinite;
+  }
+  @keyframes cosmicParticleFloat {
+    0%, 100% {
+      transform: translate(0, 0);
+    }
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .cosmic-particle-layer-far {
+    display: none;
+  }
+  .cosmic-particle-layer-mid .cosmic-particle:nth-child(n+15) {
+    display: none;
+  }
+  .cosmic-particle-layer-near .cosmic-particle:nth-child(n+10) {
+    display: none;
+  }
+}
+
 /* ============================================
    MYSTICAL EFFECTS FOR MYTHOS
    ============================================ */

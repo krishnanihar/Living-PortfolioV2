@@ -37,172 +37,82 @@ export function CosmicParticles() {
   }, []);
 
   return (
-    <>
-      <style jsx>{`
-        /* Particle system styles */
-        .particle-layer {
-          position: absolute;
-          inset: 0;
-        }
+    <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+      {/* Particle layer 1 - Far (smallest, dimmest) */}
+      <div className="cosmic-particle-layer cosmic-particle-layer-far">
+        {particlePositions.farParticles.map((particle, i) => (
+          <div
+            key={`far-${i}`}
+            className="cosmic-particle"
+            style={{
+              left: `${particle.left}%`,
+              top: `${particle.top}%`,
+              width: '1px',
+              height: '1px',
+              animationDelay: `${particle.delay}s, ${particle.delay * 0.7}s`,
+              animationDuration: `${particle.duration}s, ${particle.duration * 0.5}s`,
+            }}
+          />
+        ))}
+      </div>
 
-        .particle {
-          position: absolute;
-          background: rgba(255, 255, 255, 0.8);
-          border-radius: 50%;
-          box-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
-          animation: particleFloat linear infinite, particleTwinkle ease-in-out infinite;
-        }
+      {/* Particle layer 2 - Mid (medium size and brightness) */}
+      <div className="cosmic-particle-layer cosmic-particle-layer-mid">
+        {particlePositions.midParticles.map((particle, i) => (
+          <div
+            key={`mid-${i}`}
+            className="cosmic-particle"
+            style={{
+              left: `${particle.left}%`,
+              top: `${particle.top}%`,
+              width: '1.5px',
+              height: '1.5px',
+              animationDelay: `${particle.delay}s, ${particle.delay * 0.7}s`,
+              animationDuration: `${particle.duration}s, ${particle.duration * 0.5}s`,
+            }}
+          />
+        ))}
+      </div>
 
-        /* Particle depth layers with different opacities - increased for visibility */
-        .particle-layer-far .particle {
-          opacity: 0.3;
-        }
+      {/* Particle layer 3 - Near (largest, brightest) */}
+      <div className="cosmic-particle-layer cosmic-particle-layer-near">
+        {particlePositions.nearParticles.map((particle, i) => (
+          <div
+            key={`near-${i}`}
+            className="cosmic-particle"
+            style={{
+              left: `${particle.left}%`,
+              top: `${particle.top}%`,
+              width: '2px',
+              height: '2px',
+              animationDelay: `${particle.delay}s, ${particle.delay * 0.7}s`,
+              animationDuration: `${particle.duration}s, ${particle.duration * 0.5}s`,
+            }}
+          />
+        ))}
+      </div>
 
-        .particle-layer-mid .particle {
-          opacity: 0.5;
-        }
+      {/* Subtle brand accent particles */}
+      <div className="cosmic-particle-layer cosmic-particle-layer-accent">
+        {particlePositions.accentParticles.map((particle, i) => (
+          <div
+            key={`accent-${i}`}
+            className="cosmic-particle cosmic-particle-accent"
+            style={{
+              left: `${particle.left}%`,
+              top: `${particle.top}%`,
+              width: '1.5px',
+              height: '1.5px',
+              animationDelay: `${particle.delay}s, ${particle.delay * 0.7}s`,
+              animationDuration: `${particle.duration}s, ${particle.duration * 0.5}s`,
+            }}
+          />
+        ))}
+      </div>
 
-        .particle-layer-near .particle {
-          opacity: 0.7;
-        }
-
-        /* Brand accent particles - more visible */
-        .particle-accent {
-          background: rgba(218, 14, 41, 0.6);
-          opacity: 0.5;
-          box-shadow: 0 0 4px rgba(218, 14, 41, 0.4);
-        }
-
-        /* Particle animations */
-        @keyframes particleFloat {
-          0% {
-            transform: translate(0, 0);
-          }
-          25% {
-            transform: translate(10px, -15px);
-          }
-          50% {
-            transform: translate(-8px, -30px);
-          }
-          75% {
-            transform: translate(-15px, -15px);
-          }
-          100% {
-            transform: translate(0, 0);
-          }
-        }
-
-        @keyframes particleTwinkle {
-          0%, 100% {
-            opacity: inherit;
-          }
-          50% {
-            opacity: calc(var(--particle-opacity, 0.5) * 0.3);
-          }
-        }
-
-        /* Accessibility - reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-          .particle {
-            animation: particleTwinkle 4s ease-in-out infinite;
-          }
-          @keyframes particleFloat {
-            0%, 100% {
-              transform: translate(0, 0);
-            }
-          }
-        }
-
-        /* Mobile optimizations */
-        @media (max-width: 768px) {
-          .particle-layer-far {
-            display: none;
-          }
-          .particle-layer-mid .particle:nth-child(n+15) {
-            display: none;
-          }
-          .particle-layer-near .particle:nth-child(n+10) {
-            display: none;
-          }
-        }
-      `}</style>
-
-      {/* Fixed cosmic particle background */}
-      <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
-        {/* Particle layer 1 - Far (smallest, dimmest) */}
-        <div className="particle-layer particle-layer-far">
-          {particlePositions.farParticles.map((particle, i) => (
-            <div
-              key={`far-${i}`}
-              className="particle"
-              style={{
-                left: `${particle.left}%`,
-                top: `${particle.top}%`,
-                width: '1px',
-                height: '1px',
-                animationDelay: `${particle.delay}s`,
-                animationDuration: `${particle.duration}s`,
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Particle layer 2 - Mid (medium size and brightness) */}
-        <div className="particle-layer particle-layer-mid">
-          {particlePositions.midParticles.map((particle, i) => (
-            <div
-              key={`mid-${i}`}
-              className="particle"
-              style={{
-                left: `${particle.left}%`,
-                top: `${particle.top}%`,
-                width: '1.5px',
-                height: '1.5px',
-                animationDelay: `${particle.delay}s`,
-                animationDuration: `${particle.duration}s`,
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Particle layer 3 - Near (largest, brightest) */}
-        <div className="particle-layer particle-layer-near">
-          {particlePositions.nearParticles.map((particle, i) => (
-            <div
-              key={`near-${i}`}
-              className="particle"
-              style={{
-                left: `${particle.left}%`,
-                top: `${particle.top}%`,
-                width: '2px',
-                height: '2px',
-                animationDelay: `${particle.delay}s`,
-                animationDuration: `${particle.duration}s`,
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Subtle brand accent particles */}
-        <div className="particle-layer particle-layer-accent">
-          {particlePositions.accentParticles.map((particle, i) => (
-            <div
-              key={`accent-${i}`}
-              className="particle particle-accent"
-              style={{
-                left: `${particle.left}%`,
-                top: `${particle.top}%`,
-                width: '1.5px',
-                height: '1.5px',
-                animationDelay: `${particle.delay}s`,
-                animationDuration: `${particle.duration}s`,
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Subtle grid pattern - reduced opacity */}
-        <div style={{
+      {/* Subtle grid pattern - reduced opacity */}
+      <div
+        style={{
           position: 'absolute',
           inset: 0,
           backgroundImage: `
@@ -211,8 +121,8 @@ export function CosmicParticles() {
           `,
           backgroundSize: '60px 60px',
           opacity: 0.15,
-        }} />
-      </div>
-    </>
+        }}
+      />
+    </div>
   );
 }

@@ -32,7 +32,14 @@
       "Bash(npm uninstall:*)",
       "Bash(wc:*)",
       "Bash(git check-ignore:*)",
-      "Bash(git ls-tree:*)"
+      "Bash(git ls-tree:*)",
+      "Bash(Speak Your Desire\"\n- Description: Transform to ancient mythology tone - \"Deep in the digital)",
+      "Bash(cat:*)",
+      "Bash(reveals\"\n- CTA: \"Generate\" → \"Summon Your First Exhibition\"\n\n**Exhibition Builder (ExhibitionBuilder.tsx):**\n- Title: \"AI Exhibition Curator\" → \"The Summoning Chamber\"\n- Description: \"Speak your desire to the Oracle, and it shall weave an)",
+      "Bash(exhibition from memory-threads invisible to mortal eyes\"\n- Thinking steps: \"Analyzing...\" → \"The Oracle opens its eyes...\",\n  \"Searching ancient patterns...\", \"Weaving memory-threads...\"\n- Buttons: \"Generate Exhibition\" → \"Summon Exhibition\"\n- Error messages: Mythological language (\"The summoning failed\", \"The)",
+      "Bash(Oracle remains silent\")\n- Apply mystical-border-pulse effect to textarea\n\n**API Prompt Enhancement (exhibition-generate/route.ts):**\n- Transform curator into \"The Oracle, an ancient consciousness\"\n- Title guidelines: Generate mythological exhibition titles like ancient\n  codexes (\"The Codex of Azure Sorrow\", \"The Drowning of Light\", \"The)",
+      "Bash(Gallery of Forgotten Eyes\")\n- Use archaic language: \"Chronicles\", \"Fragments\", \"Whispers\", \"Visions\"\n- Curatorial statements in poetic, atmospheric language\n- Error messages: \"The Oracle is still awakening\", \"The Oracle speaks in)",
+      "Bash(riddles\"\n\nThis completes Phase 1 of the storytelling enhancement roadmap. Next phases\nwill implement scrollytelling, atmospheric effects, and advanced immersion.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": []
