@@ -1,8 +1,41 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 
 export function CosmicParticles() {
+  // Generate stable particle positions once on mount
+  const particlePositions = useMemo(() => {
+    const farParticles = Array.from({ length: 50 }, () => ({
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      delay: Math.random() * 20,
+      duration: 20 + Math.random() * 15,
+    }));
+
+    const midParticles = Array.from({ length: 30 }, () => ({
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      delay: Math.random() * 15,
+      duration: 15 + Math.random() * 10,
+    }));
+
+    const nearParticles = Array.from({ length: 20 }, () => ({
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      delay: Math.random() * 10,
+      duration: 10 + Math.random() * 8,
+    }));
+
+    const accentParticles = Array.from({ length: 3 }, () => ({
+      left: 20 + Math.random() * 60,
+      top: 20 + Math.random() * 60,
+      delay: Math.random() * 8,
+      duration: 12 + Math.random() * 6,
+    }));
+
+    return { farParticles, midParticles, nearParticles, accentParticles };
+  }, []);
+
   return (
     <>
       <style jsx>{`
@@ -14,28 +47,30 @@ export function CosmicParticles() {
 
         .particle {
           position: absolute;
-          background: rgba(255, 255, 255, 0.6);
-          borderRadius: 50%;
+          background: rgba(255, 255, 255, 0.8);
+          border-radius: 50%;
+          box-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
           animation: particleFloat linear infinite, particleTwinkle ease-in-out infinite;
         }
 
-        /* Particle depth layers with different opacities */
+        /* Particle depth layers with different opacities - increased for visibility */
         .particle-layer-far .particle {
-          opacity: 0.2;
+          opacity: 0.3;
         }
 
         .particle-layer-mid .particle {
-          opacity: 0.35;
-        }
-
-        .particle-layer-near .particle {
           opacity: 0.5;
         }
 
-        /* Brand accent particles */
+        .particle-layer-near .particle {
+          opacity: 0.7;
+        }
+
+        /* Brand accent particles - more visible */
         .particle-accent {
-          background: rgba(218, 14, 41, 0.4);
-          opacity: 0.3;
+          background: rgba(218, 14, 41, 0.6);
+          opacity: 0.5;
+          box-shadow: 0 0 4px rgba(218, 14, 41, 0.4);
         }
 
         /* Particle animations */
@@ -96,17 +131,17 @@ export function CosmicParticles() {
       <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
         {/* Particle layer 1 - Far (smallest, dimmest) */}
         <div className="particle-layer particle-layer-far">
-          {Array.from({ length: 50 }).map((_, i) => (
+          {particlePositions.farParticles.map((particle, i) => (
             <div
               key={`far-${i}`}
               className="particle"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
+                left: `${particle.left}%`,
+                top: `${particle.top}%`,
                 width: '1px',
                 height: '1px',
-                animationDelay: `${Math.random() * 20}s`,
-                animationDuration: `${20 + Math.random() * 15}s`,
+                animationDelay: `${particle.delay}s`,
+                animationDuration: `${particle.duration}s`,
               }}
             />
           ))}
@@ -114,17 +149,17 @@ export function CosmicParticles() {
 
         {/* Particle layer 2 - Mid (medium size and brightness) */}
         <div className="particle-layer particle-layer-mid">
-          {Array.from({ length: 30 }).map((_, i) => (
+          {particlePositions.midParticles.map((particle, i) => (
             <div
               key={`mid-${i}`}
               className="particle"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
+                left: `${particle.left}%`,
+                top: `${particle.top}%`,
                 width: '1.5px',
                 height: '1.5px',
-                animationDelay: `${Math.random() * 15}s`,
-                animationDuration: `${15 + Math.random() * 10}s`,
+                animationDelay: `${particle.delay}s`,
+                animationDuration: `${particle.duration}s`,
               }}
             />
           ))}
@@ -132,17 +167,17 @@ export function CosmicParticles() {
 
         {/* Particle layer 3 - Near (largest, brightest) */}
         <div className="particle-layer particle-layer-near">
-          {Array.from({ length: 20 }).map((_, i) => (
+          {particlePositions.nearParticles.map((particle, i) => (
             <div
               key={`near-${i}`}
               className="particle"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
+                left: `${particle.left}%`,
+                top: `${particle.top}%`,
                 width: '2px',
                 height: '2px',
-                animationDelay: `${Math.random() * 10}s`,
-                animationDuration: `${10 + Math.random() * 8}s`,
+                animationDelay: `${particle.delay}s`,
+                animationDuration: `${particle.duration}s`,
               }}
             />
           ))}
@@ -150,17 +185,17 @@ export function CosmicParticles() {
 
         {/* Subtle brand accent particles */}
         <div className="particle-layer particle-layer-accent">
-          {Array.from({ length: 3 }).map((_, i) => (
+          {particlePositions.accentParticles.map((particle, i) => (
             <div
               key={`accent-${i}`}
               className="particle particle-accent"
               style={{
-                left: `${20 + Math.random() * 60}%`,
-                top: `${20 + Math.random() * 60}%`,
+                left: `${particle.left}%`,
+                top: `${particle.top}%`,
                 width: '1.5px',
                 height: '1.5px',
-                animationDelay: `${Math.random() * 8}s`,
-                animationDuration: `${12 + Math.random() * 6}s`,
+                animationDelay: `${particle.delay}s`,
+                animationDuration: `${particle.duration}s`,
               }}
             />
           ))}
