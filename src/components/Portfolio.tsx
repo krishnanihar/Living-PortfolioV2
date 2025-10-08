@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Briefcase, User, Moon, Sun, Palette, HelpCircle, ChevronDown } from 'lucide-react';
+import { Briefcase, User, Moon, Sun, Palette, HelpCircle, ChevronDown, Beaker } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
 import { ConversationStarter } from '@/components/ConversationStarter';
 import { Chatbot } from '@/components/Chatbot';
@@ -167,6 +167,7 @@ export default function Portfolio() {
   const navItems = [
     { name: 'Work', icon: Briefcase, href: '/work' as const },
     { name: 'About', icon: User, href: '/about' as const },
+    { name: 'Labs', icon: Beaker, href: '/labs' as const },
   ];
 
   const credentials = [
