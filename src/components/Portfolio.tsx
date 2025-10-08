@@ -327,7 +327,14 @@ export default function Portfolio() {
         </a>
 
         {/* Cosmic Particles Background - Hero Only */}
-        <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          pointerEvents: 'none',
+          zIndex: 0,
+          opacity: particlesOpacity,
+          transition: 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+        }}>
           {/* Floating Gradient Orbs */}
           <div style={{
             position: 'absolute',
@@ -393,13 +400,13 @@ export default function Portfolio() {
               const dy = mousePos.y - particle.top;
               const distance = Math.sqrt(dx * dx + dy * dy);
 
-              // Very subtle attraction force
-              const maxDistance = 25;
+              // Subtle attraction force
+              const maxDistance = 30;
               const force = distance < maxDistance ? (1 - distance / maxDistance) : 0;
 
-              // Drastically reduced attraction (max 5px movement)
-              const attractX = dx * force * 0.05;
-              const attractY = dy * force * 0.05;
+              // Smooth attraction (max ~12px movement)
+              const attractX = dx * force * 0.15;
+              const attractY = dy * force * 0.15;
 
               return (
                 <div
@@ -427,11 +434,11 @@ export default function Portfolio() {
               const dy = mousePos.y - particle.top;
               const distance = Math.sqrt(dx * dx + dy * dy);
 
-              const maxDistance = 28;
+              const maxDistance = 32;
               const force = distance < maxDistance ? (1 - distance / maxDistance) : 0;
 
-              const attractX = dx * force * 0.08;
-              const attractY = dy * force * 0.08;
+              const attractX = dx * force * 0.2;
+              const attractY = dy * force * 0.2;
 
               return (
                 <div
@@ -459,11 +466,11 @@ export default function Portfolio() {
               const dy = mousePos.y - particle.top;
               const distance = Math.sqrt(dx * dx + dy * dy);
 
-              const maxDistance = 30;
+              const maxDistance = 35;
               const force = distance < maxDistance ? (1 - distance / maxDistance) : 0;
 
-              const attractX = dx * force * 0.12;
-              const attractY = dy * force * 0.12;
+              const attractX = dx * force * 0.25;
+              const attractY = dy * force * 0.25;
 
               return (
                 <div
@@ -491,11 +498,11 @@ export default function Portfolio() {
               const dy = mousePos.y - particle.top;
               const distance = Math.sqrt(dx * dx + dy * dy);
 
-              const maxDistance = 28;
+              const maxDistance = 32;
               const force = distance < maxDistance ? (1 - distance / maxDistance) : 0;
 
-              const attractX = dx * force * 0.1;
-              const attractY = dy * force * 0.1;
+              const attractX = dx * force * 0.18;
+              const attractY = dy * force * 0.18;
 
               return (
                 <div
