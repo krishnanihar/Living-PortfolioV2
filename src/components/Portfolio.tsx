@@ -143,8 +143,9 @@ export default function Portfolio() {
         e.preventDefault();
         setIsSnapping(true);
 
+        // Scroll to just after hero, with offset for header
         window.scrollTo({
-          top: heroHeight,
+          top: heroHeight - 80,
           behavior: 'smooth'
         });
 
