@@ -189,9 +189,6 @@ export default function MythOSExperience() {
         <ExhibitionBuilder onExhibitionGenerated={handleExhibitionGenerated} />
       </div>
 
-      {/* Liminal Divider */}
-      <LiminalDivider type="fog" height="150px" text="• The Gallery Materializes •" />
-
       {/* Main Gallery */}
       <main style={{ maxWidth: '1600px', margin: '0 auto', padding: '3rem 2rem' }}>$
         {/* Exhibition Title (AI-Generated) */}
