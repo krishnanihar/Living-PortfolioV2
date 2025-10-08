@@ -12,9 +12,6 @@ export {
 } from './Card';
 export type { CardProps } from './Card';
 
-export { Navigation } from './Navigation';
-export type { NavigationProps } from './Navigation';
-
 export { ProjectCard } from './ProjectCard';
 export { FilterTabs, FilterTabsAccessible } from './FilterTabs';
 export { WorkGrid, GridDebugger } from './WorkGrid';
@@ -35,7 +32,6 @@ export { WorldMap } from './Map';
 // Re-export everything for convenience
 export * from './Button';
 export * from './Card';
-export * from './Navigation';
 export * from './ProjectCard';
 export * from './FilterTabs';
 export * from './WorkGrid';
