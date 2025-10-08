@@ -238,63 +238,91 @@ export default function Portfolio() {
           }
         }
 
-        @keyframes gradientMeshMove {
+        /* Particle system styles */
+        .particle-layer {
+          position: absolute;
+          inset: 0;
+        }
+
+        .particle {
+          position: absolute;
+          background: rgba(255, 255, 255, 0.6);
+          border-radius: 50%;
+          animation: particleFloat linear infinite, particleTwinkle ease-in-out infinite;
+        }
+
+        /* Particle depth layers with different opacities */
+        .particle-layer-far .particle {
+          opacity: 0.2;
+        }
+
+        .particle-layer-mid .particle {
+          opacity: 0.35;
+        }
+
+        .particle-layer-near .particle {
+          opacity: 0.5;
+        }
+
+        /* Brand accent particles */
+        .particle-accent {
+          background: rgba(218, 14, 41, 0.4);
+          opacity: 0.3;
+        }
+
+        /* Particle animations */
+        @keyframes particleFloat {
+          0% {
+            transform: translate(0, 0);
+          }
+          25% {
+            transform: translate(10px, -15px);
+          }
+          50% {
+            transform: translate(-8px, -30px);
+          }
+          75% {
+            transform: translate(-15px, -15px);
+          }
+          100% {
+            transform: translate(0, 0);
+          }
+        }
+
+        @keyframes particleTwinkle {
           0%, 100% {
-            transform: translate(0, 0) scale(1);
+            opacity: inherit;
           }
-          33% {
-            transform: translate(20px, -30px) scale(1.05);
-          }
-          66% {
-            transform: translate(-30px, 20px) scale(0.95);
+          50% {
+            opacity: calc(var(--particle-opacity, 0.5) * 0.3);
           }
         }
 
-        @keyframes rotateSlow {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
-        }
-
-        @keyframes rotateSlowReverse {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(-360deg);
-          }
-        }
-
+        /* Accessibility - reduced motion */
         @media (prefers-reduced-motion: reduce) {
-          @keyframes gradientMeshMove {
-            0%, 100% {
-              transform: translate(0, 0) scale(1);
-            }
+          .particle {
+            animation: particleTwinkle 4s ease-in-out infinite;
           }
-          @keyframes rotateSlow {
+          @keyframes particleFloat {
             0%, 100% {
-              transform: rotate(0deg);
-            }
-          }
-          @keyframes rotateSlowReverse {
-            0%, 100% {
-              transform: rotate(0deg);
+              transform: translate(0, 0);
             }
           }
         }
 
+        /* Mobile optimizations */
         @media (max-width: 768px) {
-          .light-rays {
+          .particle-layer-far {
             display: none;
           }
-          .gradient-mesh {
-            opacity: 0.6;
+          .particle-layer-mid .particle:nth-child(n+15) {
+            display: none;
           }
-          .floating-orb {
-            transform: scale(0.7);
+          .particle-layer-near .particle:nth-child(n+10) {
+            display: none;
+          }
+          .particle-parallax-layer {
+            transform: none !important;
           }
         }
       `}</style>
@@ -333,139 +361,117 @@ export default function Portfolio() {
           Skip to main content
         </a>
 
-        {/* Ambient background elements */}
+        {/* Minimal cosmic particle background */}
         <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
-          {/* Animated gradient mesh */}
-          <div className="gradient-mesh" style={{
-            position: 'absolute',
-            inset: 0,
-            background: `
-              radial-gradient(circle at 20% 30%, rgba(218, 14, 41, 0.08) 0%, transparent 50%),
-              radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.06) 0%, transparent 50%),
-              radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 50%)
-            `,
-            animation: 'gradientMeshMove 45s ease-in-out infinite',
-          }} />
+          {/* Particle layer 1 - Far (smallest, dimmest) */}
+          <div className="particle-layer particle-layer-far">
+            {Array.from({ length: 50 }).map((_, i) => (
+              <div
+                key={`far-${i}`}
+                className="particle"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  width: '1px',
+                  height: '1px',
+                  animationDelay: `${Math.random() * 20}s`,
+                  animationDuration: `${20 + Math.random() * 15}s`,
+                }}
+              />
+            ))}
+          </div>
 
-          {/* Enhanced floating orbs - larger and more prominent */}
-          <div className="floating-orb" style={{
-            position: 'absolute',
-            top: '15%',
-            left: '8%',
-            width: '600px',
-            height: '600px',
-            background: 'radial-gradient(circle, rgba(218, 14, 41, 0.12), rgba(218, 14, 41, 0.04) 40%, transparent 70%)',
-            borderRadius: '50%',
-            filter: 'blur(100px)',
-            animation: 'floatOrb 40s ease-in-out infinite',
-          }} />
-          <div className="floating-orb" style={{
-            position: 'absolute',
-            top: '50%',
-            right: '10%',
-            width: '500px',
-            height: '500px',
-            background: 'radial-gradient(circle, rgba(99, 102, 241, 0.08), rgba(99, 102, 241, 0.03) 40%, transparent 70%)',
-            borderRadius: '50%',
-            filter: 'blur(90px)',
-            animation: 'floatOrb 45s ease-in-out infinite 10s',
-          }} />
-          <div className="floating-orb" style={{
-            position: 'absolute',
-            bottom: '5%',
-            left: '30%',
-            width: '450px',
-            height: '450px',
-            background: 'radial-gradient(circle, rgba(16, 185, 129, 0.07), rgba(16, 185, 129, 0.02) 40%, transparent 70%)',
-            borderRadius: '50%',
-            filter: 'blur(85px)',
-            animation: 'floatOrb 50s ease-in-out infinite 20s',
-          }} />
-          <div className="floating-orb" style={{
-            position: 'absolute',
-            top: '40%',
-            left: '50%',
-            width: '400px',
-            height: '400px',
-            background: 'radial-gradient(circle, rgba(245, 158, 11, 0.06), rgba(245, 158, 11, 0.02) 40%, transparent 70%)',
-            borderRadius: '50%',
-            filter: 'blur(80px)',
-            animation: 'floatOrb 42s ease-in-out infinite 15s',
-          }} />
+          {/* Particle layer 2 - Mid (medium size and brightness) */}
+          <div className="particle-layer particle-layer-mid">
+            {Array.from({ length: 30 }).map((_, i) => (
+              <div
+                key={`mid-${i}`}
+                className="particle"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  width: '1.5px',
+                  height: '1.5px',
+                  animationDelay: `${Math.random() * 15}s`,
+                  animationDuration: `${15 + Math.random() * 10}s`,
+                }}
+              />
+            ))}
+          </div>
 
-          {/* Subtle noise texture overlay */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-            opacity: 0.015,
-            mixBlendMode: 'overlay',
-          }} />
+          {/* Particle layer 3 - Near (largest, brightest) */}
+          <div className="particle-layer particle-layer-near">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <div
+                key={`near-${i}`}
+                className="particle"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  width: '2px',
+                  height: '2px',
+                  animationDelay: `${Math.random() * 10}s`,
+                  animationDuration: `${10 + Math.random() * 8}s`,
+                }}
+              />
+            ))}
+          </div>
 
-          {/* Subtle grid pattern */}
+          {/* Subtle brand accent particles */}
+          <div className="particle-layer particle-layer-accent">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div
+                key={`accent-${i}`}
+                className="particle particle-accent"
+                style={{
+                  left: `${20 + Math.random() * 60}%`,
+                  top: `${20 + Math.random() * 60}%`,
+                  width: '1.5px',
+                  height: '1.5px',
+                  animationDelay: `${Math.random() * 8}s`,
+                  animationDuration: `${12 + Math.random() * 6}s`,
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Subtle grid pattern - reduced opacity */}
           <div style={{
             position: 'absolute',
             inset: 0,
             backgroundImage: `
-              linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px)
+              linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px)
             `,
-            backgroundSize: '50px 50px',
-            opacity: 0.3,
-          }} />
-
-          {/* Light rays - top left */}
-          <div className="light-rays" style={{
-            position: 'absolute',
-            top: '-10%',
-            left: '-10%',
-            width: '40%',
-            height: '40%',
-            background: `conic-gradient(from 135deg at 50% 50%,
-              transparent 0deg,
-              rgba(218, 14, 41, 0.04) 45deg,
-              transparent 90deg,
-              transparent 360deg)`,
-            filter: 'blur(60px)',
-            animation: 'rotateSlow 60s linear infinite',
-            transformOrigin: '100% 100%',
-          }} />
-
-          {/* Light rays - top right */}
-          <div className="light-rays" style={{
-            position: 'absolute',
-            top: '-10%',
-            right: '-10%',
-            width: '40%',
-            height: '40%',
-            background: `conic-gradient(from 225deg at 50% 50%,
-              transparent 0deg,
-              rgba(99, 102, 241, 0.03) 45deg,
-              transparent 90deg,
-              transparent 360deg)`,
-            filter: 'blur(60px)',
-            animation: 'rotateSlowReverse 70s linear infinite',
-            transformOrigin: '0% 100%',
+            backgroundSize: '60px 60px',
+            opacity: 0.15,
           }} />
         </div>
 
-        {/* Dynamic spotlight effect with mouse tracking */}
+        {/* Minimal spotlight effect with mouse tracking */}
         <div style={{
           position: 'fixed',
           inset: 0,
-          background: `
-            radial-gradient(circle 800px at ${mousePos.x}% ${mousePos.y}%,
-              rgba(218, 14, 41, 0.08) 0%,
-              rgba(218, 14, 41, 0.04) 20%,
-              transparent 60%),
-            radial-gradient(circle 1200px at ${mousePos.x}% ${mousePos.y}%,
-              rgba(255, 255, 255, 0.02) 0%,
-              transparent 50%)
-          `,
+          background: `radial-gradient(circle 600px at ${mousePos.x}% ${mousePos.y}%,
+            rgba(255, 255, 255, 0.015) 0%,
+            transparent 50%)`,
           pointerEvents: 'none',
-          transition: 'background 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+          transition: 'background 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
           zIndex: 1,
         }} />
+
+        {/* Particle parallax layer - moves with mouse */}
+        <div
+          className="particle-parallax-layer"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            pointerEvents: 'none',
+            zIndex: 2,
+            transform: `translate(${(mousePos.x - 50) * 0.02}px, ${(mousePos.y - 50) * 0.02}px)`,
+            transition: 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+        />
 
         {/* Navigation with enhanced glass */}
         <nav data-tour="navigation" style={{
