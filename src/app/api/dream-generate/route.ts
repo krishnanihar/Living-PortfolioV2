@@ -1,7 +1,10 @@
 import { NextRequest } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { retryWithBackoff } from '@/lib/gemini-retry';
+import { handleGeminiError } from '@/lib/gemini-errors';
 
 export const runtime = 'nodejs';
+export const maxDuration = 30; // Vercel function timeout
 
 const DREAM_CONTEXT = `
 You are a dream fragment generator for a speculative consciousness interface. Generate vivid, surreal dream fragments based on user input.
@@ -63,11 +66,33 @@ Create a vivid, surreal dream experience.`;
 
     const fullPrompt = `${DREAM_CONTEXT}\n\n${userPrompt}`;
 
-    // Initialize Gemini with streaming
+    // Initialize Gemini with optimized configuration for creative text
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-2.5-flash',
+      generationConfig: {
+        temperature: 1.0,      // Balanced creativity for dream fragments
+        topK: 40,             // More diverse token selection
+        topP: 0.95,           // High probability mass for creative flow
+        maxOutputTokens: 1024, // Sufficient for dream fragments
+      },
+    });
 
-    const result = await model.generateContentStream(fullPrompt);
+    // Track generation time
+    const startTime = Date.now();
+
+    // Use retry logic for streaming with exponential backoff
+    const result = await retryWithBackoff(
+      () => model.generateContentStream(fullPrompt),
+      {
+        maxRetries: 3,
+        onRetry: (attempt, error) => {
+          console.log(`[Dream Generator] Retry attempt ${attempt}:`, error?.status);
+        },
+      }
+    );
+
+    console.log('[Dream Generator] Stream started, time:', Date.now() - startTime, 'ms');
 
     // Create readable stream for SSE
     const encoder = new TextEncoder();
@@ -99,53 +124,10 @@ Create a vivid, surreal dream experience.`;
     });
 
   } catch (error: any) {
-    console.error('[Dream Generator] Error details:', {
-      message: error?.message,
-      status: error?.status,
-      response: error?.response?.data,
-      stack: error?.stack?.substring(0, 500)
-    });
-
-    if (error?.message?.includes('API key') || error?.status === 400) {
-      return new Response(
-        JSON.stringify({
-          error: 'API_KEY_INVALID',
-          message: 'The dream gateway is misconfigured. Try again later...',
-          details: process.env.NODE_ENV === 'development' ? error.message : undefined
-        }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    if (error?.message?.includes('quota') || error?.message?.includes('rate limit') || error?.status === 429) {
-      return new Response(
-        JSON.stringify({
-          error: 'RATE_LIMIT',
-          message: 'Too many dreamers at once. Wait a moment and try again...'
-        }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    if (error?.message?.includes('model') || error?.message?.includes('not found')) {
-      return new Response(
-        JSON.stringify({
-          error: 'MODEL_ERROR',
-          message: 'The AI model is temporarily unavailable. Try again in a moment...',
-          details: process.env.NODE_ENV === 'development' ? error.message : undefined
-        }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    // Return 200 with error message instead of 500 for better UX
+    const errorResponse = handleGeminiError(error, 'Dream Generator');
     return new Response(
-      JSON.stringify({
-        error: 'UNKNOWN_ERROR',
-        message: 'The dream fragmented unexpectedly. Try again...',
-        details: process.env.NODE_ENV === 'development' ? error.message : undefined
-      }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } } // Changed from 500 to 200
+      JSON.stringify(errorResponse),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   }
 }

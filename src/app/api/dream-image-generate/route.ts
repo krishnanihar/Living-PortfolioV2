@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { retryWithBackoff } from '@/lib/gemini-retry';
+import { handleGeminiError } from '@/lib/gemini-errors';
 
 export const runtime = 'nodejs';
+export const maxDuration = 30; // Vercel function timeout
 
 const DREAM_IMAGE_CONTEXT = `
 You are creating a visual dream for a speculative consciousness interface. Generate surreal, dreamlike imagery based on user input.
@@ -54,29 +57,61 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    // Build image prompt with hyper-specific details
-    const userPrompt = `${DREAM_IMAGE_CONTEXT}
+    // Build improved image prompt with structured guidance (based on Gemini 2.5 best practices)
+    const userPrompt = `Create a dreamlike photograph with these elements:
 
-Create a dreamlike photograph based on this description:
-
+**Subject & Scene:**
 ${dreamInput}
 
-Use cinematic composition, surreal lighting, and dream logic. Make it feel like a memory from the subconscious.`;
+**Composition:**
+- Cinematic framing with depth of field
+- ${aspectRatio} aspect ratio composition
+- Balanced negative space and visual flow
+- Rule of thirds or dynamic symmetry
+
+**Lighting & Atmosphere:**
+- Soft, ethereal lighting with subtle light leaks
+- Surreal color grading (vivid yet dreamlike)
+- Time: twilight hours or liminal moments
+- Mood: mysterious, contemplative, otherworldly
+
+**Visual Style:**
+- Surreal photography aesthetic
+- Impossible geometries and dream logic
+- Memory-like softness with selective blur
+- Subconscious visual language
+- Rich, saturated colors or ethereal monochromes
+
+Create a single cohesive image that feels like a fleeting memory from another reality.`;
 
     console.log('[Dream Image Generator] Generating with prompt length:', userPrompt.length);
 
-    // Initialize Gemini with image generation model
+    // Initialize Gemini with optimized image generation configuration
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash-image',
       generationConfig: {
-        temperature: 0.85, // Higher temperature for more creative images
-        topK: 40,
-        topP: 0.95,
+        temperature: 0.85, // Balanced creativity for image generation
+        topK: 40,         // Standard for image generation
+        topP: 0.95,       // High probability mass
       },
     });
 
-    const result = await model.generateContent(userPrompt);
+    // Track generation time
+    const startTime = Date.now();
+
+    // Use retry logic for rate limit handling
+    const result = await retryWithBackoff(
+      () => model.generateContent(userPrompt),
+      {
+        maxRetries: 3,
+        onRetry: (attempt, error) => {
+          console.log(`[Dream Image Generator] Retry attempt ${attempt}:`, error?.status);
+        },
+      }
+    );
+
+    console.log('[Dream Image Generator] Generation time:', Date.now() - startTime, 'ms');
     const response = result.response;
 
     // Extract image data from response
@@ -124,40 +159,7 @@ Use cinematic composition, surreal lighting, and dream logic. Make it feel like 
     });
 
   } catch (error: any) {
-    console.error('[Dream Image Generator] Error details:', {
-      message: error?.message,
-      status: error?.status,
-      response: error?.response?.data,
-      stack: error?.stack?.substring(0, 500)
-    });
-
-    if (error?.message?.includes('API key') || error?.status === 400) {
-      return NextResponse.json({
-        error: 'API_KEY_INVALID',
-        message: 'The dream gateway is misconfigured. Try again later...',
-        details: process.env.NODE_ENV === 'development' ? error.message : undefined
-      }, { status: 200 });
-    }
-
-    if (error?.message?.includes('quota') || error?.message?.includes('rate limit') || error?.status === 429) {
-      return NextResponse.json({
-        error: 'RATE_LIMIT',
-        message: 'Too many dreamers at once. Wait a moment and try again...'
-      }, { status: 200 });
-    }
-
-    if (error?.message?.includes('model') || error?.message?.includes('not found')) {
-      return NextResponse.json({
-        error: 'MODEL_ERROR',
-        message: 'The AI model is temporarily unavailable. Try again in a moment...',
-        details: process.env.NODE_ENV === 'development' ? error.message : undefined
-      }, { status: 200 });
-    }
-
-    return NextResponse.json({
-      error: 'UNKNOWN_ERROR',
-      message: 'The dream visualization failed unexpectedly. Try again...',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
-    }, { status: 200 });
+    const errorResponse = handleGeminiError(error, 'Dream Image Generator');
+    return NextResponse.json(errorResponse, { status: 200 });
   }
 }
