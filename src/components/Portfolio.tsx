@@ -166,8 +166,8 @@ export default function Portfolio() {
 
   const navItems = [
     { name: 'Work', icon: Briefcase, href: '/work' as const },
-    { name: 'About', icon: User, href: '/about' as const },
     { name: 'Labs', icon: Beaker, href: '/labs' as const },
+    { name: 'About', icon: User, href: '/about' as const },
   ];
 
   const credentials = [
