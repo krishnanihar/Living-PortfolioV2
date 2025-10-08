@@ -38,7 +38,7 @@ export function LiminalDivider({
     switch (type) {
       case 'void':
         return {
-          background: 'radial-gradient(circle at 50% 50%, rgba(218, 14, 41, 0.05) 0%, var(--mystical-bg) 70%)',
+          background: 'transparent',
           position: 'relative' as const,
           overflow: 'hidden' as const,
         };
