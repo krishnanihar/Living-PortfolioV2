@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion, useMotionValue, useSpring, useScroll } from 'framer-motion';
-import { Moon, Sun, Palette, Home, User, Mail, Briefcase, Compass } from 'lucide-react';
+import { Moon, Sun, Palette, Home, User, Mail, Briefcase, Compass, Beaker } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/components/effects/ThemeProvider';
 import { useMagneticEffect } from '@/lib/micro-interactions';
@@ -16,6 +16,7 @@ export interface NavigationProps {
 const navigationItems = [
   { href: '/' as const, label: 'Home', icon: Home },
   { href: '/work' as const, label: 'Work', icon: Briefcase },
+  { href: '/labs' as const, label: 'Labs', icon: Beaker },
   { href: '/journey' as const, label: 'Journey', icon: Compass },
   { href: '/about' as const, label: 'About', icon: User },
   { href: '/contact' as const, label: 'Contact', icon: Mail },
