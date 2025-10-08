@@ -226,6 +226,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
             <button
               onClick={generateExhibition}
               disabled={isGenerating || !prompt.trim()}
+              className="mystical-breathe mystical-glow"
               style={{
                 padding: '0.75rem 1.5rem',
                 fontSize: '0.9375rem',
@@ -237,6 +238,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                 cursor: (isGenerating || !prompt.trim()) ? 'not-allowed' : 'pointer',
                 opacity: (isGenerating || !prompt.trim()) ? 0.6 : 1,
                 whiteSpace: 'nowrap',
+                boxShadow: (isGenerating || !prompt.trim()) ? 'none' : '0 0 20px rgba(218, 14, 41, 0.3)',
                 fontFamily: 'inherit',
                 letterSpacing: '0.005em',
                 display: 'flex',
@@ -244,7 +246,6 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                 gap: '0.5rem',
                 transition: 'transform var(--duration-base) var(--ease-premium), box-shadow var(--duration-base) var(--ease-premium)',
               }}
-              className="mystical-glow"
               onMouseEnter={(e) => {
                 if (!isGenerating && prompt.trim()) {
                   e.currentTarget.style.transform = 'translateY(-1px)';

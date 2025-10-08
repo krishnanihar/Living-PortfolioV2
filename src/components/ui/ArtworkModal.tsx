@@ -36,11 +36,14 @@ export function ArtworkModal({ artwork, onClose }: ArtworkModalProps) {
   const [story, setStory] = useState<ArtworkStory | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     if (artwork) {
+      setIsVisible(true);
       fetchArtworkStory();
     } else {
+      setIsVisible(false);
       setStory(null);
       setError('');
     }
@@ -92,26 +95,35 @@ export function ArtworkModal({ artwork, onClose }: ArtworkModalProps) {
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+        backgroundColor: 'rgba(10, 10, 18, 0.92)',
+        backdropFilter: 'blur(12px)',
         zIndex: 1000,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         padding: '2rem',
         overflow: 'auto',
+        opacity: isVisible ? 1 : 0,
+        transition: 'opacity 0.3s ease-out',
       }}
+      className="mystical-scanline"
       onClick={onClose}
     >
       <div
         style={{
-          backgroundColor: '#FFFFFF',
-          borderRadius: '8px',
+          backgroundColor: 'var(--bg-primary)',
+          border: '1px solid var(--mystical-border)',
+          borderRadius: '16px',
           maxWidth: '1200px',
           width: '100%',
           maxHeight: '90vh',
           overflow: 'auto',
           position: 'relative',
+          transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(20px)',
+          opacity: isVisible ? 1 : 0,
+          transition: 'all 0.4s var(--ease-premium)',
         }}
+        className="mystical-glow"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -122,14 +134,24 @@ export function ArtworkModal({ artwork, onClose }: ArtworkModalProps) {
             top: '1rem',
             right: '1rem',
             padding: '0.5rem',
-            backgroundColor: '#FFFFFF',
-            border: '1px solid #E0E0E0',
+            backgroundColor: 'var(--surface-primary)',
+            border: '1px solid var(--mystical-border)',
             borderRadius: '50%',
             cursor: 'pointer',
             zIndex: 10,
+            transition: 'all 0.2s ease',
+          }}
+          className="mystical-spotlight"
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = 'var(--brand-red)';
+            e.currentTarget.style.transform = 'rotate(90deg)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'var(--surface-primary)';
+            e.currentTarget.style.transform = 'rotate(0deg)';
           }}
         >
-          <X size={20} color="#1A1A1A" />
+          <X size={20} color="var(--text-primary)" />
         </button>
 
         {/* Content Grid */}

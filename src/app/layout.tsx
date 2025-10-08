@@ -4,7 +4,6 @@ import './globals.css';
 import { ThemeProvider } from '@/components/effects/ThemeProvider';
 import { FocusManager } from '@/components/effects/FocusManager';
 import { MicroInteractionProvider } from '@/components/effects/MicroInteractionProvider';
-import { CosmicParticles } from '@/components/effects/CosmicParticles';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -95,9 +94,6 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <ThemeProvider defaultTheme="dark" attribute="data-theme">
-          {/* Global cosmic particle background */}
-          <CosmicParticles />
-
           {/* Micro-interactions system */}
           <MicroInteractionProvider />
 

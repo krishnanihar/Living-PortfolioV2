@@ -424,16 +424,18 @@ export default function MythOSExperience() {
               <article
                 key={artwork.id}
                 onClick={() => setSelectedArtwork(artwork)}
+                className="mystical-spotlight"
                 style={{
                   cursor: 'pointer',
-                  transition: 'all 0.2s ease',
+                  transition: 'all 0.3s var(--ease-premium)',
                   position: 'relative',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.transform = 'translateY(-4px)';
                   const imgContainer = e.currentTarget.querySelector('div') as HTMLElement;
                   if (imgContainer) {
-                    imgContainer.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)';
+                    imgContainer.style.boxShadow = '0 8px 24px rgba(218, 14, 41, 0.15), 0 0 40px rgba(218, 14, 41, 0.08)';
+                    imgContainer.style.borderColor = 'var(--mystical-border)';
                   }
                 }}
                 onMouseLeave={(e) => {
@@ -441,6 +443,7 @@ export default function MythOSExperience() {
                   const imgContainer = e.currentTarget.querySelector('div') as HTMLElement;
                   if (imgContainer) {
                     imgContainer.style.boxShadow = 'none';
+                    imgContainer.style.borderColor = 'transparent';
                   }
                 }}
               >
@@ -451,8 +454,9 @@ export default function MythOSExperience() {
                   backgroundColor: 'var(--border-primary)',
                   marginBottom: '0.75rem',
                   overflow: 'hidden',
-                  borderRadius: '3px',
-                  transition: 'box-shadow 0.2s ease',
+                  borderRadius: '6px',
+                  border: '1px solid transparent',
+                  transition: 'all 0.3s var(--ease-premium)',
                 }}>
                   <Image
                     src={artwork.imageUrl}

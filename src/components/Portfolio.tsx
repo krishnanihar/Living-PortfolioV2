@@ -274,6 +274,94 @@ export default function Portfolio() {
           Skip to main content
         </a>
 
+        {/* Cosmic Particles Background - Hero Only */}
+        <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+          {/* Particle layer - Far */}
+          <div className="cosmic-particle-layer cosmic-particle-layer-far">
+            {Array.from({ length: 50 }).map((_, i) => (
+              <div
+                key={`far-${i}`}
+                className="cosmic-particle"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  width: '1px',
+                  height: '1px',
+                  animationDelay: `${Math.random() * 20}s, ${Math.random() * 14}s`,
+                  animationDuration: `${20 + Math.random() * 15}s, ${10 + Math.random() * 7}s`,
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Particle layer - Mid */}
+          <div className="cosmic-particle-layer cosmic-particle-layer-mid">
+            {Array.from({ length: 30 }).map((_, i) => (
+              <div
+                key={`mid-${i}`}
+                className="cosmic-particle"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  width: '1.5px',
+                  height: '1.5px',
+                  animationDelay: `${Math.random() * 15}s, ${Math.random() * 10}s`,
+                  animationDuration: `${15 + Math.random() * 10}s, ${8 + Math.random() * 5}s`,
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Particle layer - Near */}
+          <div className="cosmic-particle-layer cosmic-particle-layer-near">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <div
+                key={`near-${i}`}
+                className="cosmic-particle"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  width: '2px',
+                  height: '2px',
+                  animationDelay: `${Math.random() * 10}s, ${Math.random() * 7}s`,
+                  animationDuration: `${10 + Math.random() * 8}s, ${5 + Math.random() * 4}s`,
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Accent particles */}
+          <div className="cosmic-particle-layer cosmic-particle-layer-accent">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div
+                key={`accent-${i}`}
+                className="cosmic-particle cosmic-particle-accent"
+                style={{
+                  left: `${20 + Math.random() * 60}%`,
+                  top: `${20 + Math.random() * 60}%`,
+                  width: '1.5px',
+                  height: '1.5px',
+                  animationDelay: `${Math.random() * 8}s, ${Math.random() * 6}s`,
+                  animationDuration: `${12 + Math.random() * 6}s, ${6 + Math.random() * 3}s`,
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Subtle grid pattern */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundImage: `
+                linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px)
+              `,
+              backgroundSize: '60px 60px',
+              opacity: 0.15,
+            }}
+          />
+        </div>
 
         {/* Minimal spotlight effect with mouse tracking */}
         <div style={{
