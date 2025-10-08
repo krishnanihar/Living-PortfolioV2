@@ -1,7 +1,27 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Sparkles, Loader, AlertCircle, Shuffle } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Sparkles, Loader, AlertCircle, Shuffle, Mic } from 'lucide-react';
+
+// Type definitions for SpeechRecognition API
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onstart: (() => void) | null;
+  onend: (() => void) | null;
+  onerror: ((event: any) => void) | null;
+  onresult: ((event: any) => void) | null;
+  start: () => void;
+  stop: () => void;
+}
+
+declare global {
+  interface Window {
+    SpeechRecognition: { new (): SpeechRecognition };
+    webkitSpeechRecognition: { new (): SpeechRecognition };
+  }
+}
 
 interface ExhibitionCriteria {
   motifs: string[];
@@ -27,6 +47,8 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
   const [prompt, setPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState('');
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
 
   const examplePrompts = [
     "Art about loneliness, but beautiful, from the Renaissance",
@@ -115,6 +137,63 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
     }
   };
 
+  const handleVoiceInput = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+      return;
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Speech recognition not supported in this browser.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    recognition.onstart = () => {
+      setIsListening(true);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      setIsListening(false);
+    };
+
+    let final_transcript = '';
+    recognition.onresult = (event) => {
+      let interim_transcript = '';
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          final_transcript += event.results[i][0].transcript;
+        } else {
+          interim_transcript += event.results[i][0].transcript;
+        }
+      }
+      setPrompt(final_transcript + interim_transcript);
+    };
+
+    recognition.start();
+    recognitionRef.current = recognition;
+  };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, []);
+
   return (
     <div className={className} style={{
       backgroundColor: 'var(--surface-primary)',
@@ -152,16 +231,16 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
           gap: '1rem',
           alignItems: 'end',
         }}>
-          <div>
+          <div style={{ position: 'relative' }}>
             <textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Speak your desire to the Oracle..."
+              placeholder="Speak or type your desire to the Oracle..."
               disabled={isGenerating}
               style={{
                 width: '100%',
-                padding: '0.75rem 1rem',
+                padding: '0.75rem 3rem 0.75rem 1rem',
                 fontSize: '0.9375rem',
                 border: '1px solid var(--mystical-border)',
                 outline: 'none',
@@ -176,6 +255,44 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
               }}
               className="mystical-border-pulse"
             />
+            <button
+              onClick={handleVoiceInput}
+              type="button"
+              disabled={isGenerating}
+              style={{
+                position: 'absolute',
+                right: '0.75rem',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                padding: '0.5rem',
+                borderRadius: '9999px',
+                border: 'none',
+                backgroundColor: isListening ? 'var(--brand-red)' : 'transparent',
+                color: isListening ? '#FFFFFF' : 'var(--text-secondary)',
+                cursor: isGenerating ? 'not-allowed' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s',
+                opacity: isGenerating ? 0.5 : 1,
+              }}
+              onMouseEnter={(e) => {
+                if (!isGenerating && !isListening) {
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                  e.currentTarget.style.color = '#FFFFFF';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isListening) {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                  e.currentTarget.style.color = 'var(--text-secondary)';
+                }
+              }}
+              className={isListening ? 'mystical-breathe' : ''}
+              aria-label="Use voice input"
+            >
+              <Mic size={20} />
+            </button>
             {error && (
               <div style={{
                 marginTop: '0.5rem',

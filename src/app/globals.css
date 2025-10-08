@@ -1636,3 +1636,21 @@ select {
     padding: 1rem 1.25rem !important;
   }
 }
+/* Timeline Styles */
+.timeline-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.timeline-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.timeline-container::-webkit-scrollbar-thumb {
+  background: rgba(218, 14, 41, 0.5);
+  border-radius: 4px;
+}
+
+.timeline-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(218, 14, 41, 0.7);
+}

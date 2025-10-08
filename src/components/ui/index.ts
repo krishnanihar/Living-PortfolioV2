@@ -24,6 +24,14 @@ export { MagneticText } from './MagneticText';
 export { MorphingText, MorphingTextPresets } from './MorphingText';
 export { AnimatedHeading, AnimatedHeadingPresets } from './AnimatedHeading';
 
+// mythOS Components
+export { MythOSHero } from './MythOSHero';
+export { ExhibitionBuilder } from './ExhibitionBuilder';
+export { ExhibitionHeader } from './ExhibitionHeader';
+export { ImmersiveGallery } from './ImmersiveGallery';
+export { Timeline } from './Timeline';
+export { WorldMap } from './Map';
+
 // Re-export everything for convenience
 export * from './Button';
 export * from './Card';
@@ -34,3 +42,9 @@ export * from './WorkGrid';
 export * from './MagneticText';
 export * from './MorphingText';
 export * from './AnimatedHeading';
+export * from './MythOSHero';
+export * from './ExhibitionBuilder';
+export * from './ExhibitionHeader';
+export * from './ImmersiveGallery';
+export * from './Timeline';
+export * from './Map';

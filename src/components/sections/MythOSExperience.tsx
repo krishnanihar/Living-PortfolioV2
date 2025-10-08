@@ -4,6 +4,10 @@ import { useState, useMemo } from 'react';
 import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import { ExhibitionBuilder } from '@/components/ui/ExhibitionBuilder';
+import { ExhibitionHeader } from '@/components/ui/ExhibitionHeader';
+import { ImmersiveGallery } from '@/components/ui/ImmersiveGallery';
+import { Timeline } from '@/components/ui/Timeline';
+import { WorldMap } from '@/components/ui/Map';
 import { ArtworkModal } from '@/components/ui/ArtworkModal';
 import { MythOSHero } from '@/components/ui/MythOSHero';
 import { LiminalDivider } from '@/components/ui/LiminalDivider';
@@ -91,7 +95,9 @@ const ARTWORKS: Artwork[] = [
 export default function MythOSExperience() {
   const [currentExhibition, setCurrentExhibition] = useState<Exhibition | null>(null);
   const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null);
-  const [showReasoning, setShowReasoning] = useState(false);
+  const [showImmersive, setShowImmersive] = useState(false);
+  const [isGeneratingCapstone, setIsGeneratingCapstone] = useState(false);
+  const [isGeneratingDream, setIsGeneratingDream] = useState(false);
 
   // Filter artworks based on AI-generated exhibition criteria
   const filteredArtworks = useMemo(() => {
@@ -121,6 +127,34 @@ export default function MythOSExperience() {
 
   const handleExhibitionGenerated = (exhibition: Exhibition) => {
     setCurrentExhibition(exhibition);
+    setShowImmersive(false);
+  };
+
+  const handleEnterImmersive = () => {
+    setShowImmersive(true);
+  };
+
+  const handleClearExhibition = () => {
+    setCurrentExhibition(null);
+    setShowImmersive(false);
+  };
+
+  const handleCreateCapstone = async () => {
+    setIsGeneratingCapstone(true);
+    // Placeholder for capstone generation
+    setTimeout(() => {
+      setIsGeneratingCapstone(false);
+      alert('Capstone generation requires Gemini Imagen API integration');
+    }, 2000);
+  };
+
+  const handleGenerateDream = async () => {
+    setIsGeneratingDream(true);
+    // Placeholder for dream video generation
+    setTimeout(() => {
+      setIsGeneratingDream(false);
+      alert('Dream video generation requires Gemini Veo API integration');
+    }, 2000);
   };
 
   return (
@@ -189,218 +223,32 @@ export default function MythOSExperience() {
         <ExhibitionBuilder onExhibitionGenerated={handleExhibitionGenerated} />
       </div>
 
+      {/* Immersive Gallery Overlay */}
+      {showImmersive && currentExhibition && (
+        <ImmersiveGallery
+          artworks={filteredArtworks}
+          exhibition={currentExhibition}
+          onArtworkSelect={setSelectedArtwork}
+          onExit={() => setShowImmersive(false)}
+        />
+      )}
+
       {/* Main Gallery */}
       <main style={{ maxWidth: '1600px', margin: '0 auto', padding: '3rem 2rem' }}>$
-        {/* Exhibition Title (AI-Generated) */}
-        {currentExhibition ? (
-          <ScrollReveal delay={0.1}>
-            <div style={{ marginBottom: '3rem' }}>
-              <div style={{ paddingLeft: '0.75rem', borderLeft: '2px solid var(--border-primary)', marginBottom: '1.5rem' }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                marginBottom: '0.5rem',
-              }}>
-                <Sparkles size={14} color="var(--text-secondary)" />
-                <span style={{
-                  fontSize: '0.75rem',
-                  color: 'var(--text-secondary)',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
-                  fontWeight: '500',
-                }}>
-                  AI-Curated Exhibition
-                </span>
-              </div>
-              <h2 style={{
-                fontSize: '1.75rem',
-                fontWeight: '600',
-                marginBottom: '0.5rem',
-                color: 'var(--text-primary)',
-              }}>
-                {currentExhibition.title}
-              </h2>
-              {currentExhibition.subtitle && (
-                <p style={{
-                  fontSize: '1rem',
-                  color: 'var(--text-secondary)',
-                  marginBottom: '0.75rem',
-                }}>
-                  {currentExhibition.subtitle}
-                </p>
-              )}
-              <p style={{
-                fontSize: '0.9375rem',
-                color: 'var(--text-tertiary)',
-                lineHeight: '1.6',
-                marginBottom: '0.5rem',
-              }}>
-                {currentExhibition.statement}
-              </p>
-              <p style={{
-                fontSize: '0.875rem',
-                color: 'var(--text-secondary)',
-              }}>
-                {filteredArtworks.length} artworks
-              </p>
-            </div>
-
-            {/* Curator's Reasoning - Expandable */}
-            <div style={{
-              backgroundColor: 'var(--surface-primary)',
-              border: '1px solid var(--border-primary)',
-              borderRadius: '6px',
-              overflow: 'hidden',
-            }}>
-              <button
-                onClick={() => setShowReasoning(!showReasoning)}
-                style={{
-                  width: '100%',
-                  padding: '1rem 1.25rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  backgroundColor: 'transparent',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontSize: '0.875rem',
-                  fontWeight: '500',
-                  color: 'var(--text-primary)',
-                  fontFamily: 'inherit',
-                }}
-              >
-                <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <Sparkles size={16} color="var(--text-secondary)" />
-                  How did AI choose these artworks?
-                </span>
-                <span style={{
-                  transform: showReasoning ? 'rotate(180deg)' : 'rotate(0deg)',
-                  transition: 'transform 0.2s ease',
-                }}>
-                  ▼
-                </span>
-              </button>
-
-              {showReasoning && (
-                <div style={{
-                  padding: '0 1.25rem 1.25rem',
-                  borderTop: '1px solid var(--border-primary)',
-                }}>
-                  <div style={{
-                    fontSize: '0.9375rem',
-                    color: 'var(--text-secondary)',
-                    lineHeight: '1.6',
-                    marginTop: '1rem',
-                  }}>
-                    {currentExhibition.reasoning}
-                  </div>
-
-                  <div style={{ marginTop: '1.5rem' }}>
-                    <div style={{
-                      fontSize: '0.75rem',
-                      fontWeight: '600',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
-                      color: 'var(--text-tertiary)',
-                      marginBottom: '0.75rem',
-                    }}>
-                      Visual Patterns Detected
-                    </div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                      {currentExhibition.criteria.motifs.map((motif, i) => (
-                        <span key={i} style={{
-                          padding: '0.375rem 0.75rem',
-                          backgroundColor: 'var(--surface-primary)',
-                          border: '1px solid var(--border-primary)',
-                          borderRadius: '4px',
-                          fontSize: '0.8125rem',
-                          color: 'var(--text-primary)',
-                        }}>
-                          {motif}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div style={{ marginTop: '1rem' }}>
-                    <div style={{
-                      fontSize: '0.75rem',
-                      fontWeight: '600',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
-                      color: 'var(--text-tertiary)',
-                      marginBottom: '0.75rem',
-                    }}>
-                      Time Periods Explored
-                    </div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                      {currentExhibition.criteria.centuries.map((century, i) => (
-                        <span key={i} style={{
-                          padding: '0.375rem 0.75rem',
-                          backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                          border: '1px solid rgba(99, 102, 241, 0.2)',
-                          borderRadius: '4px',
-                          fontSize: '0.8125rem',
-                          color: 'var(--text-primary)',
-                        }}>
-                          {century}th Century
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div style={{ marginTop: '1rem' }}>
-                    <div style={{
-                      fontSize: '0.75rem',
-                      fontWeight: '600',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
-                      color: 'var(--text-tertiary)',
-                      marginBottom: '0.75rem',
-                    }}>
-                      Emotional Quality
-                    </div>
-                    <div style={{
-                      padding: '0.75rem 1rem',
-                      backgroundColor: 'var(--surface-primary)',
-                      border: '1px solid var(--border-primary)',
-                      borderRadius: '4px',
-                      fontSize: '0.9375rem',
-                      color: 'var(--text-primary)',
-                      fontStyle: 'italic',
-                    }}>
-                      {currentExhibition.criteria.mood}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-            </div>
-          </ScrollReveal>
-        ) : (
-          <ScrollReveal delay={0.1}>
-            <div style={{ marginBottom: '3rem', paddingLeft: '0.75rem', borderLeft: '2px solid var(--border-primary)' }}>$
-            <h2 style={{
-              fontSize: '1.75rem',
-              fontWeight: '600',
-              marginBottom: '0.5rem',
-              color: 'var(--text-primary)',
-              letterSpacing: '-0.01em',
-            }}>
-              Browse All Artworks
-            </h2>
-            <p style={{
-              fontSize: '0.9375rem',
-              color: 'var(--text-secondary)',
-            }}>
-              {ARTWORKS.length} artworks • Use the AI curator above to generate thematic exhibitions
-            </p>
-            </div>
-          </ScrollReveal>
+        {/* Exhibition Header (AI-Generated) */}
+        {currentExhibition && (
+          <ExhibitionHeader
+            exhibition={currentExhibition}
+            onEnterImmersive={handleEnterImmersive}
+            onClearExhibition={handleClearExhibition}
+            onCreateCapstone={handleCreateCapstone}
+            isGeneratingCapstone={isGeneratingCapstone}
+            onGenerateDream={handleGenerateDream}
+            isGeneratingDream={isGeneratingDream}
+          />
         )}
 
-        {/* Dense Masonry Grid */}
+        {/* Gallery Grid - Always visible */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
