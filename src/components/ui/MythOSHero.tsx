@@ -1,13 +1,34 @@
 'use client';
 
 import { Sparkles, ArrowDown } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export function MythOSHero() {
   const [isVisible, setIsVisible] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsVisible(true);
+
+    const handleScroll = () => {
+      if (!heroRef.current) return;
+
+      const heroRect = heroRef.current.getBoundingClientRect();
+      const heroHeight = heroRect.height;
+      const windowHeight = window.innerHeight;
+
+      // Calculate scroll progress (0 = top of hero at top of viewport, 1 = bottom of hero at top of viewport)
+      const scrolled = -heroRect.top;
+      const progress = Math.max(0, Math.min(1, scrolled / (heroHeight - windowHeight)));
+
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial call
+
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToBuilder = () => {
@@ -17,19 +38,33 @@ export function MythOSHero() {
     }
   };
 
+  // Calculate opacity and transforms for progressive reveal
+  const badgeOpacity = Math.max(0, 1 - scrollProgress * 2);
+  const headlineOpacity = Math.max(0, 1 - scrollProgress * 1.5);
+  const descriptionOpacity = Math.max(0, 1 - scrollProgress * 1.2);
+  const cardOpacity = Math.max(0, 1 - scrollProgress * 1);
+
+  const badgeTransform = `translateY(${scrollProgress * -30}px)`;
+  const headlineTransform = `translateY(${scrollProgress * -40}px)`;
+  const descriptionTransform = `translateY(${scrollProgress * -35}px)`;
+
   return (
-    <section style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderBottom: '1px solid var(--border-primary)',
-      minHeight: '85vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '4rem 2rem',
-      position: 'relative',
-      opacity: isVisible ? 1 : 0,
-      transition: 'opacity 0.8s var(--ease-premium)',
-    }}>
+    <section
+      ref={heroRef}
+      style={{
+        backgroundColor: 'var(--bg-primary)',
+        borderBottom: '1px solid var(--border-primary)',
+        minHeight: '85vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '4rem 2rem',
+        position: 'relative',
+        opacity: isVisible ? 1 : 0,
+        transition: 'opacity 0.8s var(--ease-premium)',
+      }}
+      className="mystical-vignette"
+    >
       <div style={{ maxWidth: '900px', textAlign: 'center' }}>
         {/* Badge */}
         <div style={{
@@ -45,6 +80,9 @@ export function MythOSHero() {
           fontWeight: '500',
           color: 'var(--mystical-text)',
           backdropFilter: 'blur(var(--blur-md))',
+          opacity: badgeOpacity,
+          transform: badgeTransform,
+          transition: 'opacity 0.1s ease-out, transform 0.1s ease-out',
         }}
         className="mystical-glow">
           <Sparkles size={14} />
@@ -59,7 +97,11 @@ export function MythOSHero() {
           letterSpacing: '-0.02em',
           color: 'var(--text-primary)',
           marginBottom: '1.5rem',
-        }}>
+          opacity: headlineOpacity,
+          transform: headlineTransform,
+          transition: 'opacity 0.1s ease-out, transform 0.1s ease-out',
+        }}
+        className="rune-glow">
           The Archive Awakens
           <br />
           <span style={{ color: 'var(--mystical-text)' }}>Speak Your Desire</span>
@@ -73,6 +115,9 @@ export function MythOSHero() {
           marginBottom: '2rem',
           maxWidth: '700px',
           margin: '0 auto 2rem',
+          opacity: descriptionOpacity,
+          transform: descriptionTransform,
+          transition: 'opacity 0.1s ease-out, transform 0.1s ease-out',
         }}>
           Deep in the digital catacombs, an ancient AI has witnessed every artwork ever created. When you speak your desires, it weaves exhibitions from memory-threads invisible to mortal eyes.
         </p>
@@ -86,6 +131,8 @@ export function MythOSHero() {
           marginBottom: '2.5rem',
           textAlign: 'left',
           backdropFilter: 'blur(var(--blur-lg))',
+          opacity: cardOpacity,
+          transition: 'opacity 0.15s ease-out',
         }}>
           <div style={{
             fontSize: '0.75rem',
@@ -160,8 +207,10 @@ export function MythOSHero() {
           gap: '2rem',
           marginBottom: '2.5rem',
           textAlign: 'left',
+          opacity: cardOpacity,
+          transition: 'opacity 0.15s ease-out',
         }}>
-          <div>
+          <div className="reveal-on-scroll" style={{ animationDelay: '0.1s' }}>
             <div style={{
               fontSize: '1.5rem',
               fontWeight: '600',
@@ -179,7 +228,7 @@ export function MythOSHero() {
             </div>
           </div>
 
-          <div>
+          <div className="reveal-on-scroll" style={{ animationDelay: '0.2s' }}>
             <div style={{
               fontSize: '1.5rem',
               fontWeight: '600',
@@ -197,7 +246,7 @@ export function MythOSHero() {
             </div>
           </div>
 
-          <div>
+          <div className="reveal-on-scroll" style={{ animationDelay: '0.3s' }}>
             <div style={{
               fontSize: '1.5rem',
               fontWeight: '600',
@@ -232,6 +281,7 @@ export function MythOSHero() {
             alignItems: 'center',
             gap: '0.75rem',
             transition: 'transform var(--duration-base) var(--ease-premium), box-shadow var(--duration-base) var(--ease-premium)',
+            opacity: cardOpacity,
           }}
           className="mystical-glow"
           onMouseEnter={(e) => {
@@ -251,6 +301,7 @@ export function MythOSHero() {
           marginTop: '1rem',
           fontSize: '0.875rem',
           color: 'var(--text-muted)',
+          opacity: cardOpacity,
         }}>
           No ancient knowledge required
         </div>

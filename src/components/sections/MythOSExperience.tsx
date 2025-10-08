@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { ExhibitionBuilder } from '@/components/ui/ExhibitionBuilder';
 import { ArtworkModal } from '@/components/ui/ArtworkModal';
 import { MythOSHero } from '@/components/ui/MythOSHero';
+import { LiminalDivider } from '@/components/ui/LiminalDivider';
+import { ScrollReveal } from '@/components/effects/ScrollReveal';
 
 interface Artwork {
   id: string;
@@ -186,12 +188,16 @@ export default function MythOSExperience() {
         <ExhibitionBuilder onExhibitionGenerated={handleExhibitionGenerated} />
       </div>
 
+      {/* Liminal Divider */}
+      <LiminalDivider type="fog" height="150px" text="• The Gallery Materializes •" />
+
       {/* Main Gallery */}
       <main style={{ maxWidth: '1600px', margin: '0 auto', padding: '3rem 2rem' }}>$
         {/* Exhibition Title (AI-Generated) */}
         {currentExhibition ? (
-          <div style={{ marginBottom: '3rem' }}>
-            <div style={{ paddingLeft: '0.75rem', borderLeft: '2px solid var(--border-primary)', marginBottom: '1.5rem' }}>
+          <ScrollReveal delay={0.1}>
+            <div style={{ marginBottom: '3rem' }}>
+              <div style={{ paddingLeft: '0.75rem', borderLeft: '2px solid var(--border-primary)', marginBottom: '1.5rem' }}>
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -372,9 +378,11 @@ export default function MythOSExperience() {
                 </div>
               )}
             </div>
-          </div>
+            </div>
+          </ScrollReveal>
         ) : (
-          <div style={{ marginBottom: '3rem', paddingLeft: '0.75rem', borderLeft: '2px solid var(--border-primary)' }}>$
+          <ScrollReveal delay={0.1}>
+            <div style={{ marginBottom: '3rem', paddingLeft: '0.75rem', borderLeft: '2px solid var(--border-primary)' }}>$
             <h2 style={{
               fontSize: '1.75rem',
               fontWeight: '600',
@@ -390,7 +398,8 @@ export default function MythOSExperience() {
             }}>
               {ARTWORKS.length} artworks • Use the AI curator above to generate thematic exhibitions
             </p>
-          </div>
+            </div>
+          </ScrollReveal>
         )}
 
         {/* Dense Masonry Grid */}
@@ -516,9 +525,12 @@ export default function MythOSExperience() {
         )}
       </main>
 
+      {/* Liminal Divider */}
+      <LiminalDivider type="void" height="200px" text="• The Oracle's Origin •" />
+
       {/* About Section - Enhanced */}
       <section id="about" style={{
-        borderTop: '1px solid var(--border-primary)',
+        borderTop: 'none',
         backgroundColor: 'var(--surface-primary)',
         padding: '5rem 2rem',
         marginTop: '4rem',
