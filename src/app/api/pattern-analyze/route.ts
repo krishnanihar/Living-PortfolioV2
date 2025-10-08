@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { retryWithBackoff } from '@/lib/gemini-retry';
+import { handleGeminiError } from '@/lib/gemini-errors';
 
 export const runtime = 'nodejs';
+export const maxDuration = 30; // Vercel function timeout
 
 const PATTERN_ANALYSIS_CONTEXT = `
 You are a dream pattern analyzer for a speculative consciousness interface. Analyze user-provided dream descriptions and identify recurring patterns, themes, symbols, and emotional signatures.
@@ -106,18 +109,33 @@ export async function POST(request: NextRequest) {
     const userPrompt = `Analyze these dream descriptions and identify patterns:\n\n${dreams}\n\nProvide your analysis in the specified JSON format.`;
     const fullPrompt = `${PATTERN_ANALYSIS_CONTEXT}\n\n${userPrompt}`;
 
-    // Initialize Gemini
+    // Initialize Gemini with optimized configuration for analytical JSON output
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
       generationConfig: {
-        temperature: 0.7,
-        topK: 40,
-        topP: 0.95,
+        temperature: 0.2,      // Low for deterministic analytical output
+        topK: 20,             // Limit token selection for structured output
+        topP: 0.9,            // High probability mass
+        maxOutputTokens: 2048, // Sufficient for pattern analysis
       },
     });
 
-    const result = await model.generateContent(fullPrompt);
+    // Track generation time
+    const startTime = Date.now();
+
+    // Use retry logic for rate limit handling
+    const result = await retryWithBackoff(
+      () => model.generateContent(fullPrompt),
+      {
+        maxRetries: 3,
+        onRetry: (attempt, error) => {
+          console.log(`[Pattern Analyzer] Retry attempt ${attempt}:`, error?.status);
+        },
+      }
+    );
+
+    console.log('[Pattern Analyzer] Generation time:', Date.now() - startTime, 'ms');
     const response = await result.response;
     let text = response.text();
 
@@ -154,53 +172,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error: any) {
-    console.error('[Pattern Analyzer] Error details:', {
-      message: error?.message,
-      status: error?.status,
-      response: error?.response?.data,
-      stack: error?.stack?.substring(0, 500)
-    });
-
-    if (error?.message?.includes('API key') || error?.status === 400) {
-      return NextResponse.json(
-        {
-          error: 'API_KEY_INVALID',
-          message: 'The pattern matrix is misconfigured. Try again later...',
-          details: process.env.NODE_ENV === 'development' ? error.message : undefined
-        },
-        { status: 200 }
-      );
-    }
-
-    if (error?.message?.includes('quota') || error?.message?.includes('rate limit') || error?.status === 429) {
-      return NextResponse.json(
-        {
-          error: 'RATE_LIMIT',
-          message: 'Too many analyses running. Wait a moment and try again...'
-        },
-        { status: 200 }
-      );
-    }
-
-    if (error?.message?.includes('model') || error?.message?.includes('not found')) {
-      return NextResponse.json(
-        {
-          error: 'MODEL_ERROR',
-          message: 'The AI model is temporarily unavailable. Try again in a moment...',
-          details: process.env.NODE_ENV === 'development' ? error.message : undefined
-        },
-        { status: 200 }
-      );
-    }
-
-    // Return 200 with error message instead of 500 for better UX
-    return NextResponse.json(
-      {
-        error: 'UNKNOWN_ERROR',
-        message: 'The analysis encountered an issue. Try again or simplify your input...',
-        details: process.env.NODE_ENV === 'development' ? error.message : undefined
-      },
-      { status: 200 } // Changed from 500 to 200 for graceful degradation
-    );
+    const errorResponse = handleGeminiError(error, 'Pattern Analyzer');
+    return NextResponse.json(errorResponse, { status: 200 });
   }
 }
