@@ -1066,7 +1066,10 @@ select {
   background: rgba(255, 255, 255, 0.9);
   border-radius: 50%;
   box-shadow: 0 0 3px rgba(255, 255, 255, 0.6);
-  animation: cosmicParticleFloat linear infinite, cosmicParticleTwinkle ease-in-out infinite;
+  animation:
+    cosmicParticleFloat cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite,
+    cosmicParticleTwinkle cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+  will-change: transform, opacity;
 }
 
 /* Particle depth layers with different opacities */
@@ -1089,19 +1092,22 @@ select {
   box-shadow: 0 0 6px rgba(218, 14, 41, 0.5);
 }
 
-/* Particle animations */
+/* Particle animations - smooth and organic */
 @keyframes cosmicParticleFloat {
   0% {
     transform: translate(0, 0);
   }
-  25% {
-    transform: translate(10px, -15px);
+  20% {
+    transform: translate(5px, -8px);
   }
-  50% {
-    transform: translate(-8px, -30px);
+  40% {
+    transform: translate(-4px, -15px);
   }
-  75% {
-    transform: translate(-15px, -15px);
+  60% {
+    transform: translate(-8px, -10px);
+  }
+  80% {
+    transform: translate(3px, -5px);
   }
   100% {
     transform: translate(0, 0);
@@ -1111,9 +1117,19 @@ select {
 @keyframes cosmicParticleTwinkle {
   0%, 100% {
     opacity: inherit;
+    transform: scale(1);
+  }
+  25% {
+    opacity: calc(var(--particle-opacity, 0.6) * 0.7);
+    transform: scale(1.1);
   }
   50% {
-    opacity: 0.2;
+    opacity: calc(var(--particle-opacity, 0.6) * 0.4);
+    transform: scale(1);
+  }
+  75% {
+    opacity: calc(var(--particle-opacity, 0.6) * 0.8);
+    transform: scale(0.95);
   }
 }
 

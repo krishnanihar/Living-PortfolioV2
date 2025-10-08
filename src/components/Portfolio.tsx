@@ -276,7 +276,7 @@ export default function Portfolio() {
 
         {/* Cosmic Particles Background - Hero Only */}
         <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
-          {/* Particle layer - Far */}
+          {/* Particle layer - Far (slowest, smoothest) */}
           <div className="cosmic-particle-layer cosmic-particle-layer-far">
             {Array.from({ length: 50 }).map((_, i) => (
               <div
@@ -287,14 +287,14 @@ export default function Portfolio() {
                   top: `${Math.random() * 100}%`,
                   width: '1px',
                   height: '1px',
-                  animationDelay: `${Math.random() * 20}s, ${Math.random() * 14}s`,
-                  animationDuration: `${20 + Math.random() * 15}s, ${10 + Math.random() * 7}s`,
+                  animationDelay: `${Math.random() * 30}s, ${Math.random() * 20}s`,
+                  animationDuration: `${35 + Math.random() * 25}s, ${15 + Math.random() * 10}s`,
                 }}
               />
             ))}
           </div>
 
-          {/* Particle layer - Mid */}
+          {/* Particle layer - Mid (medium speed) */}
           <div className="cosmic-particle-layer cosmic-particle-layer-mid">
             {Array.from({ length: 30 }).map((_, i) => (
               <div
@@ -305,14 +305,14 @@ export default function Portfolio() {
                   top: `${Math.random() * 100}%`,
                   width: '1.5px',
                   height: '1.5px',
-                  animationDelay: `${Math.random() * 15}s, ${Math.random() * 10}s`,
-                  animationDuration: `${15 + Math.random() * 10}s, ${8 + Math.random() * 5}s`,
+                  animationDelay: `${Math.random() * 25}s, ${Math.random() * 15}s`,
+                  animationDuration: `${28 + Math.random() * 18}s, ${12 + Math.random() * 8}s`,
                 }}
               />
             ))}
           </div>
 
-          {/* Particle layer - Near */}
+          {/* Particle layer - Near (faster but still smooth) */}
           <div className="cosmic-particle-layer cosmic-particle-layer-near">
             {Array.from({ length: 20 }).map((_, i) => (
               <div
@@ -323,14 +323,14 @@ export default function Portfolio() {
                   top: `${Math.random() * 100}%`,
                   width: '2px',
                   height: '2px',
-                  animationDelay: `${Math.random() * 10}s, ${Math.random() * 7}s`,
-                  animationDuration: `${10 + Math.random() * 8}s, ${5 + Math.random() * 4}s`,
+                  animationDelay: `${Math.random() * 20}s, ${Math.random() * 12}s`,
+                  animationDuration: `${22 + Math.random() * 14}s, ${10 + Math.random() * 6}s`,
                 }}
               />
             ))}
           </div>
 
-          {/* Accent particles */}
+          {/* Accent particles (slow and dreamy) */}
           <div className="cosmic-particle-layer cosmic-particle-layer-accent">
             {Array.from({ length: 3 }).map((_, i) => (
               <div
@@ -341,8 +341,8 @@ export default function Portfolio() {
                   top: `${20 + Math.random() * 60}%`,
                   width: '1.5px',
                   height: '1.5px',
-                  animationDelay: `${Math.random() * 8}s, ${Math.random() * 6}s`,
-                  animationDuration: `${12 + Math.random() * 6}s, ${6 + Math.random() * 3}s`,
+                  animationDelay: `${Math.random() * 15}s, ${Math.random() * 10}s`,
+                  animationDuration: `${25 + Math.random() * 15}s, ${12 + Math.random() * 8}s`,
                 }}
               />
             ))}

@@ -429,9 +429,19 @@ export default function MythOSExperience() {
                   cursor: 'pointer',
                   transition: 'all 0.3s var(--ease-premium)',
                   position: 'relative',
+                  transformStyle: 'preserve-3d',
+                  perspective: '1000px',
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
+                onMouseMove={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const x = e.clientX - rect.left;
+                  const y = e.clientY - rect.top;
+                  const centerX = rect.width / 2;
+                  const centerY = rect.height / 2;
+                  const rotateX = ((y - centerY) / centerY) * -5;
+                  const rotateY = ((x - centerX) / centerX) * 5;
+
+                  e.currentTarget.style.transform = `translateY(-4px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
                   const imgContainer = e.currentTarget.querySelector('div') as HTMLElement;
                   if (imgContainer) {
                     imgContainer.style.boxShadow = '0 8px 24px rgba(218, 14, 41, 0.15), 0 0 40px rgba(218, 14, 41, 0.08)';
@@ -439,7 +449,7 @@ export default function MythOSExperience() {
                   }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.transform = 'translateY(0) rotateX(0deg) rotateY(0deg) scale(1)';
                   const imgContainer = e.currentTarget.querySelector('div') as HTMLElement;
                   if (imgContainer) {
                     imgContainer.style.boxShadow = 'none';
