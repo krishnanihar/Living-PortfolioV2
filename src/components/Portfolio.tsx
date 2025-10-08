@@ -743,6 +743,8 @@ export default function Portfolio() {
           alignItems: 'center',
           justifyContent: 'center',
           position: 'relative',
+          scrollSnapAlign: 'start',
+          scrollSnapStop: 'always',
         }}>
           <div
             data-tour="hero-card"
