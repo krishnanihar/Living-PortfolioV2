@@ -17,6 +17,7 @@ export default function Portfolio() {
   const [heroCardOpacity, setHeroCardOpacity] = useState(1);
   const [heroCardScale, setHeroCardScale] = useState(1);
   const [heroCardBlur, setHeroCardBlur] = useState(0);
+  const [particlesOpacity, setParticlesOpacity] = useState(1);
   const [chatOpen, setChatOpen] = useState(false);
   const [initialMessage, setInitialMessage] = useState('');
   const [intentContext, setIntentContext] = useState('');
@@ -108,6 +109,19 @@ export default function Portfolio() {
         setHeroCardOpacity(0);
         setHeroCardScale(0.95);
         setHeroCardBlur(10);
+      }
+
+      // Particles fade out: 0px-600px range
+      const particleFadeStart = 0;
+      const particleFadeEnd = 600;
+
+      if (scrollY < particleFadeStart) {
+        setParticlesOpacity(1);
+      } else if (scrollY >= particleFadeStart && scrollY <= particleFadeEnd) {
+        const progress = (scrollY - particleFadeStart) / (particleFadeEnd - particleFadeStart);
+        setParticlesOpacity(1 - progress);
+      } else {
+        setParticlesOpacity(0);
       }
     };
 

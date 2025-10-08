@@ -540,12 +540,9 @@ export default function MythOSExperience() {
         )}
       </main>
 
-      {/* Liminal Divider */}
-      <LiminalDivider type="void" height="200px" text="• The Oracle's Origin •" />
-
       {/* About Section - Enhanced */}
       <section id="about" style={{
-        borderTop: 'none',
+        borderTop: '1px solid var(--border-primary)',
         backgroundColor: 'var(--surface-primary)',
         padding: '5rem 2rem',
         marginTop: '4rem',
