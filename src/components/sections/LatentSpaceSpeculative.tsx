@@ -5,6 +5,11 @@ import Link from 'next/link';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import { DreamFragmentGenerator } from '@/components/ui/DreamFragmentGenerator';
 import { PatternAnalyzer } from '@/components/ui/PatternAnalyzer';
+import { ConsciousnessOrbs } from '@/components/effects/ConsciousnessParticles';
+import { NarrativeProgressIndicator, NarrativeProgressBar } from '@/components/ui/NarrativeProgressIndicator';
+import { FirstPersonMoments, NarrativeWhispers } from '@/components/sections/FirstPersonMoments';
+import { DreamRecorderPrototype } from '@/components/sections/DreamRecorderPrototype';
+import { useNarrativeProgress } from '@/hooks/useNarrativeProgress';
 import {
   ChevronDown,
   ChevronRight,
@@ -93,21 +98,31 @@ const baseStyles = {
   }
 };
 
-// Section Divider Component
+// Narrative-Aware Section Divider Component
 function SectionDivider() {
+  const narrativeState = useNarrativeProgress();
+
   return (
-    <div style={{
-      width: '100%',
-      height: '1px',
-      background: 'linear-gradient(90deg, transparent, rgba(147, 51, 234, 0.3), rgba(14, 165, 233, 0.3), transparent)',
-      margin: '6rem 0',
-    }} />
+    <motion.div
+      style={{
+        width: '100%',
+        height: '1px',
+        background: `linear-gradient(90deg, transparent, ${narrativeState.color.primary.replace('0.8', '0.3')}, ${narrativeState.color.secondary.replace('0.8', '0.3')}, transparent)`,
+        margin: '6rem 0',
+        transition: 'background 1s ease',
+      }}
+      initial={{ scaleX: 0 }}
+      whileInView={{ scaleX: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+    />
   );
 }
 
 export default function LatentSpaceSpeculative() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const narrativeState = useNarrativeProgress();
 
   useEffect(() => {
     setIsLoaded(true);
@@ -115,17 +130,29 @@ export default function LatentSpaceSpeculative() {
 
   return (
     <main style={baseStyles.main}>
-      {/* Background gradient overlay */}
+      {/* Narrative-Aware Environmental Layers */}
+      <ConsciousnessOrbs count={6} />
+      <NarrativeWhispers />
+      <FirstPersonMoments />
+
+      {/* Narrative Progress Indicators */}
+      <NarrativeProgressIndicator position="right" />
+      <div className="md:hidden">
+        <NarrativeProgressBar />
+      </div>
+
+      {/* Dynamic Background gradient overlay - changes with narrative act */}
       <div style={{
         position: 'fixed',
         inset: 0,
         opacity: 0.3,
         pointerEvents: 'none',
+        transition: 'background 2s ease',
       }}>
         <div style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.05) 0%, transparent 50%, rgba(14, 165, 233, 0.05) 100%)',
+          background: `linear-gradient(135deg, ${narrativeState.color.atmosphere} 0%, transparent 50%, ${narrativeState.color.secondary.replace('0.8', '0.05')} 100%)`,
         }} />
       </div>
 
@@ -2344,11 +2371,17 @@ function SystemArchitectureSection() {
 
 // Interactive Prototypes Section
 function InteractivePrototypesSection() {
-  const [activePrototype, setActivePrototype] = useState('explorer');
+  const [activePrototype, setActivePrototype] = useState('recorder');
   const [dreamFragments, setDreamFragments] = useState<Array<{id: string, x: number, y: number, text: string}>>([]);
   const [isRecording, setIsRecording] = useState(false);
 
   const prototypes = [
+    {
+      id: 'recorder',
+      name: 'Dream Recorder',
+      description: 'Speculative interface prototype with ethical considerations',
+      icon: Camera
+    },
     {
       id: 'explorer',
       name: 'Dream Explorer',
@@ -2492,6 +2525,18 @@ function InteractivePrototypesSection() {
         overflow: 'hidden',
       }}>
         <AnimatePresence mode="wait">
+          {activePrototype === 'recorder' && (
+            <motion.div
+              key="recorder"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+            >
+              <DreamRecorderPrototype />
+            </motion.div>
+          )}
+
           {activePrototype === 'explorer' && (
             <motion.div
               key="explorer"
