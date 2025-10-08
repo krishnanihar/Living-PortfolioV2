@@ -237,6 +237,66 @@ export default function Portfolio() {
             transform: translateY(0);
           }
         }
+
+        @keyframes gradientMeshMove {
+          0%, 100% {
+            transform: translate(0, 0) scale(1);
+          }
+          33% {
+            transform: translate(20px, -30px) scale(1.05);
+          }
+          66% {
+            transform: translate(-30px, 20px) scale(0.95);
+          }
+        }
+
+        @keyframes rotateSlow {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes rotateSlowReverse {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(-360deg);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          @keyframes gradientMeshMove {
+            0%, 100% {
+              transform: translate(0, 0) scale(1);
+            }
+          }
+          @keyframes rotateSlow {
+            0%, 100% {
+              transform: rotate(0deg);
+            }
+          }
+          @keyframes rotateSlowReverse {
+            0%, 100% {
+              transform: rotate(0deg);
+            }
+          }
+        }
+
+        @media (max-width: 768px) {
+          .light-rays {
+            display: none;
+          }
+          .gradient-mesh {
+            opacity: 0.6;
+          }
+          .floating-orb {
+            transform: scale(0.7);
+          }
+        }
       `}</style>
 
       <div className="portfolio-container" style={{
@@ -275,39 +335,71 @@ export default function Portfolio() {
 
         {/* Ambient background elements */}
         <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
-          {/* Floating orbs */}
-          <div style={{
+          {/* Animated gradient mesh */}
+          <div className="gradient-mesh" style={{
             position: 'absolute',
-            top: '20%',
-            left: '10%',
+            inset: 0,
+            background: `
+              radial-gradient(circle at 20% 30%, rgba(218, 14, 41, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.06) 0%, transparent 50%),
+              radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 50%)
+            `,
+            animation: 'gradientMeshMove 45s ease-in-out infinite',
+          }} />
+
+          {/* Enhanced floating orbs - larger and more prominent */}
+          <div className="floating-orb" style={{
+            position: 'absolute',
+            top: '15%',
+            left: '8%',
+            width: '600px',
+            height: '600px',
+            background: 'radial-gradient(circle, rgba(218, 14, 41, 0.12), rgba(218, 14, 41, 0.04) 40%, transparent 70%)',
+            borderRadius: '50%',
+            filter: 'blur(100px)',
+            animation: 'floatOrb 40s ease-in-out infinite',
+          }} />
+          <div className="floating-orb" style={{
+            position: 'absolute',
+            top: '50%',
+            right: '10%',
+            width: '500px',
+            height: '500px',
+            background: 'radial-gradient(circle, rgba(99, 102, 241, 0.08), rgba(99, 102, 241, 0.03) 40%, transparent 70%)',
+            borderRadius: '50%',
+            filter: 'blur(90px)',
+            animation: 'floatOrb 45s ease-in-out infinite 10s',
+          }} />
+          <div className="floating-orb" style={{
+            position: 'absolute',
+            bottom: '5%',
+            left: '30%',
+            width: '450px',
+            height: '450px',
+            background: 'radial-gradient(circle, rgba(16, 185, 129, 0.07), rgba(16, 185, 129, 0.02) 40%, transparent 70%)',
+            borderRadius: '50%',
+            filter: 'blur(85px)',
+            animation: 'floatOrb 50s ease-in-out infinite 20s',
+          }} />
+          <div className="floating-orb" style={{
+            position: 'absolute',
+            top: '40%',
+            left: '50%',
             width: '400px',
             height: '400px',
-            background: 'radial-gradient(circle, rgba(218, 14, 41, 0.06), transparent 70%)',
+            background: 'radial-gradient(circle, rgba(245, 158, 11, 0.06), rgba(245, 158, 11, 0.02) 40%, transparent 70%)',
             borderRadius: '50%',
             filter: 'blur(80px)',
-            animation: 'floatOrb 25s ease-in-out infinite',
+            animation: 'floatOrb 42s ease-in-out infinite 15s',
           }} />
+
+          {/* Subtle noise texture overlay */}
           <div style={{
             position: 'absolute',
-            top: '60%',
-            right: '15%',
-            width: '300px',
-            height: '300px',
-            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.03), transparent 70%)',
-            borderRadius: '50%',
-            filter: 'blur(60px)',
-            animation: 'floatOrb 30s ease-in-out infinite 8s',
-          }} />
-          <div style={{
-            position: 'absolute',
-            bottom: '10%',
-            left: '25%',
-            width: '250px',
-            height: '250px',
-            background: 'radial-gradient(circle, rgba(218, 14, 41, 0.04), transparent 70%)',
-            borderRadius: '50%',
-            filter: 'blur(70px)',
-            animation: 'floatOrb 35s ease-in-out infinite 15s',
+            inset: 0,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+            opacity: 0.015,
+            mixBlendMode: 'overlay',
           }} />
 
           {/* Subtle grid pattern */}
@@ -321,17 +413,57 @@ export default function Portfolio() {
             backgroundSize: '50px 50px',
             opacity: 0.3,
           }} />
+
+          {/* Light rays - top left */}
+          <div className="light-rays" style={{
+            position: 'absolute',
+            top: '-10%',
+            left: '-10%',
+            width: '40%',
+            height: '40%',
+            background: `conic-gradient(from 135deg at 50% 50%,
+              transparent 0deg,
+              rgba(218, 14, 41, 0.04) 45deg,
+              transparent 90deg,
+              transparent 360deg)`,
+            filter: 'blur(60px)',
+            animation: 'rotateSlow 60s linear infinite',
+            transformOrigin: '100% 100%',
+          }} />
+
+          {/* Light rays - top right */}
+          <div className="light-rays" style={{
+            position: 'absolute',
+            top: '-10%',
+            right: '-10%',
+            width: '40%',
+            height: '40%',
+            background: `conic-gradient(from 225deg at 50% 50%,
+              transparent 0deg,
+              rgba(99, 102, 241, 0.03) 45deg,
+              transparent 90deg,
+              transparent 360deg)`,
+            filter: 'blur(60px)',
+            animation: 'rotateSlowReverse 70s linear infinite',
+            transformOrigin: '0% 100%',
+          }} />
         </div>
 
-        {/* Dark translucent overlay with mouse tracking */}
+        {/* Dynamic spotlight effect with mouse tracking */}
         <div style={{
           position: 'fixed',
           inset: 0,
-          background: `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%,
-            rgba(218, 14, 41, 0.03) 0%,
-            transparent 50%)`,
+          background: `
+            radial-gradient(circle 800px at ${mousePos.x}% ${mousePos.y}%,
+              rgba(218, 14, 41, 0.08) 0%,
+              rgba(218, 14, 41, 0.04) 20%,
+              transparent 60%),
+            radial-gradient(circle 1200px at ${mousePos.x}% ${mousePos.y}%,
+              rgba(255, 255, 255, 0.02) 0%,
+              transparent 50%)
+          `,
           pointerEvents: 'none',
-          transition: 'background 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+          transition: 'background 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
           zIndex: 1,
         }} />
 
