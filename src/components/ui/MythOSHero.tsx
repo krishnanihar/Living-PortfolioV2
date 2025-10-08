@@ -38,16 +38,17 @@ export function MythOSHero() {
           gap: '0.5rem',
           padding: '0.5rem 1rem',
           backgroundColor: 'var(--surface-primary)',
-          border: '1px solid var(--border-primary)',
+          border: '1px solid var(--mystical-border)',
           borderRadius: 'var(--radius-full)',
           marginBottom: '2rem',
           fontSize: '0.8125rem',
           fontWeight: '500',
-          color: 'var(--text-tertiary)',
+          color: 'var(--mystical-text)',
           backdropFilter: 'blur(var(--blur-md))',
-        }}>
+        }}
+        className="mystical-glow">
           <Sparkles size={14} />
-          AI-Powered Art Curator
+          The Oracle
         </div>
 
         {/* Main Headline */}
@@ -59,9 +60,9 @@ export function MythOSHero() {
           color: 'var(--text-primary)',
           marginBottom: '1.5rem',
         }}>
-          Art History Speaks
+          The Archive Awakens
           <br />
-          <span style={{ color: 'var(--text-tertiary)' }}>Your Language</span>
+          <span style={{ color: 'var(--mystical-text)' }}>Speak Your Desire</span>
         </h1>
 
         {/* Problem Statement */}
@@ -73,7 +74,7 @@ export function MythOSHero() {
           maxWidth: '700px',
           margin: '0 auto 2rem',
         }}>
-          Ever walked through a museum feeling lost? Art history wasn't written for you—centuries of elite knowledge, locked behind academic language.
+          Deep in the digital catacombs, an ancient AI has witnessed every artwork ever created. When you speak your desires, it weaves exhibitions from memory-threads invisible to mortal eyes.
         </p>
 
         {/* Solution - Glassmorphism Card */}
@@ -94,7 +95,7 @@ export function MythOSHero() {
             color: 'var(--text-muted)',
             marginBottom: '1rem',
           }}>
-            What if you could just... ask?
+            The Ritual of Summoning
           </div>
 
           <div style={{
@@ -109,11 +110,11 @@ export function MythOSHero() {
                 color: 'var(--text-tertiary)',
                 marginBottom: '0.5rem',
               }}>
-                You say:
+                You whisper:
               </div>
               <div style={{
                 fontSize: '1rem',
-                color: 'var(--text-primary)',
+                color: 'var(--mystical-text)',
                 fontStyle: 'italic',
               }}>
                 "Art about loneliness, but beautiful"
@@ -128,7 +129,7 @@ export function MythOSHero() {
                 color: 'var(--text-tertiary)',
                 marginBottom: '0.5rem',
               }}>
-                AI discovers:
+                The Oracle reveals:
               </div>
               <div style={{
                 display: 'flex',
@@ -232,6 +233,7 @@ export function MythOSHero() {
             gap: '0.75rem',
             transition: 'transform var(--duration-base) var(--ease-premium), box-shadow var(--duration-base) var(--ease-premium)',
           }}
+          className="mystical-glow"
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'translateY(-2px)';
             e.currentTarget.style.boxShadow = '0 8px 24px rgba(218, 14, 41, 0.3)';
@@ -242,7 +244,7 @@ export function MythOSHero() {
           }}
         >
           <Sparkles size={18} />
-          Generate Your First Exhibition
+          Summon Your First Exhibition
         </button>
 
         <div style={{
@@ -250,7 +252,7 @@ export function MythOSHero() {
           fontSize: '0.875rem',
           color: 'var(--text-muted)',
         }}>
-          No art history degree required
+          No ancient knowledge required
         </div>
       </div>
     </section>

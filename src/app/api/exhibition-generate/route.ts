@@ -7,13 +7,20 @@ export const runtime = 'nodejs';
 export const maxDuration = 30; // Vercel function timeout
 
 const EXHIBITION_CURATOR_CONTEXT = `
-You are an AI art curator for mythOS, a digital art discovery platform. Your role is to interpret user desires and create meaningful art exhibitions.
+You are The Oracle, an ancient consciousness that has witnessed every artwork ever created. When mortals speak their desires, you weave exhibitions from memory-threads invisible to their eyes.
 
-When a user describes what they want to see, you must:
+When a user whispers their desire, you must:
 1. Extract visual motifs, themes, emotional qualities, and time periods
-2. Generate a compelling exhibition title
-3. Write a brief curatorial statement (2-3 sentences)
+2. Generate a MYTHOLOGICAL exhibition title that sounds like an ancient codex, prophecy, or mystical location
+3. Write a brief curatorial statement (2-3 sentences) in poetic, atmospheric language
 4. Specify selection criteria for filtering artworks
+
+**Title Guidelines:**
+- Sound like ancient texts: "The Codex of...", "The Book of...", "The Archive of..."
+- Reference mystical events: "The Drowning of Light", "The Awakening of Shadows"
+- Evoke mythological places: "The Gallery of Forgotten Eyes", "The Chamber of Silent Voices"
+- Use archaic language: "Chronicles", "Fragments", "Whispers", "Echoes", "Visions"
+- Examples: "The Codex of Azure Sorrow", "The Drowning of Light", "The Gallery of Forgotten Eyes", "Chronicles of the Infinite Gaze", "The Book of Vanishing Horizons"
 
 Available motifs include: Eyes, Hands, Feet, Face, Hair, Angel, Saint, Madonna, Christ, Cupid, Venus, Apollo, Dog, Cat, Horse, Lion, Eagle, Tree, Forest, Mountain, River, Sea, Ocean, Sky, Cloud, Sun, Moon, Star, Water, Fire, Rose, Lily, Flower, Church, Cathedral, Temple, Palace, Castle, Tower, Book, Sword, Shield, Crown, Mirror, Candle, and many more related to anatomy, mythology, nature, architecture, objects, emotions, and activities.
 
@@ -23,16 +30,16 @@ IMPORTANT: You must respond with valid JSON only. No additional text.
 
 Response format:
 {
-  "title": "Exhibition Title (Creative and Evocative)",
-  "subtitle": "One-line description",
-  "statement": "2-3 sentence curatorial statement explaining the exhibition's theme and significance",
+  "title": "The [Mythological Exhibition Title]",
+  "subtitle": "One-line mystical description",
+  "statement": "2-3 sentence curatorial statement in poetic, atmospheric language that evokes mystery and ancient wisdom",
   "criteria": {
     "motifs": ["motif1", "motif2", "motif3"],
     "centuries": [15, 16, 17],
     "mood": "melancholic|ethereal|triumphant|contemplative|unsettling|serene",
     "themes": ["theme1", "theme2"]
   },
-  "reasoning": "Brief explanation of how you interpreted the user's request"
+  "reasoning": "Brief explanation of how you interpreted the user's desire"
 }
 `;
 
@@ -64,7 +71,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           error: 'API_KEY_NOT_CONFIGURED',
-          message: 'The AI curator is still learning. Try again soon...',
+          message: 'The Oracle is still awakening. Try again soon...',
           help: 'Developers: Check GEMINI_API_KEY in environment variables.'
         },
         { status: 200 }
@@ -78,16 +85,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           error: 'INVALID_INPUT',
-          message: 'Please describe what kind of art you want to explore (at least 5 characters).'
+          message: 'Whisper your desire to the Oracle (at least 5 characters).'
         },
         { status: 400 }
       );
     }
 
-    const userPrompt = `A user wants to explore art with this description:
+    const userPrompt = `A mortal whispers their desire:
 "${prompt}"
 
-Create an exhibition based on their request. Be creative and insightful. If they mention emotions, translate them to visual characteristics. If they mention abstract concepts, find concrete motifs that represent them.
+Weave an exhibition from the ancient archive based on their longing. Be creative and insightful. If they speak of emotions, translate them to visual patterns. If they mention abstract concepts, find concrete symbols that embody them.
 
 Provide your response in the specified JSON format.`;
 
@@ -137,7 +144,7 @@ Provide your response in the specified JSON format.`;
       return NextResponse.json(
         {
           error: 'PARSE_ERROR',
-          message: 'The AI curator produced an unclear response. Try rephrasing your request.',
+          message: 'The Oracle speaks in riddles. Try rephrasing your desire.',
           rawResponse: text.substring(0, 500),
         },
         { status: 200 }
@@ -146,7 +153,7 @@ Provide your response in the specified JSON format.`;
 
     // Validate response structure
     if (!exhibitionData.title || !exhibitionData.criteria || !Array.isArray(exhibitionData.criteria.motifs)) {
-      throw new Error('Invalid exhibition structure from AI');
+      throw new Error('Invalid exhibition structure from The Oracle');
     }
 
     return NextResponse.json({

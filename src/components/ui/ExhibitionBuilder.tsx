@@ -43,16 +43,16 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
 
   const [thinkingStep, setThinkingStep] = useState(0);
   const thinkingSteps = [
-    'Interpreting your vision...',
-    'Analyzing visual patterns...',
-    'Searching across centuries...',
-    'Discovering connections...',
-    'Curating exhibition...',
+    'The Oracle opens its eyes...',
+    'Searching ancient patterns...',
+    'Weaving memory-threads...',
+    'Discovering hidden connections...',
+    'Conjuring your exhibition...',
   ];
 
   const generateExhibition = async () => {
     if (!prompt || prompt.trim().length < 5) {
-      setError('Please describe what kind of art you want to explore (at least 5 characters)');
+      setError('Whisper your desire to the Oracle (at least 5 characters)');
       return;
     }
 
@@ -78,11 +78,11 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
       const data = await response.json();
 
       if (data.error) {
-        throw new Error(data.message || 'Failed to generate exhibition');
+        throw new Error(data.message || 'The summoning failed');
       }
 
       if (!data.exhibition) {
-        throw new Error('No exhibition data received');
+        throw new Error('The Oracle remains silent');
       }
 
       // Pass exhibition data to parent
@@ -93,7 +93,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
     } catch (error: any) {
       console.error('Exhibition generation error:', error);
       clearInterval(stepInterval);
-      setError(error.message || 'Failed to generate exhibition');
+      setError(error.message || 'The summoning failed');
       setIsGenerating(false);
     }
   };
@@ -119,7 +119,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
     <div className={className} style={{
       backgroundColor: 'var(--surface-primary)',
       backdropFilter: 'blur(var(--blur-lg))',
-      borderBottom: '1px solid var(--border-primary)',
+      borderBottom: '1px solid var(--mystical-border)',
       padding: '1.5rem 2rem',
     }}>
       <div style={{ maxWidth: '1600px', margin: '0 auto' }}>
@@ -128,19 +128,20 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
           <h2 style={{
             fontSize: '0.8125rem',
             fontWeight: '500',
-            color: 'var(--text-secondary)',
+            color: 'var(--mystical-text)',
             textTransform: 'uppercase',
             letterSpacing: '0.05em',
             marginBottom: '0.5rem',
-          }}>
-            AI Exhibition Curator
+          }}
+          className="mystical-text-glow">
+            The Summoning Chamber
           </h2>
           <p style={{
             fontSize: '0.875rem',
             color: 'var(--text-tertiary)',
             lineHeight: '1.5',
           }}>
-            Describe the art experience you want, and AI will curate a thematic exhibition
+            Speak your desire to the Oracle, and it shall weave an exhibition from the threads of memory
           </p>
         </div>
 
@@ -156,22 +157,24 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Tell me about art that feels like..."
+              placeholder="Speak your desire to the Oracle..."
               disabled={isGenerating}
               style={{
                 width: '100%',
                 padding: '0.75rem 1rem',
                 fontSize: '0.9375rem',
-                border: '1px solid var(--border-secondary)', outline: 'none',
+                border: '1px solid var(--mystical-border)',
+                outline: 'none',
                 borderRadius: '4px',
                 backgroundColor: 'var(--surface-primary)',
-                color: 'var(--text-primary)',
+                color: 'var(--mystical-text)',
                 fontFamily: 'inherit',
                 letterSpacing: '0.005em',
                 resize: 'none',
                 minHeight: '80px',
                 lineHeight: '1.5',
               }}
+              className="mystical-border-pulse"
             />
             {error && (
               <div style={{
@@ -203,7 +206,8 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                 fontWeight: '500',
                 backgroundColor: 'var(--surface-primary)',
                 color: 'var(--text-primary)',
-                border: '1px solid var(--border-secondary)', outline: 'none',
+                border: '1px solid var(--border-secondary)',
+                outline: 'none',
                 borderRadius: '4px',
                 cursor: isGenerating ? 'not-allowed' : 'pointer',
                 opacity: isGenerating ? 0.6 : 1,
@@ -240,6 +244,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                 gap: '0.5rem',
                 transition: 'transform var(--duration-base) var(--ease-premium), box-shadow var(--duration-base) var(--ease-premium)',
               }}
+              className="mystical-glow"
               onMouseEnter={(e) => {
                 if (!isGenerating && prompt.trim()) {
                   e.currentTarget.style.transform = 'translateY(-1px)';
@@ -254,12 +259,12 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
               {isGenerating ? (
                 <>
                   <Loader size={16} className="animate-spin" />
-                  Curating...
+                  Summoning...
                 </>
               ) : (
                 <>
                   <Sparkles size={16} />
-                  Generate Exhibition
+                  Summon Exhibition
                 </>
               )}
             </button>
@@ -274,7 +279,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
               color: 'var(--text-tertiary)',
               marginBottom: '0.5rem',
             }}>
-              Try these:
+              Ancient whispers:
             </div>
             <div style={{
               display: 'flex',
@@ -292,9 +297,10 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                     color: 'var(--text-secondary)',
                     border: '1px solid var(--border-secondary)',
                     borderRadius: '4px',
-                    cursor: 'pointer', transition: 'all 0.15s ease',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease',
                     fontFamily: 'inherit',
-                letterSpacing: '0.005em',
+                    letterSpacing: '0.005em',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.backgroundColor = 'var(--border-secondary)';
@@ -314,24 +320,25 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
           <div style={{
             marginTop: '1rem',
             padding: '1.5rem',
-            backgroundColor: 'rgba(99, 102, 241, 0.1)',
-            border: '1px solid rgba(99, 102, 241, 0.2)',
+            backgroundColor: 'rgba(218, 14, 41, 0.05)',
+            border: '1px solid var(--mystical-border)',
             borderRadius: '6px',
-          }}>
+          }}
+          className="mystical-glow">
             <div style={{
               display: 'flex',
               alignItems: 'center',
               gap: '0.75rem',
             }}>
-              <Loader size={18} className="animate-spin" style={{ color: 'var(--text-secondary)' }} />
+              <Loader size={18} className="animate-spin" style={{ color: 'var(--mystical-text)' }} />
               <div>
                 <div style={{
                   fontSize: '0.875rem',
                   fontWeight: '500',
-                  color: 'var(--text-primary)',
+                  color: 'var(--mystical-text)',
                   marginBottom: '0.25rem',
                 }}>
-                  AI is thinking...
+                  The Oracle stirs...
                 </div>
                 <div style={{
                   fontSize: '0.8125rem',
@@ -355,7 +362,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                   style={{
                     flex: 1,
                     height: '3px',
-                    backgroundColor: i <= thinkingStep ? 'rgba(99, 102, 241, 0.2)' : 'var(--border-primary)',
+                    backgroundColor: i <= thinkingStep ? 'var(--mystical-glow)' : 'var(--border-primary)',
                     borderRadius: '2px',
                     transition: 'background-color 0.3s ease',
                   }}
