@@ -324,14 +324,43 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
             backgroundColor: 'rgba(218, 14, 41, 0.05)',
             border: '1px solid var(--mystical-border)',
             borderRadius: '6px',
+            position: 'relative',
+            overflow: 'hidden',
           }}
-          className="mystical-glow">
+          className="mystical-glow mystical-breathe">
+            {/* Oracle orb background effect */}
+            <div style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '100px',
+              height: '100px',
+              background: 'radial-gradient(circle, rgba(218, 14, 41, 0.2) 0%, transparent 70%)',
+              borderRadius: '50%',
+              filter: 'blur(20px)',
+              animation: 'mystical-breathe 2s ease-in-out infinite',
+            }} />
             <div style={{
               display: 'flex',
               alignItems: 'center',
               gap: '0.75rem',
+              position: 'relative',
+              zIndex: 1,
             }}>
-              <Loader size={18} className="animate-spin" style={{ color: 'var(--mystical-text)' }} />
+              <div style={{
+                position: 'relative',
+                display: 'inline-flex',
+              }}>
+                <Loader size={18} className="animate-spin" style={{ color: 'var(--mystical-text)' }} />
+                <div style={{
+                  position: 'absolute',
+                  inset: '-4px',
+                  borderRadius: '50%',
+                  background: 'conic-gradient(from 0deg, transparent, rgba(218, 14, 41, 0.3), transparent)',
+                  animation: 'spin 2s linear infinite',
+                }} />
+              </div>
               <div>
                 <div style={{
                   fontSize: '0.875rem',
