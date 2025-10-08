@@ -113,61 +113,57 @@ export function FirstPersonMoments() {
       {activeMoment && (
         <motion.div
           key={`moment-${activeMoment.trigger}`}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, x: 20, y: 20 }}
+          animate={{ opacity: 1, x: 0, y: 0 }}
+          exit={{ opacity: 0, x: 20, y: 10 }}
           transition={{
-            duration: 0.8,
+            duration: 0.5,
             ease: [0.22, 1, 0.36, 1],
           }}
           style={{
             position: 'fixed',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
+            bottom: '2rem',
+            right: '2rem',
             zIndex: 200,
-            maxWidth: '600px',
-            width: '90%',
-            padding: '3rem 2rem',
-            background: 'rgba(10, 10, 10, 0.98)',
-            backdropFilter: 'blur(40px) saturate(150%)',
-            WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-            border: `1px solid ${narrativeState.color.primary.replace('0.8', '0.3')}`,
-            borderRadius: '24px',
-            boxShadow: `0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px ${narrativeState.color.primary.replace('0.8', '0.2')}`,
-            textAlign: 'center',
+            maxWidth: '420px',
+            width: 'calc(100vw - 4rem)',
+            padding: '1.5rem 1.75rem',
+            background: 'rgba(10, 10, 10, 0.85)',
+            backdropFilter: 'blur(60px) saturate(180%) brightness(0.9)',
+            WebkitBackdropFilter: 'blur(60px) saturate(180%) brightness(0.9)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderRadius: '20px',
+            boxShadow: `0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px ${narrativeState.color.primary.replace('0.8', '0.1')}, inset 0 1px 0 0 rgba(255, 255, 255, 0.05)`,
+            textAlign: 'left',
             pointerEvents: 'none',
           }}
+          className="first-person-moment"
         >
-          {/* Pulsing border effect */}
+          {/* Subtle accent line */}
           <div
             style={{
               position: 'absolute',
-              inset: 0,
-              borderRadius: '24px',
-              padding: '1px',
-              background: `linear-gradient(135deg, ${narrativeState.color.primary}, ${narrativeState.color.secondary}, ${narrativeState.color.primary})`,
-              backgroundSize: '200% 200%',
-              animation: 'borderShimmer 4s ease-in-out infinite',
-              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-              WebkitMaskComposite: 'xor',
-              maskComposite: 'exclude',
-              opacity: 0.4,
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '2px',
+              borderRadius: '20px 20px 0 0',
+              background: `linear-gradient(90deg, ${narrativeState.color.primary.replace('0.8', '0.5')}, ${narrativeState.color.secondary.replace('0.8', '0.5')})`,
+              opacity: 0.6,
             }}
           />
 
-          {/* Icon */}
+          {/* Icon - left aligned with content */}
           {activeMoment.icon && (
             <motion.div
-              initial={{ scale: 0, rotate: -180 }}
+              initial={{ scale: 0, rotate: -90 }}
               animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
+              transition={{ delay: 0.1, duration: 0.4 }}
               style={{
-                marginBottom: '1.5rem',
+                marginBottom: '1rem',
                 color: narrativeState.color.primary,
-                display: 'flex',
-                justifyContent: 'center',
-                filter: `drop-shadow(0 0 20px ${narrativeState.color.primary})`,
+                display: 'inline-flex',
+                filter: `drop-shadow(0 0 12px ${narrativeState.color.primary.replace('0.8', '0.4')})`,
               }}
             >
               {activeMoment.icon}
@@ -176,16 +172,16 @@ export function FirstPersonMoments() {
 
           {/* Main text */}
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
+            transition={{ delay: 0.15, duration: 0.5 }}
             style={{
-              fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
-              fontWeight: '200',
-              letterSpacing: '-0.02em',
-              lineHeight: '1.2',
-              color: '#ffffff',
-              marginBottom: '1rem',
+              fontSize: 'clamp(1rem, 3vw, 1.25rem)',
+              fontWeight: '400',
+              letterSpacing: '-0.01em',
+              lineHeight: '1.3',
+              color: 'rgba(255, 255, 255, 0.95)',
+              marginBottom: activeMoment.subtext ? '0.5rem' : '0',
             }}
           >
             {activeMoment.text}
@@ -196,40 +192,18 @@ export function FirstPersonMoments() {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
+              transition={{ delay: 0.25, duration: 0.5 }}
               style={{
-                fontSize: 'clamp(0.875rem, 2vw, 1.125rem)',
+                fontSize: '0.8125rem',
                 fontWeight: '300',
-                color: 'rgba(255, 255, 255, 0.7)',
+                color: 'rgba(255, 255, 255, 0.6)',
                 fontStyle: 'italic',
-                lineHeight: '1.6',
+                lineHeight: '1.5',
               }}
             >
               {activeMoment.subtext}
             </motion.p>
           )}
-
-          {/* Breathing indicator */}
-          <motion.div
-            animate={{
-              opacity: [0.3, 0.6, 0.3],
-              scale: [0.95, 1, 0.95],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-            style={{
-              marginTop: '2rem',
-              width: '4px',
-              height: '4px',
-              borderRadius: '50%',
-              background: narrativeState.color.primary,
-              margin: '2rem auto 0',
-              boxShadow: `0 0 20px ${narrativeState.color.primary}`,
-            }}
-          />
         </motion.div>
       )}
     </AnimatePresence>

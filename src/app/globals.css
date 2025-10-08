@@ -1411,3 +1411,228 @@ select {
     0 0 10px rgba(var(--brand-red-rgb), 0.5),
     0 0 20px rgba(var(--brand-red-rgb), 0.3);
 }
+
+/* Scroll Down Bounce Animation */
+@keyframes scroll-down-bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-scroll-down {
+  animation: scroll-down-bounce 2.5s infinite;
+}
+
+/* Immersive Gallery Styles */
+.immersive-container {
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+  background: #0A0A0A;
+  cursor: grab;
+}
+
+.immersive-container:active {
+  cursor: grabbing;
+}
+
+.immersive-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 30%, #0A0A0A 80%);
+  pointer-events: none;
+  z-index: 55;
+}
+
+.immersive-scene {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: transform 0.2s ease-out;
+}
+
+.immersive-title,
+.immersive-empty-state,
+.immersive-end-portal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1000px;
+  max-width: 90vw;
+  transform: translate(-50%, -50%);
+  transform-style: preserve-3d;
+  text-shadow: 0 0 30px rgba(218, 14, 41, 0.5);
+  color: white;
+  text-align: center;
+}
+
+.immersive-end-portal {
+  animation: mystical-breathe 4s infinite;
+}
+
+@keyframes grid-pulse {
+  0%, 100% {
+    background-color: rgba(218, 14, 41, 0.05);
+  }
+  50% {
+    background-color: rgba(218, 14, 41, 0.15);
+  }
+}
+
+.immersive-floor,
+.immersive-ceiling {
+  position: absolute;
+  left: 50%;
+  width: 3000px;
+  height: 100000px;
+  background-image: linear-gradient(rgba(218, 14, 41, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(218, 14, 41, 0.1) 1px, transparent 1px);
+  background-size: 100px 100px;
+  transform-origin: center center;
+  margin-left: -1500px;
+  backface-visibility: hidden;
+}
+
+.immersive-floor::before,
+.immersive-ceiling::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(218, 14, 41, 0.05);
+  animation: grid-pulse 8s ease-in-out infinite;
+}
+
+.immersive-floor {
+  bottom: 50%;
+  transform: translateY(50%) rotateX(90deg);
+  margin-bottom: -200px;
+}
+
+.immersive-ceiling {
+  top: 50%;
+  transform: translateY(-50%) rotateX(-90deg);
+  margin-top: -200px;
+}
+
+.immersive-artwork-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 400px;
+  margin-left: -150px;
+  margin-top: -200px;
+  transform-style: preserve-3d;
+  will-change: transform;
+  cursor: pointer;
+}
+
+.immersive-artwork-hover-target {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s var(--ease-premium);
+}
+
+.immersive-artwork-wrapper:hover .immersive-artwork-hover-target {
+  transform: translateZ(50px) scale(1.03);
+}
+
+.immersive-artwork {
+  width: 100%;
+  height: 100%;
+  background: #111;
+  border: 1px solid #DA0E29;
+  box-shadow: 0 0 30px rgba(218, 14, 41, 0.3);
+  position: relative;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transition: box-shadow 0.3s var(--ease-premium), border-color 0.3s var(--ease-premium);
+}
+
+.immersive-artwork-wrapper:hover .immersive-artwork {
+  box-shadow: 0 0 60px 10px rgba(218, 14, 41, 0.5);
+  border-color: #ff4d64;
+}
+
+.immersive-artwork img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.immersive-artwork-info {
+  position: absolute;
+  bottom: -100px;
+  left: -50px;
+  width: 400px;
+  padding: 1rem;
+  text-align: center;
+  color: white;
+  background: rgba(10, 10, 18, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(218, 14, 41, 0.2);
+  border-radius: 8px;
+  transform: translateZ(70px) rotateX(-20deg);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-premium), transform 0.4s var(--ease-premium);
+  pointer-events: none;
+}
+
+.immersive-artwork-wrapper:hover .immersive-artwork-info {
+  opacity: 1;
+  transform: translateZ(100px) rotateX(0deg);
+}
+
+.immersive-artwork-info h3 {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #fff;
+  text-shadow: 0 0 10px #DA0E29;
+}
+
+.immersive-artwork-info p {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  color: #E0D8C8;
+}
+
+.immersive-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  animation: float-particle 20s linear infinite;
+}
+
+.immersive-hud {
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* First-Person Moments - Mobile Responsive */
+@media (max-width: 768px) {
+  .first-person-moment {
+    bottom: 1rem !important;
+    right: 1rem !important;
+    left: 1rem !important;
+    width: calc(100vw - 2rem) !important;
+    max-width: none !important;
+    padding: 1rem 1.25rem !important;
+  }
+}
