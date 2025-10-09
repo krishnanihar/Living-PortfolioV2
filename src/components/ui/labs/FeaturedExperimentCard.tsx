@@ -38,19 +38,19 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
       className={cn(
         'relative group cursor-pointer',
         'md:col-span-2', // Takes 2 columns on desktop for featured effect
-        'min-h-[400px] p-12 rounded-3xl',
-        'bg-white/[0.08] border-2 border-white/[0.20]',
-        '[data-theme="light"] &:bg-black/[0.08] [data-theme="light"] &:border-black/[0.20]',
-        'hover:bg-white/[0.10] hover:border-[var(--brand-red)]/40',
-        '[data-theme="light"] &:hover:bg-black/[0.10]',
-        'shadow-2xl hover:shadow-[0_20px_70px_rgba(218,14,41,0.2)]',
+        'min-h-[400px] p-10 rounded-3xl',
+        'bg-white/[0.05] border border-white/[0.08]',
+        '[data-theme="light"] &:bg-black/[0.05] [data-theme="light"] &:border-black/[0.08]',
+        'hover:bg-white/[0.07] hover:border-[var(--brand-red)]/30',
+        '[data-theme="light"] &:hover:bg-black/[0.07]',
+        'shadow-2xl hover:shadow-[0_20px_70px_rgba(218,14,41,0.15)]',
         'transition-all duration-300',
         'overflow-hidden',
         className
       )}
       style={{
-        backdropFilter: 'blur(60px) saturate(200%) brightness(1.1)',
-        WebkitBackdropFilter: 'blur(60px) saturate(200%) brightness(1.1)',
+        backdropFilter: 'blur(48px) saturate(180%) brightness(1.15)',
+        WebkitBackdropFilter: 'blur(48px) saturate(180%) brightness(1.15)',
       }}
     >
       {/* Featured badge */}
@@ -60,14 +60,13 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
       </div>
 
       {/* Header */}
-      <div className="flex flex-col gap-4 mb-6">
+      <div className="flex flex-col gap-5 mb-8">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
             <h3
               className={cn(
-                'text-3xl font-semibold mb-3',
-                'text-white',
-                '[data-theme="light"] &:text-black',
+                'text-3xl font-semibold mb-4',
+                'text-[var(--text-primary)]',
                 'group-hover:text-[var(--brand-red)] transition-colors duration-300'
               )}
             >
@@ -80,7 +79,7 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
                   className="w-2.5 h-2.5 rounded-full"
                   style={{ backgroundColor: statusColors[experiment.status] }}
                 />
-                <span className="text-sm font-medium text-white/70 [data-theme='light'] &:text-black/70">
+                <span className="text-sm font-medium text-[var(--text-tertiary)]">
                   {experiment.status}
                 </span>
               </div>
@@ -89,10 +88,9 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
               <div
                 className={cn(
                   'px-3 py-1 rounded-full text-sm font-medium',
-                  'bg-white/15 border border-white/25',
-                  '[data-theme="light"] &:bg-black/15 [data-theme="light"] &:border-black/25',
-                  'text-white/80',
-                  '[data-theme="light"] &:text-black/80'
+                  'bg-white/[0.08] border border-white/[0.12]',
+                  '[data-theme="light"] &:bg-black/[0.08] [data-theme="light"] &:border-black/[0.12]',
+                  'text-[var(--text-tertiary)]'
                 )}
               >
                 TRL {experiment.trl}
@@ -102,7 +100,7 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
               {AccessIcon && (
                 <AccessIcon
                   size={14}
-                  className="text-white/50 [data-theme='light'] &:text-black/50"
+                  className="text-[var(--text-muted)]"
                 />
               )}
             </div>
@@ -110,26 +108,20 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
         </div>
 
         {/* One-liner */}
-        <p
-          className={cn(
-            'text-lg leading-relaxed',
-            'text-white/85',
-            '[data-theme="light"] &:text-black/85'
-          )}
-        >
+        <p className="text-lg leading-relaxed text-[var(--text-secondary)]">
           {experiment.oneLiner}
         </p>
       </div>
 
       {/* Tags */}
-      <div className="flex flex-wrap gap-2 mb-8">
+      <div className="flex flex-wrap gap-2.5 mb-10">
         {experiment.domain.map((domain) => (
           <span
             key={domain}
             className={cn(
               'px-3 py-1.5 rounded-lg text-sm font-medium',
-              'bg-[var(--brand-red)]/15 text-[var(--brand-red)]',
-              'border border-[var(--brand-red)]/25'
+              'bg-[var(--brand-red)]/12 text-[var(--brand-red)]',
+              'border border-[var(--brand-red)]/20'
             )}
           >
             {domain}
@@ -139,9 +131,9 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
           <span
             key={tech}
             className={cn(
-              'px-3 py-1.5 rounded-lg text-sm',
-              'bg-white/10 text-white/70 border border-white/15',
-              '[data-theme="light"] &:bg-black/10 [data-theme="light"] &:text-black/70 [data-theme="light"] &:border-black/15'
+              'px-3 py-1.5 rounded-lg text-sm font-medium',
+              'bg-white/[0.05] text-[var(--text-tertiary)] border border-white/[0.10]',
+              '[data-theme="light"] &:bg-black/[0.05] [data-theme="light"] &:border-black/[0.10]'
             )}
           >
             {tech}
@@ -150,8 +142,8 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
       </div>
 
       {/* Footer with quick actions */}
-      <div className="flex items-center justify-between pt-6 border-t border-white/15 [data-theme='light'] &:border-black/15">
-        <span className="text-sm font-medium text-white/60 [data-theme='light'] &:text-black/60">
+      <div className="flex items-center justify-between pt-6 border-t border-[var(--border-primary)]">
+        <span className="text-sm font-medium text-[var(--text-tertiary)]">
           Updated {new Date(experiment.dates.updated).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
         </span>
 
@@ -164,11 +156,10 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
               }}
               className={cn(
                 'flex items-center gap-2 px-4 py-2 rounded-xl',
-                'text-white/80 hover:text-white',
-                '[data-theme="light"] &:text-black/80 [data-theme="light"] &:hover:text-black',
-                'bg-white/10 hover:bg-[var(--brand-red)] hover:text-white',
-                '[data-theme="light"] &:bg-black/10',
-                'border border-white/20 hover:border-[var(--brand-red)]',
+                'text-[var(--text-primary)] hover:text-white',
+                'bg-white/[0.08] hover:bg-[var(--brand-red)]',
+                '[data-theme="light"] &:bg-black/[0.08]',
+                'border border-white/[0.12] hover:border-[var(--brand-red)]',
                 'transition-all duration-200'
               )}
               aria-label="View demo"
@@ -185,11 +176,10 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
               }}
               className={cn(
                 'p-2.5 rounded-xl',
-                'text-white/70 hover:text-[var(--brand-red)]',
-                '[data-theme="light"] &:text-black/70',
-                'bg-white/10 hover:bg-white/15',
-                '[data-theme="light"] &:hover:bg-black/15',
-                'border border-white/20',
+                'text-[var(--text-tertiary)] hover:text-[var(--brand-red)]',
+                'bg-white/[0.05] hover:bg-white/[0.08]',
+                '[data-theme="light"] &:bg-black/[0.05] [data-theme="light"] &:hover:bg-black/[0.08]',
+                'border border-white/[0.10]',
                 'transition-all duration-200'
               )}
               aria-label="View code"
@@ -200,11 +190,10 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
           <button
             className={cn(
               'p-2.5 rounded-xl',
-              'text-white/70 hover:text-[var(--brand-red)]',
-              '[data-theme="light"] &:text-black/70',
-              'bg-white/10 hover:bg-white/15',
-              '[data-theme="light"] &:hover:bg-black/15',
-              'border border-white/20',
+              'text-[var(--text-tertiary)] hover:text-[var(--brand-red)]',
+              'bg-white/[0.05] hover:bg-white/[0.08]',
+              '[data-theme="light"] &:bg-black/[0.05] [data-theme="light"] &:hover:bg-black/[0.08]',
+              'border border-white/[0.10]',
               'transition-all duration-200'
             )}
             aria-label="View details"

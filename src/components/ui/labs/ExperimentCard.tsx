@@ -30,28 +30,27 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
       onClick={() => onClick?.(experiment)}
       className={cn(
         'relative group cursor-pointer',
-        'min-h-[320px] p-10 rounded-3xl',
-        'bg-white/[0.08] border border-white/[0.20]',
-        '[data-theme="light"] &:bg-black/[0.08] [data-theme="light"] &:border-black/[0.20]',
-        'hover:bg-white/[0.10] hover:border-white/[0.30]',
-        '[data-theme="light"] &:hover:bg-black/[0.10] [data-theme="light"] &:hover:border-black/[0.30]',
+        'min-h-[320px] p-8 rounded-3xl',
+        'bg-white/[0.04] border border-white/[0.06]',
+        '[data-theme="light"] &:bg-black/[0.04] [data-theme="light"] &:border-black/[0.06]',
+        'hover:bg-white/[0.06] hover:border-white/[0.10]',
+        '[data-theme="light"] &:hover:bg-black/[0.06] [data-theme="light"] &:hover:border-black/[0.10]',
         'shadow-xl hover:shadow-2xl',
         'transition-all duration-300',
         className
       )}
       style={{
-        backdropFilter: 'blur(60px) saturate(200%) brightness(1.1)',
-        WebkitBackdropFilter: 'blur(60px) saturate(200%) brightness(1.1)',
+        backdropFilter: 'blur(48px) saturate(180%) brightness(1.15)',
+        WebkitBackdropFilter: 'blur(48px) saturate(180%) brightness(1.15)',
       }}
     >
       {/* Header */}
-      <div className="flex items-start justify-between gap-4 mb-3">
+      <div className="flex items-start justify-between gap-4 mb-4">
         <div className="flex-1 min-w-0">
           <h3
             className={cn(
-              'text-xl font-semibold mb-2 truncate',
-              'text-white',
-              '[data-theme="light"] &:text-black',
+              'text-xl font-semibold mb-3 truncate',
+              'text-[var(--text-primary)]',
               'group-hover:text-[var(--brand-red)] transition-colors duration-300'
             )}
           >
@@ -64,7 +63,7 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
                 className="w-2 h-2 rounded-full"
                 style={{ backgroundColor: statusColors[experiment.status] }}
               />
-              <span className="text-xs text-white/60 [data-theme='light'] &:text-black/60">
+              <span className="text-xs text-[var(--text-tertiary)]">
                 {experiment.status}
               </span>
             </div>
@@ -73,10 +72,9 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
             <div
               className={cn(
                 'px-2 py-0.5 rounded-full text-xs font-medium',
-                'bg-white/10 border border-white/20',
-                '[data-theme="light"] &:bg-black/10 [data-theme="light"] &:border-black/20',
-                'text-white/70',
-                '[data-theme="light"] &:text-black/70'
+                'bg-white/[0.05] border border-white/[0.10]',
+                '[data-theme="light"] &:bg-black/[0.05] [data-theme="light"] &:border-black/[0.10]',
+                'text-[var(--text-tertiary)]'
               )}
             >
               TRL {experiment.trl}
@@ -86,7 +84,7 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
             {AccessIcon && (
               <AccessIcon
                 size={12}
-                className="text-white/50 [data-theme='light'] &:text-black/50"
+                className="text-[var(--text-muted)]"
               />
             )}
           </div>
@@ -94,23 +92,17 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
       </div>
 
       {/* One-liner */}
-      <p
-        className={cn(
-          'text-base mb-6 line-clamp-2 leading-relaxed',
-          'text-white/85',
-          '[data-theme="light"] &:text-black/85'
-        )}
-      >
+      <p className="text-base mb-8 line-clamp-2 leading-relaxed text-[var(--text-secondary)]">
         {experiment.oneLiner}
       </p>
 
       {/* Tags */}
-      <div className="flex flex-wrap gap-1.5 mb-4">
+      <div className="flex flex-wrap gap-2 mb-6">
         {experiment.domain.slice(0, 2).map((domain) => (
           <span
             key={domain}
             className={cn(
-              'px-2 py-1 rounded-md text-xs',
+              'px-2.5 py-1 rounded-lg text-xs font-medium',
               'bg-[var(--brand-red)]/10 text-[var(--brand-red)]',
               'border border-[var(--brand-red)]/20'
             )}
@@ -122,9 +114,9 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
           <span
             key={tech}
             className={cn(
-              'px-2 py-1 rounded-md text-xs',
-              'bg-white/5 text-white/60 border border-white/10',
-              '[data-theme="light"] &:bg-black/5 [data-theme="light"] &:text-black/60 [data-theme="light"] &:border-black/10'
+              'px-2.5 py-1 rounded-lg text-xs font-medium',
+              'bg-white/[0.04] text-[var(--text-tertiary)] border border-white/[0.08]',
+              '[data-theme="light"] &:bg-black/[0.04] [data-theme="light"] &:border-black/[0.08]'
             )}
           >
             {tech}
@@ -133,8 +125,8 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
       </div>
 
       {/* Footer with quick actions */}
-      <div className="flex items-center justify-between pt-3 border-t border-white/10 [data-theme='light'] &:border-black/10">
-        <span className="text-xs text-white/50 [data-theme='light'] &:text-black/50">
+      <div className="flex items-center justify-between pt-4 border-t border-[var(--border-primary)]">
+        <span className="text-xs text-[var(--text-muted)]">
           Updated {new Date(experiment.dates.updated).toLocaleDateString()}
         </span>
 
@@ -146,16 +138,15 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
                 window.open(experiment.links.demo, '_blank');
               }}
               className={cn(
-                'p-1.5 rounded-lg',
-                'text-white/60 hover:text-[var(--brand-red)]',
-                '[data-theme="light"] &:text-black/60',
-                'hover:bg-white/10',
-                '[data-theme="light"] &:hover:bg-black/10',
+                'p-2 rounded-lg',
+                'text-[var(--text-tertiary)] hover:text-[var(--brand-red)]',
+                'hover:bg-white/[0.05]',
+                '[data-theme="light"] &:hover:bg-black/[0.05]',
                 'transition-colors duration-200'
               )}
               aria-label="View demo"
             >
-              <Play size={14} />
+              <Play size={16} />
             </button>
           )}
           {experiment.links.repo && (
@@ -165,30 +156,28 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
                 window.open(experiment.links.repo, '_blank');
               }}
               className={cn(
-                'p-1.5 rounded-lg',
-                'text-white/60 hover:text-[var(--brand-red)]',
-                '[data-theme="light"] &:text-black/60',
-                'hover:bg-white/10',
-                '[data-theme="light"] &:hover:bg-black/10',
+                'p-2 rounded-lg',
+                'text-[var(--text-tertiary)] hover:text-[var(--brand-red)]',
+                'hover:bg-white/[0.05]',
+                '[data-theme="light"] &:hover:bg-black/[0.05]',
                 'transition-colors duration-200'
               )}
               aria-label="View code"
             >
-              <Github size={14} />
+              <Github size={16} />
             </button>
           )}
           <button
             className={cn(
-              'p-1.5 rounded-lg',
-              'text-white/60 hover:text-[var(--brand-red)]',
-              '[data-theme="light"] &:text-black/60',
-              'hover:bg-white/10',
-              '[data-theme="light"] &:hover:bg-black/10',
+              'p-2 rounded-lg',
+              'text-[var(--text-tertiary)] hover:text-[var(--brand-red)]',
+              'hover:bg-white/[0.05]',
+              '[data-theme="light"] &:hover:bg-black/[0.05]',
               'transition-colors duration-200'
             )}
             aria-label="View details"
           >
-            <ExternalLink size={14} />
+            <ExternalLink size={16} />
           </button>
         </div>
       </div>

@@ -77,18 +77,18 @@ function LabsContent() {
               <div className="max-w-5xl mx-auto">
 
                 {/* Hero Content */}
-                <div className="text-center mb-16">
+                <div className="text-center mb-20">
                   <motion.div
                     initial={{ scale: 0, rotate: -180 }}
                     animate={{ scale: 1, rotate: 0 }}
                     transition={{ delay: 0.2, duration: 0.6, type: 'spring', stiffness: 150 }}
-                    className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-[var(--brand-red)]/20 border border-[var(--brand-red)]/30 mb-8"
+                    className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-[var(--brand-red)]/15 border border-[var(--brand-red)]/25 mb-10"
                   >
                     <Beaker className="w-10 h-10 text-[var(--brand-red)]" strokeWidth={1.5} />
                   </motion.div>
 
                   <h1
-                    className="text-display text-[var(--text-primary)] mb-6"
+                    className="text-display text-[var(--text-primary)] mb-8"
                     style={{
                       background: 'linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%)',
                       WebkitBackdropFilter: 'text',
@@ -105,7 +105,7 @@ function LabsContent() {
                 </div>
 
                 {/* Stats Dashboard */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
                   <AnimatedStatCard
                     value={stats.totalExperiments}
                     label="Total Experiments"
@@ -127,8 +127,8 @@ function LabsContent() {
                 </div>
 
                 {/* Search & Filters */}
-                <div className="mb-12">
-                  <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                <div className="mb-16">
+                  <div className="flex flex-col sm:flex-row gap-4 mb-8">
                     <div className="relative flex-1">
                       <Search
                         size={20}
@@ -308,12 +308,12 @@ function LabsContent() {
                 </div>
 
                 {/* Results Count */}
-                <p className="text-base font-medium text-[var(--text-tertiary)] mb-8">
+                <p className="text-base font-medium text-[var(--text-tertiary)] mb-10">
                   Showing {totalResults} of {totalExperiments} experiments
                 </p>
 
                 {/* Experiments Grid */}
-                <div id="experiments-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+                <div id="experiments-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
                   {featuredExperiments.map((experiment) => (
                     <FeaturedExperimentCard
                       key={experiment.id}
@@ -347,8 +347,8 @@ function LabsContent() {
                 )}
 
                 {/* Lab Notebook */}
-                <div className="pt-12 border-t border-[var(--border-primary)] mb-16">
-                  <h2 className="text-4xl font-bold text-[var(--text-primary)] mb-12">Lab Notebook</h2>
+                <div className="pt-16 border-t border-[var(--border-primary)] mb-20">
+                  <h2 className="text-heading text-[var(--text-primary)] mb-16">Lab Notebook</h2>
                   <LabTimelineView entries={labNotebook.slice(0, 6)} />
                 </div>
 

@@ -55,27 +55,27 @@ export function AnimatedStatCard({ value, label, trend, highlight = false, class
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
         'relative group',
-        'min-h-[160px] p-12 rounded-3xl',
-        'bg-white/[0.08] border border-white/[0.20]',
-        '[data-theme="light"] &:bg-black/[0.08] [data-theme="light"] &:border-black/[0.20]',
-        'hover:bg-white/[0.10] hover:border-white/[0.30]',
-        '[data-theme="light"] &:hover:bg-black/[0.10] [data-theme="light"] &:hover:border-black/[0.30]',
+        'min-h-[160px] p-10 rounded-3xl',
+        'bg-white/[0.04] border border-white/[0.06]',
+        '[data-theme="light"] &:bg-black/[0.04] [data-theme="light"] &:border-black/[0.06]',
+        'hover:bg-white/[0.06] hover:border-white/[0.10]',
+        '[data-theme="light"] &:hover:bg-black/[0.06] [data-theme="light"] &:hover:border-black/[0.10]',
         'shadow-xl hover:shadow-2xl',
         'transition-all duration-300',
-        highlight && 'ring-2 ring-[var(--brand-red)]/30',
+        highlight && 'ring-1 ring-[var(--brand-red)]/20',
         className
       )}
       style={{
-        backdropFilter: 'blur(60px) saturate(200%) brightness(1.1)',
-        WebkitBackdropFilter: 'blur(60px) saturate(200%) brightness(1.1)',
+        backdropFilter: 'blur(48px) saturate(180%) brightness(1.15)',
+        WebkitBackdropFilter: 'blur(48px) saturate(180%) brightness(1.15)',
       }}
     >
       {/* Stat value */}
-      <div className="flex items-baseline gap-3 mb-3">
+      <div className="flex items-baseline gap-3 mb-4">
         <div
           className={cn(
             'text-5xl font-bold tabular-nums',
-            highlight ? 'text-[var(--brand-red)]' : 'text-white [data-theme="light"] &:text-black'
+            highlight ? 'text-[var(--brand-red)]' : 'text-[var(--text-primary)]'
           )}
         >
           {count}
@@ -83,7 +83,7 @@ export function AnimatedStatCard({ value, label, trend, highlight = false, class
 
         {/* Trend indicator */}
         {trend && (
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-500/20 border border-green-500/30">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-500/15 border border-green-500/25">
             <TrendingUp size={12} className="text-green-400" />
             <span className="text-xs font-medium text-green-400">
               +{trend.value} {trend.period}
@@ -93,13 +93,7 @@ export function AnimatedStatCard({ value, label, trend, highlight = false, class
       </div>
 
       {/* Label */}
-      <div
-        className={cn(
-          'text-base font-medium',
-          'text-white/70',
-          '[data-theme="light"] &:text-black/70'
-        )}
-      >
+      <div className="text-base font-medium text-[var(--text-tertiary)]">
         {label}
       </div>
 
