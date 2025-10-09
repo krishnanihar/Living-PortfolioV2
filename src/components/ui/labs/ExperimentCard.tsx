@@ -30,18 +30,18 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
       onClick={() => onClick?.(experiment)}
       className={cn(
         'relative group cursor-pointer',
-        'p-8 rounded-2xl',
-        'bg-white/[0.06] border border-white/[0.15]',
-        '[data-theme="light"] &:bg-black/[0.06] [data-theme="light"] &:border-black/[0.15]',
-        'hover:bg-white/[0.08] hover:border-white/[0.25]',
-        '[data-theme="light"] &:hover:bg-black/[0.08] [data-theme="light"] &:hover:border-black/[0.25]',
-        'shadow-lg hover:shadow-2xl',
-        'transition-all duration-200',
+        'min-h-[320px] p-10 rounded-3xl',
+        'bg-white/[0.08] border border-white/[0.20]',
+        '[data-theme="light"] &:bg-black/[0.08] [data-theme="light"] &:border-black/[0.20]',
+        'hover:bg-white/[0.10] hover:border-white/[0.30]',
+        '[data-theme="light"] &:hover:bg-black/[0.10] [data-theme="light"] &:hover:border-black/[0.30]',
+        'shadow-xl hover:shadow-2xl',
+        'transition-all duration-300',
         className
       )}
       style={{
-        backdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
-        WebkitBackdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
+        backdropFilter: 'blur(60px) saturate(200%) brightness(1.1)',
+        WebkitBackdropFilter: 'blur(60px) saturate(200%) brightness(1.1)',
       }}
     >
       {/* Header */}
@@ -49,10 +49,10 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
         <div className="flex-1 min-w-0">
           <h3
             className={cn(
-              'text-lg font-semibold mb-1 truncate',
+              'text-xl font-semibold mb-2 truncate',
               'text-white',
               '[data-theme="light"] &:text-black',
-              'group-hover:text-[var(--brand-red)] transition-colors duration-200'
+              'group-hover:text-[var(--brand-red)] transition-colors duration-300'
             )}
           >
             {experiment.title}
@@ -96,9 +96,9 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
       {/* One-liner */}
       <p
         className={cn(
-          'text-sm mb-4 line-clamp-2',
-          'text-white/80',
-          '[data-theme="light"] &:text-black/80'
+          'text-base mb-6 line-clamp-2 leading-relaxed',
+          'text-white/85',
+          '[data-theme="light"] &:text-black/85'
         )}
       >
         {experiment.oneLiner}
