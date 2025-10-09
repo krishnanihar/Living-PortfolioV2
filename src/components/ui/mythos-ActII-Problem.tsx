@@ -27,11 +27,34 @@ export const ActIIProblem = () => {
       >
         {/* Section heading */}
         <ScrollytellingSection animationType="fade-up" threshold={0.3}>
-          <div className="text-center max-w-3xl mx-auto mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <div
+            className="text-center max-w-3xl mx-auto mb-20"
+            style={{
+              marginBottom: '5rem',
+              textAlign: 'center',
+            }}
+          >
+            <h2
+              className="text-4xl md:text-5xl font-bold text-white mb-6"
+              style={{
+                fontSize: 'clamp(2rem, 5vw, 3rem)',
+                lineHeight: '1.2',
+                marginBottom: '1.5rem',
+                fontWeight: '700',
+              }}
+            >
               Art Galleries Are Intimidating
             </h2>
-            <div className="h-1 w-24 bg-gradient-to-r from-[#DA0E29] to-transparent mx-auto" />
+            <div
+              className="h-1 w-24 bg-gradient-to-r from-[#DA0E29] to-transparent mx-auto"
+              style={{
+                height: '4px',
+                width: '6rem',
+                background: 'linear-gradient(to right, #DA0E29, transparent)',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              }}
+            />
           </div>
         </ScrollytellingSection>
 
@@ -123,30 +146,107 @@ export const ActIIProblem = () => {
 
         {/* Transition statement */}
         <ScrollytellingSection animationType="fade-up" delay={800} threshold={0.3}>
-          <div className="mt-20 text-center">
-            <p className="text-2xl md:text-3xl font-semibold text-white/90 mb-8">
-              What if art could find <span className="text-[#E0D8C8] gradient-shimmer">you</span>, instead?
+          <div
+            className="mt-20 text-center"
+            style={{
+              marginTop: '8rem',
+              textAlign: 'center',
+            }}
+          >
+            <p
+              className="text-2xl md:text-3xl font-semibold text-white/90 mb-8"
+              style={{
+                fontSize: 'clamp(1.5rem, 4vw, 2rem)',
+                fontWeight: '600',
+                marginBottom: '2rem',
+                lineHeight: '1.4',
+              }}
+            >
+              What if art could find <span className="text-[#E0D8C8] gradient-shimmer" style={{ color: '#E0D8C8' }}>you</span>, instead?
             </p>
 
             {/* Stats */}
-            <div className="flex flex-wrap justify-center gap-8 md:gap-16 mt-12">
+            <div
+              className="flex flex-wrap justify-center gap-8 md:gap-16 mt-12"
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                gap: 'clamp(2rem, 6vw, 4rem)',
+                marginTop: '3rem',
+              }}
+            >
               <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-[#DA0E29] mb-2">
+                <div
+                  className="text-4xl md:text-5xl font-bold text-[#DA0E29] mb-2"
+                  style={{
+                    fontSize: 'clamp(2.5rem, 6vw, 3.5rem)',
+                    fontWeight: '700',
+                    color: '#DA0E29',
+                    marginBottom: '0.5rem',
+                  }}
+                >
                   <AnimatedCounter end={62} />
                 </div>
-                <div className="text-sm text-white/50 uppercase tracking-wider">Masterworks</div>
+                <div
+                  className="text-sm text-white/50 uppercase tracking-wider"
+                  style={{
+                    fontSize: '0.875rem',
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                  }}
+                >
+                  Masterworks
+                </div>
               </div>
               <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-[#DA0E29] mb-2">
+                <div
+                  className="text-4xl md:text-5xl font-bold text-[#DA0E29] mb-2"
+                  style={{
+                    fontSize: 'clamp(2.5rem, 6vw, 3.5rem)',
+                    fontWeight: '700',
+                    color: '#DA0E29',
+                    marginBottom: '0.5rem',
+                  }}
+                >
                   <AnimatedCounter end={1000} />
                 </div>
-                <div className="text-sm text-white/50 uppercase tracking-wider">Years</div>
+                <div
+                  className="text-sm text-white/50 uppercase tracking-wider"
+                  style={{
+                    fontSize: '0.875rem',
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                  }}
+                >
+                  Years
+                </div>
               </div>
               <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-[#DA0E29] mb-2">
+                <div
+                  className="text-4xl md:text-5xl font-bold text-[#DA0E29] mb-2"
+                  style={{
+                    fontSize: 'clamp(2.5rem, 6vw, 3.5rem)',
+                    fontWeight: '700',
+                    color: '#DA0E29',
+                    marginBottom: '0.5rem',
+                  }}
+                >
                   ∞
                 </div>
-                <div className="text-sm text-white/50 uppercase tracking-wider">Emotions</div>
+                <div
+                  className="text-sm text-white/50 uppercase tracking-wider"
+                  style={{
+                    fontSize: '0.875rem',
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                  }}
+                >
+                  Emotions
+                </div>
               </div>
             </div>
           </div>

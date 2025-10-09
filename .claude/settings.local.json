@@ -23,7 +23,9 @@
       "Bash(open http://localhost:3000/labs)",
       "Bash(git log:*)",
       "Bash(curl:*)",
-      "Bash(lsof:*)"
+      "Bash(lsof:*)",
+      "Bash(do echo \"=== $file ===\")",
+      "Bash(head:*)"
     ],
     "deny": [],
     "ask": []
