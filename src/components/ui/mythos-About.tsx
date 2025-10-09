@@ -26,33 +26,32 @@ const AccordionItem = ({ title, children }: { title: string, children: React.Rea
 export const About = () => {
     return (
         <section style={{
-            paddingTop: 'var(--space-16)',
-            paddingBottom: 'var(--space-16)',
+            padding: 'var(--space-16) clamp(var(--space-8), 5vw, var(--space-16))',
             marginTop: 'var(--space-16)',
             borderTop: '1px solid rgba(255, 255, 255, 0.1)',
         }}>
-            <div className="text-center mb-12">
+            <div className="text-center mb-16">
                 <h2 className="text-3xl md:text-4xl font-bold text-white">About mythOS</h2>
-                <p className="mt-4 text-lg text-white/70">An experiment in generative art curation and analysis.</p>
+                <p className="mt-6 text-lg text-white/70 max-w-3xl mx-auto">An experiment in generative art curation and analysis.</p>
             </div>
-            
-            <div className="space-y-8">
+
+            <div className="space-y-12 max-w-4xl mx-auto">
                 <div>
-                    <h3 className="text-xl font-bold text-[#E0D8C8] mb-3">Why mythOS Exists</h3>
-                    <p className="text-white/70">
+                    <h3 className="text-xl font-bold text-[#E0D8C8] mb-4">Why mythOS Exists</h3>
+                    <p className="text-white/70 leading-relaxed">
                         Art galleries can be intimidating. mythOS was created to break down those barriers, transforming art discovery into a personal conversation. Instead of relying on pre-defined categories, it invites you to express a feeling, a theme, or a fragment of an idea, and watch as a unique exhibition materializes from the digital ether. It's about finding art that speaks to you, personally.
                     </p>
                 </div>
-                
+
                  <div>
-                    <h3 className="text-xl font-bold text-[#E0D8C8] mb-3">The Key Innovation</h3>
-                    <p className="text-white/70">
+                    <h3 className="text-xl font-bold text-[#E0D8C8] mb-4">The Key Innovation</h3>
+                    <p className="text-white/70 leading-relaxed">
                         The core of mythOS is its two-stage AI process. First, it acts as a "Generative Curator," translating your natural language into structured, filterable exhibition criteria. Then, when you select an artwork, it becomes an "AI Art Historian," providing a deep, multi-faceted analysis on demand. This creates a dynamic, responsive, and deeply educational journey through art history.
                     </p>
                 </div>
 
                 <div>
-                    <h3 className="text-xl font-bold text-[#E0D8C8] mb-3">How It Works</h3>
+                    <h3 className="text-xl font-bold text-[#E0D8C8] mb-4">How It Works</h3>
                     <div className="mt-4 space-y-2">
                         <AccordionItem title="1. The Whisper (Your Input)">
                            You start by "whispering" a desire into the summoning chamber. This can be anything from "art about loneliness" to "dramatic use of light in the 17th century." The more poetic and descriptive, the better.

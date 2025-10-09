@@ -135,8 +135,8 @@ export default function MythOSPage() {
       <Hero />
 
       <div id="exhibition-builder" style={{
-        padding: '0 var(--space-4)',
-        marginTop: 'calc(-1 * var(--space-16))',
+        padding: '0 clamp(var(--space-8), 5vw, var(--space-16))',
+        marginTop: 'var(--space-16)',
       }}>
         <div style={{
           maxWidth: '1200px',
@@ -146,6 +146,7 @@ export default function MythOSPage() {
             onSummon={handleSummon}
             isLoading={isLoading}
             error={error}
+            isSticky={false}
           />
 
           {exhibition && (
