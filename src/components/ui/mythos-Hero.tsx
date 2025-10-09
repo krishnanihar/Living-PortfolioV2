@@ -42,7 +42,7 @@ export const Hero = () => {
                 </p>
 
                 <div
-                    className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mt-16 text-left px-4 md:px-0">
+                    className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mt-16 text-left">
                     <div style={{ animationDelay: '1.5s' }} className="animate-fade-in-up">
                         <ValueProp icon={<Icons.eye className="w-5 h-5"/>} title="Understands Intent">
                             It deciphers the poetry behind your words, grasping mood, theme, and aesthetic.

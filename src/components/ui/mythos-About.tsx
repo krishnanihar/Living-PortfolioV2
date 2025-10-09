@@ -26,9 +26,9 @@ const AccordionItem = ({ title, children }: { title: string, children: React.Rea
 export const About = () => {
     return (
         <section style={{
-            paddingTop: 'var(--space-16)',
+            paddingTop: 'calc(var(--space-16) + var(--space-8))',
             paddingBottom: 'var(--space-16)',
-            marginTop: 'var(--space-16)',
+            marginTop: 'calc(var(--space-16) + var(--space-8))',
             borderTop: '1px solid rgba(255, 255, 255, 0.1)',
         }}>
             <div className="text-center mb-16">
@@ -36,7 +36,7 @@ export const About = () => {
                 <p className="mt-6 text-lg text-white/70 max-w-3xl mx-auto">An experiment in generative art curation and analysis.</p>
             </div>
 
-            <div className="space-y-12 max-w-4xl mx-auto">
+            <div className="space-y-12 max-w-3xl mx-auto">
                 <div>
                     <h3 className="text-xl font-bold text-[#E0D8C8] mb-4">Why mythOS Exists</h3>
                     <p className="text-white/70 leading-relaxed">
