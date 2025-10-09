@@ -4,6 +4,7 @@ import { Suspense, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, Filter as FilterIcon, TrendingUp, Calendar, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import { LabsHero } from '@/components/ui/labs/LabsHero';
 import { ExperimentCard } from '@/components/ui/labs/ExperimentCard';
 import { labExperiments } from '@/data/labs-experiments';
@@ -59,9 +60,11 @@ function LabsContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] pt-24 pb-16">
-      {/* Hero */}
-      <LabsHero
+    <>
+      <PortfolioNavigation />
+      <div className="min-h-screen bg-[var(--bg-primary)] pt-24 pb-16">
+        {/* Hero */}
+        <LabsHero
         onBrowse={handleBrowse}
         onRandom={handleRandom}
         onSubmit={handleSubmit}
@@ -432,6 +435,7 @@ function LabsContent() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 
