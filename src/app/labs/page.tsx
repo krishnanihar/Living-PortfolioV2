@@ -62,10 +62,9 @@ function LabsContent() {
     <>
       <PortfolioNavigation />
 
-      {/* Main Container - MATCHES HOME PAGE */}
+      {/* Main Container */}
       <main className="relative min-h-screen overflow-hidden">
-        <section className="relative min-h-screen flex items-center justify-center px-4 pt-32 pb-20">
-          <div className="relative w-full max-w-7xl mx-auto">
+        <section className="relative min-h-[200vh] px-4 pt-32 pb-32">
 
             {/* Atmospheric Particle Layer */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-80">
@@ -94,13 +93,14 @@ function LabsContent() {
               ))}
             </div>
 
-            {/* Hero Content - MASSIVE APPLE-STYLE */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-              className="text-center mb-64 md:mb-80 relative max-w-6xl mx-auto px-4"
-            >
+            {/* Hero Section */}
+            <div className="relative py-20 md:py-32">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                className="text-center max-w-6xl mx-auto relative"
+              >
                   {/* Background gradient glow */}
                   <div className="absolute inset-0 -inset-x-40 -z-10 opacity-30">
                     <div
@@ -142,10 +142,12 @@ function LabsContent() {
                     <br className="hidden md:block" />
                     Shipping prototypes weekly.
                   </p>
-            </motion.div>
+              </motion.div>
+            </div>
 
-                {/* Stats - Inline Minimal Display */}
-                <div className="flex flex-wrap justify-center gap-8 md:gap-16 text-center mb-48 md:mb-64 max-w-7xl mx-auto px-4">
+            {/* Stats Section */}
+            <div className="relative py-16 md:py-24">
+              <div className="flex flex-wrap justify-center gap-8 md:gap-16 text-center max-w-7xl mx-auto">
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -178,10 +180,12 @@ function LabsContent() {
                     <div className="text-6xl md:text-7xl font-extralight text-[var(--text-primary)] mb-2">{badgeCounts['Open-Source'] || 0}</div>
                     <div className="text-sm md:text-base text-[var(--text-muted)] uppercase tracking-wider">Open Source</div>
                   </motion.div>
-                </div>
+              </div>
+            </div>
 
-                {/* Search Only - Simple & Clean */}
-                <div className="max-w-3xl mx-auto mb-64 md:mb-80 px-4">
+            {/* Search Section */}
+            <div className="relative py-16 md:py-24">
+              <div className="max-w-3xl mx-auto">
                   <div className="relative">
                     <Search
                       size={24}
@@ -211,15 +215,19 @@ function LabsContent() {
                       </button>
                     )}
                   </div>
-                </div>
+              </div>
+            </div>
 
+            {/* Experiments Section */}
+            <div className="relative py-24 md:py-32">
+              <div className="max-w-7xl mx-auto">
                 {/* Results Count */}
-                <p className="text-base font-medium text-[var(--text-tertiary)] mb-10 max-w-7xl mx-auto px-4">
+                <p className="text-base font-medium text-[var(--text-tertiary)] mb-10">
                   Showing {totalResults} of {totalExperiments} experiments
                 </p>
 
-                {/* Experiments - Full-Width Showcase */}
-                <div id="experiments-grid" className="space-y-20 md:space-y-32 mb-80 md:mb-96 max-w-7xl mx-auto px-4">
+                {/* Experiments Grid */}
+                <div id="experiments-grid" className="space-y-20 md:space-y-32">
                   {filteredExperiments.map((experiment, index) => {
                     const isFeatured = experiment.trl >= 6 || experiment.status === 'Playable' || experiment.status === 'Field-Tested';
 
@@ -262,19 +270,24 @@ function LabsContent() {
                     )}
                   </div>
                 )}
+              </div>
+            </div>
 
-                {/* Lab Notebook */}
-                <div className="pt-20 border-t border-[var(--border-primary)] mb-64 max-w-6xl mx-auto px-4">
+            {/* Lab Notebook Section */}
+            <div className="relative py-24 md:py-32 border-t border-[var(--border-primary)]">
+              <div className="max-w-6xl mx-auto">
                   <h2 className="text-heading text-[var(--text-primary)] mb-16">Lab Notebook</h2>
                   <LabTimelineView entries={labNotebook.slice(0, 6)} />
-                </div>
+              </div>
+            </div>
 
-                {/* Contribute CTA */}
-                <div className="mt-64 max-w-5xl mx-auto px-4">
-                  <ContributeCTA />
-                </div>
+            {/* CTA Section */}
+            <div className="relative py-24 md:py-32">
+              <div className="max-w-5xl mx-auto">
+                <ContributeCTA />
+              </div>
+            </div>
 
-          </div>
         </section>
       </main>
     </>
