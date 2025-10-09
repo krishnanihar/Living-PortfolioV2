@@ -47,19 +47,28 @@ export const HeroNew = ({ onSummon, isLoading }: HeroNewProps) => {
 
       {/* Floating particles */}
       <div className="absolute inset-0 pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="mystical-particle absolute w-2 h-2 bg-[#DA0E29] rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 6}s`,
-              opacity: Math.random() * 0.4 + 0.3,
-              boxShadow: '0 0 8px rgba(218, 14, 41, 0.6)',
-            }}
-          />
-        ))}
+        {[...Array(20)].map((_, i) => {
+          // Deterministic positions based on index (prevents hydration mismatch)
+          const seed = i / 20; // 0 to 1
+          const left = ((seed * 87.3 + 13.7 + i * 4.2) % 100);
+          const top = ((seed * 73.1 + 17.3 + i * 5.7) % 100);
+          const delay = ((seed * 5.5 + 0.5 + i * 0.3) % 6);
+          const opacity = ((seed * 0.35) + 0.35 + (i % 3) * 0.05);
+
+          return (
+            <div
+              key={i}
+              className="mystical-particle absolute w-2 h-2 bg-[#DA0E29] rounded-full"
+              style={{
+                left: `${left}%`,
+                top: `${top}%`,
+                animationDelay: `${delay}s`,
+                opacity: opacity,
+                boxShadow: '0 0 8px rgba(218, 14, 41, 0.6)',
+              }}
+            />
+          );
+        })}
       </div>
 
       {/* Content */}
