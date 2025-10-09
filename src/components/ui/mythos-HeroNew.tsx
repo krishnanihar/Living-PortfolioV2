@@ -37,19 +37,26 @@ export const HeroNew = ({ onSummon, isLoading }: HeroNewProps) => {
       }}
     >
       {/* Background gradient */}
-      <div className="absolute inset-0 -top-1/2 bg-[radial-gradient(ellipse_50%_50%_at_50%_50%,rgba(218,14,41,0.1),rgba(255,255,255,0))] pointer-events-none" />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          top: '-50%',
+          background: 'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(218, 14, 41, 0.18), rgba(255, 255, 255, 0))',
+        }}
+      />
 
       {/* Floating particles */}
       <div className="absolute inset-0 pointer-events-none">
         {[...Array(20)].map((_, i) => (
           <div
             key={i}
-            className="mystical-particle absolute w-1 h-1 bg-[#DA0E29] rounded-full"
+            className="mystical-particle absolute w-2 h-2 bg-[#DA0E29] rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               animationDelay: `${Math.random() * 6}s`,
-              opacity: Math.random() * 0.3 + 0.1,
+              opacity: Math.random() * 0.4 + 0.3,
+              boxShadow: '0 0 8px rgba(218, 14, 41, 0.6)',
             }}
           />
         ))}
@@ -57,13 +64,13 @@ export const HeroNew = ({ onSummon, isLoading }: HeroNewProps) => {
 
       {/* Content */}
       <div
-        className="relative z-10 max-w-4xl mx-auto w-full space-y-8"
+        className="relative z-10 max-w-4xl mx-auto w-full"
         style={{
           textAlign: 'center',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '2rem',
+          gap: '1.5rem',
         }}
       >
         {/* Badge */}
@@ -77,11 +84,16 @@ export const HeroNew = ({ onSummon, isLoading }: HeroNewProps) => {
         {/* Main heading */}
         <ScrollytellingSection animationType="fade-up" delay={600}>
           <h1
-            className="font-bold text-white tracking-[-0.03em] leading-[1.05] text-[clamp(2.5rem,8vw,5rem)] gradient-shimmer"
+            className="font-bold text-white tracking-[-0.03em] text-[clamp(2.5rem,8vw,5rem)]"
             style={{
               lineHeight: '1.1',
-              marginBottom: '1.5rem',
               textAlign: 'center',
+              background: 'linear-gradient(90deg, #E0D8C8, #fff, #DA0E29, #E0D8C8)',
+              backgroundSize: '300% 100%',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              animation: 'gradient-shimmer 5s ease-in-out infinite',
             }}
           >
             The Archive Awakens
@@ -91,10 +103,9 @@ export const HeroNew = ({ onSummon, isLoading }: HeroNewProps) => {
         {/* Subheading */}
         <ScrollytellingSection animationType="fade-up" delay={900}>
           <p
-            className="max-w-2xl mx-auto text-lg md:text-xl text-white/90 leading-relaxed"
+            className="max-w-2xl mx-auto text-lg md:text-xl text-white/90"
             style={{
               lineHeight: '1.7',
-              marginBottom: '1.5rem',
               textAlign: 'center',
             }}
           >
@@ -106,10 +117,9 @@ export const HeroNew = ({ onSummon, isLoading }: HeroNewProps) => {
         {/* Value prop */}
         <ScrollytellingSection animationType="fade-up" delay={1200}>
           <p
-            className="max-w-3xl mx-auto text-base md:text-lg text-white/70 leading-relaxed"
+            className="max-w-3xl mx-auto text-base md:text-lg text-white/70"
             style={{
               lineHeight: '1.8',
-              marginBottom: '2rem',
               textAlign: 'center',
             }}
           >
@@ -144,7 +154,7 @@ export const HeroNew = ({ onSummon, isLoading }: HeroNewProps) => {
                 name="prompt"
                 placeholder="Speak or type your desire to Mythos..."
                 disabled={isLoading}
-                className="w-full h-16 px-6 pr-16 bg-white/5 border border-white/10 focus:border-[#DA0E29] focus:ring-2 focus:ring-[#DA0E29]/50 rounded-2xl text-white placeholder-white/40 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full h-16 px-6 pr-20 bg-white/5 border border-white/10 focus:border-[#DA0E29] focus:ring-2 focus:ring-[#DA0E29]/50 rounded-2xl text-white placeholder-white/40 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed"
               />
               <button
                 type="button"
@@ -178,28 +188,35 @@ export const HeroNew = ({ onSummon, isLoading }: HeroNewProps) => {
         {/* Example prompts */}
         <ScrollytellingSection animationType="fade-in" delay={1800}>
           <div
-            className="flex flex-wrap items-center justify-center gap-3 text-sm"
             style={{
-              marginTop: '1.5rem',
-              marginBottom: '2rem',
+              marginTop: '2rem',
               display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
+              flexDirection: 'column',
               alignItems: 'center',
-              gap: '0.75rem',
+              gap: '1rem',
             }}
           >
-            <span className="text-white/50">Try whispering:</span>
-            {examplePrompts.map((prompt, i) => (
-              <button
-                key={i}
-                onClick={() => onSummon(prompt)}
-                disabled={isLoading}
-                className="px-4 py-2 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:border-[#DA0E29] transition-all duration-300 text-white/70 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {prompt}
-              </button>
-            ))}
+            <span className="text-white/50 text-sm">Try whispering:</span>
+            <div
+              className="flex flex-wrap justify-center gap-3"
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                gap: '0.75rem',
+              }}
+            >
+              {examplePrompts.map((prompt, i) => (
+                <button
+                  key={i}
+                  onClick={() => onSummon(prompt)}
+                  disabled={isLoading}
+                  className="px-4 py-2 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:border-[#DA0E29] transition-all duration-300 text-white/70 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
           </div>
         </ScrollytellingSection>
 
