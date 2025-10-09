@@ -41,11 +41,26 @@ export const ActIIIInnovation = () => {
   ];
 
   return (
-    <section id="the-innovation" className="relative py-32 px-4">
+    <section
+      id="the-innovation"
+      className="relative py-32 px-4"
+      style={{
+        paddingLeft: 'clamp(1rem, 5vw, 3rem)',
+        paddingRight: 'clamp(1rem, 5vw, 3rem)',
+      }}
+    >
       {/* Background decoration */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_50%,rgba(218,14,41,0.05),transparent)]" />
 
-      <div className="relative z-10 max-w-6xl mx-auto">
+      <div
+        className="relative z-10 max-w-6xl mx-auto"
+        style={{
+          maxWidth: '72rem',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          width: '100%',
+        }}
+      >
         {/* Section heading */}
         <ScrollytellingSection animationType="fade-up" threshold={0.3}>
           <div className="text-center max-w-3xl mx-auto mb-20">

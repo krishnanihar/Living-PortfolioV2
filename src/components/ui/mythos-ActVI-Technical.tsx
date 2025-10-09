@@ -198,11 +198,26 @@ Response:
   ];
 
   return (
-    <section id="technical-depth" className="relative py-32 px-4">
+    <section
+      id="technical-depth"
+      className="relative py-32 px-4"
+      style={{
+        paddingLeft: 'clamp(1rem, 5vw, 3rem)',
+        paddingRight: 'clamp(1rem, 5vw, 3rem)',
+      }}
+    >
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0F0F12]/50 to-transparent" />
 
-      <div className="relative z-10 max-w-6xl mx-auto">
+      <div
+        className="relative z-10 max-w-6xl mx-auto"
+        style={{
+          maxWidth: '72rem',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          width: '100%',
+        }}
+      >
         {/* Section heading */}
         <ScrollytellingSection animationType="fade-up" threshold={0.3}>
           <div className="text-center max-w-3xl mx-auto mb-16">

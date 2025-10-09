@@ -31,11 +31,26 @@ export const ActVIICTA = ({ onSummon, isLoading }: ActVIICTAProps) => {
   ];
 
   return (
-    <section id="final-cta" className="relative py-40 px-4">
+    <section
+      id="final-cta"
+      className="relative py-40 px-4"
+      style={{
+        paddingLeft: 'clamp(1rem, 5vw, 3rem)',
+        paddingRight: 'clamp(1rem, 5vw, 3rem)',
+      }}
+    >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_50%,rgba(218,14,41,0.15),transparent)]" />
 
-      <div className="relative z-10 max-w-4xl mx-auto">
+      <div
+        className="relative z-10 max-w-4xl mx-auto"
+        style={{
+          maxWidth: '56rem',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          width: '100%',
+        }}
+      >
         {/* Heading */}
         <ScrollytellingSection animationType="fade-up" threshold={0.3}>
           <div className="text-center mb-12">
