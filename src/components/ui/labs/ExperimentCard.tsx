@@ -43,11 +43,11 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
       }}
     >
       {/* Header */}
-      <div className="flex items-start justify-between gap-4 mb-4">
+      <div className="flex items-start justify-between gap-4 mb-12">
         <div className="flex-1 min-w-0">
           <h3
             className={cn(
-              'text-3xl md:text-5xl font-light mb-4 tracking-tight',
+              'text-3xl md:text-5xl font-light mb-8 tracking-tight',
               'text-[var(--text-primary)]',
               'group-hover:text-[var(--brand-red)] transition-colors duration-300'
             )}
@@ -90,12 +90,12 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
       </div>
 
       {/* One-liner */}
-      <p className="text-xl md:text-2xl mb-12 line-clamp-3 leading-relaxed text-[var(--text-secondary)] font-light">
+      <p className="text-xl md:text-2xl mb-20 line-clamp-3 leading-relaxed text-[var(--text-secondary)] font-light">
         {experiment.oneLiner}
       </p>
 
       {/* Tags */}
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-16">
         {experiment.domain.slice(0, 2).map((domain) => (
           <span
             key={domain}
@@ -123,7 +123,7 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
       </div>
 
       {/* Footer with quick actions */}
-      <div className="flex items-center justify-between pt-4 border-t border-[var(--border-primary)]">
+      <div className="flex items-center justify-between pt-12 border-t border-[var(--border-primary)]">
         <span className="text-xs text-[var(--text-muted)]">
           Updated {new Date(experiment.dates.updated).toLocaleDateString()}
         </span>

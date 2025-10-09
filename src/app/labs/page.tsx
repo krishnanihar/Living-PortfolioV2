@@ -94,17 +94,13 @@ function LabsContent() {
               ))}
             </div>
 
-            {/* Main Glass Card - MATCHES HOME PAGE */}
+            {/* Hero Content - MASSIVE APPLE-STYLE */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-              className="glass-hero rounded-3xl p-12 md:p-16 lg:p-20"
+              className="text-center mb-64 md:mb-80 relative max-w-6xl mx-auto px-4"
             >
-              <div className="max-w-5xl mx-auto">
-
-                {/* Hero Content - MASSIVE APPLE-STYLE */}
-                <div className="text-center mb-40 md:mb-64 relative">
                   {/* Background gradient glow */}
                   <div className="absolute inset-0 -inset-x-40 -z-10 opacity-30">
                     <div
@@ -146,10 +142,10 @@ function LabsContent() {
                     <br className="hidden md:block" />
                     Shipping prototypes weekly.
                   </p>
-                </div>
+            </motion.div>
 
                 {/* Stats - Inline Minimal Display */}
-                <div className="flex flex-wrap justify-center gap-8 md:gap-16 text-center mb-32 md:mb-48">
+                <div className="flex flex-wrap justify-center gap-8 md:gap-16 text-center mb-48 md:mb-64 max-w-7xl mx-auto px-4">
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -185,7 +181,7 @@ function LabsContent() {
                 </div>
 
                 {/* Search Only - Simple & Clean */}
-                <div className="max-w-3xl mx-auto mb-32 md:mb-48">
+                <div className="max-w-3xl mx-auto mb-64 md:mb-80 px-4">
                   <div className="relative">
                     <Search
                       size={24}
@@ -218,12 +214,12 @@ function LabsContent() {
                 </div>
 
                 {/* Results Count */}
-                <p className="text-base font-medium text-[var(--text-tertiary)] mb-10">
+                <p className="text-base font-medium text-[var(--text-tertiary)] mb-10 max-w-7xl mx-auto px-4">
                   Showing {totalResults} of {totalExperiments} experiments
                 </p>
 
                 {/* Experiments - Full-Width Showcase */}
-                <div id="experiments-grid" className="space-y-20 md:space-y-32 mb-40 md:mb-64">
+                <div id="experiments-grid" className="space-y-20 md:space-y-32 mb-80 md:mb-96 max-w-7xl mx-auto px-4">
                   {filteredExperiments.map((experiment, index) => {
                     const isFeatured = experiment.trl >= 6 || experiment.status === 'Playable' || experiment.status === 'Field-Tested';
 
@@ -268,18 +264,15 @@ function LabsContent() {
                 )}
 
                 {/* Lab Notebook */}
-                <div className="pt-20 border-t border-[var(--border-primary)] mb-24">
+                <div className="pt-20 border-t border-[var(--border-primary)] mb-64 max-w-6xl mx-auto px-4">
                   <h2 className="text-heading text-[var(--text-primary)] mb-16">Lab Notebook</h2>
                   <LabTimelineView entries={labNotebook.slice(0, 6)} />
                 </div>
 
                 {/* Contribute CTA */}
-                <div className="pt-4">
+                <div className="mt-64 max-w-5xl mx-auto px-4">
                   <ContributeCTA />
                 </div>
-
-              </div>
-            </motion.div>
 
           </div>
         </section>

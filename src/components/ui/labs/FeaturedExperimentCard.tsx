@@ -56,12 +56,12 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
       </div>
 
       {/* Header */}
-      <div className="flex flex-col gap-5 mb-8">
+      <div className="flex flex-col gap-5 mb-24">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
             <h3
               className={cn(
-                'text-4xl md:text-7xl font-extralight mb-6 tracking-tight',
+                'text-4xl md:text-7xl font-extralight mb-16 tracking-tight',
                 'text-[var(--text-primary)]',
                 'group-hover:text-white transition-colors duration-300'
               )}
@@ -110,7 +110,7 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
       </div>
 
       {/* Tags */}
-      <div className="flex flex-wrap gap-2.5 mb-10">
+      <div className="flex flex-wrap gap-2.5 mb-20">
         {experiment.domain.map((domain) => (
           <span
             key={domain}
@@ -138,7 +138,7 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
       </div>
 
       {/* Footer with quick actions */}
-      <div className="flex items-center justify-between pt-6 border-t border-[var(--border-primary)]">
+      <div className="flex items-center justify-between pt-16 border-t border-[var(--border-primary)]">
         <span className="text-sm font-medium text-[var(--text-tertiary)]">
           Updated {new Date(experiment.dates.updated).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
         </span>
