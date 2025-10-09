@@ -25,24 +25,21 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
     <motion.article
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -8, scale: 1.01 }}
-      transition={{ duration: 0.3 }}
+      whileHover={{ y: -12, scale: 1.02 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       onClick={() => onClick?.(experiment)}
       className={cn(
-        'relative group cursor-pointer',
-        'min-h-[320px] p-8 rounded-3xl',
-        'bg-white/[0.02] border border-white/[0.04]',
-        '[data-theme="light"] &:bg-black/[0.02] [data-theme="light"] &:border-black/[0.04]',
-        'hover:bg-white/[0.04] hover:border-white/[0.08]',
-        '[data-theme="light"] &:hover:bg-black/[0.04] [data-theme="light"] &:hover:border-black/[0.08]',
-        'shadow-xl',
-        'transition-all duration-300',
+        'relative group cursor-pointer overflow-hidden',
+        'min-h-[500px] p-12 md:p-16 rounded-[2rem]',
+        'transition-all duration-500',
         className
       )}
       style={{
-        backdropFilter: 'blur(40px) saturate(170%) brightness(1.18)',
-        WebkitBackdropFilter: 'blur(40px) saturate(170%) brightness(1.18)',
-        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 20px 40px rgba(0, 0, 0, 0.1)',
+        background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(147, 51, 234, 0.15) 100%)',
+        backdropFilter: 'blur(60px) saturate(180%) brightness(1.2)',
+        WebkitBackdropFilter: 'blur(60px) saturate(180%) brightness(1.2)',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        boxShadow: 'inset 0 2px 0 rgba(255, 255, 255, 0.15), 0 30px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)',
       }}
     >
       {/* Header */}
@@ -50,7 +47,7 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
         <div className="flex-1 min-w-0">
           <h3
             className={cn(
-              'text-xl font-semibold mb-3 truncate',
+              'text-3xl md:text-5xl font-light mb-4 tracking-tight',
               'text-[var(--text-primary)]',
               'group-hover:text-[var(--brand-red)] transition-colors duration-300'
             )}
@@ -93,7 +90,7 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
       </div>
 
       {/* One-liner */}
-      <p className="text-base mb-8 line-clamp-2 leading-relaxed text-[var(--text-secondary)]">
+      <p className="text-xl md:text-2xl mb-12 line-clamp-3 leading-relaxed text-[var(--text-secondary)] font-light">
         {experiment.oneLiner}
       </p>
 

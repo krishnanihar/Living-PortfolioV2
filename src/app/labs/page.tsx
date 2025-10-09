@@ -68,23 +68,26 @@ function LabsContent() {
           <div className="relative w-full max-w-7xl mx-auto">
 
             {/* Atmospheric Particle Layer */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
-              {Array.from({ length: 30 }).map((_, i) => (
+            <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-80">
+              {Array.from({ length: 40 }).map((_, i) => (
                 <motion.div
                   key={i}
-                  className="absolute w-1 h-1 rounded-full bg-white/20"
+                  className="absolute w-2 h-2 rounded-full"
                   style={{
                     left: `${Math.random() * 100}%`,
                     top: `${Math.random() * 100}%`,
+                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(218, 14, 41, 0.4) 100%)',
+                    boxShadow: '0 0 20px rgba(255, 255, 255, 0.6), 0 0 40px rgba(218, 14, 41, 0.3)',
                   }}
                   animate={{
-                    y: [0, -40 - Math.random() * 20, 0],
-                    opacity: [0.1, 0.4, 0.1],
+                    y: [0, -60 - Math.random() * 40, 0],
+                    opacity: [0.3, 0.9, 0.3],
+                    scale: [1, 1.2, 1],
                   }}
                   transition={{
-                    duration: 10 + Math.random() * 8,
+                    duration: 12 + Math.random() * 10,
                     repeat: Infinity,
-                    delay: Math.random() * 3,
+                    delay: Math.random() * 4,
                     ease: 'easeInOut',
                   }}
                 />
@@ -100,14 +103,14 @@ function LabsContent() {
             >
               <div className="max-w-5xl mx-auto">
 
-                {/* Hero Content */}
-                <div className="text-center mb-24 relative">
+                {/* Hero Content - MASSIVE APPLE-STYLE */}
+                <div className="text-center mb-40 md:mb-64 relative">
                   {/* Background gradient glow */}
-                  <div className="absolute inset-0 -z-10 opacity-20">
+                  <div className="absolute inset-0 -inset-x-40 -z-10 opacity-30">
                     <div
-                      className="absolute inset-0 blur-3xl"
+                      className="absolute inset-0 blur-[120px]"
                       style={{
-                        background: 'radial-gradient(circle at 50% 30%, rgba(218, 14, 41, 0.15) 0%, transparent 50%)'
+                        background: 'radial-gradient(ellipse at center, rgba(218, 14, 41, 0.4) 0%, transparent 60%)'
                       }}
                     />
                   </div>
@@ -117,7 +120,7 @@ function LabsContent() {
                     animate={{ scale: 1, rotate: 0 }}
                     whileHover={{ scale: 1.05 }}
                     transition={{ delay: 0.2, duration: 0.6, type: 'spring', stiffness: 150 }}
-                    className="inline-flex items-center justify-center w-24 h-24 rounded-[2rem] bg-[var(--brand-red)]/15 border border-[var(--brand-red)]/25 mb-12"
+                    className="inline-flex items-center justify-center w-32 h-32 md:w-48 md:h-48 rounded-[3rem] bg-[var(--brand-red)]/20 border-2 border-[var(--brand-red)]/40 mb-16 md:mb-24"
                   >
                     <motion.div
                       animate={{
@@ -130,228 +133,88 @@ function LabsContent() {
                         ease: 'easeInOut',
                       }}
                     >
-                      <Beaker className="w-14 h-14 text-[var(--brand-red)]" strokeWidth={1.5} />
+                      <Beaker className="w-20 h-20 md:w-32 md:h-32 text-[var(--brand-red)]" strokeWidth={1} />
                     </motion.div>
                   </motion.div>
 
-                  <h1
-                    className="text-display text-[var(--text-primary)] mb-8"
-                    style={{
-                      background: 'linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%)',
-                      WebkitBackdropFilter: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
-                    }}
-                  >
+                  <h1 className="text-7xl md:text-9xl font-extralight text-[var(--text-primary)] mb-12 md:mb-16 tracking-tight">
                     Nihar Labs
                   </h1>
 
-                  <p className="text-subheading text-[var(--text-secondary)] max-w-3xl mx-auto leading-relaxed">
-                    Rapid experiments in AI, mobility, and new media. Shipping prototypes weekly.
+                  <p className="text-2xl md:text-4xl font-light text-[var(--text-secondary)] max-w-4xl mx-auto leading-relaxed">
+                    Rapid experiments in AI, mobility, and new media.
+                    <br className="hidden md:block" />
+                    Shipping prototypes weekly.
                   </p>
                 </div>
 
-                {/* Stats Dashboard - Compact 4-col layout */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-24">
-                  <AnimatedStatCard
-                    value={stats.totalExperiments}
-                    label="Total Experiments"
-                    trend={{ direction: 'up', value: 2, period: 'this month' }}
-                  />
-                  <AnimatedStatCard
-                    value={stats.activeExperiments}
-                    label="Active"
-                    highlight
-                  />
-                  <AnimatedStatCard
-                    value={stats.weeklyStreak}
-                    label="Week Streak"
-                  />
-                  <AnimatedStatCard
-                    value={badgeCounts['Open-Source'] || 0}
-                    label="Open Source"
-                  />
+                {/* Stats - Inline Minimal Display */}
+                <div className="flex flex-wrap justify-center gap-8 md:gap-16 text-center mb-32 md:mb-48">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.6 }}
+                  >
+                    <div className="text-6xl md:text-7xl font-extralight text-[var(--text-primary)] mb-2">{stats.totalExperiments}</div>
+                    <div className="text-sm md:text-base text-[var(--text-muted)] uppercase tracking-wider">Experiments</div>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4, duration: 0.6 }}
+                  >
+                    <div className="text-6xl md:text-7xl font-extralight text-[var(--brand-red)] mb-2">{stats.activeExperiments}</div>
+                    <div className="text-sm md:text-base text-[var(--text-muted)] uppercase tracking-wider">Active</div>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5, duration: 0.6 }}
+                  >
+                    <div className="text-6xl md:text-7xl font-extralight text-[var(--text-primary)] mb-2">{stats.weeklyStreak}</div>
+                    <div className="text-sm md:text-base text-[var(--text-muted)] uppercase tracking-wider">Week Streak</div>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6, duration: 0.6 }}
+                  >
+                    <div className="text-6xl md:text-7xl font-extralight text-[var(--text-primary)] mb-2">{badgeCounts['Open-Source'] || 0}</div>
+                    <div className="text-sm md:text-base text-[var(--text-muted)] uppercase tracking-wider">Open Source</div>
+                  </motion.div>
                 </div>
 
-                {/* Search & Filters */}
-                <div className="mb-16">
-                  <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                    <div className="relative flex-1">
-                      <Search
-                        size={20}
-                        className="absolute left-5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
-                      />
-                      <input
-                        type="text"
-                        placeholder="Search experiments..."
-                        value={filters.search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className={cn(
-                          'w-full pl-14 pr-12 py-4 rounded-full',
-                          'bg-[var(--surface-primary)] border border-[var(--border-primary)]',
-                          'text-[var(--text-primary)] placeholder:text-[var(--text-muted)]',
-                          'focus:outline-none focus:ring-2 focus:ring-[var(--brand-red)]/50',
-                          'transition-all duration-200'
-                        )}
-                      />
-                      {filters.search && (
-                        <button
-                          onClick={clearSearch}
-                          className="absolute right-5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)]"
-                        >
-                          <X size={18} />
-                        </button>
-                      )}
-                    </div>
-
-                    <button
-                      onClick={() => setShowFilters(!showFilters)}
+                {/* Search Only - Simple & Clean */}
+                <div className="max-w-3xl mx-auto mb-32 md:mb-48">
+                  <div className="relative">
+                    <Search
+                      size={24}
+                      className="absolute left-8 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Search experiments..."
+                      value={filters.search}
+                      onChange={(e) => setSearch(e.target.value)}
                       className={cn(
-                        'flex items-center justify-center gap-3 px-8 py-4 rounded-full',
-                        'bg-[var(--surface-primary)] border border-[var(--border-primary)]',
-                        'text-[var(--text-primary)] hover:text-[var(--brand-red)]',
-                        'transition-colors duration-200',
-                        hasActiveFilters && 'ring-2 ring-[var(--brand-red)]/30'
+                        'w-full pl-20 pr-16 py-6 md:py-8 rounded-full',
+                        'text-xl md:text-2xl font-light',
+                        'bg-white/[0.08] border-2 border-white/[0.15]',
+                        'text-[var(--text-primary)] placeholder:text-[var(--text-muted)]',
+                        'focus:outline-none focus:ring-4 focus:ring-[var(--brand-red)]/30 focus:border-[var(--brand-red)]/50',
+                        'transition-all duration-300',
+                        'backdrop-blur-xl'
                       )}
-                    >
-                      <FilterIcon size={20} />
-                      <span className="font-medium">Filters</span>
-                      {activeFilterCount > 0 && (
-                        <span className="px-2.5 py-1 rounded-full bg-[var(--brand-red)] text-white text-xs font-bold">
-                          {activeFilterCount}
-                        </span>
-                      )}
-                    </button>
-                  </div>
-
-                  {/* Filter Panel */}
-                  <AnimatePresence>
-                    {showFilters && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="overflow-hidden"
+                    />
+                    {filters.search && (
+                      <button
+                        onClick={clearSearch}
+                        className="absolute right-8 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
                       >
-                        <div className="glass-card rounded-2xl p-8">
-                          {/* Domain */}
-                          <div className="mb-6">
-                            <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">Domain</h3>
-                            <div className="flex flex-wrap gap-2">
-                              {filterOptions.domains.map((domain) => (
-                                <button
-                                  key={domain}
-                                  onClick={() => toggleDomain(domain as LabDomain)}
-                                  className={cn(
-                                    'px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200',
-                                    filters.domain.includes(domain as LabDomain)
-                                      ? 'bg-[var(--brand-red)]/20 border-[var(--brand-red)] text-[var(--brand-red)]'
-                                      : 'bg-[var(--surface-secondary)] border-[var(--border-primary)] text-[var(--text-tertiary)] hover:border-[var(--border-hover)]'
-                                  )}
-                                >
-                                  {domain}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Modality */}
-                          <div className="mb-6">
-                            <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">Modality</h3>
-                            <div className="flex flex-wrap gap-2">
-                              {filterOptions.modalities.map((modality) => (
-                                <button
-                                  key={modality}
-                                  onClick={() => toggleModality(modality as LabModality)}
-                                  className={cn(
-                                    'px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200',
-                                    filters.modality.includes(modality as LabModality)
-                                      ? 'bg-[var(--brand-red)]/20 border-[var(--brand-red)] text-[var(--brand-red)]'
-                                      : 'bg-[var(--surface-secondary)] border-[var(--border-primary)] text-[var(--text-tertiary)] hover:border-[var(--border-hover)]'
-                                  )}
-                                >
-                                  {modality}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Status */}
-                          <div className="mb-6">
-                            <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">Status</h3>
-                            <div className="flex flex-wrap gap-2">
-                              {filterOptions.statuses.map((status) => (
-                                <button
-                                  key={status}
-                                  onClick={() => toggleStatus(status as LabStatus)}
-                                  className={cn(
-                                    'px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200',
-                                    filters.status.includes(status as LabStatus)
-                                      ? 'bg-[var(--brand-red)]/20 border-[var(--brand-red)] text-[var(--brand-red)]'
-                                      : 'bg-[var(--surface-secondary)] border-[var(--border-primary)] text-[var(--text-tertiary)] hover:border-[var(--border-hover)]'
-                                  )}
-                                >
-                                  {status}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Access */}
-                          <div className="mb-6">
-                            <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">Access</h3>
-                            <div className="flex flex-wrap gap-2">
-                              {filterOptions.accesses.map((access) => (
-                                <button
-                                  key={access}
-                                  onClick={() => toggleAccess(access as LabAccess)}
-                                  className={cn(
-                                    'px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200',
-                                    filters.access.includes(access as LabAccess)
-                                      ? 'bg-[var(--brand-red)]/20 border-[var(--brand-red)] text-[var(--brand-red)]'
-                                      : 'bg-[var(--surface-secondary)] border-[var(--border-primary)] text-[var(--text-tertiary)] hover:border-[var(--border-hover)]'
-                                  )}
-                                >
-                                  {access}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Time Range */}
-                          <div>
-                            <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">Time Range</h3>
-                            <div className="flex flex-wrap gap-2">
-                              {(['all', '7d', '30d', '90d'] as const).map((range) => (
-                                <button
-                                  key={range}
-                                  onClick={() => setTimeRange(range)}
-                                  className={cn(
-                                    'px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200',
-                                    filters.timeRange === range
-                                      ? 'bg-[var(--brand-red)]/20 border-[var(--brand-red)] text-[var(--brand-red)]'
-                                      : 'bg-[var(--surface-secondary)] border-[var(--border-primary)] text-[var(--text-tertiary)] hover:border-[var(--border-hover)]'
-                                  )}
-                                >
-                                  {range === 'all' ? 'All Time' : `Last ${range}`}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-
-                          {hasActiveFilters && (
-                            <button
-                              onClick={clearFilters}
-                              className="mt-6 text-sm font-medium text-[var(--brand-red)] hover:underline"
-                            >
-                              Clear all filters
-                            </button>
-                          )}
-                        </div>
-                      </motion.div>
+                        <X size={24} />
+                      </button>
                     )}
-                  </AnimatePresence>
+                  </div>
                 </div>
 
                 {/* Results Count */}
@@ -359,37 +222,33 @@ function LabsContent() {
                   Showing {totalResults} of {totalExperiments} experiments
                 </p>
 
-                {/* Experiments Grid - Spacious 2-col Bento Layout */}
-                <div id="experiments-grid" className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 mb-32">
-                  {featuredExperiments.map((experiment, index) => (
-                    <motion.div
-                      key={experiment.id}
-                      initial={{ opacity: 0, y: 40 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: '-100px' }}
-                      transition={{ duration: 0.6, delay: index * 0.1 }}
-                      className="md:col-span-2"
-                    >
-                      <FeaturedExperimentCard
-                        experiment={experiment}
-                        onClick={setSelectedExperiment}
-                      />
-                    </motion.div>
-                  ))}
-                  {regularExperiments.map((experiment, index) => (
-                    <motion.div
-                      key={experiment.id}
-                      initial={{ opacity: 0, y: 40 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: '-100px' }}
-                      transition={{ duration: 0.6, delay: index * 0.1 }}
-                    >
-                      <ExperimentCard
-                        experiment={experiment}
-                        onClick={setSelectedExperiment}
-                      />
-                    </motion.div>
-                  ))}
+                {/* Experiments - Full-Width Showcase */}
+                <div id="experiments-grid" className="space-y-20 md:space-y-32 mb-40 md:mb-64">
+                  {filteredExperiments.map((experiment, index) => {
+                    const isFeatured = experiment.trl >= 6 || experiment.status === 'Playable' || experiment.status === 'Field-Tested';
+
+                    return (
+                      <motion.div
+                        key={experiment.id}
+                        initial={{ opacity: 0, scale: 0.9, y: 60 }}
+                        whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                        viewport={{ once: true, margin: '-150px' }}
+                        transition={{ delay: index * 0.1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                      >
+                        {isFeatured ? (
+                          <FeaturedExperimentCard
+                            experiment={experiment}
+                            onClick={setSelectedExperiment}
+                          />
+                        ) : (
+                          <ExperimentCard
+                            experiment={experiment}
+                            onClick={setSelectedExperiment}
+                          />
+                        )}
+                      </motion.div>
+                    );
+                  })}
                 </div>
 
                 {filteredExperiments.length === 0 && (

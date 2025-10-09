@@ -32,26 +32,21 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.3 }}
+      whileHover={{ y: -16, scale: 1.01 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       onClick={() => onClick?.(experiment)}
       className={cn(
-        'relative group cursor-pointer',
-        'min-h-[400px] p-10 rounded-3xl',
-        'bg-white/[0.04] border border-white/[0.08]',
-        '[data-theme="light"] &:bg-black/[0.04] [data-theme="light"] &:border-black/[0.08]',
-        'hover:bg-white/[0.06] hover:border-[var(--brand-red)]/25',
-        '[data-theme="light"] &:hover:bg-black/[0.06]',
-        'ring-1 ring-white/[0.03]',
-        'shadow-2xl',
-        'transition-all duration-300',
-        'overflow-hidden',
+        'relative group cursor-pointer overflow-hidden',
+        'min-h-[600px] p-16 md:p-20 rounded-[2.5rem]',
+        'transition-all duration-500',
         className
       )}
       style={{
-        backdropFilter: 'blur(40px) saturate(170%) brightness(1.18)',
-        WebkitBackdropFilter: 'blur(40px) saturate(170%) brightness(1.18)',
-        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 25px 50px rgba(0, 0, 0, 0.12)',
+        background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.35) 0%, rgba(239, 68, 68, 0.25) 50%, rgba(251, 146, 60, 0.15) 100%)',
+        backdropFilter: 'blur(80px) saturate(200%) brightness(1.25)',
+        WebkitBackdropFilter: 'blur(80px) saturate(200%) brightness(1.25)',
+        border: '2px solid rgba(255, 255, 255, 0.25)',
+        boxShadow: 'inset 0 4px 0 rgba(255, 255, 255, 0.2), 0 40px 80px rgba(218, 14, 41, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.15)',
       }}
     >
       {/* Featured badge */}
@@ -66,9 +61,9 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
           <div className="flex-1">
             <h3
               className={cn(
-                'text-3xl font-semibold mb-4',
+                'text-4xl md:text-7xl font-extralight mb-6 tracking-tight',
                 'text-[var(--text-primary)]',
-                'group-hover:text-[var(--brand-red)] transition-colors duration-300'
+                'group-hover:text-white transition-colors duration-300'
               )}
             >
               {experiment.title}
@@ -109,7 +104,7 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
         </div>
 
         {/* One-liner */}
-        <p className="text-lg leading-relaxed text-[var(--text-secondary)]">
+        <p className="text-2xl md:text-3xl leading-relaxed text-[var(--text-secondary)] font-light">
           {experiment.oneLiner}
         </p>
       </div>
