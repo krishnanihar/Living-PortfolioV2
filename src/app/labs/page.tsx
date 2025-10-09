@@ -62,7 +62,7 @@ function LabsContent() {
   return (
     <>
       <PortfolioNavigation />
-      <div className="min-h-screen bg-[var(--bg-primary)] pt-24 pb-16">
+      <div className="min-h-screen bg-[var(--bg-primary)] pt-32 pb-24">
         {/* Hero */}
         <LabsHero
         onBrowse={handleBrowse}
@@ -76,7 +76,7 @@ function LabsContent() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="max-w-7xl mx-auto px-6 mb-8"
+        className="max-w-[1200px] mx-auto px-8 mb-12"
       >
         <div
           className={cn(
@@ -126,7 +126,7 @@ function LabsContent() {
       </motion.div>
 
       {/* Filters & Search Bar */}
-      <div className="max-w-7xl mx-auto px-6 mb-8">
+      <div className="max-w-[1200px] mx-auto px-8 mb-12">
         <div className="flex flex-col sm:flex-row gap-4">
           {/* Search */}
           <div className="relative flex-1">
@@ -347,14 +347,14 @@ function LabsContent() {
       </div>
 
       {/* Results count */}
-      <div className="max-w-7xl mx-auto px-6 mb-6">
+      <div className="max-w-[1200px] mx-auto px-8 mb-8">
         <p className="text-sm text-white/60 [data-theme='light'] &:text-black/60">
           Showing {totalResults} of {totalExperiments} experiments
         </p>
       </div>
 
       {/* Experiments Grid */}
-      <div id="experiments-grid" className="max-w-7xl mx-auto px-6">
+      <div id="experiments-grid" className="max-w-[1200px] mx-auto px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredExperiments.map((experiment, index) => (
             <motion.div
@@ -398,7 +398,7 @@ function LabsContent() {
       </div>
 
       {/* Lab Notebook Sidebar - Recent Updates */}
-      <div className="max-w-7xl mx-auto px-6 mt-16">
+      <div className="max-w-[1200px] mx-auto px-8 mt-24">
         <h2 className="text-2xl font-bold text-white [data-theme='light'] &:text-black mb-6">
           Lab Notebook
         </h2>
