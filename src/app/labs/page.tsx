@@ -60,6 +60,32 @@ function LabsContent() {
 
   return (
     <>
+      <style jsx>{`
+        #hero-section {
+          padding-top: 10rem !important;
+          padding-bottom: 10rem !important;
+        }
+        #stats-section {
+          padding-top: 8rem !important;
+          padding-bottom: 8rem !important;
+        }
+        #search-section {
+          padding-top: 8rem !important;
+          padding-bottom: 8rem !important;
+        }
+        #experiments-section {
+          padding-top: 10rem !important;
+          padding-bottom: 10rem !important;
+        }
+        #lab-notebook-section {
+          padding-top: 10rem !important;
+          padding-bottom: 10rem !important;
+        }
+        #cta-section {
+          padding-top: 10rem !important;
+          padding-bottom: 10rem !important;
+        }
+      `}</style>
       <PortfolioNavigation />
 
       {/* Main Container */}
@@ -94,7 +120,7 @@ function LabsContent() {
             </div>
 
             {/* Hero Section */}
-            <div className="relative px-4" style={{ paddingTop: '10rem', paddingBottom: '10rem' }}>
+            <div id="hero-section" className="relative px-4">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -146,7 +172,7 @@ function LabsContent() {
             </div>
 
             {/* Stats Section */}
-            <div className="relative px-4" style={{ paddingTop: '8rem', paddingBottom: '8rem' }}>
+            <div id="stats-section" className="relative px-4">
               <div className="flex flex-wrap justify-center gap-8 md:gap-16 text-center max-w-7xl mx-auto">
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -184,7 +210,7 @@ function LabsContent() {
             </div>
 
             {/* Search Section */}
-            <div className="relative px-4" style={{ paddingTop: '8rem', paddingBottom: '8rem' }}>
+            <div id="search-section" className="relative px-4">
               <div className="max-w-3xl mx-auto">
                   <div className="relative">
                     <Search
@@ -219,7 +245,7 @@ function LabsContent() {
             </div>
 
             {/* Experiments Section */}
-            <div className="relative px-4" style={{ paddingTop: '10rem', paddingBottom: '10rem' }}>
+            <div id="experiments-section" className="relative px-4">
               <div className="max-w-7xl mx-auto">
                 {/* Results Count */}
                 <p className="text-base font-medium text-[var(--text-tertiary)] mb-10">
@@ -274,7 +300,7 @@ function LabsContent() {
             </div>
 
             {/* Lab Notebook Section */}
-            <div className="relative px-4 border-t border-[var(--border-primary)]" style={{ paddingTop: '10rem', paddingBottom: '10rem' }}>
+            <div id="lab-notebook-section" className="relative px-4 border-t border-[var(--border-primary)]">
               <div className="max-w-6xl mx-auto">
                   <h2 className="text-heading text-[var(--text-primary)] mb-16">Lab Notebook</h2>
                   <LabTimelineView entries={labNotebook.slice(0, 6)} />
@@ -282,7 +308,7 @@ function LabsContent() {
             </div>
 
             {/* CTA Section */}
-            <div className="relative px-4" style={{ paddingTop: '10rem', paddingBottom: '10rem' }}>
+            <div id="cta-section" className="relative px-4">
               <div className="max-w-5xl mx-auto">
                 <ContributeCTA />
               </div>
