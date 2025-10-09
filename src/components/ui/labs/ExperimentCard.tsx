@@ -25,23 +25,24 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
     <motion.article
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.2 }}
+      whileHover={{ y: -8, scale: 1.01 }}
+      transition={{ duration: 0.3 }}
       onClick={() => onClick?.(experiment)}
       className={cn(
         'relative group cursor-pointer',
         'min-h-[320px] p-8 rounded-3xl',
-        'bg-white/[0.04] border border-white/[0.06]',
-        '[data-theme="light"] &:bg-black/[0.04] [data-theme="light"] &:border-black/[0.06]',
-        'hover:bg-white/[0.06] hover:border-white/[0.10]',
-        '[data-theme="light"] &:hover:bg-black/[0.06] [data-theme="light"] &:hover:border-black/[0.10]',
-        'shadow-xl hover:shadow-2xl',
+        'bg-white/[0.02] border border-white/[0.04]',
+        '[data-theme="light"] &:bg-black/[0.02] [data-theme="light"] &:border-black/[0.04]',
+        'hover:bg-white/[0.04] hover:border-white/[0.08]',
+        '[data-theme="light"] &:hover:bg-black/[0.04] [data-theme="light"] &:hover:border-black/[0.08]',
+        'shadow-xl',
         'transition-all duration-300',
         className
       )}
       style={{
-        backdropFilter: 'blur(48px) saturate(180%) brightness(1.15)',
-        WebkitBackdropFilter: 'blur(48px) saturate(180%) brightness(1.15)',
+        backdropFilter: 'blur(40px) saturate(170%) brightness(1.18)',
+        WebkitBackdropFilter: 'blur(40px) saturate(170%) brightness(1.18)',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 20px 40px rgba(0, 0, 0, 0.1)',
       }}
     >
       {/* Header */}

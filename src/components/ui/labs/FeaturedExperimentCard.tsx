@@ -37,20 +37,21 @@ export function FeaturedExperimentCard({ experiment, onClick, className }: Featu
       onClick={() => onClick?.(experiment)}
       className={cn(
         'relative group cursor-pointer',
-        'md:col-span-2', // Takes 2 columns on desktop for featured effect
         'min-h-[400px] p-10 rounded-3xl',
-        'bg-white/[0.05] border border-white/[0.08]',
-        '[data-theme="light"] &:bg-black/[0.05] [data-theme="light"] &:border-black/[0.08]',
-        'hover:bg-white/[0.07] hover:border-[var(--brand-red)]/30',
-        '[data-theme="light"] &:hover:bg-black/[0.07]',
-        'shadow-2xl hover:shadow-[0_20px_70px_rgba(218,14,41,0.15)]',
+        'bg-white/[0.04] border border-white/[0.08]',
+        '[data-theme="light"] &:bg-black/[0.04] [data-theme="light"] &:border-black/[0.08]',
+        'hover:bg-white/[0.06] hover:border-[var(--brand-red)]/25',
+        '[data-theme="light"] &:hover:bg-black/[0.06]',
+        'ring-1 ring-white/[0.03]',
+        'shadow-2xl',
         'transition-all duration-300',
         'overflow-hidden',
         className
       )}
       style={{
-        backdropFilter: 'blur(48px) saturate(180%) brightness(1.15)',
-        WebkitBackdropFilter: 'blur(48px) saturate(180%) brightness(1.15)',
+        backdropFilter: 'blur(40px) saturate(170%) brightness(1.18)',
+        WebkitBackdropFilter: 'blur(40px) saturate(170%) brightness(1.18)',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 25px 50px rgba(0, 0, 0, 0.12)',
       }}
     >
       {/* Featured badge */}

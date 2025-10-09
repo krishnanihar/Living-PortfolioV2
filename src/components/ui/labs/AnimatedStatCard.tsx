@@ -55,26 +55,27 @@ export function AnimatedStatCard({ value, label, trend, highlight = false, class
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
         'relative group',
-        'min-h-[160px] p-10 rounded-3xl',
-        'bg-white/[0.04] border border-white/[0.06]',
-        '[data-theme="light"] &:bg-black/[0.04] [data-theme="light"] &:border-black/[0.06]',
-        'hover:bg-white/[0.06] hover:border-white/[0.10]',
-        '[data-theme="light"] &:hover:bg-black/[0.06] [data-theme="light"] &:hover:border-black/[0.10]',
-        'shadow-xl hover:shadow-2xl',
+        'min-h-[120px] p-6 rounded-2xl',
+        'bg-white/[0.02] border border-white/[0.04]',
+        '[data-theme="light"] &:bg-black/[0.02] [data-theme="light"] &:border-black/[0.04]',
+        'hover:bg-white/[0.04] hover:border-white/[0.08]',
+        '[data-theme="light"] &:hover:bg-black/[0.04] [data-theme="light"] &:hover:border-black/[0.08]',
+        'shadow-lg hover:shadow-xl',
         'transition-all duration-300',
-        highlight && 'ring-1 ring-[var(--brand-red)]/20',
+        highlight && 'ring-1 ring-[var(--brand-red)]/15 bg-white/[0.03]',
         className
       )}
       style={{
-        backdropFilter: 'blur(48px) saturate(180%) brightness(1.15)',
-        WebkitBackdropFilter: 'blur(48px) saturate(180%) brightness(1.15)',
+        backdropFilter: 'blur(40px) saturate(170%) brightness(1.18)',
+        WebkitBackdropFilter: 'blur(40px) saturate(170%) brightness(1.18)',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08)',
       }}
     >
       {/* Stat value */}
-      <div className="flex items-baseline gap-3 mb-4">
+      <div className="flex items-baseline gap-2 mb-2">
         <div
           className={cn(
-            'text-5xl font-bold tabular-nums',
+            'text-4xl font-bold tabular-nums',
             highlight ? 'text-[var(--brand-red)]' : 'text-[var(--text-primary)]'
           )}
         >
@@ -83,17 +84,17 @@ export function AnimatedStatCard({ value, label, trend, highlight = false, class
 
         {/* Trend indicator */}
         {trend && (
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-500/15 border border-green-500/25">
-            <TrendingUp size={12} className="text-green-400" />
-            <span className="text-xs font-medium text-green-400">
-              +{trend.value} {trend.period}
+          <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/10 border border-green-500/20">
+            <TrendingUp size={10} className="text-green-400" />
+            <span className="text-[10px] font-medium text-green-400">
+              +{trend.value}
             </span>
           </div>
         )}
       </div>
 
       {/* Label */}
-      <div className="text-base font-medium text-[var(--text-tertiary)]">
+      <div className="text-sm font-medium text-[var(--text-tertiary)]">
         {label}
       </div>
 

@@ -67,6 +67,30 @@ function LabsContent() {
         <section className="relative min-h-screen flex items-center justify-center px-4 pt-32 pb-20">
           <div className="relative w-full max-w-7xl mx-auto">
 
+            {/* Atmospheric Particle Layer */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
+              {Array.from({ length: 30 }).map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-1 h-1 rounded-full bg-white/20"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                  }}
+                  animate={{
+                    y: [0, -40 - Math.random() * 20, 0],
+                    opacity: [0.1, 0.4, 0.1],
+                  }}
+                  transition={{
+                    duration: 10 + Math.random() * 8,
+                    repeat: Infinity,
+                    delay: Math.random() * 3,
+                    ease: 'easeInOut',
+                  }}
+                />
+              ))}
+            </div>
+
             {/* Main Glass Card - MATCHES HOME PAGE */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -77,14 +101,37 @@ function LabsContent() {
               <div className="max-w-5xl mx-auto">
 
                 {/* Hero Content */}
-                <div className="text-center mb-20">
+                <div className="text-center mb-24 relative">
+                  {/* Background gradient glow */}
+                  <div className="absolute inset-0 -z-10 opacity-20">
+                    <div
+                      className="absolute inset-0 blur-3xl"
+                      style={{
+                        background: 'radial-gradient(circle at 50% 30%, rgba(218, 14, 41, 0.15) 0%, transparent 50%)'
+                      }}
+                    />
+                  </div>
+
                   <motion.div
                     initial={{ scale: 0, rotate: -180 }}
                     animate={{ scale: 1, rotate: 0 }}
+                    whileHover={{ scale: 1.05 }}
                     transition={{ delay: 0.2, duration: 0.6, type: 'spring', stiffness: 150 }}
-                    className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-[var(--brand-red)]/15 border border-[var(--brand-red)]/25 mb-10"
+                    className="inline-flex items-center justify-center w-24 h-24 rounded-[2rem] bg-[var(--brand-red)]/15 border border-[var(--brand-red)]/25 mb-12"
                   >
-                    <Beaker className="w-10 h-10 text-[var(--brand-red)]" strokeWidth={1.5} />
+                    <motion.div
+                      animate={{
+                        rotate: [0, 5, -5, 0],
+                        scale: [1, 1.05, 1],
+                      }}
+                      transition={{
+                        duration: 5,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                      }}
+                    >
+                      <Beaker className="w-14 h-14 text-[var(--brand-red)]" strokeWidth={1.5} />
+                    </motion.div>
                   </motion.div>
 
                   <h1
@@ -104,8 +151,8 @@ function LabsContent() {
                   </p>
                 </div>
 
-                {/* Stats Dashboard */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
+                {/* Stats Dashboard - Compact 4-col layout */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-24">
                   <AnimatedStatCard
                     value={stats.totalExperiments}
                     label="Total Experiments"
@@ -312,21 +359,36 @@ function LabsContent() {
                   Showing {totalResults} of {totalExperiments} experiments
                 </p>
 
-                {/* Experiments Grid */}
-                <div id="experiments-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
-                  {featuredExperiments.map((experiment) => (
-                    <FeaturedExperimentCard
+                {/* Experiments Grid - Spacious 2-col Bento Layout */}
+                <div id="experiments-grid" className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 mb-32">
+                  {featuredExperiments.map((experiment, index) => (
+                    <motion.div
                       key={experiment.id}
-                      experiment={experiment}
-                      onClick={setSelectedExperiment}
-                    />
+                      initial={{ opacity: 0, y: 40 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-100px' }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      className="md:col-span-2"
+                    >
+                      <FeaturedExperimentCard
+                        experiment={experiment}
+                        onClick={setSelectedExperiment}
+                      />
+                    </motion.div>
                   ))}
-                  {regularExperiments.map((experiment) => (
-                    <ExperimentCard
+                  {regularExperiments.map((experiment, index) => (
+                    <motion.div
                       key={experiment.id}
-                      experiment={experiment}
-                      onClick={setSelectedExperiment}
-                    />
+                      initial={{ opacity: 0, y: 40 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-100px' }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                    >
+                      <ExperimentCard
+                        experiment={experiment}
+                        onClick={setSelectedExperiment}
+                      />
+                    </motion.div>
                   ))}
                 </div>
 
@@ -347,13 +409,15 @@ function LabsContent() {
                 )}
 
                 {/* Lab Notebook */}
-                <div className="pt-16 border-t border-[var(--border-primary)] mb-20">
+                <div className="pt-20 border-t border-[var(--border-primary)] mb-24">
                   <h2 className="text-heading text-[var(--text-primary)] mb-16">Lab Notebook</h2>
                   <LabTimelineView entries={labNotebook.slice(0, 6)} />
                 </div>
 
                 {/* Contribute CTA */}
-                <ContributeCTA />
+                <div className="pt-4">
+                  <ContributeCTA />
+                </div>
 
               </div>
             </motion.div>
