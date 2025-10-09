@@ -64,7 +64,7 @@ function LabsContent() {
 
       {/* Main Container */}
       <main className="relative min-h-screen overflow-hidden">
-        <section className="relative min-h-[200vh] px-4 pt-32 pb-32">
+        <section className="relative px-4" style={{ minHeight: 'auto' }}>
 
             {/* Atmospheric Particle Layer */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-80">
