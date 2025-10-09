@@ -19,7 +19,11 @@
       "Bash(cat:*)",
       "Bash(git check-ignore:*)",
       "Bash(git commit -m \"$(cat <<''EOF''\nfeat: Add Labs link to navigation\n\nAdd Labs page link to main navigation between Work and Journey.\nLabs page features rapid experiments in AI, mobility, and new media.\n\n- Add Beaker icon from Lucide\n- Position Labs between Work and Journey\n- Complete Labs page already implemented with:\n  - 8 seed experiments (Pixel Radar, Astra, Aviation Analytics, etc.)\n  - Multi-dimensional filtering system\n  - Stats dashboard with streak tracking\n  - Lab notebook with recent updates\n  - Glassmorphic OLED-optimized design\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(open http://localhost:3000/labs)",
+      "Bash(git log:*)",
+      "Bash(curl:*)",
+      "Bash(lsof:*)"
     ],
     "deny": [],
     "ask": []

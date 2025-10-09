@@ -27,14 +27,14 @@ export const ActIIIInnovation = () => {
     {
       number: 3,
       title: 'The Revelation',
-      icon: 'gallery' as const,
+      icon: 'search' as const,
       description: 'The AI criteria are used to filter 62 masterworks. Each artwork is scored by how well it matches your emotional and thematic desires. The gallery instantly updates with the top 10 pieces.',
       example: 'Scoring: Century match (+1) • Mood match (+2) • Motif match (+1 each) • Theme match (+1.5 each)',
     },
     {
       number: 4,
       title: 'The Scrying',
-      icon: 'book' as const,
+      icon: 'scroll' as const,
       description: 'Click any artwork to send its metadata back to Gemini. The AI becomes an "Art Historian," generating deep insights on symbolism, historical context, artist intent, and cultural impact.',
       example: '"The Scream (1893): A visual manifestation of existential anxiety, where Munch captures the psychological weight of modern existence through distorted forms and intense color..."',
     },
