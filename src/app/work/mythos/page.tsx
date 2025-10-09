@@ -142,21 +142,44 @@ export default function MythOSPage() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          textAlign: 'center',
         }}
       >
         {/* Act II: The Problem */}
-        <div style={{ width: '100%', maxWidth: '1400px' }}>
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '1400px',
+            paddingLeft: 'clamp(1rem, 5vw, 3rem)',
+            paddingRight: 'clamp(1rem, 5vw, 3rem)',
+            marginBottom: '10rem',
+          }}
+        >
           <ActIIProblem />
         </div>
 
         {/* Act III: The Innovation */}
-        <div style={{ width: '100%', maxWidth: '1400px' }}>
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '1400px',
+            paddingLeft: 'clamp(1rem, 5vw, 3rem)',
+            paddingRight: 'clamp(1rem, 5vw, 3rem)',
+            marginBottom: '10rem',
+          }}
+        >
           <ActIIIInnovation />
         </div>
 
         {/* Act IV: The Experience */}
-        <div style={{ width: '100%', maxWidth: '1400px' }}>
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '1400px',
+            paddingLeft: 'clamp(1rem, 5vw, 3rem)',
+            paddingRight: 'clamp(1rem, 5vw, 3rem)',
+            marginBottom: '10rem',
+          }}
+        >
           <ActIVExperience
             onSummon={handleSummon}
             isLoading={isLoading}
@@ -168,17 +191,41 @@ export default function MythOSPage() {
         </div>
 
         {/* Act V: Global Impact */}
-        <div style={{ width: '100%', maxWidth: '1400px' }}>
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '1400px',
+            paddingLeft: 'clamp(1rem, 5vw, 3rem)',
+            paddingRight: 'clamp(1rem, 5vw, 3rem)',
+            marginBottom: '10rem',
+          }}
+        >
           <ActVImpact artworks={filteredArtworks} />
         </div>
 
         {/* Act VI: Technical Depth */}
-        <div style={{ width: '100%', maxWidth: '1400px' }}>
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '1400px',
+            paddingLeft: 'clamp(1rem, 5vw, 3rem)',
+            paddingRight: 'clamp(1rem, 5vw, 3rem)',
+            marginBottom: '10rem',
+          }}
+        >
           <ActVITechnical />
         </div>
 
         {/* Act VII: Final CTA */}
-        <div style={{ width: '100%', maxWidth: '1400px' }}>
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '1400px',
+            paddingLeft: 'clamp(1rem, 5vw, 3rem)',
+            paddingRight: 'clamp(1rem, 5vw, 3rem)',
+            marginBottom: '5rem',
+          }}
+        >
           <ActVIICTA onSummon={handleSummon} isLoading={isLoading} />
         </div>
       </div>

@@ -26,8 +26,8 @@ export const ActIVExperience = ({
       id="the-experience"
       className="relative py-32 px-4"
       style={{
-        paddingLeft: 'clamp(1rem, 5vw, 3rem)',
-        paddingRight: 'clamp(1rem, 5vw, 3rem)',
+        paddingTop: '8rem',
+        paddingBottom: '8rem',
       }}
     >
       {/* Background */}

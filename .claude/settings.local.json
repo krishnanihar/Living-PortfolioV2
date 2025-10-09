@@ -25,7 +25,8 @@
       "Bash(curl:*)",
       "Bash(lsof:*)",
       "Bash(do echo \"=== $file ===\")",
-      "Bash(head:*)"
+      "Bash(head:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []
