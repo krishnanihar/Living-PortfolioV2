@@ -9,21 +9,35 @@ export default function LabsPage() {
     <>
       <PortfolioNavigation />
 
-      <main className="min-h-screen pt-32 pb-20 px-4">
-        <div className="max-w-7xl mx-auto">
+      <main style={{ minHeight: '100vh', paddingTop: '8rem', paddingBottom: '5rem' }}>
+        <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
 
           {/* Hero */}
-          <div className="text-center mb-20">
-            <h1 className="text-6xl md:text-8xl font-extralight mb-6 text-[var(--text-primary)]">
+          <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+            <h1 style={{
+              fontSize: 'clamp(3rem, 8vw, 6rem)',
+              fontWeight: '200',
+              marginBottom: '1.5rem',
+              color: 'var(--text-primary)',
+              letterSpacing: '-0.02em'
+            }}>
               Nihar Labs
             </h1>
-            <p className="text-xl md:text-2xl text-[var(--text-secondary)] font-light">
+            <p style={{
+              fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
+              fontWeight: '300',
+              color: 'var(--text-secondary)'
+            }}>
               {labExperiments.length} rapid experiments in AI, mobility, and new media.
             </p>
           </div>
 
           {/* Simple Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '2rem'
+          }}>
             {labExperiments.map((exp) => {
               const link = exp.links.demo || exp.links.repo || exp.links.figma || '#';
 
@@ -33,27 +47,68 @@ export default function LabsPage() {
                   href={link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group block p-8 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06]
-                             border border-white/[0.08] hover:border-white/[0.15]
-                             transition-all duration-300 hover:-translate-y-1"
+                  className="group block transition-all duration-300"
+                  style={{
+                    padding: '2rem',
+                    borderRadius: '1rem',
+                    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    textDecoration: 'none'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.07)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.04)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
                 >
-                  <h3 className="text-2xl font-light mb-3 text-[var(--text-primary)]
-                                 group-hover:text-[var(--brand-red)] transition-colors">
+                  <h3
+                    className="group-hover:text-[var(--brand-red)] transition-colors"
+                    style={{
+                      fontSize: '1.5rem',
+                      fontWeight: '300',
+                      marginBottom: '0.75rem',
+                      color: 'var(--text-primary)'
+                    }}
+                  >
                     {exp.title}
                   </h3>
-                  <p className="text-[var(--text-secondary)] mb-4 line-clamp-2 leading-relaxed">
+                  <p style={{
+                    color: 'var(--text-secondary)',
+                    marginBottom: '1rem',
+                    lineHeight: '1.6',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden'
+                  }}>
                     {exp.oneLiner}
                   </p>
-                  <div className="flex items-center gap-2 text-sm">
-                    <span className="px-2 py-1 rounded bg-white/[0.05] text-[var(--text-tertiary)]">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem' }}>
+                    <span style={{
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '0.25rem',
+                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                      color: 'var(--text-tertiary)'
+                    }}>
                       {exp.status}
                     </span>
-                    <span className="px-2 py-1 rounded bg-white/[0.05] text-[var(--text-tertiary)]">
+                    <span style={{
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '0.25rem',
+                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                      color: 'var(--text-tertiary)'
+                    }}>
                       TRL {exp.trl}
                     </span>
                     <ExternalLink
                       size={14}
                       className="ml-auto text-[var(--text-muted)] opacity-0 group-hover:opacity-100 transition-opacity"
+                      style={{ marginLeft: 'auto' }}
                     />
                   </div>
                 </a>
