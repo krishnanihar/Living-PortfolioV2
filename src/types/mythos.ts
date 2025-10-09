@@ -11,6 +11,7 @@ export interface Artwork {
   themes: string[];
   location: { lat: number; lon: number; };
   isCapstone?: boolean;
+  score?: number;
 }
 
 export interface Exhibition {

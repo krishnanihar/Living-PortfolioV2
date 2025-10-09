@@ -2,15 +2,14 @@
 
 import { useState, useCallback, useMemo } from 'react';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
-import { Hero } from '@/components/ui/mythos-Hero';
-import { ExhibitionBuilder } from '@/components/ui/mythos-ExhibitionBuilder';
-import { ExhibitionHeader } from '@/components/ui/mythos-ExhibitionHeader';
-import { Gallery } from '@/components/ui/mythos-Gallery';
-// import { ArtworkModal } from '@/components/ui/mythos-ArtworkModal';
+import { HeroNew } from '@/components/ui/mythos-HeroNew';
+import { ActIIProblem } from '@/components/ui/mythos-ActII-Problem';
+import { ActIIIInnovation } from '@/components/ui/mythos-ActIII-Innovation';
+import { ActIVExperience } from '@/components/ui/mythos-ActIV-Experience';
+import { ActVImpact } from '@/components/ui/mythos-ActV-Impact';
+import { ActVITechnical } from '@/components/ui/mythos-ActVI-Technical';
+import { ActVIICTA } from '@/components/ui/mythos-ActVII-CTA';
 import { ImmersiveGallery } from '@/components/ui/mythos-ImmersiveGallery';
-import { Timeline } from '@/components/ui/mythos-Timeline';
-import { WorldMap } from '@/components/ui/mythos-Map';
-import { About } from '@/components/ui/mythos-About';
 import { ARTWORKS } from '@/data/mythos-artworks';
 import type { Exhibition, Artwork } from '@/types/mythos';
 
@@ -132,60 +131,34 @@ export default function MythOSPage() {
       color: '#FFFFFF',
     }}>
       <PortfolioNavigation />
-      <Hero />
 
-      <div id="exhibition-builder" style={{
-        padding: '0 clamp(var(--space-16), 8vw, 120px)',
-        marginTop: 'calc(var(--space-16) + var(--space-8))',
-      }}>
-        <div style={{
-          maxWidth: '1200px',
-          margin: '0 auto',
-        }}>
-          <ExhibitionBuilder
-            onSummon={handleSummon}
-            isLoading={isLoading}
-            error={error}
-            isSticky={false}
-          />
+      {/* Act I: Awakening */}
+      <HeroNew onSummon={handleSummon} isLoading={isLoading} />
 
-          {exhibition && (
-            <div style={{ marginTop: 'var(--space-16)' }}>
-              <ExhibitionHeader
-                exhibition={exhibition}
-                onEnterImmersive={handleEnterImmersive}
-                onClearExhibition={handleClearExhibition}
-                onCreateCapstone={handleCreateCapstone}
-                isGeneratingCapstone={isGeneratingCapstone}
-                onGenerateDream={handleGenerateDream}
-                isGeneratingDream={isGeneratingDream}
-              />
+      {/* Act II: The Problem */}
+      <ActIIProblem />
 
-              <Gallery
-                artworks={filteredArtworks}
-                onArtworkClick={handleArtworkSelect}
-              />
+      {/* Act III: The Innovation */}
+      <ActIIIInnovation />
 
-              <Timeline
-                artworks={filteredArtworks}
-                onArtworkSelect={handleArtworkSelect}
-              />
+      {/* Act IV: The Experience */}
+      <ActIVExperience
+        onSummon={handleSummon}
+        isLoading={isLoading}
+        error={error}
+        exhibition={exhibition}
+        filteredArtworks={filteredArtworks}
+        onArtworkClick={handleArtworkSelect}
+      />
 
-              <WorldMap artworks={filteredArtworks} />
-            </div>
-          )}
+      {/* Act V: Global Impact */}
+      <ActVImpact artworks={filteredArtworks} />
 
-          <About />
-        </div>
-      </div>
+      {/* Act VI: Technical Depth */}
+      <ActVITechnical />
 
-      {/* Artwork modal temporarily disabled - analysis feature not implemented */}
-      {/* {selectedArtwork && (
-        <ArtworkModal
-          artwork={selectedArtwork}
-          ...
-        />
-      )} */}
+      {/* Act VII: Final CTA */}
+      <ActVIICTA onSummon={handleSummon} isLoading={isLoading} />
     </div>
   );
 }

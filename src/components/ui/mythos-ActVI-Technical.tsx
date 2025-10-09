@@ -152,7 +152,7 @@ Response:
       content: (
         <div className="space-y-4">
           <div>
-            <h4 className="text-white font-semibold mb-2">Why Natural Language > Categories?</h4>
+            <h4 className="text-white font-semibold mb-2">Why Natural Language &gt; Categories?</h4>
             <p className="text-sm">Traditional categorical browsing assumes users know what they want ("Impressionism", "Baroque"). But emotional discovery ("art that feels nostalgic") is more intuitive and personal. Research shows emotion-driven curation increases engagement by 3-4x.</p>
           </div>
           <div>

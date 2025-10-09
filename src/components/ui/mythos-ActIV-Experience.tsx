@@ -67,7 +67,7 @@ export const ActIVExperience = ({
                       {exhibition.title}
                     </h3>
                     <p className="text-white/70 leading-relaxed">
-                      {exhibition.curatorialStatement}
+                      {exhibition.statement}
                     </p>
                   </div>
                 </div>
