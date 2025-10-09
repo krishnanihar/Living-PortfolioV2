@@ -25,7 +25,12 @@ const AccordionItem = ({ title, children }: { title: string, children: React.Rea
 
 export const About = () => {
     return (
-        <section className="py-24 max-w-4xl mx-auto border-t border-white/10">
+        <section style={{
+            paddingTop: 'var(--space-16)',
+            paddingBottom: 'var(--space-16)',
+            marginTop: 'var(--space-16)',
+            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+        }}>
             <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-white">About mythOS</h2>
                 <p className="mt-4 text-lg text-white/70">An experiment in generative art curation and analysis.</p>

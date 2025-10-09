@@ -135,43 +135,47 @@ export default function MythOSPage() {
       <Hero />
 
       <div id="exhibition-builder" style={{
-        padding: '4rem 1rem',
-        maxWidth: '1200px',
-        margin: '0 auto',
+        padding: '0 var(--space-4)',
+        marginTop: 'calc(-1 * var(--space-16))',
       }}>
-        <ExhibitionBuilder
-          onSummon={handleSummon}
-          isLoading={isLoading}
-          error={error}
-        />
+        <div style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+        }}>
+          <ExhibitionBuilder
+            onSummon={handleSummon}
+            isLoading={isLoading}
+            error={error}
+          />
 
-        {exhibition && (
-          <div style={{ marginTop: '4rem' }}>
-            <ExhibitionHeader
-              exhibition={exhibition}
-              onEnterImmersive={handleEnterImmersive}
-              onClearExhibition={handleClearExhibition}
-              onCreateCapstone={handleCreateCapstone}
-              isGeneratingCapstone={isGeneratingCapstone}
-              onGenerateDream={handleGenerateDream}
-              isGeneratingDream={isGeneratingDream}
-            />
+          {exhibition && (
+            <div style={{ marginTop: 'var(--space-16)' }}>
+              <ExhibitionHeader
+                exhibition={exhibition}
+                onEnterImmersive={handleEnterImmersive}
+                onClearExhibition={handleClearExhibition}
+                onCreateCapstone={handleCreateCapstone}
+                isGeneratingCapstone={isGeneratingCapstone}
+                onGenerateDream={handleGenerateDream}
+                isGeneratingDream={isGeneratingDream}
+              />
 
-            <Gallery
-              artworks={filteredArtworks}
-              onArtworkClick={handleArtworkSelect}
-            />
+              <Gallery
+                artworks={filteredArtworks}
+                onArtworkClick={handleArtworkSelect}
+              />
 
-            <Timeline
-              artworks={filteredArtworks}
-              onArtworkSelect={handleArtworkSelect}
-            />
+              <Timeline
+                artworks={filteredArtworks}
+                onArtworkSelect={handleArtworkSelect}
+              />
 
-            <WorldMap artworks={filteredArtworks} />
-          </div>
-        )}
+              <WorldMap artworks={filteredArtworks} />
+            </div>
+          )}
 
-        <About />
+          <About />
+        </div>
       </div>
 
       {/* Artwork modal temporarily disabled - analysis feature not implemented */}

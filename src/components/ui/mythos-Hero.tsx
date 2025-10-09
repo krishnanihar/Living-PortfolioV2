@@ -15,11 +15,11 @@ const ValueProp = ({ icon, title, children }: { icon: React.ReactNode, title: st
 
 export const Hero = () => {
     return (
-        <section className="min-h-screen flex flex-col justify-center text-center relative overflow-hidden">
+        <section className="min-h-screen flex flex-col justify-center text-center relative overflow-hidden px-4">
             <div
                 className="absolute inset-0 -top-1/2 bg-[radial-gradient(ellipse_50%_50%_at_50%_50%,rgba(218,14,41,0.1),rgba(255,255,255,0))] pointer-events-none"></div>
 
-            <div className="relative z-10 px-4">
+            <div className="relative z-10 max-w-6xl mx-auto w-full">
                 <div style={{ animationDelay: '0.3s' }} className="animate-fade-in-up inline-block mb-6">
                     <div className="flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full animate-badge-pulse backdrop-blur-sm">
                         <Icons.oracle className="w-4 h-4 text-[#DA0E29]"/>
@@ -61,7 +61,7 @@ export const Hero = () => {
                 </div>
             </div>
             
-            <a href="#main-content" aria-label="Scroll to main content" className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 animate-scroll-down">
+            <a href="#exhibition-builder" aria-label="Scroll to exhibition builder" className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 animate-scroll-down">
                 <Icons.arrowDown className="w-8 h-8 text-white/50" />
             </a>
         </section>

@@ -117,8 +117,8 @@ export const ExhibitionBuilder = ({ onSummon, isLoading, error, isSticky = true 
     };
 
     const wrapperClasses = isSticky
-        ? "sticky top-6 z-50 bg-[#0A0A0A]/80 backdrop-blur-lg border border-white/10 rounded-xl p-4 md:p-6 shadow-2xl shadow-black/50 transition-all duration-300"
-        : "bg-white/[.04] backdrop-blur-lg border border-white/10 rounded-xl p-4 md:p-6 shadow-2xl shadow-black/50 transition-all duration-300";
+        ? "sticky top-20 z-40 bg-[#0A0A0A]/95 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 shadow-2xl shadow-black/50 transition-all duration-300"
+        : "bg-white/[.04] backdrop-blur-lg border border-white/10 rounded-2xl p-6 md:p-8 shadow-2xl shadow-black/50 transition-all duration-300";
 
     return (
         <div className={wrapperClasses}>
