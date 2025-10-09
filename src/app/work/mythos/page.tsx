@@ -135,30 +135,53 @@ export default function MythOSPage() {
       {/* Act I: Awakening */}
       <HeroNew onSummon={handleSummon} isLoading={isLoading} />
 
-      {/* Act II: The Problem */}
-      <ActIIProblem />
+      {/* Acts II-VII: Narrative Flow - Wrapped for consistent centering */}
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+        }}
+      >
+        {/* Act II: The Problem */}
+        <div style={{ width: '100%', maxWidth: '1400px' }}>
+          <ActIIProblem />
+        </div>
 
-      {/* Act III: The Innovation */}
-      <ActIIIInnovation />
+        {/* Act III: The Innovation */}
+        <div style={{ width: '100%', maxWidth: '1400px' }}>
+          <ActIIIInnovation />
+        </div>
 
-      {/* Act IV: The Experience */}
-      <ActIVExperience
-        onSummon={handleSummon}
-        isLoading={isLoading}
-        error={error}
-        exhibition={exhibition}
-        filteredArtworks={filteredArtworks}
-        onArtworkClick={handleArtworkSelect}
-      />
+        {/* Act IV: The Experience */}
+        <div style={{ width: '100%', maxWidth: '1400px' }}>
+          <ActIVExperience
+            onSummon={handleSummon}
+            isLoading={isLoading}
+            error={error}
+            exhibition={exhibition}
+            filteredArtworks={filteredArtworks}
+            onArtworkClick={handleArtworkSelect}
+          />
+        </div>
 
-      {/* Act V: Global Impact */}
-      <ActVImpact artworks={filteredArtworks} />
+        {/* Act V: Global Impact */}
+        <div style={{ width: '100%', maxWidth: '1400px' }}>
+          <ActVImpact artworks={filteredArtworks} />
+        </div>
 
-      {/* Act VI: Technical Depth */}
-      <ActVITechnical />
+        {/* Act VI: Technical Depth */}
+        <div style={{ width: '100%', maxWidth: '1400px' }}>
+          <ActVITechnical />
+        </div>
 
-      {/* Act VII: Final CTA */}
-      <ActVIICTA onSummon={handleSummon} isLoading={isLoading} />
+        {/* Act VII: Final CTA */}
+        <div style={{ width: '100%', maxWidth: '1400px' }}>
+          <ActVIICTA onSummon={handleSummon} isLoading={isLoading} />
+        </div>
+      </div>
     </div>
   );
 }
