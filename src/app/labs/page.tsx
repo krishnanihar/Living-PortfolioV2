@@ -80,8 +80,8 @@ function LabsContent() {
       >
         <div
           className={cn(
-            'grid grid-cols-2 md:grid-cols-4 gap-4',
-            'p-6 rounded-2xl',
+            'grid grid-cols-2 md:grid-cols-4 gap-6',
+            'p-10 rounded-2xl',
             'bg-white/[0.06] border border-white/[0.15]',
             '[data-theme="light"] &:bg-black/[0.06] [data-theme="light"] &:border-black/[0.15]'
           )}
@@ -402,7 +402,7 @@ function LabsContent() {
         <h2 className="text-2xl font-bold text-white [data-theme='light'] &:text-black mb-6">
           Lab Notebook
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {labNotebook.slice(0, 6).map((entry, index) => (
             <motion.div
               key={entry.id}
@@ -410,7 +410,7 @@ function LabsContent() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
               className={cn(
-                'p-4 rounded-xl',
+                'p-6 rounded-xl',
                 'bg-white/[0.06] border border-white/[0.15]',
                 '[data-theme="light"] &:bg-black/[0.06] [data-theme="light"] &:border-black/[0.15]'
               )}

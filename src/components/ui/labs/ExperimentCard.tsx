@@ -30,7 +30,7 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
       onClick={() => onClick?.(experiment)}
       className={cn(
         'relative group cursor-pointer',
-        'p-6 rounded-2xl',
+        'p-8 rounded-2xl',
         'bg-white/[0.06] border border-white/[0.15]',
         '[data-theme="light"] &:bg-black/[0.06] [data-theme="light"] &:border-black/[0.15]',
         'hover:bg-white/[0.08] hover:border-white/[0.25]',
