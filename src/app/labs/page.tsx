@@ -94,7 +94,7 @@ function LabsContent() {
             </div>
 
             {/* Hero Section */}
-            <div className="relative py-20 md:py-32">
+            <div className="relative" style={{ paddingTop: '10rem', paddingBottom: '10rem' }}>
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -146,7 +146,7 @@ function LabsContent() {
             </div>
 
             {/* Stats Section */}
-            <div className="relative py-16 md:py-24">
+            <div className="relative" style={{ paddingTop: '8rem', paddingBottom: '8rem' }}>
               <div className="flex flex-wrap justify-center gap-8 md:gap-16 text-center max-w-7xl mx-auto">
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -184,7 +184,7 @@ function LabsContent() {
             </div>
 
             {/* Search Section */}
-            <div className="relative py-16 md:py-24">
+            <div className="relative" style={{ paddingTop: '8rem', paddingBottom: '8rem' }}>
               <div className="max-w-3xl mx-auto">
                   <div className="relative">
                     <Search
@@ -219,7 +219,7 @@ function LabsContent() {
             </div>
 
             {/* Experiments Section */}
-            <div className="relative py-24 md:py-32">
+            <div className="relative" style={{ paddingTop: '10rem', paddingBottom: '10rem' }}>
               <div className="max-w-7xl mx-auto">
                 {/* Results Count */}
                 <p className="text-base font-medium text-[var(--text-tertiary)] mb-10">
@@ -274,7 +274,7 @@ function LabsContent() {
             </div>
 
             {/* Lab Notebook Section */}
-            <div className="relative py-24 md:py-32 border-t border-[var(--border-primary)]">
+            <div className="relative border-t border-[var(--border-primary)]" style={{ paddingTop: '10rem', paddingBottom: '10rem' }}>
               <div className="max-w-6xl mx-auto">
                   <h2 className="text-heading text-[var(--text-primary)] mb-16">Lab Notebook</h2>
                   <LabTimelineView entries={labNotebook.slice(0, 6)} />
@@ -282,7 +282,7 @@ function LabsContent() {
             </div>
 
             {/* CTA Section */}
-            <div className="relative py-24 md:py-32">
+            <div className="relative" style={{ paddingTop: '10rem', paddingBottom: '10rem' }}>
               <div className="max-w-5xl mx-auto">
                 <ContributeCTA />
               </div>
