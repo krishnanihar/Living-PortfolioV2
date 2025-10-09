@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useMemo } from 'react';
+import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import { Hero } from '@/components/ui/mythos-Hero';
 import { ExhibitionBuilder } from '@/components/ui/mythos-ExhibitionBuilder';
 import { ExhibitionHeader } from '@/components/ui/mythos-ExhibitionHeader';
@@ -130,6 +131,7 @@ export default function MythOSPage() {
       backgroundColor: 'var(--bg-primary)',
       color: '#FFFFFF',
     }}>
+      <PortfolioNavigation />
       <Hero />
 
       <div id="exhibition-builder" style={{
