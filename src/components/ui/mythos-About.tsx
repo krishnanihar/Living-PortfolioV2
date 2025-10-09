@@ -26,7 +26,8 @@ const AccordionItem = ({ title, children }: { title: string, children: React.Rea
 export const About = () => {
     return (
         <section style={{
-            padding: 'var(--space-16) clamp(var(--space-8), 5vw, var(--space-16))',
+            paddingTop: 'var(--space-16)',
+            paddingBottom: 'var(--space-16)',
             marginTop: 'var(--space-16)',
             borderTop: '1px solid rgba(255, 255, 255, 0.1)',
         }}>
