@@ -31,17 +31,17 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
       className={cn(
         'relative group cursor-pointer',
         'p-6 rounded-2xl',
-        'bg-white/[0.04] border border-white/10',
-        '[data-theme="light"] &:bg-black/[0.04] [data-theme="light"] &:border-black/10',
-        'hover:bg-white/[0.06] hover:border-white/20',
-        '[data-theme="light"] &:hover:bg-black/[0.06] [data-theme="light"] &:hover:border-black/20',
+        'bg-white/[0.06] border border-white/[0.15]',
+        '[data-theme="light"] &:bg-black/[0.06] [data-theme="light"] &:border-black/[0.15]',
+        'hover:bg-white/[0.08] hover:border-white/[0.25]',
+        '[data-theme="light"] &:hover:bg-black/[0.08] [data-theme="light"] &:hover:border-black/[0.25]',
         'shadow-lg hover:shadow-2xl',
         'transition-all duration-200',
         className
       )}
       style={{
-        backdropFilter: 'blur(40px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+        backdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
+        WebkitBackdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
       }}
     >
       {/* Header */}
@@ -50,8 +50,8 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
           <h3
             className={cn(
               'text-lg font-semibold mb-1 truncate',
-              'text-white/90',
-              '[data-theme="light"] &:text-black/90',
+              'text-white',
+              '[data-theme="light"] &:text-black',
               'group-hover:text-[var(--brand-red)] transition-colors duration-200'
             )}
           >
@@ -97,8 +97,8 @@ export function ExperimentCard({ experiment, onClick, className }: ExperimentCar
       <p
         className={cn(
           'text-sm mb-4 line-clamp-2',
-          'text-white/70',
-          '[data-theme="light"] &:text-black/70'
+          'text-white/80',
+          '[data-theme="light"] &:text-black/80'
         )}
       >
         {experiment.oneLiner}

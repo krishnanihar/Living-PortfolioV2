@@ -151,15 +151,6 @@ export function LabsHero({ onBrowse, onRandom, onSubmit, onGetCode }: LabsHeroPr
             );
           })}
         </motion.div>
-
-        {/* Decorative gradient */}
-        <div
-          className="absolute inset-0 rounded-3xl pointer-events-none opacity-40"
-          style={{
-            background: 'radial-gradient(circle at top, var(--brand-red) 0%, transparent 70%)',
-            mixBlendMode: 'soft-light',
-          }}
-        />
       </div>
     </motion.section>
   );

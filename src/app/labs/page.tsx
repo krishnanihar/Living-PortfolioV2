@@ -82,12 +82,12 @@ function LabsContent() {
           className={cn(
             'grid grid-cols-2 md:grid-cols-4 gap-4',
             'p-6 rounded-2xl',
-            'bg-white/[0.02] border border-white/10',
-            '[data-theme="light"] &:bg-black/[0.02] [data-theme="light"] &:border-black/10'
+            'bg-white/[0.06] border border-white/[0.15]',
+            '[data-theme="light"] &:bg-black/[0.06] [data-theme="light"] &:border-black/[0.15]'
           )}
           style={{
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
+            backdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
+            WebkitBackdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
           }}
         >
           <div className="text-center">
@@ -141,16 +141,16 @@ function LabsContent() {
               onChange={(e) => setSearch(e.target.value)}
               className={cn(
                 'w-full pl-12 pr-10 py-3 rounded-xl',
-                'bg-white/[0.04] border border-white/10',
-                '[data-theme="light"] &:bg-black/[0.04] [data-theme="light"] &:border-black/10',
+                'bg-white/[0.06] border border-white/[0.15]',
+                '[data-theme="light"] &:bg-black/[0.06] [data-theme="light"] &:border-black/[0.15]',
                 'text-white placeholder:text-white/40',
                 '[data-theme="light"] &:text-black [data-theme="light"] &:placeholder:text-black/40',
                 'focus:outline-none focus:ring-2 focus:ring-[var(--brand-red)]/50',
                 'transition-all duration-200'
               )}
               style={{
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
+                backdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
+                WebkitBackdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
               }}
             />
             {filters.search && (
@@ -168,16 +168,16 @@ function LabsContent() {
             onClick={() => setShowFilters(!showFilters)}
             className={cn(
               'flex items-center gap-2 px-6 py-3 rounded-xl',
-              'bg-white/[0.04] border border-white/10',
-              '[data-theme="light"] &:bg-black/[0.04] [data-theme="light"] &:border-black/10',
+              'bg-white/[0.06] border border-white/[0.15]',
+              '[data-theme="light"] &:bg-black/[0.06] [data-theme="light"] &:border-black/[0.15]',
               'text-white hover:text-[var(--brand-red)]',
               '[data-theme="light"] &:text-black',
               'transition-colors duration-200',
               hasActiveFilters && 'ring-2 ring-[var(--brand-red)]/30'
             )}
             style={{
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
+              backdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
+              WebkitBackdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
             }}
           >
             <FilterIcon size={18} />
@@ -203,12 +203,12 @@ function LabsContent() {
               <div
                 className={cn(
                   'mt-4 p-6 rounded-2xl',
-                  'bg-white/[0.02] border border-white/10',
-                  '[data-theme="light"] &:bg-black/[0.02] [data-theme="light"] &:border-black/10'
+                  'bg-white/[0.06] border border-white/[0.15]',
+                  '[data-theme="light"] &:bg-black/[0.06] [data-theme="light"] &:border-black/[0.15]'
                 )}
                 style={{
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
+                  backdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
+                  WebkitBackdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
                 }}
               >
                 {/* Domain */}
@@ -379,10 +379,10 @@ function LabsContent() {
             className="text-center py-20"
           >
             <div className="text-6xl mb-4">🔬</div>
-            <h3 className="text-xl font-medium text-white/80 [data-theme='light'] &:text-black/80 mb-2">
+            <h3 className="text-xl font-medium text-white [data-theme='light'] &:text-black mb-2">
               No experiments found
             </h3>
-            <p className="text-white/60 [data-theme='light'] &:text-black/60 mb-6">
+            <p className="text-white/70 [data-theme='light'] &:text-black/70 mb-6">
               Try adjusting your filters or search query
             </p>
             {hasActiveFilters && (
@@ -411,21 +411,21 @@ function LabsContent() {
               transition={{ delay: index * 0.05 }}
               className={cn(
                 'p-4 rounded-xl',
-                'bg-white/[0.02] border border-white/10',
-                '[data-theme="light"] &:bg-black/[0.02] [data-theme="light"] &:border-black/10'
+                'bg-white/[0.06] border border-white/[0.15]',
+                '[data-theme="light"] &:bg-black/[0.06] [data-theme="light"] &:border-black/[0.15]'
               )}
               style={{
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
+                backdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
+                WebkitBackdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
               }}
             >
               <div className="flex items-start gap-3">
                 <Calendar size={16} className="text-[var(--brand-red)] mt-0.5 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
-                  <div className="text-xs text-white/50 [data-theme='light'] &:text-black/50 mb-1">
+                  <div className="text-xs text-white/60 [data-theme='light'] &:text-black/60 mb-1">
                     {new Date(entry.date).toLocaleDateString()} · {entry.experimentTitle}
                   </div>
-                  <p className="text-sm text-white/80 [data-theme='light'] &:text-black/80">
+                  <p className="text-sm text-white/90 [data-theme='light'] &:text-black/90">
                     {entry.note}
                   </p>
                 </div>
