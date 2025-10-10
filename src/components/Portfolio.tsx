@@ -24,41 +24,53 @@ export default function Portfolio() {
   const [isSnapping, setIsSnapping] = useState(false);
   const { theme, resolvedTheme, toggleTheme } = useTheme();
 
-  // Stabilize particle positions
+  // Stabilize particle positions with deterministic algorithm
   const particlePositions = React.useMemo(() => {
     return {
-      far: Array.from({ length: 50 }, () => ({
-        left: Math.random() * 100,
-        top: Math.random() * 100,
-        delay1: Math.random() * 30,
-        delay2: Math.random() * 20,
-        duration1: 35 + Math.random() * 25,
-        duration2: 15 + Math.random() * 10,
-      })),
-      mid: Array.from({ length: 30 }, () => ({
-        left: Math.random() * 100,
-        top: Math.random() * 100,
-        delay1: Math.random() * 25,
-        delay2: Math.random() * 15,
-        duration1: 28 + Math.random() * 18,
-        duration2: 12 + Math.random() * 8,
-      })),
-      near: Array.from({ length: 20 }, () => ({
-        left: Math.random() * 100,
-        top: Math.random() * 100,
-        delay1: Math.random() * 20,
-        delay2: Math.random() * 12,
-        duration1: 22 + Math.random() * 14,
-        duration2: 10 + Math.random() * 6,
-      })),
-      accent: Array.from({ length: 3 }, () => ({
-        left: 20 + Math.random() * 60,
-        top: 20 + Math.random() * 60,
-        delay1: Math.random() * 15,
-        delay2: Math.random() * 10,
-        duration1: 25 + Math.random() * 15,
-        duration2: 12 + Math.random() * 8,
-      })),
+      far: Array.from({ length: 50 }, (_, i) => {
+        const seed = i / 50;
+        return {
+          left: ((seed * 87.3 + 13.7 + i * 4.2) % 100),
+          top: ((seed * 73.1 + 17.3 + i * 5.7) % 100),
+          delay1: ((seed * 25.5 + 2.5 + i * 0.6) % 30),
+          delay2: ((seed * 18.3 + 1.7 + i * 0.4) % 20),
+          duration1: 35 + ((seed * 23.7 + i * 0.5) % 25),
+          duration2: 15 + ((seed * 9.4 + i * 0.2) % 10),
+        };
+      }),
+      mid: Array.from({ length: 30 }, (_, i) => {
+        const seed = i / 30;
+        return {
+          left: ((seed * 91.2 + 8.8 + i * 3.8) % 100),
+          top: ((seed * 68.4 + 21.6 + i * 4.3) % 100),
+          delay1: ((seed * 22.1 + 2.9 + i * 0.8) % 25),
+          delay2: ((seed * 13.7 + 1.3 + i * 0.5) % 15),
+          duration1: 28 + ((seed * 17.2 + i * 0.6) % 18),
+          duration2: 12 + ((seed * 7.6 + i * 0.3) % 8),
+        };
+      }),
+      near: Array.from({ length: 20 }, (_, i) => {
+        const seed = i / 20;
+        return {
+          left: ((seed * 79.6 + 20.4 + i * 5.1) % 100),
+          top: ((seed * 82.3 + 17.7 + i * 6.2) % 100),
+          delay1: ((seed * 18.4 + 1.6 + i * 1.0) % 20),
+          delay2: ((seed * 11.2 + 0.8 + i * 0.6) % 12),
+          duration1: 22 + ((seed * 13.3 + i * 0.7) % 14),
+          duration2: 10 + ((seed * 5.7 + i * 0.3) % 6),
+        };
+      }),
+      accent: Array.from({ length: 3 }, (_, i) => {
+        const seed = i / 3;
+        return {
+          left: 20 + ((seed * 52.4 + i * 8.3) % 60),
+          top: 20 + ((seed * 47.8 + i * 7.6) % 60),
+          delay1: ((seed * 13.6 + i * 1.5) % 15),
+          delay2: ((seed * 9.1 + i * 1.1) % 10),
+          duration1: 25 + ((seed * 14.2 + i * 0.9) % 15),
+          duration2: 12 + ((seed * 7.4 + i * 0.8) % 8),
+        };
+      }),
     };
   }, []);
 
