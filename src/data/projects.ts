@@ -197,6 +197,39 @@ export const projects: Project[] = [
 
   // Research Projects
   {
+    id: 'psoriassist',
+    title: 'PsoriAssist',
+    company: 'Personal Research',
+    description: 'AI-powered psoriasis management platform born from lived experience. Designing clinical-grade photo tracking with ghost overlay alignment, predictive flare-up analytics, integrated mental health screening, and early PsA detection for 125 million people worldwide. Validated through 25 patient interviews and clinical research pathways.',
+    category: 'research',
+    status: 'concept',
+    tags: [
+      { id: 'ai-ml', label: 'AI/ML' },
+      { id: 'digital-health', label: 'Digital Health' },
+      { id: 'react-native', label: 'React Native' },
+      { id: 'clinical-validation', label: 'Clinical Validation' },
+      { id: 'ux-research', label: 'UX Research' },
+      { id: 'computer-vision', label: 'Computer Vision' },
+      { id: 'predictive-analytics', label: 'Predictive Analytics' },
+      { id: 'empathy-driven-design', label: 'Empathy-Driven Design' },
+    ],
+    meta: {
+      year: '2024',
+      role: 'Designer & Researcher',
+      team: 'Solo Project',
+      duration: 'Research & Validation',
+    },
+    metrics: {
+      impact: '$12M Year 3 target, 125M global patients',
+      improvement: '85%+ AI PASI accuracy, 40% faster PsA diagnosis',
+    },
+    links: [
+      { type: 'case-study', url: '/work/psoriassist', label: 'View Case Study' },
+    ],
+    featured: true,
+    order: 9,
+  },
+  {
     id: 'mythos',
     title: 'mythOS',
     company: 'Personal Research',
@@ -227,7 +260,7 @@ export const projects: Project[] = [
       { type: 'case-study', url: '/work/mythos', label: 'Generate AI Exhibitions' },
     ],
     featured: true,
-    order: 9,
+    order: 10,
   },
   {
     id: 'latent-space',
@@ -260,7 +293,7 @@ export const projects: Project[] = [
       { type: 'case-study', url: '/work/latent-space', label: 'Explore the Speculation' },
     ],
     featured: true,
-    order: 10,
+    order: 11,
   },
   {
     id: 'metamorphic-fractal-reflections',
@@ -292,7 +325,7 @@ export const projects: Project[] = [
       { type: 'case-study', url: '/work/metamorphic-fractal-reflections', label: 'View Case Study' },
     ],
     featured: true,
-    order: 11,
+    order: 12,
   },
 
   // IFE Projects
