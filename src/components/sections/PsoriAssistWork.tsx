@@ -769,7 +769,11 @@ export function PsoriAssistWork() {
                 color: `rgb(${theme.color})`,
                 marginBottom: '0.5rem'
               }}>
-                {theme.stat}
+                <AnimatedCounter
+                  end={parseInt(theme.stat)}
+                  duration={2000}
+                  suffix="%"
+                />
               </div>
               <h3 style={{
                 fontSize: '1.25rem',
@@ -838,18 +842,18 @@ export function PsoriAssistWork() {
           {personas.map((persona, index) => {
             const isHovered = hoveredPersona === persona.name;
 
-            return (
+            // Front face of card
+            const frontContent = (
               <div
-                key={index}
-                onMouseEnter={() => setHoveredPersona(persona.name)}
-                onMouseLeave={() => setHoveredPersona(null)}
                 style={{
                   padding: isMobile ? '2rem 1.5rem' : '2rem 1.5rem',
                   borderRadius: '24px',
                   backgroundColor: isHovered ? `rgba(${persona.color}, 0.05)` : 'rgba(255, 255, 255, 0.03)',
                   border: isHovered ? `1px solid rgba(${persona.color}, 0.3)` : '1px solid rgba(255, 255, 255, 0.06)',
                   transition: 'all 0.4s ease',
-                  transform: isHovered ? 'translateY(-4px)' : 'translateY(0)'
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column'
                 }}
               >
                 <div style={{
@@ -976,6 +980,87 @@ export function PsoriAssistWork() {
                     ))}
                   </ul>
                 </div>
+              </div>
+            );
+
+            // Back face of card - Day in the life journey
+            const backContent = (
+              <div
+                style={{
+                  padding: isMobile ? '2rem 1.5rem' : '2rem 1.5rem',
+                  borderRadius: '24px',
+                  backgroundColor: `rgba(${persona.color}, 0.08)`,
+                  border: `1px solid rgba(${persona.color}, 0.4)`,
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  overflow: 'auto'
+                }}
+              >
+                <h3 style={{
+                  fontSize: '1.25rem',
+                  fontWeight: '600',
+                  marginBottom: '1rem',
+                  color: `rgb(${persona.color})`
+                }}>
+                  Day in the Life: {persona.name}
+                </h3>
+                <div style={{
+                  fontSize: '0.9rem',
+                  lineHeight: '1.7',
+                  color: 'rgba(255, 255, 255, 0.8)'
+                }}>
+                  <div style={{ marginBottom: '1rem' }}>
+                    <strong style={{ color: `rgb(${persona.color})` }}>Morning (7:00 AM)</strong>
+                    <p style={{ margin: '0.5rem 0 0 0' }}>
+                      {persona.name === 'Sarah' && 'Checks mirror, applies 3 different topicals (20 mins). Debates outfit to cover patches. Misses medication reminder—phone on silent.'}
+                      {persona.name === 'Marcus' && 'Wakes with stiff joints. Struggles with jar lids. Skips shower to avoid medication wash-off. Feels frustrated, isolated.'}
+                      {persona.name === 'Priya' && 'Morning yoga session. Logs sleep quality, stress level, symptoms. Takes progress photo. Cross-references weather app for triggers.'}
+                    </p>
+                  </div>
+                  <div style={{ marginBottom: '1rem' }}>
+                    <strong style={{ color: `rgb(${persona.color})` }}>Afternoon (2:00 PM)</strong>
+                    <p style={{ margin: '0.5rem 0 0 0' }}>
+                      {persona.name === 'Sarah' && 'Presentation at work. Wears long sleeves despite heat. Colleague asks "What\'s wrong with your hands?" Avoids answering.'}
+                      {persona.name === 'Marcus' && 'Construction site work. Joint pain worsens. Co-workers joke "getting old?" Dismisses symptoms as aging. No one mentions psoriasis connection.'}
+                      {persona.name === 'Priya' && 'Reviews nutrition tracker. Notices flare-up correlation with dairy. Adjusts meal prep. Researches gut-skin axis studies.'}
+                    </p>
+                  </div>
+                  <div style={{ marginBottom: '1rem' }}>
+                    <strong style={{ color: `rgb(${persona.color})` }}>Evening (9:00 PM)</strong>
+                    <p style={{ margin: '0.5rem 0 0 0' }}>
+                      {persona.name === 'Sarah' && 'Too tired for full routine. Applies only urgent areas. Feels guilty. Scrolls phone—no organized photo history for dermatologist appointment tomorrow.'}
+                      {persona.name === 'Marcus' && 'Joints swollen. Googles "psoriasis joint pain." Reads about PsA. Dismisses it—doctors never mentioned. Plans to "tough it out."'}
+                      {persona.name === 'Priya' && 'Analyzes 2-week data. Identifies pattern: high stress + poor sleep = worsening. Wishes existing apps offered predictive insights, not just tracking.'}
+                    </p>
+                  </div>
+                </div>
+                <div style={{
+                  marginTop: 'auto',
+                  paddingTop: '1rem',
+                  borderTop: `1px solid rgba(${persona.color}, 0.2)`,
+                  fontSize: '0.75rem',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  textAlign: 'center'
+                }}>
+                  Click to flip back
+                </div>
+              </div>
+            );
+
+            return (
+              <div
+                key={index}
+                onMouseEnter={() => setHoveredPersona(persona.name)}
+                onMouseLeave={() => setHoveredPersona(null)}
+                style={{ minHeight: '650px' }}
+              >
+                <FlipCard
+                  front={frontContent}
+                  back={backContent}
+                  color={persona.color}
+                  flipOnHover={false}
+                />
               </div>
             );
           })}
