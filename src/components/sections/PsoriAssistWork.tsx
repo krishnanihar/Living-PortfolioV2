@@ -8,6 +8,10 @@ import {
   Home as HomeIcon, CheckCircle, AlertCircle, Zap,
   type LucideIcon
 } from 'lucide-react';
+import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
+import { ScrollProgress } from '@/components/ui/ScrollProgress';
+import { FlipCard } from '@/components/ui/FlipCard';
+import { TimelineVisualization } from '@/components/ui/TimelineVisualization';
 
 interface StatItem {
   value: string;
@@ -58,7 +62,21 @@ export function PsoriAssistWork() {
   const [hoveredOtherProject, setHoveredOtherProject] = useState<number | null>(null);
   const [activePhase, setActivePhase] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
   const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Section navigation for scroll progress
+  const sections = [
+    { id: 'hero', label: 'Overview' },
+    { id: 'genesis', label: 'Genesis' },
+    { id: 'research', label: 'Research' },
+    { id: 'personas', label: 'Personas' },
+    { id: 'process', label: 'Process' },
+    { id: 'features', label: 'Features' },
+    { id: 'testing', label: 'Testing' },
+    { id: 'impact', label: 'Impact' }
+  ];
 
   const otherProjects = [
     {
@@ -304,8 +322,20 @@ export function PsoriAssistWork() {
       setIsMobile(window.innerWidth < 768);
     };
 
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      setMousePosition({ x, y });
+    };
+
     handleResize();
     window.addEventListener('resize', handleResize);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -320,6 +350,8 @@ export function PsoriAssistWork() {
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current);
       }
@@ -333,9 +365,28 @@ export function PsoriAssistWork() {
         minHeight: '100vh',
         backgroundColor: '#0A0A0A',
         color: '#FFFFFF',
-        padding: isMobile ? '5rem 1rem 3rem' : '6rem 2rem 4rem'
+        padding: isMobile ? '5rem 1rem 3rem' : '6rem 2rem 4rem',
+        position: 'relative',
+        overflow: 'hidden'
       }}
     >
+      {/* Scroll Progress Indicator */}
+      {!isMobile && <ScrollProgress sections={sections} color="74, 144, 226" />}
+
+      {/* Ambient Gradient Orb (follows mouse) */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'none',
+          zIndex: 0,
+          background: `radial-gradient(circle 600px at ${mousePosition.x}% ${mousePosition.y}%, rgba(74, 144, 226, 0.06) 0%, transparent 50%)`,
+          transition: 'background 0.3s ease-out'
+        }}
+      />
       {/* Back Button */}
       <div style={{ maxWidth: '1400px', margin: '0 auto', marginBottom: '2rem' }}>
         <Link
@@ -368,7 +419,7 @@ export function PsoriAssistWork() {
       </div>
 
       {/* Hero */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+      <div id="hero" style={{ maxWidth: '1400px', margin: '0 auto 6rem', position: 'relative' }}>
         <div style={{
           display: 'inline-block',
           padding: '0.5rem 1rem',
@@ -378,7 +429,9 @@ export function PsoriAssistWork() {
           color: 'rgb(74, 144, 226)',
           fontSize: '0.85rem',
           fontWeight: '500',
-          marginBottom: '1.5rem'
+          marginBottom: '1.5rem',
+          transform: `translateY(${scrollY * 0.1}px)`,
+          transition: 'transform 0.05s ease-out'
         }}>
           Digital Health · AI/ML · Clinical Validation · 18-Month Research
         </div>
@@ -390,7 +443,9 @@ export function PsoriAssistWork() {
           lineHeight: '1.1',
           background: 'linear-gradient(135deg, #FFFFFF 0%, rgba(255, 255, 255, 0.7) 100%)',
           WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent'
+          WebkitTextFillColor: 'transparent',
+          transform: `translateY(${scrollY * 0.05}px)`,
+          transition: 'transform 0.05s ease-out'
         }}>
           PsoriAssist
         </h1>
@@ -400,7 +455,9 @@ export function PsoriAssistWork() {
           color: 'rgba(255, 255, 255, 0.7)',
           marginBottom: '2rem',
           maxWidth: '900px',
-          lineHeight: '1.6'
+          lineHeight: '1.6',
+          transform: `translateY(${scrollY * 0.08}px)`,
+          transition: 'transform 0.05s ease-out'
         }}>
           Reimagining psoriasis care through AI-powered digital therapeutics. An 18-month design concept addressing treatment adherence, mental health integration, and early comorbidity detection for 125 million patients globally.
         </p>
@@ -496,7 +553,7 @@ export function PsoriAssistWork() {
       </div>
 
       {/* Genesis */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+      <div id="genesis" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <div style={{
           padding: isMobile ? '2rem 1.5rem' : '3rem 3rem',
           borderRadius: '32px',
@@ -512,6 +569,51 @@ export function PsoriAssistWork() {
           }}>
             The Genesis: Personal Experience as Research
           </h2>
+
+          {/* Personal Journey Timeline */}
+          <div style={{ marginBottom: '2rem' }}>
+            <TimelineVisualization
+              items={[
+                {
+                  id: 'diagnosis',
+                  title: 'Late Twenties',
+                  description: 'First patches appear, beginning of psoriasis journey',
+                  color: '74, 144, 226',
+                  completed: true
+                },
+                {
+                  id: 'topicals',
+                  title: 'Topical Steroids',
+                  description: 'Complex medication routines, adherence challenges',
+                  color: '239, 68, 68',
+                  completed: true
+                },
+                {
+                  id: 'mental-health',
+                  title: 'Mental Health Impact',
+                  description: '5+ years of treatment, zero mental health screening from providers',
+                  color: '236, 72, 153',
+                  completed: true
+                },
+                {
+                  id: 'biologics',
+                  title: 'Biologic Treatment',
+                  description: 'Escalation to advanced therapies, joint pain emerges',
+                  color: '251, 191, 36',
+                  completed: true
+                },
+                {
+                  id: 'psa-diagnosis',
+                  title: '18 Months Later',
+                  description: 'PsA diagnosis after seeing 3 specialists',
+                  color: '80, 200, 120',
+                  completed: true
+                }
+              ]}
+              orientation="horizontal"
+              animate={true}
+            />
+          </div>
           <div style={{
             fontSize: '1.125rem',
             lineHeight: '1.8',
@@ -583,7 +685,7 @@ export function PsoriAssistWork() {
       </div>
 
       {/* Research Discovery */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+      <div id="research" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
           fontWeight: '700',
@@ -707,7 +809,7 @@ export function PsoriAssistWork() {
       </div>
 
       {/* Personas */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+      <div id="personas" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
           fontWeight: '700',
@@ -881,7 +983,7 @@ export function PsoriAssistWork() {
       </div>
 
       {/* Double Diamond */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+      <div id="process" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
           fontWeight: '700',
@@ -1018,7 +1120,7 @@ export function PsoriAssistWork() {
       </div>
 
       {/* Features */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+      <div id="features" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
           fontWeight: '700',
@@ -1209,7 +1311,7 @@ export function PsoriAssistWork() {
       </div>
 
       {/* Usability Testing */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+      <div id="testing" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
           fontWeight: '700',
@@ -1395,7 +1497,7 @@ export function PsoriAssistWork() {
       </div>
 
       {/* Impact & Business */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+      <div id="impact" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
           fontWeight: '700',
