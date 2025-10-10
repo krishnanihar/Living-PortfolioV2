@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { ArrowDown, ArrowUpRight, Circle, Hexagon, Grid3x3, Heart } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Circle, Hexagon, Grid3x3, Heart, Brain } from 'lucide-react';
 
 interface LocalProject {
   id: number;
@@ -95,6 +95,20 @@ export function Work() {
     {
       id: 3,
       number: '03',
+      icon: Brain,
+      title: 'PsoriAssist',
+      category: 'Digital Health',
+      description: '18-month digital therapeutic design concept reimagining psoriasis care through AI-powered interventions. Clinical validation RCT pathway, ghost overlay innovation, and comprehensive research (25 interviews, 75+ studies).',
+      metric: '125M Global Patients',
+      tags: ['AI/ML', 'Digital Health', 'Clinical Validation', 'UX Research'],
+      status: 'Research',
+      year: '2024',
+      color: '74, 144, 226',
+      url: '/work/psoriassist',
+    },
+    {
+      id: 4,
+      number: '04',
       icon: Hexagon,
       title: 'Latent Space',
       category: 'Speculative Design',
@@ -107,8 +121,8 @@ export function Work() {
       url: '/work/latent-space',
     },
     {
-      id: 4,
-      number: '04',
+      id: 5,
+      number: '05',
       icon: Grid3x3,
       title: 'Metamorphic Fractal Reflections',
       category: 'Psychedelic Journey',
@@ -121,8 +135,8 @@ export function Work() {
       url: '/work/metamorphic-fractal-reflections',
     },
     {
-      id: 5,
-      number: '05',
+      id: 6,
+      number: '06',
       icon: Heart,
       title: 'Living Organism',
       category: 'Meta Design',
@@ -457,6 +471,23 @@ export function Work() {
                       )}
                       {project.id === 3 && (
                         <g>
+                          {/* Medical theme: Concentric circles representing holistic patient care */}
+                          <circle cx="150" cy="150" r="30" stroke="white" strokeWidth="0.5" fill="none" />
+                          <circle cx="150" cy="150" r="60" stroke="white" strokeWidth="0.5" fill="none" />
+                          <circle cx="150" cy="150" r="90" stroke="white" strokeWidth="0.5" fill="none" />
+                          <circle cx="150" cy="150" r="120" stroke="white" strokeWidth="0.5" fill="none" />
+                          {/* Plus sign for healthcare */}
+                          <line x1="150" y1="130" x2="150" y2="170" stroke="white" strokeWidth="0.5" />
+                          <line x1="130" y1="150" x2="170" y2="150" stroke="white" strokeWidth="0.5" />
+                          {/* Four dots representing 125M patients */}
+                          <circle cx="80" cy="80" r="3" fill="white" opacity="0.3" />
+                          <circle cx="220" cy="80" r="3" fill="white" opacity="0.3" />
+                          <circle cx="80" cy="220" r="3" fill="white" opacity="0.3" />
+                          <circle cx="220" cy="220" r="3" fill="white" opacity="0.3" />
+                        </g>
+                      )}
+                      {project.id === 4 && (
+                        <g>
                           {[...Array(16)].map((_, i) => (
                             <rect
                               key={i}
@@ -471,7 +502,7 @@ export function Work() {
                           ))}
                         </g>
                       )}
-                      {project.id === 4 && (
+                      {project.id === 5 && (
                         <g>
                           {/* Heart-based organic pattern */}
                           <path d="M150,80 C120,50 80,50 80,90 C80,130 150,180 150,180 C150,180 220,130 220,90 C220,50 180,50 150,80 Z" stroke="white" strokeWidth="0.5" fill="none" />

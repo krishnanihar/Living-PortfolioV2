@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowUpRight, Circle, Hexagon, Grid3X3, Heart, ArrowRight } from 'lucide-react';
+import { ArrowUpRight, Circle, Hexagon, Grid3X3, Heart, ArrowRight, Brain } from 'lucide-react';
 import Link from 'next/link';
 
 interface Project {
@@ -57,6 +57,18 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
     },
     {
       id: 3,
+      icon: Brain,
+      title: 'PsoriAssist',
+      category: 'Digital Health',
+      description: '18-month digital therapeutic design concept reimagining psoriasis care through AI-powered interventions. Clinical validation RCT pathway, ghost overlay innovation, and comprehensive research (25 interviews, 75+ studies).',
+      metric: '125M Global Patients',
+      tags: ['AI/ML', 'Digital Health', 'Clinical Validation'],
+      status: 'Research',
+      year: '2024',
+      orbColor: '74, 144, 226'
+    },
+    {
+      id: 4,
       icon: Hexagon,
       title: 'Latent Space',
       category: 'Speculative Design',
@@ -68,7 +80,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
       orbColor: '140, 100, 255'
     },
     {
-      id: 4,
+      id: 5,
       icon: Grid3X3,
       title: 'Metamorphic Fractal Reflections',
       category: 'Psychedelic Journey',
@@ -80,7 +92,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
       orbColor: '50, 200, 150'
     },
     {
-      id: 5,
+      id: 6,
       icon: Heart,
       title: 'Living Organism',
       category: 'Meta Design',
@@ -509,11 +521,22 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     )}
                     {project.id === 3 && (
                       <g>
+                        {/* Medical theme: Concentric circles representing holistic patient care */}
+                        <circle cx="60" cy="60" r="15" stroke="white" strokeWidth="0.5" fill="none" />
+                        <circle cx="60" cy="60" r="30" stroke="white" strokeWidth="0.5" fill="none" />
+                        <circle cx="60" cy="60" r="45" stroke="white" strokeWidth="0.5" fill="none" />
+                        {/* Plus sign for healthcare */}
+                        <line x1="60" y1="50" x2="60" y2="70" stroke="white" strokeWidth="0.5" />
+                        <line x1="50" y1="60" x2="70" y2="60" stroke="white" strokeWidth="0.5" />
+                      </g>
+                    )}
+                    {project.id === 4 && (
+                      <g>
                         <polygon points="60,20 100,40 100,80 60,100 20,80 20,40" stroke="white" strokeWidth="0.5" fill="none" />
                         <polygon points="60,35 85,47.5 85,72.5 60,85 35,72.5 35,47.5" stroke="white" strokeWidth="0.5" fill="none" />
                       </g>
                     )}
-                    {project.id === 4 && (
+                    {project.id === 5 && (
                       <g>
                         {[...Array(9)].map((_, i) => (
                           <rect
@@ -761,8 +784,9 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
               switch (id) {
                 case 1: return '/work/air-india';
                 case 2: return '/work/mythos';
-                case 3: return '/work/latent-space';
-                case 4: return '/work/metamorphic-fractal-reflections';
+                case 3: return '/work/psoriassist';
+                case 4: return '/work/latent-space';
+                case 5: return '/work/metamorphic-fractal-reflections';
                 default: return null;
               }
             };
