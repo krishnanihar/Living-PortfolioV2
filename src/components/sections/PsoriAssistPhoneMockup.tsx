@@ -679,18 +679,19 @@ function PhotoScreen({
     >
       {/* Header */}
       <div style={{
-        padding: '16px 20px',
+        padding: '12px 16px',
         display: 'flex',
         alignItems: 'center',
         gap: '12px',
-        borderBottom: '1px solid rgba(255,255,255,0.1)'
+        backgroundColor: IOS_COLORS.groupedBackground,
+        borderBottom: `1px solid ${IOS_COLORS.separator}`
       }}>
         <BackButton onClick={() => setActiveScreen('home')} />
         <h2 style={{
-          fontSize: '20px',
-          fontWeight: '600',
-          color: 'white',
-          letterSpacing: '-0.3px',
+          fontSize: `${IOS_TYPOGRAPHY.title3.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.title3.weight,
+          color: IOS_COLORS.label,
+          letterSpacing: `${IOS_TYPOGRAPHY.title3.tracking}px`,
           fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif'
         }}>
           Photo Tracking
@@ -738,7 +739,7 @@ function PhotoScreen({
                 justifyContent: 'center'
               }}
             >
-              <Sparkles size={32} color="rgb(74, 144, 226)" />
+              <Sparkles size={32} color={IOS_COLORS.systemBlue} />
             </motion.div>
 
             <motion.div
@@ -889,7 +890,7 @@ function PhotoScreen({
                         width: '2px',
                         height: '12px',
                         backgroundColor: Math.abs(photoOpacity - val) < 3
-                          ? 'rgb(74, 144, 226)'
+                          ? IOS_COLORS.systemBlue
                           : 'rgba(255,255,255,0.2)',
                         borderRadius: '1px',
                         transition: 'all 0.2s ease'
@@ -915,7 +916,7 @@ function PhotoScreen({
                     width: '100%',
                     height: '4px',
                     marginTop: '8px',
-                    accentColor: 'rgb(74, 144, 226)',
+                    accentColor: IOS_COLORS.systemBlue,
                     cursor: 'grab'
                   }}
                 />
@@ -937,7 +938,7 @@ function PhotoScreen({
                   height: '70px',
                   borderRadius: '50%',
                   backgroundColor: 'white',
-                  border: '4px solid rgba(74, 144, 226, 0.5)',
+                  border: `4px solid ${IOS_COLORS.systemBlue}80`,
                   cursor: 'pointer',
                   boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
                 }}
@@ -966,85 +967,106 @@ function PasiResultScreen({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      style={{ padding: '16px 20px 24px' }}
+      style={{ padding: '16px 16px 24px' }}
     >
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
-        <button
-          onClick={() => setActiveScreen('home')}
-          style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: '12px',
-            backgroundColor: 'rgba(255,255,255,0.1)',
-            border: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer'
-          }}
-        >
-          <ChevronLeft size={20} color="white" />
-        </button>
-        <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'white' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+        <BackButton onClick={() => setActiveScreen('home')} />
+        <h2 style={{
+          fontSize: `${IOS_TYPOGRAPHY.title3.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.title3.weight,
+          color: IOS_COLORS.label,
+          letterSpacing: `${IOS_TYPOGRAPHY.title3.tracking}px`
+        }}>
           PASI Results
         </h2>
       </div>
 
       {/* Overall Score */}
       <div style={{
-        padding: '24px',
-        borderRadius: '24px',
-        background: 'linear-gradient(135deg, rgba(80, 200, 120, 0.15), rgba(74, 144, 226, 0.15))',
-        border: '1px solid rgba(80, 200, 120, 0.3)',
-        marginBottom: '20px',
-        textAlign: 'center'
+        padding: '16px',
+        borderRadius: '16px',
+        backgroundColor: IOS_COLORS.systemBackground,
+        borderLeft: `4px solid ${IOS_COLORS.systemGreen}`,
+        marginBottom: '12px',
+        textAlign: 'center',
+        boxShadow: IOS_SHADOWS.card
       }}>
-        <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', marginBottom: '8px' }}>
+        <div style={{
+          fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+          color: IOS_COLORS.secondaryLabel,
+          marginBottom: '4px',
+          textTransform: 'uppercase',
+          letterSpacing: `${IOS_TYPOGRAPHY.footnote.tracking}px`
+        }}>
           Overall PASI Score
         </div>
-        <div style={{ fontSize: '56px', fontWeight: '700', color: 'rgb(80, 200, 120)', marginBottom: '8px' }}>
+        <div style={{
+          fontSize: '48px',
+          fontWeight: '700',
+          color: IOS_COLORS.systemGreen,
+          marginBottom: '4px'
+        }}>
           12.4
         </div>
-        <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)' }}>
+        <div style={{
+          fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+          color: IOS_COLORS.secondaryLabel
+        }}>
           Moderate Severity
         </div>
       </div>
 
       {/* Breakdown */}
-      <div style={{ marginBottom: '20px' }}>
-        <h3 style={{ fontSize: '16px', fontWeight: '600', color: 'white', marginBottom: '12px' }}>
+      <div style={{ marginBottom: '16px' }}>
+        <h3 style={{
+          fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.headline.weight,
+          color: IOS_COLORS.label,
+          marginBottom: '12px',
+          letterSpacing: `${IOS_TYPOGRAPHY.headline.tracking}px`
+        }}>
           Breakdown
         </h3>
-        <div style={{ display: 'grid', gap: '10px' }}>
+        <div style={{ display: 'grid', gap: '8px' }}>
           {[
-            { label: 'Erythema (Redness)', value: 2.8, color: '239, 68, 68' },
-            { label: 'Scaling', value: 3.1, color: '251, 191, 36' },
-            { label: 'Thickness', value: 2.5, color: '168, 85, 247' },
-            { label: 'Area Affected', value: 18, color: '74, 144, 226', suffix: '%' }
+            { label: 'Erythema (Redness)', value: 2.8, color: IOS_COLORS.systemRed },
+            { label: 'Scaling', value: 3.1, color: IOS_COLORS.systemYellow },
+            { label: 'Thickness', value: 2.5, color: IOS_COLORS.systemPurple },
+            { label: 'Area Affected', value: 18, color: IOS_COLORS.systemBlue, suffix: '%' }
           ].map((item, i) => (
             <div key={i} style={{
-              padding: '14px',
-              borderRadius: '14px',
-              backgroundColor: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(255,255,255,0.1)'
+              padding: '12px',
+              borderRadius: '12px',
+              backgroundColor: IOS_COLORS.systemBackground,
+              border: `1px solid ${IOS_COLORS.separator}`,
+              boxShadow: IOS_SHADOWS.card
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-                <span style={{ fontSize: '14px', color: 'rgba(255,255,255,0.8)' }}>{item.label}</span>
-                <span style={{ fontSize: '16px', fontWeight: '600', color: `rgb(${item.color})` }}>
+                <span style={{
+                  fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+                  color: IOS_COLORS.label
+                }}>
+                  {item.label}
+                </span>
+                <span style={{
+                  fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+                  fontWeight: '600',
+                  color: item.color
+                }}>
                   {item.value}{item.suffix || '/4.0'}
                 </span>
               </div>
               <div style={{
                 height: '4px',
                 borderRadius: '2px',
-                backgroundColor: 'rgba(255,255,255,0.1)',
+                backgroundColor: IOS_COLORS.quaternarySystemFill,
                 overflow: 'hidden'
               }}>
                 <div style={{
                   width: `${item.suffix ? item.value : (item.value / 4) * 100}%`,
                   height: '100%',
-                  backgroundColor: `rgb(${item.color})`
+                  backgroundColor: item.color
                 }} />
               </div>
             </div>
@@ -1056,10 +1078,16 @@ function PasiResultScreen({
       <div style={{
         padding: '16px',
         borderRadius: '16px',
-        backgroundColor: 'rgba(255,255,255,0.03)',
-        border: '1px solid rgba(255,255,255,0.1)'
+        backgroundColor: IOS_COLORS.systemBackground,
+        border: `1px solid ${IOS_COLORS.separator}`,
+        boxShadow: IOS_SHADOWS.card
       }}>
-        <div style={{ fontSize: '14px', fontWeight: '600', color: 'white', marginBottom: '12px' }}>
+        <div style={{
+          fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+          fontWeight: '600',
+          color: IOS_COLORS.label,
+          marginBottom: '12px'
+        }}>
           Compare: {compareSlider < 50 ? 'Before' : 'After'}
         </div>
         <div style={{
@@ -1110,7 +1138,7 @@ function PasiResultScreen({
           }}
           style={{
             width: '100%',
-            accentColor: 'rgb(74, 144, 226)',
+            accentColor: IOS_COLORS.systemBlue,
             cursor: 'grab'
           }}
         />
@@ -1139,62 +1167,67 @@ function MedicationScreen({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -300 }}
       transition={SPRING_CONFIG.screen}
-      style={{ padding: '16px 20px 24px' }}
+      style={{ padding: '16px 16px 24px' }}
     >
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
-        <button
-          onClick={() => setActiveScreen('home')}
-          style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: '12px',
-            backgroundColor: 'rgba(255,255,255,0.1)',
-            border: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer'
-          }}
-        >
-          <ChevronLeft size={20} color="white" />
-        </button>
-        <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'white' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+        <BackButton onClick={() => setActiveScreen('home')} />
+        <h2 style={{
+          fontSize: `${IOS_TYPOGRAPHY.title3.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.title3.weight,
+          color: IOS_COLORS.label,
+          letterSpacing: `${IOS_TYPOGRAPHY.title3.tracking}px`
+        }}>
           Medications
         </h2>
       </div>
 
       {/* Streak Card */}
       <div style={{
-        padding: '20px',
-        borderRadius: '20px',
-        background: 'linear-gradient(135deg, rgba(80, 200, 120, 0.15), rgba(74, 144, 226, 0.15))',
-        border: '1px solid rgba(80, 200, 120, 0.3)',
-        marginBottom: '24px',
-        textAlign: 'center'
+        padding: '16px',
+        borderRadius: '16px',
+        backgroundColor: IOS_COLORS.systemBackground,
+        borderLeft: `4px solid ${IOS_COLORS.systemGreen}`,
+        marginBottom: '16px',
+        textAlign: 'center',
+        boxShadow: IOS_SHADOWS.card
       }}>
-        <Award size={48} color="rgb(80, 200, 120)" style={{ margin: '0 auto 12px' }} />
-        <div style={{ fontSize: '42px', fontWeight: '700', color: 'rgb(80, 200, 120)', marginBottom: '4px' }}>
+        <Award size={40} color={IOS_COLORS.systemGreen} style={{ margin: '0 auto 12px' }} />
+        <div style={{
+          fontSize: '36px',
+          fontWeight: '700',
+          color: IOS_COLORS.systemGreen,
+          marginBottom: '4px'
+        }}>
           {streak} Days
         </div>
-        <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)' }}>
+        <div style={{
+          fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+          color: IOS_COLORS.secondaryLabel
+        }}>
           Current Streak
         </div>
         <div style={{
           marginTop: '12px',
           padding: '8px',
           borderRadius: '8px',
-          backgroundColor: 'rgba(80, 200, 120, 0.2)',
-          fontSize: '13px',
-          color: 'rgba(255,255,255,0.8)'
+          backgroundColor: IOS_COLORS.quaternarySystemFill,
+          fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+          color: IOS_COLORS.label
         }}>
           🎉 Next milestone: 30 days (16 days to go!)
         </div>
       </div>
 
       {/* Today's Schedule */}
-      <div style={{ marginBottom: '24px' }}>
-        <h3 style={{ fontSize: '16px', fontWeight: '600', color: 'white', marginBottom: '12px' }}>
+      <div style={{ marginBottom: '16px' }}>
+        <h3 style={{
+          fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.headline.weight,
+          color: IOS_COLORS.label,
+          marginBottom: '12px',
+          letterSpacing: `${IOS_TYPOGRAPHY.headline.tracking}px`
+        }}>
           Today's Schedule
         </h3>
         <div style={{ display: 'grid', gap: '12px' }}>
@@ -1207,14 +1240,13 @@ function MedicationScreen({
               key={i}
               whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
               style={{
-                padding: '16px',
-                borderRadius: '16px',
-                backgroundColor: medicationChecked[med.index]
-                  ? 'rgba(80, 200, 120, 0.1)'
-                  : 'rgba(255,255,255,0.05)',
-                border: medicationChecked[med.index]
-                  ? '1px solid rgba(80, 200, 120, 0.3)'
-                  : '1px solid rgba(255,255,255,0.1)',
+                padding: '14px',
+                borderRadius: '14px',
+                backgroundColor: IOS_COLORS.systemBackground,
+                borderLeft: medicationChecked[med.index]
+                  ? `4px solid ${IOS_COLORS.systemGreen}`
+                  : `4px solid ${IOS_COLORS.separator}`,
+                boxShadow: IOS_SHADOWS.card,
                 display: 'flex',
                 alignItems: 'center',
                 gap: '12px',
@@ -1231,8 +1263,8 @@ function MedicationScreen({
                   width: '24px',
                   height: '24px',
                   borderRadius: '50%',
-                  border: '2px solid ' + (medicationChecked[med.index] ? 'rgb(80, 200, 120)' : 'rgba(255,255,255,0.3)'),
-                  backgroundColor: medicationChecked[med.index] ? 'rgb(80, 200, 120)' : 'transparent',
+                  border: `2px solid ${medicationChecked[med.index] ? IOS_COLORS.systemGreen : IOS_COLORS.separator}`,
+                  backgroundColor: medicationChecked[med.index] ? IOS_COLORS.systemGreen : 'transparent',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -1250,10 +1282,18 @@ function MedicationScreen({
                 )}
               </motion.div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: '15px', fontWeight: '600', color: 'white', marginBottom: '2px' }}>
+                <div style={{
+                  fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+                  fontWeight: '600',
+                  color: IOS_COLORS.label,
+                  marginBottom: '2px'
+                }}>
                   {med.name}
                 </div>
-                <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>
+                <div style={{
+                  fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+                  color: IOS_COLORS.secondaryLabel
+                }}>
                   {med.time} • {med.area}
                 </div>
               </div>
