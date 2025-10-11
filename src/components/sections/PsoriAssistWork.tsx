@@ -70,12 +70,21 @@ export function PsoriAssistWork() {
   const sections = [
     { id: 'hero', label: 'Overview' },
     { id: 'genesis', label: 'Genesis' },
+    { id: 'stakeholders', label: 'Stakeholders' },
     { id: 'research', label: 'Research' },
+    { id: 'competitors', label: 'Landscape' },
+    { id: 'problem', label: 'Problem' },
+    { id: 'principles', label: 'Principles' },
     { id: 'personas', label: 'Personas' },
     { id: 'process', label: 'Process' },
     { id: 'features', label: 'Features' },
+    { id: 'design-system', label: 'Design System' },
+    { id: 'flows', label: 'Flows' },
     { id: 'testing', label: 'Testing' },
-    { id: 'impact', label: 'Impact' }
+    { id: 'technical', label: 'Technical' },
+    { id: 'impact', label: 'Impact' },
+    { id: 'learnings', label: 'Learnings' },
+    { id: 'roadmap', label: 'Roadmap' }
   ];
 
   const otherProjects = [
@@ -224,6 +233,23 @@ export function PsoriAssistWork() {
       color: '168, 85, 247'
     },
     {
+      id: 'medication-reminders',
+      priority: 'MUST',
+      icon: CheckCircle,
+      title: 'Smart Medication Reminders',
+      subtitle: 'Context-aware adherence system with gamification',
+      description: 'Learns from user patterns, adapts timing, and celebrates milestones to improve 40-50% baseline adherence',
+      details: [
+        'Smart scheduling learns from user response patterns',
+        'Location-based prompts (remind when home)',
+        'Time-of-day optimization based on historical adherence',
+        'Gamification: Streak tracking (7, 30, 90-day milestones), achievement badges',
+        'Automated MPR (Medication Possession Ratio) calculation for providers'
+      ],
+      technical: 'Local notification scheduling with geofencing, behavioral pattern ML for optimal timing',
+      color: '80, 200, 120'
+    },
+    {
       id: 'mental-health',
       priority: 'MUST',
       icon: Heart,
@@ -258,6 +284,74 @@ export function PsoriAssistWork() {
       color: '239, 68, 68'
     },
     {
+      id: 'provider-export',
+      priority: 'MUST',
+      icon: Target,
+      title: 'Provider Report Export',
+      subtitle: 'Comprehensive visit summaries',
+      description: 'PDF generation with photo timelines, PASI trends, adherence metrics, mental health & PsA screening',
+      details: [
+        'Customizable date range and section selection',
+        'Includes: Photo progression, PASI chart, adherence stats, screening scores',
+        'Email, print, or direct portal upload',
+        'Saves patients 15-20 minutes explaining status at appointments',
+        'Enables more productive 12-15 minute visits'
+      ],
+      technical: 'PDF generation via React-PDF, AES-256 encrypted transfers, audit logging',
+      color: '74, 144, 226'
+    },
+    {
+      id: 'trigger-tracking',
+      priority: 'SHOULD',
+      icon: TrendingUp,
+      title: 'Multi-Modal Trigger Tracking',
+      subtitle: 'Automated correlations with predictive insights',
+      description: 'Combines manual entry with automatic integrations to identify personalized flare-up triggers',
+      details: [
+        'Manual: Food diary, stress level (1-10), sleep duration, medications',
+        'Automatic: Weather API (temp, humidity, UV, barometric pressure), wearable sync (sleep quality)',
+        'Calendar sync: Identifies high-stress periods automatically',
+        'Spearman correlation analysis: Statistical relationships with p-values',
+        'Visual: Heat maps, scatter plots, strength indicators'
+      ],
+      technical: 'OpenWeatherMap API, Apple Health/Google Fit SDK integration, correlation engine with significance testing',
+      color: '251, 191, 36'
+    },
+    {
+      id: 'educational-library',
+      priority: 'SHOULD',
+      icon: Brain,
+      title: 'Educational Content Library',
+      subtitle: 'Curated, dermatologist-reviewed resources',
+      description: 'Personalized educational content adapting to severity, treatment type, and user engagement',
+      details: [
+        'Categories: Basics, Treatments, Lifestyle, Mental Health, PsA',
+        'Formats: Articles, videos, infographics, webinars',
+        'All content dermatologist-reviewed for accuracy',
+        'Personalization engine: Curated based on severity, current treatment, interaction history',
+        'Progress tracking: "Knowledge milestones" for patient empowerment'
+      ],
+      technical: 'Content CMS with versioning, recommendation algorithm based on collaborative filtering',
+      color: '168, 85, 247'
+    },
+    {
+      id: 'community-forum',
+      priority: 'SHOULD',
+      icon: Users,
+      title: 'Moderated Community Forum',
+      subtitle: 'Safe peer support with expert participation',
+      description: 'Pseudonymous community reducing stigma while maintaining safety through AI + human moderation',
+      details: [
+        'Structure: Topic discussions, success stories, Q&A',
+        'AI toxicity detection + human review for misinformation',
+        'Pseudonymous profiles, optional photo sharing with consent',
+        'Expert participation: Monthly dermatologist AMAs',
+        'Reporting system: Community-driven flagging with moderator review'
+      ],
+      technical: 'Perspective API for toxicity, content moderation queue, encrypted user identities',
+      color: '80, 200, 120'
+    },
+    {
       id: 'predictive-alerts',
       priority: 'COULD',
       icon: Zap,
@@ -290,6 +384,23 @@ export function PsoriAssistWork() {
       ],
       technical: 'Node.js + Express backend, PostgreSQL primary database, Real-time updates via WebSockets (Socket.io)',
       color: '80, 200, 120'
+    },
+    {
+      id: 'treatment-comparison',
+      priority: 'COULD',
+      icon: TrendingUp,
+      title: 'Treatment A/B Comparison',
+      subtitle: 'Evidence-based treatment decision support',
+      description: 'Compare two treatment regimens side-by-side to support informed shared decision-making',
+      details: [
+        'Metrics compared: PASI improvement, adherence rate, side effects frequency, cost analysis',
+        'Visual: Before/after photos, statistical significance testing (t-tests, confidence intervals)',
+        'Use case: Deciding between topicals vs. biologics, or comparing biologic options',
+        'Provider collaboration: Share comparison with dermatologist for consultation',
+        'Export as PDF for insurance prior authorization'
+      ],
+      technical: 'Statistical analysis library (Welch\'s t-test), data visualization with Recharts',
+      color: '74, 144, 226'
     }
   ];
 
@@ -684,6 +795,193 @@ export function PsoriAssistWork() {
         </div>
       </div>
 
+      {/* Stakeholder Perspectives */}
+      <div id="stakeholders" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+        <h2 style={{
+          fontSize: isMobile ? '2rem' : '3rem',
+          fontWeight: '700',
+          marginBottom: '1.5rem',
+          textAlign: 'center',
+          color: 'rgba(255, 255, 255, 0.95)'
+        }}>
+          Stakeholder Perspectives
+        </h2>
+        <p style={{
+          fontSize: '1.125rem',
+          color: 'rgba(255, 255, 255, 0.6)',
+          textAlign: 'center',
+          marginBottom: '3rem',
+          maxWidth: '800px',
+          margin: '0 auto 3rem'
+        }}>
+          Clinical insights from 8 dermatologists and 4 rheumatologists
+        </p>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+          gap: '2rem'
+        }}>
+          {/* Dermatologists */}
+          <div style={{
+            padding: isMobile ? '2rem 1.5rem' : '2.5rem 2rem',
+            borderRadius: '24px',
+            backgroundColor: 'rgba(168, 85, 247, 0.03)',
+            border: '1px solid rgba(168, 85, 247, 0.2)',
+            transition: 'all 0.3s ease'
+          }}>
+            <div style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '14px',
+              backgroundColor: 'rgba(168, 85, 247, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '1.5rem'
+            }}>
+              <Activity size={28} color="rgb(168, 85, 247)" />
+            </div>
+            <h3 style={{
+              fontSize: '1.5rem',
+              fontWeight: '600',
+              marginBottom: '1rem',
+              color: 'rgba(255, 255, 255, 0.95)'
+            }}>
+              Dermatologists (n=8)
+            </h3>
+            <div style={{
+              padding: '1.5rem',
+              borderRadius: '12px',
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+              borderLeft: '3px solid rgb(168, 85, 247)',
+              fontStyle: 'italic',
+              fontSize: '0.95rem',
+              color: 'rgba(255, 255, 255, 0.8)',
+              lineHeight: '1.6',
+              marginBottom: '1.5rem'
+            }}>
+              "If I could pull up a chart showing their medication adherence, PASI trends, trigger patterns... that would be a game-changer. Right now, I'm flying blind."
+              <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.6)' }}>
+                — Dr. Sarah Johnson, Board-Certified Dermatologist
+              </div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem' }}>
+              {[
+                'Time constraints: 12-15 min average visit',
+                'PASI scoring: 5-7 minutes if done properly',
+                'Poor adherence data: "Patients tell me they\'re applying it..."',
+                'No real-time monitoring between 3-month visits',
+                'Minimal mental health screening capacity'
+              ].map((pain, i) => (
+                <div key={i} style={{
+                  fontSize: '0.9rem',
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  paddingLeft: '1.25rem',
+                  position: 'relative',
+                  lineHeight: '1.6'
+                }}>
+                  <span style={{
+                    position: 'absolute',
+                    left: 0,
+                    color: 'rgb(168, 85, 247)'
+                  }}>
+                    •
+                  </span>
+                  {pain}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Rheumatologists */}
+          <div style={{
+            padding: isMobile ? '2rem 1.5rem' : '2.5rem 2rem',
+            borderRadius: '24px',
+            backgroundColor: 'rgba(239, 68, 68, 0.03)',
+            border: '1px solid rgba(239, 68, 68, 0.2)',
+            transition: 'all 0.3s ease'
+          }}>
+            <div style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '14px',
+              backgroundColor: 'rgba(239, 68, 68, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '1.5rem'
+            }}>
+              <AlertCircle size={28} color="rgb(239, 68, 68)" />
+            </div>
+            <h3 style={{
+              fontSize: '1.5rem',
+              fontWeight: '600',
+              marginBottom: '1rem',
+              color: 'rgba(255, 255, 255, 0.95)'
+            }}>
+              Rheumatologists (n=4)
+            </h3>
+            <div style={{
+              padding: '1.5rem',
+              borderRadius: '16px',
+              backgroundColor: 'rgba(239, 68, 68, 0.1)',
+              border: '1px solid rgba(239, 68, 68, 0.3)',
+              marginBottom: '1.5rem',
+              textAlign: 'center'
+            }}>
+              <div style={{
+                fontSize: '3rem',
+                fontWeight: '700',
+                color: 'rgb(239, 68, 68)',
+                marginBottom: '0.5rem'
+              }}>
+                2.5 years
+              </div>
+              <div style={{
+                fontSize: '1rem',
+                color: 'rgba(255, 255, 255, 0.8)',
+                fontWeight: '500'
+              }}>
+                Average PsA Diagnostic Delay
+              </div>
+              <div style={{
+                fontSize: '0.85rem',
+                color: 'rgba(255, 255, 255, 0.6)',
+                marginTop: '0.5rem'
+              }}>
+                Unchanged from 2000-2017
+              </div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem' }}>
+              {[
+                'Late referrals from dermatology',
+                '50% present with irreversible joint damage',
+                'Poor inter-specialty communication',
+                'Need systematic PsA screening in derm settings'
+              ].map((insight, i) => (
+                <div key={i} style={{
+                  fontSize: '0.9rem',
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  paddingLeft: '1.25rem',
+                  position: 'relative',
+                  lineHeight: '1.6'
+                }}>
+                  <span style={{
+                    position: 'absolute',
+                    left: 0,
+                    color: 'rgb(239, 68, 68)'
+                  }}>
+                    •
+                  </span>
+                  {insight}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Research Discovery */}
       <div id="research" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
@@ -809,6 +1107,537 @@ export function PsoriAssistWork() {
               </p>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Competitive Landscape */}
+      <div id="competitors" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+        <h2 style={{
+          fontSize: isMobile ? '2rem' : '3rem',
+          fontWeight: '700',
+          marginBottom: '1.5rem',
+          textAlign: 'center',
+          color: 'rgba(255, 255, 255, 0.95)'
+        }}>
+          Competitive Landscape
+        </h2>
+        <p style={{
+          fontSize: '1.125rem',
+          color: 'rgba(255, 255, 255, 0.6)',
+          textAlign: 'center',
+          marginBottom: '3rem',
+          maxWidth: '800px',
+          margin: '0 auto 3rem'
+        }}>
+          15 existing apps analyzed using MARS-G framework
+        </p>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+          gap: '2rem',
+          marginBottom: '3rem'
+        }}>
+          {[
+            {
+              name: 'Psoriasis Helferin',
+              market: 'Germany',
+              rating: '3.8/5.0',
+              strengths: ['Highest professional rating (MARS-G)', 'Clean interface', 'Good usability'],
+              gaps: ['No validated PASI/DLQI', 'No AI capabilities', 'Germany-only'],
+              color: '80, 200, 120'
+            },
+            {
+              name: 'Imagine by LEO Pharma',
+              market: 'Discontinued 2022',
+              rating: '200K+ users',
+              strengths: ['Pharmaceutical backing', 'Photo tracking', 'Large user base'],
+              gaps: ['Discontinued July 2022', 'Sustainability challenges', 'Promises unfulfilled'],
+              color: '239, 68, 68'
+            },
+            {
+              name: 'MyPsoriasisTeam',
+              market: 'Community',
+              rating: '80K+ members',
+              strengths: ['Largest community', 'Social support', 'Active engagement'],
+              gaps: ['ZERO symptom tracking', 'No medication management', 'Community-only focus'],
+              color: '251, 191, 36'
+            },
+            {
+              name: 'Kopa for Psoriasis',
+              market: 'Mental Health',
+              rating: 'CBT-based',
+              strengths: ['ONLY app addressing mental health', 'CBT methodology', 'Therapeutic approach'],
+              gaps: ['Limited adoption', 'No symptom tracking integration', 'Siloed approach'],
+              color: '236, 72, 153'
+            }
+          ].map((app, i) => (
+            <div
+              key={i}
+              style={{
+                padding: isMobile ? '2rem 1.5rem' : '2.5rem 2rem',
+                borderRadius: '24px',
+                backgroundColor: `rgba(${app.color}, 0.03)`,
+                border: `1px solid rgba(${app.color}, 0.2)`,
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = `rgba(${app.color}, 0.08)`;
+                e.currentTarget.style.borderColor = `rgba(${app.color}, 0.4)`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = `rgba(${app.color}, 0.03)`;
+                e.currentTarget.style.borderColor = `rgba(${app.color}, 0.2)`;
+              }}
+            >
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                marginBottom: '1rem'
+              }}>
+                <h3 style={{
+                  fontSize: '1.25rem',
+                  fontWeight: '600',
+                  color: 'rgba(255, 255, 255, 0.95)'
+                }}>
+                  {app.name}
+                </h3>
+                <div style={{
+                  padding: '0.25rem 0.75rem',
+                  borderRadius: '12px',
+                  backgroundColor: `rgba(${app.color}, 0.15)`,
+                  fontSize: '0.75rem',
+                  fontWeight: '600',
+                  color: `rgb(${app.color})`
+                }}>
+                  {app.rating}
+                </div>
+              </div>
+              <div style={{
+                fontSize: '0.85rem',
+                color: 'rgba(255, 255, 255, 0.6)',
+                marginBottom: '1.5rem'
+              }}>
+                {app.market}
+              </div>
+
+              <div style={{ marginBottom: '1.25rem' }}>
+                <h4 style={{
+                  fontSize: '0.8rem',
+                  fontWeight: '600',
+                  color: 'rgb(80, 200, 120)',
+                  marginBottom: '0.75rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
+                  Strengths
+                </h4>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                  {app.strengths.map((strength, j) => (
+                    <li
+                      key={j}
+                      style={{
+                        fontSize: '0.85rem',
+                        lineHeight: '1.6',
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        marginBottom: '0.5rem',
+                        paddingLeft: '1.25rem',
+                        position: 'relative'
+                      }}
+                    >
+                      <span style={{
+                        position: 'absolute',
+                        left: 0,
+                        color: 'rgb(80, 200, 120)'
+                      }}>
+                        ✓
+                      </span>
+                      {strength}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h4 style={{
+                  fontSize: '0.8rem',
+                  fontWeight: '600',
+                  color: 'rgb(239, 68, 68)',
+                  marginBottom: '0.75rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
+                  Gaps
+                </h4>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                  {app.gaps.map((gap, j) => (
+                    <li
+                      key={j}
+                      style={{
+                        fontSize: '0.85rem',
+                        lineHeight: '1.6',
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        marginBottom: '0.5rem',
+                        paddingLeft: '1.25rem',
+                        position: 'relative'
+                      }}
+                    >
+                      <span style={{
+                        position: 'absolute',
+                        left: 0,
+                        color: 'rgb(239, 68, 68)'
+                      }}>
+                        ✗
+                      </span>
+                      {gap}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Critical Market Gaps */}
+        <div style={{
+          padding: isMobile ? '2.5rem 2rem' : '3rem 3rem',
+          borderRadius: '32px',
+          backgroundColor: 'rgba(251, 191, 36, 0.05)',
+          border: '1px solid rgba(251, 191, 36, 0.3)',
+          textAlign: 'center'
+        }}>
+          <h3 style={{
+            fontSize: isMobile ? '1.5rem' : '2rem',
+            fontWeight: '600',
+            marginBottom: '1.5rem',
+            color: 'rgb(251, 191, 36)'
+          }}>
+            Critical Market Gaps Identified
+          </h3>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+            gap: '1.5rem'
+          }}>
+            {[
+              { value: 'ZERO', label: 'Apps with certified EHR integration' },
+              { value: 'ZERO', label: 'Apps with working AI/ML deployed' },
+              { value: 'ONE', label: 'App addressing mental health (limited adoption)' }
+            ].map((gap, i) => (
+              <div key={i}>
+                <div style={{
+                  fontSize: '2.5rem',
+                  fontWeight: '700',
+                  color: 'rgb(251, 191, 36)',
+                  marginBottom: '0.5rem'
+                }}>
+                  {gap.value}
+                </div>
+                <div style={{
+                  fontSize: '0.95rem',
+                  color: 'rgba(255, 255, 255, 0.8)',
+                  lineHeight: '1.5'
+                }}>
+                  {gap.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Problem Reframing */}
+      <div id="problem" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+        <h2 style={{
+          fontSize: isMobile ? '2rem' : '3rem',
+          fontWeight: '700',
+          marginBottom: '3rem',
+          textAlign: 'center',
+          color: 'rgba(255, 255, 255, 0.95)'
+        }}>
+          Problem Reframing
+        </h2>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+          gap: '2rem',
+          alignItems: 'center'
+        }}>
+          {/* Initial Problem */}
+          <div style={{
+            padding: isMobile ? '2rem 1.5rem' : '2.5rem 2rem',
+            borderRadius: '24px',
+            backgroundColor: 'rgba(239, 68, 68, 0.05)',
+            border: '1px solid rgba(239, 68, 68, 0.2)',
+            position: 'relative'
+          }}>
+            <div style={{
+              position: 'absolute',
+              top: '1.5rem',
+              right: '1.5rem',
+              padding: '0.375rem 0.75rem',
+              borderRadius: '12px',
+              backgroundColor: 'rgba(239, 68, 68, 0.2)',
+              fontSize: '0.75rem',
+              fontWeight: '600',
+              color: 'rgb(239, 68, 68)',
+              textTransform: 'uppercase'
+            }}>
+              Initial
+            </div>
+            <h3 style={{
+              fontSize: '1.25rem',
+              fontWeight: '600',
+              marginBottom: '1rem',
+              color: 'rgba(255, 255, 255, 0.95)'
+            }}>
+              Based on Personal Experience
+            </h3>
+            <p style={{
+              fontSize: '1rem',
+              lineHeight: '1.7',
+              color: 'rgba(255, 255, 255, 0.7)'
+            }}>
+              "Patients need better medication reminders and progress tracking."
+            </p>
+          </div>
+
+          {/* Arrow */}
+          <div style={{
+            textAlign: 'center',
+            fontSize: isMobile ? '2rem' : '3rem',
+            color: 'rgb(80, 200, 120)',
+            fontWeight: '700'
+          }}>
+            →
+          </div>
+
+          {/* Reframed Problem */}
+          <div style={{
+            padding: isMobile ? '2rem 1.5rem' : '2.5rem 2rem',
+            borderRadius: '24px',
+            backgroundColor: 'rgba(80, 200, 120, 0.05)',
+            border: '1px solid rgba(80, 200, 120, 0.3)',
+            position: 'relative',
+            gridColumn: isMobile ? '1' : '2'
+          }}>
+            <div style={{
+              position: 'absolute',
+              top: '1.5rem',
+              right: '1.5rem',
+              padding: '0.375rem 0.75rem',
+              borderRadius: '12px',
+              backgroundColor: 'rgba(80, 200, 120, 0.2)',
+              fontSize: '0.75rem',
+              fontWeight: '600',
+              color: 'rgb(80, 200, 120)',
+              textTransform: 'uppercase'
+            }}>
+              Reframed
+            </div>
+            <h3 style={{
+              fontSize: '1.25rem',
+              fontWeight: '600',
+              marginBottom: '1rem',
+              color: 'rgba(255, 255, 255, 0.95)'
+            }}>
+              After Research Synthesis
+            </h3>
+            <p style={{
+              fontSize: '1rem',
+              lineHeight: '1.7',
+              color: 'rgba(255, 255, 255, 0.7)'
+            }}>
+              "Patients face a <strong style={{ color: 'rgb(80, 200, 120)' }}>fragmented, reactive care model</strong> with poor adherence (40-50%), diagnostic delays for comorbidities (2.5yr avg for PsA), and inadequate mental health support (15% vs 20-35% prevalence). This results in suboptimal disease control, preventable joint damage, and annual costs exceeding $12,000 per patient."
+            </p>
+          </div>
+        </div>
+
+        <div style={{
+          marginTop: '2rem',
+          padding: '1.5rem',
+          borderRadius: '16px',
+          backgroundColor: 'rgba(74, 144, 226, 0.05)',
+          border: '1px solid rgba(74, 144, 226, 0.2)',
+          textAlign: 'center'
+        }}>
+          <p style={{
+            fontSize: '1.05rem',
+            lineHeight: '1.7',
+            color: 'rgba(255, 255, 255, 0.8)',
+            fontStyle: 'italic',
+            margin: 0
+          }}>
+            From "better reminders" to <strong style={{ color: 'rgb(74, 144, 226)' }}>systemic care model transformation</strong>
+          </p>
+        </div>
+      </div>
+
+      {/* Design Principles */}
+      <div id="principles" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+        <h2 style={{
+          fontSize: isMobile ? '2rem' : '3rem',
+          fontWeight: '700',
+          marginBottom: '1.5rem',
+          textAlign: 'center',
+          color: 'rgba(255, 255, 255, 0.95)'
+        }}>
+          Design Principles
+        </h2>
+        <p style={{
+          fontSize: '1.125rem',
+          color: 'rgba(255, 255, 255, 0.6)',
+          textAlign: 'center',
+          marginBottom: '3rem',
+          maxWidth: '700px',
+          margin: '0 auto 3rem'
+        }}>
+          5 core principles guiding every design decision
+        </p>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+          gap: '2rem'
+        }}>
+          {[
+            {
+              principle: 'Clinical Rigor Over Polish',
+              description: 'Evidence-based features validated by research, not just intuitive UI',
+              example: 'PASI scoring uses validated CNN models (MAE <2.5) rather than simple photo logging',
+              color: '168, 85, 247',
+              icon: Brain
+            },
+            {
+              principle: 'Proactive, Not Reactive',
+              description: 'Shift from tracking what happened to predicting what will happen',
+              example: 'Predictive flare alerts using LSTM (80%+ accuracy) vs. post-hoc symptom logging',
+              color: '251, 191, 36',
+              icon: Zap
+            },
+            {
+              principle: 'Holistic Health',
+              description: 'Address bio-psycho-social complexity, not just visible symptoms',
+              example: 'Integrated PHQ-9/GAD-7 screening + PsA detection + trigger analysis',
+              color: '236, 72, 153',
+              icon: Heart
+            },
+            {
+              principle: 'Provider Partnership',
+              description: 'Design for B2B2C model, enabling clinical collaboration',
+              example: 'Provider dashboard with RPM billing codes, not just patient-facing app',
+              color: '80, 200, 120',
+              icon: Users
+            },
+            {
+              principle: 'Inclusive by Default',
+              description: 'Accessibility, health equity, and digital divide from Day 1',
+              example: 'WCAG AA compliance, freemium model, multilingual, low-bandwidth mode',
+              color: '74, 144, 226',
+              icon: CheckCircle
+            }
+          ].map((p, i) => {
+            const Icon = p.icon;
+            // Front face
+            const frontContent = (
+              <div style={{
+                padding: isMobile ? '2rem 1.5rem' : '2rem 1.5rem',
+                borderRadius: '24px',
+                backgroundColor: `rgba(${p.color}, 0.05)`,
+                border: `1px solid rgba(${p.color}, 0.3)`,
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '50%',
+                  backgroundColor: `rgba(${p.color}, 0.15)`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '1.5rem'
+                }}>
+                  <Icon size={32} color={`rgb(${p.color})`} />
+                </div>
+                <h3 style={{
+                  fontSize: '1.25rem',
+                  fontWeight: '600',
+                  marginBottom: '0.75rem',
+                  color: `rgb(${p.color})`
+                }}>
+                  {p.principle}
+                </h3>
+                <p style={{
+                  fontSize: '0.95rem',
+                  lineHeight: '1.6',
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  margin: 0
+                }}>
+                  {p.description}
+                </p>
+              </div>
+            );
+
+            // Back face
+            const backContent = (
+              <div style={{
+                padding: isMobile ? '2rem 1.5rem' : '2rem 1.5rem',
+                borderRadius: '24px',
+                backgroundColor: `rgba(${p.color}, 0.1)`,
+                border: `1px solid rgba(${p.color}, 0.4)`,
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
+              }}>
+                <h4 style={{
+                  fontSize: '0.9rem',
+                  fontWeight: '600',
+                  color: `rgb(${p.color})`,
+                  marginBottom: '1rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
+                  In Practice
+                </h4>
+                <p style={{
+                  fontSize: '0.95rem',
+                  lineHeight: '1.7',
+                  color: 'rgba(255, 255, 255, 0.8)',
+                  margin: 0
+                }}>
+                  {p.example}
+                </p>
+                <div style={{
+                  marginTop: 'auto',
+                  paddingTop: '1rem',
+                  fontSize: '0.75rem',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  textAlign: 'center'
+                }}>
+                  Click to flip back
+                </div>
+              </div>
+            );
+
+            return (
+              <div key={i} style={{ minHeight: '300px' }}>
+                <FlipCard
+                  front={frontContent}
+                  back={backContent}
+                  color={p.color}
+                  flipOnHover={false}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -1581,6 +2410,685 @@ export function PsoriAssistWork() {
         </div>
       </div>
 
+      {/* Design System */}
+      <div id="design-system" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+        <h2 style={{
+          fontSize: isMobile ? '2rem' : '3rem',
+          fontWeight: '700',
+          marginBottom: '1.5rem',
+          textAlign: 'center',
+          color: 'rgba(255, 255, 255, 0.95)'
+        }}>
+          Design System
+        </h2>
+        <p style={{
+          fontSize: '1.125rem',
+          color: 'rgba(255, 255, 255, 0.6)',
+          textAlign: 'center',
+          marginBottom: '3rem',
+          maxWidth: '700px',
+          margin: '0 auto 3rem'
+        }}>
+          Comprehensive design language with WCAG AA accessibility standards
+        </p>
+
+        {/* Color Palette */}
+        <div style={{ marginBottom: '3rem' }}>
+          <h3 style={{
+            fontSize: '1.5rem',
+            fontWeight: '600',
+            marginBottom: '1.5rem',
+            color: 'rgba(255, 255, 255, 0.95)'
+          }}>
+            Color Palette
+          </h3>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)',
+            gap: '1rem'
+          }}>
+            {[
+              { name: 'Primary', hex: '#4A90E2', rgb: '74, 144, 226', contrast: '4.5:1', use: 'Calming Blue - Reduces anxiety, professional' },
+              { name: 'Secondary', hex: '#50C878', rgb: '80, 200, 120', contrast: '3.8:1', use: 'Success Green - Progress indicators' },
+              { name: 'Accent', hex: '#FFB84D', rgb: '255, 184, 77', contrast: '4.2:1', use: 'Warm Highlight - Calls-to-action' },
+              { name: 'Alert', hex: '#E74C3C', rgb: '231, 76, 60', contrast: '4.8:1', use: 'Red - Urgent notifications only' }
+            ].map((color, i) => (
+              <div
+                key={i}
+                style={{
+                  padding: '1.5rem',
+                  borderRadius: '16px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = `rgba(${color.rgb}, 0.1)`;
+                  e.currentTarget.style.borderColor = `rgba(${color.rgb}, 0.3)`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.03)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                }}
+              >
+                <div style={{
+                  width: '100%',
+                  height: '80px',
+                  backgroundColor: color.hex,
+                  borderRadius: '12px',
+                  marginBottom: '1rem',
+                  boxShadow: `0 4px 20px rgba(${color.rgb}, 0.3)`
+                }} />
+                <h4 style={{
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  color: color.hex,
+                  marginBottom: '0.5rem'
+                }}>
+                  {color.name}
+                </h4>
+                <div style={{
+                  fontSize: '0.85rem',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  marginBottom: '0.25rem',
+                  fontFamily: 'monospace'
+                }}>
+                  {color.hex}
+                </div>
+                <div style={{
+                  fontSize: '0.75rem',
+                  color: 'rgba(255, 255, 255, 0.5)',
+                  marginBottom: '0.75rem'
+                }}>
+                  WCAG AA: {color.contrast}
+                </div>
+                <div style={{
+                  fontSize: '0.8rem',
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  lineHeight: '1.5'
+                }}>
+                  {color.use}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Typography */}
+        <div style={{ marginBottom: '3rem' }}>
+          <h3 style={{
+            fontSize: '1.5rem',
+            fontWeight: '600',
+            marginBottom: '1.5rem',
+            color: 'rgba(255, 255, 255, 0.95)'
+          }}>
+            Typography Scale
+          </h3>
+          <div style={{
+            padding: isMobile ? '2rem 1.5rem' : '2.5rem 2rem',
+            borderRadius: '24px',
+            backgroundColor: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.06)'
+          }}>
+            <div style={{ marginBottom: '0.5rem', fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.5)' }}>
+              Typeface: Inter (Google Fonts) - Optimized for digital screens
+            </div>
+            {[
+              { name: 'Hero', size: '32pt', weight: '700', line: '1.2', sample: 'PsoriAssist' },
+              { name: 'H1', size: '28pt', weight: '700', line: '1.3', sample: 'Section Heading' },
+              { name: 'H2', size: '24pt', weight: '600', line: '1.4', sample: 'Subsection Heading' },
+              { name: 'Body', size: '16pt', weight: '400', line: '1.5', sample: 'Body text for readability and comfort' },
+              { name: 'Caption', size: '14pt', weight: '400', line: '1.5', sample: 'Small details and metadata' }
+            ].map((type, i) => (
+              <div
+                key={i}
+                style={{
+                  padding: '1.5rem 0',
+                  borderBottom: i < 4 ? '1px solid rgba(255, 255, 255, 0.06)' : 'none'
+                }}
+              >
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'baseline',
+                  flexWrap: 'wrap',
+                  gap: '1rem'
+                }}>
+                  <div style={{
+                    fontSize: type.size,
+                    fontWeight: type.weight,
+                    lineHeight: type.line,
+                    color: 'rgba(255, 255, 255, 0.95)'
+                  }}>
+                    {type.sample}
+                  </div>
+                  <div style={{
+                    fontSize: '0.85rem',
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontFamily: 'monospace',
+                    textAlign: 'right'
+                  }}>
+                    {type.name}: {type.size}, {type.weight}, LH {type.line}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Component Library */}
+        <div>
+          <h3 style={{
+            fontSize: '1.5rem',
+            fontWeight: '600',
+            marginBottom: '1.5rem',
+            color: 'rgba(255, 255, 255, 0.95)'
+          }}>
+            Component Library
+          </h3>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+            gap: '2rem'
+          }}>
+            {[
+              {
+                component: 'Buttons',
+                variants: ['Primary: #4A90E2 bg, 44x44px min', 'Secondary: Border + text only', 'Destructive: #E74C3C for delete/cancel'],
+                color: '74, 144, 226'
+              },
+              {
+                component: 'Cards',
+                variants: ['8px padding, 4px radius, 1px border', 'Hover: Shadow elevation', 'Photo Card: 3:4 aspect, metadata overlay'],
+                color: '80, 200, 120'
+              },
+              {
+                component: 'Forms',
+                variants: ['Text Input: 48px height, inline validation', 'Select: Native pickers (iOS/Android)', 'Camera: Full-screen modal, ghost overlay'],
+                color: '168, 85, 247'
+              },
+              {
+                component: 'Charts',
+                variants: ['Line: PASI trend over time', 'Bar: Adherence by week/month', 'Heat Map: Trigger correlation matrix'],
+                color: '251, 191, 36'
+              }
+            ].map((comp, i) => (
+              <div
+                key={i}
+                style={{
+                  padding: isMobile ? '2rem 1.5rem' : '2rem',
+                  borderRadius: '20px',
+                  backgroundColor: `rgba(${comp.color}, 0.05)`,
+                  border: `1px solid rgba(${comp.color}, 0.2)`
+                }}
+              >
+                <h4 style={{
+                  fontSize: '1.1rem',
+                  fontWeight: '600',
+                  color: `rgb(${comp.color})`,
+                  marginBottom: '1rem'
+                }}>
+                  {comp.component}
+                </h4>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                  {comp.variants.map((variant, j) => (
+                    <li
+                      key={j}
+                      style={{
+                        fontSize: '0.9rem',
+                        lineHeight: '1.6',
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        marginBottom: '0.5rem',
+                        paddingLeft: '1.25rem',
+                        position: 'relative'
+                      }}
+                    >
+                      <span style={{
+                        position: 'absolute',
+                        left: 0,
+                        color: `rgb(${comp.color})`
+                      }}>
+                        •
+                      </span>
+                      {variant}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* User Flows */}
+      <div id="flows" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+        <h2 style={{
+          fontSize: isMobile ? '2rem' : '3rem',
+          fontWeight: '700',
+          marginBottom: '1.5rem',
+          textAlign: 'center',
+          color: 'rgba(255, 255, 255, 0.95)'
+        }}>
+          Key User Flows
+        </h2>
+        <p style={{
+          fontSize: '1.125rem',
+          color: 'rgba(255, 255, 255, 0.6)',
+          textAlign: 'center',
+          marginBottom: '3rem',
+          maxWidth: '700px',
+          margin: '0 auto 3rem'
+        }}>
+          Critical interaction patterns designed for minimal friction
+        </p>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr',
+          gap: '3rem'
+        }}>
+          {[
+            {
+              title: 'Photo Capture Flow',
+              color: '74, 144, 226',
+              steps: [
+                { step: 1, action: 'User taps "Take Photo"', result: 'Body part selection screen appears' },
+                { step: 2, action: 'Selects "Left Arm"', result: 'Camera modal opens with ghost overlay' },
+                { step: 3, action: 'Ghost overlay appears at 50% opacity', result: 'Alignment guides (3x3 grid) help positioning' },
+                { step: 4, action: 'User adjusts opacity slider (20-80%)', result: 'Ghost visibility optimized for alignment' },
+                { step: 5, action: 'Aligns arm with ghost, taps Capture', result: 'Haptic feedback (success vibration)' },
+                { step: 6, action: 'Confirmation screen shows preview', result: '"Looks good? Add notes or retake"' },
+                { step: 7, action: 'Adds note: "After beach weekend, slight redness"', result: 'Taps "Confirm"' },
+                { step: 8, action: 'Upload progress indicator', result: 'Success toast: "PASI analysis in 2-5 min"' },
+                { step: 9, action: 'Wait 2-5 minutes', result: 'Push notification when analysis ready' }
+              ]
+            },
+            {
+              title: 'Medication Reminder Response',
+              color: '80, 200, 120',
+              steps: [
+                { step: 1, action: 'Push notification: "Time for morning cream!"', result: 'User taps notification' },
+                { step: 2, action: 'App opens to Medication screen', result: 'Checklist shows applications needed' },
+                { step: 3, action: 'List: "Calcipotriol - Left arm, right arm, trunk"', result: 'User taps checkmark for each' },
+                { step: 4, action: 'Taps checkmark', result: 'Animation: Checkmark expands, green, confetti' },
+                { step: 5, action: 'All items checked', result: 'Streak updates: "7 days in a row! 🔥"' },
+                { step: 6, action: 'If milestone (30 days)', result: 'Celebration modal with achievement badge' }
+              ]
+            },
+            {
+              title: 'Predictive Flare-Up Alert',
+              color: '251, 191, 36',
+              steps: [
+                { step: 1, action: 'ML model detects high risk', result: 'Push: "⚠️ High flare-up risk detected"' },
+                { step: 2, action: 'User taps notification', result: 'Risk Explanation screen opens' },
+                { step: 3, action: 'Thermometer shows risk level', result: '70% probability displayed' },
+                { step: 4, action: 'Contributing factors listed', result: 'Cold weather, missed applications, elevated stress' },
+                { step: 5, action: 'Mitigation suggestions shown', result: 'Increase topicals 2x, humidifier, stress management' },
+                { step: 6, action: 'Option to share with provider or dismiss', result: 'User chooses action' }
+              ]
+            }
+          ].map((flow, i) => (
+            <div
+              key={i}
+              style={{
+                padding: isMobile ? '2rem 1.5rem' : '2.5rem 2rem',
+                borderRadius: '24px',
+                backgroundColor: `rgba(${flow.color}, 0.03)`,
+                border: `1px solid rgba(${flow.color}, 0.2)`
+              }}
+            >
+              <h3 style={{
+                fontSize: '1.5rem',
+                fontWeight: '600',
+                marginBottom: '2rem',
+                color: `rgb(${flow.color})`
+              }}>
+                {flow.title}
+              </h3>
+              <div style={{ position: 'relative' }}>
+                {/* Vertical line */}
+                <div style={{
+                  position: 'absolute',
+                  left: '24px',
+                  top: 0,
+                  bottom: 0,
+                  width: '2px',
+                  backgroundColor: `rgba(${flow.color}, 0.2)`
+                }} />
+
+                {flow.steps.map((s, j) => (
+                  <div
+                    key={j}
+                    style={{
+                      display: 'flex',
+                      gap: '1.5rem',
+                      marginBottom: j < flow.steps.length - 1 ? '2rem' : 0,
+                      position: 'relative'
+                    }}
+                  >
+                    {/* Step number */}
+                    <div style={{
+                      width: '48px',
+                      height: '48px',
+                      borderRadius: '50%',
+                      backgroundColor: `rgba(${flow.color}, 0.15)`,
+                      border: `2px solid rgb(${flow.color})`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '1rem',
+                      fontWeight: '700',
+                      color: `rgb(${flow.color})`,
+                      flexShrink: 0,
+                      zIndex: 1
+                    }}>
+                      {s.step}
+                    </div>
+
+                    {/* Step content */}
+                    <div style={{ flex: 1, paddingTop: '0.5rem' }}>
+                      <div style={{
+                        fontSize: '1rem',
+                        fontWeight: '500',
+                        color: 'rgba(255, 255, 255, 0.9)',
+                        marginBottom: '0.5rem'
+                      }}>
+                        {s.action}
+                      </div>
+                      <div style={{
+                        fontSize: '0.9rem',
+                        color: 'rgba(255, 255, 255, 0.6)',
+                        lineHeight: '1.6',
+                        paddingLeft: '1rem',
+                        borderLeft: `2px solid rgba(${flow.color}, 0.3)`
+                      }}>
+                        → {s.result}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Technical Architecture */}
+      <div id="technical" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+        <h2 style={{
+          fontSize: isMobile ? '2rem' : '3rem',
+          fontWeight: '700',
+          marginBottom: '1.5rem',
+          textAlign: 'center',
+          color: 'rgba(255, 255, 255, 0.95)'
+        }}>
+          Technical Architecture
+        </h2>
+        <p style={{
+          fontSize: '1.125rem',
+          color: 'rgba(255, 255, 255, 0.6)',
+          textAlign: 'center',
+          marginBottom: '3rem',
+          maxWidth: '700px',
+          margin: '0 auto 3rem'
+        }}>
+          HIPAA-compliant, scalable infrastructure with AI/ML pipeline
+        </p>
+
+        {/* System Layers */}
+        <div style={{ marginBottom: '3rem' }}>
+          <div style={{
+            padding: isMobile ? '2rem 1.5rem' : '3rem 2.5rem',
+            borderRadius: '32px',
+            backgroundColor: 'rgba(168, 85, 247, 0.03)',
+            border: '1px solid rgba(168, 85, 247, 0.2)'
+          }}>
+            <TimelineVisualization
+              items={[
+                {
+                  id: 'client',
+                  title: 'Client Layer',
+                  description: 'iOS/Android (React Native), Redux state, custom UI, Victory charts',
+                  color: '74, 144, 226',
+                  completed: true
+                },
+                {
+                  id: 'gateway',
+                  title: 'API Gateway',
+                  description: 'NGINX + Rate limiting + Load balancer',
+                  color: '80, 200, 120',
+                  completed: true
+                },
+                {
+                  id: 'app',
+                  title: 'Application Layer',
+                  description: 'Auth (JWT/OAuth) | Core API (Node.js) | ML Service (Python FastAPI)',
+                  color: '168, 85, 247',
+                  completed: true
+                },
+                {
+                  id: 'data',
+                  title: 'Data Layer',
+                  description: 'PostgreSQL (primary) | Redis (cache) | AWS S3 (encrypted PHI images)',
+                  color: '251, 191, 36',
+                  completed: true
+                }
+              ]}
+              orientation="vertical"
+              animate={true}
+            />
+          </div>
+        </div>
+
+        {/* ML Pipeline */}
+        <div style={{ marginBottom: '3rem' }}>
+          <h3 style={{
+            fontSize: '1.5rem',
+            fontWeight: '600',
+            marginBottom: '1.5rem',
+            color: 'rgba(255, 255, 255, 0.95)'
+          }}>
+            AI/ML Pipeline
+          </h3>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+            gap: '2rem'
+          }}>
+            {[
+              {
+                model: 'PASI Scoring Model',
+                stages: [
+                  'Input: 800x1024 RGB image',
+                  'Preprocessing: CLAHE normalization, color space conversion',
+                  'Stage 1: U-Net lesion segmentation (binary mask)',
+                  'Stage 2: EfficientNetB3 multi-output regression (erythema, induration, desquamation, area)',
+                  'Output: Total PASI score + confidence interval'
+                ],
+                performance: 'MAE <2.5, ICC >0.85, Inference <30s',
+                color: '168, 85, 247'
+              },
+              {
+                model: 'Predictive Flare Model (LSTM)',
+                stages: [
+                  'Input: 14-day time series (10 features × 14 days)',
+                  'Features: PASI, symptoms, triggers, weather, adherence, sleep',
+                  'LSTM Layer 1: 128 units, return sequences, Dropout 0.2',
+                  'LSTM Layer 2: 64 units, Dropout 0.2',
+                  'Dense Layer: 32 units (ReLU), Sigmoid output',
+                  'Output: Binary (flare/no flare) + SHAP explainability'
+                ],
+                performance: 'Accuracy 80%+, AUC >0.85, F1 >0.75',
+                color: '251, 191, 36'
+              }
+            ].map((ml, i) => (
+              <div
+                key={i}
+                style={{
+                  padding: isMobile ? '2rem 1.5rem' : '2.5rem 2rem',
+                  borderRadius: '24px',
+                  backgroundColor: `rgba(${ml.color}, 0.05)`,
+                  border: `1px solid rgba(${ml.color}, 0.3)`
+                }}
+              >
+                <h4 style={{
+                  fontSize: '1.25rem',
+                  fontWeight: '600',
+                  color: `rgb(${ml.color})`,
+                  marginBottom: '1.5rem'
+                }}>
+                  {ml.model}
+                </h4>
+                <div style={{ marginBottom: '1.5rem' }}>
+                  {ml.stages.map((stage, j) => (
+                    <div
+                      key={j}
+                      style={{
+                        fontSize: '0.9rem',
+                        lineHeight: '1.6',
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        marginBottom: '0.75rem',
+                        paddingLeft: '1.25rem',
+                        position: 'relative',
+                        fontFamily: j > 0 ? 'monospace' : 'inherit'
+                      }}
+                    >
+                      <span style={{
+                        position: 'absolute',
+                        left: 0,
+                        color: `rgb(${ml.color})`
+                      }}>
+                        {j === ml.stages.length - 1 ? '↓' : '•'}
+                      </span>
+                      {stage}
+                    </div>
+                  ))}
+                </div>
+                <div style={{
+                  padding: '1rem',
+                  borderRadius: '12px',
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                  borderLeft: `3px solid rgb(${ml.color})`
+                }}>
+                  <div style={{
+                    fontSize: '0.8rem',
+                    fontWeight: '600',
+                    color: 'rgba(255, 255, 255, 0.6)',
+                    marginBottom: '0.5rem',
+                    textTransform: 'uppercase'
+                  }}>
+                    Performance Targets
+                  </div>
+                  <div style={{
+                    fontSize: '0.9rem',
+                    color: 'rgba(255, 255, 255, 0.8)',
+                    fontFamily: 'monospace'
+                  }}>
+                    {ml.performance}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Security & Compliance */}
+        <div>
+          <h3 style={{
+            fontSize: '1.5rem',
+            fontWeight: '600',
+            marginBottom: '1.5rem',
+            color: 'rgba(255, 255, 255, 0.95)'
+          }}>
+            Security & HIPAA Compliance
+          </h3>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+            gap: '1.5rem'
+          }}>
+            {[
+              {
+                category: 'Administrative',
+                items: ['Privacy/Security Officers', 'Annual workforce training', 'Access management (least privilege)', 'Incident response plan', 'BAAs with all vendors'],
+                icon: Users,
+                color: '74, 144, 226'
+              },
+              {
+                category: 'Technical',
+                items: ['AES-256 at rest, TLS 1.3 in transit', 'Audit logging (all PHI access)', 'RBAC + MFA', 'Auto session timeout', 'De-identification for analytics'],
+                icon: Brain,
+                color: '168, 85, 247'
+              },
+              {
+                category: 'Data Handling',
+                items: ['Photos encrypted before upload', 'User-controlled deletion', '7-year retention (regulatory)', 'Anonymized IDs for research', 'On-device processing option'],
+                icon: Activity,
+                color: '80, 200, 120'
+              }
+            ].map((sec, i) => {
+              const Icon = sec.icon;
+              return (
+                <div
+                  key={i}
+                  style={{
+                    padding: isMobile ? '2rem 1.5rem' : '2rem',
+                    borderRadius: '20px',
+                    backgroundColor: `rgba(${sec.color}, 0.05)`,
+                    border: `1px solid rgba(${sec.color}, 0.2)`
+                  }}
+                >
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '12px',
+                    backgroundColor: `rgba(${sec.color}, 0.15)`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: '1rem'
+                  }}>
+                    <Icon size={24} color={`rgb(${sec.color})`} />
+                  </div>
+                  <h4 style={{
+                    fontSize: '1.1rem',
+                    fontWeight: '600',
+                    color: `rgb(${sec.color})`,
+                    marginBottom: '1rem'
+                  }}>
+                    {sec.category}
+                  </h4>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                    {sec.items.map((item, j) => (
+                      <li
+                        key={j}
+                        style={{
+                          fontSize: '0.85rem',
+                          lineHeight: '1.6',
+                          color: 'rgba(255, 255, 255, 0.7)',
+                          marginBottom: '0.5rem',
+                          paddingLeft: '1.25rem',
+                          position: 'relative'
+                        }}
+                      >
+                        <span style={{
+                          position: 'absolute',
+                          left: 0,
+                          color: `rgb(${sec.color})`
+                        }}>
+                          ✓
+                        </span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
       {/* Impact & Business */}
       <div id="impact" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
@@ -1592,6 +3100,127 @@ export function PsoriAssistWork() {
         }}>
           Impact & Business Strategy
         </h2>
+
+        {/* Market Opportunity */}
+        <div style={{ marginBottom: '3rem' }}>
+          <h3 style={{
+            fontSize: isMobile ? '1.5rem' : '2rem',
+            fontWeight: '600',
+            marginBottom: '2rem',
+            textAlign: 'center',
+            color: 'rgba(255, 255, 255, 0.95)'
+          }}>
+            Market Opportunity
+          </h3>
+          <div style={{
+            padding: isMobile ? '2.5rem 2rem' : '3rem 3rem',
+            borderRadius: '32px',
+            backgroundColor: 'rgba(251, 191, 36, 0.05)',
+            border: '1px solid rgba(251, 191, 36, 0.2)',
+            marginBottom: '2rem'
+          }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+              gap: '2rem',
+              marginBottom: '2rem'
+            }}>
+              {[
+                { label: 'TAM', value: '$27.20B', desc: 'Global psoriasis treatment market' },
+                { label: 'SAM', value: '$4.4-14.1B', desc: '45M patients (developed markets) × $50-150' },
+                { label: 'SOM (Year 5)', value: '$220-705M', desc: '5% penetration target' }
+              ].map((market, i) => (
+                <div key={i} style={{ textAlign: 'center' }}>
+                  <div style={{
+                    fontSize: '0.9rem',
+                    fontWeight: '600',
+                    color: 'rgb(251, 191, 36)',
+                    marginBottom: '0.5rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em'
+                  }}>
+                    {market.label}
+                  </div>
+                  <div style={{
+                    fontSize: '2.5rem',
+                    fontWeight: '700',
+                    color: 'rgb(251, 191, 36)',
+                    marginBottom: '0.5rem'
+                  }}>
+                    {market.value}
+                  </div>
+                  <div style={{
+                    fontSize: '0.9rem',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    lineHeight: '1.5'
+                  }}>
+                    {market.desc}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div style={{
+              padding: '1.5rem',
+              borderRadius: '16px',
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+              border: '1px solid rgba(251, 191, 36, 0.3)'
+            }}>
+              <h4 style={{
+                fontSize: '1rem',
+                fontWeight: '600',
+                color: 'rgba(255, 255, 255, 0.9)',
+                marginBottom: '1rem'
+              }}>
+                5-Year Revenue Projection
+              </h4>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: isMobile ? '1fr' : 'repeat(5, 1fr)',
+                gap: '1rem'
+              }}>
+                {[
+                  { year: 'Y1', users: '40K', subs: '4K', revenue: '$1.2M' },
+                  { year: 'Y2', users: '150K', subs: '18K', revenue: '$4.2M' },
+                  { year: 'Y3', users: '540K', subs: '60K', revenue: '$11.8M' },
+                  { year: 'Y4', users: '1.2M', subs: '156K', revenue: '$25.0M' },
+                  { year: 'Y5', users: '2.0M', subs: '260K', revenue: '$38.0M' }
+                ].map((y, i) => (
+                  <div key={i} style={{
+                    padding: '1rem',
+                    borderRadius: '12px',
+                    backgroundColor: 'rgba(251, 191, 36, 0.1)',
+                    border: '1px solid rgba(251, 191, 36, 0.2)'
+                  }}>
+                    <div style={{
+                      fontSize: '0.75rem',
+                      color: 'rgba(255, 255, 255, 0.6)',
+                      marginBottom: '0.5rem',
+                      fontWeight: '600'
+                    }}>
+                      {y.year}
+                    </div>
+                    <div style={{
+                      fontSize: '1.25rem',
+                      fontWeight: '700',
+                      color: 'rgb(251, 191, 36)',
+                      marginBottom: '0.25rem'
+                    }}>
+                      {y.revenue}
+                    </div>
+                    <div style={{
+                      fontSize: '0.75rem',
+                      color: 'rgba(255, 255, 255, 0.6)',
+                      lineHeight: '1.4'
+                    }}>
+                      {y.users} users<br/>
+                      {y.subs} premium
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div style={{
           display: 'grid',
@@ -1789,6 +3418,419 @@ export function PsoriAssistWork() {
               That's why I designed PsoriAssist. And that's why I believe it can make a difference.
             </p>
           </div>
+        </div>
+      </div>
+
+      {/* Design Learnings */}
+      <div id="learnings" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+        <h2 style={{
+          fontSize: isMobile ? '2rem' : '3rem',
+          fontWeight: '700',
+          marginBottom: '3rem',
+          textAlign: 'center',
+          color: 'rgba(255, 255, 255, 0.95)'
+        }}>
+          Design Learnings
+        </h2>
+
+        {/* What Worked Well */}
+        <div style={{ marginBottom: '3rem' }}>
+          <h3 style={{
+            fontSize: '1.5rem',
+            fontWeight: '600',
+            marginBottom: '1.5rem',
+            color: 'rgb(80, 200, 120)'
+          }}>
+            What Worked Well
+          </h3>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+            gap: '2rem'
+          }}>
+            {[
+              {
+                title: 'Personal Experience as Foundation',
+                desc: 'My lived experience with psoriasis provided authentic empathy. Users said: "You get it—other apps feel like they were designed by people who never had psoriasis."'
+              },
+              {
+                title: 'Evidence-Based Approach',
+                desc: 'Grounding every design decision in clinical research differentiated PsoriAssist. The ghost overlay emerged from studies showing alignment is critical for photo-based assessment.'
+              },
+              {
+                title: 'Holistic Problem Framing',
+                desc: 'Research revealed the real problem is systemic—fragmented care, reactive management, siloed mental health—not just "medication reminders."'
+              },
+              {
+                title: 'Iterative Usability Testing',
+                desc: '3 rounds with 45 participants caught critical issues. Each iteration improved task completion by 15-20% (73% → 87% → 93%).'
+              }
+            ].map((item, i) => (
+              <div
+                key={i}
+                style={{
+                  padding: isMobile ? '2rem 1.5rem' : '2rem',
+                  borderRadius: '20px',
+                  backgroundColor: 'rgba(80, 200, 120, 0.05)',
+                  border: '1px solid rgba(80, 200, 120, 0.2)'
+                }}
+              >
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '12px',
+                  backgroundColor: 'rgba(80, 200, 120, 0.15)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '1rem'
+                }}>
+                  <CheckCircle size={24} color="rgb(80, 200, 120)" />
+                </div>
+                <h4 style={{
+                  fontSize: '1.1rem',
+                  fontWeight: '600',
+                  color: 'rgb(80, 200, 120)',
+                  marginBottom: '0.75rem'
+                }}>
+                  {item.title}
+                </h4>
+                <p style={{
+                  fontSize: '0.95rem',
+                  lineHeight: '1.7',
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  margin: 0
+                }}>
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Challenges & Solutions */}
+        <div style={{ marginBottom: '3rem' }}>
+          <h3 style={{
+            fontSize: '1.5rem',
+            fontWeight: '600',
+            marginBottom: '1.5rem',
+            color: 'rgb(251, 191, 36)'
+          }}>
+            Challenges & How I Addressed Them
+          </h3>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr',
+            gap: '2rem'
+          }}>
+            {[
+              {
+                challenge: 'Balancing Complexity vs. Simplicity',
+                problem: 'Psoriasis management is complex (medications, triggers, mental health, PsA), but users want simplicity.',
+                solution: 'Progressive disclosure. Show basic features upfront, advanced behind "See more". Free tier focuses on simplicity, Premium adds depth.',
+                color: '251, 191, 36'
+              },
+              {
+                challenge: 'AI Transparency & Trust',
+                problem: 'Users (especially Marcus persona) skeptical of AI accuracy.',
+                solution: 'Always show confidence scores. If <70%, flag for manual review. Provide explainability. Never claim 100% accuracy.',
+                color: '74, 144, 226'
+              },
+              {
+                challenge: 'Mental Health Stigma',
+                problem: 'Users may resist screening due to stigma.',
+                solution: 'Frame as "wellness check-in," emphasize 1-in-5 prevalence to normalize, make optional but encouraged. Supportive language, not clinical jargon.',
+                color: '236, 72, 153'
+              },
+              {
+                challenge: 'Provider Adoption Barriers',
+                problem: 'Dermatologists overwhelmed, skeptical of "another app."',
+                solution: 'Design portal to save time (automated PASI, RPM billing). Lead with value: "5-8 min saved per visit + $40-60 PPPM revenue."',
+                color: '80, 200, 120'
+              }
+            ].map((item, i) => (
+              <div
+                key={i}
+                style={{
+                  padding: isMobile ? '2rem 1.5rem' : '2.5rem 2rem',
+                  borderRadius: '24px',
+                  backgroundColor: `rgba(${item.color}, 0.03)`,
+                  border: `1px solid rgba(${item.color}, 0.2)`
+                }}
+              >
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: isMobile ? '1fr' : '1fr auto 1fr',
+                  gap: '1.5rem',
+                  alignItems: 'center'
+                }}>
+                  <div>
+                    <h4 style={{
+                      fontSize: '1.1rem',
+                      fontWeight: '600',
+                      color: `rgb(${item.color})`,
+                      marginBottom: '0.75rem'
+                    }}>
+                      {item.challenge}
+                    </h4>
+                    <div style={{
+                      padding: '1rem',
+                      borderRadius: '12px',
+                      backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                      border: '1px solid rgba(239, 68, 68, 0.2)'
+                    }}>
+                      <div style={{
+                        fontSize: '0.8rem',
+                        fontWeight: '600',
+                        color: 'rgb(239, 68, 68)',
+                        marginBottom: '0.5rem',
+                        textTransform: 'uppercase'
+                      }}>
+                        Problem
+                      </div>
+                      <div style={{
+                        fontSize: '0.9rem',
+                        lineHeight: '1.6',
+                        color: 'rgba(255, 255, 255, 0.7)'
+                      }}>
+                        {item.problem}
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{
+                    fontSize: '2rem',
+                    color: `rgb(${item.color})`,
+                    fontWeight: '700'
+                  }}>
+                    →
+                  </div>
+                  <div style={{
+                    padding: '1rem',
+                    borderRadius: '12px',
+                    backgroundColor: 'rgba(80, 200, 120, 0.1)',
+                    border: '1px solid rgba(80, 200, 120, 0.2)'
+                  }}>
+                    <div style={{
+                      fontSize: '0.8rem',
+                      fontWeight: '600',
+                      color: 'rgb(80, 200, 120)',
+                      marginBottom: '0.5rem',
+                      textTransform: 'uppercase'
+                    }}>
+                      Solution
+                    </div>
+                    <div style={{
+                      fontSize: '0.9rem',
+                      lineHeight: '1.6',
+                      color: 'rgba(255, 255, 255, 0.7)'
+                    }}>
+                      {item.solution}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* What I'd Do Differently */}
+        <div>
+          <h3 style={{
+            fontSize: '1.5rem',
+            fontWeight: '600',
+            marginBottom: '1.5rem',
+            color: 'rgb(168, 85, 247)'
+          }}>
+            What I'd Do Differently
+          </h3>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+            gap: '2rem'
+          }}>
+            {[
+              {
+                title: 'Earlier Provider Engagement',
+                desc: 'I interviewed providers Month 2-3. In hindsight, involving dermatologists from Day 1 would have shaped features more aligned with clinical workflows from the start.'
+              },
+              {
+                title: 'Accessibility Co-Design',
+                desc: 'While I met WCAG 2.1 AA standards, I didn\'t conduct dedicated usability testing with users who have disabilities until Round 3. Should have been Round 1.'
+              },
+              {
+                title: 'Real Patient Data Pilot',
+                desc: 'I relied on simulated data. A small pilot (10-20 patients) tracking real data for 4 weeks before MVP would have surfaced edge cases.'
+              }
+            ].map((item, i) => (
+              <div
+                key={i}
+                style={{
+                  padding: isMobile ? '2rem 1.5rem' : '2rem',
+                  borderRadius: '20px',
+                  backgroundColor: 'rgba(168, 85, 247, 0.05)',
+                  border: '1px solid rgba(168, 85, 247, 0.2)'
+                }}
+              >
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '12px',
+                  backgroundColor: 'rgba(168, 85, 247, 0.15)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '1rem'
+                }}>
+                  <Circle size={24} color="rgb(168, 85, 247)" />
+                </div>
+                <h4 style={{
+                  fontSize: '1.1rem',
+                  fontWeight: '600',
+                  color: 'rgb(168, 85, 247)',
+                  marginBottom: '0.75rem'
+                }}>
+                  {item.title}
+                </h4>
+                <p style={{
+                  fontSize: '0.95rem',
+                  lineHeight: '1.7',
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  margin: 0
+                }}>
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Future Roadmap */}
+      <div id="roadmap" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+        <h2 style={{
+          fontSize: isMobile ? '2rem' : '3rem',
+          fontWeight: '700',
+          marginBottom: '1.5rem',
+          textAlign: 'center',
+          color: 'rgba(255, 255, 255, 0.95)'
+        }}>
+          Future Roadmap
+        </h2>
+        <p style={{
+          fontSize: '1.125rem',
+          color: 'rgba(255, 255, 255, 0.6)',
+          textAlign: 'center',
+          marginBottom: '3rem',
+          maxWidth: '700px',
+          margin: '0 auto 3rem'
+        }}>
+          Evolution from MVP to comprehensive digital health platform
+        </p>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+          gap: '2rem'
+        }}>
+          {[
+            {
+              tier: 'Short-Term',
+              timeframe: 'Year 1-2',
+              color: '74, 144, 226',
+              goals: [
+                'Launch MVP with 6 core features',
+                'Complete RCT (N=200) and publish results',
+                'Achieve 100K users, $5M revenue',
+                'Sign first 3 pharmaceutical partnerships',
+                'Beta test provider dashboard with 50 dermatologists'
+              ]
+            },
+            {
+              tier: 'Mid-Term',
+              timeframe: 'Year 3-4',
+              color: '251, 191, 36',
+              goals: [
+                'Predictive analytics v2 (personalized risk models)',
+                'Genetic profiling integration (pharmacogenomics)',
+                'Wearable integration (continuous monitoring)',
+                'International expansion (Europe, Australia)',
+                'FDA Digital Health Precertification submission'
+              ]
+            },
+            {
+              tier: 'Long-Term',
+              timeframe: 'Year 5+',
+              color: '80, 200, 120',
+              goals: [
+                'White-label platform for other conditions (eczema, acne, vitiligo)',
+                'Voice-activated logging (Alexa, Google Assistant)',
+                'AR/VR treatment education modules',
+                'API platform for third-party developers',
+                'Prescription Digital Therapeutic (PDT) designation'
+              ]
+            }
+          ].map((phase, i) => (
+            <div
+              key={i}
+              style={{
+                padding: isMobile ? '2rem 1.5rem' : '2.5rem 2rem',
+                borderRadius: '24px',
+                backgroundColor: `rgba(${phase.color}, 0.05)`,
+                border: `1px solid rgba(${phase.color}, 0.3)`,
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              <div style={{
+                position: 'absolute',
+                top: '1rem',
+                right: '1rem',
+                padding: '0.375rem 0.75rem',
+                borderRadius: '12px',
+                backgroundColor: `rgba(${phase.color}, 0.2)`,
+                fontSize: '0.75rem',
+                fontWeight: '600',
+                color: `rgb(${phase.color})`,
+                textTransform: 'uppercase'
+              }}>
+                {phase.timeframe}
+              </div>
+              <h3 style={{
+                fontSize: '1.5rem',
+                fontWeight: '600',
+                color: `rgb(${phase.color})`,
+                marginBottom: '2rem'
+              }}>
+                {phase.tier}
+              </h3>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                {phase.goals.map((goal, j) => (
+                  <li
+                    key={j}
+                    style={{
+                      fontSize: '0.95rem',
+                      lineHeight: '1.7',
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      marginBottom: '1rem',
+                      paddingLeft: '1.5rem',
+                      position: 'relative'
+                    }}
+                  >
+                    <span style={{
+                      position: 'absolute',
+                      left: 0,
+                      top: '0.5rem',
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      backgroundColor: `rgb(${phase.color})`
+                    }} />
+                    {goal}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
 
