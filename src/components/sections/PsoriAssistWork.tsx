@@ -16,6 +16,11 @@ import { usePsoriAssistNarrative } from '@/hooks/usePsoriAssistNarrative';
 import { PsoriAssistFirstPersonMoments } from '@/components/sections/PsoriAssistFirstPersonMoments';
 import { PsoriAssistBreathingMoment } from '@/components/sections/PsoriAssistBreathingMoment';
 import {
+  GhostOverlayDemo,
+  SmartReminderDemo,
+  PASIScoringDemo
+} from '@/components/sections/PsoriAssistInteractivePrototypes';
+import {
   ProgressiveBarChart,
   ProgressiveRadialChart,
   ProgressiveCounter,
@@ -2319,6 +2324,23 @@ export function PsoriAssistWork() {
                             }}>
                               {feature.technical}
                             </div>
+                          </div>
+                        )}
+
+                        {/* Interactive Prototype Demos */}
+                        {feature.id === 'ghost-overlay' && (
+                          <div style={{ marginTop: '2rem' }}>
+                            <GhostOverlayDemo />
+                          </div>
+                        )}
+                        {feature.id === 'ai-pasi' && (
+                          <div style={{ marginTop: '2rem' }}>
+                            <PASIScoringDemo />
+                          </div>
+                        )}
+                        {feature.id === 'medication-reminders' && (
+                          <div style={{ marginTop: '2rem' }}>
+                            <SmartReminderDemo />
                           </div>
                         )}
                       </div>
