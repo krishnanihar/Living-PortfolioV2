@@ -64,6 +64,30 @@ const IOS_SHADOWS = {
   elevated: '0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.05)'
 };
 
+// iOS Glassmorphism System
+const IOS_GLASS = {
+  card: {
+    background: 'rgba(255, 255, 255, 0.72)',
+    backdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
+    border: '0.5px solid rgba(255, 255, 255, 0.8)',
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08), 0 8px 16px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.9)'
+  },
+  cardSubtle: {
+    background: 'rgba(255, 255, 255, 0.6)',
+    backdropFilter: 'blur(30px) saturate(150%) brightness(1.03)',
+    border: '0.5px solid rgba(255, 255, 255, 0.6)',
+    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.06), inset 0 1px 0.5px rgba(255, 255, 255, 0.8)'
+  },
+  statusBar: {
+    background: 'rgba(242, 242, 247, 0.75)',
+    backdropFilter: 'blur(30px) saturate(180%)'
+  },
+  tabBar: {
+    background: 'rgba(249, 249, 249, 0.82)',
+    backdropFilter: 'blur(30px) saturate(180%)'
+  }
+};
+
 // iOS-native spring animation constants
 const SPRING_CONFIG = {
   screen: { type: 'spring' as const, stiffness: 300, damping: 30, mass: 0.8 },
@@ -204,12 +228,14 @@ export function PsoriAssistPhoneMockup() {
           backgroundColor: IOS_COLORS.groupedBackground,
           borderRadius: '48px',
           overflow: 'hidden',
-          position: 'relative'
-        }}>
+          position: 'relative',
+          WebkitMaskImage: '-webkit-radial-gradient(white, black)',
+          maskImage: 'radial-gradient(white, black)'
+        } as React.CSSProperties}>
           {/* Status Bar */}
           <div style={{
             height: '54px',
-            background: 'linear-gradient(180deg, rgba(242,242,247,0.95) 0%, rgba(242,242,247,0) 100%)',
+            background: `linear-gradient(180deg, ${IOS_GLASS.statusBar.background} 0%, rgba(242,242,247,0) 100%)`,
             position: 'absolute',
             top: 0,
             left: 0,
@@ -220,7 +246,7 @@ export function PsoriAssistPhoneMockup() {
             justifyContent: 'space-between',
             padding: '0 24px',
             paddingTop: '8px',
-            backdropFilter: 'blur(10px)'
+            backdropFilter: IOS_GLASS.statusBar.backdropFilter
           }}>
             <div style={{ fontSize: '15px', fontWeight: '600', color: IOS_COLORS.label }}>
               9:41
@@ -258,9 +284,13 @@ export function PsoriAssistPhoneMockup() {
               position: 'absolute',
               inset: '54px 0 0 0',
               overflow: 'auto',
+              overflowX: 'hidden',
               paddingBottom: '90px',
-              cursor: 'grab'
-            }}
+              paddingLeft: '4px',
+              paddingRight: '4px',
+              cursor: 'grab',
+              WebkitOverflowScrolling: 'touch'
+            } as React.CSSProperties}
           >
             {/* Pull-to-Refresh Indicator */}
             {activeScreen === 'home' && pullToRefresh > 0 && (
@@ -377,9 +407,9 @@ export function PsoriAssistPhoneMockup() {
             left: 0,
             right: 0,
             height: '90px',
-            backgroundColor: 'rgba(249, 249, 249, 0.94)',
-            backdropFilter: 'blur(20px) saturate(180%)',
-            borderTop: `1px solid ${IOS_COLORS.separator}`,
+            backgroundColor: IOS_GLASS.tabBar.background,
+            backdropFilter: IOS_GLASS.tabBar.backdropFilter,
+            borderTop: `0.5px solid ${IOS_COLORS.separator}`,
             display: 'flex',
             justifyContent: 'space-around',
             alignItems: 'flex-start',
@@ -469,11 +499,13 @@ function HomeScreen({
         style={{
           padding: '16px',
           borderRadius: '16px',
-          backgroundColor: IOS_COLORS.systemBackground,
+          background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
           borderLeft: `4px solid ${IOS_COLORS.systemBlue}`,
+          border: IOS_GLASS.card.border,
           marginBottom: '12px',
-          boxShadow: IOS_SHADOWS.card
-        }}>
+          boxShadow: IOS_GLASS.card.boxShadow
+        } as React.CSSProperties}>
         <div style={{
           fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
           color: IOS_COLORS.secondaryLabel,
@@ -571,11 +603,13 @@ function HomeScreen({
       <div style={{
         padding: '16px',
         borderRadius: '16px',
-        backgroundColor: IOS_COLORS.systemBackground,
+        background: IOS_GLASS.card.background,
+        backdropFilter: IOS_GLASS.card.backdropFilter,
         borderLeft: `4px solid ${IOS_COLORS.systemGreen}`,
+        border: IOS_GLASS.card.border,
         marginBottom: '12px',
-        boxShadow: IOS_SHADOWS.card
-      }}>
+        boxShadow: IOS_GLASS.card.boxShadow
+      } as React.CSSProperties}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
             <div style={{
@@ -609,10 +643,12 @@ function HomeScreen({
       <div style={{
         padding: '16px',
         borderRadius: '16px',
-        backgroundColor: IOS_COLORS.systemBackground,
+        background: IOS_GLASS.card.background,
+        backdropFilter: IOS_GLASS.card.backdropFilter,
         borderLeft: `4px solid ${IOS_COLORS.systemYellow}`,
-        boxShadow: IOS_SHADOWS.card
-      }}>
+        border: IOS_GLASS.card.border,
+        boxShadow: IOS_GLASS.card.boxShadow
+      } as React.CSSProperties}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
           <Calendar size={18} color={IOS_COLORS.systemYellow} />
           <span style={{
@@ -986,11 +1022,12 @@ function PasiResultScreen({
       <div style={{
         padding: '16px',
         borderRadius: '16px',
-        backgroundColor: IOS_COLORS.systemBackground,
+        background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
         borderLeft: `4px solid ${IOS_COLORS.systemGreen}`,
         marginBottom: '12px',
         textAlign: 'center',
-        boxShadow: IOS_SHADOWS.card
+        boxShadow: IOS_GLASS.card.boxShadow
       }}>
         <div style={{
           fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
@@ -1038,9 +1075,10 @@ function PasiResultScreen({
             <div key={i} style={{
               padding: '12px',
               borderRadius: '12px',
-              backgroundColor: IOS_COLORS.systemBackground,
-              border: `1px solid ${IOS_COLORS.separator}`,
-              boxShadow: IOS_SHADOWS.card
+              background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
+              border: IOS_GLASS.card.border,
+              boxShadow: IOS_GLASS.card.boxShadow
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
                 <span style={{
@@ -1078,9 +1116,10 @@ function PasiResultScreen({
       <div style={{
         padding: '16px',
         borderRadius: '16px',
-        backgroundColor: IOS_COLORS.systemBackground,
-        border: `1px solid ${IOS_COLORS.separator}`,
-        boxShadow: IOS_SHADOWS.card
+        background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
+        border: IOS_GLASS.card.border,
+        boxShadow: IOS_GLASS.card.boxShadow
       }}>
         <div style={{
           fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
@@ -1186,11 +1225,12 @@ function MedicationScreen({
       <div style={{
         padding: '16px',
         borderRadius: '16px',
-        backgroundColor: IOS_COLORS.systemBackground,
+        background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
         borderLeft: `4px solid ${IOS_COLORS.systemGreen}`,
         marginBottom: '16px',
         textAlign: 'center',
-        boxShadow: IOS_SHADOWS.card
+        boxShadow: IOS_GLASS.card.boxShadow
       }}>
         <Award size={40} color={IOS_COLORS.systemGreen} style={{ margin: '0 auto 12px' }} />
         <div style={{
@@ -1242,11 +1282,12 @@ function MedicationScreen({
               style={{
                 padding: '14px',
                 borderRadius: '14px',
-                backgroundColor: IOS_COLORS.systemBackground,
+                background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
                 borderLeft: medicationChecked[med.index]
                   ? `4px solid ${IOS_COLORS.systemGreen}`
                   : `4px solid ${IOS_COLORS.separator}`,
-                boxShadow: IOS_SHADOWS.card,
+                boxShadow: IOS_GLASS.card.boxShadow,
                 display: 'flex',
                 alignItems: 'center',
                 gap: '12px',
@@ -1361,11 +1402,12 @@ function MentalHealthScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) 
       <div style={{
         padding: '16px',
         borderRadius: '16px',
-        backgroundColor: IOS_COLORS.systemBackground,
+        background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
         borderLeft: `4px solid ${IOS_COLORS.systemPink}`,
         marginBottom: '16px',
         textAlign: 'center',
-        boxShadow: IOS_SHADOWS.card
+        boxShadow: IOS_GLASS.card.boxShadow
       }}>
         <Heart size={32} color={IOS_COLORS.systemPink} style={{ margin: '0 auto 12px' }} />
         <div style={{
@@ -1395,10 +1437,11 @@ function MentalHealthScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) 
           style={{
             padding: '40px 20px',
             borderRadius: '16px',
-            backgroundColor: IOS_COLORS.systemBackground,
-            border: `1px solid ${IOS_COLORS.separator}`,
+            background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
+            border: IOS_GLASS.card.border,
             textAlign: 'center',
-            boxShadow: IOS_SHADOWS.card
+            boxShadow: IOS_GLASS.card.boxShadow
           }}
         >
           <motion.div
@@ -1456,10 +1499,11 @@ function MentalHealthScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) 
           <div style={{
             padding: '16px',
             borderRadius: '16px',
-            backgroundColor: IOS_COLORS.systemBackground,
-            border: `1px solid ${IOS_COLORS.separator}`,
+            background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
+            border: IOS_GLASS.card.border,
             marginBottom: '12px',
-            boxShadow: IOS_SHADOWS.card
+            boxShadow: IOS_GLASS.card.boxShadow
           }}>
             <div style={{
               fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
@@ -1475,7 +1519,7 @@ function MentalHealthScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) 
                   padding: '12px',
                   borderRadius: '12px',
                   backgroundColor: IOS_COLORS.tertiarySystemFill,
-                  border: `1px solid ${IOS_COLORS.separator}`,
+                  border: IOS_GLASS.card.border,
                   fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
                   color: IOS_COLORS.label,
                   cursor: 'pointer'
@@ -1489,12 +1533,13 @@ function MentalHealthScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) 
           <div style={{
             padding: '12px',
             borderRadius: '12px',
-            backgroundColor: IOS_COLORS.systemBackground,
+            background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
             borderLeft: `4px solid ${IOS_COLORS.systemBlue}`,
             display: 'flex',
             alignItems: 'flex-start',
             gap: '10px',
-            boxShadow: IOS_SHADOWS.card
+            boxShadow: IOS_GLASS.card.boxShadow
           }}>
             <Info size={18} color={IOS_COLORS.systemBlue} style={{ flexShrink: 0, marginTop: '2px' }} />
             <div style={{
@@ -1563,9 +1608,10 @@ function TriggerScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => vo
             <div key={i} style={{
               padding: '12px',
               borderRadius: '14px',
-              backgroundColor: IOS_COLORS.systemBackground,
-              border: `1px solid ${IOS_COLORS.separator}`,
-              boxShadow: IOS_SHADOWS.card
+              background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
+              border: IOS_GLASS.card.border,
+              boxShadow: IOS_GLASS.card.boxShadow
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
                 <span style={{
@@ -1603,9 +1649,10 @@ function TriggerScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => vo
       <div style={{
         padding: '16px',
         borderRadius: '16px',
-        backgroundColor: IOS_COLORS.systemBackground,
+        background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
         borderLeft: `4px solid ${IOS_COLORS.systemPurple}`,
-        boxShadow: IOS_SHADOWS.card
+        boxShadow: IOS_GLASS.card.boxShadow
       }}>
         <div style={{
           fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
@@ -1702,9 +1749,10 @@ function ReportScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => voi
       <div style={{
         padding: '16px',
         borderRadius: '16px',
-        backgroundColor: IOS_COLORS.systemBackground,
+        background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
         borderLeft: `4px solid ${IOS_COLORS.systemBlue}`,
-        boxShadow: IOS_SHADOWS.card,
+        boxShadow: IOS_GLASS.card.boxShadow,
         marginBottom: '20px'
       }}>
         <FileText size={40} color={IOS_COLORS.systemBlue} style={{ marginBottom: '12px' }} />
@@ -1742,9 +1790,10 @@ function ReportScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => voi
       <div style={{
         height: '300px',
         borderRadius: '16px',
-        backgroundColor: IOS_COLORS.systemBackground,
-        border: `1px solid ${IOS_COLORS.separator}`,
-        boxShadow: IOS_SHADOWS.card,
+        background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
+        border: IOS_GLASS.card.border,
+        boxShadow: IOS_GLASS.card.boxShadow,
         padding: '16px',
         marginBottom: '20px',
         overflow: 'hidden'
@@ -1786,7 +1835,7 @@ function ReportScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => voi
           height: '80px',
           borderRadius: '8px',
           backgroundColor: IOS_COLORS.tertiarySystemFill,
-          border: `1px solid ${IOS_COLORS.separator}`,
+          border: IOS_GLASS.card.border,
           display: 'flex',
           alignItems: 'center',
           padding: '12px',
@@ -1830,7 +1879,7 @@ function ReportScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => voi
           padding: '14px',
           borderRadius: '14px',
           backgroundColor: IOS_COLORS.tertiarySystemFill,
-          border: `1px solid ${IOS_COLORS.separator}`,
+          border: IOS_GLASS.card.border,
           color: IOS_COLORS.systemBlue,
           fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
           fontWeight: '600',
@@ -1957,8 +2006,9 @@ function QuickActionButton({
         padding: '12px 8px',
         minHeight: '76px',
         borderRadius: '14px',
-        backgroundColor: isHovered ? IOS_COLORS.tertiarySystemFill : IOS_COLORS.systemBackground,
-        border: `1px solid ${IOS_COLORS.separator}`,
+        background: isHovered ? IOS_COLORS.tertiarySystemFill : IOS_GLASS.cardSubtle.background,
+        backdropFilter: IOS_GLASS.cardSubtle.backdropFilter,
+        border: IOS_GLASS.cardSubtle.border,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -1966,12 +2016,12 @@ function QuickActionButton({
         gap: '6px',
         cursor: 'pointer',
         boxShadow: isFocused
-          ? `${IOS_SHADOWS.card}, 0 0 0 3px ${color}40`
-          : IOS_SHADOWS.card,
+          ? `${IOS_GLASS.cardSubtle.boxShadow}, 0 0 0 3px ${color}40`
+          : IOS_GLASS.cardSubtle.boxShadow,
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
         outline: 'none',
-        transition: 'background-color 0.2s ease, box-shadow 0.2s ease'
-      }}
+        transition: 'background 0.2s ease, box-shadow 0.2s ease'
+      } as React.CSSProperties}
     >
       <Icon size={20} color={color} />
       <span style={{
@@ -2051,9 +2101,10 @@ function SettingsSection({ title, children }: { title: string; children: React.R
       </h3>
       <div style={{
         borderRadius: '14px',
-        backgroundColor: IOS_COLORS.systemBackground,
-        border: `1px solid ${IOS_COLORS.separator}`,
-        boxShadow: IOS_SHADOWS.card,
+        background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
+        border: IOS_GLASS.card.border,
+        boxShadow: IOS_GLASS.card.boxShadow,
         overflow: 'hidden'
       }}>
         {children}
