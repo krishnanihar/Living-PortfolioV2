@@ -1544,39 +1544,55 @@ function TriggerScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => vo
       </div>
 
       <div style={{ marginBottom: '20px' }}>
-        <h3 style={{ fontSize: '16px', fontWeight: '600', color: 'white', marginBottom: '12px' }}>
+        <h3 style={{
+          fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+          fontWeight: '600',
+          color: IOS_COLORS.secondaryLabel,
+          marginBottom: '12px',
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em'
+        }}>
           Likely Triggers
         </h3>
         <div style={{ display: 'grid', gap: '12px' }}>
           {[
-            { trigger: 'High Stress', confidence: 87, color: '239, 68, 68' },
-            { trigger: 'Cold Weather', confidence: 76, color: '74, 144, 226' },
-            { trigger: 'Missed Applications', confidence: 64, color: '251, 191, 36' }
+            { trigger: 'High Stress', confidence: 87, color: IOS_COLORS.systemRed },
+            { trigger: 'Cold Weather', confidence: 76, color: IOS_COLORS.systemBlue },
+            { trigger: 'Missed Applications', confidence: 64, color: IOS_COLORS.systemYellow }
           ].map((item, i) => (
             <div key={i} style={{
-              padding: '16px',
-              borderRadius: '16px',
-              backgroundColor: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(255,255,255,0.1)'
+              padding: '12px',
+              borderRadius: '14px',
+              backgroundColor: IOS_COLORS.systemBackground,
+              border: `1px solid ${IOS_COLORS.separator}`,
+              boxShadow: IOS_SHADOWS.card
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span style={{ fontSize: '15px', fontWeight: '600', color: 'white' }}>
+                <span style={{
+                  fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+                  fontWeight: '600',
+                  color: IOS_COLORS.label
+                }}>
                   {item.trigger}
                 </span>
-                <span style={{ fontSize: '14px', fontWeight: '600', color: `rgb(${item.color})` }}>
+                <span style={{
+                  fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+                  fontWeight: '600',
+                  color: item.color
+                }}>
                   {item.confidence}%
                 </span>
               </div>
               <div style={{
                 height: '6px',
                 borderRadius: '3px',
-                backgroundColor: 'rgba(255,255,255,0.1)',
+                backgroundColor: IOS_COLORS.quaternarySystemFill,
                 overflow: 'hidden'
               }}>
                 <div style={{
                   width: `${item.confidence}%`,
                   height: '100%',
-                  backgroundColor: `rgb(${item.color})`
+                  backgroundColor: item.color
                 }} />
               </div>
             </div>
@@ -1585,18 +1601,24 @@ function TriggerScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => vo
       </div>
 
       <div style={{
-        padding: '20px',
-        borderRadius: '20px',
-        backgroundColor: 'rgba(168, 85, 247, 0.1)',
-        border: '1px solid rgba(168, 85, 247, 0.2)'
+        padding: '16px',
+        borderRadius: '16px',
+        backgroundColor: IOS_COLORS.systemBackground,
+        borderLeft: `4px solid ${IOS_COLORS.systemPurple}`,
+        boxShadow: IOS_SHADOWS.card
       }}>
-        <div style={{ fontSize: '16px', fontWeight: '600', color: 'white', marginBottom: '12px' }}>
+        <div style={{
+          fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+          fontWeight: '600',
+          color: IOS_COLORS.label,
+          marginBottom: '12px'
+        }}>
           Correlation Chart
         </div>
         <div style={{
           height: '180px',
           borderRadius: '12px',
-          backgroundColor: 'rgba(0,0,0,0.3)',
+          backgroundColor: IOS_COLORS.tertiarySystemFill,
           position: 'relative',
           padding: '20px'
         }}>
@@ -1610,7 +1632,8 @@ function TriggerScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => vo
                 width: '8px',
                 height: '8px',
                 borderRadius: '50%',
-                backgroundColor: 'rgba(168, 85, 247, 0.6)'
+                backgroundColor: IOS_COLORS.systemPurple,
+                opacity: 0.6
               }} />
             ))}
           </div>
@@ -1620,7 +1643,7 @@ function TriggerScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => vo
             left: '20px',
             right: '20px',
             height: '1px',
-            backgroundColor: 'rgba(255,255,255,0.2)'
+            backgroundColor: IOS_COLORS.separator
           }} />
           <div style={{
             position: 'absolute',
@@ -1628,13 +1651,13 @@ function TriggerScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => vo
             left: '20px',
             top: '20px',
             width: '1px',
-            backgroundColor: 'rgba(255,255,255,0.2)'
+            backgroundColor: IOS_COLORS.separator
           }} />
         </div>
         <div style={{
           marginTop: '12px',
-          fontSize: '13px',
-          color: 'rgba(255,255,255,0.6)',
+          fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+          color: IOS_COLORS.secondaryLabel,
           textAlign: 'center'
         }}>
           Stress Level vs PASI Score (r = 0.72, p &lt; 0.001)
@@ -1677,25 +1700,36 @@ function ReportScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => voi
       </div>
 
       <div style={{
-        padding: '20px',
-        borderRadius: '20px',
-        backgroundColor: 'rgba(74, 144, 226, 0.1)',
-        border: '1px solid rgba(74, 144, 226, 0.2)',
+        padding: '16px',
+        borderRadius: '16px',
+        backgroundColor: IOS_COLORS.systemBackground,
+        borderLeft: `4px solid ${IOS_COLORS.systemBlue}`,
+        boxShadow: IOS_SHADOWS.card,
         marginBottom: '20px'
       }}>
-        <FileText size={40} color="rgb(74, 144, 226)" style={{ marginBottom: '12px' }} />
-        <div style={{ fontSize: '18px', fontWeight: '600', color: 'white', marginBottom: '8px' }}>
+        <FileText size={40} color={IOS_COLORS.systemBlue} style={{ marginBottom: '12px' }} />
+        <div style={{
+          fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+          fontWeight: '600',
+          color: IOS_COLORS.label,
+          marginBottom: '8px'
+        }}>
           3-Month Summary Report
         </div>
-        <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', marginBottom: '16px' }}>
+        <div style={{
+          fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+          color: IOS_COLORS.secondaryLabel,
+          marginBottom: '16px'
+        }}>
           Ready to share with Dr. Sarah Johnson
         </div>
         <div style={{
           padding: '12px',
           borderRadius: '12px',
-          backgroundColor: 'rgba(0,0,0,0.3)',
-          fontSize: '13px',
-          color: 'rgba(255,255,255,0.8)'
+          backgroundColor: IOS_COLORS.tertiarySystemFill,
+          fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+          color: IOS_COLORS.label,
+          lineHeight: '1.6'
         }}>
           ✓ Photo progression (12 weeks)<br/>
           ✓ PASI trend chart<br/>
@@ -1707,23 +1741,35 @@ function ReportScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => voi
 
       <div style={{
         height: '300px',
-        borderRadius: '20px',
-        backgroundColor: 'rgba(255,255,255,0.05)',
-        border: '1px solid rgba(255,255,255,0.1)',
-        padding: '20px',
+        borderRadius: '16px',
+        backgroundColor: IOS_COLORS.systemBackground,
+        border: `1px solid ${IOS_COLORS.separator}`,
+        boxShadow: IOS_SHADOWS.card,
+        padding: '16px',
         marginBottom: '20px',
         overflow: 'hidden'
       }}>
         {/* PDF Preview Mockup */}
-        <div style={{ fontSize: '12px', fontWeight: '600', color: 'rgba(255,255,255,0.8)', marginBottom: '12px' }}>
+        <div style={{
+          fontSize: `${IOS_TYPOGRAPHY.caption1.size}px`,
+          fontWeight: '600',
+          color: IOS_COLORS.label,
+          marginBottom: '12px',
+          letterSpacing: '0.5px'
+        }}>
           PSORIASIS PROGRESS REPORT
         </div>
         <div style={{
           height: '2px',
-          backgroundColor: 'rgba(74, 144, 226, 0.3)',
+          backgroundColor: IOS_COLORS.systemBlue,
+          opacity: 0.3,
           marginBottom: '12px'
         }} />
-        <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.6)', marginBottom: '16px' }}>
+        <div style={{
+          fontSize: `${IOS_TYPOGRAPHY.caption2.size}px`,
+          color: IOS_COLORS.secondaryLabel,
+          marginBottom: '16px'
+        }}>
           Patient: Alex Thompson • Period: Jul 1 - Oct 1, 2024
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', marginBottom: '16px' }}>
@@ -1731,16 +1777,16 @@ function ReportScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => voi
             <div key={i} style={{
               aspectRatio: '1',
               borderRadius: '8px',
-              backgroundColor: 'rgba(239, 68, 68, 0.2)',
-              border: '1px solid rgba(239, 68, 68, 0.3)'
+              backgroundColor: IOS_COLORS.tertiarySystemFill,
+              border: `1px solid ${IOS_COLORS.separator}`
             }} />
           ))}
         </div>
         <div style={{
           height: '80px',
           borderRadius: '8px',
-          backgroundColor: 'rgba(74, 144, 226, 0.1)',
-          border: '1px solid rgba(74, 144, 226, 0.2)',
+          backgroundColor: IOS_COLORS.tertiarySystemFill,
+          border: `1px solid ${IOS_COLORS.separator}`,
           display: 'flex',
           alignItems: 'center',
           padding: '12px',
@@ -1751,7 +1797,8 @@ function ReportScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => voi
               <div key={i} style={{
                 flex: 1,
                 height: `${h}%`,
-                backgroundColor: 'rgba(74, 144, 226, 0.5)',
+                backgroundColor: IOS_COLORS.systemBlue,
+                opacity: 0.7,
                 borderRadius: '2px 2px 0 0'
               }} />
             ))}
@@ -1762,15 +1809,16 @@ function ReportScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => voi
       <button
         style={{
           width: '100%',
-          padding: '16px',
-          borderRadius: '16px',
-          backgroundColor: 'rgb(74, 144, 226)',
+          padding: '14px',
+          borderRadius: '14px',
+          backgroundColor: IOS_COLORS.systemBlue,
           border: 'none',
-          color: 'white',
-          fontSize: '16px',
+          color: IOS_COLORS.systemBackground,
+          fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
           fontWeight: '600',
           cursor: 'pointer',
-          marginBottom: '12px'
+          marginBottom: '12px',
+          boxShadow: IOS_SHADOWS.button
         }}
       >
         Email to Provider
@@ -1779,14 +1827,15 @@ function ReportScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => voi
       <button
         style={{
           width: '100%',
-          padding: '16px',
-          borderRadius: '16px',
-          backgroundColor: 'rgba(255,255,255,0.1)',
-          border: '1px solid rgba(255,255,255,0.2)',
-          color: 'white',
-          fontSize: '16px',
+          padding: '14px',
+          borderRadius: '14px',
+          backgroundColor: IOS_COLORS.tertiarySystemFill,
+          border: `1px solid ${IOS_COLORS.separator}`,
+          color: IOS_COLORS.systemBlue,
+          fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
           fontWeight: '600',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          boxShadow: IOS_SHADOWS.button
         }}
       >
         Export PDF
@@ -1806,10 +1855,19 @@ function SettingsScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => v
       style={{ padding: '16px 20px 24px' }}
     >
       <div style={{ marginBottom: '24px' }}>
-        <h2 style={{ fontSize: '28px', fontWeight: '700', color: 'white', marginBottom: '4px' }}>
+        <h2 style={{
+          fontSize: `${IOS_TYPOGRAPHY.largeTitle.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.largeTitle.weight,
+          color: IOS_COLORS.label,
+          marginBottom: '4px',
+          letterSpacing: `${IOS_TYPOGRAPHY.largeTitle.tracking}px`
+        }}>
           Settings
         </h2>
-        <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
+        <p style={{
+          fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+          color: IOS_COLORS.secondaryLabel
+        }}>
           Manage your account and preferences
         </p>
       </div>
@@ -1982,19 +2040,20 @@ function SettingsSection({ title, children }: { title: string; children: React.R
   return (
     <div>
       <h3 style={{
-        fontSize: '14px',
+        fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
         fontWeight: '600',
-        color: 'rgba(255,255,255,0.6)',
+        color: IOS_COLORS.tertiaryLabel,
         marginBottom: '8px',
         textTransform: 'uppercase',
-        letterSpacing: '0.05em'
+        letterSpacing: '0.5px'
       }}>
         {title}
       </h3>
       <div style={{
-        borderRadius: '16px',
-        backgroundColor: 'rgba(255,255,255,0.05)',
-        border: '1px solid rgba(255,255,255,0.1)',
+        borderRadius: '14px',
+        backgroundColor: IOS_COLORS.systemBackground,
+        border: `1px solid ${IOS_COLORS.separator}`,
+        boxShadow: IOS_SHADOWS.card,
         overflow: 'hidden'
       }}>
         {children}
@@ -2006,14 +2065,20 @@ function SettingsSection({ title, children }: { title: string; children: React.R
 function SettingsItem({ label, value }: { label: string; value: string }) {
   return (
     <div style={{
-      padding: '16px',
-      borderBottom: '1px solid rgba(255,255,255,0.05)',
+      padding: '14px 16px',
+      borderBottom: `1px solid ${IOS_COLORS.separator}`,
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center'
     }}>
-      <span style={{ fontSize: '15px', color: 'white' }}>{label}</span>
-      <span style={{ fontSize: '15px', color: 'rgba(255,255,255,0.5)' }}>{value}</span>
+      <span style={{
+        fontSize: `${IOS_TYPOGRAPHY.body.size}px`,
+        color: IOS_COLORS.label
+      }}>{label}</span>
+      <span style={{
+        fontSize: `${IOS_TYPOGRAPHY.body.size}px`,
+        color: IOS_COLORS.secondaryLabel
+      }}>{value}</span>
     </div>
   );
 }
