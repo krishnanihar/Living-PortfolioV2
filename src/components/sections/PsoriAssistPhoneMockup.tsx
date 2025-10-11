@@ -10,6 +10,14 @@ import {
 
 type Screen = 'home' | 'photo' | 'pasi' | 'meds' | 'mental' | 'triggers' | 'report' | 'settings';
 
+// iOS-native spring animation constants
+const SPRING_CONFIG = {
+  screen: { type: 'spring' as const, stiffness: 300, damping: 30, mass: 0.8 },
+  button: { type: 'spring' as const, stiffness: 400, damping: 17 },
+  card: { type: 'spring' as const, stiffness: 260, damping: 26 },
+  smooth: { type: 'spring' as const, stiffness: 200, damping: 20 }
+};
+
 export function PsoriAssistPhoneMockup() {
   const [activeScreen, setActiveScreen] = useState<Screen>('home');
   const [photoOpacity, setPhotoOpacity] = useState(50);
@@ -202,55 +210,109 @@ function HomeScreen({ setActiveScreen, streak }: { setActiveScreen: (s: Screen) 
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
-      transition={{ duration: 0.3 }}
-      style={{ padding: '24px 20px' }}
+      transition={SPRING_CONFIG.screen}
+      style={{
+        padding: '24px 20px',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif'
+      }}
     >
       {/* Header */}
       <div style={{ marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '32px', fontWeight: '700', color: 'white', marginBottom: '4px' }}>
+        <h1 style={{
+          fontSize: '34px',
+          fontWeight: '700',
+          color: 'white',
+          marginBottom: '4px',
+          letterSpacing: '-0.5px',
+          lineHeight: '1.1'
+        }}>
           Dashboard
         </h1>
-        <p style={{ fontSize: '16px', color: 'rgba(255,255,255,0.6)' }}>
+        <p style={{
+          fontSize: '17px',
+          color: 'rgba(255,255,255,0.6)',
+          lineHeight: '22px'
+        }}>
           Welcome back, Alex
         </p>
       </div>
 
       {/* PASI Score Card */}
-      <div style={{
-        padding: '24px',
-        borderRadius: '24px',
-        background: 'linear-gradient(135deg, rgba(74, 144, 226, 0.15), rgba(168, 85, 247, 0.15))',
-        border: '1px solid rgba(74, 144, 226, 0.3)',
-        marginBottom: '20px'
-      }}>
-        <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', marginBottom: '8px' }}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ ...SPRING_CONFIG.card, delay: 0.1 }}
+        style={{
+          padding: '24px',
+          borderRadius: '24px',
+          background: 'linear-gradient(135deg, rgba(74, 144, 226, 0.15), rgba(168, 85, 247, 0.15))',
+          border: '1px solid rgba(74, 144, 226, 0.3)',
+          marginBottom: '24px',
+          boxShadow:
+            'inset 0 1px 0 rgba(255,255,255,0.1), ' +
+            '0 8px 32px rgba(0,0,0,0.3), ' +
+            '0 1px 2px rgba(0,0,0,0.2)',
+          backdropFilter: 'saturate(180%) blur(20px)'
+        }}>
+        <div style={{
+          fontSize: '13px',
+          color: 'rgba(255,255,255,0.6)',
+          marginBottom: '8px',
+          fontWeight: '400',
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px'
+        }}>
           Current PASI Score
         </div>
-        <div style={{ fontSize: '48px', fontWeight: '700', color: 'rgb(74, 144, 226)', marginBottom: '12px' }}>
+        <div style={{
+          fontSize: '48px',
+          fontWeight: '700',
+          color: 'rgb(74, 144, 226)',
+          marginBottom: '12px',
+          letterSpacing: '-1px'
+        }}>
           12.4
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
           <TrendingUp size={16} color="rgb(80, 200, 120)" />
-          <span style={{ fontSize: '14px', color: 'rgb(80, 200, 120)', fontWeight: '600' }}>
+          <span style={{
+            fontSize: '15px',
+            color: 'rgb(80, 200, 120)',
+            fontWeight: '600'
+          }}>
             ↓ 18% from last month
           </span>
         </div>
         {/* Mini Chart */}
         <div style={{ height: '60px', display: 'flex', alignItems: 'flex-end', gap: '4px' }}>
           {[65, 55, 58, 52, 48, 45, 42].map((height, i) => (
-            <div key={i} style={{
-              flex: 1,
-              height: `${height}%`,
-              backgroundColor: 'rgba(74, 144, 226, 0.5)',
-              borderRadius: '4px 4px 0 0'
-            }} />
+            <motion.div
+              key={i}
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: `${height}%`, opacity: 1 }}
+              transition={{
+                ...SPRING_CONFIG.smooth,
+                delay: 0.2 + i * 0.05
+              }}
+              style={{
+                flex: 1,
+                background: `linear-gradient(180deg, rgba(74, 144, 226, 0.6) 0%, rgba(74, 144, 226, 0.4) 100%)`,
+                borderRadius: '4px 4px 0 0'
+              }}
+            />
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Quick Actions */}
-      <div style={{ marginBottom: '20px' }}>
-        <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'white', marginBottom: '12px' }}>
+      <div style={{ marginBottom: '24px' }}>
+        <h3 style={{
+          fontSize: '17px',
+          fontWeight: '600',
+          color: 'white',
+          marginBottom: '16px',
+          letterSpacing: '-0.2px'
+        }}>
           Quick Actions
         </h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
@@ -362,7 +424,7 @@ function PhotoScreen({
       initial={{ opacity: 0, x: 300 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -300 }}
-      transition={{ duration: 0.3 }}
+      transition={SPRING_CONFIG.screen}
       style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
     >
       {/* Header */}
@@ -373,23 +435,14 @@ function PhotoScreen({
         gap: '12px',
         borderBottom: '1px solid rgba(255,255,255,0.1)'
       }}>
-        <button
-          onClick={() => setActiveScreen('home')}
-          style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: '12px',
-            backgroundColor: 'rgba(255,255,255,0.1)',
-            border: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer'
-          }}
-        >
-          <ChevronLeft size={20} color="white" />
-        </button>
-        <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'white' }}>
+        <BackButton onClick={() => setActiveScreen('home')} />
+        <h2 style={{
+          fontSize: '20px',
+          fontWeight: '600',
+          color: 'white',
+          letterSpacing: '-0.3px',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif'
+        }}>
           Photo Tracking
         </h2>
       </div>
@@ -734,7 +787,7 @@ function MedicationScreen({
       initial={{ opacity: 0, x: 300 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -300 }}
-      transition={{ duration: 0.3 }}
+      transition={SPRING_CONFIG.screen}
       style={{ padding: '16px 20px 24px' }}
     >
       {/* Header */}
@@ -880,7 +933,7 @@ function MentalHealthScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) 
       initial={{ opacity: 0, x: 300 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -300 }}
-      transition={{ duration: 0.3 }}
+      transition={SPRING_CONFIG.screen}
       style={{ padding: '16px 20px 24px' }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
@@ -976,7 +1029,7 @@ function TriggerScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => vo
       initial={{ opacity: 0, x: 300 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -300 }}
-      transition={{ duration: 0.3 }}
+      transition={SPRING_CONFIG.screen}
       style={{ padding: '16px 20px 24px' }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
@@ -1109,7 +1162,7 @@ function ReportScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => voi
       initial={{ opacity: 0, x: 300 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -300 }}
-      transition={{ duration: 0.3 }}
+      transition={SPRING_CONFIG.screen}
       style={{ padding: '16px 20px 24px' }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
@@ -1260,7 +1313,7 @@ function SettingsScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => v
       initial={{ opacity: 0, x: 300 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -300 }}
-      transition={{ duration: 0.3 }}
+      transition={SPRING_CONFIG.screen}
       style={{ padding: '16px 20px 24px' }}
     >
       <div style={{ marginBottom: '24px' }}>
@@ -1302,6 +1355,33 @@ function SettingsScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => v
 
 // Helper Components
 
+function BackButton({ onClick }: { onClick: () => void }) {
+  return (
+    <motion.button
+      onClick={onClick}
+      whileTap={{ scale: 0.96, transition: SPRING_CONFIG.button }}
+      whileHover={{ scale: 1.05, transition: SPRING_CONFIG.smooth }}
+      style={{
+        minWidth: '44px',
+        minHeight: '44px',
+        width: '44px',
+        height: '44px',
+        borderRadius: '12px',
+        backgroundColor: 'rgba(255,255,255,0.1)',
+        border: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 8px rgba(0,0,0,0.2)',
+        backdropFilter: 'blur(10px)'
+      }}
+    >
+      <ChevronLeft size={20} color="white" />
+    </motion.button>
+  );
+}
+
 function QuickActionButton({
   icon: Icon,
   label,
@@ -1315,22 +1395,41 @@ function QuickActionButton({
 }) {
   return (
     <motion.button
-      whileTap={{ scale: 0.95 }}
+      whileTap={{
+        scale: 0.96,
+        backgroundColor: `rgba(${color}, 0.15)`,
+        transition: SPRING_CONFIG.button
+      }}
+      whileHover={{
+        scale: 1.02,
+        boxShadow: `0 8px 20px rgba(${color}, 0.25)`,
+        transition: SPRING_CONFIG.smooth
+      }}
       onClick={onClick}
       style={{
         padding: '20px 16px',
+        minHeight: '88px',
         borderRadius: '20px',
         backgroundColor: `rgba(${color}, 0.1)`,
         border: `1px solid rgba(${color}, 0.2)`,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        justifyContent: 'center',
         gap: '8px',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        boxShadow: `inset 0 1px 0 rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.15)`,
+        backdropFilter: 'saturate(180%) blur(10px)',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif'
       }}
     >
-      <Icon size={32} color={`rgb(${color})`} />
-      <span style={{ fontSize: '13px', fontWeight: '600', color: 'white' }}>
+      <Icon size={28} color={`rgb(${color})`} />
+      <span style={{
+        fontSize: '13px',
+        fontWeight: '600',
+        color: 'white',
+        letterSpacing: '-0.1px'
+      }}>
         {label}
       </span>
     </motion.button>
