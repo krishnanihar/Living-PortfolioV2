@@ -12,6 +12,15 @@ import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { ScrollProgress } from '@/components/ui/ScrollProgress';
 import { FlipCard } from '@/components/ui/FlipCard';
 import { TimelineVisualization } from '@/components/ui/TimelineVisualization';
+import { usePsoriAssistNarrative } from '@/hooks/usePsoriAssistNarrative';
+import { PsoriAssistFirstPersonMoments } from '@/components/sections/PsoriAssistFirstPersonMoments';
+import { PsoriAssistBreathingMoment } from '@/components/sections/PsoriAssistBreathingMoment';
+import {
+  ProgressiveBarChart,
+  ProgressiveRadialChart,
+  ProgressiveCounter,
+  ProgressiveStatsGrid,
+} from '@/components/ui/ProgressiveDataReveal';
 
 interface StatItem {
   value: string;
@@ -65,6 +74,9 @@ export function PsoriAssistWork() {
   const [scrollY, setScrollY] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
   const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Narrative progression system
+  const narrativeState = usePsoriAssistNarrative();
 
   // Section navigation for scroll progress
   const sections = [
@@ -483,6 +495,21 @@ export function PsoriAssistWork() {
     >
       {/* Scroll Progress Indicator */}
       {!isMobile && <ScrollProgress sections={sections} color="74, 144, 226" />}
+
+      {/* Narrative Atmosphere Layer */}
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          pointerEvents: 'none',
+          zIndex: 0,
+          background: `radial-gradient(ellipse at 50% 50%, ${narrativeState.color.atmosphere}, transparent 70%)`,
+          transition: 'background 2s cubic-bezier(0.22, 1, 0.36, 1)',
+        }}
+      />
+
+      {/* Patient Perspective Moments */}
+      <PsoriAssistFirstPersonMoments />
 
       {/* Ambient Gradient Orb (follows mouse) */}
       <div
