@@ -628,14 +628,19 @@ export function PsoriAssistWork() {
         </div>
       </div>
 
-      {/* Stats */}
+      {/* Stats - Progressive Reveal */}
       <div style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <div style={{
           display: 'grid',
           gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)',
           gap: '1.5rem'
         }}>
-          {stats.map((stat, index) => {
+          {[
+            { value: 125, label: 'Global Patients', sublabel: '$27.20B treatment market', suffix: 'M', icon: Users, color: '74, 144, 226' },
+            { value: 18, label: 'Design Concept', sublabel: 'With clinical validation', suffix: ' mo', icon: Target, color: '80, 200, 120' },
+            { value: 33, label: 'Better AI PASI', sublabel: 'vs. average dermatologist', suffix: '%', icon: Brain, color: '168, 85, 247' },
+            { value: 38, label: 'Year 5 Revenue', sublabel: '2M patients served', prefix: '$', suffix: 'M', icon: TrendingUp, color: '251, 191, 36' }
+          ].map((stat, index) => {
             const Icon = stat.icon;
             const isHovered = hoveredStat === index;
 
@@ -668,19 +673,16 @@ export function PsoriAssistWork() {
                 }}>
                   <Icon size={24} color={`rgb(${stat.color})`} />
                 </div>
-                <div style={{
-                  fontSize: '2.5rem',
-                  fontWeight: '700',
-                  marginBottom: '0.5rem',
-                  color: `rgb(${stat.color})`
-                }}>
-                  {stat.value}
-                </div>
-                <div style={{ fontSize: '1rem', color: 'rgba(255, 255, 255, 0.9)', marginBottom: '0.25rem', fontWeight: '500' }}>
-                  {stat.label}
-                </div>
+                <ProgressiveCounter
+                  value={stat.value}
+                  label={stat.label}
+                  prefix={stat.prefix}
+                  suffix={stat.suffix}
+                  duration={2}
+                  decimals={0}
+                />
                 {stat.sublabel && (
-                  <div style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.5)' }}>
+                  <div style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.5)', marginTop: '0.5rem' }}>
                     {stat.sublabel}
                   </div>
                 )}
@@ -821,6 +823,13 @@ export function PsoriAssistWork() {
           </div>
         </div>
       </div>
+
+      {/* Breathing Moment 1: After Genesis */}
+      <PsoriAssistBreathingMoment
+        text="Take a breath. This is where empathy begins."
+        color="236, 72, 153"
+        duration={3500}
+      />
 
       {/* Stakeholder Perspectives */}
       <div id="stakeholders" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
@@ -1135,7 +1144,86 @@ export function PsoriAssistWork() {
             </div>
           ))}
         </div>
+
+        {/* Adherence Comparison Chart */}
+        <div style={{
+          marginTop: '4rem',
+          padding: isMobile ? '2.5rem 1.5rem' : '3rem 2.5rem',
+          borderRadius: '24px',
+          backgroundColor: 'rgba(74, 144, 226, 0.03)',
+          border: '1px solid rgba(74, 144, 226, 0.2)'
+        }}>
+          <h3 style={{
+            fontSize: '1.75rem',
+            fontWeight: '600',
+            marginBottom: '1rem',
+            color: 'rgba(255, 255, 255, 0.95)',
+            textAlign: 'center'
+          }}>
+            Treatment Adherence: The Reality Gap
+          </h3>
+          <p style={{
+            fontSize: '1rem',
+            color: 'rgba(255, 255, 255, 0.6)',
+            textAlign: 'center',
+            marginBottom: '2.5rem',
+            maxWidth: '700px',
+            margin: '0 auto 2.5rem'
+          }}>
+            What patients report vs. what data reveals
+          </p>
+
+          <ProgressiveBarChart
+            data={[
+              {
+                label: 'Self-Reported Adherence',
+                value: 85,
+                color: 'rgb(80, 200, 120)',
+                description: 'Patients believe they follow treatment correctly'
+              },
+              {
+                label: 'Clinician Perception',
+                value: 70,
+                color: 'rgb(251, 191, 36)',
+                description: 'Doctors estimate patient adherence rates'
+              },
+              {
+                label: 'Actual Adherence (MEMs)',
+                value: 48,
+                color: 'rgb(239, 68, 68)',
+                description: 'Electronic monitoring reveals true adherence'
+              }
+            ]}
+            maxValue={100}
+            animationDuration={1.5}
+            staggerDelay={0.15}
+          />
+
+          <div style={{
+            marginTop: '2rem',
+            padding: '1.5rem',
+            borderRadius: '16px',
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            border: '1px solid rgba(239, 68, 68, 0.2)'
+          }}>
+            <p style={{
+              fontSize: '0.95rem',
+              lineHeight: '1.6',
+              color: 'rgba(255, 255, 255, 0.8)',
+              margin: 0
+            }}>
+              <strong style={{ color: 'rgb(239, 68, 68)' }}>The Gap:</strong> A 37-percentage point discrepancy between perceived and actual adherence. This invisibility prevents effective intervention and perpetuates the cycle of poor outcomes.
+            </p>
+          </div>
+        </div>
       </div>
+
+      {/* Breathing Moment 2: After Research */}
+      <PsoriAssistBreathingMoment
+        text="The data speaks. Now watch how design answers."
+        color="74, 144, 226"
+        duration={3500}
+      />
 
       {/* Competitive Landscape */}
       <div id="competitors" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
@@ -1373,6 +1461,13 @@ export function PsoriAssistWork() {
           </div>
         </div>
       </div>
+
+      {/* Breathing Moment 3: After Competitive Landscape */}
+      <PsoriAssistBreathingMoment
+        text="The gap is clear. Now watch what's possible."
+        color="168, 85, 247"
+        duration={3500}
+      />
 
       {/* Problem Reframing */}
       <div id="problem" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
@@ -3146,45 +3241,87 @@ export function PsoriAssistWork() {
             border: '1px solid rgba(251, 191, 36, 0.2)',
             marginBottom: '2rem'
           }}>
+            {/* Market Sizing Visualization */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-              gap: '2rem',
-              marginBottom: '2rem'
+              gap: '3rem',
+              marginBottom: '3rem',
+              alignItems: 'start'
             }}>
-              {[
-                { label: 'TAM', value: '$27.20B', desc: 'Global psoriasis treatment market' },
-                { label: 'SAM', value: '$4.4-14.1B', desc: '45M patients (developed markets) × $50-150' },
-                { label: 'SOM (Year 5)', value: '$220-705M', desc: '5% penetration target' }
-              ].map((market, i) => (
-                <div key={i} style={{ textAlign: 'center' }}>
-                  <div style={{
-                    fontSize: '0.9rem',
-                    fontWeight: '600',
-                    color: 'rgb(251, 191, 36)',
-                    marginBottom: '0.5rem',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.1em'
-                  }}>
-                    {market.label}
-                  </div>
-                  <div style={{
-                    fontSize: '2.5rem',
-                    fontWeight: '700',
-                    color: 'rgb(251, 191, 36)',
-                    marginBottom: '0.5rem'
-                  }}>
-                    {market.value}
-                  </div>
-                  <div style={{
-                    fontSize: '0.9rem',
-                    color: 'rgba(255, 255, 255, 0.7)',
-                    lineHeight: '1.5'
-                  }}>
-                    {market.desc}
-                  </div>
+              <div style={{ textAlign: 'center' }}>
+                <ProgressiveRadialChart
+                  data={[
+                    { label: 'TAM', value: 100, color: 'rgb(251, 191, 36)' }
+                  ]}
+                  size={isMobile ? 160 : 180}
+                />
+                <div style={{
+                  marginTop: '1rem',
+                  fontSize: '1.75rem',
+                  fontWeight: '700',
+                  color: 'rgb(251, 191, 36)'
+                }}>
+                  $27.20B
                 </div>
-              ))}
+                <div style={{
+                  fontSize: '0.85rem',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  marginTop: '0.5rem'
+                }}>
+                  Global psoriasis treatment market
+                </div>
+              </div>
+
+              <div style={{ textAlign: 'center' }}>
+                <ProgressiveRadialChart
+                  data={[
+                    { label: 'SAM', value: 52, color: 'rgb(80, 200, 120)' },
+                    { label: 'Remaining', value: 48, color: 'rgba(255, 255, 255, 0.05)' }
+                  ]}
+                  size={isMobile ? 160 : 180}
+                />
+                <div style={{
+                  marginTop: '1rem',
+                  fontSize: '1.75rem',
+                  fontWeight: '700',
+                  color: 'rgb(80, 200, 120)'
+                }}>
+                  $4.4-14.1B
+                </div>
+                <div style={{
+                  fontSize: '0.85rem',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  marginTop: '0.5rem'
+                }}>
+                  45M patients (developed markets) × $50-150
+                </div>
+              </div>
+
+              <div style={{ textAlign: 'center' }}>
+                <ProgressiveRadialChart
+                  data={[
+                    { label: 'SOM (Year 5)', value: 5, color: 'rgb(74, 144, 226)' },
+                    { label: 'Remaining', value: 95, color: 'rgba(255, 255, 255, 0.05)' }
+                  ]}
+                  size={isMobile ? 160 : 180}
+                />
+                <div style={{
+                  marginTop: '1rem',
+                  fontSize: '1.75rem',
+                  fontWeight: '700',
+                  color: 'rgb(74, 144, 226)'
+                }}>
+                  $220-705M
+                </div>
+                <div style={{
+                  fontSize: '0.85rem',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  marginTop: '0.5rem'
+                }}>
+                  5% penetration target
+                </div>
+              </div>
             </div>
             <div style={{
               padding: '1.5rem',
@@ -3389,6 +3526,13 @@ export function PsoriAssistWork() {
         </div>
       </div>
 
+      {/* Breathing Moment 5: Before Reflection */}
+      <PsoriAssistBreathingMoment
+        text="Before we end, a moment of gratitude..."
+        color="236, 72, 153"
+        duration={4000}
+      />
+
       {/* Reflection */}
       <div style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <div style={{
@@ -3447,6 +3591,13 @@ export function PsoriAssistWork() {
           </div>
         </div>
       </div>
+
+      {/* Breathing Moment 4: After Technical Architecture */}
+      <PsoriAssistBreathingMoment
+        text="Complexity, simplified. Innovation, humanized."
+        color="80, 200, 120"
+        duration={3500}
+      />
 
       {/* Design Learnings */}
       <div id="learnings" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
