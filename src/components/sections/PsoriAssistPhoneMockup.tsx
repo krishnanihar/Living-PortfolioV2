@@ -1344,28 +1344,44 @@ function MentalHealthScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) 
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -300 }}
       transition={SPRING_CONFIG.screen}
-      style={{ padding: '16px 20px 24px' }}
+      style={{ padding: '16px 16px 24px' }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
         <BackButton onClick={() => setActiveScreen('home')} />
-        <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'white' }}>
+        <h2 style={{
+          fontSize: `${IOS_TYPOGRAPHY.title3.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.title3.weight,
+          color: IOS_COLORS.label,
+          letterSpacing: `${IOS_TYPOGRAPHY.title3.tracking}px`
+        }}>
           Wellness Check-in
         </h2>
       </div>
 
       <div style={{
-        padding: '20px',
-        borderRadius: '20px',
-        backgroundColor: 'rgba(236, 72, 153, 0.1)',
-        border: '1px solid rgba(236, 72, 153, 0.2)',
-        marginBottom: '20px',
-        textAlign: 'center'
+        padding: '16px',
+        borderRadius: '16px',
+        backgroundColor: IOS_COLORS.systemBackground,
+        borderLeft: `4px solid ${IOS_COLORS.systemPink}`,
+        marginBottom: '16px',
+        textAlign: 'center',
+        boxShadow: IOS_SHADOWS.card
       }}>
-        <Heart size={40} color="rgb(236, 72, 153)" style={{ margin: '0 auto 12px' }} />
-        <div style={{ fontSize: '18px', fontWeight: '600', color: 'white', marginBottom: '8px' }}>
+        <Heart size={32} color={IOS_COLORS.systemPink} style={{ margin: '0 auto 12px' }} />
+        <div style={{
+          fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.headline.weight,
+          color: IOS_COLORS.label,
+          marginBottom: '6px',
+          letterSpacing: `${IOS_TYPOGRAPHY.headline.tracking}px`
+        }}>
           PHQ-9 Depression Screening
         </div>
-        <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', lineHeight: '1.5' }}>
+        <div style={{
+          fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+          color: IOS_COLORS.secondaryLabel,
+          lineHeight: `${IOS_TYPOGRAPHY.subheadline.lineHeight}px`
+        }}>
           Quick 9-question assessment to track your mental health. All responses are private.
         </div>
       </div>
@@ -1377,11 +1393,12 @@ function MentalHealthScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) 
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           style={{
-            padding: '48px 24px',
-            borderRadius: '20px',
-            backgroundColor: 'rgba(255,255,255,0.03)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            textAlign: 'center'
+            padding: '40px 20px',
+            borderRadius: '16px',
+            backgroundColor: IOS_COLORS.systemBackground,
+            border: `1px solid ${IOS_COLORS.separator}`,
+            textAlign: 'center',
+            boxShadow: IOS_SHADOWS.card
           }}
         >
           <motion.div
@@ -1395,21 +1412,22 @@ function MentalHealthScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) 
               ease: 'easeInOut'
             }}
           >
-            <Heart size={64} color="rgba(236, 72, 153, 0.4)" style={{ margin: '0 auto 16px' }} />
+            <Heart size={56} color={IOS_COLORS.systemPink} style={{ margin: '0 auto 16px', opacity: 0.6 }} />
           </motion.div>
 
           <h3 style={{
-            fontSize: '20px',
-            fontWeight: '600',
-            color: 'white',
-            marginBottom: '8px'
+            fontSize: `${IOS_TYPOGRAPHY.title3.size}px`,
+            fontWeight: IOS_TYPOGRAPHY.title3.weight,
+            color: IOS_COLORS.label,
+            marginBottom: '8px',
+            letterSpacing: `${IOS_TYPOGRAPHY.title3.tracking}px`
           }}>
             No Check-ins Yet
           </h3>
           <p style={{
-            fontSize: '14px',
-            color: 'rgba(255,255,255,0.6)',
-            lineHeight: '1.6',
+            fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+            color: IOS_COLORS.secondaryLabel,
+            lineHeight: `${IOS_TYPOGRAPHY.subheadline.lineHeight}px`,
             marginBottom: '20px'
           }}>
             Start your first wellness check-in to track your mental health over time.
@@ -1421,28 +1439,34 @@ function MentalHealthScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) 
             style={{
               padding: '12px 24px',
               borderRadius: '12px',
-              backgroundColor: 'rgb(236, 72, 153)',
+              backgroundColor: IOS_COLORS.systemPink,
               border: 'none',
               color: 'white',
-              fontSize: '15px',
+              fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
               fontWeight: '600',
               cursor: 'pointer',
-              boxShadow: '0 4px 12px rgba(236, 72, 153, 0.3)'
+              boxShadow: IOS_SHADOWS.button
             }}
           >
             Begin Check-in
           </motion.button>
         </motion.div>
       ) : (
-        <div style={{ marginBottom: '20px' }}>
+        <div style={{ marginBottom: '16px' }}>
           <div style={{
             padding: '16px',
             borderRadius: '16px',
-            backgroundColor: 'rgba(255,255,255,0.05)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            marginBottom: '12px'
+            backgroundColor: IOS_COLORS.systemBackground,
+            border: `1px solid ${IOS_COLORS.separator}`,
+            marginBottom: '12px',
+            boxShadow: IOS_SHADOWS.card
           }}>
-            <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.8)', marginBottom: '12px' }}>
+            <div style={{
+              fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+              color: IOS_COLORS.label,
+              marginBottom: '12px',
+              lineHeight: `${IOS_TYPOGRAPHY.subheadline.lineHeight}px`
+            }}>
               Over the last 2 weeks, how often have you been bothered by feeling down, depressed, or hopeless?
             </div>
             <div style={{ display: 'grid', gap: '8px' }}>
@@ -1450,10 +1474,10 @@ function MentalHealthScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) 
                 <div key={option} style={{
                   padding: '12px',
                   borderRadius: '12px',
-                  backgroundColor: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  fontSize: '14px',
-                  color: 'white',
+                  backgroundColor: IOS_COLORS.tertiarySystemFill,
+                  border: `1px solid ${IOS_COLORS.separator}`,
+                  fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+                  color: IOS_COLORS.label,
                   cursor: 'pointer'
                 }}>
                   {option}
@@ -1463,16 +1487,21 @@ function MentalHealthScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) 
           </div>
 
           <div style={{
-            padding: '14px',
-            borderRadius: '14px',
-            backgroundColor: 'rgba(74, 144, 226, 0.1)',
-            border: '1px solid rgba(74, 144, 226, 0.2)',
+            padding: '12px',
+            borderRadius: '12px',
+            backgroundColor: IOS_COLORS.systemBackground,
+            borderLeft: `4px solid ${IOS_COLORS.systemBlue}`,
             display: 'flex',
             alignItems: 'flex-start',
-            gap: '10px'
+            gap: '10px',
+            boxShadow: IOS_SHADOWS.card
           }}>
-            <Info size={20} color="rgb(74, 144, 226)" style={{ flexShrink: 0, marginTop: '2px' }} />
-            <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.8)', lineHeight: '1.5' }}>
+            <Info size={18} color={IOS_COLORS.systemBlue} style={{ flexShrink: 0, marginTop: '2px' }} />
+            <div style={{
+              fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+              color: IOS_COLORS.secondaryLabel,
+              lineHeight: `${IOS_TYPOGRAPHY.footnote.lineHeight}px`
+            }}>
               Your responses help identify if you may benefit from additional support. Results are shared only with your permission.
             </div>
           </div>
