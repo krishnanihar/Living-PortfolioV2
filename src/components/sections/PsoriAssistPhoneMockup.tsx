@@ -10,6 +10,60 @@ import {
 
 type Screen = 'home' | 'photo' | 'pasi' | 'meds' | 'mental' | 'triggers' | 'report' | 'settings';
 
+// iOS 17 Light Mode Design System
+const IOS_COLORS = {
+  // Backgrounds
+  systemBackground: '#FFFFFF',
+  secondarySystemBackground: '#F2F2F7',
+  tertiarySystemBackground: '#FFFFFF',
+  groupedBackground: '#F2F2F7',
+
+  // Labels
+  label: '#000000',
+  secondaryLabel: 'rgba(60, 60, 67, 0.6)',
+  tertiaryLabel: 'rgba(60, 60, 67, 0.3)',
+  quaternaryLabel: 'rgba(60, 60, 67, 0.18)',
+
+  // System Colors
+  systemBlue: '#007AFF',
+  systemGreen: '#34C759',
+  systemRed: '#FF3B30',
+  systemPink: '#FF2D55',
+  systemYellow: '#FFCC00',
+  systemPurple: '#AF52DE',
+  systemOrange: '#FF9500',
+
+  // Separators
+  separator: 'rgba(60, 60, 67, 0.29)',
+  opaqueSeparator: '#C6C6C8',
+
+  // Fills (for buttons/controls)
+  tertiarySystemFill: 'rgba(118, 118, 128, 0.12)',
+  quaternarySystemFill: 'rgba(116, 116, 128, 0.08)'
+};
+
+// iOS 17 Typography Scale
+const IOS_TYPOGRAPHY = {
+  largeTitle: { size: 34, lineHeight: 41, weight: '700' as const, tracking: -0.38 },
+  title1: { size: 28, lineHeight: 34, weight: '700' as const, tracking: -0.36 },
+  title2: { size: 22, lineHeight: 28, weight: '700' as const, tracking: -0.26 },
+  title3: { size: 20, lineHeight: 25, weight: '600' as const, tracking: -0.45 },
+  headline: { size: 17, lineHeight: 22, weight: '600' as const, tracking: -0.43 },
+  body: { size: 17, lineHeight: 22, weight: '400' as const, tracking: -0.41 },
+  callout: { size: 16, lineHeight: 21, weight: '400' as const, tracking: -0.32 },
+  subheadline: { size: 15, lineHeight: 20, weight: '400' as const, tracking: -0.24 },
+  footnote: { size: 13, lineHeight: 18, weight: '400' as const, tracking: -0.08 },
+  caption1: { size: 12, lineHeight: 16, weight: '400' as const, tracking: 0 },
+  caption2: { size: 11, lineHeight: 13, weight: '400' as const, tracking: 0.06 }
+};
+
+// iOS Shadow System
+const IOS_SHADOWS = {
+  card: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.06)',
+  button: '0 1px 2px rgba(0,0,0,0.08)',
+  elevated: '0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.05)'
+};
+
 // iOS-native spring animation constants
 const SPRING_CONFIG = {
   screen: { type: 'spring' as const, stiffness: 300, damping: 30, mass: 0.8 },
@@ -147,7 +201,7 @@ export function PsoriAssistPhoneMockup() {
         <div style={{
           width: '100%',
           height: '100%',
-          backgroundColor: '#0A0A0A',
+          backgroundColor: IOS_COLORS.groupedBackground,
           borderRadius: '48px',
           overflow: 'hidden',
           position: 'relative'
@@ -155,7 +209,7 @@ export function PsoriAssistPhoneMockup() {
           {/* Status Bar */}
           <div style={{
             height: '54px',
-            background: 'linear-gradient(180deg, rgba(0,0,0,0.9) 0%, transparent 100%)',
+            background: 'linear-gradient(180deg, rgba(242,242,247,0.95) 0%, rgba(242,242,247,0) 100%)',
             position: 'absolute',
             top: 0,
             left: 0,
@@ -165,9 +219,10 @@ export function PsoriAssistPhoneMockup() {
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '0 24px',
-            paddingTop: '8px'
+            paddingTop: '8px',
+            backdropFilter: 'blur(10px)'
           }}>
-            <div style={{ fontSize: '15px', fontWeight: '600', color: 'white' }}>
+            <div style={{ fontSize: '15px', fontWeight: '600', color: IOS_COLORS.label }}>
               9:41
             </div>
             {/* Dynamic Island */}
@@ -181,7 +236,7 @@ export function PsoriAssistPhoneMockup() {
               left: '50%',
               transform: 'translateX(-50%)'
             }} />
-            <div style={{ fontSize: '15px', color: 'white', display: 'flex', gap: '6px' }}>
+            <div style={{ fontSize: '15px', color: IOS_COLORS.label, display: 'flex', gap: '6px' }}>
               <span>100%</span>
               <span>●</span>
             </div>
@@ -230,7 +285,7 @@ export function PsoriAssistPhoneMockup() {
                     ease: 'linear'
                   }}
                 >
-                  <Sparkles size={24} color="rgb(74, 144, 226)" />
+                  <Sparkles size={24} color={IOS_COLORS.systemBlue} />
                 </motion.div>
               </motion.div>
             )}
@@ -322,9 +377,9 @@ export function PsoriAssistPhoneMockup() {
             left: 0,
             right: 0,
             height: '90px',
-            backgroundColor: 'rgba(20, 20, 20, 0.95)',
-            backdropFilter: 'blur(20px)',
-            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+            backgroundColor: 'rgba(249, 249, 249, 0.94)',
+            backdropFilter: 'blur(20px) saturate(180%)',
+            borderTop: `1px solid ${IOS_COLORS.separator}`,
             display: 'flex',
             justifyContent: 'space-around',
             alignItems: 'flex-start',
@@ -380,26 +435,27 @@ function HomeScreen({
       exit={{ opacity: 0, x: prefersReducedMotion ? 0 : 20 }}
       transition={prefersReducedMotion ? { duration: 0.2 } : SPRING_CONFIG.screen}
       style={{
-        padding: '24px 20px',
+        padding: '16px 16px',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif'
       }}
     >
       {/* Header */}
-      <div style={{ marginBottom: '24px' }}>
+      <div style={{ marginBottom: '16px' }}>
         <h1 style={{
-          fontSize: '34px',
-          fontWeight: '700',
-          color: 'white',
-          marginBottom: '4px',
-          letterSpacing: '-0.5px',
-          lineHeight: '1.1'
+          fontSize: `${IOS_TYPOGRAPHY.largeTitle.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.largeTitle.weight,
+          color: IOS_COLORS.label,
+          marginBottom: '2px',
+          letterSpacing: `${IOS_TYPOGRAPHY.largeTitle.tracking}px`,
+          lineHeight: `${IOS_TYPOGRAPHY.largeTitle.lineHeight}px`
         }}>
           Dashboard
         </h1>
         <p style={{
-          fontSize: '17px',
-          color: 'rgba(255,255,255,0.6)',
-          lineHeight: '22px'
+          fontSize: `${IOS_TYPOGRAPHY.body.size}px`,
+          color: IOS_COLORS.secondaryLabel,
+          lineHeight: `${IOS_TYPOGRAPHY.body.lineHeight}px`,
+          letterSpacing: `${IOS_TYPOGRAPHY.body.tracking}px`
         }}>
           Welcome back, Alex
         </p>
@@ -411,48 +467,45 @@ function HomeScreen({
         animate={{ opacity: 1, y: 0 }}
         transition={{ ...SPRING_CONFIG.card, delay: 0.1 }}
         style={{
-          padding: '24px',
-          borderRadius: '24px',
-          background: 'linear-gradient(135deg, rgba(74, 144, 226, 0.15), rgba(168, 85, 247, 0.15))',
-          border: '1px solid rgba(74, 144, 226, 0.3)',
-          marginBottom: '24px',
-          boxShadow:
-            'inset 0 1px 0 rgba(255,255,255,0.1), ' +
-            '0 8px 32px rgba(0,0,0,0.3), ' +
-            '0 1px 2px rgba(0,0,0,0.2)',
-          backdropFilter: 'saturate(180%) blur(20px)'
+          padding: '16px',
+          borderRadius: '16px',
+          backgroundColor: IOS_COLORS.systemBackground,
+          borderLeft: `4px solid ${IOS_COLORS.systemBlue}`,
+          marginBottom: '12px',
+          boxShadow: IOS_SHADOWS.card
         }}>
         <div style={{
-          fontSize: '13px',
-          color: 'rgba(255,255,255,0.6)',
-          marginBottom: '8px',
-          fontWeight: '400',
+          fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+          color: IOS_COLORS.secondaryLabel,
+          marginBottom: '4px',
+          fontWeight: IOS_TYPOGRAPHY.footnote.weight,
           textTransform: 'uppercase',
-          letterSpacing: '0.5px'
+          letterSpacing: `${IOS_TYPOGRAPHY.footnote.tracking}px`
         }}>
           Current PASI Score
         </div>
         <div style={{
-          fontSize: '48px',
+          fontSize: '40px',
           fontWeight: '700',
-          color: 'rgb(74, 144, 226)',
-          marginBottom: '12px',
+          color: IOS_COLORS.systemBlue,
+          marginBottom: '8px',
           letterSpacing: '-1px'
         }}>
           12.4
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-          <TrendingUp size={16} color="rgb(80, 200, 120)" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
+          <TrendingUp size={14} color={IOS_COLORS.systemGreen} />
           <span style={{
-            fontSize: '15px',
-            color: 'rgb(80, 200, 120)',
-            fontWeight: '600'
+            fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+            color: IOS_COLORS.systemGreen,
+            fontWeight: '600',
+            letterSpacing: `${IOS_TYPOGRAPHY.subheadline.tracking}px`
           }}>
             ↓ 18% from last month
           </span>
         </div>
         {/* Mini Chart with Elastic Animation */}
-        <div style={{ height: '60px', display: 'flex', alignItems: 'flex-end', gap: '4px' }}>
+        <div style={{ height: '48px', display: 'flex', alignItems: 'flex-end', gap: '3px' }}>
           {[65, 55, 58, 52, 48, 45, 42].map((height, i) => (
             <motion.div
               key={i}
@@ -472,8 +525,8 @@ function HomeScreen({
               }
               style={{
                 flex: 1,
-                background: `linear-gradient(180deg, rgba(74, 144, 226, 0.6) 0%, rgba(74, 144, 226, 0.4) 100%)`,
-                borderRadius: '4px 4px 0 0',
+                backgroundColor: IOS_COLORS.systemBlue,
+                borderRadius: '3px 3px 0 0',
                 transformOrigin: 'bottom'
               }}
             />
@@ -482,33 +535,33 @@ function HomeScreen({
       </motion.div>
 
       {/* Quick Actions */}
-      <div style={{ marginBottom: '24px' }}>
+      <div style={{ marginBottom: '16px' }}>
         <h3 style={{
-          fontSize: '17px',
-          fontWeight: '600',
-          color: 'white',
-          marginBottom: '16px',
-          letterSpacing: '-0.2px'
+          fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.headline.weight,
+          color: IOS_COLORS.label,
+          marginBottom: '12px',
+          letterSpacing: `${IOS_TYPOGRAPHY.headline.tracking}px`
         }}>
           Quick Actions
         </h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
           <QuickActionButton
             icon={Camera}
             label="Photo"
-            color="74, 144, 226"
+            color={IOS_COLORS.systemBlue}
             onClick={() => setActiveScreen('photo')}
           />
           <QuickActionButton
             icon={Check}
             label="Meds"
-            color="80, 200, 120"
+            color={IOS_COLORS.systemGreen}
             onClick={() => setActiveScreen('meds')}
           />
           <QuickActionButton
             icon={Heart}
             label="Check-in"
-            color="236, 72, 153"
+            color={IOS_COLORS.systemPink}
             onClick={() => setActiveScreen('mental')}
           />
         </div>
@@ -516,28 +569,37 @@ function HomeScreen({
 
       {/* Streak Card */}
       <div style={{
-        padding: '20px',
-        borderRadius: '20px',
-        backgroundColor: 'rgba(80, 200, 120, 0.1)',
-        border: '1px solid rgba(80, 200, 120, 0.2)',
-        marginBottom: '20px'
+        padding: '16px',
+        borderRadius: '16px',
+        backgroundColor: IOS_COLORS.systemBackground,
+        borderLeft: `4px solid ${IOS_COLORS.systemGreen}`,
+        marginBottom: '12px',
+        boxShadow: IOS_SHADOWS.card
       }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
-            <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', marginBottom: '4px' }}>
+            <div style={{
+              fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+              color: IOS_COLORS.secondaryLabel,
+              marginBottom: '2px'
+            }}>
               Current Streak
             </div>
-            <div style={{ fontSize: '32px', fontWeight: '700', color: 'rgb(80, 200, 120)' }}>
+            <div style={{
+              fontSize: `${IOS_TYPOGRAPHY.title1.size}px`,
+              fontWeight: '700',
+              color: IOS_COLORS.systemGreen
+            }}>
               {streak} days
             </div>
           </div>
-          <Award size={48} color="rgb(80, 200, 120)" />
+          <Award size={40} color={IOS_COLORS.systemGreen} />
         </div>
         <div style={{
-          marginTop: '12px',
-          fontSize: '13px',
-          color: 'rgba(255,255,255,0.5)',
-          fontStyle: 'italic'
+          marginTop: '8px',
+          fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+          color: IOS_COLORS.secondaryLabel,
+          lineHeight: `${IOS_TYPOGRAPHY.footnote.lineHeight}px`
         }}>
           Keep it up! 16 days until your next milestone 🎉
         </div>
@@ -545,32 +607,43 @@ function HomeScreen({
 
       {/* Upcoming Appointment */}
       <div style={{
-        padding: '20px',
-        borderRadius: '20px',
-        backgroundColor: 'rgba(251, 191, 36, 0.1)',
-        border: '1px solid rgba(251, 191, 36, 0.2)'
+        padding: '16px',
+        borderRadius: '16px',
+        backgroundColor: IOS_COLORS.systemBackground,
+        borderLeft: `4px solid ${IOS_COLORS.systemYellow}`,
+        boxShadow: IOS_SHADOWS.card
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <Calendar size={20} color="rgb(251, 191, 36)" />
-          <span style={{ fontSize: '16px', fontWeight: '600', color: 'white' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+          <Calendar size={18} color={IOS_COLORS.systemYellow} />
+          <span style={{
+            fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+            fontWeight: IOS_TYPOGRAPHY.headline.weight,
+            color: IOS_COLORS.label,
+            letterSpacing: `${IOS_TYPOGRAPHY.headline.tracking}px`
+          }}>
             Upcoming Appointment
           </span>
         </div>
-        <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)' }}>
+        <div style={{
+          fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+          color: IOS_COLORS.secondaryLabel,
+          lineHeight: `${IOS_TYPOGRAPHY.subheadline.lineHeight}px`,
+          marginBottom: '12px'
+        }}>
           Dr. Sarah Johnson • Friday, Oct 25 at 2:30 PM
         </div>
         <button
           onClick={() => setActiveScreen('report')}
           style={{
-            marginTop: '12px',
-            padding: '10px 16px',
-            borderRadius: '12px',
-            backgroundColor: 'rgba(251, 191, 36, 0.2)',
-            border: '1px solid rgba(251, 191, 36, 0.3)',
-            color: 'rgb(251, 191, 36)',
-            fontSize: '14px',
+            padding: '8px 14px',
+            borderRadius: '10px',
+            backgroundColor: IOS_COLORS.systemYellow,
+            border: 'none',
+            color: IOS_COLORS.systemBackground,
+            fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
             fontWeight: '600',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            boxShadow: IOS_SHADOWS.button
           }}
         >
           Prepare Report →
@@ -1707,24 +1780,23 @@ function BackButton({ onClick }: { onClick: () => void }) {
     <motion.button
       onClick={onClick}
       whileTap={{ scale: 0.96, transition: SPRING_CONFIG.button }}
-      whileHover={{ scale: 1.05, transition: SPRING_CONFIG.smooth }}
+      whileHover={{ scale: 1.02, transition: SPRING_CONFIG.smooth }}
       style={{
         minWidth: '44px',
         minHeight: '44px',
         width: '44px',
         height: '44px',
         borderRadius: '12px',
-        backgroundColor: 'rgba(255,255,255,0.1)',
+        backgroundColor: IOS_COLORS.tertiarySystemFill,
         border: 'none',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         cursor: 'pointer',
-        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 8px rgba(0,0,0,0.2)',
-        backdropFilter: 'blur(10px)'
+        boxShadow: IOS_SHADOWS.button
       }}
     >
-      <ChevronLeft size={20} color="white" />
+      <ChevronLeft size={20} color={IOS_COLORS.systemBlue} />
     </motion.button>
   );
 }
@@ -1741,49 +1813,45 @@ function QuickActionButton({
   onClick: () => void;
 }) {
   const [isFocused, setIsFocused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.button
       whileTap={{
         scale: 0.96,
-        backgroundColor: `rgba(${color}, 0.15)`,
         transition: SPRING_CONFIG.button
-      }}
-      whileHover={{
-        scale: 1.02,
-        boxShadow: `0 8px 20px rgba(${color}, 0.25)`,
-        transition: SPRING_CONFIG.smooth
       }}
       onClick={onClick}
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       style={{
-        padding: '20px 16px',
-        minHeight: '88px',
-        borderRadius: '20px',
-        backgroundColor: `rgba(${color}, 0.1)`,
-        border: `1px solid rgba(${color}, 0.2)`,
+        padding: '12px 8px',
+        minHeight: '76px',
+        borderRadius: '14px',
+        backgroundColor: isHovered ? IOS_COLORS.tertiarySystemFill : IOS_COLORS.systemBackground,
+        border: `1px solid ${IOS_COLORS.separator}`,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '8px',
+        gap: '6px',
         cursor: 'pointer',
         boxShadow: isFocused
-          ? `inset 0 1px 0 rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.15), 0 0 0 3px rgba(${color}, 0.5)`
-          : `inset 0 1px 0 rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.15)`,
-        backdropFilter: 'saturate(180%) blur(10px)',
+          ? `${IOS_SHADOWS.card}, 0 0 0 3px ${color}40`
+          : IOS_SHADOWS.card,
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
         outline: 'none',
-        transition: 'box-shadow 0.2s ease'
+        transition: 'background-color 0.2s ease, box-shadow 0.2s ease'
       }}
     >
-      <Icon size={28} color={`rgb(${color})`} />
+      <Icon size={20} color={color} />
       <span style={{
-        fontSize: '13px',
+        fontSize: `${IOS_TYPOGRAPHY.caption1.size}px`,
         fontWeight: '600',
-        color: 'white',
-        letterSpacing: '-0.1px'
+        color: IOS_COLORS.label,
+        letterSpacing: `${IOS_TYPOGRAPHY.caption1.tracking}px`
       }}>
         {label}
       </span>
@@ -1813,7 +1881,7 @@ function TabBarItem({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '4px',
+        gap: '2px',
         background: 'none',
         border: 'none',
         cursor: 'pointer',
@@ -1821,18 +1889,19 @@ function TabBarItem({
         minWidth: '60px',
         borderRadius: '12px',
         outline: 'none',
-        boxShadow: isFocused ? '0 0 0 2px rgba(74, 144, 226, 0.6)' : 'none',
+        boxShadow: isFocused ? `0 0 0 2px ${IOS_COLORS.systemBlue}99` : 'none',
         transition: 'box-shadow 0.2s ease'
       }}
     >
       <Icon
         size={24}
-        color={active ? 'rgb(74, 144, 226)' : 'rgba(255,255,255,0.5)'}
+        color={active ? IOS_COLORS.systemBlue : IOS_COLORS.secondaryLabel}
       />
       <span style={{
-        fontSize: '11px',
+        fontSize: `${IOS_TYPOGRAPHY.caption2.size}px`,
         fontWeight: active ? '600' : '400',
-        color: active ? 'rgb(74, 144, 226)' : 'rgba(255,255,255,0.5)'
+        color: active ? IOS_COLORS.systemBlue : IOS_COLORS.secondaryLabel,
+        letterSpacing: `${IOS_TYPOGRAPHY.caption2.tracking}px`
       }}>
         {label}
       </span>
