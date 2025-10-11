@@ -20,6 +20,7 @@ import {
   SmartReminderDemo,
   PASIScoringDemo
 } from '@/components/sections/PsoriAssistInteractivePrototypes';
+import { PsoriAssistPhoneMockup } from '@/components/sections/PsoriAssistPhoneMockup';
 import {
   ProgressiveBarChart,
   ProgressiveRadialChart,
@@ -3554,6 +3555,51 @@ export function PsoriAssistWork() {
         color="236, 72, 153"
         duration={4000}
       />
+
+      {/* Interactive App Prototype */}
+      <div style={{ maxWidth: '1400px', margin: '0 auto 8rem' }}>
+        <h2 style={{
+          fontSize: isMobile ? '2rem' : '3rem',
+          fontWeight: '700',
+          marginBottom: '1.5rem',
+          textAlign: 'center',
+          color: 'rgba(255, 255, 255, 0.95)'
+        }}>
+          Experience PsoriAssist
+        </h2>
+        <p style={{
+          fontSize: '1.125rem',
+          color: 'rgba(255, 255, 255, 0.6)',
+          textAlign: 'center',
+          marginBottom: '4rem',
+          maxWidth: '700px',
+          margin: '0 auto 4rem',
+          lineHeight: '1.6'
+        }}>
+          Click through the fully interactive prototype. Try the photo tracker, check your medication streak, and explore the provider report.
+        </p>
+
+        <PsoriAssistPhoneMockup />
+
+        <div style={{
+          textAlign: 'center',
+          marginTop: '3rem',
+          padding: '1.5rem',
+          borderRadius: '16px',
+          backgroundColor: 'rgba(74, 144, 226, 0.05)',
+          border: '1px solid rgba(74, 144, 226, 0.2)',
+          maxWidth: '600px',
+          margin: '3rem auto 0'
+        }}>
+          <div style={{
+            fontSize: '0.875rem',
+            color: 'rgba(255, 255, 255, 0.7)',
+            lineHeight: '1.5'
+          }}>
+            💡 <strong style={{ color: 'rgb(74, 144, 226)' }}>Tip:</strong> Use the tabs at the bottom to navigate between screens. Click buttons, adjust sliders, and check off medications to see the app come to life.
+          </div>
+        </div>
+      </div>
 
       {/* Reflection */}
       <div style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
