@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from 'framer-motion';
 import {
   Home, Camera, Activity, Settings, ChevronLeft,
   TrendingUp, Calendar, Heart, FileText, Award,
-  Check, X, Info
+  Check, X, Info, Sparkles
 } from 'lucide-react';
 
 type Screen = 'home' | 'photo' | 'pasi' | 'meds' | 'mental' | 'triggers' | 'report' | 'settings';
@@ -15,8 +15,19 @@ const SPRING_CONFIG = {
   screen: { type: 'spring' as const, stiffness: 300, damping: 30, mass: 0.8 },
   button: { type: 'spring' as const, stiffness: 400, damping: 17 },
   card: { type: 'spring' as const, stiffness: 260, damping: 26 },
-  smooth: { type: 'spring' as const, stiffness: 200, damping: 20 }
+  smooth: { type: 'spring' as const, stiffness: 200, damping: 20 },
+  elastic: { type: 'spring' as const, stiffness: 150, damping: 12, mass: 1 }
 };
+
+// Confetti particle for checkbox celebrations
+interface ConfettiParticle {
+  id: number;
+  x: number;
+  y: number;
+  color: string;
+  rotation: number;
+  velocity: { x: number; y: number };
+}
 
 export function PsoriAssistPhoneMockup() {
   const [activeScreen, setActiveScreen] = useState<Screen>('home');
@@ -27,6 +38,16 @@ export function PsoriAssistPhoneMockup() {
   const [streak, setStreak] = useState(14);
   const [showPasiResult, setShowPasiResult] = useState(false);
   const [compareSlider, setCompareSlider] = useState(50);
+  const [confetti, setConfetti] = useState<ConfettiParticle[]>([]);
+  const [pullToRefresh, setPullToRefresh] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const screenContainerRef = useRef<HTMLDivElement>(null);
+  const dragY = useMotionValue(0);
+
+  // Detect reduced motion preference
+  const prefersReducedMotion = typeof window !== 'undefined'
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    : false;
 
   const handleCapture = () => {
     setIsCapturing(true);
@@ -41,13 +62,65 @@ export function PsoriAssistPhoneMockup() {
     }, 500);
   };
 
-  const handleMedicationCheck = (index: number) => {
+  const handleMedicationCheck = (index: number, event: React.MouseEvent) => {
     const newChecked = [...medicationChecked];
     newChecked[index] = !newChecked[index];
     setMedicationChecked(newChecked);
 
+    // Confetti celebration when checking off
+    if (newChecked[index] && !prefersReducedMotion) {
+      triggerConfetti(event.clientX, event.clientY);
+    }
+
     if (newChecked[index] && newChecked.every(c => c)) {
       setStreak(streak + 1);
+    }
+  };
+
+  const triggerConfetti = (x: number, y: number) => {
+    const colors = ['#50C878', '#4A90E2', '#EC4899', '#FBD24C'];
+    const newConfetti: ConfettiParticle[] = Array.from({ length: 12 }, (_, i) => ({
+      id: Date.now() + i,
+      x,
+      y,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rotation: Math.random() * 360,
+      velocity: {
+        x: (Math.random() - 0.5) * 4,
+        y: -Math.random() * 4 - 2
+      }
+    }));
+
+    setConfetti(prev => [...prev, ...newConfetti]);
+    setTimeout(() => {
+      setConfetti(prev => prev.filter(p => !newConfetti.find(n => n.id === p.id)));
+    }, 1000);
+  };
+
+  // Swipe gesture handling
+  const handleDragEnd = (_: any, info: PanInfo) => {
+    const screens: Screen[] = ['home', 'photo', 'triggers', 'settings'];
+    const currentIndex = screens.indexOf(activeScreen);
+
+    if (Math.abs(info.offset.x) > 100) {
+      if (info.offset.x < 0 && currentIndex < screens.length - 1) {
+        setActiveScreen(screens[currentIndex + 1]);
+      } else if (info.offset.x > 0 && currentIndex > 0) {
+        setActiveScreen(screens[currentIndex - 1]);
+      }
+    }
+  };
+
+  // Pull-to-refresh handling
+  const handlePullDragEnd = (_: any, info: PanInfo) => {
+    if (info.offset.y > 80 && activeScreen === 'home') {
+      setIsRefreshing(true);
+      setTimeout(() => {
+        setIsRefreshing(false);
+        setPullToRefresh(0);
+      }, 1500);
+    } else {
+      setPullToRefresh(0);
     }
   };
 
@@ -114,15 +187,62 @@ export function PsoriAssistPhoneMockup() {
             </div>
           </div>
 
-          {/* Screen Content */}
-          <div style={{
-            position: 'absolute',
-            inset: '54px 0 0 0',
-            overflow: 'auto',
-            paddingBottom: '90px'
-          }}>
+          {/* Screen Content with Swipe & Pull-to-Refresh */}
+          <motion.div
+            ref={screenContainerRef}
+            drag={activeScreen === 'home' ? 'y' : 'x'}
+            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+            dragElastic={activeScreen === 'home' ? { top: 0.3, bottom: 0 } : 0.2}
+            onDrag={(_, info) => {
+              if (activeScreen === 'home' && info.offset.y > 0) {
+                setPullToRefresh(Math.min(info.offset.y, 100));
+              }
+            }}
+            onDragEnd={activeScreen === 'home' ? handlePullDragEnd : handleDragEnd}
+            style={{
+              position: 'absolute',
+              inset: '54px 0 0 0',
+              overflow: 'auto',
+              paddingBottom: '90px',
+              cursor: 'grab'
+            }}
+          >
+            {/* Pull-to-Refresh Indicator */}
+            {activeScreen === 'home' && pullToRefresh > 0 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: pullToRefresh / 100 }}
+                style={{
+                  position: 'absolute',
+                  top: '12px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  zIndex: 10
+                }}
+              >
+                <motion.div
+                  animate={{
+                    rotate: isRefreshing ? 360 : 0
+                  }}
+                  transition={{
+                    duration: 1,
+                    repeat: isRefreshing ? Infinity : 0,
+                    ease: 'linear'
+                  }}
+                >
+                  <Sparkles size={24} color="rgb(74, 144, 226)" />
+                </motion.div>
+              </motion.div>
+            )}
+
             <AnimatePresence mode="wait">
-              {activeScreen === 'home' && <HomeScreen setActiveScreen={setActiveScreen} streak={streak} />}
+              {activeScreen === 'home' && (
+                <HomeScreen
+                  setActiveScreen={setActiveScreen}
+                  streak={streak}
+                  prefersReducedMotion={prefersReducedMotion}
+                />
+              )}
               {activeScreen === 'photo' && (
                 <PhotoScreen
                   setActiveScreen={setActiveScreen}
@@ -146,12 +266,52 @@ export function PsoriAssistPhoneMockup() {
                   medicationChecked={medicationChecked}
                   onCheck={handleMedicationCheck}
                   streak={streak}
+                  prefersReducedMotion={prefersReducedMotion}
                 />
               )}
               {activeScreen === 'mental' && <MentalHealthScreen setActiveScreen={setActiveScreen} />}
               {activeScreen === 'triggers' && <TriggerScreen setActiveScreen={setActiveScreen} />}
               {activeScreen === 'report' && <ReportScreen setActiveScreen={setActiveScreen} />}
               {activeScreen === 'settings' && <SettingsScreen setActiveScreen={setActiveScreen} />}
+            </AnimatePresence>
+          </motion.div>
+
+          {/* Confetti Layer */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            pointerEvents: 'none',
+            zIndex: 200
+          }}>
+            <AnimatePresence>
+              {confetti.map(particle => (
+                <motion.div
+                  key={particle.id}
+                  initial={{
+                    x: particle.x,
+                    y: particle.y,
+                    opacity: 1,
+                    scale: 1,
+                    rotate: particle.rotation
+                  }}
+                  animate={{
+                    x: particle.x + particle.velocity.x * 100,
+                    y: particle.y + particle.velocity.y * 50 + 500,
+                    opacity: 0,
+                    scale: 0.5,
+                    rotate: particle.rotation + 360
+                  }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 1, ease: 'easeOut' }}
+                  style={{
+                    position: 'absolute',
+                    width: '8px',
+                    height: '8px',
+                    backgroundColor: particle.color,
+                    borderRadius: '2px'
+                  }}
+                />
+              ))}
             </AnimatePresence>
           </div>
 
@@ -203,14 +363,22 @@ export function PsoriAssistPhoneMockup() {
 
 // Screen Components
 
-function HomeScreen({ setActiveScreen, streak }: { setActiveScreen: (s: Screen) => void; streak: number }) {
+function HomeScreen({
+  setActiveScreen,
+  streak,
+  prefersReducedMotion
+}: {
+  setActiveScreen: (s: Screen) => void;
+  streak: number;
+  prefersReducedMotion: boolean;
+}) {
   return (
     <motion.div
       key="home"
-      initial={{ opacity: 0, x: -20 }}
+      initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -20 }}
       animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 20 }}
-      transition={SPRING_CONFIG.screen}
+      exit={{ opacity: 0, x: prefersReducedMotion ? 0 : 20 }}
+      transition={prefersReducedMotion ? { duration: 0.2 } : SPRING_CONFIG.screen}
       style={{
         padding: '24px 20px',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif'
@@ -283,21 +451,30 @@ function HomeScreen({ setActiveScreen, streak }: { setActiveScreen: (s: Screen) 
             ↓ 18% from last month
           </span>
         </div>
-        {/* Mini Chart */}
+        {/* Mini Chart with Elastic Animation */}
         <div style={{ height: '60px', display: 'flex', alignItems: 'flex-end', gap: '4px' }}>
           {[65, 55, 58, 52, 48, 45, 42].map((height, i) => (
             <motion.div
               key={i}
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: `${height}%`, opacity: 1 }}
-              transition={{
-                ...SPRING_CONFIG.smooth,
-                delay: 0.2 + i * 0.05
+              initial={{ height: 0, opacity: 0, scaleY: 0 }}
+              animate={{
+                height: `${height}%`,
+                opacity: 1,
+                scaleY: 1
               }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0.3, delay: i * 0.05 }
+                  : {
+                      ...SPRING_CONFIG.elastic,
+                      delay: 0.2 + i * 0.08
+                    }
+              }
               style={{
                 flex: 1,
                 background: `linear-gradient(180deg, rgba(74, 144, 226, 0.6) 0%, rgba(74, 144, 226, 0.4) 100%)`,
-                borderRadius: '4px 4px 0 0'
+                borderRadius: '4px 4px 0 0',
+                transformOrigin: 'bottom'
               }}
             />
           ))}
@@ -465,27 +642,76 @@ function PhotoScreen({
             backgroundColor: 'rgba(0,0,0,0.9)',
             zIndex: 50
           }}>
-            <div style={{
-              width: '60px',
-              height: '60px',
-              border: '4px solid rgba(74, 144, 226, 0.3)',
-              borderTop: '4px solid rgb(74, 144, 226)',
-              borderRadius: '50%',
-              animation: 'spin 1s linear infinite',
-              marginBottom: '16px'
-            }} />
-            <style>
-              {`
-                @keyframes spin {
-                  to { transform: rotate(360deg); }
-                }
-              `}
-            </style>
-            <div style={{ fontSize: '18px', fontWeight: '600', color: 'white', marginBottom: '8px' }}>
+            {/* Shimmer Loading */}
+            <motion.div
+              animate={{
+                scale: [1, 1.1, 1],
+                opacity: [0.6, 1, 0.6]
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: 'easeInOut'
+              }}
+              style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, rgba(74, 144, 226, 0.3), rgba(168, 85, 247, 0.3))',
+                boxShadow: '0 0 40px rgba(74, 144, 226, 0.4)',
+                marginBottom: '24px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <Sparkles size={32} color="rgb(74, 144, 226)" />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              style={{ fontSize: '18px', fontWeight: '600', color: 'white', marginBottom: '8px' }}
+            >
               Analyzing Photo...
-            </div>
-            <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', marginBottom: '20px' }}
+            >
               AI PASI scoring in progress
+            </motion.div>
+
+            {/* Progress Shimmer Bar */}
+            <div style={{
+              width: '200px',
+              height: '4px',
+              borderRadius: '2px',
+              backgroundColor: 'rgba(255,255,255,0.1)',
+              overflow: 'hidden',
+              position: 'relative'
+            }}>
+              <motion.div
+                animate={{
+                  x: ['-100%', '200%']
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: 'linear'
+                }}
+                style={{
+                  position: 'absolute',
+                  width: '50%',
+                  height: '100%',
+                  background: 'linear-gradient(90deg, transparent, rgb(74, 144, 226), transparent)',
+                  borderRadius: '2px'
+                }}
+              />
             </div>
           </div>
         ) : (
@@ -548,7 +774,7 @@ function PhotoScreen({
               ))}
             </div>
 
-            {/* Opacity Control */}
+            {/* Opacity Control with Haptic Notches */}
             <div style={{
               position: 'absolute',
               bottom: '120px',
@@ -562,24 +788,65 @@ function PhotoScreen({
               <div style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                marginBottom: '8px',
+                marginBottom: '12px',
                 fontSize: '13px',
                 color: 'rgba(255,255,255,0.8)'
               }}>
                 <span>Ghost Opacity</span>
-                <span>{photoOpacity}%</span>
+                <span style={{ fontWeight: '600', color: 'white' }}>{photoOpacity}%</span>
               </div>
-              <input
-                type="range"
-                min="20"
-                max="80"
-                value={photoOpacity}
-                onChange={(e) => setPhotoOpacity(Number(e.target.value))}
-                style={{
-                  width: '100%',
-                  accentColor: 'rgb(74, 144, 226)'
-                }}
-              />
+
+              {/* Custom Slider with Notches */}
+              <div style={{ position: 'relative' }}>
+                {/* Notch Markers (25%, 50%, 75%) */}
+                <div style={{
+                  position: 'absolute',
+                  top: '-4px',
+                  left: '0',
+                  right: '0',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  padding: '0 calc((80% - 20%) / 60 * 5)',
+                  pointerEvents: 'none'
+                }}>
+                  {[25, 50, 75].map(val => (
+                    <div
+                      key={val}
+                      style={{
+                        width: '2px',
+                        height: '12px',
+                        backgroundColor: Math.abs(photoOpacity - val) < 3
+                          ? 'rgb(74, 144, 226)'
+                          : 'rgba(255,255,255,0.2)',
+                        borderRadius: '1px',
+                        transition: 'all 0.2s ease'
+                      }}
+                    />
+                  ))}
+                </div>
+
+                <input
+                  type="range"
+                  min="20"
+                  max="80"
+                  value={photoOpacity}
+                  onChange={(e) => {
+                    const val = Number(e.target.value);
+                    const notches = [25, 50, 75];
+
+                    // Magnetic snapping to nearest notch within 3%
+                    const nearestNotch = notches.find(n => Math.abs(val - n) < 3);
+                    setPhotoOpacity(nearestNotch || val);
+                  }}
+                  style={{
+                    width: '100%',
+                    height: '4px',
+                    marginTop: '8px',
+                    accentColor: 'rgb(74, 144, 226)',
+                    cursor: 'grab'
+                  }}
+                />
+              </div>
             </div>
 
             {/* Capture Button */}
@@ -759,10 +1026,19 @@ function PasiResultScreen({
           min="0"
           max="100"
           value={compareSlider}
-          onChange={(e) => setCompareSlider(Number(e.target.value))}
+          onChange={(e) => {
+            const val = Number(e.target.value);
+            // Magnetic snapping to 50% (center)
+            if (Math.abs(val - 50) < 5) {
+              setCompareSlider(50);
+            } else {
+              setCompareSlider(val);
+            }
+          }}
           style={{
             width: '100%',
-            accentColor: 'rgb(74, 144, 226)'
+            accentColor: 'rgb(74, 144, 226)',
+            cursor: 'grab'
           }}
         />
       </div>
@@ -774,12 +1050,14 @@ function MedicationScreen({
   setActiveScreen,
   medicationChecked,
   onCheck,
-  streak
+  streak,
+  prefersReducedMotion
 }: {
   setActiveScreen: (s: Screen) => void;
   medicationChecked: boolean[];
-  onCheck: (i: number) => void;
+  onCheck: (i: number, e: React.MouseEvent) => void;
   streak: number;
+  prefersReducedMotion: boolean;
 }) {
   return (
     <motion.div
@@ -852,35 +1130,52 @@ function MedicationScreen({
             { time: '12:00 PM', name: 'Vitamin D Supplement', area: '1 capsule', index: 1 },
             { time: '9:00 PM', name: 'Clobetasol Cream', area: 'Elbows & Knees', index: 2 }
           ].map((med, i) => (
-            <div key={i} style={{
-              padding: '16px',
-              borderRadius: '16px',
-              backgroundColor: medicationChecked[med.index]
-                ? 'rgba(80, 200, 120, 0.1)'
-                : 'rgba(255,255,255,0.05)',
-              border: medicationChecked[med.index]
-                ? '1px solid rgba(80, 200, 120, 0.3)'
-                : '1px solid rgba(255,255,255,0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              cursor: 'pointer'
-            }}
-            onClick={() => onCheck(med.index)}
-            >
-              <div style={{
-                width: '24px',
-                height: '24px',
-                borderRadius: '50%',
-                border: '2px solid ' + (medicationChecked[med.index] ? 'rgb(80, 200, 120)' : 'rgba(255,255,255,0.3)'),
-                backgroundColor: medicationChecked[med.index] ? 'rgb(80, 200, 120)' : 'transparent',
+            <motion.div
+              key={i}
+              whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
+              style={{
+                padding: '16px',
+                borderRadius: '16px',
+                backgroundColor: medicationChecked[med.index]
+                  ? 'rgba(80, 200, 120, 0.1)'
+                  : 'rgba(255,255,255,0.05)',
+                border: medicationChecked[med.index]
+                  ? '1px solid rgba(80, 200, 120, 0.3)'
+                  : '1px solid rgba(255,255,255,0.1)',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0
-              }}>
-                {medicationChecked[med.index] && <Check size={16} color="white" />}
-              </div>
+                gap: '12px',
+                cursor: 'pointer'
+              }}
+              onClick={(e) => onCheck(med.index, e)}
+            >
+              <motion.div
+                animate={{
+                  scale: medicationChecked[med.index] ? [1, 1.2, 1] : 1
+                }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
+                style={{
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '50%',
+                  border: '2px solid ' + (medicationChecked[med.index] ? 'rgb(80, 200, 120)' : 'rgba(255,255,255,0.3)'),
+                  backgroundColor: medicationChecked[med.index] ? 'rgb(80, 200, 120)' : 'transparent',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }}
+              >
+                {medicationChecked[med.index] && (
+                  <motion.div
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={prefersReducedMotion ? { duration: 0.2 } : SPRING_CONFIG.button}
+                  >
+                    <Check size={16} color="white" />
+                  </motion.div>
+                )}
+              </motion.div>
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: '15px', fontWeight: '600', color: 'white', marginBottom: '2px' }}>
                   {med.name}
@@ -889,7 +1184,7 @@ function MedicationScreen({
                   {med.time} • {med.area}
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -927,6 +1222,8 @@ function MedicationScreen({
 }
 
 function MentalHealthScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => void }) {
+  const [hasRecentCheckIn] = useState(false); // Empty state demo
+
   return (
     <motion.div
       key="mental"
@@ -937,22 +1234,7 @@ function MentalHealthScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) 
       style={{ padding: '16px 20px 24px' }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
-        <button
-          onClick={() => setActiveScreen('home')}
-          style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: '12px',
-            backgroundColor: 'rgba(255,255,255,0.1)',
-            border: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer'
-          }}
-        >
-          <ChevronLeft size={20} color="white" />
-        </button>
+        <BackButton onClick={() => setActiveScreen('home')} />
         <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'white' }}>
           Wellness Check-in
         </h2>
@@ -975,49 +1257,114 @@ function MentalHealthScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) 
         </div>
       </div>
 
-      <div style={{ marginBottom: '20px' }}>
-        <div style={{
-          padding: '16px',
-          borderRadius: '16px',
-          backgroundColor: 'rgba(255,255,255,0.05)',
-          border: '1px solid rgba(255,255,255,0.1)',
-          marginBottom: '12px'
-        }}>
-          <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.8)', marginBottom: '12px' }}>
-            Over the last 2 weeks, how often have you been bothered by feeling down, depressed, or hopeless?
-          </div>
-          <div style={{ display: 'grid', gap: '8px' }}>
-            {['Not at all', 'Several days', 'More than half', 'Nearly every day'].map((option) => (
-              <div key={option} style={{
-                padding: '12px',
-                borderRadius: '12px',
-                backgroundColor: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                fontSize: '14px',
-                color: 'white',
-                cursor: 'pointer'
-              }}>
-                {option}
-              </div>
-            ))}
-          </div>
-        </div>
+      {!hasRecentCheckIn ? (
+        // Empty State
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          style={{
+            padding: '48px 24px',
+            borderRadius: '20px',
+            backgroundColor: 'rgba(255,255,255,0.03)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            textAlign: 'center'
+          }}
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.05, 1],
+              opacity: [0.5, 1, 0.5]
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: 'easeInOut'
+            }}
+          >
+            <Heart size={64} color="rgba(236, 72, 153, 0.4)" style={{ margin: '0 auto 16px' }} />
+          </motion.div>
 
-        <div style={{
-          padding: '14px',
-          borderRadius: '14px',
-          backgroundColor: 'rgba(74, 144, 226, 0.1)',
-          border: '1px solid rgba(74, 144, 226, 0.2)',
-          display: 'flex',
-          alignItems: 'flex-start',
-          gap: '10px'
-        }}>
-          <Info size={20} color="rgb(74, 144, 226)" style={{ flexShrink: 0, marginTop: '2px' }} />
-          <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.8)', lineHeight: '1.5' }}>
-            Your responses help identify if you may benefit from additional support. Results are shared only with your permission.
+          <h3 style={{
+            fontSize: '20px',
+            fontWeight: '600',
+            color: 'white',
+            marginBottom: '8px'
+          }}>
+            No Check-ins Yet
+          </h3>
+          <p style={{
+            fontSize: '14px',
+            color: 'rgba(255,255,255,0.6)',
+            lineHeight: '1.6',
+            marginBottom: '20px'
+          }}>
+            Start your first wellness check-in to track your mental health over time.
+          </p>
+
+          <motion.button
+            whileTap={{ scale: 0.96 }}
+            whileHover={{ scale: 1.02 }}
+            style={{
+              padding: '12px 24px',
+              borderRadius: '12px',
+              backgroundColor: 'rgb(236, 72, 153)',
+              border: 'none',
+              color: 'white',
+              fontSize: '15px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(236, 72, 153, 0.3)'
+            }}
+          >
+            Begin Check-in
+          </motion.button>
+        </motion.div>
+      ) : (
+        <div style={{ marginBottom: '20px' }}>
+          <div style={{
+            padding: '16px',
+            borderRadius: '16px',
+            backgroundColor: 'rgba(255,255,255,0.05)',
+            border: '1px solid rgba(255,255,255,0.1)',
+            marginBottom: '12px'
+          }}>
+            <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.8)', marginBottom: '12px' }}>
+              Over the last 2 weeks, how often have you been bothered by feeling down, depressed, or hopeless?
+            </div>
+            <div style={{ display: 'grid', gap: '8px' }}>
+              {['Not at all', 'Several days', 'More than half', 'Nearly every day'].map((option) => (
+                <div key={option} style={{
+                  padding: '12px',
+                  borderRadius: '12px',
+                  backgroundColor: 'rgba(255,255,255,0.05)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  fontSize: '14px',
+                  color: 'white',
+                  cursor: 'pointer'
+                }}>
+                  {option}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{
+            padding: '14px',
+            borderRadius: '14px',
+            backgroundColor: 'rgba(74, 144, 226, 0.1)',
+            border: '1px solid rgba(74, 144, 226, 0.2)',
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '10px'
+          }}>
+            <Info size={20} color="rgb(74, 144, 226)" style={{ flexShrink: 0, marginTop: '2px' }} />
+            <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.8)', lineHeight: '1.5' }}>
+              Your responses help identify if you may benefit from additional support. Results are shared only with your permission.
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </motion.div>
   );
 }
@@ -1393,6 +1740,8 @@ function QuickActionButton({
   color: string;
   onClick: () => void;
 }) {
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <motion.button
       whileTap={{
@@ -1406,6 +1755,8 @@ function QuickActionButton({
         transition: SPRING_CONFIG.smooth
       }}
       onClick={onClick}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       style={{
         padding: '20px 16px',
         minHeight: '88px',
@@ -1418,9 +1769,13 @@ function QuickActionButton({
         justifyContent: 'center',
         gap: '8px',
         cursor: 'pointer',
-        boxShadow: `inset 0 1px 0 rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.15)`,
+        boxShadow: isFocused
+          ? `inset 0 1px 0 rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.15), 0 0 0 3px rgba(${color}, 0.5)`
+          : `inset 0 1px 0 rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.15)`,
         backdropFilter: 'saturate(180%) blur(10px)',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif'
+        fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
+        outline: 'none',
+        transition: 'box-shadow 0.2s ease'
       }}
     >
       <Icon size={28} color={`rgb(${color})`} />
@@ -1447,9 +1802,13 @@ function TabBarItem({
   active: boolean;
   onClick: () => void;
 }) {
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <button
       onClick={onClick}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -1459,7 +1818,11 @@ function TabBarItem({
         border: 'none',
         cursor: 'pointer',
         padding: '8px',
-        minWidth: '60px'
+        minWidth: '60px',
+        borderRadius: '12px',
+        outline: 'none',
+        boxShadow: isFocused ? '0 0 0 2px rgba(74, 144, 226, 0.6)' : 'none',
+        transition: 'box-shadow 0.2s ease'
       }}
     >
       <Icon
