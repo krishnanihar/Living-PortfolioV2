@@ -38,21 +38,23 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
 
   // Animated text transformation
   React.useEffect(() => {
-    // After 1.5 seconds, change text
-    const textTimer = setTimeout(() => {
-      setHeroText('What brings you here today?');
-    }, 1500);
+    if (!selectedIntent) {
+      // After 1.5 seconds, change text
+      const textTimer = setTimeout(() => {
+        setHeroText('What brings you here today?');
+      }, 1500);
 
-    // Start gradient transition at 1.2s (slightly before text change)
-    const gradientTimer = setTimeout(() => {
-      setGradientPhase(1);
-    }, 1200);
+      // Start gradient transition at 1.2s (slightly before text change)
+      const gradientTimer = setTimeout(() => {
+        setGradientPhase(1);
+      }, 1200);
 
-    return () => {
-      clearTimeout(textTimer);
-      clearTimeout(gradientTimer);
-    };
-  }, []);
+      return () => {
+        clearTimeout(textTimer);
+        clearTimeout(gradientTimer);
+      };
+    }
+  }, [selectedIntent]);
 
   const intents: Intent[] = [
     {
@@ -199,6 +201,7 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
         </div>
 
         <h1
+          key={heroText}
           className={
             !selectedIntent
               ? gradientPhase === 0
@@ -217,7 +220,7 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
             display: 'inline-block',
             opacity: 0,
             animation: heroText === 'What brings you here today?'
-              ? 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both, textMorph 0.6s ease-in-out 1.4s both'
+              ? 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0s both, textMorph 0.6s ease-in-out 0s both'
               : 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both',
             transition: 'margin-bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.6s ease',
           }}
