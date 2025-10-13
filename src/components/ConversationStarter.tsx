@@ -183,7 +183,7 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
           fontWeight: '200',
           color: !selectedIntent ? 'transparent' : 'var(--text-primary)',
           marginBottom: selectedIntent ? '1rem' : 'clamp(1rem, 1.5vw, 1.75rem)',
-          lineHeight: '1.1',
+          lineHeight: '1.3',
           letterSpacing: '-0.02em',
           position: 'relative',
           display: 'inline-block',
