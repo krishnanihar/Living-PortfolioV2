@@ -775,9 +775,9 @@ export default function Portfolio() {
                 gap: '0.5rem',
                 marginTop: 'clamp(1.25rem, 2vw, 1.75rem)',
                 paddingTop: 'clamp(0.75rem, 1.5vw, 1rem)',
-                borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
                 opacity: scrollIndicatorOpacity,
-                animation: 'scrollFadeIn 1s ease-out 2s both',
+                animation: 'scrollFadeIn 0.8s ease-out 1s both',
                 cursor: 'pointer',
                 transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                 pointerEvents: scrollIndicatorOpacity > 0.1 ? 'auto' : 'none',
@@ -793,9 +793,9 @@ export default function Portfolio() {
             >
               <span style={{
                 fontSize: '0.75rem',
-                fontWeight: '300',
+                fontWeight: '400',
                 letterSpacing: '0.1em',
-                color: 'var(--text-muted)',
+                color: 'var(--text-secondary)',
                 textTransform: 'uppercase',
               }}>
                 Scroll to explore
@@ -806,7 +806,7 @@ export default function Portfolio() {
                 justifyContent: 'center',
                 animation: 'scrollBounce 3s ease-in-out infinite',
               }}>
-                <ChevronDown size={18} style={{ color: 'var(--text-muted)', opacity: 0.6 }} />
+                <ChevronDown size={18} style={{ color: 'var(--text-secondary)', opacity: 0.8 }} />
               </div>
             </div>
           </div>
