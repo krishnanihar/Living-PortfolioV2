@@ -164,7 +164,7 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
       {/* Dynamic Hero Content */}
       <div style={{
         textAlign: 'center',
-        marginBottom: '3rem',
+        marginBottom: 'clamp(1.75rem, 2.5vw, 3rem)',
       }}>
         <div style={{
           fontSize: '0.825rem',
@@ -182,7 +182,7 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
           fontSize: 'clamp(1.75rem, 4.5vw, 2.75rem)',
           fontWeight: '200',
           color: !selectedIntent ? 'transparent' : 'var(--text-primary)',
-          marginBottom: selectedIntent ? '1rem' : '2.5rem',
+          marginBottom: selectedIntent ? '1rem' : 'clamp(1.5rem, 2vw, 2.5rem)',
           lineHeight: '1.1',
           letterSpacing: '-0.02em',
           position: 'relative',
