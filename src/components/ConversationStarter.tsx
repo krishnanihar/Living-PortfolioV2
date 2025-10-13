@@ -164,12 +164,12 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
       {/* Dynamic Hero Content */}
       <div style={{
         textAlign: 'center',
-        marginBottom: 'clamp(1.75rem, 2.5vw, 3rem)',
+        marginBottom: 'clamp(1.25rem, 2vw, 2rem)',
       }}>
         <div style={{
           fontSize: '0.825rem',
           color: 'var(--text-muted)',
-          marginBottom: '1.25rem',
+          marginBottom: '0.875rem',
           letterSpacing: '0.025em',
           fontWeight: '200',
           opacity: 0,
@@ -182,7 +182,7 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
           fontSize: 'clamp(1.75rem, 4.5vw, 2.75rem)',
           fontWeight: '200',
           color: !selectedIntent ? 'transparent' : 'var(--text-primary)',
-          marginBottom: selectedIntent ? '1rem' : 'clamp(1.5rem, 2vw, 2.5rem)',
+          marginBottom: selectedIntent ? '1rem' : 'clamp(1rem, 1.5vw, 1.75rem)',
           lineHeight: '1.1',
           letterSpacing: '-0.02em',
           position: 'relative',
@@ -229,8 +229,8 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          gap: '1rem',
-          marginBottom: '2.5rem',
+          gap: '0.75rem',
+          marginBottom: '1.75rem',
           opacity: 0,
           animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both',
         }}>
@@ -244,7 +244,7 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
                 WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
                 border: '1px solid rgba(255, 255, 255, 0.06)',
                 borderRadius: '20px',
-                padding: '1.25rem',
+                padding: '1rem',
                 textAlign: 'left',
                 cursor: 'pointer',
                 transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
