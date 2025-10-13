@@ -675,6 +675,37 @@ button {
 
 /* === RESPONSIVE UTILITIES === */
 
+/* 14-inch Screen Optimizations (1280px - 1440px) */
+@media (min-width: 1280px) and (max-width: 1440px) {
+  :root {
+    --space-hero-padding: 2.5rem; /* 40px instead of 48-64px */
+    --space-section-gap: 2rem; /* 32px instead of 48px */
+  }
+
+  /* Navigation optimization */
+  nav {
+    height: 52px !important;
+  }
+
+  /* Typography fine-tuning for 14" screens */
+  .text-display {
+    font-size: clamp(2.25rem, 6vw, 6rem);
+  }
+
+  .text-heading {
+    font-size: clamp(1.75rem, 4vw, 3.5rem);
+  }
+
+  .text-subheading {
+    font-size: clamp(1.125rem, 2.25vw, 2rem);
+  }
+
+  /* Hero card optimization */
+  .glass-hero {
+    padding: 2.5rem !important;
+  }
+}
+
 /* iOS Safe Area Support */
 :root {
   --safe-area-inset-top: env(safe-area-inset-top);

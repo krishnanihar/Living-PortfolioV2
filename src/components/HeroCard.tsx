@@ -12,13 +12,13 @@ export function HeroCard() {
       {/* Name & Title */}
       <div style={{
         textAlign: 'center',
-        marginBottom: '2.5rem',
+        marginBottom: 'clamp(1.75rem, 3vw, 2.5rem)',
       }}>
         <h1 style={{
-          fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+          fontSize: 'clamp(2.25rem, 4.5vw, 3.5rem)',
           fontWeight: '200',
           color: 'var(--text-primary)',
-          marginBottom: '0.75rem',
+          marginBottom: '0.625rem',
           lineHeight: '1.1',
           letterSpacing: '-0.03em',
           opacity: 0,
@@ -28,7 +28,7 @@ export function HeroCard() {
         </h1>
 
         <p style={{
-          fontSize: '1rem',
+          fontSize: 'clamp(0.9375rem, 1.5vw, 1rem)',
           fontWeight: '300',
           color: 'var(--text-secondary)',
           letterSpacing: '0.02em',
@@ -41,14 +41,13 @@ export function HeroCard() {
 
       {/* Main Statement */}
       <p style={{
-        fontSize: 'clamp(1.125rem, 2.5vw, 1.375rem)',
+        fontSize: 'clamp(1.0625rem, 2.25vw, 1.375rem)',
         fontWeight: '300',
         color: 'var(--text-primary)',
         textAlign: 'center',
         lineHeight: '1.6',
-        marginBottom: '2rem',
-        maxWidth: '580px',
-        margin: '0 auto 2rem',
+        maxWidth: 'clamp(520px, 90%, 580px)',
+        margin: '0 auto clamp(1.5rem, 2.5vw, 2rem)',
         letterSpacing: '-0.01em',
         opacity: 0,
         animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both',
@@ -60,7 +59,7 @@ export function HeroCard() {
       <div style={{
         display: 'flex',
         justifyContent: 'center',
-        marginBottom: '2.5rem',
+        marginBottom: 'clamp(1.75rem, 3vw, 2.5rem)',
         opacity: 0,
         animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both',
       }}>
@@ -95,7 +94,7 @@ export function HeroCard() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '1rem',
+        gap: 'clamp(0.75rem, 1.5vw, 1rem)',
         flexWrap: 'wrap',
         opacity: 0,
         animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both',
@@ -109,7 +108,7 @@ export function HeroCard() {
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.5rem',
-            padding: '0.875rem 1.75rem',
+            padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.5rem, 2.5vw, 1.75rem)',
             background: hoveredButton === 'work'
               ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(255, 255, 255, 0.08))'
               : 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))',
@@ -141,7 +140,7 @@ export function HeroCard() {
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.5rem',
-            padding: '0.875rem 1.75rem',
+            padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.5rem, 2.5vw, 1.75rem)',
             background: hoveredButton === 'contact'
               ? 'var(--surface-secondary)'
               : 'var(--surface-primary)',

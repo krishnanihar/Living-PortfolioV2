@@ -582,9 +582,9 @@ export default function Portfolio() {
           <div style={{
             position: 'relative',
             height: '100%',
-            maxWidth: '1400px',
+            maxWidth: 'clamp(1200px, 90vw, 1400px)',
             margin: '0 auto',
-            padding: '0 2.5rem',
+            padding: '0 clamp(1.5rem, 3vw, 2.5rem)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -727,8 +727,8 @@ export default function Portfolio() {
             data-tour="hero-card"
             style={{
             width: '100%',
-            maxWidth: '720px',
-            padding: '2.5rem',
+            maxWidth: 'clamp(640px, 85vw, 720px)',
+            padding: 'clamp(2rem, 3vw, 2.5rem)',
             borderRadius: '28px',
             animation: 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1), breathe 8s ease-in-out infinite',
             position: 'relative',
@@ -773,8 +773,8 @@ export default function Portfolio() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: '0.5rem',
-                marginTop: '2.5rem',
-                paddingTop: '1.5rem',
+                marginTop: 'clamp(1.75rem, 3vw, 2.5rem)',
+                paddingTop: 'clamp(1rem, 2vw, 1.5rem)',
                 borderTop: '1px solid rgba(255, 255, 255, 0.06)',
                 opacity: scrollIndicatorOpacity,
                 animation: 'scrollFadeIn 1s ease-out 2s both',
