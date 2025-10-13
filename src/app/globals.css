@@ -278,6 +278,40 @@ button {
   animation: gradientShift 8s ease-in-out infinite;
 }
 
+.text-gradient-red {
+  background: linear-gradient(
+    90deg,
+    var(--text-primary) 0%,
+    #DA0E29 25%,
+    #FF1744 40%,
+    #DA0E29 60%,
+    var(--text-primary) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 6s ease-in-out infinite;
+  transition: all 0.8s ease-in-out;
+}
+
+.text-gradient-blue {
+  background: linear-gradient(
+    90deg,
+    var(--text-primary) 0%,
+    #2196F3 25%,
+    #00BCD4 40%,
+    #1976D2 60%,
+    var(--text-primary) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 6s ease-in-out infinite;
+  transition: all 0.8s ease-in-out;
+}
+
 /* === BUTTON SYSTEM === */
 
 .btn-primary {
@@ -396,6 +430,25 @@ button {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+@keyframes textMorph {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  45% {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+  55% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @keyframes floatOrb {

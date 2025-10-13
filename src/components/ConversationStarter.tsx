@@ -28,10 +28,30 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
   const [selectedIntent, setSelectedIntent] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [isClient, setIsClient] = useState(false);
+  const [heroText, setHeroText] = useState('Hi, welcome to my site');
+  const [gradientPhase, setGradientPhase] = useState(0); // 0 = red phase, 1 = blue phase
 
   // Prevent hydration mismatch by only rendering time-based content on client
   React.useEffect(() => {
     setIsClient(true);
+  }, []);
+
+  // Animated text transformation
+  React.useEffect(() => {
+    // After 1.5 seconds, change text
+    const textTimer = setTimeout(() => {
+      setHeroText('What brings you here today?');
+    }, 1500);
+
+    // Start gradient transition at 1.2s (slightly before text change)
+    const gradientTimer = setTimeout(() => {
+      setGradientPhase(1);
+    }, 1200);
+
+    return () => {
+      clearTimeout(textTimer);
+      clearTimeout(gradientTimer);
+    };
   }, []);
 
   const intents: Intent[] = [
@@ -128,7 +148,7 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
     if (!selectedIntent) {
       return {
         greeting,
-        title: 'What brings you here today?',
+        title: heroText,
         subtitle: 'Choose your path to explore this living portfolio'
       };
     }
@@ -178,19 +198,30 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
           {content.greeting}
         </div>
 
-        <h1 className={!selectedIntent ? "text-gradient-animated" : ""} style={{
-          fontSize: 'clamp(1.75rem, 4.5vw, 2.75rem)',
-          fontWeight: '200',
-          color: !selectedIntent ? 'transparent' : 'var(--text-primary)',
-          marginBottom: selectedIntent ? '1rem' : 'clamp(1rem, 1.5vw, 1.75rem)',
-          lineHeight: '1.3',
-          letterSpacing: '-0.02em',
-          position: 'relative',
-          display: 'inline-block',
-          opacity: 0,
-          animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both',
-          transition: 'margin-bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.6s ease',
-        }}>
+        <h1
+          className={
+            !selectedIntent
+              ? gradientPhase === 0
+                ? "text-gradient-red"
+                : "text-gradient-blue"
+              : ""
+          }
+          style={{
+            fontSize: 'clamp(1.75rem, 4.5vw, 2.75rem)',
+            fontWeight: '200',
+            color: !selectedIntent ? 'transparent' : 'var(--text-primary)',
+            marginBottom: selectedIntent ? '1rem' : 'clamp(1rem, 1.5vw, 1.75rem)',
+            lineHeight: '1.3',
+            letterSpacing: '-0.02em',
+            position: 'relative',
+            display: 'inline-block',
+            opacity: 0,
+            animation: heroText === 'What brings you here today?'
+              ? 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both, textMorph 0.6s ease-in-out 1.4s both'
+              : 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both',
+            transition: 'margin-bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.6s ease',
+          }}
+        >
           {content.title}
 
           {/* Dynamic Intent Icon - Hidden when selected */}
