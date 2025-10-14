@@ -15,6 +15,7 @@ interface Project {
   status: 'Active' | 'Research' | 'Completed';
   year: string;
   orbColor: string;
+  image?: string;
 }
 
 interface WorkSectionProps {
@@ -53,7 +54,8 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
       tags: ['Computer Vision', 'AI/ML', 'Art History'],
       status: 'Research',
       year: '2024',
-      orbColor: '236, 72, 153'
+      orbColor: '236, 72, 153',
+      image: '/projects/mythoscover1.png'
     },
     {
       id: 3,
@@ -463,6 +465,23 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     transparent 100%)`,
                   overflow: 'hidden',
                 }}>
+                  {/* Actual project image if available */}
+                  {project.image && (
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+                        transition: 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+                      }}
+                    />
+                  )}
+
                   {/* Glass layer for image */}
                   <div style={{
                     position: 'absolute',
@@ -494,8 +513,8 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     }} />
                   )}
 
-                  {/* Pattern as placeholder visual */}
-                  <svg style={{
+                  {/* Pattern as placeholder visual (only show if no image) */}
+                  {!project.image && (<svg style={{
                     position: 'absolute',
                     top: '50%',
                     left: '50%',
@@ -553,7 +572,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                         ))}
                       </g>
                     )}
-                  </svg>
+                  </svg>)}
 
                   {/* Status Badge - Redesigned as Pill */}
                   <div style={{
