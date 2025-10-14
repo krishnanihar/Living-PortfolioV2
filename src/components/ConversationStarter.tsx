@@ -30,28 +30,41 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
   const [isClient, setIsClient] = useState(false);
   const [heroText, setHeroText] = useState('Hi, welcome to my site');
   const [gradientPhase, setGradientPhase] = useState(0); // 0 = red phase, 1 = blue phase
+  const [textVisible, setTextVisible] = useState(true);
 
   // Prevent hydration mismatch by only rendering time-based content on client
   React.useEffect(() => {
     setIsClient(true);
   }, []);
 
-  // Animated text transformation
+  // Animated text transformation with smooth fade
   React.useEffect(() => {
     if (!selectedIntent) {
-      // After 1.5 seconds, change text
-      const textTimer = setTimeout(() => {
-        setHeroText('What brings you here today?');
-      }, 1500);
-
-      // Start gradient transition at 1.2s (slightly before text change)
+      // Start gradient transition at 1.2s
       const gradientTimer = setTimeout(() => {
         setGradientPhase(1);
       }, 1200);
 
+      // Fade out text at 1.4s
+      const fadeOutTimer = setTimeout(() => {
+        setTextVisible(false);
+      }, 1400);
+
+      // Change text while invisible at 1.5s
+      const textTimer = setTimeout(() => {
+        setHeroText('What brings you here today?');
+      }, 1500);
+
+      // Fade back in at 1.6s
+      const fadeInTimer = setTimeout(() => {
+        setTextVisible(true);
+      }, 1600);
+
       return () => {
-        clearTimeout(textTimer);
         clearTimeout(gradientTimer);
+        clearTimeout(fadeOutTimer);
+        clearTimeout(textTimer);
+        clearTimeout(fadeInTimer);
       };
     }
   }, [selectedIntent]);
@@ -201,7 +214,6 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
         </div>
 
         <h1
-          key={heroText}
           className={
             !selectedIntent
               ? gradientPhase === 0
@@ -218,11 +230,10 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
             letterSpacing: '-0.02em',
             position: 'relative',
             display: 'inline-block',
-            opacity: 0,
-            animation: heroText === 'What brings you here today?'
-              ? 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0s both, textMorph 0.6s ease-in-out 0s both'
-              : 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both',
-            transition: 'margin-bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.6s ease',
+            opacity: textVisible ? 1 : 0,
+            transform: textVisible ? 'translateY(0)' : 'translateY(-5px)',
+            animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both',
+            transition: 'opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), margin-bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.6s ease',
           }}
         >
           {content.title}
