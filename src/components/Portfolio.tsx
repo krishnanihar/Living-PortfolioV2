@@ -762,10 +762,18 @@ export default function Portfolio() {
             {/* Scroll to Explore Indicator */}
             <div
               onClick={() => {
-                window.scrollTo({
-                  top: window.innerHeight,
-                  behavior: 'smooth'
-                });
+                const workSection = document.getElementById('work-section');
+                if (workSection) {
+                  workSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                  });
+                } else {
+                  window.scrollTo({
+                    top: window.innerHeight,
+                    behavior: 'smooth'
+                  });
+                }
               }}
               style={{
                 position: 'relative',

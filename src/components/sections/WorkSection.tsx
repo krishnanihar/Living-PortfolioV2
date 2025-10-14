@@ -249,6 +249,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
       `}</style>
 
       <section
+        id="work-section"
         ref={sectionRef}
         style={{
           background: 'var(--bg-primary)',
