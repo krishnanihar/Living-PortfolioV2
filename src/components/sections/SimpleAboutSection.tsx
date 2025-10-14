@@ -262,7 +262,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                 animation: 'pulseOrb 2s ease-in-out infinite',
               }} />
             </div>
-            <h2 className="text-gradient-animated" style={{
+            <h2 className="text-gradient-blue" style={{
               fontSize: '1.5rem',
               fontWeight: '500',
               letterSpacing: '0.05em',
