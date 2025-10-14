@@ -143,7 +143,7 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
 
   const content = getHeroContent();
   const selectedIntentData = intents.find(i => i.id === selectedIntent);
-  const accentColor = selectedIntentData?.accentColor || 'rgba(218, 14, 41, 0.7)';
+  const accentColor = selectedIntentData?.accentColor || 'rgba(33, 150, 243, 0.7)';
   const SelectedIcon = selectedIntentData?.icon || Sparkles;
 
   const getPlaceholder = () => {
@@ -255,9 +255,9 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
               onMouseEnter={(e) => {
                 const target = e.currentTarget;
                 target.style.background = 'rgba(255, 255, 255, 0.05)';
-                target.style.border = '1px solid rgba(218, 14, 41, 0.2)';
+                target.style.border = '1px solid rgba(33, 150, 243, 0.2)';
                 target.style.transform = 'translateY(-2px) scale(1.02)';
-                target.style.boxShadow = '0 8px 32px rgba(218, 14, 41, 0.1)';
+                target.style.boxShadow = '0 8px 32px rgba(33, 150, 243, 0.1)';
               }}
               onMouseLeave={(e) => {
                 const target = e.currentTarget;
