@@ -117,6 +117,20 @@ export function ProjectCard({
         </CardHeader>
 
         <CardContent className="space-y-6">
+          {/* Project Image */}
+          {project.image && (
+            <div className="relative w-full aspect-video rounded-lg overflow-hidden">
+              <img
+                src={project.image}
+                alt={project.title}
+                className={cn(
+                  'w-full h-full object-cover transition-transform duration-300',
+                  'group-hover:scale-105'
+                )}
+              />
+            </div>
+          )}
+
           {/* Description */}
           <p className={cn(
             'text-sm leading-relaxed transition-colors',

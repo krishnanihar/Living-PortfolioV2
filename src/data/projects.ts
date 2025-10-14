@@ -238,6 +238,7 @@ export const projects: Project[] = [
     description: 'An AI art curator that sees patterns humans might miss. Tell it what you want to see ("art about loneliness, but beautiful"), and Gemini AI generates thematic exhibitions across centuries. Click any artwork for AI-generated analysis explaining symbolism, historical context, and cultural significance. Unlike traditional search, mythOS understands abstract concepts and translates them into visual characteristics—making elite art knowledge accessible to everyone.',
     category: 'research',
     status: 'development',
+    image: '/projects/mythoscover1.png',
     tags: [
       { id: 'gemini-ai', label: 'Gemini AI' },
       { id: 'natural-language', label: 'Natural Language' },
