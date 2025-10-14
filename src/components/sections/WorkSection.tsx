@@ -475,7 +475,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                         inset: 0,
                         width: '100%',
                         height: '100%',
-                        objectFit: 'cover',
+                        objectFit: 'contain',
                         transform: isHovered ? 'scale(1.05)' : 'scale(1)',
                         transition: 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
                       }}
