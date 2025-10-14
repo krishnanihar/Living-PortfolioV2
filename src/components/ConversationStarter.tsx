@@ -28,46 +28,11 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
   const [selectedIntent, setSelectedIntent] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [isClient, setIsClient] = useState(false);
-  const [heroText, setHeroText] = useState('Hi, welcome to my site');
-  const [gradientPhase, setGradientPhase] = useState(0); // 0 = red phase, 1 = blue phase
-  const [textVisible, setTextVisible] = useState(true);
 
   // Prevent hydration mismatch by only rendering time-based content on client
   React.useEffect(() => {
     setIsClient(true);
   }, []);
-
-  // Animated text transformation with smooth fade
-  React.useEffect(() => {
-    if (!selectedIntent) {
-      // Start gradient transition at 1.2s
-      const gradientTimer = setTimeout(() => {
-        setGradientPhase(1);
-      }, 1200);
-
-      // Fade out text at 1.4s
-      const fadeOutTimer = setTimeout(() => {
-        setTextVisible(false);
-      }, 1400);
-
-      // Change text while invisible at 1.5s
-      const textTimer = setTimeout(() => {
-        setHeroText('What brings you here today?');
-      }, 1500);
-
-      // Fade back in at 1.6s
-      const fadeInTimer = setTimeout(() => {
-        setTextVisible(true);
-      }, 1600);
-
-      return () => {
-        clearTimeout(gradientTimer);
-        clearTimeout(fadeOutTimer);
-        clearTimeout(textTimer);
-        clearTimeout(fadeInTimer);
-      };
-    }
-  }, [selectedIntent]);
 
   const intents: Intent[] = [
     {
@@ -163,7 +128,7 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
     if (!selectedIntent) {
       return {
         greeting,
-        title: heroText,
+        title: 'What brings you here today?',
         subtitle: 'Choose your path to explore this living portfolio'
       };
     }
@@ -214,13 +179,7 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
         </div>
 
         <h1
-          className={
-            !selectedIntent
-              ? gradientPhase === 0
-                ? "text-gradient-red"
-                : "text-gradient-blue"
-              : ""
-          }
+          className={!selectedIntent ? "text-gradient-blue" : ""}
           style={{
             fontSize: 'clamp(1.75rem, 4.5vw, 2.75rem)',
             fontWeight: '200',
@@ -230,10 +189,9 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
             letterSpacing: '-0.02em',
             position: 'relative',
             display: 'inline-block',
-            opacity: textVisible ? 1 : 0,
-            transform: textVisible ? 'translateY(0)' : 'translateY(-5px)',
+            opacity: 0,
             animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both',
-            transition: 'opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), margin-bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.6s ease',
+            transition: 'margin-bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.6s ease',
           }}
         >
           {content.title}
