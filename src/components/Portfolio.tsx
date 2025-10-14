@@ -788,7 +788,7 @@ export default function Portfolio() {
                 animation: 'scrollFadeIn 0.8s ease-out 1s both',
                 cursor: 'pointer',
                 transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                pointerEvents: scrollIndicatorOpacity > 0.1 ? 'auto' : 'none',
+                pointerEvents: 'auto',
               }}
               onMouseEnter={(e) => {
                 if (scrollIndicatorOpacity > 0.1) {
