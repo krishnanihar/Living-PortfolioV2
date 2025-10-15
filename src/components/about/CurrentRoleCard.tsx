@@ -57,6 +57,7 @@ export function CurrentRoleCard() {
         transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
         cursor: 'pointer',
         height: '100%',
+        minHeight: '240px',
         display: 'flex',
         flexDirection: 'column',
         gap: '1.5rem',
