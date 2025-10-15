@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Portfolio from '@/components/Portfolio';
 import WorkSection from '@/components/sections/WorkSection';
-import SimpleAboutSection from '@/components/sections/SimpleAboutSection';
+import AboutSectionV2 from '@/components/sections/AboutSectionV2';
 import { SectionDivider } from '@/components/ui/SectionDivider';
 
 export const metadata: Metadata = {
@@ -25,7 +25,7 @@ export default function HomePage() {
       <Portfolio />
       <WorkSection />
       <SectionDivider text="Who's Behind the Work?" />
-      <SimpleAboutSection />
+      <AboutSectionV2 />
     </>
   );
 }
