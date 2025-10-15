@@ -231,7 +231,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
         }}
         className={className}
       >
-        {/* Ambient Background Orbs - Gold/Amber Themed */}
+        {/* Enhanced Ambient Background Orbs with Particles */}
         <div style={{
           position: 'absolute',
           inset: 0,
@@ -240,32 +240,95 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
         }}>
           {(inView || isHovered) && (
             <>
+              {/* Primary orb - top right with multi-stop gradient */}
               <div style={{
                 position: 'absolute',
-                top: '15%',
-                right: '20%',
-                width: '450px',
-                height: '450px',
-                background: 'radial-gradient(circle, rgba(251, 191, 36, 0.06), transparent 70%)',
+                top: '10%',
+                right: '15%',
+                width: '500px',
+                height: '500px',
+                background: `radial-gradient(circle at 30% 30%,
+                  rgba(251, 191, 36, 0.12) 0%,
+                  rgba(245, 158, 11, 0.08) 25%,
+                  rgba(251, 191, 36, 0.04) 50%,
+                  transparent 70%)`,
                 borderRadius: '50%',
-                filter: 'blur(90px)',
-                animation: !prefersReducedMotion ? 'floatOrb 25s ease-in-out infinite' : 'none',
-                opacity: isHovered ? 1 : 0.4,
+                filter: 'blur(100px)',
+                mixBlendMode: 'screen',
+                animation: !prefersReducedMotion ? 'orbFloat1 20s ease-in-out infinite' : 'none',
+                opacity: isHovered ? 1 : 0.5,
                 transition: 'opacity 1.5s ease-in-out',
               }} />
+
+              {/* Secondary orb - bottom left */}
               <div style={{
                 position: 'absolute',
-                bottom: '25%',
-                left: '15%',
-                width: '350px',
-                height: '350px',
-                background: 'radial-gradient(circle, rgba(245, 158, 11, 0.04), transparent 70%)',
+                bottom: '15%',
+                left: '10%',
+                width: '400px',
+                height: '400px',
+                background: `radial-gradient(circle at 70% 70%,
+                  rgba(218, 14, 41, 0.10) 0%,
+                  rgba(239, 68, 68, 0.06) 30%,
+                  rgba(218, 14, 41, 0.03) 60%,
+                  transparent 80%)`,
                 borderRadius: '50%',
-                filter: 'blur(70px)',
-                animation: !prefersReducedMotion ? 'floatOrb 30s ease-in-out infinite 10s' : 'none',
-                opacity: isHovered ? 1 : 0.4,
+                filter: 'blur(80px)',
+                mixBlendMode: 'screen',
+                animation: !prefersReducedMotion ? 'orbFloat2 25s ease-in-out infinite 5s' : 'none',
+                opacity: isHovered ? 1 : 0.5,
                 transition: 'opacity 1.5s ease-in-out',
               }} />
+
+              {/* Accent orb - center */}
+              <div style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '300px',
+                height: '300px',
+                background: `radial-gradient(circle,
+                  rgba(59, 130, 246, 0.06) 0%,
+                  rgba(147, 51, 234, 0.04) 40%,
+                  transparent 70%)`,
+                borderRadius: '50%',
+                filter: 'blur(60px)',
+                mixBlendMode: 'screen',
+                animation: !prefersReducedMotion ? 'orbPulse 15s ease-in-out infinite' : 'none',
+                opacity: isHovered ? 0.8 : 0.3,
+                transition: 'opacity 1.5s ease-in-out',
+              }} />
+
+              {/* Floating particles - top right cluster */}
+              {!prefersReducedMotion && (
+                <div style={{
+                  position: 'absolute',
+                  top: '15%',
+                  right: '20%',
+                  width: '450px',
+                  height: '450px',
+                }}>
+                  {[...Array(12)].map((_, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        position: 'absolute',
+                        width: `${2 + Math.random() * 3}px`,
+                        height: `${2 + Math.random() * 3}px`,
+                        borderRadius: '50%',
+                        background: 'rgba(251, 191, 36, 0.6)',
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                        animation: `particleDrift ${5 + Math.random() * 5}s ease-in-out infinite ${Math.random() * 2}s`,
+                        boxShadow: '0 0 8px rgba(251, 191, 36, 0.4)',
+                        opacity: isHovered ? 1 : 0.6,
+                        transition: 'opacity 1s ease',
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
             </>
           )}
         </div>
@@ -287,51 +350,76 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
             marginBottom: '1rem',
             flexWrap: 'wrap',
           }}>
+            {/* Animated icon orb */}
             <div style={{
-              width: '32px',
-              height: '32px',
+              position: 'relative',
+              width: '48px',
+              height: '48px',
               borderRadius: '50%',
-              background: 'var(--surface-primary)',
+              background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(218, 14, 41, 0.1))',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid var(--border-primary)',
+              border: '1px solid rgba(251, 191, 36, 0.3)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              animation: !prefersReducedMotion ? 'breathe 3s ease-in-out infinite' : 'none',
+              boxShadow: '0 4px 16px rgba(251, 191, 36, 0.2)',
             }}>
-              <div style={{
-                width: '4px',
-                height: '4px',
-                borderRadius: '50%',
-                background: 'rgb(251, 191, 36)',
-                animation: !prefersReducedMotion ? 'pulseOrb 2s ease-in-out infinite' : 'none',
+              {/* Rotating ring */}
+              {!prefersReducedMotion && (
+                <div style={{
+                  position: 'absolute',
+                  inset: -4,
+                  borderRadius: '50%',
+                  border: '2px solid transparent',
+                  borderTopColor: 'rgba(251, 191, 36, 0.6)',
+                  animation: 'spin 4s linear infinite',
+                }} />
+              )}
+
+              {/* Pulsing core */}
+              <Sparkles size={20} style={{
+                color: 'rgb(251, 191, 36)',
+                filter: 'drop-shadow(0 0 8px rgba(251, 191, 36, 0.6))',
               }} />
             </div>
-            <h2 className="text-gradient-blue" style={{
+
+            {/* Gradient animated title */}
+            <h2 style={{
               fontSize: '1.5rem',
               fontWeight: '500',
               letterSpacing: '0.05em',
+              background: 'linear-gradient(90deg, rgba(251, 191, 36, 1) 0%, rgba(245, 158, 11, 1) 50%, rgba(251, 191, 36, 1) 100%)',
+              backgroundSize: '200% 100%',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              animation: !prefersReducedMotion ? 'gradientShift 3s ease infinite' : 'none',
             }}>
               About
             </h2>
+
+            {/* Enhanced location badge */}
             <div style={{
-              padding: '0.375rem 0.875rem',
-              borderRadius: '12px',
-              background: 'var(--surface-primary)',
+              padding: '0.5rem 1rem',
+              borderRadius: '16px',
+              background: 'rgba(255, 255, 255, 0.04)',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid var(--border-primary)',
+              border: '1px solid rgba(251, 191, 36, 0.2)',
               fontSize: '0.75rem',
               fontWeight: '300',
               color: 'var(--text-secondary)',
               letterSpacing: '0.02em',
+              boxShadow: '0 2px 8px rgba(251, 191, 36, 0.1)',
             }}>
               Designer · Hyderabad → San Francisco
             </div>
           </div>
         </div>
 
-        {/* Single Unified Card */}
+        {/* Multi-Layer Glass Card System */}
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
@@ -343,28 +431,43 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
             onMouseLeave={() => setIsHovered(false)}
             style={{
               position: 'relative',
-              borderRadius: '24px',
-              overflow: 'hidden',
-              animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
-              transform: isHovered ? 'translateY(-4px) scale(1.005)' : 'translateY(0) scale(1)',
+              borderRadius: '28px',
+              animation: (inView && !prefersReducedMotion) ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
+              transform: isHovered ? 'translateY(-6px) scale(1.005)' : 'translateY(0) scale(1)',
               transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
-            {/* Glass Card Body */}
+            {/* Layer 1: Background Mesh Gradient */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: '28px',
+              background: `radial-gradient(at 20% 30%, rgba(251, 191, 36, 0.08) 0%, transparent 50%),
+                           radial-gradient(at 80% 70%, rgba(218, 14, 41, 0.06) 0%, transparent 50%)`,
+              filter: 'blur(60px)',
+              opacity: isHovered ? 1 : 0.7,
+              transition: 'opacity 0.6s ease',
+            }} />
+
+            {/* Layer 2: Frosted Glass Panel with Enhanced Shadow */}
             <div style={{
               position: 'relative',
               background: isHovered
-                ? 'linear-gradient(135deg, var(--surface-secondary) 0%, var(--surface-primary) 100%)'
-                : 'linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
-              backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
-              WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
-              border: '1px solid var(--border-primary)',
-              borderRadius: '24px',
+                ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)'
+                : 'linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.04) 100%)',
+              backdropFilter: 'blur(40px) saturate(140%) brightness(0.95)',
+              WebkitBackdropFilter: 'blur(40px) saturate(140%) brightness(0.95)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '28px',
               padding: 'clamp(2rem, 4vw, 3rem)',
               transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
               boxShadow: isHovered
-                ? 'inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 10px 20px rgba(0, 0, 0, 0.3)'
-                : 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
+                ? `0 8px 32px rgba(0, 0, 0, 0.15),
+                   inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                   0 0 80px rgba(251, 191, 36, 0.08)`
+                : `0 4px 16px rgba(0, 0, 0, 0.1),
+                   inset 0 1px 0 rgba(255, 255, 255, 0.02)`,
+              overflow: 'hidden',
             }}>
 
               {/* Introduction */}
@@ -502,55 +605,90 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                       flexWrap: 'wrap',
                       gap: '0.5rem',
                     }}>
-                      {skillTags.map((tag, index) => (
-                        <Link
-                          key={tag}
-                          href={`/work?skill=${encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-').replace(/\//g, '-'))}`}
-                          onMouseEnter={() => setHoveredSkillTag(tag)}
-                          onMouseLeave={() => setHoveredSkillTag(null)}
-                          style={{
-                            padding: '0.375rem 0.75rem',
-                            borderRadius: '10px',
-                            background: hoveredSkillTag === tag
-                              ? 'linear-gradient(135deg, rgba(251, 191, 36, 0.12), var(--surface-primary))'
-                              : 'var(--surface-primary)',
-                            backdropFilter: 'blur(20px)',
-                            WebkitBackdropFilter: 'blur(20px)',
-                            border: hoveredSkillTag === tag
-                              ? '1px solid rgba(251, 191, 36, 0.3)'
-                              : '1px solid var(--border-primary)',
-                            fontSize: '0.75rem',
-                            fontWeight: '300',
-                            color: 'var(--text-secondary)',
-                            letterSpacing: '0.01em',
-                            cursor: 'pointer',
-                            textDecoration: 'none',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.25rem',
-                            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                            transform: hoveredSkillTag === tag ? 'translateY(-2px) scale(1.05)' : 'translateY(0) scale(1)',
-                            animation: (hoveredSkillTag === tag && !prefersReducedMotion) ? 'skillTagFloat 2s ease-in-out infinite' : 'none',
-                            opacity: inView ? 1 : 0,
-                            animationDelay: `${0.7 + index * 0.05}s`,
-                            animationName: inView ? 'factCardReveal' : 'none',
-                            animationDuration: '0.4s',
-                            animationFillMode: 'both',
-                          }}
-                        >
-                          <span>{tag}</span>
-                          {hoveredSkillTag === tag && (
-                            <ArrowRight
-                              size={10}
-                              style={{
-                                opacity: 0.6,
-                                transition: 'transform 0.3s ease',
-                                transform: 'translateX(2px)',
-                              }}
-                            />
-                          )}
-                        </Link>
-                      ))}
+                      {skillTags.map((tag, index) => {
+                        const isTagHovered = hoveredSkillTag === tag;
+
+                        return (
+                          <Link
+                            key={tag}
+                            href={`/work?skill=${encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-').replace(/\//g, '-'))}`}
+                            onMouseEnter={() => setHoveredSkillTag(tag)}
+                            onMouseLeave={() => setHoveredSkillTag(null)}
+                            style={{
+                              position: 'relative',
+                              padding: '0.5rem 1rem',
+                              borderRadius: '12px',
+                              background: isTagHovered
+                                ? 'linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.08))'
+                                : 'linear-gradient(135deg, var(--surface-primary), rgba(255, 255, 255, 0.03))',
+                              backdropFilter: 'blur(20px) saturate(120%)',
+                              WebkitBackdropFilter: 'blur(20px) saturate(120%)',
+                              border: isTagHovered
+                                ? '1px solid rgba(251, 191, 36, 0.4)'
+                                : '1px solid var(--border-primary)',
+                              fontSize: '0.75rem',
+                              fontWeight: '400',
+                              color: isTagHovered ? 'rgba(251, 191, 36, 1)' : 'var(--text-secondary)',
+                              letterSpacing: '0.01em',
+                              cursor: 'pointer',
+                              textDecoration: 'none',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.35rem',
+                              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                              transform: isTagHovered
+                                ? 'translateY(-4px) translateZ(8px) rotateX(-2deg) scale(1.08)'
+                                : 'translateY(0) translateZ(0) rotateX(0) scale(1)',
+                              transformStyle: 'preserve-3d',
+                              perspective: '1000px',
+                              boxShadow: isTagHovered
+                                ? `0 8px 24px rgba(251, 191, 36, 0.25),
+                                   0 0 32px rgba(251, 191, 36, 0.15),
+                                   inset 0 1px 0 rgba(255, 255, 255, 0.1)`
+                                : `0 2px 8px rgba(0, 0, 0, 0.08),
+                                   inset 0 1px 0 rgba(255, 255, 255, 0.02)`,
+                              opacity: inView ? 1 : 0,
+                              animationDelay: `${0.7 + index * 0.05}s`,
+                              animationName: inView ? 'factCardReveal' : 'none',
+                              animationDuration: '0.4s',
+                              animationFillMode: 'both',
+                            }}
+                          >
+                            {/* Shine effect on hover */}
+                            {isTagHovered && !prefersReducedMotion && (
+                              <div style={{
+                                position: 'absolute',
+                                inset: 0,
+                                borderRadius: '12px',
+                                background: 'linear-gradient(120deg, transparent 30%, rgba(251, 191, 36, 0.3) 50%, transparent 70%)',
+                                animation: 'shine 1.5s ease-in-out infinite',
+                                pointerEvents: 'none',
+                              }} />
+                            )}
+
+                            <span style={{
+                              position: 'relative',
+                              zIndex: 1,
+                              textShadow: isTagHovered ? '0 0 12px rgba(251, 191, 36, 0.4)' : 'none',
+                              transition: 'text-shadow 0.3s ease',
+                            }}>
+                              {tag}
+                            </span>
+
+                            {isTagHovered && (
+                              <ArrowRight
+                                size={12}
+                                style={{
+                                  opacity: 0.9,
+                                  transition: 'transform 0.3s ease',
+                                  transform: 'translateX(2px)',
+                                  filter: 'drop-shadow(0 0 6px rgba(251, 191, 36, 0.6))',
+                                }}
+                              />
+                            )}
+                          </Link>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
@@ -586,7 +724,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                     </span>
                   </div>
 
-                  {/* Progress Bar */}
+                  {/* Enhanced Progress Bar with Particle Trail */}
                   <div style={{
                     position: 'relative',
                     width: '100%',
@@ -594,7 +732,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                     background: 'var(--surface-primary)',
                     borderRadius: '2px',
                     marginBottom: '2rem',
-                    overflow: 'hidden',
+                    overflow: 'visible', // Changed from 'hidden' to show particles
                   }}>
                     <div style={{
                       position: 'absolute',
@@ -607,6 +745,36 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                       width: prefersReducedMotion && inView ? '100%' : undefined,
                       boxShadow: '0 0 12px rgba(251, 191, 36, 0.4)',
                     }} />
+
+                    {/* Traveling Particles */}
+                    {!prefersReducedMotion && inView && (
+                      <div style={{
+                        position: 'absolute',
+                        right: 0,
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: '60px',
+                        height: '20px',
+                        pointerEvents: 'none',
+                      }}>
+                        {[...Array(4)].map((_, i) => (
+                          <div
+                            key={i}
+                            style={{
+                              position: 'absolute',
+                              right: 0,
+                              top: '50%',
+                              width: `${3 + Math.random() * 2}px`,
+                              height: `${3 + Math.random() * 2}px`,
+                              borderRadius: '50%',
+                              background: 'rgba(251, 191, 36, 0.8)',
+                              animation: `particleTrail ${2 + Math.random() * 1}s ease-out infinite ${i * 0.3}s`,
+                              boxShadow: '0 0 6px rgba(251, 191, 36, 0.6)',
+                            }}
+                          />
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   {/* Timeline Container */}
