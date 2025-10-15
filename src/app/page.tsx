@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Portfolio from '@/components/Portfolio';
 import WorkSection from '@/components/sections/WorkSection';
 import SimpleAboutSection from '@/components/sections/SimpleAboutSection';
+import { SectionDivider } from '@/components/ui/SectionDivider';
 
 export const metadata: Metadata = {
   title: 'Nihar Sunkara - Product Designer & Systems Thinker',
@@ -23,6 +24,7 @@ export default function HomePage() {
     <>
       <Portfolio />
       <WorkSection />
+      <SectionDivider text="Who's Behind the Work?" />
       <SimpleAboutSection />
     </>
   );

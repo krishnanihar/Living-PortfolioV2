@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { ArrowRight, GraduationCap, Briefcase, Star, Building2, Sparkles, Code, Palette } from 'lucide-react';
+import { ArrowRight, GraduationCap, Briefcase, Star, Building2, Sparkles, Code, Palette, Mail } from 'lucide-react';
 
 interface SimpleAboutSectionProps {
   className?: string;
@@ -17,9 +17,12 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
   const [ripplePosition, setRipplePosition] = useState<{ x: number; y: number } | null>(null);
   const [ripplePositionAbout, setRipplePositionAbout] = useState<{ x: number; y: number } | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [activeMilestoneIndex, setActiveMilestoneIndex] = useState(0);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const ctaRef = useRef<HTMLAnchorElement>(null);
   const aboutRef = useRef<HTMLAnchorElement>(null);
+  const timelineContainerRef = useRef<HTMLDivElement>(null);
 
   const journeyMilestones = [
     {
@@ -64,19 +67,19 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
   const keyFacts = [
     {
       label: 'Education',
-      value: 'NID Masters (2021-2023) + BFA (2016-2020)',
+      value: 'NID Masters in Design · BFA Visual Arts',
       icon: GraduationCap,
       color: '99, 102, 241' // Indigo
     },
     {
       label: 'Experience',
-      value: '4+ Years, 12 Products Shipped',
+      value: '5 Years · 12 Products Across Mobile, Web & Systems',
       icon: Briefcase,
       color: '16, 185, 129' // Green
     },
     {
       label: 'Currently',
-      value: 'Air India DesignLAB, 450+ Daily Users',
+      value: 'Leading Design at Air India · 450+ Daily Users',
       icon: Building2,
       color: '218, 14, 41' // Brand Red
     },
@@ -108,6 +111,47 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Track active milestone on mobile timeline
+  useEffect(() => {
+    if (!isMobile || !timelineContainerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = Number(entry.target.getAttribute('data-index'));
+            if (!isNaN(index)) {
+              setActiveMilestoneIndex(index);
+            }
+          }
+        });
+      },
+      {
+        threshold: 0.5,
+        root: timelineContainerRef.current,
+        rootMargin: '0px'
+      }
+    );
+
+    const milestoneElements = timelineContainerRef.current?.querySelectorAll('[data-index]');
+    milestoneElements?.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [isMobile]);
+
+  // Detect prefers-reduced-motion
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setPrefersReducedMotion(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
   const handleCtaClick = (e: React.MouseEvent) => {
@@ -194,7 +238,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
           pointerEvents: 'none',
           zIndex: 0,
         }}>
-          {isHovered && (
+          {(inView || isHovered) && (
             <>
               <div style={{
                 position: 'absolute',
@@ -205,8 +249,8 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                 background: 'radial-gradient(circle, rgba(251, 191, 36, 0.06), transparent 70%)',
                 borderRadius: '50%',
                 filter: 'blur(90px)',
-                animation: 'floatOrb 25s ease-in-out infinite',
-                opacity: isHovered ? 1 : 0,
+                animation: !prefersReducedMotion ? 'floatOrb 25s ease-in-out infinite' : 'none',
+                opacity: isHovered ? 1 : 0.4,
                 transition: 'opacity 1.5s ease-in-out',
               }} />
               <div style={{
@@ -218,8 +262,8 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                 background: 'radial-gradient(circle, rgba(245, 158, 11, 0.04), transparent 70%)',
                 borderRadius: '50%',
                 filter: 'blur(70px)',
-                animation: 'floatOrb 30s ease-in-out infinite 10s',
-                opacity: isHovered ? 1 : 0,
+                animation: !prefersReducedMotion ? 'floatOrb 30s ease-in-out infinite 10s' : 'none',
+                opacity: isHovered ? 1 : 0.4,
                 transition: 'opacity 1.5s ease-in-out',
               }} />
             </>
@@ -230,8 +274,9 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto 5rem',
-          animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
+          animation: (inView && !prefersReducedMotion) ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
           opacity: inView ? 1 : 0,
+          transition: prefersReducedMotion ? 'opacity 0.3s ease' : 'none',
           position: 'relative',
           zIndex: 1,
         }}>
@@ -259,7 +304,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                 height: '4px',
                 borderRadius: '50%',
                 background: 'rgb(251, 191, 36)',
-                animation: 'pulseOrb 2s ease-in-out infinite',
+                animation: !prefersReducedMotion ? 'pulseOrb 2s ease-in-out infinite' : 'none',
               }} />
             </div>
             <h2 className="text-gradient-blue" style={{
@@ -332,9 +377,9 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                 maxWidth: '900px',
                 opacity: isHovered ? 0.9 : 0.8,
                 transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both' : 'none',
+                animation: (inView && !prefersReducedMotion) ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both' : 'none',
               }}>
-                I'm Nihar, crafting interfaces that breathe, remember, and evolve. Currently leading design transformation at Air India DesignLAB, where I build systems that serve 450+ daily users.
+                I'm Nihar. I design interfaces that breathe, remember, and evolve. At Air India DesignLAB, I'm leading the transformation of systems that power 450+ daily operations—reducing decision latency through thoughtful design.
               </p>
 
               {/* Two-Column Grid: Key Facts + Journey */}
@@ -458,8 +503,9 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                       gap: '0.5rem',
                     }}>
                       {skillTags.map((tag, index) => (
-                        <span
+                        <Link
                           key={tag}
+                          href={`/work?skill=${encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-').replace(/\//g, '-'))}`}
                           onMouseEnter={() => setHoveredSkillTag(tag)}
                           onMouseLeave={() => setHoveredSkillTag(null)}
                           style={{
@@ -478,9 +524,13 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                             color: 'var(--text-secondary)',
                             letterSpacing: '0.01em',
                             cursor: 'pointer',
+                            textDecoration: 'none',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.25rem',
                             transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                             transform: hoveredSkillTag === tag ? 'translateY(-2px) scale(1.05)' : 'translateY(0) scale(1)',
-                            animation: hoveredSkillTag === tag ? 'skillTagFloat 2s ease-in-out infinite' : 'none',
+                            animation: (hoveredSkillTag === tag && !prefersReducedMotion) ? 'skillTagFloat 2s ease-in-out infinite' : 'none',
                             opacity: inView ? 1 : 0,
                             animationDelay: `${0.7 + index * 0.05}s`,
                             animationName: inView ? 'factCardReveal' : 'none',
@@ -488,8 +538,18 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                             animationFillMode: 'both',
                           }}
                         >
-                          {tag}
-                        </span>
+                          <span>{tag}</span>
+                          {hoveredSkillTag === tag && (
+                            <ArrowRight
+                              size={10}
+                              style={{
+                                opacity: 0.6,
+                                transition: 'transform 0.3s ease',
+                                transform: 'translateX(2px)',
+                              }}
+                            />
+                          )}
+                        </Link>
                       ))}
                     </div>
                   </div>
@@ -543,16 +603,19 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                       height: '100%',
                       background: 'linear-gradient(90deg, rgba(218, 14, 41, 0.6), rgba(251, 191, 36, 0.8))',
                       borderRadius: '2px',
-                      animation: inView ? 'progressFill 2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both' : 'none',
+                      animation: (inView && !prefersReducedMotion) ? 'progressFill 2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both' : 'none',
+                      width: prefersReducedMotion && inView ? '100%' : undefined,
                       boxShadow: '0 0 12px rgba(251, 191, 36, 0.4)',
                     }} />
                   </div>
 
                   {/* Timeline Container */}
-                  <div style={{
-                    position: 'relative',
-                  }}
-                  className={isMobile ? 'mobile-timeline' : ''}
+                  <div
+                    ref={timelineContainerRef}
+                    style={{
+                      position: 'relative',
+                    }}
+                    className={isMobile ? 'mobile-timeline' : ''}
                   >
                     {/* Vertical Timeline Line (Desktop) */}
                     {!isMobile && (
@@ -562,7 +625,8 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                         top: '0',
                         width: '2px',
                         background: 'linear-gradient(180deg, rgba(218, 14, 41, 0.2), rgba(218, 14, 41, 0.6), rgba(218, 14, 41, 0.2))',
-                        animation: inView ? 'timelineDraw 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both' : 'none',
+                        animation: (inView && !prefersReducedMotion) ? 'timelineDraw 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both' : 'none',
+                        height: prefersReducedMotion && inView ? '100%' : undefined,
                       }} />
                     )}
 
@@ -580,6 +644,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                           <Link
                             key={milestone.year}
                             href={`/journey#${milestone.id}`}
+                            data-index={index}
                             onMouseEnter={() => setHoveredMilestone(index)}
                             onMouseLeave={() => setHoveredMilestone(null)}
                             style={{
@@ -610,7 +675,9 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                                 boxShadow: `0 0 20px rgba(218, 14, 41, ${milestone.opacity * 0.5})`,
                                 border: '2px solid rgba(218, 14, 41, 0.3)',
                                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                                animation: isMilestoneHovered ? 'milestonePulse 2s ease-in-out infinite' : (inView ? `pulseOrb 3s ease-in-out infinite ${index * 0.5}s` : 'none'),
+                                animation: !prefersReducedMotion
+                                  ? (isMilestoneHovered ? 'milestonePulse 2s ease-in-out infinite' : (inView ? `pulseOrb 3s ease-in-out infinite ${index * 0.5}s` : 'none'))
+                                  : 'none',
                                 transform: isMilestoneHovered ? 'scale(1.2)' : 'scale(1)',
                               }} />
                             )}
@@ -678,6 +745,70 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                         );
                       })}
                     </div>
+
+                    {/* Mobile Progress Dots */}
+                    {isMobile && (
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        marginTop: '1.5rem',
+                      }}>
+                        {journeyMilestones.map((milestone, index) => (
+                          <button
+                            key={index}
+                            onClick={() => {
+                              const element = document.querySelector(`[data-index="${index}"]`);
+                              element?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                            }}
+                            aria-label={`Go to ${milestone.label}`}
+                            style={{
+                              width: activeMilestoneIndex === index ? '24px' : '8px',
+                              height: '8px',
+                              borderRadius: '4px',
+                              background: activeMilestoneIndex === index
+                                ? 'var(--brand-red)'
+                                : 'rgba(255, 255, 255, 0.2)',
+                              border: 'none',
+                              cursor: 'pointer',
+                              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                              padding: 0,
+                            }}
+                          />
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Edge Shadow Gradients (Mobile Scroll Indicators) */}
+                    {isMobile && (
+                      <>
+                        {/* Left edge fade */}
+                        <div style={{
+                          position: 'absolute',
+                          left: 0,
+                          top: 0,
+                          bottom: activeMilestoneIndex > 0 ? '3rem' : '0', // Account for progress dots
+                          width: '40px',
+                          background: 'linear-gradient(90deg, var(--bg-primary), transparent)',
+                          pointerEvents: 'none',
+                          opacity: activeMilestoneIndex > 0 ? 1 : 0,
+                          transition: 'opacity 0.3s ease',
+                        }} />
+
+                        {/* Right edge fade */}
+                        <div style={{
+                          position: 'absolute',
+                          right: 0,
+                          top: 0,
+                          bottom: activeMilestoneIndex < journeyMilestones.length - 1 ? '3rem' : '0',
+                          width: '40px',
+                          background: 'linear-gradient(270deg, var(--bg-primary), transparent)',
+                          pointerEvents: 'none',
+                          opacity: activeMilestoneIndex < journeyMilestones.length - 1 ? 1 : 0,
+                          transition: 'opacity 0.3s ease',
+                        }} />
+                      </>
+                    )}
                   </div>
                 </div>
 
@@ -748,7 +879,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
 
                   <Link
                     ref={aboutRef}
-                    href="/about"
+                    href="/contact"
                     onClick={handleAboutClick}
                     style={{
                       position: 'relative',
@@ -757,8 +888,8 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                       alignItems: 'center',
                       gap: '0.5rem',
                       padding: '0.75rem 1.5rem',
-                      background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(255, 255, 255, 0.04))',
-                      border: '1px solid rgba(251, 191, 36, 0.25)',
+                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(255, 255, 255, 0.04))',
+                      border: '1px solid rgba(59, 130, 246, 0.25)',
                       borderRadius: '16px',
                       color: 'var(--text-primary)',
                       textDecoration: 'none',
@@ -767,14 +898,14 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(255, 255, 255, 0.06))';
-                      e.currentTarget.style.borderColor = 'rgba(251, 191, 36, 0.4)';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(255, 255, 255, 0.06))';
+                      e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.4)';
                       e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-                      e.currentTarget.style.boxShadow = '0 12px 32px rgba(251, 191, 36, 0.15)';
+                      e.currentTarget.style.boxShadow = '0 12px 32px rgba(59, 130, 246, 0.15)';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(255, 255, 255, 0.04))';
-                      e.currentTarget.style.borderColor = 'rgba(251, 191, 36, 0.25)';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(255, 255, 255, 0.04))';
+                      e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.25)';
                       e.currentTarget.style.transform = 'translateY(0) scale(1)';
                       e.currentTarget.style.boxShadow = 'none';
                     }}
@@ -788,13 +919,13 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                         width: '20px',
                         height: '20px',
                         borderRadius: '50%',
-                        background: 'rgba(251, 191, 36, 0.4)',
+                        background: 'rgba(59, 130, 246, 0.4)',
                         animation: 'aboutRipple 0.6s ease-out',
                         pointerEvents: 'none',
                       }} />
                     )}
-                    <span>About Me</span>
-                    <ArrowRight size={16} />
+                    <Mail size={16} />
+                    <span>Let's Talk</span>
                   </Link>
                 </div>
               </div>
