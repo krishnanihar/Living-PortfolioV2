@@ -240,95 +240,23 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
         }}>
           {(inView || isHovered) && (
             <>
-              {/* Primary orb - top right with multi-stop gradient */}
+              {/* Minimized ambient orb - single subtle orb */}
               <div style={{
                 position: 'absolute',
-                top: '10%',
+                top: '15%',
                 right: '15%',
-                width: '500px',
-                height: '500px',
-                background: `radial-gradient(circle at 30% 30%,
-                  rgba(251, 191, 36, 0.12) 0%,
-                  rgba(245, 158, 11, 0.08) 25%,
-                  rgba(251, 191, 36, 0.04) 50%,
-                  transparent 70%)`,
-                borderRadius: '50%',
-                filter: 'blur(100px)',
-                mixBlendMode: 'screen',
-                animation: !prefersReducedMotion ? 'orbFloat1 20s ease-in-out infinite' : 'none',
-                opacity: isHovered ? 1 : 0.5,
-                transition: 'opacity 1.5s ease-in-out',
-              }} />
-
-              {/* Secondary orb - bottom left */}
-              <div style={{
-                position: 'absolute',
-                bottom: '15%',
-                left: '10%',
                 width: '400px',
                 height: '400px',
-                background: `radial-gradient(circle at 70% 70%,
-                  rgba(218, 14, 41, 0.10) 0%,
-                  rgba(239, 68, 68, 0.06) 30%,
-                  rgba(218, 14, 41, 0.03) 60%,
-                  transparent 80%)`,
-                borderRadius: '50%',
-                filter: 'blur(80px)',
-                mixBlendMode: 'screen',
-                animation: !prefersReducedMotion ? 'orbFloat2 25s ease-in-out infinite 5s' : 'none',
-                opacity: isHovered ? 1 : 0.5,
-                transition: 'opacity 1.5s ease-in-out',
-              }} />
-
-              {/* Accent orb - center */}
-              <div style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: '300px',
-                height: '300px',
-                background: `radial-gradient(circle,
-                  rgba(59, 130, 246, 0.06) 0%,
-                  rgba(147, 51, 234, 0.04) 40%,
+                background: `radial-gradient(circle at 30% 30%,
+                  rgba(251, 191, 36, 0.04) 0%,
+                  rgba(245, 158, 11, 0.02) 40%,
                   transparent 70%)`,
                 borderRadius: '50%',
-                filter: 'blur(60px)',
-                mixBlendMode: 'screen',
-                animation: !prefersReducedMotion ? 'orbPulse 15s ease-in-out infinite' : 'none',
-                opacity: isHovered ? 0.8 : 0.3,
+                filter: 'blur(80px)',
+                animation: !prefersReducedMotion ? 'orbFloat1 25s ease-in-out infinite' : 'none',
+                opacity: isHovered ? 0.4 : 0.25,
                 transition: 'opacity 1.5s ease-in-out',
               }} />
-
-              {/* Floating particles - top right cluster */}
-              {!prefersReducedMotion && (
-                <div style={{
-                  position: 'absolute',
-                  top: '15%',
-                  right: '20%',
-                  width: '450px',
-                  height: '450px',
-                }}>
-                  {[...Array(12)].map((_, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        position: 'absolute',
-                        width: `${2 + Math.random() * 3}px`,
-                        height: `${2 + Math.random() * 3}px`,
-                        borderRadius: '50%',
-                        background: 'rgba(251, 191, 36, 0.6)',
-                        left: `${Math.random() * 100}%`,
-                        top: `${Math.random() * 100}%`,
-                        animation: `particleDrift ${5 + Math.random() * 5}s ease-in-out infinite ${Math.random() * 2}s`,
-                        boxShadow: '0 0 8px rgba(251, 191, 36, 0.4)',
-                        opacity: isHovered ? 1 : 0.6,
-                        transition: 'opacity 1s ease',
-                      }}
-                    />
-                  ))}
-                </div>
-              )}
             </>
           )}
         </div>
@@ -350,52 +278,46 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
             marginBottom: '1rem',
             flexWrap: 'wrap',
           }}>
-            {/* Animated icon orb */}
+            {/* Simplified icon orb */}
             <div style={{
               position: 'relative',
-              width: '48px',
-              height: '48px',
+              width: '40px',
+              height: '40px',
               borderRadius: '50%',
-              background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(218, 14, 41, 0.1))',
+              background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(218, 14, 41, 0.08))',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid rgba(251, 191, 36, 0.3)',
+              border: '1px solid rgba(251, 191, 36, 0.25)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              animation: !prefersReducedMotion ? 'breathe 3s ease-in-out infinite' : 'none',
-              boxShadow: '0 4px 16px rgba(251, 191, 36, 0.2)',
+              boxShadow: '0 2px 8px rgba(251, 191, 36, 0.15)',
             }}>
-              {/* Rotating ring */}
+              {/* Slower rotating ring */}
               {!prefersReducedMotion && (
                 <div style={{
                   position: 'absolute',
-                  inset: -4,
+                  inset: -3,
                   borderRadius: '50%',
-                  border: '2px solid transparent',
-                  borderTopColor: 'rgba(251, 191, 36, 0.6)',
-                  animation: 'spin 4s linear infinite',
+                  border: '1.5px solid transparent',
+                  borderTopColor: 'rgba(251, 191, 36, 0.4)',
+                  animation: 'spin 6s linear infinite',
                 }} />
               )}
 
-              {/* Pulsing core */}
-              <Sparkles size={20} style={{
+              {/* Icon without heavy glow */}
+              <Sparkles size={18} style={{
                 color: 'rgb(251, 191, 36)',
-                filter: 'drop-shadow(0 0 8px rgba(251, 191, 36, 0.6))',
+                filter: 'drop-shadow(0 0 4px rgba(251, 191, 36, 0.4))',
               }} />
             </div>
 
-            {/* Gradient animated title */}
+            {/* Simplified title - solid color */}
             <h2 style={{
               fontSize: '1.5rem',
               fontWeight: '500',
               letterSpacing: '0.05em',
-              background: 'linear-gradient(90deg, rgba(251, 191, 36, 1) 0%, rgba(245, 158, 11, 1) 50%, rgba(251, 191, 36, 1) 100%)',
-              backgroundSize: '200% 100%',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              animation: !prefersReducedMotion ? 'gradientShift 3s ease infinite' : 'none',
+              color: 'rgba(251, 191, 36, 0.95)',
             }}>
               About
             </h2>
@@ -470,15 +392,14 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
               overflow: 'hidden',
             }}>
 
-              {/* Introduction */}
+              {/* Introduction - Always readable */}
               <p style={{
                 fontSize: 'clamp(0.938rem, 2vw, 1.125rem)',
                 fontWeight: '300',
-                color: 'var(--text-primary)',
+                color: 'rgba(255, 255, 255, 0.9)',
                 lineHeight: '1.7',
                 marginBottom: 'clamp(2rem, 4vw, 3rem)',
                 maxWidth: '900px',
-                opacity: isHovered ? 0.9 : 0.8,
                 transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                 animation: (inView && !prefersReducedMotion) ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both' : 'none',
               }}>
@@ -520,20 +441,25 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                         key={index}
                         onMouseEnter={() => setHoveredFactIndex(index)}
                         onMouseLeave={() => setHoveredFactIndex(null)}
+                        tabIndex={0}
+                        onFocus={() => setHoveredFactIndex(index)}
+                        onBlur={() => setHoveredFactIndex(null)}
                         style={{
                           position: 'relative',
                           padding: '1rem',
                           borderRadius: '12px',
                           background: isFactHovered
-                            ? `linear-gradient(135deg, rgba(${fact.color}, 0.06), var(--surface-primary))`
-                            : 'var(--surface-primary)',
+                            ? `linear-gradient(135deg, rgba(${fact.color}, 0.10), rgba(${fact.color}, 0.04))`
+                            : `linear-gradient(135deg, rgba(${fact.color}, 0.08), rgba(255, 255, 255, 0.04))`,
                           backdropFilter: 'blur(20px)',
                           WebkitBackdropFilter: 'blur(20px)',
-                          border: `1px solid ${isFactHovered ? `rgba(${fact.color}, 0.3)` : 'var(--border-primary)'}`,
+                          border: `1px solid rgba(${fact.color}, ${isFactHovered ? '0.35' : '0.2'})`,
                           transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                           transform: isFactHovered ? 'translateY(-4px) scale(1.02)' : 'translateY(0) scale(1)',
                           cursor: 'default',
                           animation: inView ? `factCardReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.5 + index * 0.1}s both` : 'none',
+                          outline: isFactHovered ? `2px solid rgba(${fact.color}, 0.4)` : 'none',
+                          outlineOffset: '2px',
                         }}
                       >
                         <div style={{
@@ -573,9 +499,8 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                             <div style={{
                               fontSize: '0.813rem',
                               fontWeight: '300',
-                              color: 'var(--text-secondary)',
+                              color: 'rgba(255, 255, 255, 0.85)',
                               lineHeight: '1.5',
-                              opacity: isFactHovered ? 0.9 : 0.7,
                               transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                             }}>
                               {fact.value}
@@ -614,75 +539,58 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                             href={`/work?skill=${encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-').replace(/\//g, '-'))}`}
                             onMouseEnter={() => setHoveredSkillTag(tag)}
                             onMouseLeave={() => setHoveredSkillTag(null)}
+                            onFocus={() => setHoveredSkillTag(tag)}
+                            onBlur={() => setHoveredSkillTag(null)}
                             style={{
                               position: 'relative',
-                              padding: '0.5rem 1rem',
-                              borderRadius: '12px',
+                              padding: isMobile ? '0.375rem 0.75rem' : '0.425rem 0.875rem',
+                              borderRadius: '10px',
                               background: isTagHovered
-                                ? 'linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.08))'
+                                ? 'linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(245, 158, 11, 0.08))'
                                 : 'linear-gradient(135deg, var(--surface-primary), rgba(255, 255, 255, 0.03))',
-                              backdropFilter: 'blur(20px) saturate(120%)',
-                              WebkitBackdropFilter: 'blur(20px) saturate(120%)',
+                              backdropFilter: 'blur(20px)',
+                              WebkitBackdropFilter: 'blur(20px)',
                               border: isTagHovered
-                                ? '1px solid rgba(251, 191, 36, 0.4)'
+                                ? '1px solid rgba(251, 191, 36, 0.35)'
                                 : '1px solid var(--border-primary)',
                               fontSize: '0.75rem',
                               fontWeight: '400',
-                              color: isTagHovered ? 'rgba(251, 191, 36, 1)' : 'var(--text-secondary)',
+                              color: isTagHovered ? 'rgba(251, 191, 36, 1)' : 'rgba(255, 255, 255, 0.75)',
                               letterSpacing: '0.01em',
                               cursor: 'pointer',
                               textDecoration: 'none',
                               display: 'inline-flex',
                               alignItems: 'center',
                               gap: '0.35rem',
-                              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                               transform: isTagHovered
-                                ? 'translateY(-4px) translateZ(8px) rotateX(-2deg) scale(1.08)'
-                                : 'translateY(0) translateZ(0) rotateX(0) scale(1)',
-                              transformStyle: 'preserve-3d',
-                              perspective: '1000px',
+                                ? 'translateY(-2px) scale(1.04)'
+                                : 'translateY(0) scale(1)',
                               boxShadow: isTagHovered
-                                ? `0 8px 24px rgba(251, 191, 36, 0.25),
-                                   0 0 32px rgba(251, 191, 36, 0.15),
-                                   inset 0 1px 0 rgba(255, 255, 255, 0.1)`
-                                : `0 2px 8px rgba(0, 0, 0, 0.08),
+                                ? `0 4px 12px rgba(251, 191, 36, 0.15),
+                                   inset 0 1px 0 rgba(255, 255, 255, 0.08)`
+                                : `0 1px 3px rgba(0, 0, 0, 0.08),
                                    inset 0 1px 0 rgba(255, 255, 255, 0.02)`,
                               opacity: inView ? 1 : 0,
                               animationDelay: `${0.7 + index * 0.05}s`,
                               animationName: inView ? 'factCardReveal' : 'none',
                               animationDuration: '0.4s',
                               animationFillMode: 'both',
+                              outline: isTagHovered ? '2px solid rgba(251, 191, 36, 0.3)' : 'none',
+                              outlineOffset: '2px',
                             }}
                           >
-                            {/* Shine effect on hover */}
-                            {isTagHovered && !prefersReducedMotion && (
-                              <div style={{
-                                position: 'absolute',
-                                inset: 0,
-                                borderRadius: '12px',
-                                background: 'linear-gradient(120deg, transparent 30%, rgba(251, 191, 36, 0.3) 50%, transparent 70%)',
-                                animation: 'shine 1.5s ease-in-out infinite',
-                                pointerEvents: 'none',
-                              }} />
-                            )}
-
-                            <span style={{
-                              position: 'relative',
-                              zIndex: 1,
-                              textShadow: isTagHovered ? '0 0 12px rgba(251, 191, 36, 0.4)' : 'none',
-                              transition: 'text-shadow 0.3s ease',
-                            }}>
+                            <span>
                               {tag}
                             </span>
 
                             {isTagHovered && (
                               <ArrowRight
-                                size={12}
+                                size={11}
                                 style={{
-                                  opacity: 0.9,
+                                  opacity: 0.8,
                                   transition: 'transform 0.3s ease',
-                                  transform: 'translateX(2px)',
-                                  filter: 'drop-shadow(0 0 6px rgba(251, 191, 36, 0.6))',
+                                  transform: 'translateX(1px)',
                                 }}
                               />
                             )}
@@ -746,30 +654,30 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                       boxShadow: '0 0 12px rgba(251, 191, 36, 0.4)',
                     }} />
 
-                    {/* Traveling Particles */}
+                    {/* Simplified traveling particles */}
                     {!prefersReducedMotion && inView && (
                       <div style={{
                         position: 'absolute',
                         right: 0,
                         top: '50%',
                         transform: 'translateY(-50%)',
-                        width: '60px',
-                        height: '20px',
+                        width: '50px',
+                        height: '16px',
                         pointerEvents: 'none',
                       }}>
-                        {[...Array(4)].map((_, i) => (
+                        {[...Array(3)].map((_, i) => (
                           <div
                             key={i}
                             style={{
                               position: 'absolute',
                               right: 0,
                               top: '50%',
-                              width: `${3 + Math.random() * 2}px`,
-                              height: `${3 + Math.random() * 2}px`,
+                              width: '3px',
+                              height: '3px',
                               borderRadius: '50%',
-                              background: 'rgba(251, 191, 36, 0.8)',
-                              animation: `particleTrail ${2 + Math.random() * 1}s ease-out infinite ${i * 0.3}s`,
-                              boxShadow: '0 0 6px rgba(251, 191, 36, 0.6)',
+                              background: 'rgba(251, 191, 36, 0.7)',
+                              animation: `particleTrail 2.5s ease-out infinite ${i * 0.4}s`,
+                              boxShadow: '0 0 4px rgba(251, 191, 36, 0.5)',
                             }}
                           />
                         ))}
@@ -815,6 +723,8 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                             data-index={index}
                             onMouseEnter={() => setHoveredMilestone(index)}
                             onMouseLeave={() => setHoveredMilestone(null)}
+                            onFocus={() => setHoveredMilestone(index)}
+                            onBlur={() => setHoveredMilestone(null)}
                             style={{
                               position: 'relative',
                               display: 'flex',
@@ -829,6 +739,8 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                               background: isMobile ? 'var(--surface-primary)' : 'transparent',
                               borderRadius: isMobile ? '12px' : '0',
                               border: isMobile ? '1px solid var(--border-primary)' : 'none',
+                              outline: isMilestoneHovered ? '2px solid rgba(218, 14, 41, 0.5)' : 'none',
+                              outlineOffset: '3px',
                             }}
                           >
                             {/* Dot - Desktop */}
@@ -863,10 +775,10 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                               }}>
                                 <span style={{
                                   fontSize: '0.688rem',
-                                  color: 'var(--text-muted)',
+                                  color: 'rgba(255, 255, 255, 0.6)',
                                   fontWeight: '400',
                                   letterSpacing: '0.05em',
-                                  opacity: isMilestoneHovered ? 1 : 0.6,
+                                  opacity: isMilestoneHovered ? 1 : 0.8,
                                   transition: 'all 0.3s ease',
                                 }}>
                                   {milestone.year}
@@ -874,8 +786,8 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                                 <span style={{
                                   fontSize: '0.875rem',
                                   fontWeight: '400',
-                                  color: 'var(--text-primary)',
-                                  opacity: isMilestoneHovered ? 1 : milestone.opacity,
+                                  color: 'rgba(255, 255, 255, 0.9)',
+                                  opacity: isMilestoneHovered ? 1 : 0.85,
                                   transition: 'all 0.3s ease',
                                 }}>
                                   {milestone.label}
@@ -1004,27 +916,35 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '0.5rem',
-                      padding: '0.75rem 1.5rem',
-                      background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))',
-                      border: '1px solid rgba(218, 14, 41, 0.3)',
+                      padding: '0.875rem 1.75rem',
+                      background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(218, 14, 41, 0.12))',
+                      border: '1.5px solid rgba(218, 14, 41, 0.4)',
                       borderRadius: '16px',
-                      color: 'var(--text-primary)',
+                      color: 'rgba(255, 255, 255, 0.95)',
                       textDecoration: 'none',
                       fontSize: '0.875rem',
-                      fontWeight: '400',
+                      fontWeight: '500',
                       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                      boxShadow: '0 4px 12px rgba(218, 14, 41, 0.15)',
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(255, 255, 255, 0.08))';
-                      e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.5)';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.25), rgba(218, 14, 41, 0.15))';
+                      e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.6)';
                       e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-                      e.currentTarget.style.boxShadow = '0 12px 32px rgba(218, 14, 41, 0.2)';
+                      e.currentTarget.style.boxShadow = '0 12px 32px rgba(218, 14, 41, 0.25)';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))';
-                      e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(218, 14, 41, 0.12))';
+                      e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.4)';
                       e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                      e.currentTarget.style.boxShadow = 'none';
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(218, 14, 41, 0.15)';
+                    }}
+                    onFocus={(e) => {
+                      e.currentTarget.style.outline = '2px solid rgba(218, 14, 41, 0.6)';
+                      e.currentTarget.style.outlineOffset = '2px';
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.outline = 'none';
                     }}
                   >
                     {/* Ripple Effect */}
@@ -1076,6 +996,13 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                       e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.25)';
                       e.currentTarget.style.transform = 'translateY(0) scale(1)';
                       e.currentTarget.style.boxShadow = 'none';
+                    }}
+                    onFocus={(e) => {
+                      e.currentTarget.style.outline = '2px solid rgba(59, 130, 246, 0.5)';
+                      e.currentTarget.style.outlineOffset = '2px';
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.outline = 'none';
                     }}
                   >
                     {/* Ripple Effect */}
