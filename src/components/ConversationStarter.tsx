@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Send, Sparkles, ArrowLeft, Briefcase, BookOpen, Users, Map, User } from 'lucide-react';
+import { Send, Sparkles, ArrowLeft, Briefcase, BookOpen, Users, Map, User, ArrowRight } from 'lucide-react';
 import { projects } from '@/data/projects';
 
 interface Intent {
@@ -161,22 +161,106 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
 
   return (
     <div data-tour="conversation-starter" style={{ position: 'relative', zIndex: 1 }}>
+      {/* Identity Header - Always Visible */}
+      {!selectedIntent && (
+        <div style={{
+          textAlign: 'center',
+          marginBottom: 'clamp(1.5rem, 2.5vw, 2.5rem)',
+          paddingBottom: 'clamp(1.5rem, 2.5vw, 2.5rem)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+          opacity: 0,
+          animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both',
+        }}>
+          <div style={{
+            fontSize: '0.825rem',
+            color: 'var(--text-muted)',
+            marginBottom: '1rem',
+            letterSpacing: '0.025em',
+            fontWeight: '200',
+          }}>
+            {content.greeting}
+          </div>
+
+          <h1 style={{
+            fontSize: 'clamp(2rem, 5vw, 3rem)',
+            fontWeight: '300',
+            color: 'var(--text-primary)',
+            marginBottom: '0.5rem',
+            lineHeight: '1.2',
+            letterSpacing: '-0.02em',
+          }}>
+            Nihar Sunkara
+          </h1>
+
+          <p style={{
+            fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+            fontWeight: '300',
+            color: 'var(--text-secondary)',
+            marginBottom: '1.25rem',
+            letterSpacing: '0.01em',
+          }}>
+            Product Designer & Systems Thinker
+          </p>
+
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            padding: '0.5rem 1rem',
+            borderRadius: '16px',
+            background: 'rgba(255, 255, 255, 0.03)',
+            backdropFilter: 'blur(20px) brightness(0.8)',
+            WebkitBackdropFilter: 'blur(20px) brightness(0.8)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            fontSize: '0.813rem',
+            fontWeight: '300',
+            color: 'var(--text-secondary)',
+            letterSpacing: '0.02em',
+          }}>
+            <div style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: 'var(--brand-red)',
+              boxShadow: '0 0 12px rgba(218, 14, 41, 0.6)',
+              animation: 'pulse 2s ease-in-out infinite',
+            }} />
+            Air India DesignLAB • 450+ daily users
+          </div>
+
+          <p style={{
+            fontSize: '0.938rem',
+            fontWeight: '300',
+            color: 'var(--text-tertiary)',
+            marginTop: '1.25rem',
+            lineHeight: '1.6',
+            letterSpacing: '0.01em',
+            maxWidth: '560px',
+            margin: '1.25rem auto 0',
+          }}>
+            I visualize complex data and craft digital experiences that bridge the gap between insight and action
+          </p>
+        </div>
+      )}
+
       {/* Dynamic Hero Content */}
       <div style={{
         textAlign: 'center',
         marginBottom: 'clamp(1.25rem, 2vw, 2rem)',
       }}>
-        <div style={{
-          fontSize: '0.825rem',
-          color: 'var(--text-muted)',
-          marginBottom: '0.875rem',
-          letterSpacing: '0.025em',
-          fontWeight: '200',
-          opacity: 0,
-          animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both',
-        }}>
-          {content.greeting}
-        </div>
+        {selectedIntent && (
+          <div style={{
+            fontSize: '0.825rem',
+            color: 'var(--text-muted)',
+            marginBottom: '0.875rem',
+            letterSpacing: '0.025em',
+            fontWeight: '200',
+            opacity: 0,
+            animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both',
+          }}>
+            {content.greeting}
+          </div>
+        )}
 
         <h1
           className={!selectedIntent ? "text-gradient-blue" : ""}
@@ -190,7 +274,9 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
             position: 'relative',
             display: 'inline-block',
             opacity: 0,
-            animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both',
+            animation: selectedIntent
+              ? 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both'
+              : 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both',
             transition: 'margin-bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.6s ease',
           }}
         >
@@ -235,7 +321,7 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
           gap: '0.75rem',
           marginBottom: '1.75rem',
           opacity: 0,
-          animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both',
+          animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both',
         }}>
           {intents.map((intent) => (
             <button
@@ -527,6 +613,164 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
               About Me
             </Link>
           </div>
+
+          {/* Featured Projects Preview */}
+          {selectedIntentData?.featuredProjects && selectedIntentData.featuredProjects.length > 0 && (
+            <div style={{
+              marginTop: '2rem',
+              paddingTop: '2rem',
+              borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+              opacity: 0,
+              animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 1s both',
+            }}>
+              <h3 style={{
+                fontSize: '0.875rem',
+                fontWeight: '400',
+                color: 'var(--text-secondary)',
+                textAlign: 'center',
+                marginBottom: '1.25rem',
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase',
+              }}>
+                Featured for You
+              </h3>
+
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                gap: '1rem',
+              }}>
+                {selectedIntentData.featuredProjects.slice(0, 3).map((projectId, index) => {
+                  const project = projects.find(p => p.id === projectId);
+                  if (!project) return null;
+
+                  return (
+                    <Link
+                      key={project.id}
+                      href={(project.links?.[0]?.url || '/work') as any}
+                      style={{
+                        textDecoration: 'none',
+                        opacity: 0,
+                        animation: `fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) ${1.1 + index * 0.1}s both`,
+                      }}
+                    >
+                      <div
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.02)',
+                          backdropFilter: 'blur(30px) brightness(0.8)',
+                          WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
+                          border: `1px solid rgba(255, 255, 255, 0.06)`,
+                          borderRadius: '16px',
+                          padding: '1.25rem',
+                          transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                          cursor: 'pointer',
+                          height: '100%',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                          e.currentTarget.style.border = `1px solid ${accentColor}30`;
+                          e.currentTarget.style.transform = 'translateY(-4px)';
+                          e.currentTarget.style.boxShadow = `0 8px 32px ${accentColor}20`;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+                          e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.06)';
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = 'none';
+                        }}
+                      >
+                        {/* Project Icon/Badge */}
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginBottom: '0.875rem',
+                        }}>
+                          <div style={{
+                            padding: '0.375rem 0.75rem',
+                            borderRadius: '12px',
+                            background: `${accentColor}15`,
+                            border: `1px solid ${accentColor}30`,
+                            fontSize: '0.688rem',
+                            fontWeight: '400',
+                            color: 'var(--text-primary)',
+                            letterSpacing: '0.02em',
+                            textTransform: 'capitalize',
+                          }}>
+                            {project.category}
+                          </div>
+                          <div style={{
+                            width: '20px',
+                            height: '20px',
+                            borderRadius: '6px',
+                            background: 'rgba(255, 255, 255, 0.04)',
+                            border: '1px solid rgba(255, 255, 255, 0.08)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}>
+                            <ArrowRight size={12} style={{ color: 'var(--text-secondary)' }} />
+                          </div>
+                        </div>
+
+                        {/* Project Title */}
+                        <h4 style={{
+                          fontSize: '0.938rem',
+                          fontWeight: '400',
+                          color: 'var(--text-primary)',
+                          marginBottom: '0.5rem',
+                          letterSpacing: '0.01em',
+                          lineHeight: '1.3',
+                        }}>
+                          {project.title}
+                        </h4>
+
+                        {/* Project Description */}
+                        <p style={{
+                          fontSize: '0.75rem',
+                          fontWeight: '300',
+                          color: 'var(--text-tertiary)',
+                          lineHeight: '1.5',
+                          marginBottom: '0.875rem',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden',
+                        }}>
+                          {project.description}
+                        </p>
+
+                        {/* Project Tags */}
+                        <div style={{
+                          display: 'flex',
+                          gap: '0.375rem',
+                          flexWrap: 'wrap',
+                        }}>
+                          {project.tags.slice(0, 2).map((tag) => (
+                            <span
+                              key={tag.id}
+                              style={{
+                                padding: '0.25rem 0.5rem',
+                                borderRadius: '6px',
+                                background: 'rgba(255, 255, 255, 0.03)',
+                                border: '1px solid rgba(255, 255, 255, 0.06)',
+                                fontSize: '0.688rem',
+                                fontWeight: '300',
+                                color: 'var(--text-secondary)',
+                                letterSpacing: '0.01em',
+                              }}
+                            >
+                              {tag.label}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

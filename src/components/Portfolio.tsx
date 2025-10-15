@@ -21,7 +21,6 @@ export default function Portfolio() {
   const [chatOpen, setChatOpen] = useState(false);
   const [initialMessage, setInitialMessage] = useState('');
   const [intentContext, setIntentContext] = useState('');
-  const [isSnapping, setIsSnapping] = useState(false);
   const { theme, resolvedTheme, toggleTheme } = useTheme();
 
   // Stabilize particle positions with deterministic algorithm
@@ -82,25 +81,27 @@ export default function Portfolio() {
       setScrolled(scrollY > 20);
       setPastHero(scrollY > heroHeight * 0.8);
 
-      // Progressive reveal: starts at 200px, fully visible at 500px
-      const revealStart = 200;
-      const revealEnd = 500;
+      // Progressive reveal: starts at 100px, fully visible at 300px
+      const revealStart = 100;
+      const revealEnd = 300;
 
       if (scrollY < revealStart) {
-        setNavOpacity(0);
-        setNavTranslateY(-100);
+        setNavOpacity(0.4); // Minimum 40% visible
+        setNavTranslateY(-50); // Slightly hidden but still accessible
       } else if (scrollY >= revealStart && scrollY <= revealEnd) {
         const progress = (scrollY - revealStart) / (revealEnd - revealStart);
-        setNavOpacity(progress);
-        setNavTranslateY(-100 + (progress * 100));
+        setNavOpacity(0.4 + (progress * 0.6)); // 40% to 100%
+        setNavTranslateY(-50 + (progress * 50)); // -50px to 0
       } else {
         setNavOpacity(1);
         setNavTranslateY(0);
       }
 
-      // Scroll indicator fade-out: visible until 100px, then fades out
-      if (scrollY < 100) {
-        setScrollIndicatorOpacity(1 - (scrollY / 100));
+      // Scroll indicator fade-out: starts at 50px, complete at 150px
+      if (scrollY < 50) {
+        setScrollIndicatorOpacity(1);
+      } else if (scrollY >= 50 && scrollY <= 150) {
+        setScrollIndicatorOpacity(1 - ((scrollY - 50) / 100));
       } else {
         setScrollIndicatorOpacity(0);
       }
@@ -146,35 +147,14 @@ export default function Portfolio() {
       });
     };
 
-    const handleWheel = (e: WheelEvent) => {
-      const scrollY = window.scrollY;
-      const heroHeight = window.innerHeight;
-
-      // If we're in the hero section and scrolling down
-      if (scrollY < heroHeight * 0.5 && e.deltaY > 0 && !isSnapping) {
-        e.preventDefault();
-        setIsSnapping(true);
-
-        // Scroll to just after hero, with offset for header
-        window.scrollTo({
-          top: heroHeight - 80,
-          behavior: 'smooth'
-        });
-
-        setTimeout(() => setIsSnapping(false), 1000);
-      }
-    };
-
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('wheel', handleWheel, { passive: false });
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('wheel', handleWheel);
     };
-  }, [isSnapping]);
+  }, []);
 
   const navItems = [
     { name: 'Work', icon: Briefcase, href: '/work' as const },
@@ -552,7 +532,7 @@ export default function Portfolio() {
           height: scrolled ? '54px' : '60px',
           opacity: navOpacity,
           transform: `translateY(${navTranslateY}%)`,
-          pointerEvents: navOpacity > 0.1 ? 'auto' : 'none',
+          pointerEvents: 'auto', // Always clickable
           transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
         }}>
           {/* Multi-layer glass effect */}
