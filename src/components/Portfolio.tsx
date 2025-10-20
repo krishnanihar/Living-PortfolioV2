@@ -4,13 +4,11 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Briefcase, User, Moon, Sun, Palette, HelpCircle, ChevronDown, Beaker } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
-import { ConversationStarter } from '@/components/ConversationStarter';
-import { Chatbot } from '@/components/Chatbot';
+import { HeroCard } from '@/components/HeroCard';
 
 export default function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
-  const [pastHero, setPastHero] = useState(false);
   const [navOpacity, setNavOpacity] = useState(0);
   const [navTranslateY, setNavTranslateY] = useState(-100);
   const [scrollIndicatorOpacity, setScrollIndicatorOpacity] = useState(0);
@@ -18,9 +16,6 @@ export default function Portfolio() {
   const [heroCardScale, setHeroCardScale] = useState(1);
   const [heroCardBlur, setHeroCardBlur] = useState(0);
   const [particlesOpacity, setParticlesOpacity] = useState(1);
-  const [chatOpen, setChatOpen] = useState(false);
-  const [initialMessage, setInitialMessage] = useState('');
-  const [intentContext, setIntentContext] = useState('');
   const { theme, resolvedTheme, toggleTheme } = useTheme();
 
   // Stabilize particle positions with deterministic algorithm
@@ -76,10 +71,7 @@ export default function Portfolio() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const heroHeight = window.innerHeight;
-
       setScrolled(scrollY > 20);
-      setPastHero(scrollY > heroHeight * 0.8);
 
       // Progressive reveal: starts at 100px, fully visible at 300px
       const revealStart = 100;
@@ -161,42 +153,6 @@ export default function Portfolio() {
     { name: 'Labs', icon: Beaker, href: '/labs' as const },
     { name: 'About', icon: User, href: '/about' as const },
   ];
-
-  const credentials = [
-    {
-      name: 'Air India DesignLAB',
-      role: 'Product Designer',
-      period: '2023 - Present',
-      metric: '450+ daily users',
-      color: '#DA0E29'
-    },
-    {
-      name: 'National Institute of Design',
-      role: 'Design Education',
-      period: '2019 - 2023',
-      metric: 'Bachelor of Design',
-      color: '#3B82F6'
-    },
-    {
-      name: 'Indian School of Business',
-      role: 'YLP Fellow',
-      period: '2023',
-      metric: 'Leadership Program',
-      color: '#10B981'
-    },
-    {
-      name: 'Microsoft',
-      role: 'Design Systems',
-      period: '2022',
-      metric: 'Collaboration',
-      color: '#8B5CF6'
-    }
-  ];
-
-  const [hoveredCredential, setHoveredCredential] = useState<number | null>(null);
-
-
-
 
   return (
     <>
@@ -599,9 +555,7 @@ export default function Portfolio() {
               gap: '2rem',
             }}>
               {/* Navigation Items */}
-              {navItems.map((item) => {
-                const Icon = item.icon;
-                return (
+              {navItems.map((item) => (
                   <Link key={item.href} href={item.href} style={{ textDecoration: 'none' }}>
                     <div style={{
                       padding: '0.5rem 1.25rem',
@@ -615,8 +569,7 @@ export default function Portfolio() {
                       {item.name}
                     </div>
                   </Link>
-                );
-              })}
+              ))}
 
               <div style={{
                 width: '1px',
@@ -730,14 +683,8 @@ export default function Portfolio() {
               boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
             }} />
 
-            {/* Conversation Starter */}
-            <ConversationStarter
-              onMessageSubmit={(message, intent) => {
-                setInitialMessage(message);
-                setIntentContext(intent);
-                setChatOpen(true);
-              }}
-            />
+            {/* Hero Card */}
+            <HeroCard />
 
             {/* Scroll to Explore Indicator */}
             <div
@@ -799,17 +746,6 @@ export default function Portfolio() {
             </div>
           </div>
         </section>
-
-        {/* AI Chatbot */}
-        <Chatbot
-          isOpen={chatOpen}
-          onClose={() => {
-            setChatOpen(false);
-            setInitialMessage('');
-          }}
-          initialMessage={initialMessage}
-          intentContext={intentContext}
-        />
 
       </div>
     </>
