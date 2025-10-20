@@ -78,12 +78,12 @@ export default function Portfolio() {
       const revealEnd = 300;
 
       if (scrollY < revealStart) {
-        setNavOpacity(0.4); // Minimum 40% visible
-        setNavTranslateY(-50); // Slightly hidden but still accessible
+        setNavOpacity(0.7); // Minimum 70% visible (improved discoverability)
+        setNavTranslateY(-30); // Slightly hidden but clearly visible
       } else if (scrollY >= revealStart && scrollY <= revealEnd) {
         const progress = (scrollY - revealStart) / (revealEnd - revealStart);
-        setNavOpacity(0.4 + (progress * 0.6)); // 40% to 100%
-        setNavTranslateY(-50 + (progress * 50)); // -50px to 0
+        setNavOpacity(0.7 + (progress * 0.3)); // 70% to 100%
+        setNavTranslateY(-30 + (progress * 30)); // -30px to 0
       } else {
         setNavOpacity(1);
         setNavTranslateY(0);
@@ -726,15 +726,22 @@ export default function Portfolio() {
                 (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
               }}
             >
-              <span style={{
-                fontSize: '0.75rem',
-                fontWeight: '400',
-                letterSpacing: '0.1em',
-                color: 'var(--text-secondary)',
-                textTransform: 'uppercase',
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
               }}>
-                Scroll to explore
-              </span>
+                <Briefcase size={14} style={{ color: 'var(--text-secondary)', opacity: 0.7 }} />
+                <span style={{
+                  fontSize: '0.75rem',
+                  fontWeight: '400',
+                  letterSpacing: '0.1em',
+                  color: 'var(--text-secondary)',
+                  textTransform: 'uppercase',
+                }}>
+                  Scroll to explore work
+                </span>
+              </div>
               <div style={{
                 display: 'flex',
                 alignItems: 'center',

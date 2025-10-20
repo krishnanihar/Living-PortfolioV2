@@ -141,6 +141,25 @@ export function HeroCard() {
           </p>
         </div>
 
+        {/* Impact Statement */}
+        <div style={{
+          textAlign: 'center',
+          marginBottom: 'clamp(1rem, 2vw, 1.25rem)',
+          opacity: mounted ? 1 : 0,
+          transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+          transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.35s',
+        }}>
+          <p style={{
+            fontSize: 'clamp(0.9375rem, 1.75vw, 1.0625rem)',
+            fontWeight: '400',
+            color: 'rgba(255, 255, 255, 0.85)',
+            letterSpacing: '0.01em',
+            lineHeight: '1.5',
+          }}>
+            Designing systems that <span style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: '500' }}>millions interact with daily</span> — from 30,000ft to healthcare
+          </p>
+        </div>
+
         {/* Current Role Badge with Pulsing Dot */}
         <div style={{
           display: 'flex',
@@ -189,9 +208,9 @@ export function HeroCard() {
           transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s',
         }}>
           {[
-            { label: '5000 lines · 48 hours', tooltip: '2 hackathons won' },
-            { label: '18 months · Research', tooltip: 'PsoriAssist design' },
-            { label: '450+ users · Daily impact', tooltip: 'Air India systems' },
+            { label: '10K+ daily users', tooltip: 'Air India mobile app + IFE systems' },
+            { label: '18-month research deep dive', tooltip: 'PsoriAssist healthcare design' },
+            { label: '2 hackathons won simultaneously', tooltip: '5000 LOC in 48 hours' },
           ].map((stat, idx) => (
             <div
               key={idx}
@@ -266,81 +285,47 @@ export function HeroCard() {
           transform: mounted ? 'translateY(0)' : 'translateY(30px)',
           transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s',
         }}>
-          {/* Primary: PsoriAssist Case Study */}
+          {/* Primary: Featured Work */}
           <Link
             href="/work/psoriassist"
-            onMouseEnter={() => setHoveredButton('psoriassist')}
+            onMouseEnter={() => setHoveredButton('featured')}
             onMouseLeave={() => setHoveredButton(null)}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.5rem',
-              padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.25rem, 2.5vw, 1.5rem)',
-              background: hoveredButton === 'psoriassist'
-                ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(255, 255, 255, 0.08))'
-                : 'linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(255, 255, 255, 0.05))',
-              border: hoveredButton === 'psoriassist'
-                ? '1px solid rgba(16, 185, 129, 0.5)'
-                : '1px solid rgba(16, 185, 129, 0.3)',
-              borderRadius: '16px',
-              color: 'rgba(255, 255, 255, 0.95)',
+              gap: '0.625rem',
+              padding: 'clamp(0.875rem, 1.75vw, 1rem) clamp(1.5rem, 3vw, 2rem)',
+              background: hoveredButton === 'featured'
+                ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(255, 255, 255, 0.1))'
+                : 'linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(255, 255, 255, 0.06))',
+              border: hoveredButton === 'featured'
+                ? '1px solid rgba(16, 185, 129, 0.6)'
+                : '1px solid rgba(16, 185, 129, 0.35)',
+              borderRadius: '18px',
+              color: 'rgba(255, 255, 255, 0.98)',
               textDecoration: 'none',
-              fontSize: '0.9375rem',
-              fontWeight: '400',
+              fontSize: 'clamp(0.9375rem, 1.75vw, 1rem)',
+              fontWeight: '500',
               transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-              transform: hoveredButton === 'psoriassist' ? 'translateY(-2px)' : 'translateY(0)',
-              boxShadow: hoveredButton === 'psoriassist'
-                ? '0 12px 32px rgba(16, 185, 129, 0.2)'
-                : 'none',
+              transform: hoveredButton === 'featured' ? 'translateY(-3px) scale(1.02)' : 'translateY(0) scale(1)',
+              boxShadow: hoveredButton === 'featured'
+                ? '0 16px 40px rgba(16, 185, 129, 0.25), 0 0 0 1px rgba(16, 185, 129, 0.1) inset'
+                : '0 4px 12px rgba(0, 0, 0, 0.1)',
               position: 'relative',
             }}
           >
-            <span>View PsoriAssist Case Study</span>
+            <span>View Featured Work</span>
             <div style={{
-              padding: '0.125rem 0.5rem',
-              background: 'rgba(16, 185, 129, 0.2)',
-              borderRadius: '8px',
-              fontSize: '0.7rem',
-              fontWeight: '500',
+              padding: '0.25rem 0.625rem',
+              background: 'rgba(16, 185, 129, 0.25)',
+              borderRadius: '10px',
+              fontSize: '0.75rem',
+              fontWeight: '600',
               color: 'rgba(16, 185, 129, 1)',
               letterSpacing: '0.02em',
             }}>
-              18-Month Research
+              18 Months
             </div>
-          </Link>
-
-          {/* Secondary: GitHub */}
-          <Link
-            href="https://github.com/krishn404"
-            target="_blank"
-            rel="noopener noreferrer"
-            onMouseEnter={() => setHoveredButton('github')}
-            onMouseLeave={() => setHoveredButton(null)}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.25rem, 2.5vw, 1.5rem)',
-              background: hoveredButton === 'github'
-                ? 'rgba(255, 255, 255, 0.08)'
-                : 'rgba(255, 255, 255, 0.04)',
-              border: hoveredButton === 'github'
-                ? '1px solid rgba(255, 255, 255, 0.15)'
-                : '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '16px',
-              color: 'rgba(255, 255, 255, 0.8)',
-              textDecoration: 'none',
-              fontSize: '0.9375rem',
-              fontWeight: '400',
-              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-              transform: hoveredButton === 'github' ? 'translateY(-2px)' : 'translateY(0)',
-              boxShadow: hoveredButton === 'github'
-                ? '0 8px 24px rgba(0, 0, 0, 0.2)'
-                : 'none',
-            }}
-          >
-            <Github size={16} />
-            <span>GitHub Projects</span>
           </Link>
 
           {/* Secondary: Contact */}
@@ -360,9 +345,9 @@ export function HeroCard() {
                 ? '1px solid rgba(255, 255, 255, 0.15)'
                 : '1px solid rgba(255, 255, 255, 0.1)',
               borderRadius: '16px',
-              color: 'rgba(255, 255, 255, 0.8)',
+              color: 'rgba(255, 255, 255, 0.85)',
               textDecoration: 'none',
-              fontSize: '0.9375rem',
+              fontSize: '0.875rem',
               fontWeight: '400',
               transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
               transform: hoveredButton === 'contact' ? 'translateY(-2px)' : 'translateY(0)',
@@ -373,6 +358,40 @@ export function HeroCard() {
           >
             <Mail size={16} />
             <span>Get in Touch</span>
+          </Link>
+
+          {/* Tertiary: GitHub Link */}
+          <Link
+            href="https://github.com/krishn404"
+            target="_blank"
+            rel="noopener noreferrer"
+            onMouseEnter={() => setHoveredButton('github')}
+            onMouseLeave={() => setHoveredButton(null)}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.25rem, 2.5vw, 1.5rem)',
+              background: hoveredButton === 'github'
+                ? 'rgba(255, 255, 255, 0.06)'
+                : 'rgba(255, 255, 255, 0.03)',
+              border: hoveredButton === 'github'
+                ? '1px solid rgba(255, 255, 255, 0.12)'
+                : '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: '16px',
+              color: 'rgba(255, 255, 255, 0.7)',
+              textDecoration: 'none',
+              fontSize: '0.875rem',
+              fontWeight: '400',
+              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              transform: hoveredButton === 'github' ? 'translateY(-2px)' : 'translateY(0)',
+              boxShadow: hoveredButton === 'github'
+                ? '0 6px 20px rgba(0, 0, 0, 0.15)'
+                : 'none',
+            }}
+          >
+            <Github size={15} />
+            <span>GitHub</span>
           </Link>
         </div>
 
@@ -393,7 +412,7 @@ export function HeroCard() {
           transform: mounted ? 'translateY(0)' : 'translateY(30px)',
           transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s',
         }}>
-          <span style={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: '400' }}>INTP</span> building at the intersection of <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>healthcare × AI × consciousness</span>. 18-month deep dive into digital therapeutics culminating in <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>PsoriAssist</span>. Built <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>5000 lines in 48 hours</span> while winning <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>2 hackathons simultaneously</span>. Currently transforming enterprise systems at <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Air India</span> while plotting escape to <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Thailand + remote $100k roles</span>.
+          <span style={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: '400' }}>INTP</span> building at the intersection of <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>healthcare × AI × consciousness</span>. 18-month deep dive into digital therapeutics culminating in <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>PsoriAssist</span>. Built <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>5000 lines in 48 hours</span> while winning <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>2 hackathons simultaneously</span>. Currently transforming enterprise systems at <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Air India</span> (10K+ daily users) while exploring the future of <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>human-computer symbiosis</span>.
         </div>
       </div>
     </>
