@@ -1,168 +1,401 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Mail } from 'lucide-react';
+import { Github, Mail } from 'lucide-react';
 
 export function HeroCard() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
+  const [hoveredStat, setHoveredStat] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
-    <div style={{ position: 'relative', zIndex: 1 }}>
-      {/* Name & Title */}
-      <div style={{
-        textAlign: 'center',
-        marginBottom: 'clamp(1.75rem, 3vw, 2.5rem)',
-      }}>
-        <h1 style={{
-          fontSize: 'clamp(2.25rem, 4.5vw, 3.5rem)',
-          fontWeight: '200',
-          color: 'var(--text-primary)',
-          marginBottom: '0.625rem',
-          lineHeight: '1.1',
-          letterSpacing: '-0.03em',
-          opacity: 0,
-          animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both',
-        }}>
-          Nihar Sunkara
-        </h1>
+    <>
+      <style jsx>{`
+        @keyframes gradientOrb {
+          0%, 100% {
+            transform: translate(0, 0) scale(1);
+            opacity: 0.15;
+          }
+          33% {
+            transform: translate(30px, -30px) scale(1.1);
+            opacity: 0.2;
+          }
+          66% {
+            transform: translate(-30px, 30px) scale(0.9);
+            opacity: 0.15;
+          }
+        }
 
-        <p style={{
-          fontSize: 'clamp(0.9375rem, 1.5vw, 1rem)',
-          fontWeight: '300',
-          color: 'var(--text-secondary)',
-          letterSpacing: '0.02em',
-          opacity: 0,
-          animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both',
-        }}>
-          Product & New Media Designer
-        </p>
-      </div>
+        @keyframes pulseRed {
+          0%, 100% {
+            box-shadow: 0 0 8px rgba(218, 14, 41, 0.4);
+            opacity: 1;
+          }
+          50% {
+            box-shadow: 0 0 16px rgba(218, 14, 41, 0.8);
+            opacity: 0.8;
+          }
+        }
+      `}</style>
 
-      {/* Main Statement */}
-      <p style={{
-        fontSize: 'clamp(1.0625rem, 2.25vw, 1.375rem)',
-        fontWeight: '300',
-        color: 'var(--text-primary)',
-        textAlign: 'center',
-        lineHeight: '1.6',
-        maxWidth: 'clamp(520px, 90%, 580px)',
-        margin: '0 auto clamp(1.5rem, 2.5vw, 2rem)',
-        letterSpacing: '-0.01em',
-        opacity: 0,
-        animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both',
-      }}>
-        Building living interfaces that breathe, remember, and evolve
-      </p>
-
-      {/* Current Role Badge */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        marginBottom: 'clamp(1.75rem, 3vw, 2.5rem)',
-        opacity: 0,
-        animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both',
-      }}>
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        {/* Animated Gradient Orbs Background */}
         <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          padding: '0.625rem 1.25rem',
-          background: 'var(--surface-primary)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          border: '1px solid var(--border-primary)',
-          borderRadius: '20px',
-          fontSize: '0.875rem',
-          fontWeight: '300',
-          color: 'var(--text-secondary)',
-          letterSpacing: '0.01em',
+          position: 'absolute',
+          inset: '-100px',
+          overflow: 'hidden',
+          pointerEvents: 'none',
+          zIndex: -1,
+          opacity: mounted ? 1 : 0,
+          transition: 'opacity 1s ease-out',
+        }}>
+          {/* Red Orb */}
+          <div style={{
+            position: 'absolute',
+            top: '20%',
+            left: '10%',
+            width: '300px',
+            height: '300px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(218, 14, 41, 0.15) 0%, transparent 70%)',
+            filter: 'blur(60px)',
+            animation: 'gradientOrb 20s ease-in-out infinite',
+          }} />
+          {/* Purple Orb */}
+          <div style={{
+            position: 'absolute',
+            top: '60%',
+            right: '15%',
+            width: '250px',
+            height: '250px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(147, 51, 234, 0.12) 0%, transparent 70%)',
+            filter: 'blur(70px)',
+            animation: 'gradientOrb 25s ease-in-out infinite',
+            animationDelay: '5s',
+          }} />
+          {/* Green Orb */}
+          <div style={{
+            position: 'absolute',
+            bottom: '10%',
+            left: '50%',
+            width: '280px',
+            height: '280px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%)',
+            filter: 'blur(65px)',
+            animation: 'gradientOrb 22s ease-in-out infinite',
+            animationDelay: '10s',
+          }} />
+        </div>
+
+        {/* Name */}
+        <div style={{
+          textAlign: 'center',
+          marginBottom: 'clamp(1rem, 2vw, 1.5rem)',
+        }}>
+          <h1 style={{
+            fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+            fontWeight: '200',
+            color: 'rgba(255, 255, 255, 0.95)',
+            marginBottom: '0.625rem',
+            lineHeight: '1.1',
+            letterSpacing: '-0.04em',
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+            transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
+          }}>
+            Nihar Sunkara
+          </h1>
+
+          {/* Tagline with Red × */}
+          <p style={{
+            fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+            fontWeight: '300',
+            color: 'rgba(255, 255, 255, 0.8)',
+            letterSpacing: '0.01em',
+            marginBottom: '0.5rem',
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+            transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
+          }}>
+            Designer <span style={{ color: '#DA0E29', fontWeight: '400' }}>×</span> Engineer <span style={{ color: '#DA0E29', fontWeight: '400' }}>×</span> Consciousness Explorer
+          </p>
+
+          {/* Subtitle */}
+          <p style={{
+            fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
+            fontWeight: '400',
+            color: 'rgba(255, 255, 255, 0.6)',
+            letterSpacing: '0.02em',
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+            transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s',
+          }}>
+            From ego death simulators to enterprise systems
+          </p>
+        </div>
+
+        {/* Current Role Badge with Pulsing Dot */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginBottom: 'clamp(1.5rem, 2.5vw, 2rem)',
+          opacity: mounted ? 1 : 0,
+          transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+          transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s',
         }}>
           <div style={{
-            width: '6px',
-            height: '6px',
-            borderRadius: '50%',
-            background: 'rgba(218, 14, 41, 0.8)',
-            boxShadow: '0 0 8px rgba(218, 14, 41, 0.4)',
-          }} />
-          Air India DesignLAB • 450+ daily users
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            padding: '0.625rem 1.25rem',
+            background: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: '20px',
+            fontSize: '0.875rem',
+            fontWeight: '400',
+            color: 'rgba(255, 255, 255, 0.8)',
+            letterSpacing: '0.01em',
+          }}>
+            <div style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: 'rgba(218, 14, 41, 0.9)',
+              animation: 'pulseRed 2s ease-in-out infinite',
+            }} />
+            Air India DesignLAB • Transforming 450+ daily operations
+          </div>
+        </div>
+
+        {/* Credibility Stats Section */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 'clamp(0.75rem, 2vw, 1rem)',
+          flexWrap: 'wrap',
+          marginBottom: 'clamp(1.5rem, 2.5vw, 2rem)',
+          opacity: mounted ? 1 : 0,
+          transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+          transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s',
+        }}>
+          {[
+            { label: '5000 lines · 48 hours', tooltip: '2 hackathons won' },
+            { label: '18 months · Research', tooltip: 'PsoriAssist design' },
+            { label: '450+ users · Daily impact', tooltip: 'Air India systems' },
+          ].map((stat, idx) => (
+            <div
+              key={idx}
+              onMouseEnter={() => setHoveredStat(idx)}
+              onMouseLeave={() => setHoveredStat(null)}
+              style={{
+                position: 'relative',
+                padding: '0.625rem 1rem',
+                background: hoveredStat === idx
+                  ? 'rgba(255, 255, 255, 0.08)'
+                  : 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '12px',
+                fontSize: '0.8125rem',
+                fontWeight: '400',
+                color: 'rgba(255, 255, 255, 0.75)',
+                cursor: 'pointer',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                transform: hoveredStat === idx ? 'translateY(-2px)' : 'translateY(0)',
+                boxShadow: hoveredStat === idx
+                  ? '0 8px 24px rgba(0, 0, 0, 0.15)'
+                  : 'none',
+              }}
+            >
+              {stat.label}
+              {hoveredStat === idx && (
+                <div style={{
+                  position: 'absolute',
+                  bottom: 'calc(100% + 8px)',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  padding: '0.5rem 0.75rem',
+                  background: 'rgba(10, 10, 10, 0.95)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  borderRadius: '8px',
+                  fontSize: '0.75rem',
+                  fontWeight: '400',
+                  color: 'rgba(255, 255, 255, 0.9)',
+                  whiteSpace: 'nowrap',
+                  pointerEvents: 'none',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                  zIndex: 10,
+                }}>
+                  {stat.tooltip}
+                  <div style={{
+                    position: 'absolute',
+                    top: '100%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: 0,
+                    height: 0,
+                    borderLeft: '6px solid transparent',
+                    borderRight: '6px solid transparent',
+                    borderTop: '6px solid rgba(10, 10, 10, 0.95)',
+                  }} />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* CTA Buttons */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 'clamp(0.75rem, 1.5vw, 1rem)',
+          flexWrap: 'wrap',
+          marginBottom: 'clamp(1.5rem, 2.5vw, 2rem)',
+          opacity: mounted ? 1 : 0,
+          transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+          transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s',
+        }}>
+          {/* Primary: PsoriAssist Case Study */}
+          <Link
+            href="/work/psoriassist"
+            onMouseEnter={() => setHoveredButton('psoriassist')}
+            onMouseLeave={() => setHoveredButton(null)}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.25rem, 2.5vw, 1.5rem)',
+              background: hoveredButton === 'psoriassist'
+                ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(255, 255, 255, 0.08))'
+                : 'linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(255, 255, 255, 0.05))',
+              border: hoveredButton === 'psoriassist'
+                ? '1px solid rgba(16, 185, 129, 0.5)'
+                : '1px solid rgba(16, 185, 129, 0.3)',
+              borderRadius: '16px',
+              color: 'rgba(255, 255, 255, 0.95)',
+              textDecoration: 'none',
+              fontSize: '0.9375rem',
+              fontWeight: '400',
+              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              transform: hoveredButton === 'psoriassist' ? 'translateY(-2px)' : 'translateY(0)',
+              boxShadow: hoveredButton === 'psoriassist'
+                ? '0 12px 32px rgba(16, 185, 129, 0.2)'
+                : 'none',
+              position: 'relative',
+            }}
+          >
+            <span>View PsoriAssist Case Study</span>
+            <div style={{
+              padding: '0.125rem 0.5rem',
+              background: 'rgba(16, 185, 129, 0.2)',
+              borderRadius: '8px',
+              fontSize: '0.7rem',
+              fontWeight: '500',
+              color: 'rgba(16, 185, 129, 1)',
+              letterSpacing: '0.02em',
+            }}>
+              18-Month Research
+            </div>
+          </Link>
+
+          {/* Secondary: GitHub */}
+          <Link
+            href="https://github.com/krishn404"
+            target="_blank"
+            rel="noopener noreferrer"
+            onMouseEnter={() => setHoveredButton('github')}
+            onMouseLeave={() => setHoveredButton(null)}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.25rem, 2.5vw, 1.5rem)',
+              background: hoveredButton === 'github'
+                ? 'rgba(255, 255, 255, 0.08)'
+                : 'rgba(255, 255, 255, 0.04)',
+              border: hoveredButton === 'github'
+                ? '1px solid rgba(255, 255, 255, 0.15)'
+                : '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '16px',
+              color: 'rgba(255, 255, 255, 0.8)',
+              textDecoration: 'none',
+              fontSize: '0.9375rem',
+              fontWeight: '400',
+              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              transform: hoveredButton === 'github' ? 'translateY(-2px)' : 'translateY(0)',
+              boxShadow: hoveredButton === 'github'
+                ? '0 8px 24px rgba(0, 0, 0, 0.2)'
+                : 'none',
+            }}
+          >
+            <Github size={16} />
+            <span>GitHub Projects</span>
+          </Link>
+
+          {/* Secondary: Contact */}
+          <Link
+            href="/contact"
+            onMouseEnter={() => setHoveredButton('contact')}
+            onMouseLeave={() => setHoveredButton(null)}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.25rem, 2.5vw, 1.5rem)',
+              background: hoveredButton === 'contact'
+                ? 'rgba(255, 255, 255, 0.08)'
+                : 'rgba(255, 255, 255, 0.04)',
+              border: hoveredButton === 'contact'
+                ? '1px solid rgba(255, 255, 255, 0.15)'
+                : '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '16px',
+              color: 'rgba(255, 255, 255, 0.8)',
+              textDecoration: 'none',
+              fontSize: '0.9375rem',
+              fontWeight: '400',
+              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              transform: hoveredButton === 'contact' ? 'translateY(-2px)' : 'translateY(0)',
+              boxShadow: hoveredButton === 'contact'
+                ? '0 8px 24px rgba(0, 0, 0, 0.2)'
+                : 'none',
+            }}
+          >
+            <Mail size={16} />
+            <span>Get in Touch</span>
+          </Link>
+        </div>
+
+        {/* Bio Card */}
+        <div style={{
+          padding: 'clamp(1rem, 2vw, 1.25rem)',
+          background: 'rgba(255, 255, 255, 0.03)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          borderRadius: '16px',
+          fontSize: 'clamp(0.8125rem, 1.5vw, 0.9375rem)',
+          fontWeight: '300',
+          color: 'rgba(255, 255, 255, 0.7)',
+          lineHeight: '1.6',
+          textAlign: 'center',
+          opacity: mounted ? 1 : 0,
+          transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+          transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s',
+        }}>
+          <span style={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: '400' }}>INTP</span> building at the intersection of <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>healthcare × AI × consciousness</span>. 18-month deep dive into digital therapeutics culminating in <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>PsoriAssist</span>. Built <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>5000 lines in 48 hours</span> while winning <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>2 hackathons simultaneously</span>. Currently transforming enterprise systems at <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Air India</span> while plotting escape to <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Thailand + remote $100k roles</span>.
         </div>
       </div>
-
-      {/* CTA Buttons */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 'clamp(0.75rem, 1.5vw, 1rem)',
-        flexWrap: 'wrap',
-        opacity: 0,
-        animation: 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both',
-      }}>
-        {/* Primary: View Work */}
-        <Link
-          href="/work"
-          onMouseEnter={() => setHoveredButton('work')}
-          onMouseLeave={() => setHoveredButton(null)}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.5rem, 2.5vw, 1.75rem)',
-            background: hoveredButton === 'work'
-              ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(255, 255, 255, 0.08))'
-              : 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))',
-            border: hoveredButton === 'work'
-              ? '1px solid rgba(218, 14, 41, 0.5)'
-              : '1px solid rgba(218, 14, 41, 0.3)',
-            borderRadius: '16px',
-            color: 'var(--text-primary)',
-            textDecoration: 'none',
-            fontSize: '0.9375rem',
-            fontWeight: '400',
-            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-            transform: hoveredButton === 'work' ? 'translateY(-2px)' : 'translateY(0)',
-            boxShadow: hoveredButton === 'work'
-              ? '0 12px 32px rgba(218, 14, 41, 0.2)'
-              : 'none',
-          }}
-        >
-          <span>View Work</span>
-          <ArrowRight size={16} />
-        </Link>
-
-        {/* Secondary: Contact */}
-        <Link
-          href="/contact"
-          onMouseEnter={() => setHoveredButton('contact')}
-          onMouseLeave={() => setHoveredButton(null)}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.5rem, 2.5vw, 1.75rem)',
-            background: hoveredButton === 'contact'
-              ? 'var(--surface-secondary)'
-              : 'var(--surface-primary)',
-            border: hoveredButton === 'contact'
-              ? '1px solid var(--border-secondary)'
-              : '1px solid var(--border-primary)',
-            borderRadius: '16px',
-            color: 'var(--text-secondary)',
-            textDecoration: 'none',
-            fontSize: '0.9375rem',
-            fontWeight: '400',
-            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-            transform: hoveredButton === 'contact' ? 'translateY(-2px)' : 'translateY(0)',
-            boxShadow: hoveredButton === 'contact'
-              ? '0 8px 24px rgba(0, 0, 0, 0.2)'
-              : 'none',
-          }}
-        >
-          <Mail size={16} />
-          <span>Get in Touch</span>
-        </Link>
-      </div>
-    </div>
+    </>
   );
 }
