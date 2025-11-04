@@ -320,13 +320,14 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
               width: '32px',
               height: '32px',
               borderRadius: '50%',
-              background: 'var(--surface-primary)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid var(--border-primary)',
+              background: 'rgba(255, 255, 255, 0.03)',
+              backdropFilter: 'blur(100px) saturate(150%)',
+              WebkitBackdropFilter: 'blur(100px) saturate(150%)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              boxShadow: '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
             }}>
               <div style={{
                 width: '4px',
@@ -345,15 +346,16 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
             </h2>
             <div style={{
               padding: '0.375rem 0.875rem',
-              borderRadius: '12px',
-              background: 'var(--surface-primary)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid var(--border-primary)',
+              borderRadius: '15px',
+              background: 'rgba(255, 255, 255, 0.04)',
+              backdropFilter: 'blur(100px) saturate(150%)',
+              WebkitBackdropFilter: 'blur(100px) saturate(150%)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
               fontSize: '0.75rem',
               fontWeight: '300',
               color: 'var(--text-secondary)',
               letterSpacing: '0.02em',
+              boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
             }}>
               {projects.length} Projects · {activeProjectsCount} Active
             </div>
@@ -415,7 +417,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                 onClick={(e) => handleCardClick(e, cardRefs.current[project.id])}
                 style={{
                   position: 'relative',
-                  borderRadius: '24px',
+                  borderRadius: '20px',
                   overflow: 'hidden',
                   animation: getRevealAnimation(),
                   transform: isHovered
@@ -448,8 +450,8 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                 <div style={{
                   position: 'absolute',
                   inset: 0,
-                  borderRadius: '24px',
-                  border: isHovered ? '1px solid transparent' : '1px solid var(--border-primary)',
+                  borderRadius: '20px',
+                  border: isHovered ? '1px solid transparent' : '1px solid rgba(255, 255, 255, 0.09)',
                   animation: isHovered ? 'borderShimmer 2s ease-in-out infinite' : 'none',
                   pointerEvents: 'none',
                   zIndex: 10,
@@ -580,15 +582,16 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     top: '1rem',
                     right: '1rem',
                     padding: '0.375rem 0.75rem',
-                    borderRadius: '16px',
-                    background: 'rgba(0, 0, 0, 0.4)',
-                    backdropFilter: 'blur(20px)',
-                    WebkitBackdropFilter: 'blur(20px)',
+                    borderRadius: '10px',
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    backdropFilter: 'blur(100px) saturate(150%)',
+                    WebkitBackdropFilter: 'blur(100px) saturate(150%)',
                     border: `1px solid ${getStatusColor()}`,
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.5rem',
                     transition: 'all 0.3s ease',
+                    boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
                   }}>
                     <div style={{
                       width: '6px',
@@ -614,18 +617,16 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                   position: 'absolute',
                   inset: 0,
                   top: '180px',
-                  background: isHovered
-                    ? 'linear-gradient(135deg, var(--surface-secondary) 0%, var(--surface-primary) 100%)'
-                    : 'linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
-                  backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
-                  WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
-                  border: '1px solid var(--border-primary)',
+                  background: 'rgba(137, 137, 137, 0.05)',
+                  backdropFilter: 'blur(75px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(75px) saturate(180%)',
+                  border: isHovered ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(255, 255, 255, 0.09)',
                   borderTop: 'none',
-                  borderRadius: '0 0 24px 24px',
+                  borderRadius: '0 0 20px 20px',
                   transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                   boxShadow: isHovered
-                    ? 'inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 10px 20px rgba(0, 0, 0, 0.3)'
-                    : 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
+                    ? '0px 16px 48px rgba(0, 0, 0, 0.5), 0px 0px 16px rgba(255, 255, 255, 0.04) inset'
+                    : '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
                 }} />
 
                 {/* Very light translucent overlay */}
@@ -682,16 +683,17 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                       width: '32px',
                       height: '32px',
                       borderRadius: '10px',
-                      background: 'var(--surface-primary)',
-                      backdropFilter: 'blur(20px)',
-                      WebkitBackdropFilter: 'blur(20px)',
-                      border: '1px solid var(--border-primary)',
+                      background: 'rgba(255, 255, 255, 0.03)',
+                      backdropFilter: 'blur(100px) saturate(150%)',
+                      WebkitBackdropFilter: 'blur(100px) saturate(150%)',
+                      border: '1px solid rgba(255, 255, 255, 0.08)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                       transform: isHovered ? 'rotate(45deg) scale(1.1)' : 'rotate(0) scale(1)',
                       animation: isHovered ? 'workFloat 3s ease-in-out infinite' : 'none',
+                      boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.3), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
                     }}>
                       <ArrowUpRight size={14} style={{
                         color: 'var(--text-secondary)',
@@ -777,10 +779,10 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                           style={{
                             padding: '0.25rem 0.625rem',
                             borderRadius: '8px',
-                            background: 'var(--surface-primary)',
-                            backdropFilter: 'blur(20px)',
-                            WebkitBackdropFilter: 'blur(20px)',
-                            border: '1px solid var(--border-primary)',
+                            background: 'rgba(255, 255, 255, 0.04)',
+                            backdropFilter: 'blur(60px) saturate(130%)',
+                            WebkitBackdropFilter: 'blur(60px) saturate(130%)',
+                            border: '1px solid rgba(255, 255, 255, 0.08)',
                             fontSize: '0.688rem',
                             fontWeight: '300',
                             color: 'var(--text-secondary)',

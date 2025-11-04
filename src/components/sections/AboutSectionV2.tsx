@@ -55,13 +55,13 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               height: '40px',
               borderRadius: '50%',
               background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(218, 14, 41, 0.08))',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
+              backdropFilter: 'blur(100px) saturate(150%)',
+              WebkitBackdropFilter: 'blur(100px) saturate(150%)',
               border: '1px solid rgba(251, 191, 36, 0.25)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 2px 8px rgba(251, 191, 36, 0.15)',
+              boxShadow: '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
             }}
           >
             <div
@@ -89,15 +89,16 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           <div
             style={{
               padding: '0.5rem 1rem',
-              borderRadius: '16px',
+              borderRadius: '15px',
               background: 'rgba(255, 255, 255, 0.04)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
+              backdropFilter: 'blur(100px) saturate(150%)',
+              WebkitBackdropFilter: 'blur(100px) saturate(150%)',
               border: '1px solid rgba(251, 191, 36, 0.2)',
               fontSize: '0.75rem',
               fontWeight: '300',
               color: 'var(--text-secondary)',
               letterSpacing: '0.02em',
+              boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
             }}
           >
             Designer · Hyderabad → San Francisco
@@ -142,27 +143,27 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 padding: '1rem 2rem',
                 background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.2), rgba(218, 14, 41, 0.15))',
                 border: '1.5px solid rgba(218, 14, 41, 0.4)',
-                borderRadius: '16px',
+                borderRadius: '15px',
                 color: 'rgba(255, 255, 255, 0.95)',
                 textDecoration: 'none',
                 fontSize: '0.938rem',
                 fontWeight: '500',
                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                boxShadow: '0 4px 12px rgba(218, 14, 41, 0.2)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
+                boxShadow: '0px 8px 30px rgba(218, 14, 41, 0.25), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
+                backdropFilter: 'blur(100px) saturate(150%)',
+                WebkitBackdropFilter: 'blur(100px) saturate(150%)',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.3), rgba(218, 14, 41, 0.2))';
                 e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.6)';
                 e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-                e.currentTarget.style.boxShadow = '0 12px 32px rgba(218, 14, 41, 0.3)';
+                e.currentTarget.style.boxShadow = '0px 16px 48px rgba(218, 14, 41, 0.35), 0px 0px 16px rgba(255, 255, 255, 0.04) inset';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.2), rgba(218, 14, 41, 0.15))';
                 e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.4)';
                 e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(218, 14, 41, 0.2)';
+                e.currentTarget.style.boxShadow = '0px 8px 30px rgba(218, 14, 41, 0.25), 0px 0px 12px rgba(255, 255, 255, 0.03) inset';
               }}
             >
               <span>Explore the Full Journey</span>
@@ -180,27 +181,28 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 gap: '0.5rem',
                 padding: '1rem 2rem',
                 background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '16px',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: '15px',
                 color: 'var(--text-primary)',
                 textDecoration: 'none',
                 fontSize: '0.938rem',
                 fontWeight: '400',
                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
+                backdropFilter: 'blur(100px) saturate(150%)',
+                WebkitBackdropFilter: 'blur(100px) saturate(150%)',
+                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
                 e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-                e.currentTarget.style.boxShadow = '0 12px 32px rgba(0, 0, 0, 0.2)';
+                e.currentTarget.style.boxShadow = '0px 12px 40px rgba(0, 0, 0, 0.4), 0px 0px 12px rgba(255, 255, 255, 0.03) inset';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
                 e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.boxShadow = '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
               }}
             >
               <Mail size={18} />
