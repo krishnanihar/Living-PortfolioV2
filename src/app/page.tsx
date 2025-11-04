@@ -1,5 +1,8 @@
 import { Metadata } from 'next';
-import Portfolio from '@/components/Portfolio';
+import { NavigationBar } from '@/components/NavigationBar';
+import { CosmicBackground } from '@/components/effects/CosmicBackground';
+import { HeroSection } from '@/components/sections/HeroSection';
+import { HeroCardSection } from '@/components/sections/HeroCardSection';
 import WorkSection from '@/components/sections/WorkSection';
 import AboutSectionV2 from '@/components/sections/AboutSectionV2';
 import { SectionDivider } from '@/components/ui/SectionDivider';
@@ -22,10 +25,15 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <Portfolio />
-      <WorkSection />
-      <SectionDivider text="Who's Behind the Work?" />
-      <AboutSectionV2 />
+      <NavigationBar />
+      <CosmicBackground />
+      <main id="main-content">
+        <HeroSection />
+        <HeroCardSection />
+        <SectionDivider text="Who's Behind the Work?" />
+        <AboutSectionV2 />
+        <WorkSection />
+      </main>
     </>
   );
 }
