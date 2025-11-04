@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { NavigationBar } from '@/components/NavigationBar';
 import { CosmicBackground } from '@/components/effects/CosmicBackground';
 import { HeroSection } from '@/components/sections/HeroSection';
-import { HeroCardSection } from '@/components/sections/HeroCardSection';
+import { IntroductionSection } from '@/components/sections/IntroductionSection';
 import WorkSection from '@/components/sections/WorkSection';
 import AboutSectionV2 from '@/components/sections/AboutSectionV2';
 import { SectionDivider } from '@/components/ui/SectionDivider';
@@ -29,7 +29,7 @@ export default function HomePage() {
       <CosmicBackground />
       <main id="main-content">
         <HeroSection />
-        <HeroCardSection />
+        <IntroductionSection />
         <SectionDivider text="Who's Behind the Work?" />
         <AboutSectionV2 />
         <WorkSection />
