@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Github, Mail, User } from 'lucide-react';
+import { Github, Mail, ChevronDown } from 'lucide-react';
 
 export function IntroductionSection() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
@@ -47,6 +47,13 @@ export function IntroductionSection() {
     { label: '2 hackathons won simultaneously', tooltip: '5000 LOC in 48 hours' },
   ];
 
+  const scrollToNext = () => {
+    const aboutSection = document.querySelector('[id*="about"]');
+    if (aboutSection) {
+      aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <>
       <style jsx>{`
@@ -80,16 +87,26 @@ export function IntroductionSection() {
             transform: rotate(180deg) scale(1.1);
           }
         }
+
+        @keyframes scrollBounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(8px);
+          }
+        }
       `}</style>
 
       <section
-        id="introduction-section"
+        id="hero-section"
         style={{
           background: 'var(--bg-primary)',
           fontFamily: 'Inter, sans-serif',
-          padding: '6rem clamp(1.5rem, 3vw, 2.5rem)',
+          padding: '6rem clamp(1.5rem, 3vw, 2.5rem) 3rem',
+          paddingTop: '60px',
           position: 'relative',
-          minHeight: '90vh',
+          height: '100vh',
           display: 'flex',
           alignItems: 'center',
         }}
@@ -104,65 +121,6 @@ export function IntroductionSection() {
             zIndex: 1,
           }}
         >
-          {/* Section Label */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1rem',
-              marginBottom: '3rem',
-              opacity: inView && mounted ? 1 : 0,
-              animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both' : 'none',
-            }}
-          >
-            <div
-              style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(147, 51, 234, 0.08))',
-                backdropFilter: 'blur(100px) saturate(150%)',
-                WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-                border: '1px solid rgba(218, 14, 41, 0.25)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
-              }}
-            >
-              <User size={18} style={{ color: 'rgba(218, 14, 41, 0.95)' }} />
-            </div>
-
-            <h2
-              style={{
-                fontSize: '1.5rem',
-                fontWeight: '500',
-                letterSpacing: '0.05em',
-                color: 'rgba(218, 14, 41, 0.95)',
-              }}
-            >
-              Introduction
-            </h2>
-
-            <div
-              style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '15px',
-                background: 'rgba(255, 255, 255, 0.04)',
-                backdropFilter: 'blur(100px) saturate(150%)',
-                WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-                border: '1px solid rgba(218, 14, 41, 0.2)',
-                fontSize: '0.75rem',
-                fontWeight: '300',
-                color: 'var(--text-secondary)',
-                letterSpacing: '0.02em',
-                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
-              }}
-            >
-              Deep Dive
-            </div>
-          </div>
-
           {/* Split-Screen Grid */}
           <div
             style={{
@@ -527,6 +485,52 @@ export function IntroductionSection() {
                 }}
               />
             </div>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div
+          onClick={scrollToNext}
+          style={{
+            position: 'absolute',
+            bottom: '3rem',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '0.5rem',
+            cursor: 'pointer',
+            opacity: mounted ? 0.6 : 0,
+            transition: 'opacity 0.3s ease, transform 0.3s ease',
+            zIndex: 10,
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.opacity = '1';
+            e.currentTarget.style.transform = 'translateX(-50%) scale(1.1)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.opacity = '0.6';
+            e.currentTarget.style.transform = 'translateX(-50%) scale(1)';
+          }}
+        >
+          <span
+            style={{
+              fontSize: '0.75rem',
+              fontWeight: '400',
+              letterSpacing: '0.1em',
+              color: 'var(--text-secondary)',
+              textTransform: 'uppercase',
+            }}
+          >
+            Scroll
+          </span>
+          <div
+            style={{
+              animation: 'scrollBounce 3s ease-in-out infinite',
+            }}
+          >
+            <ChevronDown size={18} style={{ color: 'var(--text-secondary)' }} />
           </div>
         </div>
       </section>
