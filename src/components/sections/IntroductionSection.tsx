@@ -30,7 +30,7 @@ export function IntroductionSection() {
       { threshold: 0.1 }
     );
 
-    const section = document.getElementById('introduction-section');
+    const section = document.getElementById('hero-section');
     if (section) {
       observer.observe(section);
     }
