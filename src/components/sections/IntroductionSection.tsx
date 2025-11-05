@@ -109,6 +109,7 @@ export function IntroductionSection() {
           height: '100vh',
           display: 'flex',
           alignItems: 'center',
+          zIndex: 1,
         }}
       >
         {/* Container */}
