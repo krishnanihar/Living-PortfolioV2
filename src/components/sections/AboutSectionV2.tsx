@@ -20,11 +20,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
     <section
       ref={sectionRef}
       style={{
-        background: 'var(--bg-primary)',
+        background: 'transparent',
         fontFamily: 'Inter, sans-serif',
         padding: '6rem 1.5rem',
         position: 'relative',
         minHeight: '100vh',
+        zIndex: 1,
       }}
       className={className}
     >
