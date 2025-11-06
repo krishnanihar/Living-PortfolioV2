@@ -46,13 +46,13 @@ export function ParticleSphere({
   // Liquid physics parameters
   const physicsParams = {
     springStrength: 0.008,      // How fast particles return to rest position
-    damping: 0.90,               // Velocity damping (friction) - 0.90 = freer flow than 0.92
-    repulsionStrength: 350,      // How hard mouse pushes particles away (increased from 250)
+    damping: 0.91,               // Velocity damping (friction) - 0.91 = balanced flow
+    repulsionStrength: 280,      // How hard mouse pushes particles away (moderate)
     repulsionRadius: 250,        // Area of mouse influence in 3D space (increased from 180)
     cohesionStrength: 0.001,     // Particle-to-particle attraction (surface tension)
     cohesionRadius: 40,          // Distance for cohesion effect
-    flowStrength: 150,           // Tangential swirl force strength (new)
-    dragStrength: 8,             // Mouse velocity drag force (new)
+    flowStrength: 80,            // Tangential swirl force strength (reduced for smoothness)
+    dragStrength: 4,             // Mouse velocity drag force (gentle)
   };
 
   // Detect reduced motion preference
@@ -407,19 +407,6 @@ export function ParticleSphere({
       sortedParticles.forEach((particle, index) => {
         // Get current particle position (already updated by physics)
         let { x, y, z } = particle;
-
-        // Apply subtle rotation to base positions (for visual variety)
-        if (!prefersReducedMotion) {
-          // Rotate around Y axis
-          const cosY = Math.cos(rotationRef.current.y);
-          const sinY = Math.sin(rotationRef.current.y);
-          const baseRotatedX = particle.baseX * cosY - particle.baseZ * sinY;
-          const baseRotatedZ = particle.baseX * sinY + particle.baseZ * cosY;
-
-          // Update base position for spring force to follow rotation
-          particle.baseX = baseRotatedX;
-          particle.baseZ = baseRotatedZ;
-        }
 
         // Project 3D to 2D (perspective projection)
         const perspective = 600;
