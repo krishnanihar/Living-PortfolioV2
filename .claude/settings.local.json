@@ -28,9 +28,10 @@
       "Bash(head:*)",
       "Bash(npm run dev:*)",
       "Bash(git pull:*)",
+      "Bash(git stash:*)",
       "Bash(gh api:*)",
       "Bash(git ls-tree:*)",
-      "Bash(git stash:*)",
+      "Bash(git restore:*)",
       "Bash(xargs kill:*)"
     ],
     "deny": [],
