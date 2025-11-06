@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Github, Mail } from 'lucide-react';
+import { ParticleSphere } from '@/components/effects/ParticleSphere';
 
 export function HeroCard() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
@@ -16,21 +17,6 @@ export function HeroCard() {
   return (
     <>
       <style jsx>{`
-        @keyframes gradientOrb {
-          0%, 100% {
-            transform: translate(0, 0) scale(1);
-            opacity: 0.15;
-          }
-          33% {
-            transform: translate(30px, -30px) scale(1.1);
-            opacity: 0.2;
-          }
-          66% {
-            transform: translate(-30px, 30px) scale(0.9);
-            opacity: 0.15;
-          }
-        }
-
         @keyframes pulseRed {
           0%, 100% {
             box-shadow: 0 0 8px rgba(218, 14, 41, 0.4);
@@ -54,54 +40,21 @@ export function HeroCard() {
         padding: 'clamp(2rem, 3vw, 2.5rem)',
         boxShadow: '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
       }}>
-        {/* Animated Gradient Orbs Background */}
+        {/* Particle Sphere Background - Consciousness Orb */}
         <div style={{
           position: 'absolute',
-          inset: '-100px',
+          inset: 0,
           overflow: 'hidden',
           pointerEvents: 'none',
           zIndex: -1,
           opacity: mounted ? 1 : 0,
-          transition: 'opacity 1s ease-out',
+          transition: 'opacity 1.2s ease-out',
         }}>
-          {/* Red Orb */}
-          <div style={{
-            position: 'absolute',
-            top: '20%',
-            left: '10%',
-            width: '300px',
-            height: '300px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(218, 14, 41, 0.15) 0%, transparent 70%)',
-            filter: 'blur(60px)',
-            animation: 'gradientOrb 20s ease-in-out infinite',
-          }} />
-          {/* Purple Orb */}
-          <div style={{
-            position: 'absolute',
-            top: '60%',
-            right: '15%',
-            width: '250px',
-            height: '250px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(147, 51, 234, 0.12) 0%, transparent 70%)',
-            filter: 'blur(70px)',
-            animation: 'gradientOrb 25s ease-in-out infinite',
-            animationDelay: '5s',
-          }} />
-          {/* Green Orb */}
-          <div style={{
-            position: 'absolute',
-            bottom: '10%',
-            left: '50%',
-            width: '280px',
-            height: '280px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%)',
-            filter: 'blur(65px)',
-            animation: 'gradientOrb 22s ease-in-out infinite',
-            animationDelay: '10s',
-          }} />
+          <ParticleSphere
+            radius={180}
+            particleCount={500}
+            enableInteraction={true}
+          />
         </div>
 
         {/* Name */}
