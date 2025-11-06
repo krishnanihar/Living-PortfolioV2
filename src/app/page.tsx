@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { NavigationBar } from '@/components/NavigationBar';
 import { CosmicBackground } from '@/components/effects/CosmicBackground';
+import { ScrollDarkeningOverlay } from '@/components/effects/ScrollDarkeningOverlay';
 import { IntroductionSection } from '@/components/sections/IntroductionSection';
 import WorkSection from '@/components/sections/WorkSection';
 import AboutSectionV2 from '@/components/sections/AboutSectionV2';
@@ -27,6 +28,7 @@ export default function HomePage() {
     <OrbReflectionProvider>
       <NavigationBar />
       <CosmicBackground />
+      <ScrollDarkeningOverlay />
       <main id="main-content">
         <IntroductionSection />
         <SectionDivider text="Who's Behind the Work?" />
