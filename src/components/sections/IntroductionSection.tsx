@@ -440,7 +440,7 @@ export function IntroductionSection() {
               style={{
                 position: 'relative',
                 width: '100%',
-                height: '600px',
+                height: '700px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -450,8 +450,8 @@ export function IntroductionSection() {
               }}
             >
               <ParticleSphere
-                radius={180}
-                particleCount={500}
+                radius={140}
+                particleCount={350}
                 enableInteraction={true}
               />
             </div>

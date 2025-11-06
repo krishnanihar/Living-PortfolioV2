@@ -27,8 +27,8 @@ interface ParticleSphereProps {
 }
 
 export function ParticleSphere({
-  radius = 180,
-  particleCount = 500,
+  radius = 140,
+  particleCount = 350,
   enableInteraction = true,
 }: ParticleSphereProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -43,16 +43,18 @@ export function ParticleSphere({
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Liquid physics parameters
+  // Liquid physics parameters (elegant, slow, natural motion)
   const physicsParams = {
-    springStrength: 0.008,      // How fast particles return to rest position
-    damping: 0.91,               // Velocity damping (friction) - 0.91 = balanced flow
-    repulsionStrength: 280,      // How hard mouse pushes particles away (moderate)
-    repulsionRadius: 250,        // Area of mouse influence in 3D space (increased from 180)
+    springStrength: 0.004,       // How fast particles return to rest position (slow, gentle)
+    damping: 0.94,               // Velocity damping (friction) - 0.94 = viscous, heavy feel
+    repulsionStrength: 150,      // How hard mouse pushes particles away (gentle, subtle)
+    repulsionRadius: 180,        // Area of mouse influence in 3D space (contained)
     cohesionStrength: 0.001,     // Particle-to-particle attraction (surface tension)
     cohesionRadius: 40,          // Distance for cohesion effect
-    flowStrength: 80,            // Tangential swirl force strength (reduced for smoothness)
-    dragStrength: 4,             // Mouse velocity drag force (gentle)
+    flowStrength: 40,            // Tangential swirl force strength (subtle, elegant)
+    dragStrength: 2,             // Mouse velocity drag force (minimal wake)
+    containmentRadius: 160,      // Soft boundary to prevent drift (keeps particles contained)
+    containmentStrength: 0.01,   // How hard containment pushes back (gentle)
   };
 
   // Detect reduced motion preference
@@ -108,13 +110,13 @@ export function ParticleSphere({
       };
 
       // Calculate target rotation based on normalized mouse position
-      // Map mouse position to rotation angles (±0.3 radians = ~17°)
+      // Map mouse position to rotation angles (±0.2 radians = ~11° for elegance)
       const normalizedX = mouseX / (rect.width / 2);  // -1 to 1
       const normalizedY = mouseY / (rect.height / 2); // -1 to 1
 
       targetRotationRef.current = {
-        x: -normalizedY * 0.3,  // Up/down tilt (negative for natural feel)
-        y: normalizedX * 0.3,   // Left/right rotation
+        x: -normalizedY * 0.2,  // Up/down tilt (negative for natural feel, subtle)
+        y: normalizedX * 0.2,   // Left/right rotation (gentle)
       };
     };
 
@@ -207,10 +209,10 @@ export function ParticleSphere({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set canvas size (larger to prevent clipping with effects)
+    // Set canvas size (large enough to contain all particle movement)
     const setCanvasSize = () => {
       const dpr = window.devicePixelRatio || 1;
-      const size = isMobile ? 350 : 550; // Increased from 400px to 550px for proper effects rendering
+      const size = isMobile ? 400 : 700; // 700px = safe space for 140px radius + 180px repulsion + margin
 
       canvas.width = size * dpr;
       canvas.height = size * dpr;
@@ -236,12 +238,12 @@ export function ParticleSphere({
       const centerX = canvas.width / (window.devicePixelRatio || 1) / 2;
       const centerY = canvas.height / (window.devicePixelRatio || 1) / 2;
 
-      // Draw ambient glow layers (atmospheric depth)
+      // Draw ambient glow layers (atmospheric depth, softer for elegance)
       if (!isMobile && !prefersReducedMotion) {
         const glowLayers = [
-          { radius: radius * 0.5, color: 'rgba(33, 150, 243, 0.02)', blur: 60 },   // Inner blue glow
-          { radius: radius * 0.75, color: 'rgba(124, 58, 237, 0.015)', blur: 80 }, // Mid purple glow
-          { radius: radius * 1.0, color: 'rgba(6, 182, 212, 0.01)', blur: 100 },   // Outer cyan glow
+          { radius: radius * 0.5, color: 'rgba(33, 150, 243, 0.015)', blur: 50 },   // Inner blue glow (softer)
+          { radius: radius * 0.75, color: 'rgba(124, 58, 237, 0.01)', blur: 70 },   // Mid purple glow (softer)
+          { radius: radius * 1.0, color: 'rgba(6, 182, 212, 0.008)', blur: 90 },    // Outer cyan glow (softer)
         ];
 
         glowLayers.forEach(layer => {
@@ -259,13 +261,13 @@ export function ParticleSphere({
       // Update rotation to follow mouse (smooth interpolation)
       if (!prefersReducedMotion) {
         // Lerp (linear interpolation) for smooth rotation transitions
-        const lerpFactor = 0.05; // Lower = smoother (0.05 = very smooth)
+        const lerpFactor = 0.03; // Lower = smoother (0.03 = very elegant, graceful)
         rotationRef.current.x += (targetRotationRef.current.x - rotationRef.current.x) * lerpFactor;
         rotationRef.current.y += (targetRotationRef.current.y - rotationRef.current.y) * lerpFactor;
 
         // Breathing effect (subtle living quality) - keep this for organic feel
-        breathingRef.current += 0.0003; // 62.5% slower breathing
-        const breathingScale = 1 + Math.sin(breathingRef.current) * 0.006; // 70% reduced amplitude (±0.6%)
+        breathingRef.current += 0.0002; // Even slower breathing for zen quality
+        const breathingScale = 1 + Math.sin(breathingRef.current) * 0.004; // Barely perceptible (±0.4%)
       }
 
       // Sort particles by z-depth for proper rendering
@@ -283,8 +285,8 @@ export function ParticleSphere({
 
             // Only draw line if particles are close in 3D space (< 60px)
             if (distance3D < 60) {
-              // Fade line opacity based on distance
-              const lineOpacity = Math.max(0, (1 - distance3D / 60) * 0.12);
+              // Fade line opacity based on distance (softer, more subtle)
+              const lineOpacity = Math.max(0, (1 - distance3D / 60) * 0.08);
 
               // Project both particles to 2D
               const perspective = 600;
@@ -387,6 +389,20 @@ export function ParticleSphere({
           }
         }
 
+        // 4. Soft containment boundary (prevents particles from drifting too far)
+        const distanceFromCenter = Math.sqrt(particle.x**2 + particle.y**2 + particle.z**2);
+        if (distanceFromCenter > physicsParams.containmentRadius) {
+          // Gently push particle back toward center
+          const pushBackStrength = (distanceFromCenter - physicsParams.containmentRadius) * physicsParams.containmentStrength;
+          const directionToCenterX = -particle.x / distanceFromCenter;
+          const directionToCenterY = -particle.y / distanceFromCenter;
+          const directionToCenterZ = -particle.z / distanceFromCenter;
+
+          forceX += directionToCenterX * pushBackStrength;
+          forceY += directionToCenterY * pushBackStrength;
+          forceZ += directionToCenterZ * pushBackStrength;
+        }
+
         // Apply forces to velocity
         particle.velocityX += forceX;
         particle.velocityY += forceY;
@@ -451,18 +467,18 @@ export function ParticleSphere({
         const rgb = hexToRgb(particle.color);
         const color = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`;
 
-        // Multi-layer glow (only on desktop or if not reduced motion)
+        // Multi-layer glow (only on desktop or if not reduced motion, softer for elegance)
         if (!isMobile && !prefersReducedMotion) {
           // Outer bloom (largest, softest)
-          ctx.shadowBlur = 12 * twinkleBrightness;
-          ctx.shadowColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity * 0.3})`;
+          ctx.shadowBlur = 8 * twinkleBrightness;
+          ctx.shadowColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity * 0.25})`;
 
           // Mid glow
-          ctx.shadowBlur = 8 * twinkleBrightness;
-          ctx.shadowColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity * 0.4})`;
+          ctx.shadowBlur = 6 * twinkleBrightness;
+          ctx.shadowColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity * 0.35})`;
         } else {
           // Simplified glow for mobile/reduced motion
-          ctx.shadowBlur = 4;
+          ctx.shadowBlur = 3;
           ctx.shadowColor = color;
         }
 
