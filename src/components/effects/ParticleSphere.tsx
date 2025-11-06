@@ -34,8 +34,11 @@ export function ParticleSphere({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const mouseRef = useRef({ x: 0, y: 0, z: 0, active: false });
+  const previousMouseRef = useRef({ x: 0, y: 0 });
+  const mouseVelocityRef = useRef({ x: 0, y: 0 });
   const animationRef = useRef<number | undefined>(undefined);
   const rotationRef = useRef({ x: 0, y: 0, z: 0 });
+  const targetRotationRef = useRef({ x: 0, y: 0 });
   const breathingRef = useRef(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -43,11 +46,13 @@ export function ParticleSphere({
   // Liquid physics parameters
   const physicsParams = {
     springStrength: 0.008,      // How fast particles return to rest position
-    damping: 0.92,               // Velocity damping (friction) - 0.92 = smooth liquid
-    repulsionStrength: 250,      // How hard mouse pushes particles away
-    repulsionRadius: 180,        // Area of mouse influence in 3D space
+    damping: 0.90,               // Velocity damping (friction) - 0.90 = freer flow than 0.92
+    repulsionStrength: 350,      // How hard mouse pushes particles away (increased from 250)
+    repulsionRadius: 250,        // Area of mouse influence in 3D space (increased from 180)
     cohesionStrength: 0.001,     // Particle-to-particle attraction (surface tension)
     cohesionRadius: 40,          // Distance for cohesion effect
+    flowStrength: 150,           // Tangential swirl force strength (new)
+    dragStrength: 8,             // Mouse velocity drag force (new)
   };
 
   // Detect reduced motion preference
@@ -68,7 +73,7 @@ export function ParticleSphere({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Mouse tracking for liquid scatter effect
+  // Mouse tracking for liquid scatter effect with velocity tracking
   useEffect(() => {
     if (!enableInteraction || isMobile) return;
 
@@ -84,6 +89,15 @@ export function ParticleSphere({
       const mouseX = e.clientX - sphereCenterX;
       const mouseY = e.clientY - sphereCenterY;
 
+      // Calculate mouse velocity (for drag/flow effects)
+      mouseVelocityRef.current = {
+        x: mouseX - previousMouseRef.current.x,
+        y: mouseY - previousMouseRef.current.y,
+      };
+
+      // Store previous position for next frame
+      previousMouseRef.current = { x: mouseX, y: mouseY };
+
       // Mouse is at z=0 plane (front of sphere)
       // We'll convert this to 3D space for particle repulsion
       mouseRef.current = {
@@ -92,10 +106,23 @@ export function ParticleSphere({
         z: 0, // Mouse position is on the viewing plane
         active: true,
       };
+
+      // Calculate target rotation based on normalized mouse position
+      // Map mouse position to rotation angles (±0.3 radians = ~17°)
+      const normalizedX = mouseX / (rect.width / 2);  // -1 to 1
+      const normalizedY = mouseY / (rect.height / 2); // -1 to 1
+
+      targetRotationRef.current = {
+        x: -normalizedY * 0.3,  // Up/down tilt (negative for natural feel)
+        y: normalizedX * 0.3,   // Left/right rotation
+      };
     };
 
     const handleMouseLeave = () => {
       mouseRef.current.active = false;
+      mouseVelocityRef.current = { x: 0, y: 0 };
+      // Return to neutral rotation when mouse leaves
+      targetRotationRef.current = { x: 0, y: 0 };
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -229,12 +256,14 @@ export function ParticleSphere({
         });
       }
 
-      // Update rotation (ultra-subtle, barely perceptible)
+      // Update rotation to follow mouse (smooth interpolation)
       if (!prefersReducedMotion) {
-        rotationRef.current.y += 0.00005; // 83% slower - barely perceptible rotation
-        rotationRef.current.x += 0.00002; // 80% slower - minimal tilt
+        // Lerp (linear interpolation) for smooth rotation transitions
+        const lerpFactor = 0.05; // Lower = smoother (0.05 = very smooth)
+        rotationRef.current.x += (targetRotationRef.current.x - rotationRef.current.x) * lerpFactor;
+        rotationRef.current.y += (targetRotationRef.current.y - rotationRef.current.y) * lerpFactor;
 
-        // Breathing effect (subtle living quality)
+        // Breathing effect (subtle living quality) - keep this for organic feel
         breathingRef.current += 0.0003; // 62.5% slower breathing
         const breathingScale = 1 + Math.sin(breathingRef.current) * 0.006; // 70% reduced amplitude (±0.6%)
       }
@@ -308,6 +337,25 @@ export function ParticleSphere({
             forceX += directionX * repulsionForce;
             forceY += directionY * repulsionForce;
             forceZ += directionZ * repulsionForce;
+
+            // 2b. Tangential swirl force (creates vortex/flowing motion)
+            // Apply force perpendicular to radial direction for swirling effect
+            const falloff = 1 - (mouseDist3D / physicsParams.repulsionRadius);
+            const swirlForce = physicsParams.flowStrength * falloff;
+
+            // Perpendicular vector (tangent): rotate direction 90° in XY plane
+            const tangentX = -directionY;
+            const tangentY = directionX;
+
+            forceX += tangentX * swirlForce;
+            forceY += tangentY * swirlForce;
+            // No Z component for tangent (swirl in 2D plane)
+
+            // 2c. Drag force (particles follow mouse movement)
+            // Mouse velocity creates "wake" effect
+            const dragForce = physicsParams.dragStrength * falloff;
+            forceX += mouseVelocityRef.current.x * dragForce;
+            forceY += mouseVelocityRef.current.y * dragForce;
           }
         }
 
