@@ -196,16 +196,20 @@ export function IntroductionSection() {
                   alignItems: 'center',
                   gap: '0.5rem',
                   padding: '0.75rem 1.25rem',
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  backdropFilter: 'blur(100px) saturate(150%)',
-                  WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  background: 'rgba(12, 12, 12, 0.65)',
+                  backdropFilter: 'blur(120px) saturate(200%)',
+                  WebkitBackdropFilter: 'blur(120px) saturate(200%)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
                   borderRadius: '15px',
                   fontSize: '0.9375rem',
                   fontWeight: '400',
-                  color: 'rgba(255, 255, 255, 0.8)',
+                  color: 'rgba(255, 255, 255, 0.85)',
                   letterSpacing: '0.01em',
-                  boxShadow: '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
+                  boxShadow: `
+                    0px 12px 36px rgba(0, 0, 0, 0.5),
+                    0px 0px 1px rgba(255, 255, 255, 0.25) inset,
+                    0px -1px 0px rgba(255, 255, 255, 0.06) inset
+                  `,
                   marginBottom: '2.5rem',
                   opacity: inView && mounted ? 1 : 0,
                   animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both' : 'none',
@@ -241,21 +245,25 @@ export function IntroductionSection() {
                       position: 'relative',
                       padding: '1rem 1.25rem',
                       background: hoveredStat === idx
-                        ? 'rgba(255, 255, 255, 0.05)'
-                        : 'rgba(255, 255, 255, 0.03)',
-                      backdropFilter: 'blur(100px) saturate(150%)',
-                      WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                        ? 'rgba(15, 15, 15, 0.7)'
+                        : 'rgba(12, 12, 12, 0.65)',
+                      backdropFilter: 'blur(120px) saturate(200%)',
+                      WebkitBackdropFilter: 'blur(120px) saturate(200%)',
+                      border: '1px solid rgba(255, 255, 255, 0.12)',
                       borderRadius: '15px',
                       fontSize: '0.875rem',
                       fontWeight: '400',
-                      color: 'rgba(255, 255, 255, 0.75)',
+                      color: 'rgba(255, 255, 255, 0.8)',
                       cursor: 'pointer',
                       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                       transform: hoveredStat === idx ? 'translateY(-2px)' : 'translateY(0)',
                       boxShadow: hoveredStat === idx
-                        ? '0px 8px 30px rgba(0, 0, 0, 0.5), 0px 0px 12px rgba(255, 255, 255, 0.03) inset'
-                        : '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                        ? `0px 16px 40px rgba(0, 0, 0, 0.6),
+                           0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                           0px -1px 0px rgba(255, 255, 255, 0.08) inset`
+                        : `0px 8px 24px rgba(0, 0, 0, 0.4),
+                           0px 0px 1px rgba(255, 255, 255, 0.2) inset,
+                           0px -1px 0px rgba(255, 255, 255, 0.04) inset`,
                       opacity: inView && mounted ? 1 : 0,
                       animation: inView && mounted ? `fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) ${0.6 + idx * 0.1}s both` : 'none',
                     }}
@@ -322,13 +330,13 @@ export function IntroductionSection() {
                     gap: '0.625rem',
                     padding: 'clamp(0.875rem, 1.75vw, 1rem) clamp(1.5rem, 3vw, 2rem)',
                     background: hoveredButton === 'featured'
-                      ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(255, 255, 255, 0.1))'
-                      : 'linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(255, 255, 255, 0.06))',
-                    backdropFilter: 'blur(100px) saturate(150%)',
-                    WebkitBackdropFilter: 'blur(100px) saturate(150%)',
+                      ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(12, 12, 12, 0.7))'
+                      : 'linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(12, 12, 12, 0.65))',
+                    backdropFilter: 'blur(120px) saturate(200%)',
+                    WebkitBackdropFilter: 'blur(120px) saturate(200%)',
                     border: hoveredButton === 'featured'
                       ? '1px solid rgba(16, 185, 129, 0.6)'
-                      : '1px solid rgba(16, 185, 129, 0.35)',
+                      : '1px solid rgba(16, 185, 129, 0.4)',
                     borderRadius: '15px',
                     color: 'rgba(255, 255, 255, 0.98)',
                     textDecoration: 'none',
@@ -337,8 +345,12 @@ export function IntroductionSection() {
                     transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                     transform: hoveredButton === 'featured' ? 'translateY(-3px) scale(1.02)' : 'translateY(0) scale(1)',
                     boxShadow: hoveredButton === 'featured'
-                      ? '0 16px 40px rgba(16, 185, 129, 0.25), 0px 0px 12px rgba(255, 255, 255, 0.03) inset'
-                      : '0px 8px 30px rgba(0, 0, 0, 0.3), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                      ? `0 20px 48px rgba(16, 185, 129, 0.3),
+                         0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                         0px -1px 0px rgba(255, 255, 255, 0.1) inset`
+                      : `0px 12px 36px rgba(0, 0, 0, 0.4),
+                         0px 0px 1px rgba(255, 255, 255, 0.2) inset,
+                         0px -1px 0px rgba(255, 255, 255, 0.05) inset`,
                     opacity: inView && mounted ? 1 : 0,
                     animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both' : 'none',
                   }}
@@ -370,23 +382,27 @@ export function IntroductionSection() {
                     gap: '0.5rem',
                     padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.25rem, 2.5vw, 1.5rem)',
                     background: hoveredButton === 'contact'
-                      ? 'rgba(255, 255, 255, 0.05)'
-                      : 'rgba(255, 255, 255, 0.03)',
-                    backdropFilter: 'blur(100px) saturate(150%)',
-                    WebkitBackdropFilter: 'blur(100px) saturate(150%)',
+                      ? 'rgba(15, 15, 15, 0.7)'
+                      : 'rgba(12, 12, 12, 0.65)',
+                    backdropFilter: 'blur(120px) saturate(200%)',
+                    WebkitBackdropFilter: 'blur(120px) saturate(200%)',
                     border: hoveredButton === 'contact'
-                      ? '1px solid rgba(255, 255, 255, 0.12)'
-                      : '1px solid rgba(255, 255, 255, 0.08)',
+                      ? '1px solid rgba(255, 255, 255, 0.15)'
+                      : '1px solid rgba(255, 255, 255, 0.12)',
                     borderRadius: '15px',
-                    color: 'rgba(255, 255, 255, 0.85)',
+                    color: 'rgba(255, 255, 255, 0.9)',
                     textDecoration: 'none',
                     fontSize: '0.875rem',
                     fontWeight: '400',
                     transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                     transform: hoveredButton === 'contact' ? 'translateY(-2px)' : 'translateY(0)',
                     boxShadow: hoveredButton === 'contact'
-                      ? '0px 8px 30px rgba(0, 0, 0, 0.4), 0px 0px 12px rgba(255, 255, 255, 0.03) inset'
-                      : '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                      ? `0px 16px 40px rgba(0, 0, 0, 0.6),
+                         0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                         0px -1px 0px rgba(255, 255, 255, 0.08) inset`
+                      : `0px 8px 24px rgba(0, 0, 0, 0.4),
+                         0px 0px 1px rgba(255, 255, 255, 0.2) inset,
+                         0px -1px 0px rgba(255, 255, 255, 0.04) inset`,
                     opacity: inView && mounted ? 1 : 0,
                     animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.0s both' : 'none',
                   }}
@@ -408,23 +424,27 @@ export function IntroductionSection() {
                     gap: '0.5rem',
                     padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.25rem, 2.5vw, 1.5rem)',
                     background: hoveredButton === 'github'
-                      ? 'rgba(255, 255, 255, 0.04)'
-                      : 'rgba(255, 255, 255, 0.03)',
-                    backdropFilter: 'blur(100px) saturate(150%)',
-                    WebkitBackdropFilter: 'blur(100px) saturate(150%)',
+                      ? 'rgba(15, 15, 15, 0.7)'
+                      : 'rgba(12, 12, 12, 0.65)',
+                    backdropFilter: 'blur(120px) saturate(200%)',
+                    WebkitBackdropFilter: 'blur(120px) saturate(200%)',
                     border: hoveredButton === 'github'
-                      ? '1px solid rgba(255, 255, 255, 0.1)'
-                      : '1px solid rgba(255, 255, 255, 0.08)',
+                      ? '1px solid rgba(255, 255, 255, 0.14)'
+                      : '1px solid rgba(255, 255, 255, 0.12)',
                     borderRadius: '15px',
-                    color: 'rgba(255, 255, 255, 0.7)',
+                    color: 'rgba(255, 255, 255, 0.85)',
                     textDecoration: 'none',
                     fontSize: '0.875rem',
                     fontWeight: '400',
                     transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                     transform: hoveredButton === 'github' ? 'translateY(-2px)' : 'translateY(0)',
                     boxShadow: hoveredButton === 'github'
-                      ? '0px 8px 30px rgba(0, 0, 0, 0.35), 0px 0px 12px rgba(255, 255, 255, 0.03) inset'
-                      : '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                      ? `0px 16px 40px rgba(0, 0, 0, 0.6),
+                         0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                         0px -1px 0px rgba(255, 255, 255, 0.08) inset`
+                      : `0px 8px 24px rgba(0, 0, 0, 0.4),
+                         0px 0px 1px rgba(255, 255, 255, 0.2) inset,
+                         0px -1px 0px rgba(255, 255, 255, 0.04) inset`,
                     opacity: inView && mounted ? 1 : 0,
                     animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.1s both' : 'none',
                   }}

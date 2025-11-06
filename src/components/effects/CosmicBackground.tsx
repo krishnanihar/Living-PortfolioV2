@@ -13,7 +13,7 @@ export function CosmicBackground() {
     const dx = starX - spherePosition.x;
     const dy = starY - spherePosition.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
-    const influenceRadius = 35; // % of viewport (reduced from 45 for tighter, more intense color zones)
+    const influenceRadius = 45; // % of viewport
 
     // No influence if too far from sphere
     if (distance > influenceRadius) return `rgba(255, 255, 255, ${layerOpacity})`;
@@ -36,18 +36,13 @@ export function CosmicBackground() {
     }
 
     // Mix with white based on layer strength and influence
-    // layerStrength: far layer = 0.95 (very strong), mid = 0.85, near = 0.75 (dramatic color saturation)
+    // layerStrength: far layer = 0.7 (strong), mid = 0.5, near = 0.3 (subtle)
     const mixStrength = influence * layerStrength;
+    const r = Math.round(255 * (1 - mixStrength) + baseColor.r * mixStrength);
+    const g = Math.round(255 * (1 - mixStrength) + baseColor.g * mixStrength);
+    const b = Math.round(255 * (1 - mixStrength) + baseColor.b * mixStrength);
 
-    // Brightness boost for stars very close to sphere core (within 20%)
-    const brightnessBoost = distance < (influenceRadius * 0.2) ? 1.5 : 1.0;
-
-    const r = Math.round((255 * (1 - mixStrength) + baseColor.r * mixStrength) * brightnessBoost);
-    const g = Math.round((255 * (1 - mixStrength) + baseColor.g * mixStrength) * brightnessBoost);
-    const b = Math.round((255 * (1 - mixStrength) + baseColor.b * mixStrength) * brightnessBoost);
-
-    // Clamp values to 0-255
-    return `rgba(${Math.min(r, 255)}, ${Math.min(g, 255)}, ${Math.min(b, 255)}, ${layerOpacity})`;
+    return `rgba(${r}, ${g}, ${b}, ${layerOpacity})`;
   };
 
   // Stabilize particle positions with deterministic algorithm
@@ -132,28 +127,6 @@ export function CosmicBackground() {
           zIndex: 0,
         }}
       >
-        {/* Colored glow overlay at sphere position for reinforced halo */}
-        <div
-          style={{
-            position: 'absolute',
-            left: `${spherePosition.x}%`,
-            top: `${spherePosition.y}%`,
-            width: '70%',
-            height: '70%',
-            transform: 'translate(-50%, -50%)',
-            background: `
-              radial-gradient(circle at center,
-                rgba(33, 150, 243, 0.15) 0%,
-                rgba(124, 58, 237, 0.12) 33%,
-                rgba(6, 182, 212, 0.10) 66%,
-                transparent 100%)
-            `,
-            filter: 'blur(80px)',
-            opacity: 0.6,
-            pointerEvents: 'none',
-          }}
-        />
-
         {/* Particle layer - Far (slowest, smoothest) with mouse attraction */}
         <div className="cosmic-particle-layer cosmic-particle-layer-far">
           {particlePositions.far.map((particle, i) => {
@@ -170,7 +143,7 @@ export function CosmicBackground() {
             const attractX = dx * force * 0.15;
             const attractY = dy * force * 0.15;
 
-            const color = getReflectedColor(particle.left, particle.top, 0.95, 0.7);
+            const color = getReflectedColor(particle.left, particle.top, 0.7, 0.7);
 
             return (
               <div
@@ -186,7 +159,7 @@ export function CosmicBackground() {
                   transform: `translate(${attractX}px, ${attractY}px)`,
                   transition: 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
                   background: color,
-                  boxShadow: `0 0 ${6 + particle.size * 2}px ${color}, 0 0 ${12 + particle.size * 3}px ${color}`,
+                  boxShadow: `0 0 ${2 + particle.size}px ${color}`,
                   opacity: particle.brightness,
                 }}
               />
@@ -207,7 +180,7 @@ export function CosmicBackground() {
             const attractX = dx * force * 0.2;
             const attractY = dy * force * 0.2;
 
-            const color = getReflectedColor(particle.left, particle.top, 0.85, 0.75);
+            const color = getReflectedColor(particle.left, particle.top, 0.5, 0.75);
 
             return (
               <div
@@ -223,7 +196,7 @@ export function CosmicBackground() {
                   transform: `translate(${attractX}px, ${attractY}px)`,
                   transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                   background: color,
-                  boxShadow: `0 0 ${8 + particle.size * 2}px ${color}, 0 0 ${14 + particle.size * 3}px ${color}`,
+                  boxShadow: `0 0 ${2.5 + particle.size}px ${color}`,
                   opacity: particle.brightness,
                 }}
               />
@@ -244,7 +217,7 @@ export function CosmicBackground() {
             const attractX = dx * force * 0.25;
             const attractY = dy * force * 0.25;
 
-            const color = getReflectedColor(particle.left, particle.top, 0.75, 0.85);
+            const color = getReflectedColor(particle.left, particle.top, 0.3, 0.85);
 
             return (
               <div
@@ -260,7 +233,7 @@ export function CosmicBackground() {
                   transform: `translate(${attractX}px, ${attractY}px)`,
                   transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                   background: color,
-                  boxShadow: `0 0 ${10 + particle.size * 2}px ${color}, 0 0 ${16 + particle.size * 3}px ${color}`,
+                  boxShadow: `0 0 ${3 + particle.size}px ${color}`,
                   opacity: particle.brightness,
                 }}
               />
@@ -282,7 +255,7 @@ export function CosmicBackground() {
             const attractY = dy * force * 0.18;
 
             // Accent particles shift from red to sphere colors when near sphere
-            const accentColor = getReflectedColor(particle.left, particle.top, 0.95, 0.8);
+            const accentColor = getReflectedColor(particle.left, particle.top, 0.8, 0.8);
             const isNearSphere = distance < 30; // Within 30% of viewport
 
             return (
@@ -300,7 +273,7 @@ export function CosmicBackground() {
                   transition: 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)',
                   background: isNearSphere ? accentColor : 'rgba(218, 14, 41, 0.7)',
                   boxShadow: isNearSphere
-                    ? `0 0 ${12 + particle.size * 3}px ${accentColor}, 0 0 ${18 + particle.size * 4}px ${accentColor}`
+                    ? `0 0 ${4 + particle.size}px ${accentColor}`
                     : '0 0 6px rgba(218, 14, 41, 0.5)',
                   opacity: particle.brightness,
                 }}
