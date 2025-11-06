@@ -55,7 +55,7 @@ export function ParticleSphere({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Mouse tracking
+  // Mouse tracking with distance-based falloff
   useEffect(() => {
     if (!enableInteraction || isMobile) return;
 
@@ -64,14 +64,33 @@ export function ParticleSphere({
       if (!canvas) return;
 
       const rect = canvas.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+      const sphereCenterX = rect.left + rect.width / 2;
+      const sphereCenterY = rect.top + rect.height / 2;
 
-      // Normalize to -1 to 1 range
-      mouseRef.current = {
-        x: ((e.clientX - centerX) / rect.width) * 2,
-        y: ((e.clientY - centerY) / rect.height) * 2,
-      };
+      // Calculate distance from mouse to sphere center
+      const mouseDistanceX = e.clientX - sphereCenterX;
+      const mouseDistanceY = e.clientY - sphereCenterY;
+      const distanceFromCenter = Math.sqrt(mouseDistanceX**2 + mouseDistanceY**2);
+
+      // Influence radius: 350px (roughly canvas size - prevents scattering)
+      const influenceRadius = 350;
+
+      if (distanceFromCenter < influenceRadius) {
+        // Apply smooth quadratic falloff: closer = stronger, farther = weaker
+        const falloff = Math.pow(1 - (distanceFromCenter / influenceRadius), 2);
+
+        // Normalize and clamp to ±0.5 range (prevent extreme displacement)
+        const normalizedX = Math.max(-0.5, Math.min(0.5, (mouseDistanceX / rect.width) * 2));
+        const normalizedY = Math.max(-0.5, Math.min(0.5, (mouseDistanceY / rect.height) * 2));
+
+        mouseRef.current = {
+          x: normalizedX * falloff,
+          y: normalizedY * falloff,
+        };
+      } else {
+        // Mouse too far from sphere, no parallax effect
+        mouseRef.current = { x: 0, y: 0 };
+      }
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -274,9 +293,9 @@ export function ParticleSphere({
           z *= breathingScale;
         }
 
-        // Mouse parallax (subtle layer-based displacement - 60% reduced)
+        // Mouse parallax (subtle layer-based displacement with falloff)
         if (enableInteraction && !isMobile && !prefersReducedMotion) {
-          const parallaxStrength = (particle.layer + 1) * 2; // 2px, 4px, 6px per layer (was 5, 10, 15)
+          const parallaxStrength = (particle.layer + 1) * 1.5; // 1.5px, 3px, 4.5px per layer (reduced for smoother feel)
           x += mouseRef.current.x * parallaxStrength;
           y += mouseRef.current.y * parallaxStrength;
         }
