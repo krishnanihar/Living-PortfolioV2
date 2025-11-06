@@ -9,14 +9,14 @@ export function CosmicBackground() {
   const spherePosition = { x: 65, y: 45 };
 
   // Color reflection helper - calculates star color based on distance to particle sphere
-  const getReflectedColor = (starX: number, starY: number, layerStrength: number = 0.6) => {
+  const getReflectedColor = (starX: number, starY: number, layerStrength: number = 0.6, layerOpacity: number = 0.7) => {
     const dx = starX - spherePosition.x;
     const dy = starY - spherePosition.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
     const influenceRadius = 45; // % of viewport
 
     // No influence if too far from sphere
-    if (distance > influenceRadius) return 'rgba(255, 255, 255, 0.9)';
+    if (distance > influenceRadius) return `rgba(255, 255, 255, ${layerOpacity})`;
 
     // Calculate influence strength (1 = at sphere center, 0 = at influence edge)
     const influence = 1 - (distance / influenceRadius);
@@ -42,14 +42,14 @@ export function CosmicBackground() {
     const g = Math.round(255 * (1 - mixStrength) + baseColor.g * mixStrength);
     const b = Math.round(255 * (1 - mixStrength) + baseColor.b * mixStrength);
 
-    return `rgba(${r}, ${g}, ${b}, 0.9)`;
+    return `rgba(${r}, ${g}, ${b}, ${layerOpacity})`;
   };
 
   // Stabilize particle positions with deterministic algorithm
   const particlePositions = React.useMemo(() => {
     return {
-      far: Array.from({ length: 50 }, (_, i) => {
-        const seed = i / 50;
+      far: Array.from({ length: 250 }, (_, i) => {
+        const seed = i / 250;
         return {
           left: (seed * 87.3 + 13.7 + i * 4.2) % 100,
           top: (seed * 73.1 + 17.3 + i * 5.7) % 100,
@@ -57,10 +57,12 @@ export function CosmicBackground() {
           delay2: (seed * 18.3 + 1.7 + i * 0.4) % 20,
           duration1: 35 + ((seed * 23.7 + i * 0.5) % 25),
           duration2: 15 + ((seed * 9.4 + i * 0.2) % 10),
+          size: 0.8 + ((seed * 13.2 + i * 0.3) % 0.4), // 0.8-1.2px
+          brightness: 0.6 + ((seed * 17.4 + i * 0.4) % 0.4), // 0.6-1.0
         };
       }),
-      mid: Array.from({ length: 30 }, (_, i) => {
-        const seed = i / 30;
+      mid: Array.from({ length: 150 }, (_, i) => {
+        const seed = i / 150;
         return {
           left: (seed * 91.2 + 8.8 + i * 3.8) % 100,
           top: (seed * 68.4 + 21.6 + i * 4.3) % 100,
@@ -68,10 +70,12 @@ export function CosmicBackground() {
           delay2: (seed * 13.7 + 1.3 + i * 0.5) % 15,
           duration1: 28 + ((seed * 17.2 + i * 0.6) % 18),
           duration2: 12 + ((seed * 7.6 + i * 0.3) % 8),
+          size: 1.0 + ((seed * 11.7 + i * 0.5) % 0.8), // 1.0-1.8px
+          brightness: 0.65 + ((seed * 14.8 + i * 0.35) % 0.35), // 0.65-1.0
         };
       }),
-      near: Array.from({ length: 20 }, (_, i) => {
-        const seed = i / 20;
+      near: Array.from({ length: 80 }, (_, i) => {
+        const seed = i / 80;
         return {
           left: (seed * 79.6 + 20.4 + i * 5.1) % 100,
           top: (seed * 82.3 + 17.7 + i * 6.2) % 100,
@@ -79,10 +83,12 @@ export function CosmicBackground() {
           delay2: (seed * 11.2 + 0.8 + i * 0.6) % 12,
           duration1: 22 + ((seed * 13.3 + i * 0.7) % 14),
           duration2: 10 + ((seed * 5.7 + i * 0.3) % 6),
+          size: 1.5 + ((seed * 9.8 + i * 0.6) % 1.0), // 1.5-2.5px
+          brightness: 0.7 + ((seed * 12.3 + i * 0.3) % 0.3), // 0.7-1.0
         };
       }),
-      accent: Array.from({ length: 3 }, (_, i) => {
-        const seed = i / 3;
+      accent: Array.from({ length: 15 }, (_, i) => {
+        const seed = i / 15;
         return {
           left: 20 + ((seed * 52.4 + i * 8.3) % 60),
           top: 20 + ((seed * 47.8 + i * 7.6) % 60),
@@ -90,6 +96,8 @@ export function CosmicBackground() {
           delay2: (seed * 9.1 + i * 1.1) % 10,
           duration1: 25 + ((seed * 14.2 + i * 0.9) % 15),
           duration2: 12 + ((seed * 7.4 + i * 0.8) % 8),
+          size: 1.2 + ((seed * 8.6 + i * 0.7) % 0.6), // 1.2-1.8px
+          brightness: 0.75 + ((seed * 10.5 + i * 0.25) % 0.25), // 0.75-1.0
         };
       }),
     };
@@ -135,6 +143,8 @@ export function CosmicBackground() {
             const attractX = dx * force * 0.15;
             const attractY = dy * force * 0.15;
 
+            const color = getReflectedColor(particle.left, particle.top, 0.7, 0.7);
+
             return (
               <div
                 key={`far-${i}`}
@@ -142,14 +152,15 @@ export function CosmicBackground() {
                 style={{
                   left: `${particle.left}%`,
                   top: `${particle.top}%`,
-                  width: '1px',
-                  height: '1px',
+                  width: `${particle.size}px`,
+                  height: `${particle.size}px`,
                   animationDelay: `${particle.delay1}s, ${particle.delay2}s`,
                   animationDuration: `${particle.duration1}s, ${particle.duration2}s`,
                   transform: `translate(${attractX}px, ${attractY}px)`,
                   transition: 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-                  background: getReflectedColor(particle.left, particle.top, 0.7),
-                  boxShadow: `0 0 3px ${getReflectedColor(particle.left, particle.top, 0.6)}`,
+                  background: color,
+                  boxShadow: `0 0 ${2 + particle.size}px ${color}`,
+                  opacity: particle.brightness,
                 }}
               />
             );
@@ -169,6 +180,8 @@ export function CosmicBackground() {
             const attractX = dx * force * 0.2;
             const attractY = dy * force * 0.2;
 
+            const color = getReflectedColor(particle.left, particle.top, 0.5, 0.75);
+
             return (
               <div
                 key={`mid-${i}`}
@@ -176,14 +189,15 @@ export function CosmicBackground() {
                 style={{
                   left: `${particle.left}%`,
                   top: `${particle.top}%`,
-                  width: '1.5px',
-                  height: '1.5px',
+                  width: `${particle.size}px`,
+                  height: `${particle.size}px`,
                   animationDelay: `${particle.delay1}s, ${particle.delay2}s`,
                   animationDuration: `${particle.duration1}s, ${particle.duration2}s`,
                   transform: `translate(${attractX}px, ${attractY}px)`,
                   transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                  background: getReflectedColor(particle.left, particle.top, 0.5),
-                  boxShadow: `0 0 3px ${getReflectedColor(particle.left, particle.top, 0.4)}`,
+                  background: color,
+                  boxShadow: `0 0 ${2.5 + particle.size}px ${color}`,
+                  opacity: particle.brightness,
                 }}
               />
             );
@@ -203,6 +217,8 @@ export function CosmicBackground() {
             const attractX = dx * force * 0.25;
             const attractY = dy * force * 0.25;
 
+            const color = getReflectedColor(particle.left, particle.top, 0.3, 0.85);
+
             return (
               <div
                 key={`near-${i}`}
@@ -210,14 +226,15 @@ export function CosmicBackground() {
                 style={{
                   left: `${particle.left}%`,
                   top: `${particle.top}%`,
-                  width: '2px',
-                  height: '2px',
+                  width: `${particle.size}px`,
+                  height: `${particle.size}px`,
                   animationDelay: `${particle.delay1}s, ${particle.delay2}s`,
                   animationDuration: `${particle.duration1}s, ${particle.duration2}s`,
                   transform: `translate(${attractX}px, ${attractY}px)`,
                   transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                  background: getReflectedColor(particle.left, particle.top, 0.3),
-                  boxShadow: `0 0 3px ${getReflectedColor(particle.left, particle.top, 0.25)}`,
+                  background: color,
+                  boxShadow: `0 0 ${3 + particle.size}px ${color}`,
+                  opacity: particle.brightness,
                 }}
               />
             );
@@ -238,7 +255,7 @@ export function CosmicBackground() {
             const attractY = dy * force * 0.18;
 
             // Accent particles shift from red to sphere colors when near sphere
-            const accentColor = getReflectedColor(particle.left, particle.top, 0.8);
+            const accentColor = getReflectedColor(particle.left, particle.top, 0.8, 0.8);
             const isNearSphere = distance < 30; // Within 30% of viewport
 
             return (
@@ -248,16 +265,17 @@ export function CosmicBackground() {
                 style={{
                   left: `${particle.left}%`,
                   top: `${particle.top}%`,
-                  width: '1.5px',
-                  height: '1.5px',
+                  width: `${particle.size}px`,
+                  height: `${particle.size}px`,
                   animationDelay: `${particle.delay1}s, ${particle.delay2}s`,
                   animationDuration: `${particle.duration1}s, ${particle.duration2}s`,
                   transform: `translate(${attractX}px, ${attractY}px)`,
                   transition: 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)',
                   background: isNearSphere ? accentColor : 'rgba(218, 14, 41, 0.7)',
                   boxShadow: isNearSphere
-                    ? `0 0 6px ${accentColor}`
+                    ? `0 0 ${4 + particle.size}px ${accentColor}`
                     : '0 0 6px rgba(218, 14, 41, 0.5)',
+                  opacity: particle.brightness,
                 }}
               />
             );
