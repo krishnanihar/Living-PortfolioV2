@@ -175,30 +175,86 @@ export function ParticleSphere({
       // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Update rotation (gentle, slow rotation)
-      if (!prefersReducedMotion) {
-        rotationRef.current.y += 0.0003; // Very slow Y-axis rotation
-        rotationRef.current.x += 0.0001; // Minimal X-axis rotation
-
-        // Breathing effect (scale oscillation)
-        breathingRef.current += 0.0008;
-        const breathingScale = 1 + Math.sin(breathingRef.current) * 0.02; // 1.0 to 1.02
-      }
-
       const centerX = canvas.width / (window.devicePixelRatio || 1) / 2;
       const centerY = canvas.height / (window.devicePixelRatio || 1) / 2;
 
+      // Draw ambient glow layers (atmospheric depth)
+      if (!isMobile && !prefersReducedMotion) {
+        const glowLayers = [
+          { radius: radius * 0.5, color: 'rgba(33, 150, 243, 0.02)', blur: 60 },   // Inner blue glow
+          { radius: radius * 0.75, color: 'rgba(124, 58, 237, 0.015)', blur: 80 }, // Mid purple glow
+          { radius: radius * 1.0, color: 'rgba(6, 182, 212, 0.01)', blur: 100 },   // Outer cyan glow
+        ];
+
+        glowLayers.forEach(layer => {
+          ctx.save();
+          ctx.shadowBlur = layer.blur;
+          ctx.shadowColor = layer.color;
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, layer.radius, 0, Math.PI * 2);
+          ctx.fillStyle = layer.color;
+          ctx.fill();
+          ctx.restore();
+        });
+      }
+
+      // Update rotation (ultra-subtle, barely perceptible)
+      if (!prefersReducedMotion) {
+        rotationRef.current.y += 0.00005; // 83% slower - barely perceptible rotation
+        rotationRef.current.x += 0.00002; // 80% slower - minimal tilt
+
+        // Breathing effect (subtle living quality)
+        breathingRef.current += 0.0003; // 62.5% slower breathing
+        const breathingScale = 1 + Math.sin(breathingRef.current) * 0.006; // 70% reduced amplitude (±0.6%)
+      }
+
       // Sort particles by z-depth for proper rendering
       const sortedParticles = [...particlesRef.current].sort((a, b) => a.z - b.z);
+
+      // Draw constellation lines between nearby particles (adds structural complexity)
+      if (!isMobile && !prefersReducedMotion) {
+        sortedParticles.forEach((particleA, i) => {
+          // Only check next 5 particles (performance optimization)
+          sortedParticles.slice(i + 1, i + 6).forEach(particleB => {
+            const dx = particleA.x - particleB.x;
+            const dy = particleA.y - particleB.y;
+            const dz = particleA.z - particleB.z;
+            const distance3D = Math.sqrt(dx*dx + dy*dy + dz*dz);
+
+            // Only draw line if particles are close in 3D space (< 60px)
+            if (distance3D < 60) {
+              // Fade line opacity based on distance
+              const lineOpacity = Math.max(0, (1 - distance3D / 60) * 0.12);
+
+              // Project both particles to 2D
+              const perspective = 600;
+              const scaleA = perspective / (perspective + particleA.z);
+              const scaleB = perspective / (perspective + particleB.z);
+              const x2dA = centerX + particleA.x * scaleA;
+              const y2dA = centerY + particleA.y * scaleA;
+              const x2dB = centerX + particleB.x * scaleB;
+              const y2dB = centerY + particleB.y * scaleB;
+
+              // Draw subtle constellation line
+              ctx.beginPath();
+              ctx.moveTo(x2dA, y2dA);
+              ctx.lineTo(x2dB, y2dB);
+              ctx.strokeStyle = `rgba(124, 58, 237, ${lineOpacity})`; // Purple lines
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          });
+        });
+      }
 
       sortedParticles.forEach((particle, index) => {
         // Apply rotation
         let { x, y, z } = particle;
 
         if (!prefersReducedMotion) {
-          // Rotate around Y axis
-          const cosY = Math.cos(rotationRef.current.y * (particle.layer + 1)); // Different speed per layer
-          const sinY = Math.sin(rotationRef.current.y * (particle.layer + 1));
+          // Rotate around Y axis (all layers rotate together - no layer desync)
+          const cosY = Math.cos(rotationRef.current.y);
+          const sinY = Math.sin(rotationRef.current.y);
           const newX = x * cosY - z * sinY;
           const newZ = x * sinY + z * cosY;
           x = newX;
@@ -211,16 +267,16 @@ export function ParticleSphere({
           z = y * sinX + z * cosX;
           y = newY;
 
-          // Apply breathing scale
-          const breathingScale = 1 + Math.sin(breathingRef.current) * 0.02;
+          // Apply breathing scale (subtle amplitude)
+          const breathingScale = 1 + Math.sin(breathingRef.current) * 0.006;
           x *= breathingScale;
           y *= breathingScale;
           z *= breathingScale;
         }
 
-        // Mouse parallax (layer-based displacement)
+        // Mouse parallax (subtle layer-based displacement - 60% reduced)
         if (enableInteraction && !isMobile && !prefersReducedMotion) {
-          const parallaxStrength = (particle.layer + 1) * 5; // 5px, 10px, 15px per layer
+          const parallaxStrength = (particle.layer + 1) * 2; // 2px, 4px, 6px per layer (was 5, 10, 15)
           x += mouseRef.current.x * parallaxStrength;
           y += mouseRef.current.y * parallaxStrength;
         }
@@ -231,8 +287,8 @@ export function ParticleSphere({
         const x2d = centerX + x * scale;
         const y2d = centerY + y * scale;
 
-        // Calculate size with depth (closer = bigger)
-        const depthSize = particle.size * scale;
+        // Calculate size with depth (enhanced depth-of-field - foreground particles much larger)
+        const depthSize = particle.size * scale * (1 + (z / radius) * 0.5); // 50% size boost for near particles
 
         // Pulse animation (individual particle glow)
         let pulseOpacity = particle.opacity;

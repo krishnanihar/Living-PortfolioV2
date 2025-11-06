@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Github, Mail, ChevronDown } from 'lucide-react';
+import { ParticleSphere } from '@/components/effects/ParticleSphere';
 
 export function IntroductionSection() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
@@ -76,15 +77,6 @@ export function IntroductionSection() {
           50% {
             box-shadow: 0 0 16px rgba(218, 14, 41, 0.8);
             opacity: 0.8;
-          }
-        }
-
-        @keyframes gradientShift {
-          0%, 100% {
-            transform: rotate(0deg) scale(1);
-          }
-          50% {
-            transform: rotate(180deg) scale(1.1);
           }
         }
 
@@ -443,7 +435,7 @@ export function IntroductionSection() {
               </div>
             </div>
 
-            {/* Right Column: Visual */}
+            {/* Right Column: Particle Sphere Visual */}
             <div
               style={{
                 position: 'relative',
@@ -456,34 +448,10 @@ export function IntroductionSection() {
                 animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both' : 'none',
               }}
             >
-              {/* Animated Gradient Orb */}
-              <div
-                style={{
-                  position: 'relative',
-                  width: '400px',
-                  height: '400px',
-                  borderRadius: '50%',
-                  background: `
-                    radial-gradient(circle at 30% 30%, rgba(218, 14, 41, 0.3) 0%, transparent 50%),
-                    radial-gradient(circle at 70% 70%, rgba(147, 51, 234, 0.25) 0%, transparent 50%),
-                    radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.2) 0%, transparent 70%)
-                  `,
-                  filter: 'blur(80px)',
-                  animation: 'gradientShift 20s ease-in-out infinite',
-                }}
-              />
-              {/* Glass overlay */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: '20%',
-                  borderRadius: '50%',
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  backdropFilter: 'blur(100px) saturate(180%)',
-                  WebkitBackdropFilter: 'blur(100px) saturate(180%)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  boxShadow: '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
-                }}
+              <ParticleSphere
+                radius={200}
+                particleCount={500}
+                enableInteraction={true}
               />
             </div>
           </div>
