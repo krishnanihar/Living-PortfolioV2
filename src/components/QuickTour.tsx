@@ -19,7 +19,7 @@ interface QuickTourProps {
 const tourSteps: TourStep[] = [
   {
     id: 'intro',
-    title: 'Hi, I\'m Nihar Sunkara',
+    title: 'Hi, I\'m Krishna Nihar',
     description: 'Product & New Media Designer who builds living interfaces. I\'ve worked with Air India, NID, ISB, and Microsoft — designing systems that serve 450+ users daily.',
     targetSelector: '[data-tour="hero-card"]',
     position: 'bottom',

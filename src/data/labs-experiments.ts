@@ -40,7 +40,7 @@ export const labExperiments: LabExperiment[] = [
       figma: 'https://www.figma.com/community/plugin/pixel-radar',
     },
 
-    owner: 'Nihar Sunkara',
+    owner: 'Krishna Nihar',
     dates: {
       created: '2025-03-26',
       updated: '2025-10-08',
@@ -118,7 +118,7 @@ export const labExperiments: LabExperiment[] = [
       url: 'https://astra-chat.vercel.app',
     },
 
-    owner: 'Nihar Sunkara',
+    owner: 'Krishna Nihar',
     dates: {
       created: '2025-02-14',
       updated: '2025-10-09',
@@ -189,7 +189,7 @@ export const labExperiments: LabExperiment[] = [
       demo: '/work/air-india#aviation-analytics',
     },
 
-    owner: 'Nihar Sunkara',
+    owner: 'Krishna Nihar',
     dates: {
       created: '2024-06-10',
       updated: '2025-10-07',
@@ -267,7 +267,7 @@ export const labExperiments: LabExperiment[] = [
       url: 'https://arcane-pursuit.vercel.app/demo.mp4',
     },
 
-    owner: 'Nihar Sunkara',
+    owner: 'Krishna Nihar',
     dates: {
       created: '2025-04-05',
       updated: '2025-10-09',
@@ -344,7 +344,7 @@ export const labExperiments: LabExperiment[] = [
       url: 'https://kerala-kingdoms.vercel.app',
     },
 
-    owner: 'Nihar Sunkara',
+    owner: 'Krishna Nihar',
     dates: {
       created: '2025-05-12',
       updated: '2025-10-01',
@@ -421,7 +421,7 @@ export const labExperiments: LabExperiment[] = [
       url: 'https://latent-space.vercel.app',
     },
 
-    owner: 'Nihar Sunkara',
+    owner: 'Krishna Nihar',
     dates: {
       created: '2024-12-10',
       updated: '2025-10-08',
@@ -498,7 +498,7 @@ export const labExperiments: LabExperiment[] = [
       url: 'https://ultraviolette.com/manual/preview.png',
     },
 
-    owner: 'Nihar Sunkara',
+    owner: 'Krishna Nihar',
     dates: {
       created: '2024-08-20',
       updated: '2025-09-30',
@@ -568,7 +568,7 @@ export const labExperiments: LabExperiment[] = [
       repo: 'https://github.com/krishnanihar/n8n-agent-kit',
     },
 
-    owner: 'Nihar Sunkara',
+    owner: 'Krishna Nihar',
     dates: {
       created: '2025-03-01',
       updated: '2025-10-05',

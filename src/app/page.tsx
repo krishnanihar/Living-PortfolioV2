@@ -9,16 +9,16 @@ import { SectionDivider } from '@/components/ui/SectionDivider';
 import { OrbReflectionProvider } from '@/contexts/OrbReflectionContext';
 
 export const metadata: Metadata = {
-  title: 'Nihar Sunkara - Product Designer & Systems Thinker',
+  title: 'Krishna Nihar - Product Designer & Systems Thinker',
   description: 'Product designer crafting thoughtful experiences across systems, mobile, and IFE. Exploring design, AI, and the future of human-computer interaction.',
   openGraph: {
-    title: 'Nihar Sunkara - Product Designer & Systems Thinker',
+    title: 'Krishna Nihar - Product Designer & Systems Thinker',
     description: 'Product designer crafting thoughtful experiences across systems, mobile, and IFE. Exploring design, AI, and the future of human-computer interaction.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Nihar Sunkara - Product Designer & Systems Thinker',
+    title: 'Krishna Nihar - Product Designer & Systems Thinker',
     description: 'Product designer crafting thoughtful experiences across systems, mobile, and IFE. Exploring design, AI, and the future of human-computer interaction.',
   },
 };

@@ -190,7 +190,7 @@ export function Hero({ className }: HeroProps) {
                     backgroundClip: 'text',
                   }}
                 >
-                  Nihar Sunkara
+                  Krishna Nihar
                 </h1>
               </motion.div>
 

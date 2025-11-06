@@ -14,8 +14,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Nihar Sunkara — Product & New Media Designer',
-    template: '%s | Nihar Sunkara',
+    default: 'Krishna Nihar — Product & New Media Designer',
+    template: '%s | Krishna Nihar',
   },
   description: 'A living portfolio that breathes, remembers, and evolves with you. Product & New Media Designer specializing in design systems, aviation UX, and consciousness-aware interfaces.',
   keywords: [
@@ -28,19 +28,19 @@ export const metadata: Metadata = {
     'UI/UX Design',
     'Design Leadership',
   ],
-  authors: [{ name: 'Nihar Sunkara' }],
-  creator: 'Nihar Sunkara',
+  authors: [{ name: 'Krishna Nihar' }],
+  creator: 'Krishna Nihar',
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: 'https://niharsunkara.com',
-    title: 'Nihar Sunkara — Product & New Media Designer',
+    title: 'Krishna Nihar — Product & New Media Designer',
     description: 'A living portfolio that breathes, remembers, and evolves with you.',
-    siteName: 'Nihar Sunkara Portfolio',
+    siteName: 'Krishna Nihar Portfolio',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Nihar Sunkara — Product & New Media Designer',
+    title: 'Krishna Nihar — Product & New Media Designer',
     description: 'A living portfolio that breathes, remembers, and evolves with you.',
     creator: '@niharsunkara',
   },

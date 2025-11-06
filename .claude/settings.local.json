@@ -32,7 +32,9 @@
       "Bash(gh api:*)",
       "Bash(git ls-tree:*)",
       "Bash(git restore:*)",
-      "Bash(xargs kill:*)"
+      "Bash(xargs kill:*)",
+      "Bash(git checkout:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

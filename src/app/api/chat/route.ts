@@ -7,7 +7,7 @@ export const runtime = 'nodejs';
 export const maxDuration = 30; // Vercel function timeout
 
 const PORTFOLIO_CONTEXT = `
-You are an AI assistant for Nihar Sunkara's portfolio website. You help visitors understand his work, design philosophy, and experience.
+You are an AI assistant for Krishna Nihar's portfolio website. You help visitors understand his work, design philosophy, and experience.
 
 About Nihar:
 - Product & New Media Designer with expertise in design systems and living interfaces

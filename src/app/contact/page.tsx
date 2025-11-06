@@ -1,17 +1,17 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contact - Nihar Sunkara',
-  description: 'Get in touch with Nihar Sunkara for design collaborations, speaking opportunities, or general inquiries.',
+  title: 'Contact - Krishna Nihar',
+  description: 'Get in touch with Krishna Nihar for design collaborations, speaking opportunities, or general inquiries.',
   openGraph: {
-    title: 'Contact - Nihar Sunkara',
-    description: 'Get in touch with Nihar Sunkara for design collaborations, speaking opportunities, or general inquiries.',
+    title: 'Contact - Krishna Nihar',
+    description: 'Get in touch with Krishna Nihar for design collaborations, speaking opportunities, or general inquiries.',
     type: 'website',
   },
   twitter: {
     card: 'summary',
-    title: 'Contact - Nihar Sunkara',
-    description: 'Get in touch with Nihar Sunkara for design collaborations, speaking opportunities, or general inquiries.',
+    title: 'Contact - Krishna Nihar',
+    description: 'Get in touch with Krishna Nihar for design collaborations, speaking opportunities, or general inquiries.',
   },
 };
 

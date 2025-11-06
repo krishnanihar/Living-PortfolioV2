@@ -116,7 +116,7 @@ export function HeroCard() {
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
           }}>
-            Nihar Sunkara
+            Krishna Nihar
           </h1>
 
           {/* Tagline with Red × */}

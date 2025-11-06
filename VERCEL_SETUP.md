@@ -232,4 +232,4 @@ If you continue to experience issues:
 ---
 
 **Last Updated**: 2025-10-07
-**Maintained by**: Nihar Sunkara
+**Maintained by**: Krishna Nihar

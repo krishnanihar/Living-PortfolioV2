@@ -142,7 +142,7 @@ export function IntroductionSection() {
                   animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
                 }}
               >
-                Nihar Sunkara
+                Krishna Nihar
               </h1>
 
               {/* Tagline with Red × */}

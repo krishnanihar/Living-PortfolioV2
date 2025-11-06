@@ -2,7 +2,7 @@
   "name": "living-portfolio-v2",
   "version": "2.0.0",
   "description": "Modern portfolio website for Nihar - Built with Next.js, TypeScript, and design systems",
-  "author": "Nihar Sunkara",
+  "author": "Krishna Nihar",
   "license": "MIT",
   "scripts": {
     "dev": "next dev",

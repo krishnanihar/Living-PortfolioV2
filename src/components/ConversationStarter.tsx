@@ -189,7 +189,7 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
             lineHeight: '1.2',
             letterSpacing: '-0.02em',
           }}>
-            Nihar Sunkara
+            Krishna Nihar
           </h1>
 
           <p style={{
