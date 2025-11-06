@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Github, Mail, ChevronDown } from 'lucide-react';
 import { ParticleSphere } from '@/components/effects/ParticleSphere';
+import { useOrbReflection } from '@/contexts/OrbReflectionContext';
 
 export function IntroductionSection() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
@@ -11,6 +12,9 @@ export function IntroductionSection() {
   const [mounted, setMounted] = useState(false);
   const [inView, setInView] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
+
+  // Get orb reflection state for dynamic color effects
+  const { orbState } = useOrbReflection();
 
   useEffect(() => {
     setMounted(true);

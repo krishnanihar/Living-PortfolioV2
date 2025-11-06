@@ -5,6 +5,7 @@ import { IntroductionSection } from '@/components/sections/IntroductionSection';
 import WorkSection from '@/components/sections/WorkSection';
 import AboutSectionV2 from '@/components/sections/AboutSectionV2';
 import { SectionDivider } from '@/components/ui/SectionDivider';
+import { OrbReflectionProvider } from '@/contexts/OrbReflectionContext';
 
 export const metadata: Metadata = {
   title: 'Nihar Sunkara - Product Designer & Systems Thinker',
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <>
+    <OrbReflectionProvider>
       <NavigationBar />
       <CosmicBackground />
       <main id="main-content">
@@ -32,6 +33,6 @@ export default function HomePage() {
         <AboutSectionV2 />
         <WorkSection />
       </main>
-    </>
+    </OrbReflectionProvider>
   );
 }
