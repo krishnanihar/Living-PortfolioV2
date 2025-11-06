@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Github, Mail } from 'lucide-react';
 import { ParticleSphere } from '@/components/effects/ParticleSphere';
@@ -9,9 +9,25 @@ export function HeroCard() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
   const [hoveredStat, setHoveredStat] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (cardRef.current) {
+        const rect = cardRef.current.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        setMousePosition({ x, y });
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   return (
@@ -29,17 +45,42 @@ export function HeroCard() {
         }
       `}</style>
 
-      <div style={{
-        position: 'relative',
-        zIndex: 1,
-        backdropFilter: 'blur(75px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(75px) saturate(180%)',
-        background: 'rgba(137, 137, 137, 0.05)',
-        border: '1px solid rgba(255, 255, 255, 0.09)',
-        borderRadius: '30px',
-        padding: 'clamp(2rem, 3vw, 2.5rem)',
-        boxShadow: '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
-      }}>
+      <div
+        ref={cardRef}
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          backdropFilter: 'blur(120px) saturate(200%)',
+          WebkitBackdropFilter: 'blur(120px) saturate(200%)',
+          background: 'rgba(18, 18, 18, 0.72)',
+          border: '1px solid rgba(255, 255, 255, 0.12)',
+          borderRadius: '30px',
+          padding: 'clamp(2rem, 3vw, 2.5rem)',
+          boxShadow: `
+            0px 16px 48px rgba(0, 0, 0, 0.6),
+            0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+            0px -1px 0px rgba(255, 255, 255, 0.08) inset,
+            0px 1px 2px rgba(0, 0, 0, 0.8)
+          `,
+          overflow: 'hidden',
+        }}
+      >
+        {/* Dynamic Mouse-Tracking Reflection Layer */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: `radial-gradient(circle 400px at ${mousePosition.x}% ${mousePosition.y}%,
+              rgba(255, 255, 255, 0.08) 0%,
+              rgba(255, 255, 255, 0.04) 30%,
+              transparent 60%)`,
+            pointerEvents: 'none',
+            zIndex: 0,
+            borderRadius: '30px',
+            transition: 'background 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+            mixBlendMode: 'overlay',
+          }}
+        />
         {/* Particle Sphere Background - Consciousness Orb */}
         <div style={{
           position: 'absolute',
@@ -59,6 +100,8 @@ export function HeroCard() {
 
         {/* Name */}
         <div style={{
+          position: 'relative',
+          zIndex: 1,
           textAlign: 'center',
           marginBottom: 'clamp(1rem, 2vw, 1.5rem)',
         }}>
@@ -106,6 +149,8 @@ export function HeroCard() {
 
         {/* Impact Statement */}
         <div style={{
+          position: 'relative',
+          zIndex: 1,
           textAlign: 'center',
           marginBottom: 'clamp(1rem, 2vw, 1.25rem)',
           opacity: mounted ? 1 : 0,
@@ -125,6 +170,8 @@ export function HeroCard() {
 
         {/* Current Role Badge with Pulsing Dot */}
         <div style={{
+          position: 'relative',
+          zIndex: 1,
           display: 'flex',
           justifyContent: 'center',
           marginBottom: 'clamp(1.5rem, 2.5vw, 2rem)',
@@ -137,16 +184,20 @@ export function HeroCard() {
             alignItems: 'center',
             gap: '0.5rem',
             padding: '0.625rem 1.25rem',
-            background: 'rgba(255, 255, 255, 0.03)',
-            backdropFilter: 'blur(100px) saturate(150%)',
-            WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            background: 'rgba(12, 12, 12, 0.65)',
+            backdropFilter: 'blur(120px) saturate(200%)',
+            WebkitBackdropFilter: 'blur(120px) saturate(200%)',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
             borderRadius: '15px',
             fontSize: '0.875rem',
             fontWeight: '400',
-            color: 'rgba(255, 255, 255, 0.8)',
+            color: 'rgba(255, 255, 255, 0.85)',
             letterSpacing: '0.01em',
-            boxShadow: '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
+            boxShadow: `
+              0px 12px 36px rgba(0, 0, 0, 0.5),
+              0px 0px 1px rgba(255, 255, 255, 0.25) inset,
+              0px -1px 0px rgba(255, 255, 255, 0.06) inset
+            `,
           }}>
             <div style={{
               width: '6px',
@@ -161,6 +212,8 @@ export function HeroCard() {
 
         {/* Credibility Stats Section */}
         <div style={{
+          position: 'relative',
+          zIndex: 1,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -184,21 +237,25 @@ export function HeroCard() {
                 position: 'relative',
                 padding: '0.625rem 1rem',
                 background: hoveredStat === idx
-                  ? 'rgba(255, 255, 255, 0.05)'
-                  : 'rgba(255, 255, 255, 0.03)',
-                backdropFilter: 'blur(100px) saturate(150%)',
-                WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
+                  ? 'rgba(15, 15, 15, 0.7)'
+                  : 'rgba(12, 12, 12, 0.65)',
+                backdropFilter: 'blur(120px) saturate(200%)',
+                WebkitBackdropFilter: 'blur(120px) saturate(200%)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
                 borderRadius: '15px',
                 fontSize: '0.8125rem',
                 fontWeight: '400',
-                color: 'rgba(255, 255, 255, 0.75)',
+                color: 'rgba(255, 255, 255, 0.8)',
                 cursor: 'pointer',
                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                 transform: hoveredStat === idx ? 'translateY(-2px)' : 'translateY(0)',
                 boxShadow: hoveredStat === idx
-                  ? '0px 8px 30px rgba(0, 0, 0, 0.5), 0px 0px 12px rgba(255, 255, 255, 0.03) inset'
-                  : '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                  ? `0px 16px 40px rgba(0, 0, 0, 0.6),
+                     0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                     0px -1px 0px rgba(255, 255, 255, 0.08) inset`
+                  : `0px 8px 24px rgba(0, 0, 0, 0.4),
+                     0px 0px 1px rgba(255, 255, 255, 0.2) inset,
+                     0px -1px 0px rgba(255, 255, 255, 0.04) inset`,
               }}
             >
               {stat.label}
@@ -241,6 +298,8 @@ export function HeroCard() {
 
         {/* CTA Buttons */}
         <div style={{
+          position: 'relative',
+          zIndex: 1,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -262,13 +321,13 @@ export function HeroCard() {
               gap: '0.625rem',
               padding: 'clamp(0.875rem, 1.75vw, 1rem) clamp(1.5rem, 3vw, 2rem)',
               background: hoveredButton === 'featured'
-                ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(255, 255, 255, 0.1))'
-                : 'linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(255, 255, 255, 0.06))',
-              backdropFilter: 'blur(100px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(100px) saturate(150%)',
+                ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(12, 12, 12, 0.7))'
+                : 'linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(12, 12, 12, 0.65))',
+              backdropFilter: 'blur(120px) saturate(200%)',
+              WebkitBackdropFilter: 'blur(120px) saturate(200%)',
               border: hoveredButton === 'featured'
                 ? '1px solid rgba(16, 185, 129, 0.6)'
-                : '1px solid rgba(16, 185, 129, 0.35)',
+                : '1px solid rgba(16, 185, 129, 0.4)',
               borderRadius: '15px',
               color: 'rgba(255, 255, 255, 0.98)',
               textDecoration: 'none',
@@ -277,8 +336,12 @@ export function HeroCard() {
               transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
               transform: hoveredButton === 'featured' ? 'translateY(-3px) scale(1.02)' : 'translateY(0) scale(1)',
               boxShadow: hoveredButton === 'featured'
-                ? '0 16px 40px rgba(16, 185, 129, 0.25), 0px 0px 12px rgba(255, 255, 255, 0.03) inset'
-                : '0px 8px 30px rgba(0, 0, 0, 0.3), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                ? `0 20px 48px rgba(16, 185, 129, 0.3),
+                   0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                   0px -1px 0px rgba(255, 255, 255, 0.1) inset`
+                : `0px 12px 36px rgba(0, 0, 0, 0.4),
+                   0px 0px 1px rgba(255, 255, 255, 0.2) inset,
+                   0px -1px 0px rgba(255, 255, 255, 0.05) inset`,
               position: 'relative',
             }}
           >
@@ -307,23 +370,27 @@ export function HeroCard() {
               gap: '0.5rem',
               padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.25rem, 2.5vw, 1.5rem)',
               background: hoveredButton === 'contact'
-                ? 'rgba(255, 255, 255, 0.05)'
-                : 'rgba(255, 255, 255, 0.03)',
-              backdropFilter: 'blur(100px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(100px) saturate(150%)',
+                ? 'rgba(15, 15, 15, 0.7)'
+                : 'rgba(12, 12, 12, 0.65)',
+              backdropFilter: 'blur(120px) saturate(200%)',
+              WebkitBackdropFilter: 'blur(120px) saturate(200%)',
               border: hoveredButton === 'contact'
-                ? '1px solid rgba(255, 255, 255, 0.12)'
-                : '1px solid rgba(255, 255, 255, 0.08)',
+                ? '1px solid rgba(255, 255, 255, 0.15)'
+                : '1px solid rgba(255, 255, 255, 0.12)',
               borderRadius: '15px',
-              color: 'rgba(255, 255, 255, 0.85)',
+              color: 'rgba(255, 255, 255, 0.9)',
               textDecoration: 'none',
               fontSize: '0.875rem',
               fontWeight: '400',
               transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
               transform: hoveredButton === 'contact' ? 'translateY(-2px)' : 'translateY(0)',
               boxShadow: hoveredButton === 'contact'
-                ? '0px 8px 30px rgba(0, 0, 0, 0.4), 0px 0px 12px rgba(255, 255, 255, 0.03) inset'
-                : '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                ? `0px 16px 40px rgba(0, 0, 0, 0.6),
+                   0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                   0px -1px 0px rgba(255, 255, 255, 0.08) inset`
+                : `0px 8px 24px rgba(0, 0, 0, 0.4),
+                   0px 0px 1px rgba(255, 255, 255, 0.2) inset,
+                   0px -1px 0px rgba(255, 255, 255, 0.04) inset`,
             }}
           >
             <Mail size={16} />
@@ -343,23 +410,27 @@ export function HeroCard() {
               gap: '0.5rem',
               padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.25rem, 2.5vw, 1.5rem)',
               background: hoveredButton === 'github'
-                ? 'rgba(255, 255, 255, 0.04)'
-                : 'rgba(255, 255, 255, 0.03)',
-              backdropFilter: 'blur(100px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(100px) saturate(150%)',
+                ? 'rgba(15, 15, 15, 0.7)'
+                : 'rgba(12, 12, 12, 0.65)',
+              backdropFilter: 'blur(120px) saturate(200%)',
+              WebkitBackdropFilter: 'blur(120px) saturate(200%)',
               border: hoveredButton === 'github'
-                ? '1px solid rgba(255, 255, 255, 0.1)'
-                : '1px solid rgba(255, 255, 255, 0.08)',
+                ? '1px solid rgba(255, 255, 255, 0.14)'
+                : '1px solid rgba(255, 255, 255, 0.12)',
               borderRadius: '15px',
-              color: 'rgba(255, 255, 255, 0.7)',
+              color: 'rgba(255, 255, 255, 0.85)',
               textDecoration: 'none',
               fontSize: '0.875rem',
               fontWeight: '400',
               transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
               transform: hoveredButton === 'github' ? 'translateY(-2px)' : 'translateY(0)',
               boxShadow: hoveredButton === 'github'
-                ? '0px 8px 30px rgba(0, 0, 0, 0.35), 0px 0px 12px rgba(255, 255, 255, 0.03) inset'
-                : '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                ? `0px 16px 40px rgba(0, 0, 0, 0.6),
+                   0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                   0px -1px 0px rgba(255, 255, 255, 0.08) inset`
+                : `0px 8px 24px rgba(0, 0, 0, 0.4),
+                   0px 0px 1px rgba(255, 255, 255, 0.2) inset,
+                   0px -1px 0px rgba(255, 255, 255, 0.04) inset`,
             }}
           >
             <Github size={15} />
@@ -369,21 +440,27 @@ export function HeroCard() {
 
         {/* Bio Card */}
         <div style={{
+          position: 'relative',
+          zIndex: 1,
           padding: 'clamp(1rem, 2vw, 1.25rem)',
-          background: 'rgba(255, 255, 255, 0.03)',
-          backdropFilter: 'blur(100px) saturate(150%)',
-          WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
+          background: 'rgba(12, 12, 12, 0.65)',
+          backdropFilter: 'blur(120px) saturate(200%)',
+          WebkitBackdropFilter: 'blur(120px) saturate(200%)',
+          border: '1px solid rgba(255, 255, 255, 0.12)',
           borderRadius: '15px',
           fontSize: 'clamp(0.8125rem, 1.5vw, 0.9375rem)',
           fontWeight: '300',
-          color: 'rgba(255, 255, 255, 0.7)',
+          color: 'rgba(255, 255, 255, 0.75)',
           lineHeight: '1.6',
           textAlign: 'center',
           opacity: mounted ? 1 : 0,
           transform: mounted ? 'translateY(0)' : 'translateY(30px)',
           transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s',
-          boxShadow: '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
+          boxShadow: `
+            0px 12px 36px rgba(0, 0, 0, 0.5),
+            0px 0px 1px rgba(255, 255, 255, 0.25) inset,
+            0px -1px 0px rgba(255, 255, 255, 0.06) inset
+          `,
         }}>
           <span style={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: '400' }}>INTP</span> building at the intersection of <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>healthcare × AI × consciousness</span>. 18-month deep dive into digital therapeutics culminating in <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>PsoriAssist</span>. Built <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>5000 lines in 48 hours</span> while winning <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>2 hackathons simultaneously</span>. Currently transforming enterprise systems at <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Air India</span> (10K+ daily users) while exploring the future of <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>human-computer symbiosis</span>.
         </div>
