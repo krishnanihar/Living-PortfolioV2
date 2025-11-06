@@ -9,6 +9,9 @@ interface Particle {
   baseX: number;
   baseY: number;
   baseZ: number;
+  velocityX: number;
+  velocityY: number;
+  velocityZ: number;
   size: number;
   opacity: number;
   pulseOffset: number;
@@ -30,12 +33,22 @@ export function ParticleSphere({
 }: ParticleSphereProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
-  const mouseRef = useRef({ x: 0, y: 0 });
+  const mouseRef = useRef({ x: 0, y: 0, z: 0, active: false });
   const animationRef = useRef<number | undefined>(undefined);
   const rotationRef = useRef({ x: 0, y: 0, z: 0 });
   const breathingRef = useRef(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Liquid physics parameters
+  const physicsParams = {
+    springStrength: 0.008,      // How fast particles return to rest position
+    damping: 0.92,               // Velocity damping (friction) - 0.92 = smooth liquid
+    repulsionStrength: 250,      // How hard mouse pushes particles away
+    repulsionRadius: 180,        // Area of mouse influence in 3D space
+    cohesionStrength: 0.001,     // Particle-to-particle attraction (surface tension)
+    cohesionRadius: 40,          // Distance for cohesion effect
+  };
 
   // Detect reduced motion preference
   useEffect(() => {
@@ -55,7 +68,7 @@ export function ParticleSphere({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Mouse tracking with distance-based falloff
+  // Mouse tracking for liquid scatter effect
   useEffect(() => {
     if (!enableInteraction || isMobile) return;
 
@@ -67,34 +80,30 @@ export function ParticleSphere({
       const sphereCenterX = rect.left + rect.width / 2;
       const sphereCenterY = rect.top + rect.height / 2;
 
-      // Calculate distance from mouse to sphere center
-      const mouseDistanceX = e.clientX - sphereCenterX;
-      const mouseDistanceY = e.clientY - sphereCenterY;
-      const distanceFromCenter = Math.sqrt(mouseDistanceX**2 + mouseDistanceY**2);
+      // Calculate mouse position relative to sphere center
+      const mouseX = e.clientX - sphereCenterX;
+      const mouseY = e.clientY - sphereCenterY;
 
-      // Influence radius: 350px (roughly canvas size - prevents scattering)
-      const influenceRadius = 350;
+      // Mouse is at z=0 plane (front of sphere)
+      // We'll convert this to 3D space for particle repulsion
+      mouseRef.current = {
+        x: mouseX,
+        y: mouseY,
+        z: 0, // Mouse position is on the viewing plane
+        active: true,
+      };
+    };
 
-      if (distanceFromCenter < influenceRadius) {
-        // Apply smooth quadratic falloff: closer = stronger, farther = weaker
-        const falloff = Math.pow(1 - (distanceFromCenter / influenceRadius), 2);
-
-        // Normalize and clamp to ±0.5 range (prevent extreme displacement)
-        const normalizedX = Math.max(-0.5, Math.min(0.5, (mouseDistanceX / rect.width) * 2));
-        const normalizedY = Math.max(-0.5, Math.min(0.5, (mouseDistanceY / rect.height) * 2));
-
-        mouseRef.current = {
-          x: normalizedX * falloff,
-          y: normalizedY * falloff,
-        };
-      } else {
-        // Mouse too far from sphere, no parallax effect
-        mouseRef.current = { x: 0, y: 0 };
-      }
+    const handleMouseLeave = () => {
+      mouseRef.current.active = false;
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseleave', handleMouseLeave);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+    };
   }, [enableInteraction, isMobile]);
 
   // Color interpolation helper
@@ -148,6 +157,9 @@ export function ParticleSphere({
         baseX: scaledX,
         baseY: scaledY,
         baseZ: scaledZ,
+        velocityX: 0,
+        velocityY: 0,
+        velocityZ: 0,
         size: isMobile ? (3 + Math.random() * 2) : (1 + Math.random() * 3), // 1-4px on desktop, 3-5px on mobile
         opacity: 0.3 + Math.random() * 0.6, // 0.3-0.9
         pulseOffset: Math.random() * Math.PI * 2, // Random starting phase for pulse
@@ -266,38 +278,99 @@ export function ParticleSphere({
         });
       }
 
-      sortedParticles.forEach((particle, index) => {
-        // Apply rotation
-        let { x, y, z } = particle;
+      // Update particle physics (liquid behavior)
+      particlesRef.current.forEach((particle, index) => {
+        // Calculate forces acting on particle
+        let forceX = 0, forceY = 0, forceZ = 0;
 
-        if (!prefersReducedMotion) {
-          // Rotate around Y axis (all layers rotate together - no layer desync)
-          const cosY = Math.cos(rotationRef.current.y);
-          const sinY = Math.sin(rotationRef.current.y);
-          const newX = x * cosY - z * sinY;
-          const newZ = x * sinY + z * cosY;
-          x = newX;
-          z = newZ;
+        // 1. Spring force (pulls particle back to rest position)
+        const dx = particle.baseX - particle.x;
+        const dy = particle.baseY - particle.y;
+        const dz = particle.baseZ - particle.z;
+        forceX += dx * physicsParams.springStrength;
+        forceY += dy * physicsParams.springStrength;
+        forceZ += dz * physicsParams.springStrength;
 
-          // Rotate around X axis
-          const cosX = Math.cos(rotationRef.current.x);
-          const sinX = Math.sin(rotationRef.current.x);
-          const newY = y * cosX - z * sinX;
-          z = y * sinX + z * cosX;
-          y = newY;
+        // 2. Mouse repulsion force (explosive scatter)
+        if (enableInteraction && !isMobile && mouseRef.current.active && !prefersReducedMotion) {
+          const mouseDistX = particle.x - mouseRef.current.x;
+          const mouseDistY = particle.y - mouseRef.current.y;
+          const mouseDistZ = particle.z - mouseRef.current.z;
+          const mouseDist3D = Math.sqrt(mouseDistX**2 + mouseDistY**2 + mouseDistZ**2);
 
-          // Apply breathing scale (subtle amplitude)
-          const breathingScale = 1 + Math.sin(breathingRef.current) * 0.006;
-          x *= breathingScale;
-          y *= breathingScale;
-          z *= breathingScale;
+          if (mouseDist3D < physicsParams.repulsionRadius && mouseDist3D > 0.1) {
+            // Inverse square law for repulsion (closer = stronger push)
+            const repulsionForce = physicsParams.repulsionStrength / (mouseDist3D * mouseDist3D + 1);
+            const directionX = mouseDistX / mouseDist3D;
+            const directionY = mouseDistY / mouseDist3D;
+            const directionZ = mouseDistZ / mouseDist3D;
+
+            forceX += directionX * repulsionForce;
+            forceY += directionY * repulsionForce;
+            forceZ += directionZ * repulsionForce;
+          }
         }
 
-        // Mouse parallax (subtle layer-based displacement with falloff)
-        if (enableInteraction && !isMobile && !prefersReducedMotion) {
-          const parallaxStrength = (particle.layer + 1) * 1.5; // 1.5px, 3px, 4.5px per layer (reduced for smoother feel)
-          x += mouseRef.current.x * parallaxStrength;
-          y += mouseRef.current.y * parallaxStrength;
+        // 3. Cohesion force (particles attract nearby particles - surface tension)
+        if (!isMobile && !prefersReducedMotion) {
+          let cohesionX = 0, cohesionY = 0, cohesionZ = 0;
+          let neighborCount = 0;
+
+          // Check nearby particles (performance: only check every 10th particle)
+          for (let j = index + 1; j < Math.min(index + 20, particlesRef.current.length); j++) {
+            const other = particlesRef.current[j];
+            const cohDistX = other.x - particle.x;
+            const cohDistY = other.y - particle.y;
+            const cohDistZ = other.z - particle.z;
+            const cohDist = Math.sqrt(cohDistX**2 + cohDistY**2 + cohDistZ**2);
+
+            if (cohDist < physicsParams.cohesionRadius && cohDist > 0.1) {
+              cohesionX += cohDistX;
+              cohesionY += cohDistY;
+              cohesionZ += cohDistZ;
+              neighborCount++;
+            }
+          }
+
+          if (neighborCount > 0) {
+            forceX += (cohesionX / neighborCount) * physicsParams.cohesionStrength;
+            forceY += (cohesionY / neighborCount) * physicsParams.cohesionStrength;
+            forceZ += (cohesionZ / neighborCount) * physicsParams.cohesionStrength;
+          }
+        }
+
+        // Apply forces to velocity
+        particle.velocityX += forceX;
+        particle.velocityY += forceY;
+        particle.velocityZ += forceZ;
+
+        // Apply damping (friction)
+        particle.velocityX *= physicsParams.damping;
+        particle.velocityY *= physicsParams.damping;
+        particle.velocityZ *= physicsParams.damping;
+
+        // Update position based on velocity
+        particle.x += particle.velocityX;
+        particle.y += particle.velocityY;
+        particle.z += particle.velocityZ;
+      });
+
+      // Render particles
+      sortedParticles.forEach((particle, index) => {
+        // Get current particle position (already updated by physics)
+        let { x, y, z } = particle;
+
+        // Apply subtle rotation to base positions (for visual variety)
+        if (!prefersReducedMotion) {
+          // Rotate around Y axis
+          const cosY = Math.cos(rotationRef.current.y);
+          const sinY = Math.sin(rotationRef.current.y);
+          const baseRotatedX = particle.baseX * cosY - particle.baseZ * sinY;
+          const baseRotatedZ = particle.baseX * sinY + particle.baseZ * cosY;
+
+          // Update base position for spring force to follow rotation
+          particle.baseX = baseRotatedX;
+          particle.baseZ = baseRotatedZ;
         }
 
         // Project 3D to 2D (perspective projection)
