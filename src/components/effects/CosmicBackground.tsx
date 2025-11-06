@@ -5,6 +5,46 @@ import React, { useState, useEffect } from 'react';
 export function CosmicBackground() {
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
 
+  // Sphere position (static - right side of hero section, approximately 65% x, 45% y)
+  const spherePosition = { x: 65, y: 45 };
+
+  // Color reflection helper - calculates star color based on distance to particle sphere
+  const getReflectedColor = (starX: number, starY: number, layerStrength: number = 0.6) => {
+    const dx = starX - spherePosition.x;
+    const dy = starY - spherePosition.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const influenceRadius = 45; // % of viewport
+
+    // No influence if too far from sphere
+    if (distance > influenceRadius) return 'rgba(255, 255, 255, 0.9)';
+
+    // Calculate influence strength (1 = at sphere center, 0 = at influence edge)
+    const influence = 1 - (distance / influenceRadius);
+
+    // Get angle to determine which color zone (matches sphere's color distribution)
+    const angle = Math.atan2(dy, dx);
+    const normalizedAngle = ((angle + Math.PI) / (Math.PI * 2) + 1) % 1;
+
+    // Select base color based on angle (same as particle sphere)
+    let baseColor;
+    if (normalizedAngle < 0.33) {
+      baseColor = { r: 33, g: 150, b: 243 }; // Electric Blue
+    } else if (normalizedAngle < 0.66) {
+      baseColor = { r: 124, g: 58, b: 237 }; // Deep Purple
+    } else {
+      baseColor = { r: 6, g: 182, b: 212 }; // Cyan
+    }
+
+    // Mix with white based on layer strength and influence
+    // layerStrength: far layer = 0.7 (strong), mid = 0.5, near = 0.3 (subtle)
+    const mixStrength = influence * layerStrength;
+    const r = Math.round(255 * (1 - mixStrength) + baseColor.r * mixStrength);
+    const g = Math.round(255 * (1 - mixStrength) + baseColor.g * mixStrength);
+    const b = Math.round(255 * (1 - mixStrength) + baseColor.b * mixStrength);
+
+    return `rgba(${r}, ${g}, ${b}, 0.9)`;
+  };
+
   // Stabilize particle positions with deterministic algorithm
   const particlePositions = React.useMemo(() => {
     return {
@@ -108,6 +148,8 @@ export function CosmicBackground() {
                   animationDuration: `${particle.duration1}s, ${particle.duration2}s`,
                   transform: `translate(${attractX}px, ${attractY}px)`,
                   transition: 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+                  background: getReflectedColor(particle.left, particle.top, 0.7),
+                  boxShadow: `0 0 3px ${getReflectedColor(particle.left, particle.top, 0.6)}`,
                 }}
               />
             );
@@ -140,6 +182,8 @@ export function CosmicBackground() {
                   animationDuration: `${particle.duration1}s, ${particle.duration2}s`,
                   transform: `translate(${attractX}px, ${attractY}px)`,
                   transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                  background: getReflectedColor(particle.left, particle.top, 0.5),
+                  boxShadow: `0 0 3px ${getReflectedColor(particle.left, particle.top, 0.4)}`,
                 }}
               />
             );
@@ -172,6 +216,8 @@ export function CosmicBackground() {
                   animationDuration: `${particle.duration1}s, ${particle.duration2}s`,
                   transform: `translate(${attractX}px, ${attractY}px)`,
                   transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  background: getReflectedColor(particle.left, particle.top, 0.3),
+                  boxShadow: `0 0 3px ${getReflectedColor(particle.left, particle.top, 0.25)}`,
                 }}
               />
             );
@@ -191,6 +237,10 @@ export function CosmicBackground() {
             const attractX = dx * force * 0.18;
             const attractY = dy * force * 0.18;
 
+            // Accent particles shift from red to sphere colors when near sphere
+            const accentColor = getReflectedColor(particle.left, particle.top, 0.8);
+            const isNearSphere = distance < 30; // Within 30% of viewport
+
             return (
               <div
                 key={`accent-${i}`}
@@ -204,6 +254,10 @@ export function CosmicBackground() {
                   animationDuration: `${particle.duration1}s, ${particle.duration2}s`,
                   transform: `translate(${attractX}px, ${attractY}px)`,
                   transition: 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)',
+                  background: isNearSphere ? accentColor : 'rgba(218, 14, 41, 0.7)',
+                  boxShadow: isNearSphere
+                    ? `0 0 6px ${accentColor}`
+                    : '0 0 6px rgba(218, 14, 41, 0.5)',
                 }}
               />
             );
