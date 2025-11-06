@@ -149,10 +149,10 @@ export function ParticleSphere({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set canvas size
+    // Set canvas size (larger to prevent clipping with effects)
     const setCanvasSize = () => {
       const dpr = window.devicePixelRatio || 1;
-      const size = isMobile ? 300 : 400;
+      const size = isMobile ? 350 : 550; // Increased from 400px to 550px for proper effects rendering
 
       canvas.width = size * dpr;
       canvas.height = size * dpr;
@@ -378,7 +378,7 @@ export function ParticleSphere({
         left: '50%',
         transform: 'translate(-50%, -50%)',
         pointerEvents: 'none',
-        filter: prefersReducedMotion ? 'none' : 'drop-shadow(0 0 40px rgba(124, 58, 237, 0.15))',
+        filter: (prefersReducedMotion || isMobile) ? 'none' : 'drop-shadow(0 0 30px rgba(124, 58, 237, 0.12))',
         opacity: prefersReducedMotion ? 0.7 : 1,
       }}
     />

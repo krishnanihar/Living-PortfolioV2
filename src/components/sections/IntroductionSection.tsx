@@ -444,12 +444,13 @@ export function IntroductionSection() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                overflow: 'visible', // Allow effects to extend beyond container
                 opacity: inView && mounted ? 1 : 0,
                 animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both' : 'none',
               }}
             >
               <ParticleSphere
-                radius={200}
+                radius={180}
                 particleCount={500}
                 enableInteraction={true}
               />
