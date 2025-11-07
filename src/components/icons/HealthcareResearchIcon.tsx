@@ -22,7 +22,6 @@ export function HealthcareResearchIcon({
       // Hover animation for entire icon
       whileHover={{
         scale: 1.15,
-        filter: 'drop-shadow(0 0 8px rgba(16, 185, 129, 0.6))',
       }}
       transition={{
         duration: 0.3,
