@@ -71,7 +71,7 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
             transform: 'translateY(-50%)',
             maxWidth: '180px',
             padding: '12px 16px',
-            background: 'rgba(0, 0, 0, 0.95)',
+            background: 'rgba(10, 10, 20, 0.95)',
             backdropFilter: 'blur(120px) saturate(200%) brightness(0.9)',
             WebkitBackdropFilter: 'blur(120px) saturate(200%) brightness(0.9)',
             border: '1px solid rgba(255, 255, 255, 0.08)',
@@ -80,7 +80,7 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
               inset 0 1px 0 rgba(255, 255, 255, 0.03),
               inset 0 -1px 0 rgba(0, 0, 0, 0.5),
               0 16px 48px rgba(0, 0, 0, 0.8),
-              0 0 40px rgba(218, 14, 41, 0.15)
+              0 0 40px rgba(124, 58, 237, 0.15)
             `,
             pointerEvents: 'none',
             whiteSpace: 'nowrap',
@@ -109,7 +109,7 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
               height: 0,
               borderTop: '6px solid transparent',
               borderBottom: '6px solid transparent',
-              borderLeft: '6px solid rgba(0, 0, 0, 0.95)',
+              borderLeft: '6px solid rgba(10, 10, 20, 0.95)',
             }}
           />
         </div>
@@ -125,7 +125,7 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
           width: 'clamp(48px, 10vw, 56px)',
           height: 'clamp(48px, 10vw, 56px)',
           borderRadius: '50%',
-          background: 'rgba(0, 0, 0, 0.95)',
+          background: 'rgba(10, 10, 20, 0.95)',
           backdropFilter: 'blur(120px) saturate(200%)',
           WebkitBackdropFilter: 'blur(120px) saturate(200%)',
           border: '1px solid rgba(255, 255, 255, 0.08)',
@@ -133,7 +133,7 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
             inset 0 1px 0 rgba(255, 255, 255, 0.03),
             inset 0 -1px 0 rgba(0, 0, 0, 0.5),
             0 16px 48px rgba(0, 0, 0, 0.8),
-            0 0 40px rgba(218, 14, 41, 0.2)
+            0 0 40px rgba(124, 58, 237, 0.25)
           `,
           display: 'flex',
           alignItems: 'center',
@@ -148,7 +148,7 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
             inset 0 1px 0 rgba(255, 255, 255, 0.05),
             inset 0 -1px 0 rgba(0, 0, 0, 0.5),
             0 20px 60px rgba(0, 0, 0, 0.9),
-            0 0 60px rgba(218, 14, 41, 0.35)
+            0 0 60px rgba(124, 58, 237, 0.4)
           `;
         }}
         onMouseLeave={(e) => {
@@ -157,7 +157,7 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
             inset 0 1px 0 rgba(255, 255, 255, 0.03),
             inset 0 -1px 0 rgba(0, 0, 0, 0.5),
             0 16px 48px rgba(0, 0, 0, 0.8),
-            0 0 40px rgba(218, 14, 41, 0.2)
+            0 0 40px rgba(124, 58, 237, 0.25)
           `;
         }}
         onMouseDown={(e) => {
@@ -167,14 +167,13 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
           e.currentTarget.style.transform = 'scale(1.05)';
         }}
       >
-        {/* Icon with subtle rotation animation */}
+        {/* Icon - static and elegant */}
         <Sparkles
           size={24}
           strokeWidth={2}
           style={{
-            color: 'rgba(218, 14, 41, 1)',
-            filter: 'drop-shadow(0 0 8px rgba(218, 14, 41, 0.4))',
-            animation: 'rotate-sparkle 4s linear infinite',
+            color: 'rgba(124, 58, 237, 1)',
+            filter: 'drop-shadow(0 0 8px rgba(124, 58, 237, 0.5))',
           }}
         />
 
@@ -228,25 +227,16 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
               inset 0 1px 0 rgba(255, 255, 255, 0.03),
               inset 0 -1px 0 rgba(0, 0, 0, 0.5),
               0 16px 48px rgba(0, 0, 0, 0.8),
-              0 0 40px rgba(218, 14, 41, 0.2),
-              0 0 0 0 rgba(218, 14, 41, 0.4);
+              0 0 40px rgba(124, 58, 237, 0.25),
+              0 0 0 0 rgba(124, 58, 237, 0.4);
           }
           50% {
             box-shadow:
               inset 0 1px 0 rgba(255, 255, 255, 0.03),
               inset 0 -1px 0 rgba(0, 0, 0, 0.5),
               0 16px 48px rgba(0, 0, 0, 0.8),
-              0 0 40px rgba(218, 14, 41, 0.2),
-              0 0 0 16px rgba(218, 14, 41, 0);
-          }
-        }
-
-        @keyframes rotate-sparkle {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
+              0 0 40px rgba(124, 58, 237, 0.25),
+              0 0 0 16px rgba(124, 58, 237, 0);
           }
         }
 
