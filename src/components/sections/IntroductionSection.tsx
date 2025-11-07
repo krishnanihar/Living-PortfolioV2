@@ -193,44 +193,6 @@ export function IntroductionSection() {
                 </p>
               </div>
 
-              {/* Current Role Badge */}
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.75rem 1.25rem',
-                  background: 'rgba(8, 8, 8, 0.9)',
-                  backdropFilter: 'blur(80px) saturate(180%)',
-                  WebkitBackdropFilter: 'blur(80px) saturate(180%)',
-                  border: '1px solid rgba(255, 255, 255, 0.18)',
-                  borderRadius: '15px',
-                  fontSize: '0.9375rem',
-                  fontWeight: '400',
-                  color: 'rgba(255, 255, 255, 0.9)',
-                  letterSpacing: '0.01em',
-                  boxShadow: `
-                    0px 12px 36px rgba(0, 0, 0, 0.6),
-                    0 0 20px rgba(218, 14, 41, 0.15),
-                    0px 0px 1px rgba(255, 255, 255, 0.3) inset,
-                    0px -1px 0px rgba(255, 255, 255, 0.08) inset
-                  `,
-                  marginBottom: '2.5rem',
-                  opacity: inView && mounted ? 1 : 0,
-                  animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both' : 'none',
-                }}
-              >
-                <div
-                  style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    background: 'rgba(218, 14, 41, 0.9)',
-                    animation: 'pulseRed 2s ease-in-out infinite',
-                  }}
-                />
-                Air India DesignLAB • Transforming 450+ daily operations
-              </div>
 
               {/* Stats Grid */}
               <div
