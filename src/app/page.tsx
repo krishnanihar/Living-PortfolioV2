@@ -1,4 +1,6 @@
-import { Metadata } from 'next';
+'use client';
+
+import { useState } from 'react';
 import { NavigationBar } from '@/components/NavigationBar';
 import { CosmicBackground } from '@/components/effects/CosmicBackground';
 import { ScrollDarkeningOverlay } from '@/components/effects/ScrollDarkeningOverlay';
@@ -7,23 +9,11 @@ import WorkSection from '@/components/sections/WorkSection';
 import AboutSectionV2 from '@/components/sections/AboutSectionV2';
 import { SectionDivider } from '@/components/ui/SectionDivider';
 import { OrbReflectionProvider } from '@/contexts/OrbReflectionContext';
-
-export const metadata: Metadata = {
-  title: 'Krishna Nihar - Product Designer & Systems Thinker',
-  description: 'Product designer crafting thoughtful experiences across systems, mobile, and IFE. Exploring design, AI, and the future of human-computer interaction.',
-  openGraph: {
-    title: 'Krishna Nihar - Product Designer & Systems Thinker',
-    description: 'Product designer crafting thoughtful experiences across systems, mobile, and IFE. Exploring design, AI, and the future of human-computer interaction.',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Krishna Nihar - Product Designer & Systems Thinker',
-    description: 'Product designer crafting thoughtful experiences across systems, mobile, and IFE. Exploring design, AI, and the future of human-computer interaction.',
-  },
-};
+import { FloatingChatButton } from '@/components/FloatingChatButton';
+import { Chatbot } from '@/components/Chatbot';
 
 export default function HomePage() {
+  const [isChatOpen, setIsChatOpen] = useState(false);
   return (
     <OrbReflectionProvider>
       <NavigationBar />
@@ -35,6 +25,16 @@ export default function HomePage() {
         <AboutSectionV2 />
         <WorkSection />
       </main>
+
+      {/* Floating chat button */}
+      <FloatingChatButton onClick={() => setIsChatOpen(true)} />
+
+      {/* Chatbot modal */}
+      <Chatbot
+        isOpen={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+        intentContext="general"
+      />
     </OrbReflectionProvider>
   );
 }
