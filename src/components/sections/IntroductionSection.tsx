@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Github, Mail, ChevronDown } from 'lucide-react';
 import { ParticleSphere } from '@/components/effects/ParticleSphere';
 import { useOrbReflection } from '@/contexts/OrbReflectionContext';
+import { HealthcareResearchIcon } from '@/components/icons/HealthcareResearchIcon';
 
 export function IntroductionSection() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
@@ -325,6 +326,16 @@ export function IntroductionSection() {
                     animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both' : 'none',
                   }}
                 >
+                  <div
+                    style={{
+                      filter: hoveredButton === 'featured'
+                        ? 'drop-shadow(0 0 8px rgba(16, 185, 129, 0.6))'
+                        : 'drop-shadow(0 0 4px rgba(16, 185, 129, 0.3))',
+                      transition: 'filter 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    }}
+                  >
+                    <HealthcareResearchIcon size={20} />
+                  </div>
                   <span>View Featured Work</span>
                   <div
                     style={{
