@@ -47,7 +47,7 @@ export function IntroductionSection() {
   }, []);
 
   const stats = [
-    { label: '10K+ daily users', tooltip: 'Air India mobile app + IFE systems' },
+    { label: 'Air India 10K users', tooltip: 'Mobile app + IFE systems serving 10K+ daily' },
     { label: '18-month research deep dive', tooltip: 'PsoriAssist healthcare design' },
     { label: '2 hackathons won simultaneously', tooltip: '5000 LOC in 48 hours' },
   ];
