@@ -12,6 +12,8 @@ interface Milestone {
   icon: React.ReactNode;
   metrics?: { label: string; value: string }[];
   color: string;
+  logo?: string; // Logo URL or SVG path
+  organization: string;
 }
 
 export default function JourneyPreview() {
@@ -21,7 +23,12 @@ export default function JourneyPreview() {
   const [isDragging, setIsDragging] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const dragX = useMotionValue(0);
-  const springX = useSpring(dragX, { stiffness: 200, damping: 30 });
+  // Smoother spring physics for carousel feel
+  const springX = useSpring(dragX, {
+    stiffness: 180,
+    damping: 35,
+    mass: 1.2 // More weight = smoother, more luxurious motion
+  });
 
   // Mouse tracking for magnetic effect
   const mouseX = useMotionValue(0);
@@ -37,7 +44,8 @@ export default function JourneyPreview() {
         { label: 'First Computer Fix', value: 'Age 10' },
         { label: 'ROMs Flashed', value: '20+' }
       ],
-      color: '#FFB800'
+      color: '#FFB800',
+      organization: 'Hyderabad'
     },
     {
       year: '2018',
@@ -48,7 +56,8 @@ export default function JourneyPreview() {
         { label: 'Projects Built', value: '15+' },
         { label: 'Skills Acquired', value: '8' }
       ],
-      color: '#7C3AED'
+      color: '#7C3AED',
+      organization: 'Srishti Manipal'
     },
     {
       year: '2021',
@@ -59,7 +68,8 @@ export default function JourneyPreview() {
         { label: 'Research Papers', value: '3' },
         { label: 'Prototypes', value: '12+' }
       ],
-      color: '#2196F3'
+      color: '#2196F3',
+      organization: 'National Institute of Design'
     },
     {
       year: '2024',
@@ -70,12 +80,25 @@ export default function JourneyPreview() {
         { label: 'Daily Users', value: '10K+' },
         { label: 'Systems Designed', value: '5+' }
       ],
-      color: '#DA0E29'
+      color: '#DA0E29',
+      organization: 'Air India'
     },
   ];
 
-  const cardWidth = 380;
-  const gap = 32;
+  // Responsive card sizing - larger for desktop carousel feel
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkDesktop = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
+
+  const cardWidth = isDesktop ? 520 : 380; // Larger cards on desktop
+  const gap = isDesktop ? 48 : 32; // More breathing room on desktop
   const totalWidth = (cardWidth + gap) * milestones.length;
 
   // Parallax background based on scroll position
@@ -88,7 +111,11 @@ export default function JourneyPreview() {
       const cardCenter = index * (cardWidth + gap);
       const viewportCenter = typeof window !== 'undefined' ? window.innerWidth / 2 : 0;
       const distanceFromCenter = Math.abs((cardCenter + latest) - viewportCenter);
-      const baseScale = Math.max(0.85, 1 - distanceFromCenter / 800);
+
+      // Smoother scaling curve for desktop
+      const scaleFactor = isDesktop ? 1000 : 800;
+      const minScale = isDesktop ? 0.88 : 0.85;
+      const baseScale = Math.max(minScale, 1 - distanceFromCenter / scaleFactor);
 
       // Extra boost for hovered card
       return hoveredCard === index ? baseScale * 1.05 : baseScale;
@@ -98,14 +125,19 @@ export default function JourneyPreview() {
       const cardCenter = index * (cardWidth + gap);
       const viewportCenter = typeof window !== 'undefined' ? window.innerWidth / 2 : 0;
       const distanceFromCenter = Math.abs((cardCenter + latest) - viewportCenter);
-      return Math.max(0.4, 1 - distanceFromCenter / 1000);
+
+      // Smoother opacity transition for desktop
+      const opacityFactor = isDesktop ? 1200 : 1000;
+      return Math.max(0.4, 1 - distanceFromCenter / opacityFactor);
     });
 
     const rotateY = useTransform(springX, (latest) => {
       if (hoveredCard !== index) return 0;
       const cardCenter = index * (cardWidth + gap);
       const distanceFromCenter = (cardCenter + latest);
-      return distanceFromCenter / 100; // Subtle 3D tilt
+      // Subtler 3D tilt for larger desktop cards
+      const tiltFactor = isDesktop ? 150 : 100;
+      return distanceFromCenter / tiltFactor;
     });
 
     return { scale, opacity, rotateY };
@@ -314,7 +346,7 @@ export default function JourneyPreview() {
       <div
         style={{
           position: 'relative',
-          height: '600px',
+          height: isDesktop ? '700px' : '600px', // Taller for desktop
           cursor: isDragging ? 'grabbing' : 'grab',
           userSelect: 'none',
         }}
@@ -331,7 +363,7 @@ export default function JourneyPreview() {
           style={{
             display: 'flex',
             gap: `${gap}px`,
-            paddingLeft: 'calc(50vw - 190px)',
+            paddingLeft: isDesktop ? `calc(50vw - ${cardWidth / 2}px)` : 'calc(50vw - 190px)',
             x: springX,
           }}
         >
@@ -366,8 +398,8 @@ export default function JourneyPreview() {
                     WebkitBackdropFilter: 'blur(40px) saturate(150%)',
                     border: `1px solid ${milestone.color}${hoveredCard === index ? '40' : '20'}`,
                     borderRadius: '24px',
-                    padding: '2rem',
-                    height: '500px',
+                    padding: isDesktop ? '2.5rem' : '2rem',
+                    height: isDesktop ? '580px' : '500px',
                     display: 'flex',
                     flexDirection: 'column',
                     transition: 'border-color 0.3s ease',
@@ -376,25 +408,47 @@ export default function JourneyPreview() {
                       : '0 10px 40px rgba(0, 0, 0, 0.3)',
                   }}
                 >
-                  {/* Icon */}
-                  <motion.div
-                    animate={hoveredCard === index ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
-                    transition={{ duration: 0.3 }}
-                    style={{
-                      width: '64px',
-                      height: '64px',
-                      borderRadius: '16px',
-                      background: `${milestone.color}15`,
-                      border: `1px solid ${milestone.color}30`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: milestone.color,
-                      marginBottom: '1.5rem',
-                    }}
-                  >
-                    {milestone.icon}
-                  </motion.div>
+                  {/* Header Row: Icon + Organization */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '1.5rem',
+                  }}>
+                    {/* Icon */}
+                    <motion.div
+                      animate={hoveredCard === index ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
+                      transition={{ duration: 0.3 }}
+                      style={{
+                        width: '64px',
+                        height: '64px',
+                        borderRadius: '16px',
+                        background: `${milestone.color}15`,
+                        border: `1px solid ${milestone.color}30`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: milestone.color,
+                      }}
+                    >
+                      {milestone.icon}
+                    </motion.div>
+
+                    {/* Organization Badge */}
+                    <div style={{
+                      padding: '0.5rem 1rem',
+                      background: 'rgba(255, 255, 255, 0.04)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      fontSize: '0.75rem',
+                      fontWeight: '500',
+                      color: 'var(--text-secondary)',
+                      textAlign: 'right',
+                      letterSpacing: '0.02em',
+                    }}>
+                      {milestone.organization}
+                    </div>
+                  </div>
 
                   {/* Year */}
                   <div style={{
