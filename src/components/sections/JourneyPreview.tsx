@@ -105,42 +105,27 @@ export default function JourneyPreview() {
   const backgroundY = useTransform(springX, [0, -totalWidth], [0, 100]);
   const backgroundOpacity = useTransform(springX, [0, -totalWidth], [0.3, 0.6]);
 
-  // Calculate scale and opacity for each card based on scroll position
+  // Apple Cover Flow style: Calculate rotation, scale, and depth for each card
   const getCardStyle = (index: number) => {
-    const scale = useTransform(springX, (latest) => {
-      const cardCenter = index * (cardWidth + gap);
-      const viewportCenter = typeof window !== 'undefined' ? window.innerWidth / 2 : 0;
-      const distanceFromCenter = Math.abs((cardCenter + latest) - viewportCenter);
+    const isCenter = index === activeIndex;
+    const offset = index - activeIndex;
 
-      // Smoother scaling curve for desktop
-      const scaleFactor = isDesktop ? 1000 : 800;
-      const minScale = isDesktop ? 0.88 : 0.85;
-      const baseScale = Math.max(minScale, 1 - distanceFromCenter / scaleFactor);
+    // Cover Flow Rotation: ±45° for side cards, 0° for center
+    const rotateY = offset === 0 ? 0 : offset > 0 ? 45 : -45;
 
-      // Extra boost for hovered card
-      return hoveredCard === index ? baseScale * 1.05 : baseScale;
-    });
+    // Binary Scaling: Center card is 1.5x, all others are 1x
+    const scale = isCenter ? 1.5 : 1;
 
-    const opacity = useTransform(springX, (latest) => {
-      const cardCenter = index * (cardWidth + gap);
-      const viewportCenter = typeof window !== 'undefined' ? window.innerWidth / 2 : 0;
-      const distanceFromCenter = Math.abs((cardCenter + latest) - viewportCenter);
+    // Z-depth: Center forward, sides recede into background
+    const translateZ = isCenter ? 16 : -(100 + Math.abs(offset) * (cardWidth / 1.5));
 
-      // Smoother opacity transition for desktop
-      const opacityFactor = isDesktop ? 1200 : 1000;
-      return Math.max(0.4, 1 - distanceFromCenter / opacityFactor);
-    });
+    // Z-index: Center always on top
+    const zIndex = isCenter ? 100 : 1;
 
-    const rotateY = useTransform(springX, (latest) => {
-      if (hoveredCard !== index) return 0;
-      const cardCenter = index * (cardWidth + gap);
-      const distanceFromCenter = (cardCenter + latest);
-      // Subtler 3D tilt for larger desktop cards
-      const tiltFactor = isDesktop ? 150 : 100;
-      return distanceFromCenter / tiltFactor;
-    });
+    // Opacity for far cards (optional)
+    const opacity = Math.abs(offset) > 2 ? 0.6 : 1;
 
-    return { scale, opacity, rotateY };
+    return { rotateY, scale, translateZ, zIndex, opacity };
   };
 
   const handleDragEnd = (_: any, info: PanInfo) => {
@@ -342,13 +327,17 @@ export default function JourneyPreview() {
         </motion.div>
       </div>
 
-      {/* Draggable Timeline */}
+      {/* Draggable Timeline - Cover Flow Container */}
       <div
         style={{
           position: 'relative',
-          height: isDesktop ? '700px' : '600px', // Taller for desktop
+          height: isDesktop ? '700px' : '600px',
           cursor: isDragging ? 'grabbing' : 'grab',
           userSelect: 'none',
+          perspective: '640px', // Apple Cover Flow perspective (40em)
+          perspectiveOrigin: '50% 50%',
+          WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.2) 100%)',
+          maskImage: 'linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.2) 100%)',
         }}
         onMouseMove={handleMouseMove}
       >
@@ -365,47 +354,62 @@ export default function JourneyPreview() {
             gap: `${gap}px`,
             paddingLeft: isDesktop ? `calc(50vw - ${cardWidth / 2}px)` : 'calc(50vw - 190px)',
             x: springX,
+            transformStyle: 'preserve-3d',
           }}
         >
           {milestones.map((milestone, index) => {
-            const { scale, opacity, rotateY } = getCardStyle(index);
+            const { rotateY, scale, translateZ, zIndex, opacity } = getCardStyle(index);
 
             return (
               <motion.div
                 key={milestone.year}
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => setHoveredCard(null)}
+                onClick={() => snapToIndex(index)}
                 style={{
                   width: `${cardWidth}px`,
                   minWidth: `${cardWidth}px`,
-                  scale,
-                  opacity,
-                  rotateY,
-                  pointerEvents: isDragging ? 'none' : 'auto',
                   transformStyle: 'preserve-3d',
-                  perspective: '1000px',
-                }}
-                whileHover={{
-                  y: -10,
-                  transition: { duration: 0.3, ease: 'easeOut' }
+                  pointerEvents: isDragging ? 'none' : 'auto',
+                  zIndex,
+                  opacity,
                 }}
               >
+                {/* Inner card with Cover Flow transforms */}
+                <motion.div
+                  animate={{
+                    rotateY,
+                    scale,
+                    translateZ,
+                  }}
+                  transition={{
+                    duration: 0.6,
+                    ease: [0, 0, 0.001, 1], // Apple's luxury cubic-bezier
+                  }}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    transformStyle: 'preserve-3d',
+                  }}
+                >
                 {/* Milestone Card */}
                 <motion.div
                   style={{
                     background: 'rgba(255, 255, 255, 0.03)',
                     backdropFilter: 'blur(40px) saturate(150%)',
                     WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-                    border: `1px solid ${milestone.color}${hoveredCard === index ? '40' : '20'}`,
-                    borderRadius: '24px',
+                    border: `1px solid ${milestone.color}${index === activeIndex ? '40' : '20'}`,
+                    borderRadius: '8px', // Sharp Apple aesthetic
                     padding: isDesktop ? '2.5rem' : '2rem',
                     height: isDesktop ? '580px' : '500px',
                     display: 'flex',
                     flexDirection: 'column',
                     transition: 'border-color 0.3s ease',
-                    boxShadow: activeIndex === index || hoveredCard === index
+                    boxShadow: index === activeIndex
                       ? `0 20px 60px ${milestone.color}20, 0 0 0 1px ${milestone.color}15 inset`
                       : '0 10px 40px rgba(0, 0, 0, 0.3)',
+                    // Apple Cover Flow reflection
+                    WebkitBoxReflect: 'below 8px linear-gradient(transparent, rgba(0, 0, 0, 0.25))',
                   }}
                 >
                   {/* Header Row: Icon + Organization */}
@@ -522,6 +526,7 @@ export default function JourneyPreview() {
                       ))}
                     </div>
                   )}
+                </motion.div>
                 </motion.div>
               </motion.div>
             );
