@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { motion, useMotionValue, useTransform, useSpring, PanInfo } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useSpring, PanInfo, useMotionValueEvent } from 'framer-motion';
 import { ArrowRight, Compass, Sparkles, GraduationCap, Briefcase, Zap } from 'lucide-react';
 
 interface Milestone {
@@ -16,10 +16,16 @@ interface Milestone {
 
 export default function JourneyPreview() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const dragX = useMotionValue(0);
   const springX = useSpring(dragX, { stiffness: 200, damping: 30 });
+
+  // Mouse tracking for magnetic effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
   const milestones: Milestone[] = [
     {
@@ -72,14 +78,20 @@ export default function JourneyPreview() {
   const gap = 32;
   const totalWidth = (cardWidth + gap) * milestones.length;
 
+  // Parallax background based on scroll position
+  const backgroundY = useTransform(springX, [0, -totalWidth], [0, 100]);
+  const backgroundOpacity = useTransform(springX, [0, -totalWidth], [0.3, 0.6]);
+
   // Calculate scale and opacity for each card based on scroll position
   const getCardStyle = (index: number) => {
-    const x = useTransform(springX, (latest) => {
+    const scale = useTransform(springX, (latest) => {
       const cardCenter = index * (cardWidth + gap);
       const viewportCenter = typeof window !== 'undefined' ? window.innerWidth / 2 : 0;
       const distanceFromCenter = Math.abs((cardCenter + latest) - viewportCenter);
-      const scale = Math.max(0.85, 1 - distanceFromCenter / 800);
-      return scale;
+      const baseScale = Math.max(0.85, 1 - distanceFromCenter / 800);
+
+      // Extra boost for hovered card
+      return hoveredCard === index ? baseScale * 1.05 : baseScale;
     });
 
     const opacity = useTransform(springX, (latest) => {
@@ -89,7 +101,14 @@ export default function JourneyPreview() {
       return Math.max(0.4, 1 - distanceFromCenter / 1000);
     });
 
-    return { scale: x, opacity };
+    const rotateY = useTransform(springX, (latest) => {
+      if (hoveredCard !== index) return 0;
+      const cardCenter = index * (cardWidth + gap);
+      const distanceFromCenter = (cardCenter + latest);
+      return distanceFromCenter / 100; // Subtle 3D tilt
+    });
+
+    return { scale, opacity, rotateY };
   };
 
   const handleDragEnd = (_: any, info: PanInfo) => {
@@ -120,6 +139,14 @@ export default function JourneyPreview() {
     snapToIndex(index);
   };
 
+  // Mouse move handler for magnetic effect
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+  };
+
   useEffect(() => {
     // Keyboard navigation
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -135,12 +162,49 @@ export default function JourneyPreview() {
   }, [activeIndex]);
 
   return (
-    <section style={{
-      background: 'var(--bg-primary)',
-      padding: '6rem 0',
-      position: 'relative',
-      overflow: 'hidden',
-    }}>
+    <section
+      ref={sectionRef}
+      style={{
+        background: 'var(--bg-primary)',
+        padding: '6rem 0',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Parallax Background Elements */}
+      <motion.div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          y: backgroundY,
+          opacity: backgroundOpacity,
+          pointerEvents: 'none',
+        }}
+      >
+        {/* Gradient orbs for depth */}
+        <div style={{
+          position: 'absolute',
+          top: '20%',
+          left: '10%',
+          width: '300px',
+          height: '300px',
+          background: 'radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%)',
+          filter: 'blur(60px)',
+        }} />
+        <div style={{
+          position: 'absolute',
+          bottom: '30%',
+          right: '15%',
+          width: '400px',
+          height: '400px',
+          background: 'radial-gradient(circle, rgba(33, 150, 243, 0.12) 0%, transparent 70%)',
+          filter: 'blur(80px)',
+        }} />
+      </motion.div>
+
       {/* Header */}
       <div style={{
         maxWidth: '1200px',
@@ -148,55 +212,83 @@ export default function JourneyPreview() {
         padding: '0 1.5rem',
         textAlign: 'center',
         marginBottom: '3rem',
+        position: 'relative',
+        zIndex: 1,
       }}>
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          marginBottom: '1rem',
-          padding: '0.5rem 1rem',
-          background: 'rgba(218, 14, 41, 0.08)',
-          border: '1px solid rgba(218, 14, 41, 0.2)',
-          borderRadius: '20px',
-          fontSize: '0.875rem',
-          color: 'var(--text-muted)',
-        }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            marginBottom: '1rem',
+            padding: '0.5rem 1rem',
+            background: 'rgba(218, 14, 41, 0.08)',
+            border: '1px solid rgba(218, 14, 41, 0.2)',
+            borderRadius: '20px',
+            fontSize: '0.875rem',
+            color: 'var(--text-muted)',
+          }}
+        >
           <Compass size={16} />
           <span>The Journey</span>
-        </div>
+        </motion.div>
 
-        <h2 style={{
-          fontSize: 'clamp(2rem, 5vw, 3rem)',
-          fontWeight: '200',
-          color: 'var(--text-primary)',
-          marginBottom: '1rem',
-          letterSpacing: '-0.02em',
-        }}>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          viewport={{ once: true }}
+          style={{
+            fontSize: 'clamp(2rem, 5vw, 3rem)',
+            fontWeight: '200',
+            color: 'var(--text-primary)',
+            marginBottom: '1rem',
+            letterSpacing: '-0.02em',
+          }}
+        >
           From Curiosity to Craft
-        </h2>
+        </motion.h2>
 
-        <p style={{
-          fontSize: '1.125rem',
-          color: 'var(--text-secondary)',
-          maxWidth: '600px',
-          margin: '0 auto 1.5rem',
-          lineHeight: '1.7',
-        }}>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          style={{
+            fontSize: '1.125rem',
+            color: 'var(--text-secondary)',
+            maxWidth: '600px',
+            margin: '0 auto 1.5rem',
+            lineHeight: '1.7',
+          }}
+        >
           Drag to explore · Arrow keys to navigate
-        </p>
+        </motion.p>
 
         {/* Minimap Navigator */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: '1rem',
-          marginTop: '2rem',
-        }}>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={{ once: true }}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '1rem',
+            marginTop: '2rem',
+          }}
+        >
           {milestones.map((milestone, index) => (
-            <button
+            <motion.button
               key={milestone.year}
               onClick={() => handleMinimapClick(index)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
               style={{
                 position: 'relative',
                 width: activeIndex === index ? '48px' : '32px',
@@ -209,22 +301,25 @@ export default function JourneyPreview() {
                 cursor: 'pointer',
                 transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                 boxShadow: activeIndex === index
-                  ? `0 0 16px ${milestone.color}40`
+                  ? `0 0 20px ${milestone.color}60`
                   : 'none',
               }}
               aria-label={`Jump to ${milestone.year}`}
             />
           ))}
-        </div>
+        </motion.div>
       </div>
 
       {/* Draggable Timeline */}
-      <div style={{
-        position: 'relative',
-        height: '600px',
-        cursor: isDragging ? 'grabbing' : 'grab',
-        userSelect: 'none',
-      }}>
+      <div
+        style={{
+          position: 'relative',
+          height: '600px',
+          cursor: isDragging ? 'grabbing' : 'grab',
+          userSelect: 'none',
+        }}
+        onMouseMove={handleMouseMove}
+      >
         <motion.div
           ref={containerRef}
           drag="x"
@@ -241,50 +336,65 @@ export default function JourneyPreview() {
           }}
         >
           {milestones.map((milestone, index) => {
-            const { scale, opacity } = getCardStyle(index);
+            const { scale, opacity, rotateY } = getCardStyle(index);
 
             return (
               <motion.div
                 key={milestone.year}
+                onMouseEnter={() => setHoveredCard(index)}
+                onMouseLeave={() => setHoveredCard(null)}
                 style={{
                   width: `${cardWidth}px`,
                   minWidth: `${cardWidth}px`,
                   scale,
                   opacity,
+                  rotateY,
                   pointerEvents: isDragging ? 'none' : 'auto',
+                  transformStyle: 'preserve-3d',
+                  perspective: '1000px',
+                }}
+                whileHover={{
+                  y: -10,
+                  transition: { duration: 0.3, ease: 'easeOut' }
                 }}
               >
                 {/* Milestone Card */}
-                <div style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  backdropFilter: 'blur(40px) saturate(150%)',
-                  WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-                  border: `1px solid ${milestone.color}20`,
-                  borderRadius: '24px',
-                  padding: '2rem',
-                  height: '500px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  transition: 'border-color 0.3s ease',
-                  boxShadow: activeIndex === index
-                    ? `0 20px 60px ${milestone.color}15, 0 0 0 1px ${milestone.color}10 inset`
-                    : '0 10px 40px rgba(0, 0, 0, 0.3)',
-                }}>
-                  {/* Icon */}
-                  <div style={{
-                    width: '64px',
-                    height: '64px',
-                    borderRadius: '16px',
-                    background: `${milestone.color}15`,
-                    border: `1px solid ${milestone.color}30`,
+                <motion.div
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    backdropFilter: 'blur(40px) saturate(150%)',
+                    WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                    border: `1px solid ${milestone.color}${hoveredCard === index ? '40' : '20'}`,
+                    borderRadius: '24px',
+                    padding: '2rem',
+                    height: '500px',
                     display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: milestone.color,
-                    marginBottom: '1.5rem',
-                  }}>
+                    flexDirection: 'column',
+                    transition: 'border-color 0.3s ease',
+                    boxShadow: activeIndex === index || hoveredCard === index
+                      ? `0 20px 60px ${milestone.color}20, 0 0 0 1px ${milestone.color}15 inset`
+                      : '0 10px 40px rgba(0, 0, 0, 0.3)',
+                  }}
+                >
+                  {/* Icon */}
+                  <motion.div
+                    animate={hoveredCard === index ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
+                    transition={{ duration: 0.3 }}
+                    style={{
+                      width: '64px',
+                      height: '64px',
+                      borderRadius: '16px',
+                      background: `${milestone.color}15`,
+                      border: `1px solid ${milestone.color}30`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: milestone.color,
+                      marginBottom: '1.5rem',
+                    }}
+                  >
                     {milestone.icon}
-                  </div>
+                  </motion.div>
 
                   {/* Year */}
                   <div style={{
@@ -328,8 +438,9 @@ export default function JourneyPreview() {
                       marginTop: 'auto',
                     }}>
                       {milestone.metrics.map((metric, idx) => (
-                        <div
+                        <motion.div
                           key={idx}
+                          whileHover={{ scale: 1.05 }}
                           style={{
                             padding: '1rem',
                             background: 'rgba(255, 255, 255, 0.02)',
@@ -353,11 +464,11 @@ export default function JourneyPreview() {
                           }}>
                             {metric.value}
                           </div>
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
                   )}
-                </div>
+                </motion.div>
               </motion.div>
             );
           })}
@@ -365,10 +476,18 @@ export default function JourneyPreview() {
       </div>
 
       {/* CTA */}
-      <div style={{
-        textAlign: 'center',
-        marginTop: '4rem',
-      }}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        viewport={{ once: true }}
+        style={{
+          textAlign: 'center',
+          marginTop: '4rem',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
         <Link
           href="/journey"
           style={{
@@ -401,7 +520,7 @@ export default function JourneyPreview() {
           <span>Explore the Full Journey</span>
           <ArrowRight size={18} />
         </Link>
-      </div>
+      </motion.div>
     </section>
   );
 }
