@@ -30,3 +30,10 @@ export * from './WorkGrid';
 export * from './MagneticText';
 export * from './MorphingText';
 export * from './AnimatedHeading';
+// Typography Effects Components
+export { ScrambleText } from './ScrambleText';
+export { GradientText } from './GradientText';
+export { ClipRevealText } from './ClipRevealText';
+export * from './ScrambleText';
+export * from './GradientText';
+export * from './ClipRevealText';

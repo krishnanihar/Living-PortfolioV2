@@ -6,6 +6,7 @@ import { Github, Mail, ChevronDown } from 'lucide-react';
 import { ParticleSphere } from '@/components/effects/ParticleSphere';
 import { useOrbReflection } from '@/contexts/OrbReflectionContext';
 import { HealthcareResearchIcon } from '@/components/icons/HealthcareResearchIcon';
+import { GradientText, ClipRevealText } from '@/components/ui';
 
 export function IntroductionSection() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
@@ -130,36 +131,51 @@ export function IntroductionSection() {
           >
             {/* Left Column: Content */}
             <div>
-              {/* Name */}
+              {/* Name with Gradient Animation */}
               <h1
                 style={{
                   fontSize: 'clamp(3.5rem, 7vw, 5.5rem)',
                   fontWeight: '200',
-                  color: 'rgba(255, 255, 255, 0.98)',
                   marginBottom: '1rem',
                   lineHeight: '1.1',
                   letterSpacing: '-0.05em',
-                  opacity: inView && mounted ? 1 : 0,
-                  animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
                 }}
               >
-                Krishna Nihar
+                {inView && mounted ? (
+                  <GradientText
+                    text="Krishna Nihar"
+                    splitByLetters={true}
+                    staggerDelay={0.05}
+                    enableVariableFont={true}
+                    animationDuration={6}
+                  />
+                ) : (
+                  <span style={{ opacity: 0 }}>Krishna Nihar</span>
+                )}
               </h1>
 
-              {/* Tagline with Red × */}
-              <p
+              {/* Tagline with Clip Reveal */}
+              <div
                 style={{
                   fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)',
                   fontWeight: '300',
                   color: 'rgba(255, 255, 255, 0.85)',
                   letterSpacing: '0.01em',
                   marginBottom: '1.5rem',
-                  opacity: inView && mounted ? 1 : 0,
-                  animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both' : 'none',
                 }}
               >
-                Designer <span style={{ color: '#DA0E29', fontWeight: '400' }}>×</span> Engineer <span style={{ color: '#DA0E29', fontWeight: '400' }}>×</span> Consciousness Explorer
-              </p>
+                {inView && mounted ? (
+                  <ClipRevealText
+                    text="Designer × Engineer × Consciousness Explorer"
+                    direction="left"
+                    duration={1.2}
+                    delay={0.3}
+                    enableMagneticWords={false}
+                  />
+                ) : (
+                  <span style={{ opacity: 0 }}>Designer × Engineer × Consciousness Explorer</span>
+                )}
+              </div>
 
               {/* Impact Statements */}
               <div

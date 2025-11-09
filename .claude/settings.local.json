@@ -34,7 +34,8 @@
       "Bash(git restore:*)",
       "Bash(xargs kill:*)",
       "Bash(git checkout:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(src/components/ui/index.ts)"
     ],
     "deny": [],
     "ask": []
