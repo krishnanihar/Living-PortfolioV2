@@ -2,8 +2,8 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { motion, useMotionValue, useTransform, useSpring, PanInfo, useMotionValueEvent } from 'framer-motion';
-import { ArrowRight, Compass, Sparkles, GraduationCap, Briefcase, Zap } from 'lucide-react';
+import { motion, useTransform } from 'framer-motion';
+import { ArrowRight, Compass, Sparkles, GraduationCap, Briefcase } from 'lucide-react';
 
 interface Milestone {
   year: string;
@@ -20,19 +20,7 @@ export default function JourneyPreview() {
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const dragX = useMotionValue(0);
-  // Smoother spring physics for carousel feel
-  const springX = useSpring(dragX, {
-    stiffness: 180,
-    damping: 35,
-    mass: 1.2 // More weight = smoother, more luxurious motion
-  });
-
-  // Mouse tracking for magnetic effect
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
 
   const milestones: Milestone[] = [
     {
@@ -98,70 +86,36 @@ export default function JourneyPreview() {
   }, []);
 
   const cardWidth = isDesktop ? 520 : 380; // Larger cards on desktop
-  const gap = isDesktop ? 48 : 32; // More breathing room on desktop
-  const totalWidth = (cardWidth + gap) * milestones.length;
 
-  // Parallax background based on scroll position
-  const backgroundY = useTransform(springX, [0, -totalWidth], [0, 100]);
-  const backgroundOpacity = useTransform(springX, [0, -totalWidth], [0.3, 0.6]);
-
-  // Apple Cover Flow style: Calculate rotation, scale, and depth for each card
+  // Apple Cover Flow style: Calculate position, rotation, scale, and depth for each card
   const getCardStyle = (index: number) => {
     const isCenter = index === activeIndex;
     const offset = index - activeIndex;
 
-    // Cover Flow Rotation: ±45° for side cards, 0° for center
-    const rotateY = offset === 0 ? 0 : offset > 0 ? 45 : -45;
+    // X Position: Cards fan out from center with overlap
+    const spacing = cardWidth * 0.6; // 60% overlap for Cover Flow effect
+    const x = offset * spacing;
 
-    // Binary Scaling: Center card is 1.5x, all others are 1x
-    const scale = isCenter ? 1.5 : 1;
+    // Cover Flow Rotation: ±30° for side cards (more subtle than 45°)
+    const rotateY = offset === 0 ? 0 : offset > 0 ? 30 : -30;
 
-    // Z-depth: Center forward, sides recede into background
-    const translateZ = isCenter ? 16 : -(100 + Math.abs(offset) * (cardWidth / 1.5));
+    // Reduced Scaling: Center card is 1.2x (was 1.5x - less aggressive)
+    const scale = isCenter ? 1.2 : 1;
+
+    // Better Z-depth: Keep side cards visible
+    const translateZ = isCenter ? 50 : -(50 + Math.abs(offset) * 80);
 
     // Z-index: Center always on top
     const zIndex = isCenter ? 100 : 1;
 
-    // Opacity for far cards (optional)
+    // Opacity for far cards
     const opacity = Math.abs(offset) > 2 ? 0.6 : 1;
 
-    return { rotateY, scale, translateZ, zIndex, opacity };
-  };
-
-  const handleDragEnd = (_: any, info: PanInfo) => {
-    setIsDragging(false);
-
-    // Calculate snap position
-    const offset = info.offset.x;
-    const velocity = info.velocity.x;
-
-    // Determine target index based on drag direction and velocity
-    let targetIndex = activeIndex;
-    if (Math.abs(velocity) > 500) {
-      targetIndex = velocity > 0 ? Math.max(0, activeIndex - 1) : Math.min(milestones.length - 1, activeIndex + 1);
-    } else if (Math.abs(offset) > cardWidth / 3) {
-      targetIndex = offset > 0 ? Math.max(0, activeIndex - 1) : Math.min(milestones.length - 1, activeIndex + 1);
-    }
-
-    snapToIndex(targetIndex);
+    return { x, rotateY, scale, translateZ, zIndex, opacity };
   };
 
   const snapToIndex = (index: number) => {
     setActiveIndex(index);
-    const targetX = -index * (cardWidth + gap);
-    dragX.set(targetX);
-  };
-
-  const handleMinimapClick = (index: number) => {
-    snapToIndex(index);
-  };
-
-  // Mouse move handler for magnetic effect
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    mouseX.set(e.clientX - rect.left);
-    mouseY.set(e.clientY - rect.top);
   };
 
   useEffect(() => {
@@ -188,40 +142,6 @@ export default function JourneyPreview() {
         overflow: 'hidden',
       }}
     >
-      {/* Parallax Background Elements */}
-      <motion.div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          y: backgroundY,
-          opacity: backgroundOpacity,
-          pointerEvents: 'none',
-        }}
-      >
-        {/* Gradient orbs for depth */}
-        <div style={{
-          position: 'absolute',
-          top: '20%',
-          left: '10%',
-          width: '300px',
-          height: '300px',
-          background: 'radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%)',
-          filter: 'blur(60px)',
-        }} />
-        <div style={{
-          position: 'absolute',
-          bottom: '30%',
-          right: '15%',
-          width: '400px',
-          height: '400px',
-          background: 'radial-gradient(circle, rgba(33, 150, 243, 0.12) 0%, transparent 70%)',
-          filter: 'blur(80px)',
-        }} />
-      </motion.div>
-
       {/* Header */}
       <div style={{
         maxWidth: '1200px',
@@ -283,7 +203,7 @@ export default function JourneyPreview() {
             lineHeight: '1.7',
           }}
         >
-          Drag to explore · Arrow keys to navigate
+          Click cards or use arrow keys to navigate
         </motion.p>
 
         {/* Minimap Navigator */}
@@ -303,7 +223,7 @@ export default function JourneyPreview() {
           {milestones.map((milestone, index) => (
             <motion.button
               key={milestone.year}
-              onClick={() => handleMinimapClick(index)}
+              onClick={() => snapToIndex(index)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               style={{
@@ -327,38 +247,23 @@ export default function JourneyPreview() {
         </motion.div>
       </div>
 
-      {/* Draggable Timeline - Cover Flow Container */}
+      {/* Cover Flow Container */}
       <div
+        ref={containerRef}
         style={{
           position: 'relative',
           height: isDesktop ? '700px' : '600px',
-          cursor: isDragging ? 'grabbing' : 'grab',
-          userSelect: 'none',
           perspective: '640px', // Apple Cover Flow perspective (40em)
           perspectiveOrigin: '50% 50%',
           WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.2) 100%)',
           maskImage: 'linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.2) 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
-        onMouseMove={handleMouseMove}
       >
-        <motion.div
-          ref={containerRef}
-          drag="x"
-          dragConstraints={{ left: -(totalWidth - cardWidth - gap * 2), right: cardWidth }}
-          dragElastic={0.1}
-          dragTransition={{ bounceStiffness: 200, bounceDamping: 30 }}
-          onDragStart={() => setIsDragging(true)}
-          onDragEnd={handleDragEnd}
-          style={{
-            display: 'flex',
-            gap: `${gap}px`,
-            paddingLeft: isDesktop ? `calc(50vw - ${cardWidth / 2}px)` : 'calc(50vw - 190px)',
-            x: springX,
-            transformStyle: 'preserve-3d',
-          }}
-        >
           {milestones.map((milestone, index) => {
-            const { rotateY, scale, translateZ, zIndex, opacity } = getCardStyle(index);
+            const { x, rotateY, scale, translateZ, zIndex, opacity } = getCardStyle(index);
 
             return (
               <motion.div
@@ -366,34 +271,27 @@ export default function JourneyPreview() {
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => setHoveredCard(null)}
                 onClick={() => snapToIndex(index)}
+                animate={{
+                  x,
+                  rotateY,
+                  scale,
+                  translateZ,
+                }}
+                transition={{
+                  duration: 0.6,
+                  ease: [0, 0, 0.001, 1], // Apple's luxury cubic-bezier
+                }}
                 style={{
+                  position: 'absolute',
                   width: `${cardWidth}px`,
-                  minWidth: `${cardWidth}px`,
                   transformStyle: 'preserve-3d',
-                  pointerEvents: isDragging ? 'none' : 'auto',
+                  cursor: 'pointer',
                   zIndex,
                   opacity,
                 }}
               >
-                {/* Inner card with Cover Flow transforms */}
-                <motion.div
-                  animate={{
-                    rotateY,
-                    scale,
-                    translateZ,
-                  }}
-                  transition={{
-                    duration: 0.6,
-                    ease: [0, 0, 0.001, 1], // Apple's luxury cubic-bezier
-                  }}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    transformStyle: 'preserve-3d',
-                  }}
-                >
                 {/* Milestone Card */}
-                <motion.div
+                <div
                   style={{
                     background: 'rgba(255, 255, 255, 0.03)',
                     backdropFilter: 'blur(40px) saturate(150%)',
@@ -526,12 +424,10 @@ export default function JourneyPreview() {
                       ))}
                     </div>
                   )}
-                </motion.div>
-                </motion.div>
+                </div>
               </motion.div>
             );
           })}
-        </motion.div>
       </div>
 
       {/* CTA */}
