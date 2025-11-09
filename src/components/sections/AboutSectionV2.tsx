@@ -18,7 +18,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [hoveredMilestone, setHoveredMilestone] = useState<number | null>(null);
   const [milestonesInView, setMilestonesInView] = useState<boolean[]>([false, false, false, false]);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const timelineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -544,13 +543,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                       id={`milestone-${idx}`}
                       onMouseEnter={() => setHoveredMilestone(idx)}
                       onMouseLeave={() => setHoveredMilestone(null)}
-                      onMouseMove={(e) => {
-                        const rect = e.currentTarget.getBoundingClientRect();
-                        setMousePosition({
-                          x: e.clientX - rect.left - rect.width / 2,
-                          y: e.clientY - rect.top - rect.height / 2,
-                        });
-                      }}
                       style={{
                         position: 'relative',
                         opacity: isInView ? 1 : 0,
@@ -565,13 +557,19 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                           position: 'absolute',
                           left: '-3rem',
                           top: '2rem',
-                          width: '16px',
-                          height: '16px',
+                          width: '12px',
+                          height: '12px',
                           borderRadius: '50%',
-                          background: milestone.borderColor.replace('0.4', '0.6'),
-                          border: `2px solid ${milestone.borderColor}`,
-                          boxShadow: `0 0 20px ${milestone.borderColor.replace('0.4', '0.4')}`,
-                          animation: isInView ? 'pulse 2s ease-in-out infinite' : 'none',
+                          background: isHovered
+                            ? milestone.borderColor.replace('0.4', '0.8')
+                            : 'rgba(255, 255, 255, 0.2)',
+                          border: isHovered
+                            ? `2px solid ${milestone.borderColor.replace('0.4', '1)')}`
+                            : '2px solid rgba(255, 255, 255, 0.1)',
+                          boxShadow: isHovered
+                            ? `0 0 16px ${milestone.borderColor.replace('0.4', '0.4')}`
+                            : 'none',
+                          transition: 'all 0.3s ease',
                           zIndex: 2,
                         }}
                       />
@@ -581,22 +579,21 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                         className="milestone-card"
                         style={{
                           background: isHovered
-                            ? milestone.color.replace(/[\d.]+\)$/, '0.25)')
-                            : milestone.color,
-                          backdropFilter: 'blur(100px) saturate(150%)',
-                          WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-                          border: `1.5px solid ${milestone.borderColor}`,
+                            ? 'rgba(10, 10, 10, 0.7)'
+                            : 'rgba(10, 10, 10, 0.6)',
+                          backdropFilter: 'blur(100px) saturate(180%)',
+                          WebkitBackdropFilter: 'blur(100px) saturate(180%)',
+                          border: isHovered
+                            ? `2px solid ${milestone.borderColor.replace('0.4', '0.8')}`
+                            : '1px solid rgba(255, 255, 255, 0.06)',
                           borderRadius: '24px',
                           padding: 'clamp(2rem, 3vw, 2.5rem)',
                           position: 'relative',
                           overflow: 'hidden',
                           boxShadow: isHovered
-                            ? `0px 20px 60px rgba(0, 0, 0, 0.5), 0px 0px 20px ${milestone.borderColor.replace('0.4', '0.15')} inset`
-                            : '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
-                          transform: isHovered
-                            ? `perspective(1000px) rotateX(${mousePosition.y * 0.01}deg) rotateY(${mousePosition.x * 0.01}deg) scale(1.02)`
-                            : 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)',
-                          transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                            ? `0px 8px 32px rgba(0, 0, 0, 0.5), 0px 0px 24px ${milestone.borderColor.replace('0.4', '0.12')}, 0px 0px 8px rgba(255, 255, 255, 0.02) inset`
+                            : '0px 4px 20px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                          transition: 'all 0.3s ease',
                         }}
                       >
                         {/* Category Badge */}
@@ -606,13 +603,13 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                             top: '1.5rem',
                             right: '1.5rem',
                             padding: '0.375rem 0.875rem',
-                            background: milestone.borderColor.replace('0.4', '0.2'),
-                            border: `1px solid ${milestone.borderColor}`,
-                            borderRadius: '10px',
-                            fontSize: '0.75rem',
-                            fontWeight: '600',
-                            color: 'rgba(255, 255, 255, 0.9)',
-                            letterSpacing: '0.05em',
+                            background: 'rgba(255, 255, 255, 0.03)',
+                            border: '1px solid rgba(255, 255, 255, 0.08)',
+                            borderRadius: '8px',
+                            fontSize: '0.6875rem',
+                            fontWeight: '500',
+                            color: 'rgba(255, 255, 255, 0.5)',
+                            letterSpacing: '0.08em',
                             textTransform: 'uppercase',
                           }}
                         >
@@ -623,36 +620,39 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.5rem', marginBottom: '1.5rem' }}>
                           <div
                             style={{
-                              width: '64px',
-                              height: '64px',
-                              borderRadius: '18px',
-                              background: milestone.color.replace(/[\d.]+\)$/, '0.3)'),
-                              border: `1.5px solid ${milestone.borderColor}`,
+                              width: '56px',
+                              height: '56px',
+                              borderRadius: '14px',
+                              background: 'rgba(255, 255, 255, 0.02)',
+                              border: '1px solid rgba(255, 255, 255, 0.08)',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
                               flexShrink: 0,
                             }}
                           >
-                            <Icon size={32} style={{ color: milestone.borderColor.replace(/[\d.]+\)$/, '1)') }} />
+                            <Icon size={28} style={{ color: 'rgba(255, 255, 255, 0.6)' }} />
                           </div>
 
                           <div style={{ flex: 1 }}>
                             <div
                               style={{
-                                fontSize: '2rem',
-                                fontWeight: '700',
-                                color: milestone.borderColor.replace(/[\d.]+\)$/, '1)'),
+                                fontSize: '1.75rem',
+                                fontWeight: '600',
+                                color: isHovered
+                                  ? milestone.borderColor.replace(/[\d.]+\)$/, '1)')
+                                  : 'rgba(255, 255, 255, 0.4)',
                                 marginBottom: '0.5rem',
-                                letterSpacing: '-0.02em',
+                                letterSpacing: '-0.01em',
+                                transition: 'color 0.3s ease',
                               }}
                             >
                               {milestone.year}
                             </div>
                             <h4
                               style={{
-                                fontSize: 'clamp(1.5rem, 2.5vw, 1.875rem)',
-                                fontWeight: '500',
+                                fontSize: 'clamp(1.375rem, 2.5vw, 1.75rem)',
+                                fontWeight: '400',
                                 color: 'rgba(255, 255, 255, 0.95)',
                                 marginBottom: '0.5rem',
                                 lineHeight: '1.3',
@@ -666,17 +666,15 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                         {/* Hook Quote */}
                         <div
                           style={{
-                            fontSize: 'clamp(1.125rem, 2vw, 1.375rem)',
-                            fontWeight: '400',
+                            fontSize: 'clamp(1.0625rem, 1.75vw, 1.25rem)',
+                            fontWeight: '300',
                             fontStyle: 'italic',
-                            color: 'rgba(255, 255, 255, 0.85)',
+                            color: 'rgba(255, 255, 255, 0.65)',
                             marginBottom: '1.5rem',
-                            paddingLeft: '1rem',
-                            borderLeft: `3px solid ${milestone.borderColor}`,
-                            lineHeight: '1.5',
+                            lineHeight: '1.6',
                           }}
                         >
-                          {milestone.hook}
+                          "{milestone.hook}"
                         </div>
 
                         {/* Event Description */}
@@ -695,19 +693,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                         {/* Achievements List */}
                         {milestone.achievements && milestone.achievements.length > 0 && (
                           <div style={{ marginBottom: '1.5rem' }}>
-                            <div
-                              style={{
-                                fontSize: '0.875rem',
-                                fontWeight: '600',
-                                color: 'rgba(255, 255, 255, 0.6)',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.1em',
-                                marginBottom: '0.75rem',
-                              }}
-                            >
-                              Key Achievements
-                            </div>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
                               {milestone.achievements.map((achievement, achIdx) => (
                                 <div
                                   key={achIdx}
@@ -722,10 +708,10 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                                 >
                                   <div
                                     style={{
-                                      width: '6px',
-                                      height: '6px',
+                                      width: '4px',
+                                      height: '4px',
                                       borderRadius: '50%',
-                                      background: milestone.borderColor.replace('0.4', '0.8'),
+                                      background: 'rgba(255, 255, 255, 0.3)',
                                       marginTop: '0.5rem',
                                       flexShrink: 0,
                                     }}
@@ -734,8 +720,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                                     style={{
                                       fontSize: '0.9375rem',
                                       fontWeight: '300',
-                                      color: 'rgba(255, 255, 255, 0.7)',
-                                      lineHeight: '1.6',
+                                      color: 'rgba(255, 255, 255, 0.6)',
+                                      lineHeight: '1.65',
                                     }}
                                   >
                                     {achievement}
@@ -753,10 +739,10 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                             style={{
                               display: 'grid',
                               gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-                              gap: '1rem',
-                              marginTop: '1.5rem',
+                              gap: '1.5rem',
+                              marginTop: '2rem',
                               paddingTop: '1.5rem',
-                              borderTop: `1px solid ${milestone.borderColor.replace('0.4', '0.2')}`,
+                              borderTop: '1px solid rgba(255, 255, 255, 0.06)',
                             }}
                           >
                             {milestone.metrics.map((metric, metricIdx) => (
@@ -770,22 +756,25 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                               >
                                 <div
                                   style={{
-                                    fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-                                    fontWeight: '700',
-                                    color: milestone.borderColor.replace(/[\d.]+\)$/, '1)'),
-                                    marginBottom: '0.25rem',
+                                    fontSize: 'clamp(1.5rem, 2.5vw, 1.875rem)',
+                                    fontWeight: '500',
+                                    color: isHovered
+                                      ? milestone.borderColor.replace(/[\d.]+\)$/, '1)')
+                                      : 'rgba(255, 255, 255, 0.9)',
+                                    marginBottom: '0.375rem',
                                     lineHeight: '1.2',
+                                    transition: 'color 0.3s ease',
                                   }}
                                 >
                                   {metric.value}
                                 </div>
                                 <div
                                   style={{
-                                    fontSize: '0.8125rem',
+                                    fontSize: '0.75rem',
                                     fontWeight: '400',
-                                    color: 'rgba(255, 255, 255, 0.6)',
+                                    color: 'rgba(255, 255, 255, 0.4)',
                                     textTransform: 'uppercase',
-                                    letterSpacing: '0.05em',
+                                    letterSpacing: '0.08em',
                                   }}
                                 >
                                   {metric.label}
