@@ -6,7 +6,7 @@ import { Github, Mail, ChevronDown } from 'lucide-react';
 import { ParticleSphere } from '@/components/effects/ParticleSphere';
 import { useOrbReflection } from '@/contexts/OrbReflectionContext';
 import { HealthcareResearchIcon } from '@/components/icons/HealthcareResearchIcon';
-import { GradientText, ClipRevealText } from '@/components/ui';
+import { GradientText } from '@/components/ui';
 
 export function IntroductionSection() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
@@ -131,12 +131,12 @@ export function IntroductionSection() {
           >
             {/* Left Column: Content */}
             <div>
-              {/* Name with Gradient Animation */}
+              {/* Name with Orb-Reflected Gradient */}
               <h1
                 style={{
                   fontSize: 'clamp(3.5rem, 7vw, 5.5rem)',
                   fontWeight: '200',
-                  marginBottom: '1rem',
+                  marginBottom: '2rem',
                   lineHeight: '1.1',
                   letterSpacing: '-0.05em',
                 }}
@@ -146,36 +146,13 @@ export function IntroductionSection() {
                     text="Krishna Nihar"
                     splitByLetters={true}
                     staggerDelay={0.05}
-                    enableVariableFont={true}
+                    gradient={['#2196F3', '#7C3AED', '#06B6D4']}
                     animationDuration={6}
                   />
                 ) : (
                   <span style={{ opacity: 0 }}>Krishna Nihar</span>
                 )}
               </h1>
-
-              {/* Tagline with Clip Reveal */}
-              <div
-                style={{
-                  fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)',
-                  fontWeight: '300',
-                  color: 'rgba(255, 255, 255, 0.85)',
-                  letterSpacing: '0.01em',
-                  marginBottom: '1.5rem',
-                }}
-              >
-                {inView && mounted ? (
-                  <ClipRevealText
-                    text="Designer × Engineer × Consciousness Explorer"
-                    direction="left"
-                    duration={1.2}
-                    delay={0.3}
-                    enableMagneticWords={false}
-                  />
-                ) : (
-                  <span style={{ opacity: 0 }}>Designer × Engineer × Consciousness Explorer</span>
-                )}
-              </div>
 
               {/* Impact Statements */}
               <div
