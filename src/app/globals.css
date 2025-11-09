@@ -1360,3 +1360,16 @@ select {
   0%, 100% { background-position: 0% center; }
   50% { background-position: 100% center; }
 }
+
+/* Floating animation for gradient orbs */
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(30px, -30px);
+  }
+  66% {
+    transform: translate(-20px, 20px);
+  }
+}

@@ -3,7 +3,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, useTransform } from 'framer-motion';
-import { ArrowRight, Compass, Sparkles, GraduationCap, Briefcase } from 'lucide-react';
+import { ArrowRight, Compass, Sparkles, GraduationCap, Briefcase, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Milestone {
   year: string;
@@ -99,8 +99,8 @@ export default function JourneyPreview() {
     // Cover Flow Rotation: ±30° for side cards (more subtle than 45°)
     const rotateY = offset === 0 ? 0 : offset > 0 ? 30 : -30;
 
-    // Reduced Scaling: Center card is 1.2x (was 1.5x - less aggressive)
-    const scale = isCenter ? 1.2 : 1;
+    // Enhanced Scaling: Center card is 1.3x for better prominence
+    const scale = isCenter ? 1.3 : 1;
 
     // Better Z-depth: Keep side cards visible
     const translateZ = isCenter ? 50 : -(50 + Math.abs(offset) * 80);
@@ -142,6 +142,51 @@ export default function JourneyPreview() {
         overflow: 'hidden',
       }}
     >
+      {/* Gradient Background Orbs - Sonaar Style */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        pointerEvents: 'none',
+        zIndex: 0,
+      }}>
+        {/* Purple gradient orb */}
+        <div style={{
+          position: 'absolute',
+          top: '10%',
+          left: '5%',
+          width: '500px',
+          height: '500px',
+          background: 'radial-gradient(circle, rgba(138, 43, 226, 0.15) 0%, transparent 70%)',
+          filter: 'blur(80px)',
+          animation: 'float 20s ease-in-out infinite',
+        }} />
+        {/* Pink gradient orb */}
+        <div style={{
+          position: 'absolute',
+          top: '40%',
+          right: '10%',
+          width: '600px',
+          height: '600px',
+          background: 'radial-gradient(circle, rgba(219, 39, 119, 0.12) 0%, transparent 70%)',
+          filter: 'blur(100px)',
+          animation: 'float 25s ease-in-out infinite reverse',
+        }} />
+        {/* Blue-purple gradient orb */}
+        <div style={{
+          position: 'absolute',
+          bottom: '20%',
+          left: '50%',
+          width: '400px',
+          height: '400px',
+          background: 'radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 70%)',
+          filter: 'blur(90px)',
+          animation: 'float 30s ease-in-out infinite',
+        }} />
+      </div>
+
       {/* Header */}
       <div style={{
         maxWidth: '1200px',
@@ -262,8 +307,74 @@ export default function JourneyPreview() {
           justifyContent: 'center',
         }}
       >
+        {/* Navigation Arrows - Sonaar Style */}
+        {activeIndex > 0 && (
+          <motion.button
+            onClick={() => snapToIndex(activeIndex - 1)}
+            whileHover={{ scale: 1.1, x: -4 }}
+            whileTap={{ scale: 0.95 }}
+            style={{
+              position: 'absolute',
+              left: isDesktop ? '5%' : '2%',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 200,
+              width: '56px',
+              height: '56px',
+              borderRadius: '50%',
+              background: 'rgba(255, 255, 255, 0.05)',
+              backdropFilter: 'blur(40px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              color: 'var(--text-primary)',
+              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
+            }}
+            aria-label="Previous milestone"
+          >
+            <ChevronLeft size={24} />
+          </motion.button>
+        )}
+
+        {activeIndex < milestones.length - 1 && (
+          <motion.button
+            onClick={() => snapToIndex(activeIndex + 1)}
+            whileHover={{ scale: 1.1, x: 4 }}
+            whileTap={{ scale: 0.95 }}
+            style={{
+              position: 'absolute',
+              right: isDesktop ? '5%' : '2%',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 200,
+              width: '56px',
+              height: '56px',
+              borderRadius: '50%',
+              background: 'rgba(255, 255, 255, 0.05)',
+              backdropFilter: 'blur(40px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              color: 'var(--text-primary)',
+              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
+            }}
+            aria-label="Next milestone"
+          >
+            <ChevronRight size={24} />
+          </motion.button>
+        )}
+
           {milestones.map((milestone, index) => {
             const { x, rotateY, scale, translateZ, zIndex, opacity } = getCardStyle(index);
+            const isCenter = index === activeIndex;
 
             return (
               <motion.div
@@ -288,26 +399,30 @@ export default function JourneyPreview() {
                   cursor: 'pointer',
                   zIndex,
                   opacity,
+                  filter: isCenter ? 'none' : 'blur(2px)', // Blur side cards
                 }}
               >
                 {/* Milestone Card */}
                 <div
                   style={{
-                    background: 'rgba(255, 255, 255, 0.03)',
-                    backdropFilter: 'blur(40px) saturate(150%)',
-                    WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-                    border: `1px solid ${milestone.color}${index === activeIndex ? '40' : '20'}`,
-                    borderRadius: '8px', // Sharp Apple aesthetic
+                    background: index === activeIndex
+                      ? 'rgba(255, 255, 255, 0.05)'
+                      : 'rgba(255, 255, 255, 0.02)',
+                    backdropFilter: 'blur(60px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(60px) saturate(180%)',
+                    border: `1px solid ${milestone.color}${index === activeIndex ? '50' : '25'}`,
+                    borderRadius: '24px', // Symmetry style - large rounded corners
                     padding: isDesktop ? '2.5rem' : '2rem',
                     height: isDesktop ? '580px' : '500px',
                     display: 'flex',
                     flexDirection: 'column',
-                    transition: 'border-color 0.3s ease',
+                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                     boxShadow: index === activeIndex
-                      ? `0 20px 60px ${milestone.color}20, 0 0 0 1px ${milestone.color}15 inset`
-                      : '0 10px 40px rgba(0, 0, 0, 0.3)',
-                    // Apple Cover Flow reflection
-                    WebkitBoxReflect: 'below 8px linear-gradient(transparent, rgba(0, 0, 0, 0.25))',
+                      ? `0 30px 80px ${milestone.color}30,
+                         0 0 0 1px ${milestone.color}20 inset,
+                         0 10px 40px rgba(0, 0, 0, 0.5)`
+                      : `0 15px 50px rgba(0, 0, 0, 0.4),
+                         0 0 0 1px ${milestone.color}10 inset`,
                   }}
                 >
                   {/* Header Row: Icon + Organization */}
