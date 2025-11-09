@@ -5,7 +5,6 @@ import { NavigationBar } from '@/components/NavigationBar';
 import { CosmicBackground } from '@/components/effects/CosmicBackground';
 import { ScrollDarkeningOverlay } from '@/components/effects/ScrollDarkeningOverlay';
 import { IntroductionSection } from '@/components/sections/IntroductionSection';
-import JourneyPreview from '@/components/sections/JourneyPreview';
 import WorkSection from '@/components/sections/WorkSection';
 import AboutSectionV2 from '@/components/sections/AboutSectionV2';
 import { SectionDivider } from '@/components/ui/SectionDivider';
@@ -24,7 +23,6 @@ export default function HomePage() {
         <IntroductionSection />
         <SectionDivider text="Who's Behind the Work?" />
         <AboutSectionV2 />
-        <JourneyPreview />
         <WorkSection />
       </main>
 
