@@ -6,7 +6,6 @@ import { Github, Mail, ChevronDown } from 'lucide-react';
 import { ParticleSphere } from '@/components/effects/ParticleSphere';
 import { useOrbReflection } from '@/contexts/OrbReflectionContext';
 import { HealthcareResearchIcon } from '@/components/icons/HealthcareResearchIcon';
-import { GradientText } from '@/components/ui';
 
 export function IntroductionSection() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
@@ -94,6 +93,15 @@ export function IntroductionSection() {
             transform: translateY(8px);
           }
         }
+
+        @keyframes gradientSweep {
+          0% {
+            background-position: 200% center;
+          }
+          100% {
+            background-position: -200% center;
+          }
+        }
       `}</style>
 
       <section
@@ -131,28 +139,37 @@ export function IntroductionSection() {
           >
             {/* Left Column: Content */}
             <div>
-              {/* Name with Orb-Reflected Gradient */}
-              <h1
-                style={{
-                  fontSize: 'clamp(3.5rem, 7vw, 5.5rem)',
-                  fontWeight: '200',
-                  marginBottom: '2rem',
-                  lineHeight: '1.1',
-                  letterSpacing: '-0.05em',
-                }}
-              >
-                {inView && mounted ? (
-                  <GradientText
-                    text="Krishna Nihar"
-                    splitByLetters={true}
-                    staggerDelay={0.05}
-                    gradient={['#2196F3', '#7C3AED', '#06B6D4']}
-                    animationDuration={6}
+              {/* Name with Gradient Line */}
+              <div style={{ position: 'relative', marginBottom: '2rem' }}>
+                <h1
+                  style={{
+                    fontSize: 'clamp(3.5rem, 7vw, 5.5rem)',
+                    fontWeight: '100',
+                    lineHeight: '1.1',
+                    letterSpacing: '-0.05em',
+                    color: 'rgba(255, 255, 255, 0.98)',
+                    marginBottom: '1rem',
+                    opacity: inView && mounted ? 1 : 0,
+                    animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
+                  }}
+                >
+                  Krishna Nihar
+                </h1>
+                {/* Animated Gradient Line */}
+                {inView && mounted && (
+                  <div
+                    style={{
+                      width: '100%',
+                      height: '2px',
+                      background: 'linear-gradient(90deg, transparent 0%, #7C3AED 20%, #DA0E29 50%, #06B6D4 80%, transparent 100%)',
+                      backgroundSize: '200% 100%',
+                      animation: 'gradientSweep 2.5s linear infinite',
+                      borderRadius: '2px',
+                      opacity: 0.6,
+                    }}
                   />
-                ) : (
-                  <span style={{ opacity: 0 }}>Krishna Nihar</span>
                 )}
-              </h1>
+              </div>
 
               {/* Impact Statements */}
               <div
