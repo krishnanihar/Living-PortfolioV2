@@ -139,37 +139,21 @@ export function IntroductionSection() {
           >
             {/* Left Column: Content */}
             <div>
-              {/* Name with Gradient Line */}
-              <div style={{ position: 'relative', marginBottom: '2rem' }}>
-                <h1
-                  style={{
-                    fontSize: 'clamp(3.5rem, 7vw, 5.5rem)',
-                    fontWeight: '100',
-                    lineHeight: '1.1',
-                    letterSpacing: '-0.05em',
-                    color: 'rgba(255, 255, 255, 0.98)',
-                    marginBottom: '1rem',
-                    opacity: inView && mounted ? 1 : 0,
-                    animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
-                  }}
-                >
-                  Krishna Nihar
-                </h1>
-                {/* Animated Gradient Line */}
-                {inView && mounted && (
-                  <div
-                    style={{
-                      width: '100%',
-                      height: '2px',
-                      background: 'linear-gradient(90deg, transparent 0%, #7C3AED 20%, #DA0E29 50%, #06B6D4 80%, transparent 100%)',
-                      backgroundSize: '200% 100%',
-                      animation: 'gradientSweep 2.5s linear infinite',
-                      borderRadius: '2px',
-                      opacity: 0.6,
-                    }}
-                  />
-                )}
-              </div>
+              {/* Name */}
+              <h1
+                style={{
+                  fontSize: 'clamp(3.5rem, 7vw, 5.5rem)',
+                  fontWeight: '100',
+                  lineHeight: '1.1',
+                  letterSpacing: '-0.05em',
+                  color: 'rgba(255, 255, 255, 0.98)',
+                  marginBottom: '2rem',
+                  opacity: inView && mounted ? 1 : 0,
+                  animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
+                }}
+              >
+                Krishna Nihar
+              </h1>
 
               {/* Impact Statements */}
               <div
@@ -182,25 +166,25 @@ export function IntroductionSection() {
                 <p
                   style={{
                     fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-                    fontWeight: '300',
+                    fontWeight: '200',
                     color: 'rgba(255, 255, 255, 0.75)',
                     letterSpacing: '0.01em',
                     lineHeight: '1.7',
                     marginBottom: '0.75rem',
                   }}
                 >
-                  From <span style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: '400' }}>ego death simulators</span> to <span style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: '400' }}>enterprise systems</span> — building experiences that matter
+                  From <span style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: '300' }}>ego death simulators</span> to <span style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: '300' }}>enterprise systems</span> — building experiences that matter
                 </p>
                 <p
                   style={{
                     fontSize: 'clamp(0.9375rem, 1.75vw, 1.0625rem)',
-                    fontWeight: '400',
+                    fontWeight: '200',
                     color: 'rgba(255, 255, 255, 0.85)',
                     letterSpacing: '0.01em',
                     lineHeight: '1.6',
                   }}
                 >
-                  Designing systems that <span style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: '500' }}>millions interact with daily</span> — from 30,000ft to healthcare
+                  Designing systems that <span style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: '300' }}>millions interact with daily</span> — from 30,000ft to healthcare
                 </p>
               </div>
 
@@ -232,7 +216,7 @@ export function IntroductionSection() {
                         : '1px solid rgba(255, 255, 255, 0.18)',
                       borderRadius: '15px',
                       fontSize: '0.875rem',
-                      fontWeight: '400',
+                      fontWeight: '300',
                       color: 'rgba(255, 255, 255, 0.85)',
                       cursor: 'pointer',
                       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -262,7 +246,7 @@ export function IntroductionSection() {
                           border: '1px solid rgba(255, 255, 255, 0.15)',
                           borderRadius: '8px',
                           fontSize: '0.75rem',
-                          fontWeight: '400',
+                          fontWeight: '300',
                           color: 'rgba(255, 255, 255, 0.9)',
                           whiteSpace: 'nowrap',
                           pointerEvents: 'none',
@@ -321,7 +305,7 @@ export function IntroductionSection() {
                     color: 'rgba(255, 255, 255, 0.98)',
                     textDecoration: 'none',
                     fontSize: 'clamp(0.9375rem, 1.75vw, 1rem)',
-                    fontWeight: '500',
+                    fontWeight: '300',
                     transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                     transform: hoveredButton === 'featured' ? 'translateY(-3px) scale(1.02)' : 'translateY(0) scale(1)',
                     boxShadow: hoveredButton === 'featured'
@@ -344,7 +328,7 @@ export function IntroductionSection() {
                       background: 'rgba(16, 185, 129, 0.25)',
                       borderRadius: '10px',
                       fontSize: '0.75rem',
-                      fontWeight: '600',
+                      fontWeight: '400',
                       color: 'rgba(16, 185, 129, 1)',
                       letterSpacing: '0.02em',
                     }}
@@ -375,7 +359,7 @@ export function IntroductionSection() {
                     color: 'rgba(255, 255, 255, 0.9)',
                     textDecoration: 'none',
                     fontSize: '0.875rem',
-                    fontWeight: '400',
+                    fontWeight: '300',
                     transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                     transform: hoveredButton === 'contact' ? 'translateY(-2px)' : 'translateY(0)',
                     boxShadow: hoveredButton === 'contact'
@@ -417,7 +401,7 @@ export function IntroductionSection() {
                     color: 'rgba(255, 255, 255, 0.9)',
                     textDecoration: 'none',
                     fontSize: '0.875rem',
-                    fontWeight: '400',
+                    fontWeight: '300',
                     transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                     transform: hoveredButton === 'github' ? 'translateY(-2px)' : 'translateY(0)',
                     boxShadow: hoveredButton === 'github'
@@ -489,7 +473,7 @@ export function IntroductionSection() {
           <span
             style={{
               fontSize: '0.75rem',
-              fontWeight: '400',
+              fontWeight: '300',
               letterSpacing: '0.1em',
               color: 'var(--text-secondary)',
               textTransform: 'uppercase',
