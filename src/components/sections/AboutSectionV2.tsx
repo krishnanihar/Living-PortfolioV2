@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Mail, Brain, Network, Sparkles, Lightbulb, Trophy, Briefcase, Rocket } from 'lucide-react';
+import { ArrowRight, Mail, Lightbulb, Trophy, Briefcase, Rocket } from 'lucide-react';
 
 interface AboutSectionV2Props {
   className?: string;
@@ -12,9 +12,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   const [mounted, setMounted] = useState(false);
   const [act1InView, setAct1InView] = useState(false);
   const [act2InView, setAct2InView] = useState(false);
-  const [act3InView, setAct3InView] = useState(false);
   const [act4InView, setAct4InView] = useState(false);
-  const [hoveredPrinciple, setHoveredPrinciple] = useState<number | null>(null);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [hoveredMilestone, setHoveredMilestone] = useState<number | null>(null);
   const [milestonesInView, setMilestonesInView] = useState<boolean[]>([false, false, false, false]);
@@ -35,10 +33,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       ([entry]) => entry.isIntersecting && setAct2InView(true),
       observerOptions
     );
-    const act3Observer = new IntersectionObserver(
-      ([entry]) => entry.isIntersecting && setAct3InView(true),
-      observerOptions
-    );
     const act4Observer = new IntersectionObserver(
       ([entry]) => entry.isIntersecting && setAct4InView(true),
       observerOptions
@@ -46,12 +40,10 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
     const act1El = document.getElementById('act-1-philosophy');
     const act2El = document.getElementById('act-2-journey');
-    const act3El = document.getElementById('act-3-approach');
     const act4El = document.getElementById('act-4-impact');
 
     if (act1El) { act1Observer.observe(act1El); observers.push(act1Observer); }
     if (act2El) { act2Observer.observe(act2El); observers.push(act2Observer); }
-    if (act3El) { act3Observer.observe(act3El); observers.push(act3Observer); }
     if (act4El) { act4Observer.observe(act4El); observers.push(act4Observer); }
 
     // Milestone observers
@@ -83,27 +75,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
     return () => observers.forEach(o => o.disconnect());
   }, []);
-
-  const principles = [
-    {
-      icon: Brain,
-      title: 'Consciousness First',
-      description: 'Design for the human behind the interaction',
-      stat: '10K+ daily users',
-    },
-    {
-      icon: Network,
-      title: 'Systems Thinking',
-      description: 'Every component breathes within a larger whole',
-      stat: '450+ operations',
-    },
-    {
-      icon: Sparkles,
-      title: 'Thoughtful Craft',
-      description: 'Details matter—from pixels to architecture',
-      stat: '18-month deep dives',
-    },
-  ];
 
   const projects = [
     {
@@ -701,127 +672,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   );
                 })}
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Act 3: The Approach */}
-        <div
-          id="act-3-approach"
-          style={{
-            minHeight: '100vh',
-            display: 'flex',
-            alignItems: 'center',
-            padding: '6rem 1.5rem',
-          }}
-        >
-          <div style={{ maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
-            <h3
-              style={{
-                fontSize: 'clamp(2rem, 4vw, 3rem)',
-                fontWeight: '300',
-                color: 'rgba(255, 255, 255, 0.95)',
-                marginBottom: '1.5rem',
-                textAlign: 'center',
-                opacity: act3InView && mounted ? 1 : 0,
-                animation: act3InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
-              }}
-            >
-              Three principles guide everything I build
-            </h3>
-
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: '2rem',
-                marginTop: '4rem',
-              }}
-            >
-              {principles.map((principle, idx) => {
-                const Icon = principle.icon;
-                return (
-                  <div
-                    key={idx}
-                    onMouseEnter={() => setHoveredPrinciple(idx)}
-                    onMouseLeave={() => setHoveredPrinciple(null)}
-                    style={{
-                      padding: '2.5rem 2rem',
-                      background: hoveredPrinciple === idx
-                        ? 'rgba(255, 255, 255, 0.05)'
-                        : 'rgba(255, 255, 255, 0.03)',
-                      backdropFilter: 'blur(100px) saturate(150%)',
-                      WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
-                      borderRadius: '20px',
-                      boxShadow: hoveredPrinciple === idx
-                        ? '0px 16px 48px rgba(0, 0, 0, 0.5), 0px 0px 16px rgba(255, 255, 255, 0.04) inset'
-                        : '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
-                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                      transform: hoveredPrinciple === idx ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
-                      opacity: act3InView && mounted ? 1 : 0,
-                      animation: act3InView && mounted ? `fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) ${0.3 + idx * 0.15}s both` : 'none',
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: '56px',
-                        height: '56px',
-                        borderRadius: '15px',
-                        background: 'rgba(218, 14, 41, 0.15)',
-                        border: '1px solid rgba(218, 14, 41, 0.3)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginBottom: '1.5rem',
-                      }}
-                    >
-                      <Icon size={28} style={{ color: '#DA0E29' }} />
-                    </div>
-
-                    <h4
-                      style={{
-                        fontSize: '1.5rem',
-                        fontWeight: '500',
-                        color: 'rgba(255, 255, 255, 0.95)',
-                        marginBottom: '0.75rem',
-                      }}
-                    >
-                      {principle.title}
-                    </h4>
-
-                    <p
-                      style={{
-                        fontSize: '1.0625rem',
-                        fontWeight: '300',
-                        color: 'rgba(255, 255, 255, 0.75)',
-                        lineHeight: '1.6',
-                        marginBottom: '1.5rem',
-                      }}
-                    >
-                      {principle.description}
-                    </p>
-
-                    <div
-                      style={{
-                        padding: '0.5rem 1rem',
-                        background: 'rgba(255, 255, 255, 0.04)',
-                        border: '1px solid rgba(255, 255, 255, 0.08)',
-                        borderRadius: '10px',
-                        display: 'inline-block',
-                      }}
-                    >
-                      <p style={{
-                        fontSize: '0.875rem',
-                        fontWeight: '500',
-                        color: 'rgba(255, 255, 255, 0.8)',
-                      }}>
-                        {principle.stat}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
             </div>
           </div>
         </div>
