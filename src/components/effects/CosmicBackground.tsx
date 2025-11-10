@@ -45,14 +45,15 @@ export function CosmicBackground() {
     return `rgba(${r}, ${g}, ${b}, ${layerOpacity})`;
   };
 
-  // Stabilize particle positions with deterministic algorithm
+  // Stabilize particle positions with deterministic algorithm - organic distribution
   const particlePositions = React.useMemo(() => {
     return {
-      far: Array.from({ length: 150 }, (_, i) => {
-        const seed = i / 150;
+      far: Array.from({ length: 70 }, (_, i) => {
+        const seed = i / 70;
+        const clusterSeed = Math.sin(i * 0.7) * 0.5 + 0.5; // Creates natural clustering
         return {
-          left: (seed * 87.3 + 13.7 + i * 4.2) % 100,
-          top: (seed * 73.1 + 17.3 + i * 5.7) % 100,
+          left: (seed * 127.3 + clusterSeed * 40 + i * 7.2) % 100,
+          top: (seed * 93.1 + clusterSeed * 35 + i * 8.7) % 100,
           delay1: (seed * 25.5 + 2.5 + i * 0.6) % 30,
           delay2: (seed * 18.3 + 1.7 + i * 0.4) % 20,
           duration1: 35 + ((seed * 23.7 + i * 0.5) % 25),
@@ -61,11 +62,12 @@ export function CosmicBackground() {
           brightness: 0.6 + ((seed * 17.4 + i * 0.4) % 0.4), // 0.6-1.0
         };
       }),
-      mid: Array.from({ length: 80 }, (_, i) => {
-        const seed = i / 80;
+      mid: Array.from({ length: 40 }, (_, i) => {
+        const seed = i / 40;
+        const clusterSeed = Math.sin(i * 0.9 + 1.2) * 0.5 + 0.5;
         return {
-          left: (seed * 91.2 + 8.8 + i * 3.8) % 100,
-          top: (seed * 68.4 + 21.6 + i * 4.3) % 100,
+          left: (seed * 141.2 + clusterSeed * 45 + i * 6.8) % 100,
+          top: (seed * 88.4 + clusterSeed * 38 + i * 7.3) % 100,
           delay1: (seed * 22.1 + 2.9 + i * 0.8) % 25,
           delay2: (seed * 13.7 + 1.3 + i * 0.5) % 15,
           duration1: 28 + ((seed * 17.2 + i * 0.6) % 18),
@@ -74,11 +76,12 @@ export function CosmicBackground() {
           brightness: 0.65 + ((seed * 14.8 + i * 0.35) % 0.35), // 0.65-1.0
         };
       }),
-      near: Array.from({ length: 40 }, (_, i) => {
-        const seed = i / 40;
+      near: Array.from({ length: 20 }, (_, i) => {
+        const seed = i / 20;
+        const clusterSeed = Math.sin(i * 1.1 + 2.4) * 0.5 + 0.5;
         return {
-          left: (seed * 79.6 + 20.4 + i * 5.1) % 100,
-          top: (seed * 82.3 + 17.7 + i * 6.2) % 100,
+          left: (seed * 119.6 + clusterSeed * 50 + i * 9.1) % 100,
+          top: (seed * 102.3 + clusterSeed * 42 + i * 10.2) % 100,
           delay1: (seed * 18.4 + 1.6 + i * 1.0) % 20,
           delay2: (seed * 11.2 + 0.8 + i * 0.6) % 12,
           duration1: 22 + ((seed * 13.3 + i * 0.7) % 14),
@@ -87,11 +90,12 @@ export function CosmicBackground() {
           brightness: 0.7 + ((seed * 12.3 + i * 0.3) % 0.3), // 0.7-1.0
         };
       }),
-      accent: Array.from({ length: 8 }, (_, i) => {
-        const seed = i / 8;
+      accent: Array.from({ length: 4 }, (_, i) => {
+        const seed = i / 4;
+        const clusterSeed = Math.sin(i * 1.5 + 3.7) * 0.5 + 0.5;
         return {
-          left: 20 + ((seed * 52.4 + i * 8.3) % 60),
-          top: 20 + ((seed * 47.8 + i * 7.6) % 60),
+          left: 20 + ((seed * 72.4 + clusterSeed * 25 + i * 12.3) % 60),
+          top: 20 + ((seed * 67.8 + clusterSeed * 20 + i * 11.6) % 60),
           delay1: (seed * 13.6 + i * 1.5) % 15,
           delay2: (seed * 9.1 + i * 1.1) % 10,
           duration1: 25 + ((seed * 14.2 + i * 0.9) % 15),
