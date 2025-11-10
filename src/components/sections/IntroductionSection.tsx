@@ -102,6 +102,54 @@ export function IntroductionSection() {
             background-position: -200% center;
           }
         }
+
+        @keyframes borderRotate {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+
+        .featured-work-button {
+          position: relative;
+          isolation: isolate;
+        }
+
+        .featured-work-button::before {
+          content: '';
+          position: absolute;
+          inset: -2px;
+          border-radius: 15px;
+          padding: 2px;
+          background: conic-gradient(
+            from 0deg,
+            rgba(255, 255, 255, 0.2) 0deg,
+            rgba(218, 14, 41, 0.5) 90deg,
+            rgba(255, 255, 255, 0.2) 180deg,
+            rgba(218, 14, 41, 0.5) 270deg,
+            rgba(255, 255, 255, 0.2) 360deg
+          );
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          z-index: -1;
+          animation: borderRotate 4s linear infinite;
+          pointer-events: none;
+        }
+
+        .featured-work-button:hover::before {
+          background: conic-gradient(
+            from 0deg,
+            rgba(255, 255, 255, 0.4) 0deg,
+            rgba(218, 14, 41, 0.7) 90deg,
+            rgba(255, 255, 255, 0.4) 180deg,
+            rgba(218, 14, 41, 0.7) 270deg,
+            rgba(255, 255, 255, 0.4) 360deg
+          );
+          animation-duration: 3s;
+        }
       `}</style>
 
       <section
@@ -286,6 +334,7 @@ export function IntroductionSection() {
                 {/* Primary: Featured Work */}
                 <Link
                   href="/work/psoriassist"
+                  className="featured-work-button"
                   onMouseEnter={() => setHoveredButton('featured')}
                   onMouseLeave={() => setHoveredButton(null)}
                   style={{
@@ -296,9 +345,7 @@ export function IntroductionSection() {
                     background: 'rgba(10, 10, 10, 0.6)',
                     backdropFilter: 'blur(100px) saturate(180%)',
                     WebkitBackdropFilter: 'blur(100px) saturate(180%)',
-                    border: hoveredButton === 'featured'
-                      ? '1px solid rgba(255, 255, 255, 0.12)'
-                      : '1px solid rgba(255, 255, 255, 0.06)',
+                    border: '1px solid transparent',
                     borderRadius: '15px',
                     color: 'rgba(255, 255, 255, 0.98)',
                     textDecoration: 'none',
@@ -310,7 +357,7 @@ export function IntroductionSection() {
                       ? `inset 0 1px 0 rgba(255, 255, 255, 0.02),
                          inset 0 -1px 0 rgba(0, 0, 0, 0.3),
                          0 12px 32px rgba(0, 0, 0, 0.7),
-                         0 0 20px rgba(255, 255, 255, 0.05)`
+                         0 0 30px rgba(218, 14, 41, 0.2)`
                       : `inset 0 1px 0 rgba(255, 255, 255, 0.02),
                          inset 0 -1px 0 rgba(0, 0, 0, 0.3),
                          0 8px 24px rgba(0, 0, 0, 0.6)`,
