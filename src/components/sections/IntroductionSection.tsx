@@ -293,14 +293,10 @@ export function IntroductionSection() {
                     alignItems: 'center',
                     gap: '0.625rem',
                     padding: 'clamp(0.875rem, 1.75vw, 1rem) clamp(1.5rem, 3vw, 2rem)',
-                    background: hoveredButton === 'featured'
-                      ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(8, 8, 8, 0.9))'
-                      : 'linear-gradient(135deg, rgba(16, 185, 129, 0.22), rgba(8, 8, 8, 0.85))',
-                    backdropFilter: 'blur(80px) saturate(180%)',
-                    WebkitBackdropFilter: 'blur(80px) saturate(180%)',
-                    border: hoveredButton === 'featured'
-                      ? '1px solid rgba(16, 185, 129, 0.7)'
-                      : '1px solid rgba(16, 185, 129, 0.5)',
+                    background: 'rgba(10, 10, 10, 0.6)',
+                    backdropFilter: 'blur(100px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(100px) saturate(180%)',
+                    border: '1px solid rgba(255, 255, 255, 0.06)',
                     borderRadius: '15px',
                     color: 'rgba(255, 255, 255, 0.98)',
                     textDecoration: 'none',
@@ -309,12 +305,12 @@ export function IntroductionSection() {
                     transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                     transform: hoveredButton === 'featured' ? 'translateY(-3px) scale(1.02)' : 'translateY(0) scale(1)',
                     boxShadow: hoveredButton === 'featured'
-                      ? `0px 20px 48px rgba(0, 0, 0, 0.7),
-                         0px 0px 1px rgba(255, 255, 255, 0.35) inset,
-                         0px -1px 0px rgba(255, 255, 255, 0.1) inset`
-                      : `0px 10px 30px rgba(0, 0, 0, 0.5),
-                         0px 0px 1px rgba(255, 255, 255, 0.25) inset,
-                         0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
+                      ? `inset 0 1px 0 rgba(255, 255, 255, 0.02),
+                         inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                         0 12px 32px rgba(0, 0, 0, 0.7)`
+                      : `inset 0 1px 0 rgba(255, 255, 255, 0.02),
+                         inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                         0 8px 24px rgba(0, 0, 0, 0.6)`,
                     opacity: inView && mounted ? 1 : 0,
                     animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both' : 'none',
                   }}
@@ -324,11 +320,11 @@ export function IntroductionSection() {
                   <div
                     style={{
                       padding: '0.25rem 0.625rem',
-                      background: 'rgba(16, 185, 129, 0.25)',
+                      background: 'rgba(255, 255, 255, 0.08)',
                       borderRadius: '10px',
                       fontSize: '0.75rem',
-                      fontWeight: '400',
-                      color: 'rgba(16, 185, 129, 1)',
+                      fontWeight: '300',
+                      color: 'rgba(255, 255, 255, 0.9)',
                       letterSpacing: '0.02em',
                     }}
                   >
