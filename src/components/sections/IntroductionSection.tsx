@@ -309,13 +309,12 @@ export function IntroductionSection() {
                     transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                     transform: hoveredButton === 'featured' ? 'translateY(-3px) scale(1.02)' : 'translateY(0) scale(1)',
                     boxShadow: hoveredButton === 'featured'
-                      ? `0 24px 56px rgba(16, 185, 129, 0.35),
+                      ? `0px 20px 48px rgba(0, 0, 0, 0.7),
                          0px 0px 1px rgba(255, 255, 255, 0.35) inset,
-                         0px -1px 0px rgba(255, 255, 255, 0.12) inset`
-                      : `0px 14px 40px rgba(0, 0, 0, 0.5),
-                         0 0 20px rgba(16, 185, 129, 0.2),
+                         0px -1px 0px rgba(255, 255, 255, 0.1) inset`
+                      : `0px 10px 30px rgba(0, 0, 0, 0.5),
                          0px 0px 1px rgba(255, 255, 255, 0.25) inset,
-                         0px -1px 0px rgba(255, 255, 255, 0.08) inset`,
+                         0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
                     opacity: inView && mounted ? 1 : 0,
                     animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both' : 'none',
                   }}
