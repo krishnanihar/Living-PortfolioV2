@@ -789,39 +789,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 })}
               </div>
             </div>
-
-            {/* Journey Arc Summary */}
-            <div
-              style={{
-                marginTop: '6rem',
-                textAlign: 'center',
-                padding: '3rem 2rem',
-                background: 'rgba(255, 255, 255, 0.02)',
-                backdropFilter: 'blur(100px) saturate(150%)',
-                WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
-                borderRadius: '24px',
-                boxShadow: '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
-                opacity: act2InView && mounted ? 1 : 0,
-                animation: act2InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both' : 'none',
-              }}
-            >
-              <p
-                style={{
-                  fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)',
-                  fontWeight: '300',
-                  color: 'rgba(255, 255, 255, 0.75)',
-                  fontStyle: 'italic',
-                  lineHeight: '1.8',
-                }}
-              >
-                <span style={{ color: 'rgba(147, 51, 234, 0.9)', fontWeight: '400' }}>Hyderabad</span> → <span style={{ color: 'rgba(218, 14, 41, 0.9)', fontWeight: '400' }}>San Francisco</span>
-                <br />
-                <span style={{ color: 'rgba(147, 51, 234, 0.9)', fontWeight: '400' }}>Research labs</span> → <span style={{ color: 'rgba(218, 14, 41, 0.9)', fontWeight: '400' }}>Enterprise transformation</span>
-                <br />
-                <span style={{ color: 'rgba(147, 51, 234, 0.9)', fontWeight: '400' }}>Individual experiments</span> → <span style={{ color: 'rgba(218, 14, 41, 0.9)', fontWeight: '400' }}>Systems serving millions</span>
-              </p>
-            </div>
           </div>
         </div>
 
