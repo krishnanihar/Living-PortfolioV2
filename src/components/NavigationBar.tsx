@@ -7,6 +7,7 @@ import { useTheme } from '@/components/effects/ThemeProvider';
 
 export function NavigationBar() {
   const [scrolled, setScrolled] = useState(false);
+  const [navHeight, setNavHeight] = useState({ normal: 60, scrolled: 54 });
   const { theme, resolvedTheme, toggleTheme } = useTheme();
 
   useEffect(() => {
@@ -16,6 +17,47 @@ export function NavigationBar() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Responsive navigation height based on screen size
+  useEffect(() => {
+    const updateNavHeight = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      // Height constraint for 13" vertical space
+      if (height <= 850 && width >= 1024) {
+        setNavHeight({ normal: 48, scrolled: 44 });
+      }
+      // 13-inch laptops (1280-1439px)
+      else if (width >= 1280 && width < 1440) {
+        setNavHeight({ normal: 48, scrolled: 44 });
+      }
+      // 14-inch laptops (1440-1679px)
+      else if (width >= 1440 && width < 1680) {
+        setNavHeight({ normal: 52, scrolled: 48 });
+      }
+      // 16-inch scaled (1536-1727px) - takes precedence in this range
+      else if (width >= 1536 && width < 1728) {
+        setNavHeight({ normal: 54, scrolled: 50 });
+      }
+      // 16-inch native/large (1728-2879px)
+      else if (width >= 1728 && width < 2880) {
+        setNavHeight({ normal: 58, scrolled: 54 });
+      }
+      // 15-inch laptops (1920-2559px)
+      else if (width >= 1920 && width < 2560) {
+        setNavHeight({ normal: 56, scrolled: 52 });
+      }
+      // Default (mobile and small laptops)
+      else {
+        setNavHeight({ normal: 60, scrolled: 54 });
+      }
+    };
+
+    updateNavHeight();
+    window.addEventListener('resize', updateNavHeight);
+    return () => window.removeEventListener('resize', updateNavHeight);
   }, []);
 
   const navItems = [
@@ -72,7 +114,7 @@ export function NavigationBar() {
           left: 0,
           right: 0,
           zIndex: 9999,
-          height: scrolled ? '54px' : '60px',
+          height: scrolled ? `${navHeight.scrolled}px` : `${navHeight.normal}px`,
           transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >

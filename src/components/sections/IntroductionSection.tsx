@@ -168,7 +168,7 @@ export function IntroductionSection() {
               {/* Name */}
               <h1
                 style={{
-                  fontSize: 'clamp(3.5rem, 7vw, 5.5rem)',
+                  fontSize: 'clamp(3rem, 6vw, 4.5rem)',
                   fontWeight: '100',
                   lineHeight: '1.1',
                   letterSpacing: '-0.05em',

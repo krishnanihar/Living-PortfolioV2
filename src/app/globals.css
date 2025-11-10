@@ -812,35 +812,176 @@ button {
 
 /* === RESPONSIVE UTILITIES === */
 
-/* 14-inch Screen Optimizations (1280px - 1440px) */
-@media (min-width: 1280px) and (max-width: 1440px) {
+/* 13-inch Laptop Optimizations (1280px - 1439px) */
+@media (min-width: 1280px) and (max-width: 1439px) {
   :root {
-    --space-hero-padding: 2.5rem; /* 40px instead of 48-64px */
-    --space-section-gap: 2rem; /* 32px instead of 48px */
+    --space-hero-padding: 1.75rem; /* Tighter spacing for smaller screens */
+    --space-section-gap: 1.75rem;
+    --container-max-width: 1150px; /* Optimized for 13" width */
   }
 
-  /* Navigation optimization */
-  nav {
-    height: 52px !important;
-  }
+  /* Navigation optimization handled by NavigationBar component JavaScript */
 
-  /* Typography fine-tuning for 14" screens */
+  /* Typography fine-tuning for 13" screens - tighter ranges */
   .text-display {
-    font-size: clamp(2.25rem, 6vw, 6rem);
+    font-size: clamp(2rem, 5vw, 3.25rem);
   }
 
   .text-heading {
-    font-size: clamp(1.75rem, 4vw, 3.5rem);
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
   }
 
   .text-subheading {
-    font-size: clamp(1.125rem, 2.25vw, 2rem);
+    font-size: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  /* Hero card optimization - compact */
+  .glass-hero {
+    padding: 1.75rem !important;
+    max-width: 640px;
+  }
+}
+
+/* 14-inch Laptop Optimizations (1440px - 1679px) */
+@media (min-width: 1440px) and (max-width: 1679px) {
+  :root {
+    --space-hero-padding: 2rem;
+    --space-section-gap: 2rem;
+    --container-max-width: 1350px;
+  }
+
+  /* Navigation optimization handled by NavigationBar component JavaScript */
+
+  /* Typography fine-tuning for 14" screens */
+  .text-display {
+    font-size: clamp(2.25rem, 5.5vw, 3.5rem);
+  }
+
+  .text-heading {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+  }
+
+  .text-subheading {
+    font-size: clamp(1.125rem, 2.25vw, 1.75rem);
+  }
+
+  /* Hero card optimization */
+  .glass-hero {
+    padding: 2rem !important;
+    max-width: 680px;
+  }
+}
+
+/* 15-inch Laptop Optimizations (1920px - 2559px) */
+@media (min-width: 1920px) and (max-width: 2559px) {
+  :root {
+    --space-hero-padding: 2.25rem;
+    --space-section-gap: 2.5rem;
+    --container-max-width: 1680px; /* Wider containers for larger screens */
+  }
+
+  /* Navigation optimization handled by NavigationBar component JavaScript */
+
+  /* Typography fine-tuning for 15" screens */
+  .text-display {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .text-heading {
+    font-size: clamp(2rem, 4.5vw, 2.75rem);
+  }
+
+  .text-subheading {
+    font-size: clamp(1.25rem, 2.5vw, 1.875rem);
+  }
+
+  /* Hero card optimization */
+  .glass-hero {
+    padding: 2.25rem !important;
+    max-width: 720px;
+  }
+}
+
+/* 16-inch Laptop Optimizations - Scaled (1536px - 1727px) */
+/* For MacBook Pro 16" at 2x scaling (effective 1536x960 or 1728x1117) */
+@media (min-width: 1536px) and (max-width: 1727px) {
+  :root {
+    --space-hero-padding: 2.125rem;
+    --space-section-gap: 2.25rem;
+    --container-max-width: 1550px;
+  }
+
+  /* Navigation optimization handled by NavigationBar component JavaScript */
+
+  /* Typography fine-tuning for 16" screens (scaled) */
+  .text-display {
+    font-size: clamp(2.375rem, 5.75vw, 3.75rem);
+  }
+
+  .text-heading {
+    font-size: clamp(1.875rem, 4.25vw, 2.625rem);
+  }
+
+  .text-subheading {
+    font-size: clamp(1.1875rem, 2.375vw, 1.8125rem);
+  }
+
+  /* Hero card optimization */
+  .glass-hero {
+    padding: 2.125rem !important;
+    max-width: 700px;
+  }
+}
+
+/* 16-inch Laptop Optimizations - Native/Large (1728px - 2879px) */
+/* For 16" at 1x scaling or large external displays */
+@media (min-width: 1728px) and (max-width: 2879px) {
+  :root {
+    --space-hero-padding: 2.5rem;
+    --space-section-gap: 3rem;
+    --container-max-width: 1600px;
+  }
+
+  /* Navigation optimization handled by NavigationBar component JavaScript */
+
+  /* Typography fine-tuning for 16" screens (native) */
+  .text-display {
+    font-size: clamp(2.625rem, 6.25vw, 4.25rem);
+  }
+
+  .text-heading {
+    font-size: clamp(2.125rem, 4.75vw, 3rem);
+  }
+
+  .text-subheading {
+    font-size: clamp(1.3125rem, 2.625vw, 2rem);
   }
 
   /* Hero card optimization */
   .glass-hero {
     padding: 2.5rem !important;
+    max-width: 740px;
   }
+}
+
+/* 13-inch Height Constraint Optimization (800px-850px vertical space) */
+@media (max-height: 850px) and (min-width: 1024px) {
+  :root {
+    --space-section-vertical: 2rem; /* Reduce vertical spacing */
+  }
+
+  /* Reduce section min-heights to fit content better */
+  section {
+    min-height: auto !important;
+  }
+
+  /* Tighter vertical spacing in hero */
+  .glass-hero {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  /* Navigation optimization handled by NavigationBar component JavaScript */
 }
 
 /* iOS Safe Area Support */
