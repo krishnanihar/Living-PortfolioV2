@@ -48,8 +48,8 @@ export function CosmicBackground() {
   // Stabilize particle positions with deterministic algorithm
   const particlePositions = React.useMemo(() => {
     return {
-      far: Array.from({ length: 250 }, (_, i) => {
-        const seed = i / 250;
+      far: Array.from({ length: 150 }, (_, i) => {
+        const seed = i / 150;
         return {
           left: (seed * 87.3 + 13.7 + i * 4.2) % 100,
           top: (seed * 73.1 + 17.3 + i * 5.7) % 100,
@@ -61,8 +61,8 @@ export function CosmicBackground() {
           brightness: 0.6 + ((seed * 17.4 + i * 0.4) % 0.4), // 0.6-1.0
         };
       }),
-      mid: Array.from({ length: 150 }, (_, i) => {
-        const seed = i / 150;
+      mid: Array.from({ length: 80 }, (_, i) => {
+        const seed = i / 80;
         return {
           left: (seed * 91.2 + 8.8 + i * 3.8) % 100,
           top: (seed * 68.4 + 21.6 + i * 4.3) % 100,
@@ -74,8 +74,8 @@ export function CosmicBackground() {
           brightness: 0.65 + ((seed * 14.8 + i * 0.35) % 0.35), // 0.65-1.0
         };
       }),
-      near: Array.from({ length: 80 }, (_, i) => {
-        const seed = i / 80;
+      near: Array.from({ length: 40 }, (_, i) => {
+        const seed = i / 40;
         return {
           left: (seed * 79.6 + 20.4 + i * 5.1) % 100,
           top: (seed * 82.3 + 17.7 + i * 6.2) % 100,
@@ -87,8 +87,8 @@ export function CosmicBackground() {
           brightness: 0.7 + ((seed * 12.3 + i * 0.3) % 0.3), // 0.7-1.0
         };
       }),
-      accent: Array.from({ length: 15 }, (_, i) => {
-        const seed = i / 15;
+      accent: Array.from({ length: 8 }, (_, i) => {
+        const seed = i / 8;
         return {
           left: 20 + ((seed * 52.4 + i * 8.3) % 60),
           top: 20 + ((seed * 47.8 + i * 7.6) % 60),
