@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { NavigationBar } from '@/components/NavigationBar';
-import { CosmicBackground } from '@/components/effects/CosmicBackground';
 import { ScrollDarkeningOverlay } from '@/components/effects/ScrollDarkeningOverlay';
 import { IntroductionSection } from '@/components/sections/IntroductionSection';
 import WorkSection from '@/components/sections/WorkSection';
@@ -11,6 +11,15 @@ import { SectionDivider } from '@/components/ui/SectionDivider';
 import { OrbReflectionProvider } from '@/contexts/OrbReflectionContext';
 import { FloatingChatButton } from '@/components/FloatingChatButton';
 import { Chatbot } from '@/components/Chatbot';
+
+// Dynamically import CosmicBackground for better performance
+const CosmicBackground = dynamic(
+  () => import('@/components/effects/CosmicBackground').then(mod => ({ default: mod.CosmicBackground })),
+  {
+    ssr: false,
+    loading: () => null
+  }
+);
 
 export default function HomePage() {
   const [isChatOpen, setIsChatOpen] = useState(false);

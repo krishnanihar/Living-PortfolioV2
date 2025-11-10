@@ -2,8 +2,17 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { Github, Mail } from 'lucide-react';
-import { ParticleSphere } from '@/components/effects/ParticleSphere';
+
+// Dynamically import ParticleSphere for better performance
+const ParticleSphere = dynamic(
+  () => import('@/components/effects/ParticleSphere').then(mod => ({ default: mod.ParticleSphere })),
+  {
+    ssr: false,
+    loading: () => null
+  }
+);
 
 export function HeroCard() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);

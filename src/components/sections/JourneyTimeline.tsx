@@ -6,8 +6,6 @@ import { MousePointer2, ArrowDown, Check, ChevronDown, ExternalLink, Image as Im
 import { timelineMilestones, iconMap } from '@/data/timeline';
 import Image from 'next/image';
 import { useScrollProgress } from '@/hooks/useScrollProgress';
-import dynamic from 'next/dynamic';
-import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ContactChat } from '../ContactChat';
@@ -17,12 +15,6 @@ import { Chatbot } from '../Chatbot';
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
-
-// Dynamically import 3D scene to avoid SSR issues
-const HeroScene3D = dynamic(() => import('@/components/HeroScene3D').then(mod => ({ default: mod.HeroScene3D })), {
-  ssr: false,
-  loading: () => null
-});
 
 export function JourneyTimeline() {
   const scrollProgress = useScrollProgress();
@@ -71,7 +63,7 @@ export function JourneyTimeline() {
   }, []);
 
   // GSAP Hero Animation
-  useGSAP(() => {
+  useEffect(() => {
     if (!heroRef.current) return;
 
     const tl = gsap.timeline({
@@ -94,13 +86,17 @@ export function JourneyTimeline() {
       opacity: 0,
       duration: 0.8,
     }, '-=0.6');
-  }, { scope: heroRef });
+
+    return () => {
+      tl.kill();
+    };
+  }, []);
 
   // GSAP Timeline Progress Line Animation
-  useGSAP(() => {
+  useEffect(() => {
     if (!timelineLineRef.current || !containerRef.current) return;
 
-    gsap.to(timelineLineRef.current, {
+    const animation = gsap.to(timelineLineRef.current, {
       scaleY: 1,
       ease: 'none',
       scrollTrigger: {
@@ -110,10 +106,17 @@ export function JourneyTimeline() {
         scrub: 1,
       }
     });
-  }, { scope: containerRef, dependencies: [] });
+
+    return () => {
+      animation.kill();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
 
   // GSAP Milestone Animations - Simplified & Subtle
-  useGSAP(() => {
+  useEffect(() => {
+    const timelines: gsap.core.Timeline[] = [];
+
     milestonesRef.current.forEach((milestone, index) => {
       if (!milestone) return;
 
@@ -192,8 +195,15 @@ export function JourneyTimeline() {
           0
         );
       }
+
+      timelines.push(tl);
     });
-  }, { scope: containerRef, dependencies: [] });
+
+    return () => {
+      timelines.forEach(tl => tl.kill());
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
 
   // Track scroll state
   useEffect(() => {
@@ -278,9 +288,6 @@ export function JourneyTimeline() {
         position: 'relative',
         padding: '2rem',
       }}>
-        {/* 3D Background Scene */}
-        <HeroScene3D />
-
         <h1 style={{
           fontSize: 'clamp(2.5rem, 8vw, 5rem)',
           fontWeight: '200',

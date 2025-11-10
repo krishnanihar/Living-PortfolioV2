@@ -48,8 +48,8 @@ export function CosmicBackground() {
   // Stabilize particle positions with deterministic algorithm - organic distribution
   const particlePositions = React.useMemo(() => {
     return {
-      far: Array.from({ length: 70 }, (_, i) => {
-        const seed = i / 70;
+      far: Array.from({ length: 50 }, (_, i) => {
+        const seed = i / 50;
         const clusterSeed = Math.sin(i * 0.7) * 0.5 + 0.5; // Creates natural clustering
         return {
           left: (seed * 127.3 + clusterSeed * 40 + i * 7.2) % 100,
@@ -62,8 +62,8 @@ export function CosmicBackground() {
           brightness: 0.6 + ((seed * 17.4 + i * 0.4) % 0.4), // 0.6-1.0
         };
       }),
-      mid: Array.from({ length: 40 }, (_, i) => {
-        const seed = i / 40;
+      mid: Array.from({ length: 30 }, (_, i) => {
+        const seed = i / 30;
         const clusterSeed = Math.sin(i * 0.9 + 1.2) * 0.5 + 0.5;
         return {
           left: (seed * 141.2 + clusterSeed * 45 + i * 6.8) % 100,
@@ -76,8 +76,8 @@ export function CosmicBackground() {
           brightness: 0.65 + ((seed * 14.8 + i * 0.35) % 0.35), // 0.65-1.0
         };
       }),
-      near: Array.from({ length: 20 }, (_, i) => {
-        const seed = i / 20;
+      near: Array.from({ length: 15 }, (_, i) => {
+        const seed = i / 15;
         const clusterSeed = Math.sin(i * 1.1 + 2.4) * 0.5 + 0.5;
         return {
           left: (seed * 119.6 + clusterSeed * 50 + i * 9.1) % 100,

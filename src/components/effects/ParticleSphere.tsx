@@ -42,6 +42,8 @@ export function ParticleSphere({
   const breathingRef = useRef(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Liquid physics parameters (elegant, slow, natural motion)
   const physicsParams = {
@@ -73,6 +75,21 @@ export function ParticleSphere({
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Viewport visibility detection - pause animations when off-screen
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
   }, []);
 
   // Mouse tracking for liquid scatter effect with velocity tracking
@@ -234,6 +251,12 @@ export function ParticleSphere({
     let lastTime = 0;
     const animate = (currentTime: number) => {
       if (!ctx || !canvas) return;
+
+      // Pause animation when not visible (performance optimization)
+      if (!isVisible) {
+        animationRef.current = requestAnimationFrame(animate);
+        return;
+      }
 
       const deltaTime = currentTime - lastTime;
       lastTime = currentTime;
@@ -516,20 +539,30 @@ export function ParticleSphere({
       }
       window.removeEventListener('resize', setCanvasSize);
     };
-  }, [radius, particleCount, enableInteraction, isMobile, prefersReducedMotion]);
+  }, [radius, particleCount, enableInteraction, isMobile, prefersReducedMotion, isVisible]);
 
   return (
-    <canvas
-      ref={canvasRef}
+    <div
+      ref={containerRef}
       style={{
         position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
+        inset: 0,
         pointerEvents: 'none',
-        filter: (prefersReducedMotion || isMobile) ? 'none' : 'drop-shadow(0 0 30px rgba(124, 58, 237, 0.12))',
-        opacity: prefersReducedMotion ? 0.7 : 1,
       }}
-    />
+    >
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          pointerEvents: 'none',
+          filter: (prefersReducedMotion || isMobile) ? 'none' : 'drop-shadow(0 0 30px rgba(124, 58, 237, 0.12))',
+          opacity: prefersReducedMotion ? 0.7 : 1,
+          willChange: 'transform, opacity',
+        }}
+      />
+    </div>
   );
 }

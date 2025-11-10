@@ -71,16 +71,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
-        {/* Preload critical fonts */}
-        <link
-          rel="preload"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
-          as="style"
-          crossOrigin=""
-        />
-        {/* DNS prefetch for better performance */}
-        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+        {/* next/font/google automatically handles font optimization and preloading */}
       </head>
       <body
         className={`
