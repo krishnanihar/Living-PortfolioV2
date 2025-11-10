@@ -181,8 +181,8 @@ export function ParticleSphere({
     const goldenRatio = (1 + Math.sqrt(5)) / 2;
     const angleIncrement = Math.PI * 2 * goldenRatio;
 
-    // Adjust particle count based on device
-    const adjustedCount = isMobile ? 150 : particleCount;
+    // Adjust particle count based on device (aggressive mobile optimization)
+    const adjustedCount = isMobile ? 40 : particleCount;
 
     for (let i = 0; i < adjustedCount; i++) {
       // Fibonacci sphere distribution (even distribution on sphere)
@@ -267,26 +267,6 @@ export function ParticleSphere({
       const centerX = canvas.width / (window.devicePixelRatio || 1) / 2;
       const centerY = canvas.height / (window.devicePixelRatio || 1) / 2;
 
-      // Draw ambient glow layers (atmospheric depth, softer for elegance)
-      if (!isMobile && !prefersReducedMotion) {
-        const glowLayers = [
-          { radius: radius * 0.5, color: 'rgba(33, 150, 243, 0.015)', blur: 50 },   // Inner blue glow (softer)
-          { radius: radius * 0.75, color: 'rgba(124, 58, 237, 0.01)', blur: 70 },   // Mid purple glow (softer)
-          { radius: radius * 1.0, color: 'rgba(6, 182, 212, 0.008)', blur: 90 },    // Outer cyan glow (softer)
-        ];
-
-        glowLayers.forEach(layer => {
-          ctx.save();
-          ctx.shadowBlur = layer.blur;
-          ctx.shadowColor = layer.color;
-          ctx.beginPath();
-          ctx.arc(centerX, centerY, layer.radius, 0, Math.PI * 2);
-          ctx.fillStyle = layer.color;
-          ctx.fill();
-          ctx.restore();
-        });
-      }
-
       // Update rotation to follow mouse (smooth interpolation)
       if (!prefersReducedMotion) {
         // Lerp (linear interpolation) for smooth rotation transitions
@@ -301,42 +281,6 @@ export function ParticleSphere({
 
       // Sort particles by z-depth for proper rendering
       const sortedParticles = [...particlesRef.current].sort((a, b) => a.z - b.z);
-
-      // Draw constellation lines between nearby particles (adds structural complexity)
-      if (!isMobile && !prefersReducedMotion) {
-        sortedParticles.forEach((particleA, i) => {
-          // Only check next 5 particles (performance optimization)
-          sortedParticles.slice(i + 1, i + 6).forEach(particleB => {
-            const dx = particleA.x - particleB.x;
-            const dy = particleA.y - particleB.y;
-            const dz = particleA.z - particleB.z;
-            const distance3D = Math.sqrt(dx*dx + dy*dy + dz*dz);
-
-            // Only draw line if particles are close in 3D space (< 60px)
-            if (distance3D < 60) {
-              // Fade line opacity based on distance (softer, more subtle)
-              const lineOpacity = Math.max(0, (1 - distance3D / 60) * 0.08);
-
-              // Project both particles to 2D
-              const perspective = 600;
-              const scaleA = perspective / (perspective + particleA.z);
-              const scaleB = perspective / (perspective + particleB.z);
-              const x2dA = centerX + particleA.x * scaleA;
-              const y2dA = centerY + particleA.y * scaleA;
-              const x2dB = centerX + particleB.x * scaleB;
-              const y2dB = centerY + particleB.y * scaleB;
-
-              // Draw subtle constellation line
-              ctx.beginPath();
-              ctx.moveTo(x2dA, y2dA);
-              ctx.lineTo(x2dB, y2dB);
-              ctx.strokeStyle = `rgba(124, 58, 237, ${lineOpacity})`; // Purple lines
-              ctx.lineWidth = 0.5;
-              ctx.stroke();
-            }
-          });
-        });
-      }
 
       // Update particle physics (liquid behavior)
       particlesRef.current.forEach((particle, index) => {
@@ -368,57 +312,10 @@ export function ParticleSphere({
             forceX += directionX * repulsionForce;
             forceY += directionY * repulsionForce;
             forceZ += directionZ * repulsionForce;
-
-            // 2b. Tangential swirl force (creates vortex/flowing motion)
-            // Apply force perpendicular to radial direction for swirling effect
-            const falloff = 1 - (mouseDist3D / physicsParams.repulsionRadius);
-            const swirlForce = physicsParams.flowStrength * falloff;
-
-            // Perpendicular vector (tangent): rotate direction 90° in XY plane
-            const tangentX = -directionY;
-            const tangentY = directionX;
-
-            forceX += tangentX * swirlForce;
-            forceY += tangentY * swirlForce;
-            // No Z component for tangent (swirl in 2D plane)
-
-            // 2c. Drag force (particles follow mouse movement)
-            // Mouse velocity creates "wake" effect
-            const dragForce = physicsParams.dragStrength * falloff;
-            forceX += mouseVelocityRef.current.x * dragForce;
-            forceY += mouseVelocityRef.current.y * dragForce;
           }
         }
 
-        // 3. Cohesion force (particles attract nearby particles - surface tension)
-        if (!isMobile && !prefersReducedMotion) {
-          let cohesionX = 0, cohesionY = 0, cohesionZ = 0;
-          let neighborCount = 0;
-
-          // Check nearby particles (performance: only check every 10th particle)
-          for (let j = index + 1; j < Math.min(index + 20, particlesRef.current.length); j++) {
-            const other = particlesRef.current[j];
-            const cohDistX = other.x - particle.x;
-            const cohDistY = other.y - particle.y;
-            const cohDistZ = other.z - particle.z;
-            const cohDist = Math.sqrt(cohDistX**2 + cohDistY**2 + cohDistZ**2);
-
-            if (cohDist < physicsParams.cohesionRadius && cohDist > 0.1) {
-              cohesionX += cohDistX;
-              cohesionY += cohDistY;
-              cohesionZ += cohDistZ;
-              neighborCount++;
-            }
-          }
-
-          if (neighborCount > 0) {
-            forceX += (cohesionX / neighborCount) * physicsParams.cohesionStrength;
-            forceY += (cohesionY / neighborCount) * physicsParams.cohesionStrength;
-            forceZ += (cohesionZ / neighborCount) * physicsParams.cohesionStrength;
-          }
-        }
-
-        // 4. Soft containment boundary (prevents particles from drifting too far)
+        // 3. Soft containment boundary (prevents particles from drifting too far)
         const distanceFromCenter = Math.sqrt(particle.x**2 + particle.y**2 + particle.z**2);
         if (distanceFromCenter > physicsParams.containmentRadius) {
           // Gently push particle back toward center
@@ -496,36 +393,11 @@ export function ParticleSphere({
         const rgb = hexToRgb(particle.color);
         const color = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`;
 
-        // Multi-layer glow (only on desktop or if not reduced motion, softer for elegance)
-        if (!isMobile && !prefersReducedMotion) {
-          // Outer bloom (largest, softest)
-          ctx.shadowBlur = 8 * twinkleBrightness;
-          ctx.shadowColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity * 0.25})`;
-
-          // Mid glow
-          ctx.shadowBlur = 6 * twinkleBrightness;
-          ctx.shadowColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity * 0.35})`;
-        } else {
-          // Simplified glow for mobile/reduced motion
-          ctx.shadowBlur = 3;
-          ctx.shadowColor = color;
-        }
-
-        // Draw particle
+        // Draw particle (no shadow blur for performance)
         ctx.beginPath();
         ctx.arc(x2d, y2d, depthSize, 0, Math.PI * 2);
         ctx.fillStyle = color;
         ctx.fill();
-
-        // Inner bright core for twinkle effect
-        if (twinkleBrightness > 1.5 && !prefersReducedMotion) {
-          ctx.shadowBlur = 4;
-          ctx.shadowColor = `rgba(255, 255, 255, ${(twinkleBrightness - 1) * 0.8})`;
-          ctx.beginPath();
-          ctx.arc(x2d, y2d, depthSize * 0.5, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255, 255, 255, ${(twinkleBrightness - 1) * 0.6})`;
-          ctx.fill();
-        }
       });
 
       animationRef.current = requestAnimationFrame(animate);

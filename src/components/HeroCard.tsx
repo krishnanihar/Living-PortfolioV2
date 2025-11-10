@@ -2,17 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import { Github, Mail } from 'lucide-react';
-
-// Dynamically import ParticleSphere for better performance
-const ParticleSphere = dynamic(
-  () => import('@/components/effects/ParticleSphere').then(mod => ({ default: mod.ParticleSphere })),
-  {
-    ssr: false,
-    loading: () => null
-  }
-);
 
 export function HeroCard() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
@@ -90,22 +80,6 @@ export function HeroCard() {
             mixBlendMode: 'overlay',
           }}
         />
-        {/* Particle Sphere Background - Consciousness Orb */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          overflow: 'hidden',
-          pointerEvents: 'none',
-          zIndex: -1,
-          opacity: mounted ? 1 : 0,
-          transition: 'opacity 1.2s ease-out',
-        }}>
-          <ParticleSphere
-            radius={180}
-            particleCount={500}
-            enableInteraction={true}
-          />
-        </div>
 
         {/* Name */}
         <div style={{

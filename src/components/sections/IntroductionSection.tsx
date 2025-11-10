@@ -453,7 +453,7 @@ export function IntroductionSection() {
             >
               <ParticleSphere
                 radius={140}
-                particleCount={250}
+                particleCount={75}
                 enableInteraction={true}
               />
             </div>
