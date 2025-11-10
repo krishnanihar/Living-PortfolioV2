@@ -20,7 +20,6 @@ export function IntroductionSection() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
   const [hoveredStat, setHoveredStat] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
-  const [inView, setInView] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
 
   // Get orb reflection state for dynamic color effects
@@ -36,23 +35,8 @@ export function IntroductionSection() {
 
     window.addEventListener('resize', handleResize);
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const section = document.getElementById('hero-section');
-    if (section) {
-      observer.observe(section);
-    }
-
     return () => {
       window.removeEventListener('resize', handleResize);
-      observer.disconnect();
     };
   }, []);
 
@@ -72,17 +56,6 @@ export function IntroductionSection() {
   return (
     <>
       <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
         @keyframes pulseRed {
           0%, 100% {
             box-shadow: 0 0 8px rgba(218, 14, 41, 0.4);
@@ -205,8 +178,7 @@ export function IntroductionSection() {
                   letterSpacing: '-0.05em',
                   color: 'rgba(255, 255, 255, 0.98)',
                   marginBottom: '2rem',
-                  opacity: inView && mounted ? 1 : 0,
-                  animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
+                  opacity: mounted ? 1 : 0,
                 }}
               >
                 Krishna Nihar
@@ -216,8 +188,7 @@ export function IntroductionSection() {
               <div
                 style={{
                   marginBottom: '2rem',
-                  opacity: inView && mounted ? 1 : 0,
-                  animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both' : 'none',
+                  opacity: mounted ? 1 : 0,
                 }}
               >
                 <p
@@ -285,8 +256,7 @@ export function IntroductionSection() {
                         : `0px 10px 30px rgba(0, 0, 0, 0.5),
                            0px 0px 1px rgba(255, 255, 255, 0.25) inset,
                            0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
-                      opacity: inView && mounted ? 1 : 0,
-                      animation: inView && mounted ? `fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) ${0.6 + idx * 0.1}s both` : 'none',
+                      opacity: mounted ? 1 : 0,
                     }}
                   >
                     {stat.label}
@@ -370,8 +340,7 @@ export function IntroductionSection() {
                       : `inset 0 1px 0 rgba(255, 255, 255, 0.02),
                          inset 0 -1px 0 rgba(0, 0, 0, 0.3),
                          0 8px 24px rgba(0, 0, 0, 0.6)`,
-                    opacity: inView && mounted ? 1 : 0,
-                    animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both' : 'none',
+                    opacity: mounted ? 1 : 0,
                   }}
                 >
                   <HealthcareResearchIcon size={20} />
@@ -423,8 +392,7 @@ export function IntroductionSection() {
                       : `0px 10px 30px rgba(0, 0, 0, 0.5),
                          0px 0px 1px rgba(255, 255, 255, 0.25) inset,
                          0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
-                    opacity: inView && mounted ? 1 : 0,
-                    animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.0s both' : 'none',
+                    opacity: mounted ? 1 : 0,
                   }}
                 >
                   <Mail size={16} />
@@ -465,8 +433,7 @@ export function IntroductionSection() {
                       : `0px 10px 30px rgba(0, 0, 0, 0.5),
                          0px 0px 1px rgba(255, 255, 255, 0.25) inset,
                          0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
-                    opacity: inView && mounted ? 1 : 0,
-                    animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.1s both' : 'none',
+                    opacity: mounted ? 1 : 0,
                   }}
                 >
                   <Github size={16} />
@@ -485,8 +452,7 @@ export function IntroductionSection() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 overflow: 'visible', // Allow effects to extend beyond container
-                opacity: inView && mounted ? 1 : 0,
-                animation: inView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both' : 'none',
+                opacity: mounted ? 1 : 0,
               }}
             >
               <ParticleSphere
