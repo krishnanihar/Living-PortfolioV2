@@ -5,12 +5,7 @@ import dynamic from 'next/dynamic';
 import { NavigationBar } from '@/components/NavigationBar';
 import { ScrollDarkeningOverlay } from '@/components/effects/ScrollDarkeningOverlay';
 import { IntroductionSection } from '@/components/sections/IntroductionSection';
-import WorkSection from '@/components/sections/WorkSection';
-import AboutSectionV2 from '@/components/sections/AboutSectionV2';
 import { SectionDivider } from '@/components/ui/SectionDivider';
-import { OrbReflectionProvider } from '@/contexts/OrbReflectionContext';
-import { FloatingChatButton } from '@/components/FloatingChatButton';
-import { Chatbot } from '@/components/Chatbot';
 
 // Dynamically import CosmicBackground for better performance
 const CosmicBackground = dynamic(
@@ -21,10 +16,42 @@ const CosmicBackground = dynamic(
   }
 );
 
+// Lazy load below-the-fold sections for faster initial load
+const AboutSectionV2 = dynamic(
+  () => import('@/components/sections/AboutSectionV2'),
+  {
+    loading: () => null
+  }
+);
+
+const WorkSection = dynamic(
+  () => import('@/components/sections/WorkSection'),
+  {
+    loading: () => null
+  }
+);
+
+// Lazy load chat components
+const FloatingChatButton = dynamic(
+  () => import('@/components/FloatingChatButton').then(mod => ({ default: mod.FloatingChatButton })),
+  {
+    ssr: false,
+    loading: () => null
+  }
+);
+
+const Chatbot = dynamic(
+  () => import('@/components/Chatbot').then(mod => ({ default: mod.Chatbot })),
+  {
+    ssr: false,
+    loading: () => null
+  }
+);
+
 export default function HomePage() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   return (
-    <OrbReflectionProvider>
+    <>
       <NavigationBar />
       <CosmicBackground />
       <ScrollDarkeningOverlay />
@@ -44,6 +71,6 @@ export default function HomePage() {
         onClose={() => setIsChatOpen(false)}
         intentContext="general"
       />
-    </OrbReflectionProvider>
+    </>
   );
 }

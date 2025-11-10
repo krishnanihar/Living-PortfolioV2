@@ -3,7 +3,12 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/effects/ThemeProvider';
 import { FocusManager } from '@/components/effects/FocusManager';
-import { MicroInteractionProvider } from '@/components/effects/MicroInteractionProvider';
+import dynamic from 'next/dynamic';
+
+// Lazy load MicroInteractionProvider for better initial load
+const MicroInteractionProvider = dynamic(
+  () => import('@/components/effects/MicroInteractionProvider').then(mod => ({ default: mod.MicroInteractionProvider }))
+);
 
 const inter = Inter({
   subsets: ['latin'],

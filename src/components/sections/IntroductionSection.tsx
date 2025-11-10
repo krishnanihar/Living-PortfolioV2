@@ -4,7 +4,6 @@ import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Github, Mail, ChevronDown } from 'lucide-react';
-import { useOrbReflection } from '@/contexts/OrbReflectionContext';
 import { HealthcareResearchIcon } from '@/components/icons/HealthcareResearchIcon';
 
 // Dynamically import ParticleSphere for better performance
@@ -21,9 +20,6 @@ export function IntroductionSection() {
   const [hoveredStat, setHoveredStat] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
-
-  // Get orb reflection state for dynamic color effects
-  const { orbState } = useOrbReflection();
 
   useEffect(() => {
     setMounted(true);
