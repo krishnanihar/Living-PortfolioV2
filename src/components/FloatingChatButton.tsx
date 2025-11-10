@@ -113,16 +113,15 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
             transform: 'translateY(-50%)',
             maxWidth: '180px',
             padding: '12px 16px',
-            background: `rgba(${reflectedColor.r}, ${reflectedColor.g}, ${reflectedColor.b}, 0.3)`,
-            backdropFilter: 'blur(120px) saturate(200%) brightness(0.9)',
-            WebkitBackdropFilter: 'blur(120px) saturate(200%) brightness(0.9)',
-            border: `1px solid rgba(${reflectedColor.r}, ${reflectedColor.g}, ${reflectedColor.b}, 0.5)`,
+            background: 'rgba(10, 10, 10, 0.95)',
+            backdropFilter: 'blur(100px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(100px) saturate(180%)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
             borderRadius: '12px',
             boxShadow: `
-              inset 0 1px 0 rgba(255, 255, 255, 0.03),
-              inset 0 -1px 0 rgba(0, 0, 0, 0.5),
-              0 16px 48px rgba(0, 0, 0, 0.8),
-              0 0 20px rgba(${reflectedColor.r}, ${reflectedColor.g}, ${reflectedColor.b}, 0.3)
+              inset 0 1px 0 rgba(255, 255, 255, 0.02),
+              inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+              0 8px 24px rgba(0, 0, 0, 0.7)
             `,
             pointerEvents: 'none',
             whiteSpace: 'nowrap',
@@ -131,8 +130,8 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
           <span
             style={{
               fontSize: '14px',
-              fontWeight: 500,
-              color: 'rgba(255, 255, 255, 0.95)',
+              fontWeight: 300,
+              color: 'rgba(255, 255, 255, 0.9)',
               letterSpacing: '-0.01em',
             }}
           >
@@ -151,7 +150,7 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
               height: 0,
               borderTop: '6px solid transparent',
               borderBottom: '6px solid transparent',
-              borderLeft: `6px solid rgba(${reflectedColor.r}, ${reflectedColor.g}, ${reflectedColor.b}, 0.95)`,
+              borderLeft: '6px solid rgba(10, 10, 10, 0.95)',
             }}
           />
         </div>
@@ -167,39 +166,36 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
           width: 'clamp(48px, 10vw, 56px)',
           height: 'clamp(48px, 10vw, 56px)',
           borderRadius: '50%',
-          background: `rgba(${reflectedColor.r}, ${reflectedColor.g}, ${reflectedColor.b}, 0.35)`,
-          backdropFilter: 'blur(120px) saturate(200%)',
-          WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-          border: `1px solid rgba(${reflectedColor.r}, ${reflectedColor.g}, ${reflectedColor.b}, 0.5)`,
+          background: 'rgba(10, 10, 10, 0.6)',
+          backdropFilter: 'blur(100px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(100px) saturate(180%)',
+          border: '1px solid rgba(255, 255, 255, 0.06)',
           boxShadow: `
-            inset 0 1px 0 rgba(255, 255, 255, 0.05),
-            inset 0 -1px 0 rgba(0, 0, 0, 0.5),
-            0 16px 48px rgba(0, 0, 0, 0.8),
-            0 0 20px rgba(${reflectedColor.r}, ${reflectedColor.g}, ${reflectedColor.b}, 0.3)
+            inset 0 1px 0 rgba(255, 255, 255, 0.02),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+            0 8px 24px rgba(0, 0, 0, 0.6)
           `,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           cursor: 'pointer',
           transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-          animation: 'pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          overflow: 'hidden',
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.transform = 'scale(1.05)';
           e.currentTarget.style.boxShadow = `
-            inset 0 1px 0 rgba(255, 255, 255, 0.05),
-            inset 0 -1px 0 rgba(0, 0, 0, 0.5),
-            0 20px 60px rgba(0, 0, 0, 0.9),
-            0 0 30px rgba(${reflectedColor.r}, ${reflectedColor.g}, ${reflectedColor.b}, 0.4)
+            inset 0 1px 0 rgba(255, 255, 255, 0.02),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+            0 12px 32px rgba(0, 0, 0, 0.7)
           `;
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.transform = 'scale(1)';
           e.currentTarget.style.boxShadow = `
-            inset 0 1px 0 rgba(255, 255, 255, 0.05),
-            inset 0 -1px 0 rgba(0, 0, 0, 0.5),
-            0 16px 48px rgba(0, 0, 0, 0.8),
-            0 0 20px rgba(${reflectedColor.r}, ${reflectedColor.g}, ${reflectedColor.b}, 0.3)
+            inset 0 1px 0 rgba(255, 255, 255, 0.02),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+            0 8px 24px rgba(0, 0, 0, 0.6)
           `;
         }}
         onMouseDown={(e) => {
@@ -209,13 +205,28 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
           e.currentTarget.style.transform = 'scale(1.05)';
         }}
       >
-        {/* Icon - static and elegant with reflected color */}
+        {/* Top-left color reflection gradient */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            borderRadius: '50%',
+            background: `radial-gradient(circle at 20% 20%, rgba(${reflectedColor.r}, ${reflectedColor.g}, ${reflectedColor.b}, 0.3) 0%, transparent 50%)`,
+            pointerEvents: 'none',
+          }}
+        />
+
+        {/* Icon - pure white for minimal aesthetic */}
         <Sparkles
           size={24}
           strokeWidth={2}
           style={{
-            color: `rgba(${reflectedColor.r}, ${reflectedColor.g}, ${reflectedColor.b}, 1)`,
-            filter: `drop-shadow(0 0 8px rgba(${reflectedColor.r}, ${reflectedColor.g}, ${reflectedColor.b}, 0.8))`,
+            color: 'rgba(255, 255, 255, 0.9)',
+            position: 'relative',
+            zIndex: 1,
           }}
         />
 
@@ -263,20 +274,6 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
           }
         }
 
-        @keyframes pulse-ring {
-          0%, 100% {
-            box-shadow:
-              inset 0 1px 0 rgba(255, 255, 255, 0.03),
-              inset 0 -1px 0 rgba(0, 0, 0, 0.5),
-              0 16px 48px rgba(0, 0, 0, 0.8);
-          }
-          50% {
-            box-shadow:
-              inset 0 1px 0 rgba(255, 255, 255, 0.03),
-              inset 0 -1px 0 rgba(0, 0, 0, 0.5),
-              0 16px 48px rgba(0, 0, 0, 0.8);
-          }
-        }
 
         @media (prefers-reduced-motion: reduce) {
           .floating-chat-button {
