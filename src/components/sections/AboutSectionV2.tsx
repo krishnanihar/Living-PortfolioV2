@@ -299,18 +299,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
         /* Mobile responsive adjustments for Act 2 timeline */
         @media (max-width: 768px) {
-          #act-2-journey .timeline-container {
-            padding-left: 1.5rem !important;
-          }
-
-          #act-2-journey .timeline-svg {
-            width: 50px !important;
-          }
-
-          #act-2-journey .connection-dot {
-            left: -1.5rem !important;
-          }
-
           #act-2-journey .milestone-card {
             padding: 1.5rem !important;
           }
@@ -477,59 +465,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               </p>
             </div>
 
-            {/* Timeline Container with SVG Spine */}
-            <div className="timeline-container" style={{ position: 'relative', paddingLeft: '3rem' }}>
-              {/* SVG Timeline Spine */}
-              <svg
-                className="timeline-svg"
-                style={{
-                  position: 'absolute',
-                  left: '0',
-                  top: '0',
-                  height: '100%',
-                  width: '100px',
-                  zIndex: 0,
-                  pointerEvents: 'none',
-                }}
-                viewBox="0 0 100 1000"
-                preserveAspectRatio="none"
-              >
-                {/* Main vertical line */}
-                <line
-                  x1="48"
-                  y1="0"
-                  x2="48"
-                  y2="1000"
-                  stroke="rgba(218, 14, 41, 0.15)"
-                  strokeWidth="2"
-                  strokeDasharray="0"
-                />
-
-                {/* Animated gradient overlay line */}
-                <line
-                  x1="48"
-                  y1="0"
-                  x2="48"
-                  y2="1000"
-                  stroke="url(#timelineGradient)"
-                  strokeWidth="3"
-                  strokeDasharray="0"
-                  style={{
-                    opacity: act2InView && mounted ? 1 : 0,
-                    transition: 'opacity 1.5s ease-out 0.5s',
-                  }}
-                />
-
-                <defs>
-                  <linearGradient id="timelineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="rgba(147, 51, 234, 0.6)" />
-                    <stop offset="33%" stopColor="rgba(251, 146, 60, 0.6)" />
-                    <stop offset="66%" stopColor="rgba(218, 14, 41, 0.6)" />
-                    <stop offset="100%" stopColor="rgba(218, 14, 41, 0.8)" />
-                  </linearGradient>
-                </defs>
-              </svg>
-
+            {/* Timeline Container */}
+            <div className="timeline-container" style={{ position: 'relative' }}>
               {/* Milestones */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem', position: 'relative', zIndex: 1 }}>
                 {journeyMilestones.map((milestone, idx) => {
@@ -550,30 +487,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                         transition: `all 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.2 + idx * 0.15}s`,
                       }}
                     >
-                      {/* Connection Dot on Timeline */}
-                      <div
-                        className="connection-dot"
-                        style={{
-                          position: 'absolute',
-                          left: '-3rem',
-                          top: '2rem',
-                          width: '12px',
-                          height: '12px',
-                          borderRadius: '50%',
-                          background: isHovered
-                            ? milestone.borderColor.replace('0.4', '0.8')
-                            : 'rgba(255, 255, 255, 0.2)',
-                          border: isHovered
-                            ? `2px solid ${milestone.borderColor.replace('0.4', '1)')}`
-                            : '2px solid rgba(255, 255, 255, 0.1)',
-                          boxShadow: isHovered
-                            ? `0 0 16px ${milestone.borderColor.replace('0.4', '0.4')}`
-                            : 'none',
-                          transition: 'all 0.3s ease',
-                          zIndex: 2,
-                        }}
-                      />
-
                       {/* Milestone Card */}
                       <div
                         className="milestone-card"
