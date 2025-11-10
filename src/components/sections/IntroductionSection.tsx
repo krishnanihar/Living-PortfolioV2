@@ -296,7 +296,9 @@ export function IntroductionSection() {
                     background: 'rgba(10, 10, 10, 0.6)',
                     backdropFilter: 'blur(100px) saturate(180%)',
                     WebkitBackdropFilter: 'blur(100px) saturate(180%)',
-                    border: '1px solid rgba(255, 255, 255, 0.06)',
+                    border: hoveredButton === 'featured'
+                      ? '1px solid rgba(255, 255, 255, 0.12)'
+                      : '1px solid rgba(255, 255, 255, 0.06)',
                     borderRadius: '15px',
                     color: 'rgba(255, 255, 255, 0.98)',
                     textDecoration: 'none',
@@ -307,7 +309,8 @@ export function IntroductionSection() {
                     boxShadow: hoveredButton === 'featured'
                       ? `inset 0 1px 0 rgba(255, 255, 255, 0.02),
                          inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-                         0 12px 32px rgba(0, 0, 0, 0.7)`
+                         0 12px 32px rgba(0, 0, 0, 0.7),
+                         0 0 20px rgba(255, 255, 255, 0.05)`
                       : `inset 0 1px 0 rgba(255, 255, 255, 0.02),
                          inset 0 -1px 0 rgba(0, 0, 0, 0.3),
                          0 8px 24px rgba(0, 0, 0, 0.6)`,
