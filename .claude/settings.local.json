@@ -35,7 +35,12 @@
       "Bash(xargs kill:*)",
       "Bash(git checkout:*)",
       "Bash(find:*)",
-      "Bash(src/components/ui/index.ts)"
+      "Bash(src/components/ui/index.ts)",
+      "Bash(tasklist:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(nul)",
+      "Bash(git rm:*)"
     ],
     "deny": [],
     "ask": []

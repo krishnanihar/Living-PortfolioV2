@@ -36,14 +36,14 @@ export function ScrollDarkeningOverlay() {
         // Still in hero section, no darkening
         setDarkeningOpacity(0);
       } else if (scrollY < darkeningEnd) {
-        // Progressive darkening from 0 to 0.7
+        // Progressive darkening from 0 to 0.85
         const progress = (scrollY - darkeningStart) / (darkeningEnd - darkeningStart);
         // Smooth ease-out curve for natural feel
         const easedProgress = 1 - Math.pow(1 - progress, 3);
-        setDarkeningOpacity(easedProgress * 0.7);
+        setDarkeningOpacity(easedProgress * 0.85);
       } else {
         // Maximum darkness after 200vh
-        setDarkeningOpacity(0.7);
+        setDarkeningOpacity(0.85);
       }
     };
 
@@ -86,8 +86,8 @@ export function ScrollDarkeningOverlay() {
         background: `radial-gradient(
           ellipse 120% 100% at 50% 0%,
           rgba(0, 0, 0, 0) 0%,
-          rgba(0, 0, 0, 0.3) 40%,
-          rgba(0, 0, 0, 0.8) 100%
+          rgba(0, 0, 0, 0.4) 40%,
+          rgba(0, 0, 0, 0.9) 100%
         )`,
       }}
     />
