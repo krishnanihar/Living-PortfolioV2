@@ -136,7 +136,13 @@ export function ParticleSphere({
   }, [enableInteraction, isMobile]);
 
   // Color interpolation helper
-  const getParticleColor = (theta: number): string => {
+  const getParticleColor = (theta: number, layer: number): string => {
+    // Inner layer (layer 0 = 70% radius) is white
+    if (layer === 0) {
+      return '#FFFFFF'; // White
+    }
+
+    // Mid and outer layers use theta-based color gradient
     // Map theta (0 to 2π) to color gradient
     const normalized = (theta / (Math.PI * 2) + 1) % 1;
 
@@ -193,7 +199,7 @@ export function ParticleSphere({
         opacity: 0.3 + Math.random() * 0.6, // 0.3-0.9
         pulseOffset: Math.random() * Math.PI * 2, // Random starting phase for pulse
         twinkleOffset: Math.random() * 1000, // Random starting offset for twinkle
-        color: getParticleColor(theta),
+        color: getParticleColor(theta, layer),
         layer,
       });
     }
