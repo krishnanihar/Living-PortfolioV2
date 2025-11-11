@@ -90,6 +90,15 @@ export function IntroductionSection() {
           }
         }
 
+        @keyframes orbGlow {
+          0%, 100% {
+            filter: drop-shadow(0 0 20px rgba(124, 58, 237, 0.4));
+          }
+          50% {
+            filter: drop-shadow(0 0 30px rgba(33, 150, 243, 0.5));
+          }
+        }
+
         .featured-work-button {
           position: relative;
           isolation: isolate;
@@ -98,35 +107,35 @@ export function IntroductionSection() {
         .featured-work-button::before {
           content: '';
           position: absolute;
-          inset: -2px;
+          inset: -3px;
           border-radius: 15px;
-          padding: 2px;
+          padding: 3px;
           background: conic-gradient(
             from 0deg,
-            rgba(255, 255, 255, 0.2) 0deg,
-            rgba(218, 14, 41, 0.5) 90deg,
-            rgba(255, 255, 255, 0.2) 180deg,
-            rgba(218, 14, 41, 0.5) 270deg,
-            rgba(255, 255, 255, 0.2) 360deg
+            rgba(33, 150, 243, 0.6) 0deg,
+            rgba(124, 58, 237, 0.8) 90deg,
+            rgba(6, 182, 212, 0.6) 180deg,
+            rgba(124, 58, 237, 0.8) 270deg,
+            rgba(33, 150, 243, 0.6) 360deg
           );
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           -webkit-mask-composite: xor;
           mask-composite: exclude;
           z-index: -1;
-          animation: borderRotate 4s linear infinite;
+          animation: borderRotate 3s linear infinite, orbGlow 3s ease-in-out infinite;
           pointer-events: none;
         }
 
         .featured-work-button:hover::before {
           background: conic-gradient(
             from 0deg,
-            rgba(255, 255, 255, 0.4) 0deg,
-            rgba(218, 14, 41, 0.7) 90deg,
-            rgba(255, 255, 255, 0.4) 180deg,
-            rgba(218, 14, 41, 0.7) 270deg,
-            rgba(255, 255, 255, 0.4) 360deg
+            rgba(33, 150, 243, 0.8) 0deg,
+            rgba(124, 58, 237, 1) 90deg,
+            rgba(6, 182, 212, 0.8) 180deg,
+            rgba(124, 58, 237, 1) 270deg,
+            rgba(33, 150, 243, 0.8) 360deg
           );
-          animation-duration: 3s;
+          animation-duration: 2.5s, 2.5s;
         }
       `}</style>
 
@@ -316,10 +325,10 @@ export function IntroductionSection() {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.625rem',
-                    padding: 'clamp(0.875rem, 1.75vw, 1rem) clamp(1.5rem, 3vw, 2rem)',
-                    background: 'rgba(10, 10, 10, 0.6)',
-                    backdropFilter: 'blur(100px) saturate(180%)',
-                    WebkitBackdropFilter: 'blur(100px) saturate(180%)',
+                    padding: 'clamp(1rem, 2vw, 1.125rem) clamp(1.75rem, 3.5vw, 2.25rem)',
+                    background: 'rgba(15, 15, 15, 0.5)',
+                    backdropFilter: 'blur(40px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(40px) saturate(180%)',
                     border: '1px solid transparent',
                     borderRadius: '15px',
                     color: 'rgba(255, 255, 255, 0.98)',
@@ -327,15 +336,17 @@ export function IntroductionSection() {
                     fontSize: 'clamp(0.9375rem, 1.75vw, 1rem)',
                     fontWeight: '300',
                     transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                    transform: hoveredButton === 'featured' ? 'translateY(-3px) scale(1.02)' : 'translateY(0) scale(1)',
+                    transform: hoveredButton === 'featured' ? 'translateY(-3px) scale(1.05)' : 'translateY(0) scale(1)',
                     boxShadow: hoveredButton === 'featured'
                       ? `inset 0 1px 0 rgba(255, 255, 255, 0.02),
                          inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-                         0 12px 32px rgba(0, 0, 0, 0.7),
-                         0 0 30px rgba(218, 14, 41, 0.2)`
+                         0 16px 40px rgba(0, 0, 0, 0.7),
+                         0 0 40px rgba(124, 58, 237, 0.4),
+                         0 0 20px rgba(33, 150, 243, 0.3)`
                       : `inset 0 1px 0 rgba(255, 255, 255, 0.02),
                          inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-                         0 8px 24px rgba(0, 0, 0, 0.6)`,
+                         0 8px 24px rgba(0, 0, 0, 0.6),
+                         0 0 20px rgba(124, 58, 237, 0.2)`,
                     opacity: mounted ? 1 : 0,
                   }}
                 >
@@ -344,11 +355,12 @@ export function IntroductionSection() {
                   <div
                     style={{
                       padding: '0.25rem 0.625rem',
-                      background: 'rgba(255, 255, 255, 0.08)',
+                      background: 'rgba(124, 58, 237, 0.15)',
+                      border: '1px solid rgba(124, 58, 237, 0.3)',
                       borderRadius: '10px',
                       fontSize: '0.75rem',
                       fontWeight: '300',
-                      color: 'rgba(255, 255, 255, 0.9)',
+                      color: 'rgba(255, 255, 255, 0.95)',
                       letterSpacing: '0.02em',
                     }}
                   >
