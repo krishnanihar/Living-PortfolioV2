@@ -12,18 +12,61 @@ interface PortfolioNavigationProps {
 
 export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
   const [scrolled, setScrolled] = useState(false);
+  const [navHeight, setNavHeight] = useState({ normal: 60, scrolled: 54 });
   const pathname = usePathname();
   const { theme, resolvedTheme, toggleTheme } = useTheme();
 
+  // Scroll detection - triggers at 50px like NavigationBar
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 50);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
+  }, []);
+
+  // Responsive navigation height based on screen size (copied from NavigationBar)
+  useEffect(() => {
+    const updateNavHeight = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      // Height constraint for 13" vertical space
+      if (height <= 850 && width >= 1024) {
+        setNavHeight({ normal: 48, scrolled: 44 });
+      }
+      // 13-inch laptops (1280-1439px)
+      else if (width >= 1280 && width < 1440) {
+        setNavHeight({ normal: 48, scrolled: 44 });
+      }
+      // 14-inch laptops (1440-1679px)
+      else if (width >= 1440 && width < 1680) {
+        setNavHeight({ normal: 52, scrolled: 48 });
+      }
+      // 16-inch scaled (1536-1727px) - takes precedence in this range
+      else if (width >= 1536 && width < 1728) {
+        setNavHeight({ normal: 54, scrolled: 50 });
+      }
+      // 16-inch native/large (1728-2879px)
+      else if (width >= 1728 && width < 2880) {
+        setNavHeight({ normal: 58, scrolled: 54 });
+      }
+      // 15-inch laptops (1920-2559px)
+      else if (width >= 1920 && width < 2560) {
+        setNavHeight({ normal: 56, scrolled: 52 });
+      }
+      // Default (mobile and small laptops)
+      else {
+        setNavHeight({ normal: 60, scrolled: 54 });
+      }
+    };
+
+    updateNavHeight();
+    window.addEventListener('resize', updateNavHeight);
+    return () => window.removeEventListener('resize', updateNavHeight);
   }, []);
 
   const navItems = [
@@ -40,17 +83,6 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
   return (
     <>
       <style jsx>{`
-        @keyframes slideDown {
-          from {
-            transform: translateY(-100%) translateZ(0);
-            opacity: 0;
-          }
-          to {
-            transform: translateY(0) translateZ(0);
-            opacity: 1;
-          }
-        }
-
         @keyframes shimmer {
           0% {
             transform: translateX(-100%);
@@ -61,38 +93,81 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
         }
       `}</style>
 
-      {/* Navigation with enhanced glass */}
+      {/* Skip to main content - Accessibility */}
+      <a
+        href="#main-content"
+        style={{
+          position: 'absolute',
+          left: '-9999px',
+          zIndex: 10000,
+          padding: '1rem 1.5rem',
+          background: 'var(--brand-red)',
+          color: 'white',
+          textDecoration: 'none',
+          borderRadius: '8px',
+          fontWeight: '500',
+          fontSize: '0.9rem',
+          boxShadow: '0 4px 12px rgba(218, 14, 41, 0.4)',
+        }}
+        onFocus={(e) => {
+          e.currentTarget.style.left = '1rem';
+          e.currentTarget.style.top = '1rem';
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.left = '-9999px';
+        }}
+      >
+        Skip to main content
+      </a>
+
+      {/* Navigation with floating effect when scrolled */}
       <nav style={{
         position: 'fixed',
-        top: 0,
+        top: scrolled ? '12px' : '0',
         left: 0,
         right: 0,
-        zIndex: 50,
-        height: scrolled ? '54px' : '60px',
-        transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-        animation: 'slideDown 1s cubic-bezier(0.16, 1, 0.3, 1)',
+        zIndex: 9999,
+        height: scrolled ? `${navHeight.scrolled}px` : `${navHeight.normal}px`,
+        transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+        width: scrolled ? 'calc(100% - 48px)' : '100%',
+        maxWidth: scrolled ? 'clamp(1200px, 90vw, 1400px)' : '100%',
+        margin: '0 auto',
+        borderRadius: scrolled ? '16px' : '0',
+        overflow: scrolled ? 'hidden' : 'visible',
       }}>
         {/* Multi-layer glass effect */}
         <div style={{
           position: 'absolute',
           inset: 0,
-          background: `linear-gradient(90deg,
-            var(--surface-secondary) 0%,
-            var(--surface-primary) 50%,
-            var(--surface-secondary) 100%)`,
-          backdropFilter: 'blur(40px) saturate(150%)',
-          WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-          borderBottom: '1px solid var(--border-primary)',
-          boxShadow: scrolled ? '0 4px 12px rgba(0, 0, 0, 0.2)' : 'none',
+          background: scrolled
+            ? `linear-gradient(90deg,
+              var(--surface-secondary) 0%,
+              var(--surface-primary) 50%,
+              var(--surface-secondary) 100%)`
+            : 'transparent',
+          backdropFilter: scrolled ? 'blur(60px) saturate(180%) brightness(1.05)' : 'blur(20px) saturate(120%)',
+          WebkitBackdropFilter: scrolled ? 'blur(60px) saturate(180%) brightness(1.05)' : 'blur(20px) saturate(120%)',
+          borderBottom: scrolled ? '1px solid var(--border-primary)' : '1px solid transparent',
+          boxShadow: scrolled
+            ? `inset 0 1px 0 rgba(255, 255, 255, 0.03),
+               inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+               0 8px 32px rgba(0, 0, 0, 0.4),
+               0 20px 60px rgba(0, 0, 0, 0.2)`
+            : 'none',
+          pointerEvents: 'none',
+          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+          willChange: scrolled ? 'transform, box-shadow' : 'auto',
         }}>
-          {/* Animated shimmer overlay */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(90deg, transparent 0%, var(--highlight-subtle) 50%, transparent 100%)',
-            animation: 'shimmer 8s linear infinite',
-            pointerEvents: 'none',
-          }} />
+          {/* Animated shimmer overlay - only visible when scrolled */}
+          {scrolled && (
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 50%, transparent 100%)',
+              animation: 'shimmer 8s linear infinite',
+              pointerEvents: 'none',
+            }} />
+          )}
         </div>
 
         <div style={{
@@ -100,7 +175,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
           height: '100%',
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: '0 2.5rem',
+          padding: '0 clamp(1.5rem, 3vw, 2.5rem)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
