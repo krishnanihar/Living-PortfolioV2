@@ -482,24 +482,28 @@ export function JourneyTimeline() {
                     }}>
                       {milestone.logoFile ? (
                         <div style={{
-                          width: '48px',
-                          height: '48px',
-                          padding: '8px',
-                          borderRadius: '12px',
-                          background: 'rgba(255, 255, 255, 0.05)',
-                          backdropFilter: 'blur(20px)',
-                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          width: 'clamp(72px, 8vw, 96px)',
+                          height: 'clamp(72px, 8vw, 96px)',
+                          padding: '16px',
+                          borderRadius: '16px',
+                          background: milestone.logoFile === 'bfa.jpeg'
+                            ? 'rgba(255, 255, 255, 0.15)'
+                            : 'rgba(255, 255, 255, 0.10)',
+                          backdropFilter: 'blur(20px) saturate(140%)',
+                          border: `1px solid rgba(255, 255, 255, ${milestone.logoFile === 'bfa.jpeg' ? '0.20' : '0.18'})`,
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          filter: 'drop-shadow(0 0 12px rgba(218, 14, 41, 0.3))',
-                          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                          boxShadow: milestone.logoFile === 'bfa.jpeg'
+                            ? 'inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.2)'
+                            : '0 4px 16px rgba(0, 0, 0, 0.2)',
+                          transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                         }}>
                           <Image
                             src={`/logos/${milestone.logoFile}`}
                             alt={milestone.organization || milestone.title}
-                            width={32}
-                            height={32}
+                            width={64}
+                            height={64}
                             style={{
                               objectFit: 'contain',
                               width: '100%',
@@ -1028,24 +1032,28 @@ export function JourneyTimeline() {
                         }}>
                           {milestone.logoFile ? (
                             <div style={{
-                              width: '48px',
-                              height: '48px',
-                              padding: '8px',
-                              borderRadius: '12px',
-                              background: 'rgba(255, 255, 255, 0.05)',
-                              backdropFilter: 'blur(20px)',
-                              border: '1px solid rgba(255, 255, 255, 0.1)',
+                              width: 'clamp(72px, 8vw, 96px)',
+                              height: 'clamp(72px, 8vw, 96px)',
+                              padding: '16px',
+                              borderRadius: '16px',
+                              background: milestone.logoFile === 'bfa.jpeg'
+                                ? 'rgba(255, 255, 255, 0.15)'
+                                : 'rgba(255, 255, 255, 0.10)',
+                              backdropFilter: 'blur(20px) saturate(140%)',
+                              border: `1px solid rgba(255, 255, 255, ${milestone.logoFile === 'bfa.jpeg' ? '0.20' : '0.18'})`,
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
-                              filter: 'drop-shadow(0 0 12px rgba(218, 14, 41, 0.3))',
-                              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                              boxShadow: milestone.logoFile === 'bfa.jpeg'
+                                ? 'inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.2)'
+                                : '0 4px 16px rgba(0, 0, 0, 0.2)',
+                              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                             }}>
                               <Image
                                 src={`/logos/${milestone.logoFile}`}
                                 alt={milestone.organization || milestone.title}
-                                width={32}
-                                height={32}
+                                width={64}
+                                height={64}
                                 style={{
                                   objectFit: 'contain',
                                   width: '100%',

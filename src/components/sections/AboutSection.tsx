@@ -544,24 +544,29 @@ export function AboutSection() {
                   }}>
                     {activeMilestone?.logoFile && (
                       <div style={{
-                        width: '48px',
-                        height: '48px',
-                        minWidth: '48px',
-                        padding: '10px',
-                        borderRadius: '12px',
-                        background: 'rgba(255, 255, 255, 0.08)',
-                        backdropFilter: 'blur(20px)',
-                        border: '1px solid rgba(255, 255, 255, 0.12)',
+                        width: 'clamp(64px, 7vw, 80px)',
+                        height: 'clamp(64px, 7vw, 80px)',
+                        minWidth: 'clamp(64px, 7vw, 80px)',
+                        padding: '12px',
+                        borderRadius: '14px',
+                        background: activeMilestone.logoFile === 'bfa.jpeg'
+                          ? 'rgba(255, 255, 255, 0.15)'
+                          : 'rgba(255, 255, 255, 0.10)',
+                        backdropFilter: 'blur(20px) saturate(140%)',
+                        border: `1px solid rgba(255, 255, 255, ${activeMilestone.logoFile === 'bfa.jpeg' ? '0.20' : '0.18'})`,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        filter: 'drop-shadow(0 0 12px rgba(218, 14, 41, 0.25))',
+                        boxShadow: activeMilestone.logoFile === 'bfa.jpeg'
+                          ? 'inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.2)'
+                          : '0 4px 16px rgba(0, 0, 0, 0.2)',
+                        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                       }}>
                         <Image
                           src={`/logos/${activeMilestone.logoFile}`}
                           alt={activeMilestone.organization || activeMilestone.label}
-                          width={28}
-                          height={28}
+                          width={56}
+                          height={56}
                           style={{
                             objectFit: 'contain',
                             width: '100%',

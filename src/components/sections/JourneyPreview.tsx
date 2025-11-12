@@ -429,24 +429,37 @@ export default function JourneyPreview() {
                     </div>
                     {/* Logo or Icon */}
                     <div style={{
-                      width: '64px',
-                      height: '64px',
-                      borderRadius: '16px',
-                      background: `${milestone.color}15`,
-                      border: `1px solid ${milestone.color}30`,
+                      width: 'clamp(88px, 10vw, 112px)',
+                      height: 'clamp(88px, 10vw, 112px)',
+                      borderRadius: '20px',
+                      background: milestone.logoFile
+                        ? (milestone.logoFile === 'bfa.jpeg'
+                          ? 'rgba(255, 255, 255, 0.15)'
+                          : 'rgba(255, 255, 255, 0.10)')
+                        : `${milestone.color}15`,
+                      border: milestone.logoFile
+                        ? `1px solid rgba(255, 255, 255, ${milestone.logoFile === 'bfa.jpeg' ? '0.20' : '0.18'})`
+                        : `1px solid ${milestone.color}40`,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       color: milestone.color,
                       animation: isHovered ? 'journeyFloat 3s ease-in-out infinite' : 'none',
-                      padding: milestone.logoFile ? '12px' : '0',
+                      padding: milestone.logoFile ? '18px' : '0',
+                      backdropFilter: milestone.logoFile ? 'blur(20px) saturate(140%)' : 'none',
+                      boxShadow: milestone.logoFile
+                        ? (milestone.logoFile === 'bfa.jpeg'
+                          ? 'inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.2)'
+                          : '0 4px 16px rgba(0, 0, 0, 0.2)')
+                        : 'none',
+                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                     }}>
                       {milestone.logoFile ? (
                         <Image
                           src={`/logos/${milestone.logoFile}`}
                           alt={milestone.organization}
-                          width={40}
-                          height={40}
+                          width={76}
+                          height={76}
                           style={{
                             objectFit: 'contain',
                             width: '100%',
