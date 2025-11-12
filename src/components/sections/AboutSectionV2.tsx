@@ -647,27 +647,50 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           display: flex;
         }
 
-        /* Custom navigation buttons */
-        .custom-nav-button:hover {
-          background: rgba(255, 255, 255, 0.15);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          transform: scale(1.05);
-          boxShadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        /* Custom navigation buttons - Base styling */
+        .custom-nav-prev,
+        .custom-nav-next,
+        .custom-nav-button {
+          width: 56px !important;
+          height: 56px !important;
+          border-radius: 50% !important;
+          background: rgba(0, 0, 0, 0.7) !important;
+          backdrop-filter: blur(20px) !important;
+          -webkit-backdrop-filter: blur(20px) !important;
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          cursor: pointer !important;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+          color: rgba(255, 255, 255, 0.9) !important;
         }
 
+        .custom-nav-prev:hover,
+        .custom-nav-next:hover,
+        .custom-nav-button:hover {
+          background: rgba(255, 255, 255, 0.15) !important;
+          border: 1px solid rgba(255, 255, 255, 0.2) !important;
+          transform: scale(1.05) !important;
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .custom-nav-prev:active,
+        .custom-nav-next:active,
         .custom-nav-button:active {
-          transform: scale(0.95);
+          transform: scale(0.95) !important;
         }
 
         .custom-nav-button.swiper-button-disabled {
-          opacity: 0.3;
-          cursor: not-allowed;
+          opacity: 0.3 !important;
+          cursor: not-allowed !important;
         }
 
         .custom-nav-button.swiper-button-disabled:hover {
-          background: rgba(0, 0, 0, 0.7);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          transform: scale(1);
+          background: rgba(0, 0, 0, 0.7) !important;
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+          transform: scale(1) !important;
         }
 
         .swiper-pagination {
