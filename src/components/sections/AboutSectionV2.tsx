@@ -636,6 +636,44 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           }
         }
 
+        @keyframes svgGlow {
+          0%, 100% {
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.15));
+          }
+          50% {
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+          }
+        }
+
+        @keyframes lightRay {
+          0% {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+          }
+          50% {
+            opacity: 0.6;
+            transform: translateY(0) scale(1);
+          }
+          100% {
+            opacity: 0;
+            transform: translateY(-20px) scale(0.95);
+          }
+        }
+
+        @keyframes floatUp {
+          0% {
+            transform: translateY(0) translateX(0);
+            opacity: 0.3;
+          }
+          50% {
+            opacity: 0.6;
+          }
+          100% {
+            transform: translateY(-100px) translateX(10px);
+            opacity: 0;
+          }
+        }
+
         /* Swiper custom styling */
         .swiper {
           width: 100%;
@@ -646,6 +684,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           height: auto;
           display: flex;
         }
+
 
         /* Custom navigation buttons - Base styling */
         .custom-nav-prev,
@@ -725,28 +764,42 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           border-radius: 4px !important;
         }
 
-        /* Center/side card transitions with 3D perspective */
-        .swiper-slide {
-          transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-          opacity: 0.75;
-          transform: scale(0.90) rotateY(0deg);
-          transform-style: preserve-3d;
+        /* Center/side card transitions - CSS-only approach */
+        :global(.swiper-slide) {
+          transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+          opacity: 0.7 !important;
         }
 
-        .swiper-slide-active {
+        /* Scale down all slides by default */
+        :global(.swiper-slide) > * {
+          transform: scale(0.90);
+          transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Scale up active slide */
+        :global(.swiper-slide-active) {
           opacity: 1 !important;
-          transform: scale(1.15) translateZ(40px) rotateY(0deg) !important;
-          z-index: 10;
+          z-index: 10 !important;
         }
 
-        .swiper-slide-prev {
-          opacity: 0.8;
-          transform: scale(0.90) rotateY(5deg) !important;
+        :global(.swiper-slide-active) > * {
+          transform: scale(1.08);
         }
 
-        .swiper-slide-next {
-          opacity: 0.8;
-          transform: scale(0.90) rotateY(-5deg) !important;
+        /* Side slides slightly visible */
+        :global(.swiper-slide-prev),
+        :global(.swiper-slide-next) {
+          opacity: 0.85 !important;
+        }
+
+        :global(.swiper-slide-prev) > *,
+        :global(.swiper-slide-next) > * {
+          transform: scale(0.95);
+        }
+
+        /* Navigation positioning */
+        .carousel-navigation {
+          margin-top: 32px;
         }
 
         /* Mobile responsive adjustments for Act 2 timeline */
@@ -1169,9 +1222,192 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             display: 'flex',
             alignItems: 'center',
             padding: '6rem 1.5rem',
+            position: 'relative',
+            overflow: 'hidden',
           }}
         >
-          <div style={{ maxWidth: '100vw', margin: '0 auto', width: '100%' }}>
+          {/* Animated SVG Background Mesh Gradient */}
+          <svg
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: 0,
+              opacity: 0.4,
+              pointerEvents: 'none',
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="meshGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style={{ stopColor: 'rgba(147, 51, 234, 0.15)', stopOpacity: 1 }}>
+                  <animate attributeName="stop-color" values="rgba(147, 51, 234, 0.15); rgba(218, 14, 41, 0.15); rgba(59, 130, 246, 0.15); rgba(147, 51, 234, 0.15)" dur="10s" repeatCount="indefinite" />
+                </stop>
+                <stop offset="100%" style={{ stopColor: 'rgba(218, 14, 41, 0.15)', stopOpacity: 1 }}>
+                  <animate attributeName="stop-color" values="rgba(218, 14, 41, 0.15); rgba(59, 130, 246, 0.15); rgba(147, 51, 234, 0.15); rgba(218, 14, 41, 0.15)" dur="10s" repeatCount="indefinite" />
+                </stop>
+              </linearGradient>
+
+              <radialGradient id="meshGrad2" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" style={{ stopColor: 'rgba(147, 51, 234, 0.2)', stopOpacity: 1 }}>
+                  <animate attributeName="stop-color" values="rgba(147, 51, 234, 0.2); rgba(16, 185, 129, 0.2); rgba(232, 121, 249, 0.2); rgba(147, 51, 234, 0.2)" dur="8s" repeatCount="indefinite" />
+                </stop>
+                <stop offset="100%" style={{ stopColor: 'transparent', stopOpacity: 0 }} />
+              </radialGradient>
+            </defs>
+
+            {/* Flowing mesh background */}
+            <path d="M0,100 Q250,80 500,100 T1000,100 L1000,300 Q750,280 500,300 T0,300 Z" fill="url(#meshGrad1)" opacity="0.3">
+              <animate attributeName="d" values="M0,100 Q250,80 500,100 T1000,100 L1000,300 Q750,280 500,300 T0,300 Z; M0,120 Q250,90 500,120 T1000,120 L1000,320 Q750,290 500,320 T0,320 Z; M0,100 Q250,80 500,100 T1000,100 L1000,300 Q750,280 500,300 T0,300 Z" dur="12s" repeatCount="indefinite" />
+            </path>
+
+            <circle cx="20%" cy="30%" r="150" fill="url(#meshGrad2)" opacity="0.4">
+              <animate attributeName="cx" values="20%; 25%; 20%" dur="15s" repeatCount="indefinite" />
+              <animate attributeName="cy" values="30%; 35%; 30%" dur="18s" repeatCount="indefinite" />
+            </circle>
+
+            <circle cx="80%" cy="70%" r="180" fill="url(#meshGrad2)" opacity="0.3">
+              <animate attributeName="cx" values="80%; 75%; 80%" dur="20s" repeatCount="indefinite" />
+              <animate attributeName="cy" values="70%; 65%; 70%" dur="16s" repeatCount="indefinite" />
+            </circle>
+          </svg>
+
+          {/* Floating Geometric Accents */}
+          <svg
+            style={{
+              position: 'absolute',
+              top: '10%',
+              left: '5%',
+              width: '80px',
+              height: '80px',
+              zIndex: 0,
+              opacity: 0.2,
+              pointerEvents: 'none',
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <polygon points="40,10 70,30 70,60 40,80 10,60 10,30" fill="none" stroke="rgba(147, 51, 234, 0.6)" strokeWidth="1.5">
+              <animateTransform attributeName="transform" type="rotate" from="0 40 40" to="360 40 40" dur="30s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.2; 0.5; 0.2" dur="6s" repeatCount="indefinite" />
+            </polygon>
+          </svg>
+
+          <svg
+            style={{
+              position: 'absolute',
+              top: '60%',
+              right: '8%',
+              width: '60px',
+              height: '60px',
+              zIndex: 0,
+              opacity: 0.25,
+              pointerEvents: 'none',
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="30" cy="30" r="25" fill="none" stroke="rgba(218, 14, 41, 0.5)" strokeWidth="1.5">
+              <animate attributeName="r" values="25; 28; 25" dur="5s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.25; 0.6; 0.25" dur="7s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="30" cy="30" r="15" fill="none" stroke="rgba(218, 14, 41, 0.4)" strokeWidth="1">
+              <animate attributeName="r" values="15; 18; 15" dur="4s" repeatCount="indefinite" />
+            </circle>
+          </svg>
+
+          <svg
+            style={{
+              position: 'absolute',
+              bottom: '15%',
+              left: '10%',
+              width: '50px',
+              height: '50px',
+              zIndex: 0,
+              opacity: 0.2,
+              pointerEvents: 'none',
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <line x1="5" y1="5" x2="45" y2="45" stroke="rgba(59, 130, 246, 0.5)" strokeWidth="1.5">
+              <animate attributeName="opacity" values="0.2; 0.5; 0.2" dur="8s" repeatCount="indefinite" />
+            </line>
+            <line x1="45" y1="5" x2="5" y2="45" stroke="rgba(59, 130, 246, 0.5)" strokeWidth="1.5">
+              <animate attributeName="opacity" values="0.5; 0.2; 0.5" dur="8s" repeatCount="indefinite" />
+            </line>
+          </svg>
+
+          <svg
+            style={{
+              position: 'absolute',
+              top: '20%',
+              right: '15%',
+              width: '40px',
+              height: '40px',
+              zIndex: 0,
+              opacity: 0.3,
+              pointerEvents: 'none',
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect x="5" y="5" width="30" height="30" fill="none" stroke="rgba(16, 185, 129, 0.5)" strokeWidth="1.5" rx="4">
+              <animateTransform attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="25s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.3; 0.6; 0.3" dur="5s" repeatCount="indefinite" />
+            </rect>
+          </svg>
+
+          {/* Decorative Line Art Framing */}
+          <svg
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '2%',
+              width: '30px',
+              height: '200px',
+              zIndex: 0,
+              opacity: 0.15,
+              pointerEvents: 'none',
+              transform: 'translateY(-50%)',
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <line x1="15" y1="0" x2="15" y2="80" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1" strokeDasharray="4 4">
+              <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
+            </line>
+            <circle cx="15" cy="100" r="4" fill="rgba(255, 255, 255, 0.4)">
+              <animate attributeName="opacity" values="0.4; 1; 0.4" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <line x1="15" y1="120" x2="15" y2="200" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1" strokeDasharray="4 4">
+              <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
+            </line>
+          </svg>
+
+          <svg
+            style={{
+              position: 'absolute',
+              top: '50%',
+              right: '2%',
+              width: '30px',
+              height: '200px',
+              zIndex: 0,
+              opacity: 0.15,
+              pointerEvents: 'none',
+              transform: 'translateY(-50%)',
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <line x1="15" y1="0" x2="15" y2="80" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1" strokeDasharray="4 4">
+              <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
+            </line>
+            <circle cx="15" cy="100" r="4" fill="rgba(255, 255, 255, 0.4)">
+              <animate attributeName="opacity" values="0.4; 1; 0.4" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <line x1="15" y1="120" x2="15" y2="200" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1" strokeDasharray="4 4">
+              <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
+            </line>
+          </svg>
+
+          <div style={{ maxWidth: '100vw', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
             <h3
               style={{
                 fontSize: 'clamp(2rem, 4vw, 3rem)',
@@ -1187,7 +1423,55 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             </h3>
 
             {/* Swiper Carousel */}
-            <div style={{ maxWidth: '100vw', margin: '4rem auto 0', padding: '0', overflow: 'visible' }}>
+            <div style={{ maxWidth: '100vw', margin: '4rem auto 0', padding: '0', overflow: 'visible', position: 'relative' }} className="carousel-container">
+              {/* Ambient Light Rays - Spotlight Effect */}
+              <svg
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: '800px',
+                  height: '800px',
+                  zIndex: 0,
+                  opacity: 0.15,
+                  pointerEvents: 'none',
+                  mixBlendMode: 'screen',
+                }}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <defs>
+                  <radialGradient id="lightRayGrad" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" style={{ stopColor: 'rgba(255, 255, 255, 0.8)', stopOpacity: 1 }} />
+                    <stop offset="40%" style={{ stopColor: 'rgba(147, 51, 234, 0.4)', stopOpacity: 0.5 }}>
+                      <animate attributeName="stop-color" values="rgba(147, 51, 234, 0.4); rgba(218, 14, 41, 0.4); rgba(59, 130, 246, 0.4); rgba(147, 51, 234, 0.4)" dur="8s" repeatCount="indefinite" />
+                    </stop>
+                    <stop offset="100%" style={{ stopColor: 'transparent', stopOpacity: 0 }} />
+                  </radialGradient>
+                </defs>
+
+                <circle cx="400" cy="400" r="350" fill="url(#lightRayGrad)" opacity="0.6">
+                  <animate attributeName="r" values="350; 380; 350" dur="4s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.6; 0.8; 0.6" dur="3s" repeatCount="indefinite" />
+                </circle>
+
+                {/* Light ray beams */}
+                <g opacity="0.3">
+                  <line x1="400" y1="400" x2="400" y2="50" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="2" opacity="0.4">
+                    <animate attributeName="opacity" values="0.4; 0.7; 0.4" dur="3s" repeatCount="indefinite" />
+                    <animateTransform attributeName="transform" type="rotate" from="0 400 400" to="360 400 400" dur="40s" repeatCount="indefinite" />
+                  </line>
+                  <line x1="400" y1="400" x2="600" y2="150" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1.5" opacity="0.3">
+                    <animate attributeName="opacity" values="0.3; 0.6; 0.3" dur="4s" repeatCount="indefinite" />
+                    <animateTransform attributeName="transform" type="rotate" from="0 400 400" to="360 400 400" dur="35s" repeatCount="indefinite" />
+                  </line>
+                  <line x1="400" y1="400" x2="200" y2="150" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1.5" opacity="0.3">
+                    <animate attributeName="opacity" values="0.3; 0.6; 0.3" dur="5s" repeatCount="indefinite" />
+                    <animateTransform attributeName="transform" type="rotate" from="0 400 400" to="360 400 400" dur="45s" repeatCount="indefinite" />
+                  </line>
+                </g>
+              </svg>
+
               <Swiper
                 modules={[Navigation, Pagination]}
                 centeredSlides={true}
@@ -1212,7 +1496,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     slidesPerView: 1.6,
                   },
                 }}
-                style={{ paddingBottom: '0', perspective: '1500px', transformStyle: 'preserve-3d' }}
+                style={{ paddingBottom: '0' }}
               >
                 {projects.map((project, idx) => {
                 // Generate unique class name for each project
@@ -1331,23 +1615,40 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                         {project.status === 'live' ? 'Live Now' : project.status === 'research' ? 'In Research' : 'Case Study'}
                       </div>
 
-                      {/* Geometric pattern (since no images) */}
+                      {/* Geometric pattern with animations */}
                       <svg
                         width="280"
                         height="280"
                         viewBox="0 0 200 200"
                         style={{
-                          opacity: 0.4,
+                          opacity: hoveredProject === idx ? 0.6 : 0.4,
                           position: 'relative',
                           zIndex: 1,
+                          transition: 'opacity 0.4s ease',
+                          animation: hoveredProject === idx ? 'svgGlow 2s ease-in-out infinite' : 'none',
                         }}
                       >
                         {idx === 0 && (
-                          // Air India - circles pattern
+                          // Air India - circles pattern with pulse
                           <>
-                            <circle cx="100" cy="100" r="60" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} strokeWidth="2" />
-                            <circle cx="100" cy="100" r="40" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} strokeWidth="2" />
-                            <circle cx="100" cy="100" r="20" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} />
+                            <circle cx="100" cy="100" r="60" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} strokeWidth="2">
+                              {hoveredProject === idx && (
+                                <animate attributeName="r" values="60; 65; 60" dur="2s" repeatCount="indefinite" />
+                              )}
+                            </circle>
+                            <circle cx="100" cy="100" r="40" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} strokeWidth="2">
+                              {hoveredProject === idx && (
+                                <animate attributeName="r" values="40; 43; 40" dur="2s" repeatCount="indefinite" />
+                              )}
+                            </circle>
+                            <circle cx="100" cy="100" r="20" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`}>
+                              {hoveredProject === idx && (
+                                <>
+                                  <animate attributeName="r" values="20; 23; 20" dur="2s" repeatCount="indefinite" />
+                                  <animate attributeName="opacity" values="0.6; 1; 0.6" dur="2s" repeatCount="indefinite" />
+                                </>
+                              )}
+                            </circle>
                           </>
                         )}
                         {idx === 1 && (
@@ -1358,21 +1659,59 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                           </>
                         )}
                         {idx === 2 && (
-                          // Latent Space - hexagons
+                          // Latent Space - hexagons with rotation
                           <>
-                            <polygon points="100,40 130,55 130,85 100,100 70,85 70,55" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} strokeWidth="2" />
-                            <polygon points="100,70 120,80 120,100 100,110 80,100 80,80" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} />
+                            <polygon points="100,40 130,55 130,85 100,100 70,85 70,55" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} strokeWidth="2">
+                              {hoveredProject === idx && (
+                                <>
+                                  <animateTransform attributeName="transform" type="rotate" from="0 100 70" to="360 100 70" dur="8s" repeatCount="indefinite" />
+                                  <animate attributeName="opacity" values="0.5; 0.9; 0.5" dur="3s" repeatCount="indefinite" />
+                                </>
+                              )}
+                            </polygon>
+                            <polygon points="100,70 120,80 120,100 100,110 80,100 80,80" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`}>
+                              {hoveredProject === idx && (
+                                <>
+                                  <animateTransform attributeName="transform" type="rotate" from="360 100 95" to="0 100 95" dur="6s" repeatCount="indefinite" />
+                                  <animate attributeName="opacity" values="0.5; 1; 0.5" dur="2.5s" repeatCount="indefinite" />
+                                </>
+                              )}
+                            </polygon>
                           </>
                         )}
                         {idx === 3 && (
-                          // Aviation Analytics - bar chart data visualization
+                          // Aviation Analytics - bar chart with animated growth
                           <>
-                            <rect x="40" y="120" width="20" height="50" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} rx="3" />
-                            <rect x="70" y="90" width="20" height="80" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} rx="3" />
-                            <rect x="100" y="60" width="20" height="110" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.7)`} rx="3" />
-                            <rect x="130" y="80" width="20" height="90" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} rx="3" />
-                            <rect x="160" y="100" width="20" height="70" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} rx="3" />
-                            <line x1="30" y1="175" x2="190" y2="175" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} strokeWidth="2" />
+                            <rect x="40" y="120" width="20" height="50" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} rx="3">
+                              {hoveredProject === idx && (
+                                <animate attributeName="height" values="50; 55; 50" dur="2s" repeatCount="indefinite" />
+                              )}
+                            </rect>
+                            <rect x="70" y="90" width="20" height="80" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} rx="3">
+                              {hoveredProject === idx && (
+                                <animate attributeName="height" values="80; 88; 80" dur="2.2s" repeatCount="indefinite" />
+                              )}
+                            </rect>
+                            <rect x="100" y="60" width="20" height="110" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.7)`} rx="3">
+                              {hoveredProject === idx && (
+                                <animate attributeName="height" values="110; 120; 110" dur="2.4s" repeatCount="indefinite" />
+                              )}
+                            </rect>
+                            <rect x="130" y="80" width="20" height="90" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} rx="3">
+                              {hoveredProject === idx && (
+                                <animate attributeName="height" values="90; 98; 90" dur="2.1s" repeatCount="indefinite" />
+                              )}
+                            </rect>
+                            <rect x="160" y="100" width="20" height="70" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} rx="3">
+                              {hoveredProject === idx && (
+                                <animate attributeName="height" values="70; 76; 70" dur="2.3s" repeatCount="indefinite" />
+                              )}
+                            </rect>
+                            <line x1="30" y1="175" x2="190" y2="175" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} strokeWidth="2">
+                              {hoveredProject === idx && (
+                                <animate attributeName="opacity" values="0.4; 0.8; 0.4" dur="2s" repeatCount="indefinite" />
+                              )}
+                            </line>
                           </>
                         )}
                         {idx === 4 && (
@@ -1390,24 +1729,98 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                           </>
                         )}
                         {idx === 5 && (
-                          // mythOS - gallery frames/art pattern
+                          // mythOS - gallery frames with floating animation
                           <>
-                            <rect x="50" y="50" width="40" height="50" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} strokeWidth="3" rx="2" />
-                            <rect x="110" y="50" width="40" height="50" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} strokeWidth="3" rx="2" />
-                            <rect x="80" y="110" width="40" height="50" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.7)`} strokeWidth="3" rx="2" />
-                            <circle cx="70" cy="75" r="8" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} />
-                            <circle cx="130" cy="75" r="8" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} />
-                            <circle cx="100" cy="135" r="8" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.7)`} />
+                            <rect x="50" y="50" width="40" height="50" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} strokeWidth="3" rx="2">
+                              {hoveredProject === idx && (
+                                <>
+                                  <animate attributeName="y" values="50; 47; 50" dur="3s" repeatCount="indefinite" />
+                                  <animate attributeName="opacity" values="0.5; 0.9; 0.5" dur="3s" repeatCount="indefinite" />
+                                </>
+                              )}
+                            </rect>
+                            <rect x="110" y="50" width="40" height="50" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} strokeWidth="3" rx="2">
+                              {hoveredProject === idx && (
+                                <>
+                                  <animate attributeName="y" values="50; 47; 50" dur="3.2s" repeatCount="indefinite" />
+                                  <animate attributeName="opacity" values="0.6; 1; 0.6" dur="3.2s" repeatCount="indefinite" />
+                                </>
+                              )}
+                            </rect>
+                            <rect x="80" y="110" width="40" height="50" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.7)`} strokeWidth="3" rx="2">
+                              {hoveredProject === idx && (
+                                <>
+                                  <animate attributeName="y" values="110; 107; 110" dur="3.4s" repeatCount="indefinite" />
+                                  <animate attributeName="opacity" values="0.7; 1; 0.7" dur="3.4s" repeatCount="indefinite" />
+                                </>
+                              )}
+                            </rect>
+                            <circle cx="70" cy="75" r="8" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`}>
+                              {hoveredProject === idx && (
+                                <>
+                                  <animate attributeName="r" values="8; 10; 8" dur="2s" repeatCount="indefinite" />
+                                  <animate attributeName="opacity" values="0.5; 1; 0.5" dur="2s" repeatCount="indefinite" />
+                                </>
+                              )}
+                            </circle>
+                            <circle cx="130" cy="75" r="8" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`}>
+                              {hoveredProject === idx && (
+                                <>
+                                  <animate attributeName="r" values="8; 10; 8" dur="2.2s" repeatCount="indefinite" />
+                                  <animate attributeName="opacity" values="0.6; 1; 0.6" dur="2.2s" repeatCount="indefinite" />
+                                </>
+                              )}
+                            </circle>
+                            <circle cx="100" cy="135" r="8" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.7)`}>
+                              {hoveredProject === idx && (
+                                <>
+                                  <animate attributeName="r" values="8; 10; 8" dur="2.4s" repeatCount="indefinite" />
+                                  <animate attributeName="opacity" values="0.7; 1; 0.7" dur="2.4s" repeatCount="indefinite" />
+                                </>
+                              )}
+                            </circle>
                           </>
                         )}
                         {idx === 6 && (
-                          // Metamorphic Fractal Reflections - kaleidoscope/fractal pattern
+                          // Metamorphic Fractal Reflections - kaleidoscope with rotation
                           <>
-                            <path d="M100,50 L120,80 L140,70 L130,100 L160,110 L130,130 L140,160 L100,150 L60,160 L70,130 L40,110 L70,100 L60,70 L80,80 Z" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} strokeWidth="2" />
-                            <circle cx="100" cy="100" r="30" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} strokeWidth="2" />
-                            <circle cx="100" cy="100" r="15" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.7)`} />
-                            <line x1="100" y1="70" x2="100" y2="130" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} strokeWidth="2" />
-                            <line x1="70" y1="100" x2="130" y2="100" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} strokeWidth="2" />
+                            <path d="M100,50 L120,80 L140,70 L130,100 L160,110 L130,130 L140,160 L100,150 L60,160 L70,130 L40,110 L70,100 L60,70 L80,80 Z" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} strokeWidth="2">
+                              {hoveredProject === idx && (
+                                <>
+                                  <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="10s" repeatCount="indefinite" />
+                                  <animate attributeName="opacity" values="0.6; 1; 0.6" dur="3s" repeatCount="indefinite" />
+                                </>
+                              )}
+                            </path>
+                            <circle cx="100" cy="100" r="30" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} strokeWidth="2">
+                              {hoveredProject === idx && (
+                                <animate attributeName="r" values="30; 35; 30" dur="2.5s" repeatCount="indefinite" />
+                              )}
+                            </circle>
+                            <circle cx="100" cy="100" r="15" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.7)`}>
+                              {hoveredProject === idx && (
+                                <>
+                                  <animate attributeName="r" values="15; 18; 15" dur="2s" repeatCount="indefinite" />
+                                  <animate attributeName="opacity" values="0.7; 1; 0.7" dur="2s" repeatCount="indefinite" />
+                                </>
+                              )}
+                            </circle>
+                            <line x1="100" y1="70" x2="100" y2="130" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} strokeWidth="2">
+                              {hoveredProject === idx && (
+                                <>
+                                  <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="180 100 100" dur="4s" repeatCount="indefinite" />
+                                  <animate attributeName="opacity" values="0.4; 0.8; 0.4" dur="2s" repeatCount="indefinite" />
+                                </>
+                              )}
+                            </line>
+                            <line x1="70" y1="100" x2="130" y2="100" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} strokeWidth="2">
+                              {hoveredProject === idx && (
+                                <>
+                                  <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="180 100 100" dur="4s" repeatCount="indefinite" />
+                                  <animate attributeName="opacity" values="0.4; 0.8; 0.4" dur="2s" repeatCount="indefinite" />
+                                </>
+                              )}
+                            </line>
                           </>
                         )}
                         {idx === 7 && (
@@ -1664,6 +2077,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
               {/* Custom Navigation Controls Below Carousel */}
               <div
+                className="carousel-navigation"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -1723,6 +2137,61 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 >
                   <ChevronRight size={24} />
                 </button>
+              </div>
+
+              {/* View All Work Button */}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginTop: '2rem',
+                }}
+              >
+                <Link
+                  href="/work"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.875rem 1.75rem',
+                    background: 'rgba(10, 10, 10, 0.6)',
+                    backdropFilter: 'blur(100px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(100px) saturate(180%)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    borderRadius: '15px',
+                    color: 'rgba(255, 255, 255, 0.95)',
+                    textDecoration: 'none',
+                    fontSize: '0.9375rem',
+                    fontWeight: '400',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    boxShadow: `
+                      inset 0 1px 0 rgba(255, 255, 255, 0.02),
+                      inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                      0 8px 24px rgba(0, 0, 0, 0.6)
+                    `,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = `
+                      inset 0 1px 0 rgba(255, 255, 255, 0.02),
+                      inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                      0 12px 32px rgba(0, 0, 0, 0.7)
+                    `;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(10, 10, 10, 0.6)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = `
+                      inset 0 1px 0 rgba(255, 255, 255, 0.02),
+                      inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                      0 8px 24px rgba(0, 0, 0, 0.6)
+                    `;
+                  }}
+                >
+                  <span>View All Work</span>
+                  <ArrowRight size={16} />
+                </Link>
               </div>
             </div>
           </div>
