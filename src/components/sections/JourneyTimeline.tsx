@@ -247,18 +247,9 @@ export function JourneyTimeline() {
   return (
     <div ref={containerRef} style={{
       minHeight: '100vh',
-      background: '#0a0a0a',
       position: 'relative',
       overflow: 'hidden',
     }}>
-      {/* Simple Background Gradient */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        minHeight: '100%',
-        pointerEvents: 'none',
-        background: 'linear-gradient(180deg, #0a0a0a 0%, #111111 100%)',
-      }} />
 
       {/* Progress Bar - Simplified */}
       <div style={{
@@ -454,24 +445,21 @@ export function JourneyTimeline() {
                     role="article"
                     aria-label={`${milestone.title} - ${milestone.year}`}
                     style={{
-                      background: `
-                        linear-gradient(135deg,
-                          rgba(218, 14, 41, ${isActive ? 0.08 : isHovered ? 0.05 : 0.02}),
-                          rgba(255, 255, 255, 0.03)
-                        )
-                      `,
-                      backdropFilter: `blur(${isHovered ? 24 : 20}px)`,
-                      WebkitBackdropFilter: `blur(${isHovered ? 24 : 20}px)`,
-                      border: `1px solid rgba(255, 255, 255, ${isActive ? 0.14 : isHovered ? 0.12 : 0.08})`,
+                      background: isActive
+                        ? `linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.12))`
+                        : `rgba(255, 255, 255, 0.12)`,
+                      backdropFilter: `blur(var(--blur-2xl)) saturate(180%) brightness(1.05)`,
+                      WebkitBackdropFilter: `blur(var(--blur-2xl)) saturate(180%) brightness(1.05)`,
+                      border: `1px solid ${isActive ? 'rgba(255, 255, 255, 0.28)' : isHovered ? 'rgba(255, 255, 255, 0.20)' : 'rgba(255, 255, 255, 0.14)'}`,
                       borderRadius: '24px',
                       padding: 'clamp(1.5rem, 3vw, 2.5rem)',
                       boxShadow: isHovered
-                        ? `0 12px 40px rgba(0, 0, 0, 0.35),
-                           0 0 0 1px rgba(218, 14, 41, 0.1),
-                           inset 0 1px 0 rgba(255, 255, 255, 0.08)`
+                        ? `var(--shadow-lg),
+                           0 0 0 1px rgba(218, 14, 41, 0.15),
+                           inset 0 1px 0 rgba(255, 255, 255, 0.12)`
                         : isActive
-                        ? '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(218, 14, 41, 0.1)'
-                        : '0 8px 32px rgba(0, 0, 0, 0.2)',
+                        ? `var(--shadow-lg), 0 0 0 1px rgba(218, 14, 41, 0.15)`
+                        : 'var(--shadow-lg)',
                       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                       transform: isHovered ? 'scale(1.01)' : 'scale(1)',
                       cursor: 'pointer',
@@ -910,24 +898,21 @@ export function JourneyTimeline() {
                     role="article"
                     aria-label={`${milestone.title} - ${milestone.year}`}
                     style={{
-                      background: `
-                        linear-gradient(135deg,
-                          rgba(218, 14, 41, ${isActive ? 0.08 : isHovered ? 0.05 : 0.02}),
-                          rgba(255, 255, 255, 0.03)
-                        )
-                      `,
-                      backdropFilter: `blur(${isHovered ? 24 : 20}px)`,
-                      WebkitBackdropFilter: `blur(${isHovered ? 24 : 20}px)`,
-                      border: `1px solid rgba(255, 255, 255, ${isActive ? 0.14 : isHovered ? 0.12 : 0.08})`,
+                      background: isActive
+                        ? `linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.12))`
+                        : `rgba(255, 255, 255, 0.12)`,
+                      backdropFilter: `blur(var(--blur-2xl)) saturate(180%) brightness(1.05)`,
+                      WebkitBackdropFilter: `blur(var(--blur-2xl)) saturate(180%) brightness(1.05)`,
+                      border: `1px solid ${isActive ? 'rgba(255, 255, 255, 0.28)' : isHovered ? 'rgba(255, 255, 255, 0.20)' : 'rgba(255, 255, 255, 0.14)'}`,
                       borderRadius: '24px',
                       padding: 'clamp(1.5rem, 3vw, 2.5rem)',
                       boxShadow: isHovered
-                        ? `0 12px 40px rgba(0, 0, 0, 0.35),
-                           0 0 0 1px rgba(218, 14, 41, 0.1),
-                           inset 0 1px 0 rgba(255, 255, 255, 0.08)`
+                        ? `var(--shadow-lg),
+                           0 0 0 1px rgba(218, 14, 41, 0.15),
+                           inset 0 1px 0 rgba(255, 255, 255, 0.12)`
                         : isActive
-                        ? '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(218, 14, 41, 0.1)'
-                        : '0 8px 32px rgba(0, 0, 0, 0.2)',
+                        ? `var(--shadow-lg), 0 0 0 1px rgba(218, 14, 41, 0.15)`
+                        : 'var(--shadow-lg)',
                       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                       transform: isHovered ? 'scale(1.01)' : 'scale(1)',
                       cursor: 'pointer',

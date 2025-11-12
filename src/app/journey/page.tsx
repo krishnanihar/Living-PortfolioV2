@@ -1,20 +1,33 @@
+'use client';
+
+import dynamic from 'next/dynamic';
 import { JourneyTimeline } from '@/components/sections/JourneyTimeline';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
-import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'My Journey | Krishna Nihar',
-  description: 'Explore Nihar\'s professional journey from design education to building systems at scale. From Air India to Microsoft, NID to ISB - the story of designing living interfaces.',
-  openGraph: {
-    title: 'My Journey | Krishna Nihar',
-    description: 'Explore Nihar\'s professional journey from design education to building systems at scale.',
-  },
-};
+// Dynamically import CosmicBackground for better performance
+const CosmicBackground = dynamic(
+  () => import('@/components/effects/CosmicBackground').then(mod => ({ default: mod.CosmicBackground })),
+  {
+    ssr: false,
+    loading: () => null
+  }
+);
+
+// Import ScrollDarkeningOverlay for depth effect
+const ScrollDarkeningOverlay = dynamic(
+  () => import('@/components/effects/ScrollDarkeningOverlay').then(mod => ({ default: mod.ScrollDarkeningOverlay })),
+  {
+    ssr: false,
+    loading: () => null
+  }
+);
 
 export default function JourneyPage() {
   return (
     <>
       <PortfolioNavigation />
+      <CosmicBackground />
+      <ScrollDarkeningOverlay />
       <JourneyTimeline />
     </>
   );
