@@ -171,10 +171,10 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
         <div style={{
           height: '100%',
           borderRadius: '24px',
-          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%)',
-          backdropFilter: 'blur(60px) saturate(150%) brightness(0.85)',
-          WebkitBackdropFilter: 'blur(60px) saturate(150%) brightness(0.85)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
+          background: 'linear-gradient(135deg, rgba(10, 10, 10, 0.15) 0%, rgba(10, 10, 10, 0.1) 100%)',
+          backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+          WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+          border: '1px solid rgba(255, 255, 255, 0.06)',
           boxShadow: `
             inset 0 1px 0 rgba(255, 255, 255, 0.05),
             inset 0 -1px 0 rgba(0, 0, 0, 0.2),
@@ -275,12 +275,12 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
                   borderRadius: message.isUser ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
                   background: message.isUser
                     ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.3) 0%, rgba(218, 14, 41, 0.2) 100%)'
-                    : 'rgba(255, 255, 255, 0.05)',
+                    : 'rgba(255, 255, 255, 0.08)',
                   border: message.isUser
                     ? '1px solid rgba(218, 14, 41, 0.4)'
                     : '1px solid rgba(255, 255, 255, 0.08)',
-                  backdropFilter: 'blur(20px) brightness(0.9)',
-                  WebkitBackdropFilter: 'blur(20px) brightness(0.9)',
+                  backdropFilter: 'blur(20px) saturate(120%) brightness(0.95)',
+                  WebkitBackdropFilter: 'blur(20px) saturate(120%) brightness(0.95)',
                 }}>
                   <p style={{
                     fontSize: '0.875rem',
@@ -351,9 +351,9 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
               display: 'flex',
               alignItems: 'center',
               gap: '0.75rem',
-              background: 'rgba(255, 255, 255, 0.03)',
-              backdropFilter: 'blur(20px) brightness(0.8)',
-              WebkitBackdropFilter: 'blur(20px) brightness(0.8)',
+              background: 'rgba(255, 255, 255, 0.05)',
+              backdropFilter: 'blur(20px) saturate(120%) brightness(0.9)',
+              WebkitBackdropFilter: 'blur(20px) saturate(120%) brightness(0.9)',
               border: '1px solid rgba(255, 255, 255, 0.08)',
               borderRadius: '20px',
               padding: '0.75rem 1rem',

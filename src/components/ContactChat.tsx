@@ -40,10 +40,10 @@ export function ContactChat({ onMessageSubmit }: ContactChatProps) {
           display: 'flex',
           alignItems: 'center',
           gap: '0.75rem',
-          background: 'rgba(255, 255, 255, 0.02)',
-          backdropFilter: 'blur(30px) brightness(0.8)',
-          WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
-          border: `1px solid ${accentColor}20`,
+          background: 'rgba(255, 255, 255, 0.04)',
+          backdropFilter: 'blur(30px) saturate(120%) brightness(0.9)',
+          WebkitBackdropFilter: 'blur(30px) saturate(120%) brightness(0.9)',
+          border: '1px solid rgba(218, 14, 41, 0.15)',
           borderRadius: '28px',
           padding: '0.875rem 1.25rem',
           transition: 'all 0.3s ease',
@@ -126,9 +126,9 @@ export function ContactChat({ onMessageSubmit }: ContactChatProps) {
             key={i}
             onClick={() => setInputValue(prompt)}
             style={{
-              background: 'rgba(255, 255, 255, 0.02)',
-              backdropFilter: 'blur(30px) brightness(0.8)',
-              WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
+              background: 'rgba(255, 255, 255, 0.04)',
+              backdropFilter: 'blur(30px) saturate(120%) brightness(0.9)',
+              WebkitBackdropFilter: 'blur(30px) saturate(120%) brightness(0.9)',
               border: '1px solid rgba(255, 255, 255, 0.06)',
               borderRadius: '16px',
               padding: '0.375rem 0.875rem',
