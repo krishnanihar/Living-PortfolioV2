@@ -235,7 +235,7 @@ export function NarrativeHook({ question }: { question: string }) {
 
 /**
  * Act Transition
- * Marks the shift between narrative acts with visual clarity
+ * Immersive portal between narrative acts with sophisticated glassmorphism
  */
 export function ActTransition({
   fromAct,
@@ -270,6 +270,9 @@ export function ActTransition({
     }
   };
 
+  const fromColor = getActColor(fromAct);
+  const toColor = getActColor(toAct);
+
   return (
     <div
       ref={ref}
@@ -283,33 +286,118 @@ export function ActTransition({
         overflow: 'hidden',
       }}
     >
-      {/* Gradient transition background */}
+      {/* Atmospheric radial fog background */}
       <motion.div
-        initial={{ scaleX: 0 }}
-        animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
         transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
         style={{
           position: 'absolute',
-          inset: 0,
-          background: `linear-gradient(135deg, ${getActColor(fromAct)} 0%, ${getActColor(toAct)} 100%)`,
-          opacity: 0.1,
-          transformOrigin: 'left',
+          inset: '-20%',
+          background: `radial-gradient(ellipse at 50% 50%,
+            ${fromColor.replace('0.8', '0.04')} 0%,
+            ${toColor.replace('0.8', '0.03')} 40%,
+            ${toColor.replace('0.8', '0.02')} 70%,
+            transparent 100%)`,
+          filter: 'blur(80px)',
+          pointerEvents: 'none',
         }}
       />
 
-      <div style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
+      {/* Pulsing ambient glow */}
+      <motion.div
+        animate={
+          isInView
+            ? {
+                opacity: [0.15, 0.35, 0.15],
+                scale: [0.9, 1.1, 0.9],
+              }
+            : { opacity: 0, scale: 0.8 }
+        }
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+        style={{
+          position: 'absolute',
+          width: '600px',
+          height: '600px',
+          background: `radial-gradient(circle, ${fromColor.replace('0.8', '0.2')}, ${toColor.replace('0.8', '0.1')}, transparent)`,
+          filter: 'blur(60px)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Floating particles */}
+      {isInView &&
+        [...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{
+              y: [Math.random() * -30, Math.random() * 30, Math.random() * -30],
+              x: [Math.random() * -20, Math.random() * 20, Math.random() * -20],
+              opacity: [0.2, 0.6, 0.2],
+            }}
+            transition={{
+              duration: 5 + i * 0.5,
+              repeat: Infinity,
+              delay: i * 0.3,
+              ease: 'easeInOut',
+            }}
+            style={{
+              position: 'absolute',
+              width: i % 3 === 0 ? '6px' : '4px',
+              height: i % 3 === 0 ? '6px' : '4px',
+              background: i % 2 === 0 ? fromColor : toColor,
+              borderRadius: '50%',
+              filter: 'blur(1px)',
+              boxShadow: `0 0 ${i % 3 === 0 ? '20px' : '12px'} ${i % 2 === 0 ? fromColor.replace('0.8', '0.6') : toColor.replace('0.8', '0.6')}`,
+              left: `${15 + i * 10}%`,
+              top: `${30 + (i % 4) * 15}%`,
+              pointerEvents: 'none',
+            }}
+          />
+        ))}
+
+      {/* Glass container card */}
+      <motion.div
+        initial={{ opacity: 0, y: 40, scale: 0.95 }}
+        animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 40, scale: 0.95 }}
+        transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          background: 'rgba(10, 10, 10, 0.75)',
+          backdropFilter: 'blur(60px) saturate(180%) brightness(0.95)',
+          WebkitBackdropFilter: 'blur(60px) saturate(180%) brightness(0.95)',
+          borderRadius: '32px',
+          border: '1px solid rgba(255, 255, 255, 0.06)',
+          padding: 'clamp(2.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem)',
+          boxShadow: `
+            0 30px 60px rgba(0, 0, 0, 0.5),
+            0 0 1px rgba(255, 255, 255, 0.1) inset,
+            0 -2px 4px rgba(255, 255, 255, 0.06) inset,
+            0 0 60px ${fromColor.replace('0.8', '0.15')},
+            0 0 80px ${toColor.replace('0.8', '0.1')}
+          `,
+          maxWidth: '900px',
+          textAlign: 'center',
+        }}
+      >
         {/* Act label */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
+          initial={{ opacity: 0, y: -10 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
           style={{
-            fontSize: '0.75rem',
-            fontWeight: '500',
-            letterSpacing: '0.3em',
+            fontSize: '0.6875rem',
+            fontWeight: '400',
+            letterSpacing: '0.25em',
             textTransform: 'uppercase',
-            color: 'rgba(255, 255, 255, 0.5)',
-            marginBottom: '2rem',
+            color: 'rgba(255, 255, 255, 0.4)',
+            marginBottom: '1.5rem',
           }}
         >
           Act Transition
@@ -317,37 +405,106 @@ export function ActTransition({
 
         {/* Title */}
         <motion.h2
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
-          transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+          transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
           style={{
             fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-            fontWeight: '200',
-            color: 'rgba(255, 255, 255, 0.9)',
-            lineHeight: '1',
-            marginBottom: '1.5rem',
-            background: `linear-gradient(135deg, ${getActColor(fromAct)}, ${getActColor(toAct)})`,
+            fontWeight: '100',
+            color: 'rgba(255, 255, 255, 0.95)',
+            lineHeight: '1.1',
+            marginBottom: '2rem',
+            letterSpacing: '-0.02em',
+            background: `linear-gradient(135deg, ${fromColor}, ${toColor})`,
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
+            textShadow: `0 20px 40px ${fromColor.replace('0.8', '0.3')}`,
           }}
         >
           {title}
         </motion.h2>
 
-        {/* Ornamental line */}
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-          transition={{ duration: 1.5, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            height: '1px',
-            width: '200px',
-            margin: '0 auto',
-            background: `linear-gradient(90deg, ${getActColor(fromAct)}, ${getActColor(toAct)})`,
-          }}
-        />
-      </div>
+        {/* Layered ornamental divider system */}
+        <div style={{ position: 'relative', height: '20px', margin: '0 auto', maxWidth: '300px' }}>
+          {/* Top glowing line */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
+            transition={{ duration: 1.5, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              position: 'absolute',
+              top: '8px',
+              left: 0,
+              right: 0,
+              height: '2px',
+              background: `linear-gradient(90deg,
+                transparent 0%,
+                ${fromColor.replace('0.8', '0.6')} 30%,
+                ${toColor.replace('0.8', '0.6')} 70%,
+                transparent 100%)`,
+              filter: 'blur(1px)',
+              transformOrigin: 'center',
+            }}
+          />
+
+          {/* Bottom accent line */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
+            transition={{ duration: 1.5, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              position: 'absolute',
+              top: '11px',
+              left: '20%',
+              right: '20%',
+              height: '1px',
+              background: `linear-gradient(90deg,
+                transparent,
+                ${fromColor.replace('0.8', '0.4')},
+                ${toColor.replace('0.8', '0.4')},
+                transparent)`,
+              transformOrigin: 'center',
+            }}
+          />
+
+          {/* Left particle endpoint */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
+            transition={{ duration: 0.6, delay: 1.2, ease: 'backOut' }}
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: '5px',
+              width: '8px',
+              height: '8px',
+              background: fromColor,
+              borderRadius: '50%',
+              boxShadow: `0 0 20px ${fromColor.replace('0.8', '0.8')}, 0 0 40px ${fromColor.replace('0.8', '0.4')}`,
+              filter: 'blur(1px)',
+            }}
+          />
+
+          {/* Right particle endpoint */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
+            transition={{ duration: 0.6, delay: 1.2, ease: 'backOut' }}
+            style={{
+              position: 'absolute',
+              right: 0,
+              top: '5px',
+              width: '8px',
+              height: '8px',
+              background: toColor,
+              borderRadius: '50%',
+              boxShadow: `0 0 20px ${toColor.replace('0.8', '0.8')}, 0 0 40px ${toColor.replace('0.8', '0.4')}`,
+              filter: 'blur(1px)',
+            }}
+          />
+        </div>
+      </motion.div>
     </div>
   );
 }
