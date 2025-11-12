@@ -701,23 +701,25 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           gap: 0 !important;
         }
 
-        .swiper-pagination-bullet {
+        .swiper-pagination .swiper-pagination-bullet {
           width: 8px !important;
           height: 8px !important;
           background: #FFFFFF !important;
+          background-color: #FFFFFF !important;
           border: none;
           opacity: 0.7 !important;
           margin: 0 6px !important;
           transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .swiper-pagination-bullet:hover {
+        .swiper-pagination .swiper-pagination-bullet:hover {
           opacity: 0.8 !important;
           transform: scale(1.2);
         }
 
-        .swiper-pagination-bullet-active {
+        .swiper-pagination .swiper-pagination-bullet-active {
           background: #FFFFFF !important;
+          background-color: #FFFFFF !important;
           opacity: 1 !important;
           width: 24px !important;
           border-radius: 4px !important;
@@ -1212,7 +1214,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 const MetricIcon = project.metric.icon;
 
                 return (
-                  <SwiperSlide key={idx} style={{ width: 'clamp(50vw, 500px, 600px)' }}>
+                  <SwiperSlide key={idx} style={{ width: 'clamp(40vw, 380px, 450px)' }}>
                     <Link
                       href={project.link}
                       className={projectClassName}
@@ -1258,7 +1260,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     <div
                       style={{
                         position: 'relative',
-                        height: '280px',
+                        height: '380px',
                         background: `
                           radial-gradient(circle at 30% 30%, rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.35) 0%, rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.12) 50%, transparent 100%),
                           rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.08)
