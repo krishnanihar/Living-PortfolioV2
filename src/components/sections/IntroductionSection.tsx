@@ -240,13 +240,13 @@ export function IntroductionSection() {
                       position: 'relative',
                       padding: '1rem 1.25rem',
                       background: hoveredStat === idx
-                        ? 'rgba(15, 15, 15, 0.95)'
-                        : 'rgba(8, 8, 8, 0.9)',
-                      backdropFilter: 'blur(80px) saturate(180%)',
-                      WebkitBackdropFilter: 'blur(80px) saturate(180%)',
+                        ? 'rgba(15, 15, 15, 0.5)'
+                        : 'rgba(8, 8, 8, 0.4)',
+                      backdropFilter: 'blur(120px) saturate(180%)',
+                      WebkitBackdropFilter: 'blur(120px) saturate(180%)',
                       border: hoveredStat === idx
-                        ? '1px solid rgba(255, 255, 255, 0.22)'
-                        : '1px solid rgba(255, 255, 255, 0.18)',
+                        ? '1px solid rgba(255, 255, 255, 0.15)'
+                        : '1px solid rgba(255, 255, 255, 0.12)',
                       borderRadius: '15px',
                       fontSize: '0.875rem',
                       fontWeight: '300',
@@ -379,13 +379,13 @@ export function IntroductionSection() {
                     gap: '0.5rem',
                     padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.25rem, 2.5vw, 1.5rem)',
                     background: hoveredButton === 'contact'
-                      ? 'rgba(15, 15, 15, 0.95)'
-                      : 'rgba(8, 8, 8, 0.9)',
-                    backdropFilter: 'blur(80px) saturate(180%)',
-                    WebkitBackdropFilter: 'blur(80px) saturate(180%)',
+                      ? 'rgba(15, 15, 15, 0.5)'
+                      : 'rgba(8, 8, 8, 0.4)',
+                    backdropFilter: 'blur(120px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(120px) saturate(180%)',
                     border: hoveredButton === 'contact'
-                      ? '1px solid rgba(255, 255, 255, 0.22)'
-                      : '1px solid rgba(255, 255, 255, 0.18)',
+                      ? '1px solid rgba(255, 255, 255, 0.15)'
+                      : '1px solid rgba(255, 255, 255, 0.12)',
                     borderRadius: '15px',
                     color: 'rgba(255, 255, 255, 0.9)',
                     textDecoration: 'none',
@@ -420,13 +420,13 @@ export function IntroductionSection() {
                     gap: '0.5rem',
                     padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.25rem, 2.5vw, 1.5rem)',
                     background: hoveredButton === 'github'
-                      ? 'rgba(15, 15, 15, 0.95)'
-                      : 'rgba(8, 8, 8, 0.9)',
-                    backdropFilter: 'blur(80px) saturate(180%)',
-                    WebkitBackdropFilter: 'blur(80px) saturate(180%)',
+                      ? 'rgba(15, 15, 15, 0.5)'
+                      : 'rgba(8, 8, 8, 0.4)',
+                    backdropFilter: 'blur(120px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(120px) saturate(180%)',
                     border: hoveredButton === 'github'
-                      ? '1px solid rgba(255, 255, 255, 0.22)'
-                      : '1px solid rgba(255, 255, 255, 0.18)',
+                      ? '1px solid rgba(255, 255, 255, 0.15)'
+                      : '1px solid rgba(255, 255, 255, 0.12)',
                     borderRadius: '15px',
                     color: 'rgba(255, 255, 255, 0.9)',
                     textDecoration: 'none',

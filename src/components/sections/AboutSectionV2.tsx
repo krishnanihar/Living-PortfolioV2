@@ -912,9 +912,9 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 ref={pillar1Ref}
                 style={{
                   position: 'relative',
-                  background: 'rgba(10, 10, 10, 0.6)',
-                  backdropFilter: 'blur(100px) saturate(180%)',
-                  WebkitBackdropFilter: 'blur(100px) saturate(180%)',
+                  background: 'rgba(10, 10, 10, 0.15)',
+                  backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+                  WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
                   borderRadius: '28px',
                   padding: '2.5rem',
                   border: '1px solid rgba(255, 255, 255, 0.08)',
@@ -979,9 +979,9 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 ref={pillar2Ref}
                 style={{
                   position: 'relative',
-                  background: 'rgba(10, 10, 10, 0.6)',
-                  backdropFilter: 'blur(100px) saturate(180%)',
-                  WebkitBackdropFilter: 'blur(100px) saturate(180%)',
+                  background: 'rgba(10, 10, 10, 0.15)',
+                  backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+                  WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
                   borderRadius: '28px',
                   padding: '2.5rem',
                   border: '1px solid rgba(255, 255, 255, 0.08)',
@@ -1031,9 +1031,9 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 ref={pillar3Ref}
                 style={{
                   position: 'relative',
-                  background: 'rgba(10, 10, 10, 0.6)',
-                  backdropFilter: 'blur(100px) saturate(180%)',
-                  WebkitBackdropFilter: 'blur(100px) saturate(180%)',
+                  background: 'rgba(10, 10, 10, 0.15)',
+                  backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+                  WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
                   borderRadius: '28px',
                   padding: '2.5rem',
                   border: '1px solid rgba(255, 255, 255, 0.08)',
@@ -1447,9 +1447,9 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      background: 'rgba(10, 10, 10, 0.85)',
-                      backdropFilter: 'blur(100px) saturate(180%) brightness(0.95)',
-                      WebkitBackdropFilter: 'blur(100px) saturate(180%) brightness(0.95)',
+                      background: 'rgba(10, 10, 10, 0.3)',
+                      backdropFilter: 'blur(140px) saturate(180%) brightness(0.95)',
+                      WebkitBackdropFilter: 'blur(140px) saturate(180%) brightness(0.95)',
                       border: '1px solid rgba(255, 255, 255, 0.1)',
                       borderRadius: '20px',
                       textDecoration: 'none',
@@ -2133,9 +2133,9 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             {/* Premium Glassmorphic Card */}
             <div
               style={{
-                background: 'rgba(8, 8, 8, 0.9)',
-                backdropFilter: 'blur(80px) saturate(180%)',
-                WebkitBackdropFilter: 'blur(80px) saturate(180%)',
+                background: 'rgba(8, 8, 8, 0.3)',
+                backdropFilter: 'blur(140px) saturate(180%)',
+                WebkitBackdropFilter: 'blur(140px) saturate(180%)',
                 border: '1px solid rgba(255, 255, 255, 0.18)',
                 borderRadius: '24px',
                 padding: 'clamp(3rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem)',

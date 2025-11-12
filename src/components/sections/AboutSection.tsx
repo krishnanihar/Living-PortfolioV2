@@ -257,7 +257,7 @@ export function AboutSection() {
   return (
     <section style={{
       minHeight: '100vh',
-      background: 'var(--bg-primary)',
+      background: 'transparent',
       color: 'var(--text-primary)',
       paddingTop: '120px',
       paddingBottom: '6rem',
@@ -339,9 +339,9 @@ export function AboutSection() {
         >
           <div style={{
             position: 'relative',
-            background: 'linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
-            backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
-            WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            background: 'linear-gradient(135deg, rgba(10, 10, 10, 0.15) 0%, rgba(10, 10, 10, 0.1) 100%)',
+            backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+            WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
             borderRadius: '28px',
             padding: '3rem',
             border: '1px solid var(--border-primary)',
@@ -515,9 +515,9 @@ export function AboutSection() {
         >
           <div style={{
             position: 'relative',
-            background: 'linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%)',
-            backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
-            WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            background: 'linear-gradient(135deg, rgba(10, 10, 10, 0.15) 0%, rgba(10, 10, 10, 0.1) 100%)',
+            backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+            WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
             borderRadius: '28px',
             padding: '3rem',
             border: '1px solid var(--border-primary)',
@@ -609,12 +609,12 @@ export function AboutSection() {
           {/* Current Focus Card */}
           <div style={{
             position: 'relative',
-            background: 'rgba(255, 255, 255, 0.02)',
-            backdropFilter: 'blur(30px) brightness(0.8)',
-            WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
+            background: 'rgba(10, 10, 10, 0.15)',
+            backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+            WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
             borderRadius: '28px',
             padding: '2.5rem',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
@@ -661,12 +661,12 @@ export function AboutSection() {
           {/* Philosophy Card */}
           <div style={{
             position: 'relative',
-            background: 'rgba(255, 255, 255, 0.02)',
-            backdropFilter: 'blur(30px) brightness(0.8)',
-            WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
+            background: 'rgba(10, 10, 10, 0.15)',
+            backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+            WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
             borderRadius: '28px',
             padding: '2.5rem',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
@@ -700,12 +700,12 @@ export function AboutSection() {
           {/* Approach Card */}
           <div style={{
             position: 'relative',
-            background: 'rgba(255, 255, 255, 0.02)',
-            backdropFilter: 'blur(30px) brightness(0.8)',
-            WebkitBackdropFilter: 'blur(30px) brightness(0.8)',
+            background: 'rgba(10, 10, 10, 0.15)',
+            backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+            WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
             borderRadius: '28px',
             padding: '2.5rem',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
@@ -744,9 +744,9 @@ export function AboutSection() {
             opacity: isVisible ? 1 : 0,
             animationDelay: '300ms',
             marginBottom: '4rem',
-            background: 'var(--surface-primary)',
-            backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
-            WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
+            background: 'rgba(10, 10, 10, 0.15)',
+            backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+            WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
             borderRadius: '32px',
             border: '1px solid var(--border-primary)',
             padding: '4rem',
@@ -1855,6 +1855,13 @@ export function AboutSection() {
           zIndex: 1,
           maxWidth: '800px',
           margin: '0 auto',
+          background: 'rgba(10, 10, 10, 0.2)',
+          backdropFilter: 'blur(120px) saturate(180%) brightness(1.05)',
+          WebkitBackdropFilter: 'blur(120px) saturate(180%) brightness(1.05)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          borderRadius: '24px',
+          padding: '3rem',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
         }}>
           <h2 style={{
             fontSize: 'clamp(2rem, 4vw, 2.75rem)',
