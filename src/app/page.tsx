@@ -6,6 +6,8 @@ import { NavigationBar } from '@/components/NavigationBar';
 import { ScrollDarkeningOverlay } from '@/components/effects/ScrollDarkeningOverlay';
 import { IntroductionSection } from '@/components/sections/IntroductionSection';
 import { SectionDivider } from '@/components/ui/SectionDivider';
+import { HomeNarrativeWrapper } from '@/components/sections/HomeNarrativeWrapper';
+import { HomeFirstPersonMoments } from '@/components/sections/HomeFirstPersonMoments';
 
 // Dynamically import CosmicBackground for better performance
 const CosmicBackground = dynamic(
@@ -44,14 +46,34 @@ const Chatbot = dynamic(
 export default function HomePage() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   return (
-    <>
+    <HomeNarrativeWrapper>
       <NavigationBar />
       <CosmicBackground />
       <ScrollDarkeningOverlay />
+
+      {/* First-person narrative moments */}
+      <HomeFirstPersonMoments />
+
       <main id="main-content">
         <IntroductionSection />
-        <SectionDivider text="Who's Behind the Work?" />
+
+        {/* Breathing moment after hero */}
+        <div style={{ minHeight: '50vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{
+            fontSize: '3rem',
+            color: 'rgba(255, 255, 255, 0.3)',
+            fontWeight: '100'
+          }}>
+            •
+          </div>
+        </div>
+
+        <SectionDivider text="Who thinks like this?" />
+
         <AboutSectionV2 />
+
+        {/* Contemplative space before footer */}
+        <div style={{ minHeight: '40vh', background: 'linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8))' }} />
       </main>
 
       {/* Floating chat button */}
@@ -63,6 +85,6 @@ export default function HomePage() {
         onClose={() => setIsChatOpen(false)}
         intentContext="general"
       />
-    </>
+    </HomeNarrativeWrapper>
   );
 }
