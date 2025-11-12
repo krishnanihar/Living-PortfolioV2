@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Briefcase,
   Sparkles,
@@ -29,7 +30,6 @@ export function AboutSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [activeTimeline, setActiveTimeline] = useState<string | null>(null);
-  const [avatarEmoji, setAvatarEmoji] = useState('👋');
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeTab, setActiveTab] = useState<'everything' | 'books' | 'games'>('everything');
   const [isGraphModalOpen, setIsGraphModalOpen] = useState(false);
@@ -37,9 +37,22 @@ export function AboutSection() {
   const [selectedGraphNode, setSelectedGraphNode] = useState<any | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [initialMessage, setInitialMessage] = useState('');
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
+    // Check if mobile on mount
+    setIsMobile(window.innerWidth < 768);
+
+    // Update on resize
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   useEffect(() => {
@@ -70,19 +83,6 @@ export function AboutSection() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
-
-  // Avatar emoji rotation (every 3 seconds)
-  useEffect(() => {
-    const emojis = ['👋', '🎨', '💻', '✨'];
-    let currentIndex = 0;
-
-    const interval = setInterval(() => {
-      currentIndex = (currentIndex + 1) % emojis.length;
-      setAvatarEmoji(emojis[currentIndex]);
-    }, 3000);
-
-    return () => clearInterval(interval);
   }, []);
 
   const journeyMilestones = [
@@ -367,26 +367,52 @@ export function AboutSection() {
               alignItems: 'center',
               marginBottom: '2.5rem',
             }}>
-              {/* Avatar with Rotating Emoji */}
-              <div style={{
-                width: '120px',
-                height: '120px',
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.2), rgba(218, 14, 41, 0.05))',
-                border: '2px solid rgba(218, 14, 41, 0.3)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '3rem',
-                boxShadow: '0 8px 32px rgba(218, 14, 41, 0.2)',
-                transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-              }}>
-                <span style={{
-                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                  display: 'inline-block',
+              {/* Profile Picture with Glassmorphic Effect */}
+              <div
+                className="profile-avatar-container"
+                style={{
+                  position: 'relative',
+                  width: isMobile ? '110px' : '140px',
+                  height: isMobile ? '110px' : '140px',
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.2), rgba(218, 14, 41, 0.05))',
+                  padding: '4px',
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  cursor: 'pointer',
+                  flexShrink: 0,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                  e.currentTarget.style.boxShadow = '0 12px 48px rgba(218, 14, 41, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(218, 14, 41, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05)';
+                }}
+              >
+                <div style={{
+                  position: 'relative',
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: '50%',
+                  overflow: 'hidden',
+                  border: '2px solid rgba(255, 255, 255, 0.08)',
+                  boxShadow: '0 8px 32px rgba(218, 14, 41, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+                  backdropFilter: 'blur(40px) saturate(120%)',
                 }}>
-                  {avatarEmoji}
-                </span>
+                  <Image
+                    src="/images/profile/mypic.png"
+                    alt="Nihar - Product Designer & Developer at Air India DesignLAB"
+                    width={140}
+                    height={140}
+                    priority
+                    style={{
+                      objectFit: 'cover',
+                      width: '100%',
+                      height: '100%',
+                    }}
+                  />
+                </div>
               </div>
 
               {/* Introduction */}
