@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import { ViewToggle, ViewMode } from '@/components/ui/ViewToggle';
@@ -12,7 +12,6 @@ import { FilterCategory } from '@/types/projects';
 export default function WorkPage() {
   // View mode state with localStorage persistence - default to fullscreen
   const [viewMode, setViewMode] = useState<ViewMode>('fullscreen');
-  const [isLoading, setIsLoading] = useState(false);
   const [activeFilter, setActiveFilter] = useState<FilterCategory>('all');
 
   // Load view preference from localStorage on mount
@@ -24,14 +23,15 @@ export default function WorkPage() {
   }, []);
 
   // Save view preference to localStorage
-  const handleViewModeChange = (mode: ViewMode) => {
-    setIsLoading(true);
+  const handleViewModeChange = useCallback((mode: ViewMode) => {
     setViewMode(mode);
-    localStorage.setItem('workViewPreference', mode);
 
-    // Brief loading state for smooth transition
-    setTimeout(() => setIsLoading(false), 300);
-  };
+    try {
+      localStorage.setItem('workViewPreference', mode);
+    } catch (error) {
+      console.error('Failed to save view preference:', error);
+    }
+  }, []);
 
   // Keyboard shortcuts: G for grid, F for fullscreen
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function WorkPage() {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, []);
+  }, [handleViewModeChange]);
 
   // Filter projects based on active filter
   const filteredProjects = activeFilter === 'all'
@@ -69,34 +69,19 @@ export default function WorkPage() {
 
       {/* View Content with Transitions */}
       <AnimatePresence mode="wait">
-        {isLoading ? (
-          <motion.div
-            key="loading"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="min-h-screen flex items-center justify-center"
-          >
-            <div className="text-white/60 text-lg">
-              Switching view...
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            key={viewMode}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {viewMode === 'grid' ? (
-              <WorkSection />
-            ) : (
-              <Work />
-            )}
-          </motion.div>
-        )}
+        <motion.div
+          key={viewMode}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {viewMode === 'grid' ? (
+            <WorkSection />
+          ) : (
+            <Work />
+          )}
+        </motion.div>
       </AnimatePresence>
 
       {/* ARIA live region for accessibility */}
