@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { NavigationBar } from '@/components/NavigationBar';
+import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import { ScrollDarkeningOverlay } from '@/components/effects/ScrollDarkeningOverlay';
 import { IntroductionSection } from '@/components/sections/IntroductionSection';
 import { SectionDivider } from '@/components/ui/SectionDivider';
@@ -54,7 +54,7 @@ export default function HomePage() {
 
   return (
     <HomeNarrativeWrapper>
-      <NavigationBar />
+      <PortfolioNavigation />
       <CosmicBackground />
       <ScrollDarkeningOverlay />
 

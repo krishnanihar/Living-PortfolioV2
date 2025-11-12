@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Briefcase, User, Moon, Sun, Palette, Beaker } from 'lucide-react';
+import { Briefcase, User, Moon, Sun, Palette, Beaker, HelpCircle } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
 
 interface PortfolioNavigationProps {
@@ -335,6 +335,40 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
             >
               {theme === 'system' ? <Palette size={15} /> : (resolvedTheme === 'dark' ? <Moon size={15} /> : <Sun size={15} />)}
             </div>
+
+            {/* Journey Button */}
+            <Link href="/journey" style={{ textDecoration: 'none' }}>
+              <div
+                style={{
+                  position: 'relative',
+                  borderRadius: '50%',
+                  width: '34px',
+                  height: '34px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--text-secondary)',
+                  background: 'var(--surface-primary)',
+                  backdropFilter: 'blur(20px) brightness(0.8)',
+                  WebkitBackdropFilter: 'blur(20px) brightness(0.8)',
+                  border: '1px solid var(--border-primary)',
+                  transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                  cursor: 'pointer',
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.transform = 'scale(1.1)';
+                  (e.currentTarget as HTMLElement).style.background = 'var(--surface-secondary)';
+                  (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)';
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
+                  (e.currentTarget as HTMLElement).style.background = 'var(--surface-primary)';
+                  (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)';
+                }}
+              >
+                <HelpCircle size={15} />
+              </div>
+            </Link>
           </div>
         </div>
       </nav>
