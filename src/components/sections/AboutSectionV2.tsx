@@ -693,7 +693,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           transform: scale(1) !important;
         }
 
-        .swiper-pagination {
+        :global(.swiper-pagination) {
           position: static !important;
           display: flex !important;
           align-items: center !important;
@@ -701,7 +701,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           gap: 0 !important;
         }
 
-        .swiper-pagination .swiper-pagination-bullet {
+        :global(.swiper-pagination) :global(.swiper-pagination-bullet) {
           width: 8px !important;
           height: 8px !important;
           background: #FFFFFF !important;
@@ -712,12 +712,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .swiper-pagination .swiper-pagination-bullet:hover {
+        :global(.swiper-pagination) :global(.swiper-pagination-bullet:hover) {
           opacity: 0.8 !important;
           transform: scale(1.2);
         }
 
-        .swiper-pagination .swiper-pagination-bullet-active {
+        :global(.swiper-pagination) :global(.swiper-pagination-bullet-active) {
           background: #FFFFFF !important;
           background-color: #FFFFFF !important;
           opacity: 1 !important;
@@ -1185,8 +1185,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               <Swiper
                 modules={[Navigation, Pagination]}
                 centeredSlides={true}
-                slidesPerView={1.3}
-                spaceBetween={40}
+                slidesPerView={1.6}
+                spaceBetween={30}
                 loop={true}
                 navigation={{
                   prevEl: '.custom-nav-prev',
@@ -1198,12 +1198,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 }}
                 breakpoints={{
                   768: {
-                    spaceBetween: 24,
-                    slidesPerView: 1.2,
+                    spaceBetween: 20,
+                    slidesPerView: 1.3,
                   },
                   1024: {
-                    spaceBetween: 40,
-                    slidesPerView: 1.3,
+                    spaceBetween: 30,
+                    slidesPerView: 1.6,
                   },
                 }}
                 style={{ paddingBottom: '0' }}
@@ -1214,7 +1214,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 const MetricIcon = project.metric.icon;
 
                 return (
-                  <SwiperSlide key={idx} style={{ width: 'clamp(40vw, 380px, 450px)' }}>
+                  <SwiperSlide key={idx}>
                     <Link
                       href={project.link}
                       className={projectClassName}
@@ -1325,8 +1325,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
                       {/* Geometric pattern (since no images) */}
                       <svg
-                        width="200"
-                        height="200"
+                        width="280"
+                        height="280"
                         viewBox="0 0 200 200"
                         style={{
                           opacity: 0.4,
