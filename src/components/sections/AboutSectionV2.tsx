@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Mail, Lightbulb, Trophy, Briefcase, Rocket, Users, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, Mail, Lightbulb, Trophy, Briefcase, Rocket, Users, CheckCircle2, ChevronLeft, ChevronRight, Sparkles, Layers } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { ContactChat } from '../ContactChat';
@@ -21,8 +21,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   const [act2InView, setAct2InView] = useState(false);
   const [act4InView, setAct4InView] = useState(false);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
-  const [hoveredMilestone, setHoveredMilestone] = useState<number | null>(null);
-  const [milestonesInView, setMilestonesInView] = useState<boolean[]>([false, false, false, false]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [cardTilt, setCardTilt] = useState({ rotateX: 0, rotateY: 0 });
   const [chatOpen, setChatOpen] = useState(false);
@@ -50,39 +48,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
     );
 
     const act1El = document.getElementById('act-1-philosophy');
-    const act2El = document.getElementById('act-2-journey');
+    const act2El = document.getElementById('act-2-about');
     const act4El = document.getElementById('act-4-impact');
 
     if (act1El) { act1Observer.observe(act1El); observers.push(act1Observer); }
     if (act2El) { act2Observer.observe(act2El); observers.push(act2Observer); }
     if (act4El) { act4Observer.observe(act4El); observers.push(act4Observer); }
-
-    // Milestone observers
-    const milestoneObservers = [0, 1, 2, 3].map((idx) => {
-      return new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setMilestonesInView(prev => {
-              const newState = [...prev];
-              newState[idx] = true;
-              return newState;
-            });
-          }
-        },
-        { threshold: 0.3, rootMargin: '-50px' }
-      );
-    });
-
-    // Observe each milestone
-    setTimeout(() => {
-      milestoneObservers.forEach((observer, idx) => {
-        const milestoneEl = document.getElementById(`milestone-${idx}`);
-        if (milestoneEl) {
-          observer.observe(milestoneEl);
-          observers.push(observer);
-        }
-      });
-    }, 100);
 
     return () => observers.forEach(o => o.disconnect());
   }, []);
@@ -218,83 +189,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
     },
   ];
 
-  const journeyMilestones = [
-    {
-      year: '2020',
-      title: 'The Awakening',
-      hook: 'What if interfaces could understand consciousness?',
-      event: 'Started exploring consciousness tech & speculative design',
-      achievements: [
-        'First experiments with design fiction',
-        'Discovered Dunne & Raby\'s speculative design',
-        'Built first narrative-driven prototypes'
-      ],
-      icon: Lightbulb,
-      category: 'Origin',
-      color: 'rgba(147, 51, 234, 0.2)',
-      borderColor: 'rgba(147, 51, 234, 0.4)',
-    },
-    {
-      year: '2022',
-      title: 'The Breakthrough',
-      hook: 'Two hackathons. Same weekend. Both won.',
-      event: 'Won 2 hackathons simultaneously—5000 LOC in 48 hours',
-      achievements: [
-        '5000 lines of code in 48 hours',
-        'Built PsoriAssist AI diagnostic system',
-        'Created Mythos gaming platform MVP'
-      ],
-      metrics: [
-        { label: 'Lines of Code', value: '5000+' },
-        { label: 'Hackathons Won', value: '2' },
-        { label: 'Sleep Hours', value: '4' }
-      ],
-      icon: Trophy,
-      category: 'Achievement',
-      color: 'rgba(251, 146, 60, 0.2)',
-      borderColor: 'rgba(251, 146, 60, 0.4)',
-    },
-    {
-      year: '2023',
-      title: 'Enterprise Transformation',
-      hook: 'From personal experiments to systems serving thousands.',
-      event: 'Joined Air India DesignLAB—transforming enterprise systems',
-      achievements: [
-        'Designed multi-modal operations dashboard',
-        'Built design system for 450+ daily operations',
-        'Shipped features used by 10K+ users'
-      ],
-      metrics: [
-        { label: 'Daily Operations', value: '450+' },
-        { label: 'Active Users', value: '10K+' },
-        { label: 'Team Size', value: '12' }
-      ],
-      icon: Briefcase,
-      category: 'Professional',
-      color: 'rgba(218, 14, 41, 0.2)',
-      borderColor: 'rgba(218, 14, 41, 0.4)',
-    },
-    {
-      year: '2024',
-      title: 'Building at Scale',
-      hook: 'Systems that breathe with millions of people.',
-      event: 'Building systems that serve millions daily',
-      achievements: [
-        'Architecting consciousness-aware interfaces',
-        'Shipping features to production weekly',
-        'Mentoring next generation of designers'
-      ],
-      metrics: [
-        { label: 'Users Served', value: 'Millions' },
-        { label: 'Deployments/Week', value: '8+' },
-        { label: 'System Uptime', value: '99.9%' }
-      ],
-      icon: Rocket,
-      category: 'Current',
-      color: 'rgba(218, 14, 41, 0.2)',
-      borderColor: 'rgba(218, 14, 41, 0.4)',
-    },
-  ];
 
   return (
     <>
@@ -936,9 +830,9 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           </div>
         </div>
 
-        {/* Act 2: The Journey - Enhanced Timeline */}
+        {/* Act 2: About Me - Three Pillars */}
         <div
-          id="act-2-journey"
+          id="act-2-about"
           ref={timelineRef}
           style={{
             minHeight: '100vh',
@@ -948,7 +842,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             position: 'relative',
           }}
         >
-          <div style={{ maxWidth: '1400px', margin: '0 auto', width: '100%', position: 'relative' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', position: 'relative' }}>
             {/* Section Header */}
             <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
               <h3
@@ -961,7 +855,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   animation: act2InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
                 }}
               >
-                The Journey
+                About Me
               </h3>
               <p
                 style={{
@@ -974,246 +868,241 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   animation: act2InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both' : 'none',
                 }}
               >
-                From speculative experiments to systems serving millions
+                Designer, builder, and systems thinker
               </p>
             </div>
 
-            {/* Timeline Container */}
-            <div className="timeline-container" style={{ position: 'relative' }}>
-              {/* Milestones */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem', position: 'relative', zIndex: 1 }}>
-                {journeyMilestones.map((milestone, idx) => {
-                  const Icon = milestone.icon;
-                  const isInView = milestonesInView[idx] && mounted;
-                  const isHovered = hoveredMilestone === idx;
-
-                  return (
-                    <div
-                      key={idx}
-                      id={`milestone-${idx}`}
-                      onMouseEnter={() => setHoveredMilestone(idx)}
-                      onMouseLeave={() => setHoveredMilestone(null)}
-                      style={{
-                        position: 'relative',
-                        opacity: isInView ? 1 : 0,
-                        transform: isInView ? 'translateX(0)' : 'translateX(50px)',
-                        transition: `all 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.2 + idx * 0.15}s`,
-                      }}
-                    >
-                      {/* Milestone Card */}
-                      <div
-                        className="milestone-card"
-                        style={{
-                          background: isHovered
-                            ? 'rgba(10, 10, 10, 0.7)'
-                            : 'rgba(10, 10, 10, 0.6)',
-                          backdropFilter: 'blur(100px) saturate(180%)',
-                          WebkitBackdropFilter: 'blur(100px) saturate(180%)',
-                          border: isHovered
-                            ? `2px solid ${milestone.borderColor.replace('0.4', '0.8')}`
-                            : '1px solid rgba(255, 255, 255, 0.06)',
-                          borderRadius: '24px',
-                          padding: 'clamp(2rem, 3vw, 2.5rem)',
-                          position: 'relative',
-                          overflow: 'hidden',
-                          boxShadow: isHovered
-                            ? `0px 8px 32px rgba(0, 0, 0, 0.5), 0px 0px 24px ${milestone.borderColor.replace('0.4', '0.12')}, 0px 0px 8px rgba(255, 255, 255, 0.02) inset`
-                            : '0px 4px 20px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
-                          transition: 'all 0.3s ease',
-                        }}
-                      >
-                        {/* Category Badge */}
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: '1.5rem',
-                            right: '1.5rem',
-                            padding: '0.375rem 0.875rem',
-                            background: 'rgba(255, 255, 255, 0.03)',
-                            border: '1px solid rgba(255, 255, 255, 0.08)',
-                            borderRadius: '8px',
-                            fontSize: '0.6875rem',
-                            fontWeight: '500',
-                            color: 'rgba(255, 255, 255, 0.5)',
-                            letterSpacing: '0.08em',
-                            textTransform: 'uppercase',
-                          }}
-                        >
-                          {milestone.category}
-                        </div>
-
-                        {/* Header: Icon + Year + Title */}
-                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.5rem', marginBottom: '1.5rem' }}>
-                          <div
-                            style={{
-                              width: '56px',
-                              height: '56px',
-                              borderRadius: '14px',
-                              background: 'rgba(255, 255, 255, 0.02)',
-                              border: '1px solid rgba(255, 255, 255, 0.08)',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              flexShrink: 0,
-                            }}
-                          >
-                            <Icon size={28} style={{ color: 'rgba(255, 255, 255, 0.6)' }} />
-                          </div>
-
-                          <div style={{ flex: 1 }}>
-                            <div
-                              style={{
-                                fontSize: '1.75rem',
-                                fontWeight: '600',
-                                color: isHovered
-                                  ? milestone.borderColor.replace(/[\d.]+\)$/, '1)')
-                                  : 'rgba(255, 255, 255, 0.4)',
-                                marginBottom: '0.5rem',
-                                letterSpacing: '-0.01em',
-                                transition: 'color 0.3s ease',
-                              }}
-                            >
-                              {milestone.year}
-                            </div>
-                            <h4
-                              style={{
-                                fontSize: 'clamp(1.375rem, 2.5vw, 1.75rem)',
-                                fontWeight: '400',
-                                color: 'rgba(255, 255, 255, 0.95)',
-                                marginBottom: '0.5rem',
-                                lineHeight: '1.3',
-                              }}
-                            >
-                              {milestone.title}
-                            </h4>
-                          </div>
-                        </div>
-
-                        {/* Hook Quote */}
-                        <div
-                          style={{
-                            fontSize: 'clamp(1.0625rem, 1.75vw, 1.25rem)',
-                            fontWeight: '300',
-                            fontStyle: 'italic',
-                            color: 'rgba(255, 255, 255, 0.65)',
-                            marginBottom: '1.5rem',
-                            lineHeight: '1.6',
-                          }}
-                        >
-                          "{milestone.hook}"
-                        </div>
-
-                        {/* Event Description */}
-                        <p
-                          style={{
-                            fontSize: 'clamp(1rem, 1.75vw, 1.125rem)',
-                            fontWeight: '300',
-                            color: 'rgba(255, 255, 255, 0.75)',
-                            lineHeight: '1.7',
-                            marginBottom: '1.5rem',
-                          }}
-                        >
-                          {milestone.event}
-                        </p>
-
-                        {/* Achievements List */}
-                        {milestone.achievements && milestone.achievements.length > 0 && (
-                          <div style={{ marginBottom: '1.5rem' }}>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
-                              {milestone.achievements.map((achievement, achIdx) => (
-                                <div
-                                  key={achIdx}
-                                  style={{
-                                    display: 'flex',
-                                    alignItems: 'flex-start',
-                                    gap: '0.75rem',
-                                    opacity: isInView ? 1 : 0,
-                                    transform: isInView ? 'translateX(0)' : 'translateX(20px)',
-                                    transition: `all 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${0.5 + achIdx * 0.1}s`,
-                                  }}
-                                >
-                                  <div
-                                    style={{
-                                      width: '4px',
-                                      height: '4px',
-                                      borderRadius: '50%',
-                                      background: 'rgba(255, 255, 255, 0.3)',
-                                      marginTop: '0.5rem',
-                                      flexShrink: 0,
-                                    }}
-                                  />
-                                  <span
-                                    style={{
-                                      fontSize: '0.9375rem',
-                                      fontWeight: '300',
-                                      color: 'rgba(255, 255, 255, 0.6)',
-                                      lineHeight: '1.65',
-                                    }}
-                                  >
-                                    {achievement}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Metrics Grid */}
-                        {milestone.metrics && milestone.metrics.length > 0 && (
-                          <div
-                            className="metrics-grid"
-                            style={{
-                              display: 'grid',
-                              gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-                              gap: '1.5rem',
-                              marginTop: '2rem',
-                              paddingTop: '1.5rem',
-                              borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-                            }}
-                          >
-                            {milestone.metrics.map((metric, metricIdx) => (
-                              <div
-                                key={metricIdx}
-                                style={{
-                                  opacity: isInView ? 1 : 0,
-                                  transform: isInView ? 'translateY(0)' : 'translateY(20px)',
-                                  transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.7 + metricIdx * 0.1}s`,
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    fontSize: 'clamp(1.5rem, 2.5vw, 1.875rem)',
-                                    fontWeight: '500',
-                                    color: isHovered
-                                      ? milestone.borderColor.replace(/[\d.]+\)$/, '1)')
-                                      : 'rgba(255, 255, 255, 0.9)',
-                                    marginBottom: '0.375rem',
-                                    lineHeight: '1.2',
-                                    transition: 'color 0.3s ease',
-                                  }}
-                                >
-                                  {metric.value}
-                                </div>
-                                <div
-                                  style={{
-                                    fontSize: '0.75rem',
-                                    fontWeight: '400',
-                                    color: 'rgba(255, 255, 255, 0.4)',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.08em',
-                                  }}
-                                >
-                                  {metric.label}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
+            {/* Three Pillars Grid */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gap: '2rem',
+                marginBottom: '4rem',
+                opacity: act2InView && mounted ? 1 : 0,
+                transform: act2InView && mounted ? 'translateY(0)' : 'translateY(40px)',
+                transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s',
+              }}
+            >
+              {/* Right Now Card */}
+              <div
+                style={{
+                  position: 'relative',
+                  background: 'rgba(10, 10, 10, 0.6)',
+                  backdropFilter: 'blur(100px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(100px) saturate(180%)',
+                  borderRadius: '28px',
+                  padding: '2.5rem',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  cursor: 'default',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.02) translateY(-8px)';
+                  e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.4)';
+                  e.currentTarget.style.boxShadow = '0 12px 48px rgba(0, 0, 0, 0.5), 0px 0px 24px rgba(218, 14, 41, 0.1), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1) translateY(0)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
+                }}
+              >
+                <Briefcase size={36} style={{ color: 'rgba(218, 14, 41, 0.9)', marginBottom: '1.5rem' }} />
+                <h4
+                  style={{
+                    fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
+                    fontWeight: '500',
+                    marginBottom: '1rem',
+                    color: 'rgba(255, 255, 255, 0.95)',
+                    lineHeight: '1.3',
+                  }}
+                >
+                  Right Now
+                </h4>
+                <p
+                  style={{
+                    fontSize: 'clamp(1rem, 1.5vw, 1.0625rem)',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    lineHeight: '1.7',
+                    fontWeight: '300',
+                    marginBottom: '1.5rem',
+                  }}
+                >
+                  Building design systems at Air India. 450+ daily users. Aviation UX.
+                </p>
+                <div
+                  style={{
+                    display: 'inline-block',
+                    padding: '0.5rem 1rem',
+                    background: 'rgba(34, 197, 94, 0.15)',
+                    color: 'rgba(34, 197, 94, 1)',
+                    fontSize: '0.875rem',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(34, 197, 94, 0.3)',
+                    fontWeight: '500',
+                  }}
+                >
+                  Open to opportunities
+                </div>
               </div>
+
+              {/* Belief Card */}
+              <div
+                style={{
+                  position: 'relative',
+                  background: 'rgba(10, 10, 10, 0.6)',
+                  backdropFilter: 'blur(100px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(100px) saturate(180%)',
+                  borderRadius: '28px',
+                  padding: '2.5rem',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  cursor: 'default',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.02) translateY(-8px)';
+                  e.currentTarget.style.borderColor = 'rgba(147, 51, 234, 0.4)';
+                  e.currentTarget.style.boxShadow = '0 12px 48px rgba(0, 0, 0, 0.5), 0px 0px 24px rgba(147, 51, 234, 0.1), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1) translateY(0)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
+                }}
+              >
+                <Sparkles size={36} style={{ color: 'rgba(147, 51, 234, 0.9)', marginBottom: '1.5rem' }} />
+                <h4
+                  style={{
+                    fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
+                    fontWeight: '500',
+                    marginBottom: '1rem',
+                    color: 'rgba(255, 255, 255, 0.95)',
+                    lineHeight: '1.3',
+                  }}
+                >
+                  Belief
+                </h4>
+                <p
+                  style={{
+                    fontSize: 'clamp(1rem, 1.5vw, 1.0625rem)',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    lineHeight: '1.7',
+                    fontWeight: '300',
+                  }}
+                >
+                  Interfaces should breathe, remember, and evolve. Reduce time between thought and action.
+                </p>
+              </div>
+
+              {/* How I Work Card */}
+              <div
+                style={{
+                  position: 'relative',
+                  background: 'rgba(10, 10, 10, 0.6)',
+                  backdropFilter: 'blur(100px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(100px) saturate(180%)',
+                  borderRadius: '28px',
+                  padding: '2.5rem',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  cursor: 'default',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.02) translateY(-8px)';
+                  e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.4)';
+                  e.currentTarget.style.boxShadow = '0 12px 48px rgba(0, 0, 0, 0.5), 0px 0px 24px rgba(59, 130, 246, 0.1), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1) translateY(0)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
+                }}
+              >
+                <Layers size={36} style={{ color: 'rgba(59, 130, 246, 0.9)', marginBottom: '1.5rem' }} />
+                <h4
+                  style={{
+                    fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
+                    fontWeight: '500',
+                    marginBottom: '1rem',
+                    color: 'rgba(255, 255, 255, 0.95)',
+                    lineHeight: '1.3',
+                  }}
+                >
+                  How I Work
+                </h4>
+                <p
+                  style={{
+                    fontSize: 'clamp(1rem, 1.5vw, 1.0625rem)',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    lineHeight: '1.7',
+                    fontWeight: '300',
+                  }}
+                >
+                  Systems thinking. Creative coding. Data-driven design. Prototyping first.
+                </p>
+              </div>
+            </div>
+
+            {/* Journey Teaser */}
+            <div
+              style={{
+                textAlign: 'center',
+                marginTop: '5rem',
+                opacity: act2InView && mounted ? 1 : 0,
+                transform: act2InView && mounted ? 'translateY(0)' : 'translateY(40px)',
+                transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 1s',
+              }}
+            >
+              <p
+                style={{
+                  fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
+                  fontWeight: '300',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  marginBottom: '1.5rem',
+                  lineHeight: '1.7',
+                }}
+              >
+                Curious about my journey from 2005 to today?
+              </p>
+              <Link
+                href="/journey"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  padding: '1rem 2rem',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '16px',
+                  color: 'rgba(255, 255, 255, 0.9)',
+                  fontSize: 'clamp(0.9375rem, 1.5vw, 1.0625rem)',
+                  fontWeight: '500',
+                  textDecoration: 'none',
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(218, 14, 41, 0.15)';
+                  e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.4)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(218, 14, 41, 0.2)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.3)';
+                }}
+              >
+                Explore My Full Journey
+                <ArrowRight size={18} />
+              </Link>
             </div>
           </div>
         </div>
