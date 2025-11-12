@@ -61,7 +61,6 @@ export function ContactChat({ onMessageSubmit }: ContactChatProps) {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyPress={handleKeyPress}
-          autoFocus
           style={{
             flex: 1,
             background: 'none',
