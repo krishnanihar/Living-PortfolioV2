@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowUpRight, Circle, Hexagon, Grid3X3, Heart, ArrowRight, Brain } from 'lucide-react';
 import Link from 'next/link';
+import { JourneyBadge, RoleBadge, ImpactBadge } from '@/components/ui';
+import { ProgressiveCounter } from '@/components/ui/ProgressiveDataReveal';
 
 interface Project {
   id: number;
@@ -16,6 +18,11 @@ interface Project {
   year: string;
   orbColor: string;
   image?: string;
+  meta: {
+    duration?: string;
+    team?: string;
+    role?: string;
+  };
 }
 
 interface WorkSectionProps {
@@ -42,7 +49,12 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
       tags: ['React', 'Systems', 'Aviation UX'],
       status: 'Active',
       year: '2024',
-      orbColor: '218, 14, 41'
+      orbColor: '218, 14, 41',
+      meta: {
+        duration: '2024-Present',
+        team: 'DesignLAB Team',
+        role: 'Lead Designer'
+      }
     },
     {
       id: 2,
@@ -55,7 +67,12 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
       status: 'Research',
       year: '2024',
       orbColor: '236, 72, 153',
-      image: '/projects/mythoscover1.png'
+      image: '/projects/mythoscover1.png',
+      meta: {
+        duration: '6 months',
+        team: 'Solo Project',
+        role: 'Designer & Developer'
+      }
     },
     {
       id: 3,
@@ -67,7 +84,12 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
       tags: ['AI/ML', 'Digital Health', 'Clinical Validation'],
       status: 'Research',
       year: '2024',
-      orbColor: '74, 144, 226'
+      orbColor: '74, 144, 226',
+      meta: {
+        duration: '18-month design concept',
+        team: 'Solo Project',
+        role: 'Lead Researcher'
+      }
     },
     {
       id: 4,
@@ -79,7 +101,12 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
       tags: ['Ethics', 'Consciousness', 'Future Concepts'],
       status: 'Research',
       year: '2024',
-      orbColor: '140, 100, 255'
+      orbColor: '140, 100, 255',
+      meta: {
+        duration: '3 months',
+        team: 'Solo Project',
+        role: 'Experience Designer'
+      }
     },
     {
       id: 5,
@@ -91,7 +118,12 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
       tags: ['TouchDesigner', 'Arduino', 'VR + Installation'],
       status: 'Completed',
       year: '2023',
-      orbColor: '50, 200, 150'
+      orbColor: '50, 200, 150',
+      meta: {
+        duration: '2-month sprint',
+        team: 'Solo Project',
+        role: 'Creative Developer'
+      }
     },
     {
       id: 6,
@@ -103,7 +135,12 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
       tags: ['Next.js', 'Framer Motion', 'Consciousness UI'],
       status: 'Active',
       year: '2024',
-      orbColor: '255, 255, 255'
+      orbColor: '255, 255, 255',
+      meta: {
+        duration: '2024-Present',
+        team: 'Solo Project',
+        role: 'Designer & Developer'
+      }
     }
   ];
 
@@ -650,12 +687,37 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     color: 'var(--text-tertiary)',
                     lineHeight: '1.6',
                     letterSpacing: '0.01em',
-                    marginBottom: 'auto',
+                    marginBottom: '1rem',
                     transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                     opacity: isHovered ? 0.7 : 0.5,
                   }}>
                     {project.description}
                   </p>
+
+                  {/* Journey & Impact Badges */}
+                  <div style={{
+                    display: 'flex',
+                    gap: '0.75rem',
+                    alignItems: 'center',
+                    marginBottom: '0.5rem',
+                    flexWrap: 'wrap',
+                  }}>
+                    {/* Impact Badge */}
+                    <ImpactBadge status={project.status as any} />
+
+                    {/* Journey Badge */}
+                    <JourneyBadge
+                      duration={project.meta.duration}
+                      team={project.meta.team}
+                    />
+                  </div>
+
+                  {/* Role Badge */}
+                  {project.meta.role && (
+                    <div style={{ marginBottom: '0.75rem' }}>
+                      <RoleBadge role={project.meta.role} />
+                    </div>
+                  )}
 
                   {/* Footer */}
                   <div style={{

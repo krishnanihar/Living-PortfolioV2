@@ -40,3 +40,11 @@ export { ClipRevealText } from './ClipRevealText';
 export * from './ScrambleText';
 export * from './GradientText';
 export * from './ClipRevealText';
+
+// Narrative Storytelling Components
+export { JourneyBadge } from './JourneyBadge';
+export type { JourneyBadgeProps } from './JourneyBadge';
+export { RoleBadge } from './RoleBadge';
+export type { RoleBadgeProps } from './RoleBadge';
+export { ImpactBadge } from './ImpactBadge';
+export type { ImpactBadgeProps } from './ImpactBadge';
