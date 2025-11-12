@@ -2,12 +2,19 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import { ViewToggle, ViewMode } from '@/components/ui/ViewToggle';
 import { Work } from '@/components/sections/Work';
 import WorkSection from '@/components/sections/WorkSection';
 import { projects, getProjectsByCategory } from '@/data/projects';
 import { FilterCategory } from '@/types/projects';
+
+// Dynamic import of CosmicBackground for performance
+const CosmicBackground = dynamic(
+  () => import('@/components/effects/CosmicBackground').then(mod => ({ default: mod.CosmicBackground })),
+  { ssr: false, loading: () => null }
+);
 
 export default function WorkPage() {
   // View mode state with localStorage persistence - default to fullscreen
@@ -59,6 +66,9 @@ export default function WorkPage() {
 
   return (
     <>
+      {/* Cosmic Stars Background */}
+      <CosmicBackground />
+
       <PortfolioNavigation />
 
       {/* View Toggle Control */}

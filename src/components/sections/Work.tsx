@@ -386,13 +386,13 @@ export function Work() {
                   position: 'absolute',
                   inset: 0,
                   borderRadius: '32px',
-                  background: 'rgba(137, 137, 137, 0.05)',
-                  backdropFilter: 'blur(75px) saturate(180%)',
-                  WebkitBackdropFilter: 'blur(75px) saturate(180%)',
-                  border: isActive ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(255, 255, 255, 0.09)',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  backdropFilter: 'blur(100px) saturate(200%)',
+                  WebkitBackdropFilter: 'blur(100px) saturate(200%)',
+                  border: isActive ? '1px solid rgba(255, 255, 255, 0.18)' : '1px solid rgba(255, 255, 255, 0.06)',
                   boxShadow: isActive
-                    ? '0px 16px 48px rgba(0, 0, 0, 0.5), 0px 0px 16px rgba(255, 255, 255, 0.04) inset'
-                    : '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
+                    ? '0px 20px 60px rgba(0, 0, 0, 0.7), 0px 0px 24px rgba(255, 255, 255, 0.05) inset'
+                    : '0px 12px 40px rgba(0, 0, 0, 0.65), 0px 0px 20px rgba(255, 255, 255, 0.02) inset',
                   overflow: 'hidden',
                   transition: 'border 0.3s ease, box-shadow 0.3s ease',
                 }}>

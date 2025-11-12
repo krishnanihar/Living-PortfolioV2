@@ -430,10 +430,10 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     position: 'absolute',
                     inset: 0,
                     background: isHovered
-                      ? 'rgba(255, 255, 255, 0.02)'
-                      : 'rgba(255, 255, 255, 0.005)',
-                    backdropFilter: 'blur(30px) saturate(120%)',
-                    WebkitBackdropFilter: 'blur(30px) saturate(120%)',
+                      ? 'rgba(255, 255, 255, 0.015)'
+                      : 'rgba(255, 255, 255, 0.003)',
+                    backdropFilter: 'blur(40px) saturate(150%)',
+                    WebkitBackdropFilter: 'blur(40px) saturate(150%)',
                     transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
                   }} />
 
@@ -558,16 +558,16 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                   position: 'absolute',
                   inset: 0,
                   top: '180px',
-                  background: 'rgba(137, 137, 137, 0.05)',
-                  backdropFilter: 'blur(75px) saturate(180%)',
-                  WebkitBackdropFilter: 'blur(75px) saturate(180%)',
-                  border: isHovered ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(255, 255, 255, 0.09)',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  backdropFilter: 'blur(100px) saturate(200%)',
+                  WebkitBackdropFilter: 'blur(100px) saturate(200%)',
+                  border: isHovered ? '1px solid rgba(255, 255, 255, 0.18)' : '1px solid rgba(255, 255, 255, 0.06)',
                   borderTop: 'none',
                   borderRadius: '0 0 20px 20px',
                   transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                   boxShadow: isHovered
-                    ? '0px 16px 48px rgba(0, 0, 0, 0.5), 0px 0px 16px rgba(255, 255, 255, 0.04) inset'
-                    : '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
+                    ? '0px 20px 60px rgba(0, 0, 0, 0.7), 0px 0px 24px rgba(255, 255, 255, 0.05) inset'
+                    : '0px 12px 40px rgba(0, 0, 0, 0.65), 0px 0px 20px rgba(255, 255, 255, 0.02) inset',
                 }} />
 
                 {/* Very light translucent overlay */}
