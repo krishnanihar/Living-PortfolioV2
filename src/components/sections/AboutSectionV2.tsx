@@ -2213,7 +2213,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 marginBottom: '3rem',
               }}
             >
-              Want to build something that <span style={{ color: '#DA0E29', fontWeight: '400' }}>matters</span>?
+              Let's build something <span style={{ color: '#DA0E29', fontWeight: '400' }}>together</span>
             </p>
 
             <div
