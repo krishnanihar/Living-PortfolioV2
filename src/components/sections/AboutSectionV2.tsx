@@ -179,6 +179,76 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       metric: { icon: ArrowRight, label: 'Immersive Experience' },
       year: '2024',
     },
+    {
+      title: 'Aviation Analytics',
+      category: 'Real-time Operations',
+      description: 'Real-time ops dashboard that reduced decision-making time from minutes to seconds',
+      link: '/work/air-india' as const,
+      color: 'rgba(59, 130, 246, 0.15)',
+      borderColor: 'rgba(59, 130, 246, 0.3)',
+      orbColor: { r: 59, g: 130, b: 246 },
+      status: 'live' as const,
+      image: null,
+      tags: ['Data Visualization', 'Real-time', 'Operations', 'React'],
+      metric: { icon: Users, label: '450+ Daily Users' },
+      year: '2024',
+    },
+    {
+      title: 'Pixel Radar',
+      category: 'Design Systems',
+      description: 'Figma plugin that audits design components against token systems',
+      link: '/work/air-india' as const,
+      color: 'rgba(59, 130, 246, 0.15)',
+      borderColor: 'rgba(59, 130, 246, 0.3)',
+      orbColor: { r: 59, g: 130, b: 246 },
+      status: 'live' as const,
+      image: null,
+      tags: ['Figma Plugin', 'Design Tokens', 'QA Automation', 'JavaScript'],
+      metric: { icon: CheckCircle2, label: '90% Review Time Reduction' },
+      year: '2024',
+    },
+    {
+      title: 'mythOS',
+      category: 'AI Art Curation',
+      description: 'AI art curator that sees patterns humans might miss through Gemini AI',
+      link: '/work/mythos' as const,
+      color: 'rgba(232, 121, 249, 0.15)',
+      borderColor: 'rgba(232, 121, 249, 0.3)',
+      orbColor: { r: 232, g: 121, b: 249 },
+      status: 'completed' as const,
+      image: '/projects/mythoscover1.png',
+      tags: ['Gemini AI', 'Natural Language', 'AI Curation', 'Art History'],
+      metric: { icon: ArrowRight, label: 'Generative Exhibitions' },
+      year: '2024',
+    },
+    {
+      title: 'Metamorphic Fractal Reflections',
+      category: 'Immersive Installation',
+      description: 'Psychedelic journey installation exploring consciousness through ego dissolution',
+      link: '/work/metamorphic-fractal-reflections' as const,
+      color: 'rgba(232, 121, 249, 0.15)',
+      borderColor: 'rgba(232, 121, 249, 0.3)',
+      orbColor: { r: 232, g: 121, b: 249 },
+      status: 'live' as const,
+      image: null,
+      tags: ['TouchDesigner', 'Arduino', 'Psychedelic Design', 'Installation'],
+      metric: { icon: CheckCircle2, label: 'NID Exhibition 2023' },
+      year: '2023',
+    },
+    {
+      title: 'Mobile UX Patterns',
+      category: 'Mobile Design System',
+      description: 'Comprehensive mobile design system with 40+ patterns for iOS/Android',
+      link: '/work/air-india' as const,
+      color: 'rgba(16, 185, 129, 0.15)',
+      borderColor: 'rgba(16, 185, 129, 0.3)',
+      orbColor: { r: 16, g: 185, b: 129 },
+      status: 'live' as const,
+      image: null,
+      tags: ['Mobile Design', 'Design System', 'iOS', 'Android'],
+      metric: { icon: CheckCircle2, label: '40+ Patterns' },
+      year: '2023',
+    },
   ];
 
   const journeyMilestones = [
@@ -495,7 +565,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           overflow-x: auto;
           scroll-snap-type: x mandatory;
           scroll-behavior: smooth;
-          padding: 0 5vw;
+          padding: 0 clamp(1.5rem, 5vw, 3rem);
           -webkit-overflow-scrolling: touch;
           scrollbar-width: none;
         }
@@ -571,11 +641,11 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
         }
 
         .carousel-nav-left {
-          left: 2vw;
+          left: 1rem;
         }
 
         .carousel-nav-right {
-          right: 2vw;
+          right: 1rem;
         }
 
         /* Progress dots */
@@ -1058,7 +1128,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             padding: '6rem 1.5rem',
           }}
         >
-          <div style={{ margin: '0 auto', width: '100%' }}>
+          <div style={{ maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
             <h3
               style={{
                 fontSize: 'clamp(2rem, 4vw, 3rem)',
@@ -1074,7 +1144,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             </h3>
 
             {/* Carousel Container with Navigation */}
-            <div style={{ position: 'relative', marginTop: '4rem' }}>
+            <div style={{ position: 'relative', maxWidth: '1600px', margin: '4rem auto 0' }}>
               {/* Left Arrow Button */}
               <button
                 className="carousel-nav-button carousel-nav-left"
