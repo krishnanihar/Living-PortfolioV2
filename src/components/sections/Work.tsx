@@ -272,6 +272,7 @@ export function Work() {
           background: 'var(--bg-primary)',
           fontFamily: 'Inter, sans-serif',
           position: 'relative',
+          paddingTop: '10rem',
         }}
       >
         {/* Background gradient */}
