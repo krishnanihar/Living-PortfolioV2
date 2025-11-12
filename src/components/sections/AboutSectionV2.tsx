@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Mail, Lightbulb, Trophy, Briefcase, Rocket, Users, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Mail, Lightbulb, Trophy, Briefcase, Rocket, Users, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -647,44 +647,35 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           display: flex;
         }
 
-        .swiper-button-prev,
-        .swiper-button-next {
-          width: 56px !important;
-          height: 56px !important;
-          color: #FFFFFF !important;
-          opacity: 0.8;
-          background: none !important;
-          transition: all 0.3s ease;
+        /* Custom navigation buttons */
+        .custom-nav-button:hover {
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          transform: scale(1.05);
+          boxShadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
-        .swiper-button-prev::after,
-        .swiper-button-next::after {
-          font-size: 24px !important;
-          font-weight: 700;
+        .custom-nav-button:active {
+          transform: scale(0.95);
         }
 
-        .swiper-button-prev {
-          left: 2rem !important;
-        }
-
-        .swiper-button-next {
-          right: 2rem !important;
-        }
-
-        .swiper-button-prev:hover,
-        .swiper-button-next:hover {
-          opacity: 1;
-          transform: scale(1.1);
-        }
-
-        .swiper-button-disabled {
-          opacity: 0.3 !important;
+        .custom-nav-button.swiper-button-disabled {
+          opacity: 0.3;
           cursor: not-allowed;
         }
 
+        .custom-nav-button.swiper-button-disabled:hover {
+          background: rgba(0, 0, 0, 0.6);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          transform: scale(1);
+        }
+
         .swiper-pagination {
-          bottom: -60px !important;
-          padding-bottom: 0 !important;
+          position: static !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          gap: 8px !important;
         }
 
         .swiper-pagination-bullet {
@@ -736,8 +727,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             grid-template-columns: repeat(2, 1fr) !important;
           }
 
-          .swiper-button-prev,
-          .swiper-button-next {
+          .custom-nav-button {
             display: none !important;
           }
         }
@@ -1149,7 +1139,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             padding: '6rem 1.5rem',
           }}
         >
-          <div style={{ maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
+          <div style={{ maxWidth: '100vw', margin: '0 auto', width: '100%' }}>
             <h3
               style={{
                 fontSize: 'clamp(2rem, 4vw, 3rem)',
@@ -1172,8 +1162,14 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 slidesPerView={'auto'}
                 spaceBetween={32}
                 loop={true}
-                navigation
-                pagination={{ clickable: true }}
+                navigation={{
+                  prevEl: '.custom-nav-prev',
+                  nextEl: '.custom-nav-next',
+                }}
+                pagination={{
+                  el: '.custom-pagination',
+                  clickable: true,
+                }}
                 breakpoints={{
                   768: {
                     spaceBetween: 24,
@@ -1182,7 +1178,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     spaceBetween: 32,
                   },
                 }}
-                style={{ paddingBottom: '80px' }}
+                style={{ paddingBottom: '0' }}
               >
                 {projects.map((project, idx) => {
                 // Generate unique class name for each project
@@ -1190,7 +1186,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 const MetricIcon = project.metric.icon;
 
                 return (
-                  <SwiperSlide key={idx} style={{ width: '520px' }}>
+                  <SwiperSlide key={idx} style={{ width: 'clamp(90vw, 600px, 700px)' }}>
                     <Link
                       href={project.link}
                       className={projectClassName}
@@ -1530,6 +1526,69 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 );
               })}
               </Swiper>
+
+              {/* Custom Navigation Controls Below Carousel */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '24px',
+                  marginTop: '60px',
+                  flexWrap: 'wrap',
+                }}
+              >
+                {/* Previous Button */}
+                <button
+                  className="custom-nav-prev custom-nav-button"
+                  aria-label="Previous slide"
+                  style={{
+                    width: 'clamp(48px, 10vw, 56px)',
+                    height: 'clamp(48px, 10vw, 56px)',
+                    borderRadius: '50%',
+                    background: 'rgba(0, 0, 0, 0.6)',
+                    backdropFilter: 'blur(20px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.02)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    color: 'rgba(255, 255, 255, 0.9)',
+                  }}
+                >
+                  <ChevronLeft size={24} />
+                </button>
+
+                {/* Pagination Dots */}
+                <div className="custom-pagination swiper-pagination" />
+
+                {/* Next Button */}
+                <button
+                  className="custom-nav-next custom-nav-button"
+                  aria-label="Next slide"
+                  style={{
+                    width: 'clamp(48px, 10vw, 56px)',
+                    height: 'clamp(48px, 10vw, 56px)',
+                    borderRadius: '50%',
+                    background: 'rgba(0, 0, 0, 0.6)',
+                    backdropFilter: 'blur(20px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.02)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    color: 'rgba(255, 255, 255, 0.9)',
+                  }}
+                >
+                  <ChevronRight size={24} />
+                </button>
+              </div>
             </div>
           </div>
         </div>
