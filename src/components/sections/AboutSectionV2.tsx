@@ -725,22 +725,28 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           border-radius: 4px !important;
         }
 
-        /* Center/side card transitions */
+        /* Center/side card transitions with 3D perspective */
         .swiper-slide {
-          transition: all 0.3s ease;
-          opacity: 0.85;
-          transform: scale(0.98);
+          transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+          opacity: 0.75;
+          transform: scale(0.90) rotateY(0deg);
+          transform-style: preserve-3d;
         }
 
         .swiper-slide-active {
           opacity: 1 !important;
-          transform: scale(1.05) !important;
+          transform: scale(1.15) translateZ(40px) rotateY(0deg) !important;
           z-index: 10;
         }
 
-        .swiper-slide-prev,
+        .swiper-slide-prev {
+          opacity: 0.8;
+          transform: scale(0.90) rotateY(5deg) !important;
+        }
+
         .swiper-slide-next {
-          opacity: 0.9;
+          opacity: 0.8;
+          transform: scale(0.90) rotateY(-5deg) !important;
         }
 
         /* Mobile responsive adjustments for Act 2 timeline */
@@ -1206,7 +1212,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     slidesPerView: 1.6,
                   },
                 }}
-                style={{ paddingBottom: '0' }}
+                style={{ paddingBottom: '0', perspective: '1500px', transformStyle: 'preserve-3d' }}
               >
                 {projects.map((project, idx) => {
                 // Generate unique class name for each project
@@ -1232,20 +1238,22 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      background: 'rgba(10, 10, 10, 0.6)',
-                      backdropFilter: 'blur(100px) saturate(180%)',
-                      WebkitBackdropFilter: 'blur(100px) saturate(180%)',
-                      border: '1px solid rgba(255, 255, 255, 0.06)',
+                      background: 'rgba(10, 10, 10, 0.85)',
+                      backdropFilter: 'blur(100px) saturate(180%) brightness(0.95)',
+                      WebkitBackdropFilter: 'blur(100px) saturate(180%) brightness(0.95)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
                       borderRadius: '20px',
                       textDecoration: 'none',
                       overflow: 'hidden',
                       boxShadow: hoveredProject === idx
                         ? `0px 20px 56px rgba(0, 0, 0, 0.7),
                            0px 0px 40px ${project.color.replace('0.15', '0.25')},
+                           inset 0 2px 8px rgba(0, 0, 0, 0.5),
                            inset 0 1px 0 rgba(255, 255, 255, 0.03),
                            inset 0 -1px 0 rgba(0, 0, 0, 0.3)`
                         : `0px 12px 36px rgba(0, 0, 0, 0.5),
                            0px 0px 20px ${project.color.replace('0.15', '0.15')},
+                           inset 0 2px 8px rgba(0, 0, 0, 0.5),
                            inset 0 1px 0 rgba(255, 255, 255, 0.02),
                            inset 0 -1px 0 rgba(0, 0, 0, 0.25)`,
                       transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -1660,8 +1668,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '24px',
-                  marginTop: '56px',
+                  gap: '12px',
+                  marginTop: '32px',
                   flexWrap: 'nowrap',
                 }}
               >
