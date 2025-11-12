@@ -99,10 +99,22 @@ export function AboutSection() {
       detail: 'Bachelor of Fine Arts - exploring visual design, typography, and the foundations of creative thinking.'
     },
     {
+      year: '2020',
+      label: 'Infosys',
+      id: 'infosys-2020',
+      detail: 'UX Designer at Infosys - learning design systems, enterprise scale, and working with cross-functional teams on production features.'
+    },
+    {
       year: '2021',
       label: 'NID',
       id: 'nid-2021',
       detail: 'National Institute of Design Masters program - learning to build interfaces that breathe and systems thinking.'
+    },
+    {
+      year: '2022',
+      label: 'ISB',
+      id: 'isb-2022',
+      detail: 'Internship at ISB Digital Learning (online) - exploring digital education platforms and online learning experiences.'
     },
     {
       year: '2024',
@@ -410,7 +422,7 @@ export function AboutSection() {
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '1rem',
+                gap: '0.75rem',
               }}>
                 {journeyMilestones.map((milestone, index) => (
                   <React.Fragment key={milestone.id}>

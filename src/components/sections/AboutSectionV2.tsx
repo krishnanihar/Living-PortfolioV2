@@ -7,6 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { ContactChat } from '../ContactChat';
 import { Chatbot } from '../Chatbot';
+import { JourneyTimelineMini } from './JourneyTimelineMini';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -1079,63 +1080,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               </div>
             </div>
 
-            {/* Journey Teaser */}
-            <div
-              style={{
-                textAlign: 'center',
-                marginTop: '5rem',
-                opacity: act2InView && mounted ? 1 : 0,
-                transform: act2InView && mounted ? 'translateY(0)' : 'translateY(40px)',
-                transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 1s',
-              }}
-            >
-              <p
-                style={{
-                  fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
-                  fontWeight: '300',
-                  color: 'rgba(255, 255, 255, 0.6)',
-                  marginBottom: '1.5rem',
-                  lineHeight: '1.7',
-                }}
-              >
-                Curious about my journey from 2005 to today?
-              </p>
-              <Link
-                href="/journey"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.75rem',
-                  padding: '1rem 2rem',
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  borderRadius: '16px',
-                  color: 'rgba(255, 255, 255, 0.9)',
-                  fontSize: 'clamp(0.9375rem, 1.5vw, 1.0625rem)',
-                  fontWeight: '500',
-                  textDecoration: 'none',
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(218, 14, 41, 0.15)';
-                  e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.4)';
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(218, 14, 41, 0.2)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.3)';
-                }}
-              >
-                Explore My Full Journey
-                <ArrowRight size={18} />
-              </Link>
-            </div>
+          {/* Journey Timeline */}
+            <JourneyTimelineMini act2InView={act2InView} mounted={mounted} />
           </div>
         </div>
 
