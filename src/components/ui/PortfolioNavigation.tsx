@@ -140,19 +140,22 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
           position: 'absolute',
           inset: 0,
           background: scrolled
-            ? `linear-gradient(90deg,
-              var(--surface-secondary) 0%,
-              var(--surface-primary) 50%,
-              var(--surface-secondary) 100%)`
+            ? `radial-gradient(ellipse 200% 100% at top, rgba(255, 255, 255, 0.04) 0%, transparent 50%),
+               linear-gradient(135deg,
+                 rgba(10, 10, 10, 0.3) 0%,
+                 rgba(0, 0, 0, 0.2) 50%,
+                 rgba(10, 10, 10, 0.3) 100%)`
             : 'transparent',
-          backdropFilter: scrolled ? 'blur(60px) saturate(180%) brightness(1.05)' : 'blur(20px) saturate(120%)',
-          WebkitBackdropFilter: scrolled ? 'blur(60px) saturate(180%) brightness(1.05)' : 'blur(20px) saturate(120%)',
+          backdropFilter: scrolled ? 'blur(80px) saturate(200%) brightness(0.95)' : 'blur(20px) saturate(120%)',
+          WebkitBackdropFilter: scrolled ? 'blur(80px) saturate(200%) brightness(0.95)' : 'blur(20px) saturate(120%)',
           borderBottom: scrolled ? '1px solid var(--border-primary)' : '1px solid transparent',
           boxShadow: scrolled
-            ? `inset 0 1px 0 rgba(255, 255, 255, 0.03),
-               inset 0 -1px 0 rgba(0, 0, 0, 0.4),
-               0 8px 32px rgba(0, 0, 0, 0.4),
-               0 20px 60px rgba(0, 0, 0, 0.2)`
+            ? `inset 0 1px 2px rgba(255, 255, 255, 0.1),
+               inset 0 -1px 2px rgba(0, 0, 0, 0.6),
+               inset 0 0 30px rgba(255, 255, 255, 0.01),
+               0 8px 32px rgba(0, 0, 0, 0.6),
+               0 20px 60px rgba(0, 0, 0, 0.3),
+               0 0 0 1px rgba(255, 255, 255, 0.02)`
             : 'none',
           pointerEvents: 'none',
           transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -166,6 +169,22 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
               background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 50%, transparent 100%)',
               animation: 'shimmer 8s linear infinite',
               pointerEvents: 'none',
+            }} />
+          )}
+
+          {/* Liquid Glass reflection layer - diagonal gradient overlay */}
+          {scrolled && (
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              background: `linear-gradient(135deg,
+                rgba(255, 255, 255, 0.05) 0%,
+                transparent 20%,
+                transparent 80%,
+                rgba(255, 255, 255, 0.03) 100%)`,
+              pointerEvents: 'none',
+              mixBlendMode: 'overlay',
+              borderRadius: 'inherit',
             }} />
           )}
         </div>

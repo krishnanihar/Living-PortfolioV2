@@ -292,7 +292,7 @@ export function Work() {
           right: '3rem',
           top: '50%',
           transform: 'translateY(-50%)',
-          zIndex: 100,
+          zIndex: 9998,
         }}>
           {projects.map((_, index) => (
             <div
