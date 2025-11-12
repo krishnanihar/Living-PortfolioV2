@@ -269,7 +269,7 @@ export function Work() {
           overflowY: 'auto',
           scrollSnapType: 'y mandatory',
           scrollBehavior: 'auto',
-          background: 'var(--bg-primary)',
+          background: 'transparent',
           fontFamily: 'Inter, sans-serif',
           position: 'relative',
           paddingTop: '10rem',
