@@ -25,7 +25,13 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   const [cardTilt, setCardTilt] = useState({ rotateX: 0, rotateY: 0 });
   const [chatOpen, setChatOpen] = useState(false);
   const [initialMessage, setInitialMessage] = useState('');
+  const [pillar1InView, setPillar1InView] = useState(false);
+  const [pillar2InView, setPillar2InView] = useState(false);
+  const [pillar3InView, setPillar3InView] = useState(false);
   const timelineRef = useRef<HTMLDivElement>(null);
+  const pillar1Ref = useRef<HTMLDivElement>(null);
+  const pillar2Ref = useRef<HTMLDivElement>(null);
+  const pillar3Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -54,6 +60,26 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
     if (act1El) { act1Observer.observe(act1El); observers.push(act1Observer); }
     if (act2El) { act2Observer.observe(act2El); observers.push(act2Observer); }
     if (act4El) { act4Observer.observe(act4El); observers.push(act4Observer); }
+
+    // Pillar observers for staggered reveal
+    const pillarObserverOptions = { threshold: 0.3, rootMargin: '0px' };
+
+    const pillar1Observer = new IntersectionObserver(
+      ([entry]) => entry.isIntersecting && setPillar1InView(true),
+      pillarObserverOptions
+    );
+    const pillar2Observer = new IntersectionObserver(
+      ([entry]) => entry.isIntersecting && setPillar2InView(true),
+      pillarObserverOptions
+    );
+    const pillar3Observer = new IntersectionObserver(
+      ([entry]) => entry.isIntersecting && setPillar3InView(true),
+      pillarObserverOptions
+    );
+
+    if (pillar1Ref.current) { pillar1Observer.observe(pillar1Ref.current); observers.push(pillar1Observer); }
+    if (pillar2Ref.current) { pillar2Observer.observe(pillar2Ref.current); observers.push(pillar2Observer); }
+    if (pillar3Ref.current) { pillar3Observer.observe(pillar3Ref.current); observers.push(pillar3Observer); }
 
     return () => observers.forEach(o => o.disconnect());
   }, []);
@@ -879,13 +905,11 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
                 gap: '2rem',
                 marginBottom: '4rem',
-                opacity: act2InView && mounted ? 1 : 0,
-                transform: act2InView && mounted ? 'translateY(0)' : 'translateY(40px)',
-                transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s',
               }}
             >
               {/* Right Now Card */}
               <div
+                ref={pillar1Ref}
                 style={{
                   position: 'relative',
                   background: 'rgba(10, 10, 10, 0.6)',
@@ -895,7 +919,9 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   padding: '2.5rem',
                   border: '1px solid rgba(255, 255, 255, 0.08)',
                   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
-                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  opacity: pillar1InView && mounted ? 1 : 0,
+                  transform: pillar1InView && mounted ? 'translateY(0) scale(1)' : 'translateY(60px) scale(0.95)',
+                  transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
                   cursor: 'default',
                 }}
                 onMouseEnter={(e) => {
@@ -950,6 +976,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
               {/* Belief Card */}
               <div
+                ref={pillar2Ref}
                 style={{
                   position: 'relative',
                   background: 'rgba(10, 10, 10, 0.6)',
@@ -959,7 +986,9 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   padding: '2.5rem',
                   border: '1px solid rgba(255, 255, 255, 0.08)',
                   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
-                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  opacity: pillar2InView && mounted ? 1 : 0,
+                  transform: pillar2InView && mounted ? 'translateY(0) scale(1)' : 'translateY(60px) scale(0.95)',
+                  transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
                   cursor: 'default',
                 }}
                 onMouseEnter={(e) => {
@@ -999,6 +1028,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
               {/* How I Work Card */}
               <div
+                ref={pillar3Ref}
                 style={{
                   position: 'relative',
                   background: 'rgba(10, 10, 10, 0.6)',
@@ -1008,7 +1038,9 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   padding: '2.5rem',
                   border: '1px solid rgba(255, 255, 255, 0.08)',
                   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
-                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  opacity: pillar3InView && mounted ? 1 : 0,
+                  transform: pillar3InView && mounted ? 'translateY(0) scale(1)' : 'translateY(60px) scale(0.95)',
+                  transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s',
                   cursor: 'default',
                 }}
                 onMouseEnter={(e) => {

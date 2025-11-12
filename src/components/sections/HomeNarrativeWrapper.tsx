@@ -4,7 +4,7 @@ import { createContext, useContext, ReactNode } from 'react';
 import { useHomeNarrative, HomeNarrativeState } from '@/hooks/useHomeNarrative';
 
 // Create context for narrative state
-const HomeNarrativeContext = createContext<HomeNarrativeState | null>(null);
+export const HomeNarrativeContext = createContext<HomeNarrativeState | null>(null);
 
 // Hook to use narrative context
 export function useHomeNarrativeContext() {

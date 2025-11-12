@@ -8,6 +8,7 @@ import { IntroductionSection } from '@/components/sections/IntroductionSection';
 import { SectionDivider } from '@/components/ui/SectionDivider';
 import { HomeNarrativeWrapper } from '@/components/sections/HomeNarrativeWrapper';
 import { HomeFirstPersonMoments } from '@/components/sections/HomeFirstPersonMoments';
+import { BreathingMoment, NarrativeHook, ActTransition, ContemplativeSpace } from '@/components/ui/BreathingMoment';
 
 // Dynamically import CosmicBackground for better performance
 const CosmicBackground = dynamic(
@@ -55,25 +56,47 @@ export default function HomePage() {
       <HomeFirstPersonMoments />
 
       <main id="main-content">
+        {/* ACT I: ARRIVAL (0-30%) - Purple, Curiosity & Wonder */}
         <IntroductionSection />
 
         {/* Breathing moment after hero */}
-        <div style={{ minHeight: '50vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{
-            fontSize: '3rem',
-            color: 'rgba(255, 255, 255, 0.3)',
-            fontWeight: '100'
-          }}>
-            •
-          </div>
-        </div>
+        <BreathingMoment type="pause" minHeight="60vh" />
 
+        {/* Narrative hook - pull user forward */}
+        <NarrativeHook question="What happens when design systems remember your context?" />
+
+        {/* ACT I → ACT II TRANSITION */}
+        <ActTransition
+          fromAct="arrival"
+          toAct="philosophy"
+          title="The Philosophy"
+        />
+
+        {/* ACT II: PHILOSOPHY (30-70%) - Purple → Red, Conviction & Identity */}
         <SectionDivider text="Who thinks like this?" />
 
         <AboutSectionV2 />
 
+        {/* Breathing moment with reflection */}
+        <BreathingMoment
+          type="reflection"
+          quote="Design is not just what it looks like. It's how it thinks."
+          author="Steve Jobs"
+          minHeight="55vh"
+        />
+
+        {/* ACT II → ACT III TRANSITION */}
+        <ActTransition
+          fromAct="philosophy"
+          toAct="catalog"
+          title="The Work"
+        />
+
+        {/* ACT III: CATALOG (70-100%) - Red → Blue, Contemplation & Invitation */}
+        <NarrativeHook question="Every project is a question answered. What's yours?" />
+
         {/* Contemplative space before footer */}
-        <div style={{ minHeight: '40vh', background: 'linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8))' }} />
+        <ContemplativeSpace height="50vh" />
       </main>
 
       {/* Floating chat button */}
