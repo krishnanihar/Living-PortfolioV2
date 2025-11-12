@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Briefcase, User, Moon, Sun, Palette, HelpCircle, Beaker } from 'lucide-react';
+import { Briefcase, User, Moon, Sun, Palette, HelpCircle } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
 
 export function NavigationBar() {
@@ -62,7 +62,6 @@ export function NavigationBar() {
 
   const navItems = [
     { name: 'Work', icon: Briefcase, href: '/work' as const },
-    { name: 'Labs', icon: Beaker, href: '/labs' as const },
     { name: 'About', icon: User, href: '/about' as const },
   ];
 

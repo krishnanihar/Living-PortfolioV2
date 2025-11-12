@@ -40,7 +40,6 @@ src/
 │   ├── about/page.tsx     # About page
 │   ├── contact/page.tsx   # Contact page
 │   ├── journey/page.tsx   # Journey timeline page
-│   ├── labs/page.tsx      # Labs experiments page
 │   └── work/              # Work case studies
 │       ├── page.tsx       # Work portfolio page
 │       ├── air-india/page.tsx
@@ -106,14 +105,7 @@ src/
 │   │   ├── ImmersiveGallery.tsx
 │   │   ├── ExhibitionBuilder.tsx
 │   │   ├── ArtworkModal.tsx
-│   │   ├── Map.tsx
-│   │   └── labs/          # Labs page components
-│   │       ├── LabsHero.tsx
-│   │       ├── ExperimentCard.tsx
-│   │       ├── FeaturedExperimentCard.tsx
-│   │       ├── AnimatedStatCard.tsx
-│   │       ├── LabTimelineView.tsx
-│   │       └── ContributeCTA.tsx
+│   │   └── Map.tsx
 │   ├── Portfolio.tsx      # Main portfolio wrapper with consciousness system
 │   ├── HeroCard.tsx
 │   ├── HeroScene3D.tsx
@@ -334,14 +326,6 @@ TypeScript path mapping configured:
 - **Interactive features**: Camera functionality, PASI calculator, medication tracker
 - **Documentation**: PHASE_A_COMPLETE.md, PHASE_B_C_COMPLETE.md, iOS_LIGHT_MODE_TRANSFORMATION.md
 
-### Labs Experiments Page
-**Rapid prototyping showcase** - /labs route
-- **8 seed experiments**: Pixel Radar, Astra, Aviation Analytics, etc.
-- **Multi-dimensional filtering**: By type, status, theme, impact
-- **Features**: Stats dashboard with streak tracking, lab notebook, timeline view
-- **Design**: Glassmorphic OLED-optimized interface
-- **Navigation**: Beaker icon in main nav between Work and Journey
-
 ### Case Study Pages
 1. **Air India** - System design for airline operations
 2. **Latent Space** - Immersive narrative experience with speculative design
@@ -354,6 +338,5 @@ TypeScript path mapping configured:
 - `/work` - Portfolio grid with filtering
 - `/work/[project]` - Individual case studies
 - `/journey` - Timeline of professional journey
-- `/labs` - Experimental prototypes
 - `/about` - About page with knowledge graph
 - `/contact` - Contact chat interface
