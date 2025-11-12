@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { ArrowRight, Mail, Lightbulb, Trophy, Briefcase, Rocket, Users, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
+import { ContactChat } from '../ContactChat';
+import { Chatbot } from '../Chatbot';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -23,6 +25,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   const [milestonesInView, setMilestonesInView] = useState<boolean[]>([false, false, false, false]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [cardTilt, setCardTilt] = useState({ rotateX: 0, rotateY: 0 });
+  const [chatOpen, setChatOpen] = useState(false);
+  const [initialMessage, setInitialMessage] = useState('');
   const timelineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -2197,100 +2201,80 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           </div>
         </div>
 
-        {/* Closing: The Invitation */}
+        {/* Closing: Interactive Chat Invitation */}
         <div
           style={{
             padding: '6rem 1.5rem',
             borderTop: '1px solid rgba(255, 255, 255, 0.08)',
           }}
         >
-          <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-            <p
-              style={{
-                fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-                fontWeight: '300',
-                color: 'rgba(255, 255, 255, 0.85)',
-                marginBottom: '3rem',
-              }}
-            >
-              Let's build something <span style={{ color: '#DA0E29', fontWeight: '400' }}>together</span>
-            </p>
-
+          <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+            {/* Premium Glassmorphic Card */}
             <div
               style={{
-                display: 'flex',
-                gap: '1rem',
-                flexWrap: 'wrap',
-                justifyContent: 'center',
+                background: 'rgba(8, 8, 8, 0.9)',
+                backdropFilter: 'blur(80px) saturate(180%)',
+                WebkitBackdropFilter: 'blur(80px) saturate(180%)',
+                border: '1px solid rgba(255, 255, 255, 0.18)',
+                borderRadius: '24px',
+                padding: 'clamp(3rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem)',
+                boxShadow: `
+                  0px 20px 48px rgba(0, 0, 0, 0.7),
+                  0px 0px 1px rgba(255, 255, 255, 0.35) inset,
+                  0px -1px 0px rgba(255, 255, 255, 0.1) inset
+                `,
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
               }}
             >
-              <Link
-                href="/journey"
+              <h2
                 style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '1rem 2rem',
-                  background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.2), rgba(218, 14, 41, 0.15))',
-                  border: '1.5px solid rgba(218, 14, 41, 0.4)',
-                  borderRadius: '15px',
+                  fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+                  fontWeight: '300',
                   color: 'rgba(255, 255, 255, 0.95)',
-                  textDecoration: 'none',
-                  fontSize: '0.938rem',
-                  fontWeight: '500',
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  boxShadow: '0px 8px 30px rgba(218, 14, 41, 0.25), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
-                  backdropFilter: 'blur(100px) saturate(150%)',
-                  WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.3), rgba(218, 14, 41, 0.2))';
-                  e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.2), rgba(218, 14, 41, 0.15))';
-                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                  marginBottom: '1rem',
+                  lineHeight: '1.2',
+                  letterSpacing: '-0.01em',
                 }}
               >
-                <span>Explore the Full Journey</span>
-                <ArrowRight size={18} />
-              </Link>
+                Let's build something <span style={{ color: '#DA0E29', fontWeight: '400' }}>together</span>
+              </h2>
 
-              <Link
-                href="/contact"
+              <p
                 style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '1rem 2rem',
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  borderRadius: '15px',
-                  color: 'rgba(255, 255, 255, 0.95)',
-                  textDecoration: 'none',
-                  fontSize: '0.938rem',
-                  fontWeight: '400',
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  backdropFilter: 'blur(100px) saturate(150%)',
-                  WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-                  boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                  e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
-                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                  fontSize: 'clamp(0.938rem, 1.75vw, 1rem)',
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  marginBottom: '2.5rem',
+                  fontWeight: '300',
+                  letterSpacing: '0.01em',
+                  lineHeight: '1.6',
+                  maxWidth: '600px',
+                  margin: '0 auto 2.5rem',
                 }}
               >
-                <Mail size={18} />
-                <span>Let's Talk</span>
-              </Link>
+                Tell me about your project, and let's explore how we can collaborate
+              </p>
+
+              <ContactChat
+                onMessageSubmit={(message, intent) => {
+                  setInitialMessage(message);
+                  setChatOpen(true);
+                }}
+              />
             </div>
           </div>
         </div>
       </section>
+
+      {/* Chatbot Modal */}
+      {chatOpen && (
+        <Chatbot
+          isOpen={chatOpen}
+          onClose={() => setChatOpen(false)}
+          intentContext="collaboration"
+          initialMessage={initialMessage}
+        />
+      )}
     </>
   );
 }
