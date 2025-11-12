@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Mail, Lightbulb, Trophy, Briefcase, Rocket } from 'lucide-react';
+import { ArrowRight, Mail, Lightbulb, Trophy, Briefcase, Rocket, Users, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface AboutSectionV2Props {
   className?: string;
@@ -16,7 +16,10 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [hoveredMilestone, setHoveredMilestone] = useState<number | null>(null);
   const [milestonesInView, setMilestonesInView] = useState<boolean[]>([false, false, false, false]);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [cardTilt, setCardTilt] = useState({ rotateX: 0, rotateY: 0 });
   const timelineRef = useRef<HTMLDivElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -76,30 +79,64 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
     return () => observers.forEach(o => o.disconnect());
   }, []);
 
+  // 3D tilt effect for card hover
+  const handleCardMouseMove = (e: MouseEvent) => {
+    const card = e.currentTarget as HTMLElement;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = ((y - centerY) / centerY) * -4; // Max 4deg tilt
+    const rotateY = ((x - centerX) / centerX) * 4;
+
+    setCardTilt({ rotateX, rotateY });
+  };
+
   const projects = [
     {
       title: 'Air India',
       category: 'Enterprise Design Systems',
-      description: 'Transforming 450+ daily operations',
+      description: 'Transforming 450+ daily operations across mobile app and IFE systems',
       link: '/work/air-india' as const,
       color: 'rgba(218, 14, 41, 0.15)',
       borderColor: 'rgba(218, 14, 41, 0.3)',
+      orbColor: { r: 218, g: 14, b: 41 },
+      status: 'live' as const,
+      image: null, // Will use geometric pattern
+      tags: ['React', 'Design System', 'Mobile', 'IFE'],
+      metric: { icon: Users, label: '10K+ Active Users' },
+      year: '2023-2024',
     },
     {
       title: 'PsoriAssist',
       category: 'Healthcare AI',
-      description: '18-month research deep dive',
+      description: '18-month research deep dive into AI-powered psoriasis management and patient care',
       link: '/work/psoriassist' as const,
       color: 'rgba(16, 185, 129, 0.15)',
       borderColor: 'rgba(16, 185, 129, 0.3)',
+      orbColor: { r: 16, g: 185, b: 129 },
+      status: 'research' as const,
+      image: null,
+      tags: ['AI/ML', 'Healthcare', 'iOS', 'Research'],
+      metric: { icon: CheckCircle2, label: 'Hackathon Winner' },
+      year: '2022-2024',
     },
     {
       title: 'Latent Space',
       category: 'Consciousness Exploration',
-      description: 'Narrative-driven experiences',
+      description: 'Narrative-driven experiences exploring consciousness through interactive design',
       link: '/work/latent-space' as const,
       color: 'rgba(147, 51, 234, 0.15)',
       borderColor: 'rgba(147, 51, 234, 0.3)',
+      orbColor: { r: 147, g: 51, b: 234 },
+      status: 'completed' as const,
+      image: null,
+      tags: ['Speculative Design', 'Narrative', 'WebGL'],
+      metric: { icon: ArrowRight, label: 'Immersive Experience' },
+      year: '2024',
     },
   ];
 
@@ -377,6 +414,78 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             rgba(168, 85, 247, 1) 270deg,
             rgba(147, 51, 234, 0.8) 360deg
           );
+        }
+
+        @keyframes shimmerSweep {
+          0% {
+            background-position: -1000px 0;
+          }
+          100% {
+            background-position: 1000px 0;
+          }
+        }
+
+        @keyframes statusPulse {
+          0%, 100% {
+            box-shadow: 0 0 8px rgba(52, 211, 153, 0.4);
+            opacity: 1;
+          }
+          50% {
+            box-shadow: 0 0 16px rgba(52, 211, 153, 0.8);
+            opacity: 0.9;
+          }
+        }
+
+        @keyframes tagStagger {
+          from {
+            opacity: 0;
+            transform: translateY(8px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        /* Horizontal carousel styles */
+        .project-carousel {
+          display: flex;
+          gap: 2rem;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          scroll-behavior: smooth;
+          padding: 0 3rem;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+        }
+
+        .project-carousel::-webkit-scrollbar {
+          display: none;
+        }
+
+        .project-carousel-card {
+          flex: 0 0 420px;
+          scroll-snap-align: start;
+        }
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 1024px) {
+          .project-carousel {
+            padding: 0 1.5rem;
+          }
+          .project-carousel-card {
+            flex: 0 0 360px;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .project-carousel {
+            padding: 0 1rem;
+          }
+          .project-carousel-card {
+            flex: 0 0 90vw;
+            max-width: 400px;
+          }
         }
 
         /* Mobile responsive adjustments for Act 2 timeline */
@@ -812,38 +921,46 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               What this looks like in practice
             </h3>
 
+            {/* Horizontal carousel */}
             <div
+              ref={carouselRef}
+              className="project-carousel"
               style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                gap: '2rem',
                 marginTop: '4rem',
+                position: 'relative',
               }}
             >
               {projects.map((project, idx) => {
                 // Generate unique class name for each project
-                const projectClassName = `project-card project-card-${project.title.toLowerCase().replace(/\s+/g, '-')}`;
+                const projectClassName = `project-card project-card-${project.title.toLowerCase().replace(/\s+/g, '-')} project-carousel-card`;
+                const MetricIcon = project.metric.icon;
 
                 return (
                   <Link
                     key={idx}
                     href={project.link}
                     className={projectClassName}
-                    onMouseEnter={() => setHoveredProject(idx)}
-                    onMouseLeave={() => setHoveredProject(null)}
+                    onMouseEnter={(e) => {
+                      setHoveredProject(idx);
+                      const card = e.currentTarget;
+                      card.addEventListener('mousemove', handleCardMouseMove);
+                    }}
+                    onMouseLeave={(e) => {
+                      setHoveredProject(null);
+                      setCardTilt({ rotateX: 0, rotateY: 0 });
+                      const card = e.currentTarget;
+                      card.removeEventListener('mousemove', handleCardMouseMove);
+                    }}
                     style={{
-                      display: 'block',
-                      padding: '2.5rem 2rem',
-                      background: hoveredProject === idx
-                        ? 'rgba(10, 10, 10, 0.7)'
-                        : 'rgba(10, 10, 10, 0.6)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      background: 'rgba(10, 10, 10, 0.6)',
                       backdropFilter: 'blur(100px) saturate(180%)',
                       WebkitBackdropFilter: 'blur(100px) saturate(180%)',
-                      border: hoveredProject === idx
-                        ? `1px solid ${project.borderColor.replace(/[\d.]+\)$/, '0.6)')}`
-                        : '1px solid rgba(255, 255, 255, 0.06)',
+                      border: '1px solid rgba(255, 255, 255, 0.06)',
                       borderRadius: '20px',
                       textDecoration: 'none',
+                      overflow: 'hidden',
                       boxShadow: hoveredProject === idx
                         ? `0px 20px 56px rgba(0, 0, 0, 0.7),
                            0px 0px 40px ${project.color.replace('0.15', '0.25')},
@@ -854,62 +971,253 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                            inset 0 1px 0 rgba(255, 255, 255, 0.02),
                            inset 0 -1px 0 rgba(0, 0, 0, 0.25)`,
                       transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                      transform: hoveredProject === idx ? 'translateY(-10px) scale(1.02)' : 'translateY(0) scale(1)',
+                      transform: hoveredProject === idx
+                        ? `translateY(-10px) scale(1.01) rotateX(${cardTilt.rotateX}deg) rotateY(${cardTilt.rotateY}deg)`
+                        : 'translateY(0) scale(1)',
                       opacity: act4InView && mounted ? 1 : 0,
                       animation: act4InView && mounted ? `fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) ${0.3 + idx * 0.15}s both` : 'none',
                     }}
                   >
+                    {/* Top: Image Area */}
                     <div
                       style={{
-                        fontSize: '0.875rem',
-                        fontWeight: '500',
-                        color: 'rgba(255, 255, 255, 0.6)',
-                        letterSpacing: '0.05em',
-                        textTransform: 'uppercase',
-                        marginBottom: '0.75rem',
+                        position: 'relative',
+                        height: '180px',
+                        background: `radial-gradient(circle at 30% 30%, rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.25) 0%, rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.05) 50%, transparent 100%)`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        overflow: 'hidden',
                       }}
                     >
-                      {project.category}
+                      {/* Glass overlay */}
+                      <div
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          backdropFilter: 'blur(30px) saturate(120%)',
+                          WebkitBackdropFilter: 'blur(30px) saturate(120%)',
+                        }}
+                      />
+
+                      {/* Shimmer effect on hover */}
+                      {hoveredProject === idx && (
+                        <div
+                          style={{
+                            position: 'absolute',
+                            inset: 0,
+                            background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent)',
+                            backgroundSize: '200% 100%',
+                            animation: 'shimmerSweep 2s linear infinite',
+                          }}
+                        />
+                      )}
+
+                      {/* Status Badge */}
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: '1rem',
+                          right: '1rem',
+                          padding: '0.375rem 0.75rem',
+                          background: project.status === 'live'
+                            ? 'rgba(52, 211, 153, 0.2)'
+                            : project.status === 'research'
+                            ? 'rgba(251, 191, 36, 0.2)'
+                            : 'rgba(255, 255, 255, 0.1)',
+                          backdropFilter: 'blur(20px)',
+                          WebkitBackdropFilter: 'blur(20px)',
+                          border: `1px solid ${
+                            project.status === 'live'
+                              ? 'rgba(52, 211, 153, 0.4)'
+                              : project.status === 'research'
+                              ? 'rgba(251, 191, 36, 0.4)'
+                              : 'rgba(255, 255, 255, 0.2)'
+                          }`,
+                          borderRadius: '8px',
+                          fontSize: '0.688rem',
+                          fontWeight: '500',
+                          color: project.status === 'live'
+                            ? 'rgba(52, 211, 153, 1)'
+                            : project.status === 'research'
+                            ? 'rgba(251, 191, 36, 1)'
+                            : 'rgba(255, 255, 255, 0.9)',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em',
+                          animation: project.status === 'live' ? 'statusPulse 2s ease-in-out infinite' : 'none',
+                          zIndex: 2,
+                        }}
+                      >
+                        {project.status === 'live' ? 'Live Now' : project.status === 'research' ? 'In Research' : 'Case Study'}
+                      </div>
+
+                      {/* Geometric pattern (since no images) */}
+                      <svg
+                        width="200"
+                        height="200"
+                        viewBox="0 0 200 200"
+                        style={{
+                          opacity: 0.2,
+                          position: 'relative',
+                          zIndex: 1,
+                        }}
+                      >
+                        {idx === 0 && (
+                          // Air India - circles pattern
+                          <>
+                            <circle cx="100" cy="100" r="60" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.3)`} strokeWidth="2" />
+                            <circle cx="100" cy="100" r="40" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} strokeWidth="2" />
+                            <circle cx="100" cy="100" r="20" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} />
+                          </>
+                        )}
+                        {idx === 1 && (
+                          // PsoriAssist - medical cross
+                          <>
+                            <rect x="85" y="50" width="30" height="100" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} rx="5" />
+                            <rect x="50" y="85" width="100" height="30" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} rx="5" />
+                          </>
+                        )}
+                        {idx === 2 && (
+                          // Latent Space - hexagons
+                          <>
+                            <polygon points="100,40 130,55 130,85 100,100 70,85 70,55" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} strokeWidth="2" />
+                            <polygon points="100,70 120,80 120,100 100,110 80,100 80,80" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.3)`} />
+                          </>
+                        )}
+                      </svg>
                     </div>
 
-                    <h4
-                      style={{
-                        fontSize: '2rem',
-                        fontWeight: '500',
-                        color: 'rgba(255, 255, 255, 0.95)',
-                        marginBottom: '1rem',
-                      }}
-                    >
-                      {project.title}
-                    </h4>
+                    {/* Bottom: Content Area */}
+                    <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                      {/* Category */}
+                      <div
+                        style={{
+                          fontSize: '0.75rem',
+                          fontWeight: '500',
+                          color: 'rgba(255, 255, 255, 0.6)',
+                          letterSpacing: '0.05em',
+                          textTransform: 'uppercase',
+                          marginBottom: '0.5rem',
+                        }}
+                      >
+                        {project.category}
+                      </div>
 
-                    <p
-                      style={{
-                        fontSize: '1.0625rem',
-                        fontWeight: '300',
-                        color: 'rgba(255, 255, 255, 0.75)',
-                        lineHeight: '1.6',
-                        marginBottom: '1.5rem',
-                      }}
-                    >
-                      {project.description}
-                    </p>
+                      {/* Title */}
+                      <h4
+                        style={{
+                          fontSize: '1.375rem',
+                          fontWeight: '400',
+                          color: 'rgba(255, 255, 255, 0.95)',
+                          marginBottom: '0.75rem',
+                          lineHeight: '1.3',
+                        }}
+                      >
+                        {project.title}
+                      </h4>
 
-                    <div
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        fontSize: '0.9375rem',
-                        fontWeight: '500',
-                        color: hoveredProject === idx
-                          ? 'rgba(255, 255, 255, 1)'
-                          : 'rgba(255, 255, 255, 0.9)',
-                        transition: 'color 0.3s ease',
-                      }}
-                    >
-                      View case study
-                      <ArrowRight size={16} />
+                      {/* Description */}
+                      <p
+                        style={{
+                          fontSize: '0.875rem',
+                          fontWeight: '300',
+                          color: hoveredProject === idx ? 'rgba(255, 255, 255, 0.85)' : 'rgba(255, 255, 255, 0.7)',
+                          lineHeight: '1.6',
+                          marginBottom: '1.25rem',
+                          flex: 1,
+                          transition: 'color 0.3s ease',
+                        }}
+                      >
+                        {project.description}
+                      </p>
+
+                      {/* Tags */}
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          gap: '0.5rem',
+                          marginBottom: '1.25rem',
+                        }}
+                      >
+                        {project.tags.slice(0, 4).map((tag, tagIdx) => (
+                          <div
+                            key={tagIdx}
+                            style={{
+                              padding: '0.25rem 0.625rem',
+                              background: 'rgba(255, 255, 255, 0.04)',
+                              backdropFilter: 'blur(60px) saturate(130%)',
+                              WebkitBackdropFilter: 'blur(60px) saturate(130%)',
+                              border: '1px solid rgba(255, 255, 255, 0.08)',
+                              borderRadius: '8px',
+                              fontSize: '0.688rem',
+                              fontWeight: '300',
+                              color: 'rgba(255, 255, 255, 0.75)',
+                              opacity: hoveredProject === idx ? 1 : 0.8,
+                              transform: hoveredProject === idx ? `translateY(-2px)` : 'translateY(0)',
+                              transition: `all 0.3s ease ${tagIdx * 0.05}s`,
+                            }}
+                          >
+                            {tag}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Footer: Metric + Year + Arrow */}
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          paddingTop: '1rem',
+                          borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+                        }}
+                      >
+                        {/* Metric */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <MetricIcon size={14} style={{ color: 'rgba(255, 255, 255, 0.5)' }} />
+                          <span
+                            style={{
+                              fontSize: '0.75rem',
+                              fontWeight: '300',
+                              color: 'rgba(255, 255, 255, 0.6)',
+                            }}
+                          >
+                            {project.metric.label}
+                          </span>
+                        </div>
+
+                        {/* Year */}
+                        <span
+                          style={{
+                            fontSize: '0.75rem',
+                            fontWeight: '300',
+                            color: 'rgba(255, 255, 255, 0.4)',
+                          }}
+                        >
+                          {project.year}
+                        </span>
+
+                        {/* Arrow icon */}
+                        <div
+                          style={{
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            background: 'rgba(255, 255, 255, 0.03)',
+                            backdropFilter: 'blur(20px)',
+                            WebkitBackdropFilter: 'blur(20px)',
+                            border: '1px solid rgba(255, 255, 255, 0.06)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transform: hoveredProject === idx ? 'rotate(45deg) translateY(-4px)' : 'rotate(0deg)',
+                            transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                          }}
+                        >
+                          <ArrowRight size={14} style={{ color: 'rgba(255, 255, 255, 0.7)' }} />
+                        </div>
+                      </div>
                     </div>
                   </Link>
                 );
