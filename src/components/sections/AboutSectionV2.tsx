@@ -495,7 +495,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           overflow-x: auto;
           scroll-snap-type: x mandatory;
           scroll-behavior: smooth;
-          padding: 0 2.5rem;
+          padding: 0 5vw;
           -webkit-overflow-scrolling: touch;
           scrollbar-width: none;
         }
@@ -571,11 +571,11 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
         }
 
         .carousel-nav-left {
-          left: -28px;
+          left: 2vw;
         }
 
         .carousel-nav-right {
-          right: -28px;
+          right: 2vw;
         }
 
         /* Progress dots */
@@ -1058,7 +1058,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             padding: '6rem 1.5rem',
           }}
         >
-          <div style={{ maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
+          <div style={{ margin: '0 auto', width: '100%' }}>
             <h3
               style={{
                 fontSize: 'clamp(2rem, 4vw, 3rem)',
