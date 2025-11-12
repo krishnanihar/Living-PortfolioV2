@@ -446,20 +446,21 @@ export function JourneyTimeline() {
                     aria-label={`${milestone.title} - ${milestone.year}`}
                     style={{
                       background: isActive
-                        ? `linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.12))`
-                        : `rgba(255, 255, 255, 0.12)`,
-                      backdropFilter: `blur(var(--blur-2xl)) saturate(180%) brightness(1.05)`,
-                      WebkitBackdropFilter: `blur(var(--blur-2xl)) saturate(180%) brightness(1.05)`,
-                      border: `1px solid ${isActive ? 'rgba(255, 255, 255, 0.28)' : isHovered ? 'rgba(255, 255, 255, 0.20)' : 'rgba(255, 255, 255, 0.14)'}`,
+                        ? `linear-gradient(135deg, rgba(10, 10, 10, 0.12), rgba(10, 10, 10, 0.08))`
+                        : isHovered
+                        ? `linear-gradient(135deg, rgba(10, 10, 10, 0.08), rgba(10, 10, 10, 0.05))`
+                        : `linear-gradient(135deg, rgba(10, 10, 10, 0.05), rgba(10, 10, 10, 0.03))`,
+                      backdropFilter: `blur(120px) saturate(120%) brightness(1.05)`,
+                      WebkitBackdropFilter: `blur(120px) saturate(120%) brightness(1.05)`,
+                      border: `1px solid ${isActive ? 'rgba(255, 255, 255, 0.20)' : isHovered ? 'rgba(255, 255, 255, 0.14)' : 'rgba(255, 255, 255, 0.10)'}`,
                       borderRadius: '24px',
                       padding: 'clamp(1.5rem, 3vw, 2.5rem)',
                       boxShadow: isHovered
-                        ? `var(--shadow-lg),
-                           0 0 0 1px rgba(218, 14, 41, 0.15),
-                           inset 0 1px 0 rgba(255, 255, 255, 0.12)`
+                        ? `0 8px 32px rgba(0, 0, 0, 0.4),
+                           inset 0 1px 1px rgba(255, 255, 255, 0.05)`
                         : isActive
-                        ? `var(--shadow-lg), 0 0 0 1px rgba(218, 14, 41, 0.15)`
-                        : 'var(--shadow-lg)',
+                        ? `0 8px 32px rgba(0, 0, 0, 0.4)`
+                        : '0 8px 32px rgba(0, 0, 0, 0.3)',
                       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                       transform: isHovered ? 'scale(1.01)' : 'scale(1)',
                       cursor: 'pointer',
@@ -899,20 +900,21 @@ export function JourneyTimeline() {
                     aria-label={`${milestone.title} - ${milestone.year}`}
                     style={{
                       background: isActive
-                        ? `linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.12))`
-                        : `rgba(255, 255, 255, 0.12)`,
-                      backdropFilter: `blur(var(--blur-2xl)) saturate(180%) brightness(1.05)`,
-                      WebkitBackdropFilter: `blur(var(--blur-2xl)) saturate(180%) brightness(1.05)`,
-                      border: `1px solid ${isActive ? 'rgba(255, 255, 255, 0.28)' : isHovered ? 'rgba(255, 255, 255, 0.20)' : 'rgba(255, 255, 255, 0.14)'}`,
+                        ? `linear-gradient(135deg, rgba(10, 10, 10, 0.12), rgba(10, 10, 10, 0.08))`
+                        : isHovered
+                        ? `linear-gradient(135deg, rgba(10, 10, 10, 0.08), rgba(10, 10, 10, 0.05))`
+                        : `linear-gradient(135deg, rgba(10, 10, 10, 0.05), rgba(10, 10, 10, 0.03))`,
+                      backdropFilter: `blur(120px) saturate(120%) brightness(1.05)`,
+                      WebkitBackdropFilter: `blur(120px) saturate(120%) brightness(1.05)`,
+                      border: `1px solid ${isActive ? 'rgba(255, 255, 255, 0.20)' : isHovered ? 'rgba(255, 255, 255, 0.14)' : 'rgba(255, 255, 255, 0.10)'}`,
                       borderRadius: '24px',
                       padding: 'clamp(1.5rem, 3vw, 2.5rem)',
                       boxShadow: isHovered
-                        ? `var(--shadow-lg),
-                           0 0 0 1px rgba(218, 14, 41, 0.15),
-                           inset 0 1px 0 rgba(255, 255, 255, 0.12)`
+                        ? `0 8px 32px rgba(0, 0, 0, 0.4),
+                           inset 0 1px 1px rgba(255, 255, 255, 0.05)`
                         : isActive
-                        ? `var(--shadow-lg), 0 0 0 1px rgba(218, 14, 41, 0.15)`
-                        : 'var(--shadow-lg)',
+                        ? `0 8px 32px rgba(0, 0, 0, 0.4)`
+                        : '0 8px 32px rgba(0, 0, 0, 0.3)',
                       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                       transform: isHovered ? 'scale(1.01)' : 'scale(1)',
                       cursor: 'pointer',
