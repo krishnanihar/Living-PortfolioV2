@@ -468,33 +468,83 @@ export function AboutSection() {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        gap: '0.5rem',
+                        gap: '0.75rem',
                         flex: 1,
                         cursor: 'pointer',
-                        transition: 'transform 0.3s ease',
+                        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'translateY(-2px)';
+                        const container = e.currentTarget.querySelector('[data-logo-container]') as HTMLElement;
+                        if (container) {
+                          container.style.transform = 'scale(1.08)';
+                          container.style.borderColor = 'rgba(218, 14, 41, 0.3)';
+                          container.style.boxShadow = '0 0 20px rgba(218, 14, 41, 0.2)';
+                        }
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'translateY(0)';
+                        const container = e.currentTarget.querySelector('[data-logo-container]') as HTMLElement;
+                        if (container) {
+                          container.style.transform = 'scale(1)';
+                          container.style.borderColor = activeTimeline === milestone.id
+                            ? 'var(--brand-red)'
+                            : 'rgba(255, 255, 255, 0.12)';
+                          container.style.boxShadow = activeTimeline === milestone.id
+                            ? '0 0 24px rgba(218, 14, 41, 0.4)'
+                            : 'inset 0 1px 0 rgba(255, 255, 255, 0.05)';
+                        }
                       }}
                     >
-                      <div style={{
-                        width: activeTimeline === milestone.id ? '16px' : '12px',
-                        height: activeTimeline === milestone.id ? '16px' : '12px',
-                        borderRadius: '50%',
-                        background: index === journeyMilestones.length - 1 || activeTimeline === milestone.id
-                          ? 'var(--brand-red)'
-                          : 'rgba(255, 255, 255, 0.3)',
-                        border: index === journeyMilestones.length - 1 || activeTimeline === milestone.id
-                          ? '2px solid rgba(218, 14, 41, 0.5)'
-                          : '2px solid rgba(255, 255, 255, 0.2)',
-                        boxShadow: index === journeyMilestones.length - 1 || activeTimeline === milestone.id
-                          ? '0 0 12px rgba(218, 14, 41, 0.5)'
-                          : 'none',
-                        transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                      }} />
+                      {/* Logo Container */}
+                      <div
+                        data-logo-container
+                        style={{
+                          width: 'clamp(48px, 6vw, 56px)',
+                          height: 'clamp(48px, 6vw, 56px)',
+                          padding: '10px',
+                          borderRadius: '14px',
+                          background: milestone.logoFile === 'bfa.jpeg'
+                            ? 'rgba(255, 255, 255, 0.12)'
+                            : (activeTimeline === milestone.id
+                              ? 'rgba(218, 14, 41, 0.08)'
+                              : 'rgba(255, 255, 255, 0.08)'),
+                          backdropFilter: 'blur(40px) saturate(140%)',
+                          border: activeTimeline === milestone.id
+                            ? '1.5px solid var(--brand-red)'
+                            : '1px solid rgba(255, 255, 255, 0.12)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: activeTimeline === milestone.id
+                            ? '0 0 24px rgba(218, 14, 41, 0.4)'
+                            : 'inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+                          transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                        }}
+                      >
+                        {milestone.logoFile ? (
+                          <Image
+                            src={`/logos/${milestone.logoFile}`}
+                            alt={milestone.organization || milestone.label}
+                            width={36}
+                            height={36}
+                            style={{
+                              objectFit: 'contain',
+                              width: '100%',
+                              height: 'auto',
+                            }}
+                          />
+                        ) : (
+                          <Sparkles
+                            size={24}
+                            style={{
+                              color: activeTimeline === milestone.id
+                                ? 'var(--brand-red)'
+                                : 'rgba(255, 255, 255, 0.6)',
+                            }}
+                          />
+                        )}
+                      </div>
+
+                      {/* Year */}
                       <div style={{
                         fontSize: '0.875rem',
                         fontWeight: '600',
@@ -505,6 +555,8 @@ export function AboutSection() {
                       }}>
                         {milestone.year}
                       </div>
+
+                      {/* Label */}
                       <div style={{
                         fontSize: '0.75rem',
                         color: activeTimeline === milestone.id ? 'var(--brand-red)' : 'var(--text-muted)',
@@ -538,50 +590,13 @@ export function AboutSection() {
                     borderRadius: '16px',
                     border: '1px solid rgba(218, 14, 41, 0.2)',
                     animation: 'fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                    display: 'flex',
-                    gap: '1.25rem',
-                    alignItems: activeMilestone?.logoFile ? 'center' : 'flex-start',
                   }}>
-                    {activeMilestone?.logoFile && (
-                      <div style={{
-                        width: 'clamp(64px, 7vw, 80px)',
-                        height: 'clamp(64px, 7vw, 80px)',
-                        minWidth: 'clamp(64px, 7vw, 80px)',
-                        padding: '12px',
-                        borderRadius: '14px',
-                        background: activeMilestone.logoFile === 'bfa.jpeg'
-                          ? 'rgba(255, 255, 255, 0.15)'
-                          : 'rgba(255, 255, 255, 0.10)',
-                        backdropFilter: 'blur(20px) saturate(140%)',
-                        border: `1px solid rgba(255, 255, 255, ${activeMilestone.logoFile === 'bfa.jpeg' ? '0.20' : '0.18'})`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxShadow: activeMilestone.logoFile === 'bfa.jpeg'
-                          ? 'inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.2)'
-                          : '0 4px 16px rgba(0, 0, 0, 0.2)',
-                        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                      }}>
-                        <Image
-                          src={`/logos/${activeMilestone.logoFile}`}
-                          alt={activeMilestone.organization || activeMilestone.label}
-                          width={56}
-                          height={56}
-                          style={{
-                            objectFit: 'contain',
-                            width: '100%',
-                            height: 'auto',
-                          }}
-                        />
-                      </div>
-                    )}
                     <p style={{
                       fontSize: '0.9375rem',
                       color: 'var(--text-secondary)',
                       lineHeight: '1.7',
                       fontWeight: '300',
                       margin: 0,
-                      flex: 1,
                     }}>
                       {activeMilestone?.detail}
                     </p>
