@@ -212,11 +212,11 @@ export class SpotlightEffect {
     this.spotlight.className = 'cursor-spotlight';
     this.spotlight.style.cssText = `
       position: fixed;
-      width: 480px;
-      height: 480px;
+      width: 360px;
+      height: 360px;
       pointer-events: none;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(180, 210, 240, 0.03) 0%, transparent 60%);
+      background: radial-gradient(circle, rgba(180, 210, 240, 0.01) 0%, transparent 80%);
       transform: translate(-50%, -50%);
       z-index: 9997;
       opacity: 0;
@@ -252,7 +252,7 @@ export class SpotlightEffect {
 
     const animate = () => {
       if (this.spotlight && this.isActive) {
-        this.spotlight.style.transform = `translate3d(${this.currentX - 240}px, ${this.currentY - 240}px, 0)`;
+        this.spotlight.style.transform = `translate3d(${this.currentX - 180}px, ${this.currentY - 180}px, 0)`;
       }
 
       if (this.isActive) {
