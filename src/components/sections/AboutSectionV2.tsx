@@ -649,10 +649,10 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
         /* Custom navigation buttons */
         .custom-nav-button:hover {
-          background: rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.15);
           border: 1px solid rgba(255, 255, 255, 0.2);
           transform: scale(1.05);
-          boxShadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+          boxShadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
         }
 
         .custom-nav-button:active {
@@ -665,7 +665,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
         }
 
         .custom-nav-button.swiper-button-disabled:hover {
-          background: rgba(0, 0, 0, 0.6);
+          background: rgba(0, 0, 0, 0.7);
           border: 1px solid rgba(255, 255, 255, 0.1);
           transform: scale(1);
         }
@@ -675,7 +675,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           display: flex !important;
           align-items: center !important;
           justify-content: center !important;
-          gap: 8px !important;
+          gap: 0 !important;
         }
 
         .swiper-pagination-bullet {
@@ -683,7 +683,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           height: 8px !important;
           background: #FFFFFF !important;
           border: none;
-          opacity: 0.5 !important;
+          opacity: 0.4 !important;
+          margin: 0 6px !important;
           transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -1159,8 +1160,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               <Swiper
                 modules={[Navigation, Pagination]}
                 centeredSlides={true}
-                slidesPerView={'auto'}
-                spaceBetween={32}
+                slidesPerView={1.3}
+                spaceBetween={40}
                 loop={true}
                 navigation={{
                   prevEl: '.custom-nav-prev',
@@ -1173,9 +1174,11 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 breakpoints={{
                   768: {
                     spaceBetween: 24,
+                    slidesPerView: 1.2,
                   },
                   1024: {
-                    spaceBetween: 32,
+                    spaceBetween: 40,
+                    slidesPerView: 1.3,
                   },
                 }}
                 style={{ paddingBottom: '0' }}
@@ -1186,7 +1189,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 const MetricIcon = project.metric.icon;
 
                 return (
-                  <SwiperSlide key={idx} style={{ width: 'clamp(90vw, 600px, 700px)' }}>
+                  <SwiperSlide key={idx} style={{ width: 'clamp(75vw, 650px, 750px)' }}>
                     <Link
                       href={project.link}
                       className={projectClassName}
@@ -1534,7 +1537,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '24px',
-                  marginTop: '60px',
+                  marginTop: '56px',
                   flexWrap: 'wrap',
                 }}
               >
@@ -1546,11 +1549,11 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     width: 'clamp(48px, 10vw, 56px)',
                     height: 'clamp(48px, 10vw, 56px)',
                     borderRadius: '50%',
-                    background: 'rgba(0, 0, 0, 0.6)',
-                    backdropFilter: 'blur(20px) saturate(180%)',
-                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
                     border: '1px solid rgba(255, 255, 255, 0.1)',
-                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.02)',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -1573,11 +1576,11 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     width: 'clamp(48px, 10vw, 56px)',
                     height: 'clamp(48px, 10vw, 56px)',
                     borderRadius: '50%',
-                    background: 'rgba(0, 0, 0, 0.6)',
-                    backdropFilter: 'blur(20px) saturate(180%)',
-                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
                     border: '1px solid rgba(255, 255, 255, 0.1)',
-                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.02)',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
