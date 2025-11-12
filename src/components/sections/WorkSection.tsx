@@ -256,7 +256,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
         style={{
           background: 'transparent',
           fontFamily: 'Inter, sans-serif',
-          padding: '3rem 1.5rem',
+          padding: isMobile ? '3rem 1.5rem' : '12rem 1.5rem 3rem',
           position: 'relative',
           overflow: 'hidden',
           minHeight: '100vh',
@@ -301,66 +301,6 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
               }} />
             </>
           )}
-        </div>
-
-        {/* Section Header - Enhanced */}
-        <div style={{
-          maxWidth: '1400px',
-          margin: '0 auto 5rem',
-          animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
-          opacity: inView ? 1 : 0,
-        }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '1rem',
-            marginBottom: '1rem',
-            flexWrap: 'wrap',
-          }}>
-            <div style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              background: 'rgba(255, 255, 255, 0.03)',
-              backdropFilter: 'blur(100px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
-            }}>
-              <div style={{
-                width: '4px',
-                height: '4px',
-                borderRadius: '50%',
-                background: 'var(--brand-red)',
-                animation: 'pulseOrb 2s ease-in-out infinite',
-              }} />
-            </div>
-            <h2 className="text-gradient-blue" style={{
-              fontSize: '1.5rem',
-              fontWeight: '500',
-              letterSpacing: '0.05em',
-            }}>
-              Selected Work
-            </h2>
-            <div style={{
-              padding: '0.375rem 0.875rem',
-              borderRadius: '15px',
-              background: 'rgba(255, 255, 255, 0.04)',
-              backdropFilter: 'blur(100px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              fontSize: '0.75rem',
-              fontWeight: '300',
-              color: 'var(--text-secondary)',
-              letterSpacing: '0.02em',
-              boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
-            }}>
-              {projects.length} Projects · {activeProjectsCount} Active
-            </div>
-          </div>
         </div>
 
         {/* Cards Grid - Bento Layout */}
@@ -850,54 +790,6 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
             ))}
           </div>
         )}
-
-        {/* View All Work CTA */}
-        <div style={{
-          maxWidth: '1400px',
-          margin: '5rem auto 0',
-          display: 'flex',
-          justifyContent: 'center',
-          animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both' : 'none',
-          opacity: inView ? 1 : 0,
-        }}>
-          <Link href="/work" style={{ textDecoration: 'none' }}>
-            <button
-              className="btn-primary"
-              style={{
-                position: 'relative',
-                overflow: 'hidden',
-                padding: '0.875rem 2rem',
-                borderRadius: '28px',
-                background: 'rgba(255, 255, 255, 0.04)',
-                backdropFilter: 'blur(30px)',
-                WebkitBackdropFilter: 'blur(30px)',
-                border: '1px solid var(--border-primary)',
-                color: 'var(--text-primary)',
-                fontSize: '0.875rem',
-                fontWeight: '400',
-                letterSpacing: '0.02em',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.75rem',
-                transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
-                e.currentTarget.style.borderColor = 'var(--border-hover)';
-                e.currentTarget.style.transform = 'scale(1.05)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
-                e.currentTarget.style.borderColor = 'var(--border-primary)';
-                e.currentTarget.style.transform = 'scale(1)';
-              }}
-            >
-              View All Work
-              <ArrowRight size={16} />
-            </button>
-          </Link>
-        </div>
       </section>
     </>
   );

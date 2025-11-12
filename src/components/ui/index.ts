@@ -15,6 +15,8 @@ export type { CardProps } from './Card';
 export { ProjectCard } from './ProjectCard';
 export { FilterTabs, FilterTabsAccessible } from './FilterTabs';
 export { WorkGrid, GridDebugger } from './WorkGrid';
+export { ViewToggle } from './ViewToggle';
+export type { ViewToggleProps, ViewMode } from './ViewToggle';
 
 // Premium Typography Components
 export { MagneticText } from './MagneticText';
@@ -27,6 +29,7 @@ export * from './Card';
 export * from './ProjectCard';
 export * from './FilterTabs';
 export * from './WorkGrid';
+export * from './ViewToggle';
 export * from './MagneticText';
 export * from './MorphingText';
 export * from './AnimatedHeading';
