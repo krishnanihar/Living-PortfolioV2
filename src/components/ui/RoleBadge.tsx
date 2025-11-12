@@ -34,7 +34,7 @@ export function RoleBadge({ role, firstPersonContext, className }: RoleBadgeProp
       {/* First-person context tooltip on hover */}
       {firstPersonContext && (
         <div
-          className="pointer-events-none"
+          className="pointer-events-none group-hover:opacity-100 group-hover:visible"
           style={{
             position: 'absolute',
             top: 'calc(100% + 0.5rem)',
@@ -57,7 +57,6 @@ export function RoleBadge({ role, firstPersonContext, className }: RoleBadgeProp
             transition: 'opacity 0.3s ease, visibility 0.3s ease',
             zIndex: 100,
           }}
-          className="group-hover:opacity-100 group-hover:visible"
         >
           {firstPersonContext}
           {/* Arrow pointer */}
