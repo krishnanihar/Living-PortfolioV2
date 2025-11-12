@@ -678,11 +678,13 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           display: flex;
           gap: 2rem;
           overflow-x: auto;
+          overflow-y: hidden;
           scroll-snap-type: x mandatory;
           scroll-behavior: smooth;
           padding: 0 clamp(1.5rem, 5vw, 3rem);
           -webkit-overflow-scrolling: touch;
           scrollbar-width: none;
+          width: 100%;
         }
 
         .project-carousel::-webkit-scrollbar {
@@ -691,6 +693,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
         .project-carousel-card {
           flex: 0 0 520px;
+          min-width: 520px;
+          max-width: 520px;
           scroll-snap-align: start;
           min-height: 520px;
         }
@@ -702,6 +706,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           }
           .project-carousel-card {
             flex: 0 0 460px;
+            min-width: 460px;
+            max-width: 460px;
             min-height: 520px;
           }
         }
@@ -712,6 +718,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           }
           .project-carousel-card {
             flex: 0 0 90vw;
+            min-width: 320px;
             max-width: 480px;
             min-height: 520px;
           }
