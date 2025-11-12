@@ -476,9 +476,9 @@ export function AboutSection() {
                       onMouseEnter={(e) => {
                         const container = e.currentTarget.querySelector('[data-logo-container]') as HTMLElement;
                         if (container) {
-                          container.style.transform = 'scale(1.08)';
-                          container.style.borderColor = 'rgba(218, 14, 41, 0.3)';
-                          container.style.boxShadow = '0 0 20px rgba(218, 14, 41, 0.2)';
+                          container.style.transform = 'scale(1.06)';
+                          container.style.borderColor = 'rgba(218, 14, 41, 0.4)';
+                          container.style.boxShadow = '0 0 20px rgba(218, 14, 41, 0.25), 0 4px 12px rgba(0, 0, 0, 0.12)';
                         }
                       }}
                       onMouseLeave={(e) => {
@@ -487,10 +487,10 @@ export function AboutSection() {
                           container.style.transform = 'scale(1)';
                           container.style.borderColor = activeTimeline === milestone.id
                             ? 'var(--brand-red)'
-                            : 'rgba(255, 255, 255, 0.12)';
+                            : 'rgba(0, 0, 0, 0.08)';
                           container.style.boxShadow = activeTimeline === milestone.id
-                            ? '0 0 24px rgba(218, 14, 41, 0.4)'
-                            : 'inset 0 1px 0 rgba(255, 255, 255, 0.05)';
+                            ? '0 0 24px rgba(218, 14, 41, 0.3), 0 2px 8px rgba(0, 0, 0, 0.1)'
+                            : '0 2px 8px rgba(0, 0, 0, 0.08)';
                         }
                       }}
                     >
@@ -498,25 +498,23 @@ export function AboutSection() {
                       <div
                         data-logo-container
                         style={{
-                          width: 'clamp(48px, 6vw, 56px)',
-                          height: 'clamp(48px, 6vw, 56px)',
-                          padding: '10px',
-                          borderRadius: '14px',
-                          background: milestone.logoFile === 'bfa.jpeg'
-                            ? 'rgba(255, 255, 255, 0.12)'
-                            : (activeTimeline === milestone.id
-                              ? 'rgba(218, 14, 41, 0.08)'
-                              : 'rgba(255, 255, 255, 0.08)'),
-                          backdropFilter: 'blur(40px) saturate(140%)',
+                          width: 'clamp(80px, 9vw, 96px)',
+                          height: 'clamp(80px, 9vw, 96px)',
+                          padding: '14px',
+                          borderRadius: '18px',
+                          background: activeTimeline === milestone.id
+                            ? 'rgba(218, 14, 41, 0.12)'
+                            : 'rgba(255, 255, 255, 0.95)',
+                          backdropFilter: 'blur(20px) saturate(110%)',
                           border: activeTimeline === milestone.id
-                            ? '1.5px solid var(--brand-red)'
-                            : '1px solid rgba(255, 255, 255, 0.12)',
+                            ? '2px solid var(--brand-red)'
+                            : '1px solid rgba(0, 0, 0, 0.08)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           boxShadow: activeTimeline === milestone.id
-                            ? '0 0 24px rgba(218, 14, 41, 0.4)'
-                            : 'inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+                            ? '0 0 24px rgba(218, 14, 41, 0.3), 0 2px 8px rgba(0, 0, 0, 0.1)'
+                            : '0 2px 8px rgba(0, 0, 0, 0.08)',
                           transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                         }}
                       >
@@ -524,8 +522,8 @@ export function AboutSection() {
                           <Image
                             src={`/logos/${milestone.logoFile}`}
                             alt={milestone.organization || milestone.label}
-                            width={36}
-                            height={36}
+                            width={62}
+                            height={62}
                             style={{
                               objectFit: 'contain',
                               width: '100%',
@@ -534,11 +532,11 @@ export function AboutSection() {
                           />
                         ) : (
                           <Sparkles
-                            size={24}
+                            size={32}
                             style={{
                               color: activeTimeline === milestone.id
                                 ? 'var(--brand-red)'
-                                : 'rgba(255, 255, 255, 0.6)',
+                                : 'rgba(0, 0, 0, 0.4)',
                             }}
                           />
                         )}
