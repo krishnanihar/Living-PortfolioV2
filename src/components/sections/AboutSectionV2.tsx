@@ -651,28 +651,30 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
         .swiper-button-next {
           width: 56px !important;
           height: 56px !important;
-          border-radius: 50%;
-          background: rgba(10, 10, 10, 0.7);
-          backdrop-filter: blur(100px) saturate(180%);
-          -webkit-backdrop-filter: blur(100px) saturate(180%);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.03);
-          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          color: #FFFFFF !important;
+          opacity: 0.8;
+          background: none !important;
+          transition: all 0.3s ease;
         }
 
         .swiper-button-prev::after,
         .swiper-button-next::after {
-          font-size: 18px !important;
-          color: rgba(255, 255, 255, 0.7);
+          font-size: 24px !important;
           font-weight: 700;
+        }
+
+        .swiper-button-prev {
+          left: 2rem !important;
+        }
+
+        .swiper-button-next {
+          right: 2rem !important;
         }
 
         .swiper-button-prev:hover,
         .swiper-button-next:hover {
-          background: rgba(10, 10, 10, 0.85);
-          border-color: rgba(255, 255, 255, 0.15);
-          box-shadow: 0px 12px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-          transform: scale(1.05);
+          opacity: 1;
+          transform: scale(1.1);
         }
 
         .swiper-button-disabled {
@@ -681,29 +683,47 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
         }
 
         .swiper-pagination {
-          bottom: 0 !important;
+          bottom: -60px !important;
           padding-bottom: 0 !important;
         }
 
         .swiper-pagination-bullet {
           width: 8px !important;
           height: 8px !important;
-          background: rgba(255, 255, 255, 0.2) !important;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          opacity: 1 !important;
+          background: #FFFFFF !important;
+          border: none;
+          opacity: 0.5 !important;
           transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .swiper-pagination-bullet:hover {
-          background: rgba(255, 255, 255, 0.4) !important;
+          opacity: 0.8 !important;
           transform: scale(1.2);
         }
 
         .swiper-pagination-bullet-active {
-          background: rgba(218, 14, 41, 0.8) !important;
-          border-color: rgba(218, 14, 41, 0.6);
+          background: #FFFFFF !important;
+          opacity: 1 !important;
           width: 24px !important;
           border-radius: 4px !important;
+        }
+
+        /* Center/side card transitions */
+        .swiper-slide {
+          transition: all 0.3s ease;
+          opacity: 0.6;
+          transform: scale(0.95);
+        }
+
+        .swiper-slide-active {
+          opacity: 1 !important;
+          transform: scale(1.05) !important;
+          z-index: 10;
+        }
+
+        .swiper-slide-prev,
+        .swiper-slide-next {
+          opacity: 0.7;
         }
 
         /* Mobile responsive adjustments for Act 2 timeline */
@@ -1145,24 +1165,24 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             </h3>
 
             {/* Swiper Carousel */}
-            <div style={{ maxWidth: '1600px', margin: '4rem auto 0', padding: '0 2rem' }}>
+            <div style={{ maxWidth: '100vw', margin: '4rem auto 0', padding: '0', overflow: 'visible' }}>
               <Swiper
                 modules={[Navigation, Pagination]}
+                centeredSlides={true}
+                slidesPerView={'auto'}
                 spaceBetween={32}
-                slidesPerView={1}
+                loop={true}
                 navigation
                 pagination={{ clickable: true }}
                 breakpoints={{
                   768: {
-                    slidesPerView: 2,
                     spaceBetween: 24,
                   },
                   1024: {
-                    slidesPerView: 3,
                     spaceBetween: 32,
                   },
                 }}
-                style={{ paddingBottom: '4rem' }}
+                style={{ paddingBottom: '80px' }}
               >
                 {projects.map((project, idx) => {
                 // Generate unique class name for each project
@@ -1170,7 +1190,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 const MetricIcon = project.metric.icon;
 
                 return (
-                  <SwiperSlide key={idx}>
+                  <SwiperSlide key={idx} style={{ width: '520px' }}>
                     <Link
                       href={project.link}
                       className={projectClassName}
