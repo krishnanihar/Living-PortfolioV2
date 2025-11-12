@@ -386,16 +386,15 @@ export function Work() {
                   position: 'absolute',
                   inset: 0,
                   borderRadius: '32px',
-                  background: 'var(--surface-primary)',
-                  backdropFilter: 'blur(60px) saturate(130%)',
-                  WebkitBackdropFilter: 'blur(60px) saturate(130%)',
-                  border: '1px solid var(--border-primary)',
-                  boxShadow: `
-                    inset 0 2px 0 var(--highlight-subtle),
-                    inset 0 -2px 0 var(--shadow-primary),
-                    0 30px 60px var(--shadow-deep)
-                  `,
+                  background: 'rgba(137, 137, 137, 0.05)',
+                  backdropFilter: 'blur(75px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(75px) saturate(180%)',
+                  border: isActive ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(255, 255, 255, 0.09)',
+                  boxShadow: isActive
+                    ? '0px 16px 48px rgba(0, 0, 0, 0.5), 0px 0px 16px rgba(255, 255, 255, 0.04) inset'
+                    : '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
                   overflow: 'hidden',
+                  transition: 'border 0.3s ease, box-shadow 0.3s ease',
                 }}>
                   {/* Shimmer Effect */}
                   <div style={{
