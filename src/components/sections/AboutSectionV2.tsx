@@ -527,6 +527,121 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           );
         }
 
+        /* Aviation Analytics - Blue gradient */
+        .project-card-aviation-analytics::before {
+          background: conic-gradient(
+            from 0deg,
+            rgba(59, 130, 246, 0.6) 0deg,
+            rgba(96, 165, 250, 0.8) 90deg,
+            rgba(59, 130, 246, 0.6) 180deg,
+            rgba(96, 165, 250, 0.8) 270deg,
+            rgba(59, 130, 246, 0.6) 360deg
+          );
+        }
+
+        .project-card-aviation-analytics:hover::before {
+          background: conic-gradient(
+            from 0deg,
+            rgba(59, 130, 246, 0.8) 0deg,
+            rgba(96, 165, 250, 1) 90deg,
+            rgba(59, 130, 246, 0.8) 180deg,
+            rgba(96, 165, 250, 1) 270deg,
+            rgba(59, 130, 246, 0.8) 360deg
+          );
+        }
+
+        /* Pixel Radar - Blue gradient */
+        .project-card-pixel-radar::before {
+          background: conic-gradient(
+            from 0deg,
+            rgba(59, 130, 246, 0.6) 0deg,
+            rgba(96, 165, 250, 0.8) 90deg,
+            rgba(59, 130, 246, 0.6) 180deg,
+            rgba(96, 165, 250, 0.8) 270deg,
+            rgba(59, 130, 246, 0.6) 360deg
+          );
+        }
+
+        .project-card-pixel-radar:hover::before {
+          background: conic-gradient(
+            from 0deg,
+            rgba(59, 130, 246, 0.8) 0deg,
+            rgba(96, 165, 250, 1) 90deg,
+            rgba(59, 130, 246, 0.8) 180deg,
+            rgba(96, 165, 250, 1) 270deg,
+            rgba(59, 130, 246, 0.8) 360deg
+          );
+        }
+
+        /* mythOS - Magenta gradient */
+        .project-card-mythos::before {
+          background: conic-gradient(
+            from 0deg,
+            rgba(232, 121, 249, 0.6) 0deg,
+            rgba(240, 171, 252, 0.8) 90deg,
+            rgba(232, 121, 249, 0.6) 180deg,
+            rgba(240, 171, 252, 0.8) 270deg,
+            rgba(232, 121, 249, 0.6) 360deg
+          );
+        }
+
+        .project-card-mythos:hover::before {
+          background: conic-gradient(
+            from 0deg,
+            rgba(232, 121, 249, 0.8) 0deg,
+            rgba(240, 171, 252, 1) 90deg,
+            rgba(232, 121, 249, 0.8) 180deg,
+            rgba(240, 171, 252, 1) 270deg,
+            rgba(232, 121, 249, 0.8) 360deg
+          );
+        }
+
+        /* Metamorphic Fractal Reflections - Magenta gradient */
+        .project-card-metamorphic-fractal-reflections::before {
+          background: conic-gradient(
+            from 0deg,
+            rgba(232, 121, 249, 0.6) 0deg,
+            rgba(240, 171, 252, 0.8) 90deg,
+            rgba(232, 121, 249, 0.6) 180deg,
+            rgba(240, 171, 252, 0.8) 270deg,
+            rgba(232, 121, 249, 0.6) 360deg
+          );
+        }
+
+        .project-card-metamorphic-fractal-reflections:hover::before {
+          background: conic-gradient(
+            from 0deg,
+            rgba(232, 121, 249, 0.8) 0deg,
+            rgba(240, 171, 252, 1) 90deg,
+            rgba(232, 121, 249, 0.8) 180deg,
+            rgba(240, 171, 252, 1) 270deg,
+            rgba(232, 121, 249, 0.8) 360deg
+          );
+        }
+
+        /* Mobile UX Patterns - Green gradient */
+        .project-card-mobile-ux-patterns::before {
+          background: conic-gradient(
+            from 0deg,
+            rgba(16, 185, 129, 0.6) 0deg,
+            rgba(52, 211, 153, 0.8) 90deg,
+            rgba(16, 185, 129, 0.6) 180deg,
+            rgba(52, 211, 153, 0.8) 270deg,
+            rgba(16, 185, 129, 0.6) 360deg
+          );
+        }
+
+        .project-card-mobile-ux-patterns:hover::before {
+          background: conic-gradient(
+            from 0deg,
+            rgba(16, 185, 129, 0.8) 0deg,
+            rgba(52, 211, 153, 1) 90deg,
+            rgba(16, 185, 129, 0.8) 180deg,
+            rgba(52, 211, 153, 1) 270deg,
+            rgba(16, 185, 129, 0.8) 360deg
+          );
+        }
+
         @keyframes shimmerSweep {
           0% {
             background-position: -1000px 0;
@@ -1323,6 +1438,64 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                           <>
                             <polygon points="100,40 130,55 130,85 100,100 70,85 70,55" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} strokeWidth="2" />
                             <polygon points="100,70 120,80 120,100 100,110 80,100 80,80" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} />
+                          </>
+                        )}
+                        {idx === 3 && (
+                          // Aviation Analytics - bar chart data visualization
+                          <>
+                            <rect x="40" y="120" width="20" height="50" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} rx="3" />
+                            <rect x="70" y="90" width="20" height="80" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} rx="3" />
+                            <rect x="100" y="60" width="20" height="110" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.7)`} rx="3" />
+                            <rect x="130" y="80" width="20" height="90" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} rx="3" />
+                            <rect x="160" y="100" width="20" height="70" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} rx="3" />
+                            <line x1="30" y1="175" x2="190" y2="175" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} strokeWidth="2" />
+                          </>
+                        )}
+                        {idx === 4 && (
+                          // Pixel Radar - grid/pixel pattern
+                          <>
+                            <rect x="60" y="60" width="25" height="25" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} rx="2" />
+                            <rect x="90" y="60" width="25" height="25" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} strokeWidth="2" rx="2" />
+                            <rect x="120" y="60" width="25" height="25" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} rx="2" />
+                            <rect x="60" y="90" width="25" height="25" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} strokeWidth="2" rx="2" />
+                            <rect x="90" y="90" width="25" height="25" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.7)`} rx="2" />
+                            <rect x="120" y="90" width="25" height="25" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} strokeWidth="2" rx="2" />
+                            <rect x="60" y="120" width="25" height="25" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} rx="2" />
+                            <rect x="90" y="120" width="25" height="25" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} strokeWidth="2" rx="2" />
+                            <rect x="120" y="120" width="25" height="25" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} rx="2" />
+                          </>
+                        )}
+                        {idx === 5 && (
+                          // mythOS - gallery frames/art pattern
+                          <>
+                            <rect x="50" y="50" width="40" height="50" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} strokeWidth="3" rx="2" />
+                            <rect x="110" y="50" width="40" height="50" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} strokeWidth="3" rx="2" />
+                            <rect x="80" y="110" width="40" height="50" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.7)`} strokeWidth="3" rx="2" />
+                            <circle cx="70" cy="75" r="8" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} />
+                            <circle cx="130" cy="75" r="8" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} />
+                            <circle cx="100" cy="135" r="8" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.7)`} />
+                          </>
+                        )}
+                        {idx === 6 && (
+                          // Metamorphic Fractal Reflections - kaleidoscope/fractal pattern
+                          <>
+                            <path d="M100,50 L120,80 L140,70 L130,100 L160,110 L130,130 L140,160 L100,150 L60,160 L70,130 L40,110 L70,100 L60,70 L80,80 Z" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} strokeWidth="2" />
+                            <circle cx="100" cy="100" r="30" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} strokeWidth="2" />
+                            <circle cx="100" cy="100" r="15" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.7)`} />
+                            <line x1="100" y1="70" x2="100" y2="130" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} strokeWidth="2" />
+                            <line x1="70" y1="100" x2="130" y2="100" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} strokeWidth="2" />
+                          </>
+                        )}
+                        {idx === 7 && (
+                          // Mobile UX Patterns - mobile device outline
+                          <>
+                            <rect x="70" y="40" width="60" height="120" rx="8" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} strokeWidth="3" />
+                            <rect x="80" y="55" width="40" height="25" rx="4" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} />
+                            <rect x="80" y="85" width="40" height="8" rx="2" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} />
+                            <rect x="80" y="98" width="40" height="8" rx="2" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} />
+                            <rect x="80" y="111" width="40" height="8" rx="2" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} />
+                            <rect x="85" y="47" width="12" height="4" rx="2" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} />
+                            <circle cx="100" cy="145" r="6" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} strokeWidth="2" />
                           </>
                         )}
                       </svg>
