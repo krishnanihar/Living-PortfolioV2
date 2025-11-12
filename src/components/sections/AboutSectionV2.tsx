@@ -268,6 +268,117 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           }
         }
 
+        @keyframes borderRotate {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes projectGlow {
+          0%, 100% {
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
+          }
+          50% {
+            filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.15));
+          }
+        }
+
+        /* Project card animated borders */
+        .project-card {
+          position: relative;
+          isolation: isolate;
+        }
+
+        .project-card::before {
+          content: '';
+          position: absolute;
+          inset: -3px;
+          border-radius: 20px;
+          padding: 3px;
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          z-index: -1;
+          animation: borderRotate 4s linear infinite, projectGlow 4s ease-in-out infinite;
+          pointer-events: none;
+        }
+
+        .project-card:hover::before {
+          animation-duration: 3s, 3s;
+        }
+
+        /* Air India - Red gradient */
+        .project-card-air-india::before {
+          background: conic-gradient(
+            from 0deg,
+            rgba(218, 14, 41, 0.6) 0deg,
+            rgba(255, 82, 82, 0.8) 90deg,
+            rgba(218, 14, 41, 0.6) 180deg,
+            rgba(255, 82, 82, 0.8) 270deg,
+            rgba(218, 14, 41, 0.6) 360deg
+          );
+        }
+
+        .project-card-air-india:hover::before {
+          background: conic-gradient(
+            from 0deg,
+            rgba(218, 14, 41, 0.8) 0deg,
+            rgba(255, 82, 82, 1) 90deg,
+            rgba(218, 14, 41, 0.8) 180deg,
+            rgba(255, 82, 82, 1) 270deg,
+            rgba(218, 14, 41, 0.8) 360deg
+          );
+        }
+
+        /* PsoriAssist - Green gradient */
+        .project-card-psoriassist::before {
+          background: conic-gradient(
+            from 0deg,
+            rgba(16, 185, 129, 0.6) 0deg,
+            rgba(52, 211, 153, 0.8) 90deg,
+            rgba(16, 185, 129, 0.6) 180deg,
+            rgba(52, 211, 153, 0.8) 270deg,
+            rgba(16, 185, 129, 0.6) 360deg
+          );
+        }
+
+        .project-card-psoriassist:hover::before {
+          background: conic-gradient(
+            from 0deg,
+            rgba(16, 185, 129, 0.8) 0deg,
+            rgba(52, 211, 153, 1) 90deg,
+            rgba(16, 185, 129, 0.8) 180deg,
+            rgba(52, 211, 153, 1) 270deg,
+            rgba(16, 185, 129, 0.8) 360deg
+          );
+        }
+
+        /* Latent Space - Purple gradient */
+        .project-card-latent-space::before {
+          background: conic-gradient(
+            from 0deg,
+            rgba(147, 51, 234, 0.6) 0deg,
+            rgba(168, 85, 247, 0.8) 90deg,
+            rgba(147, 51, 234, 0.6) 180deg,
+            rgba(168, 85, 247, 0.8) 270deg,
+            rgba(147, 51, 234, 0.6) 360deg
+          );
+        }
+
+        .project-card-latent-space:hover::before {
+          background: conic-gradient(
+            from 0deg,
+            rgba(147, 51, 234, 0.8) 0deg,
+            rgba(168, 85, 247, 1) 90deg,
+            rgba(147, 51, 234, 0.8) 180deg,
+            rgba(168, 85, 247, 1) 270deg,
+            rgba(147, 51, 234, 0.8) 360deg
+          );
+        }
+
         /* Mobile responsive adjustments for Act 2 timeline */
         @media (max-width: 768px) {
           #act-2-journey .milestone-card {
@@ -709,83 +820,100 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 marginTop: '4rem',
               }}
             >
-              {projects.map((project, idx) => (
-                <Link
-                  key={idx}
-                  href={project.link}
-                  onMouseEnter={() => setHoveredProject(idx)}
-                  onMouseLeave={() => setHoveredProject(null)}
-                  style={{
-                    display: 'block',
-                    padding: '2.5rem 2rem',
-                    background: hoveredProject === idx
-                      ? project.color.replace('0.15', '0.2')
-                      : project.color,
-                    backdropFilter: 'blur(100px) saturate(150%)',
-                    WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-                    border: `1px solid ${project.borderColor}`,
-                    borderRadius: '20px',
-                    textDecoration: 'none',
-                    boxShadow: hoveredProject === idx
-                      ? '0px 16px 48px rgba(0, 0, 0, 0.5), 0px 0px 16px rgba(255, 255, 255, 0.04) inset'
-                      : '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
-                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                    transform: hoveredProject === idx ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
-                    opacity: act4InView && mounted ? 1 : 0,
-                    animation: act4InView && mounted ? `fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) ${0.3 + idx * 0.15}s both` : 'none',
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: '0.875rem',
-                      fontWeight: '500',
-                      color: 'rgba(255, 255, 255, 0.6)',
-                      letterSpacing: '0.05em',
-                      textTransform: 'uppercase',
-                      marginBottom: '0.75rem',
-                    }}
-                  >
-                    {project.category}
-                  </div>
+              {projects.map((project, idx) => {
+                // Generate unique class name for each project
+                const projectClassName = `project-card project-card-${project.title.toLowerCase().replace(/\s+/g, '-')}`;
 
-                  <h4
+                return (
+                  <Link
+                    key={idx}
+                    href={project.link}
+                    className={projectClassName}
+                    onMouseEnter={() => setHoveredProject(idx)}
+                    onMouseLeave={() => setHoveredProject(null)}
                     style={{
-                      fontSize: '2rem',
-                      fontWeight: '500',
-                      color: 'rgba(255, 255, 255, 0.95)',
-                      marginBottom: '1rem',
+                      display: 'block',
+                      padding: '2.5rem 2rem',
+                      background: hoveredProject === idx
+                        ? 'rgba(10, 10, 10, 0.7)'
+                        : 'rgba(10, 10, 10, 0.6)',
+                      backdropFilter: 'blur(100px) saturate(180%)',
+                      WebkitBackdropFilter: 'blur(100px) saturate(180%)',
+                      border: hoveredProject === idx
+                        ? `1px solid ${project.borderColor.replace(/[\d.]+\)$/, '0.6)')}`
+                        : '1px solid rgba(255, 255, 255, 0.06)',
+                      borderRadius: '20px',
+                      textDecoration: 'none',
+                      boxShadow: hoveredProject === idx
+                        ? `0px 20px 56px rgba(0, 0, 0, 0.7),
+                           0px 0px 40px ${project.color.replace('0.15', '0.25')},
+                           inset 0 1px 0 rgba(255, 255, 255, 0.03),
+                           inset 0 -1px 0 rgba(0, 0, 0, 0.3)`
+                        : `0px 12px 36px rgba(0, 0, 0, 0.5),
+                           0px 0px 20px ${project.color.replace('0.15', '0.15')},
+                           inset 0 1px 0 rgba(255, 255, 255, 0.02),
+                           inset 0 -1px 0 rgba(0, 0, 0, 0.25)`,
+                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                      transform: hoveredProject === idx ? 'translateY(-10px) scale(1.02)' : 'translateY(0) scale(1)',
+                      opacity: act4InView && mounted ? 1 : 0,
+                      animation: act4InView && mounted ? `fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) ${0.3 + idx * 0.15}s both` : 'none',
                     }}
                   >
-                    {project.title}
-                  </h4>
+                    <div
+                      style={{
+                        fontSize: '0.875rem',
+                        fontWeight: '500',
+                        color: 'rgba(255, 255, 255, 0.6)',
+                        letterSpacing: '0.05em',
+                        textTransform: 'uppercase',
+                        marginBottom: '0.75rem',
+                      }}
+                    >
+                      {project.category}
+                    </div>
 
-                  <p
-                    style={{
-                      fontSize: '1.0625rem',
-                      fontWeight: '300',
-                      color: 'rgba(255, 255, 255, 0.75)',
-                      lineHeight: '1.6',
-                      marginBottom: '1.5rem',
-                    }}
-                  >
-                    {project.description}
-                  </p>
+                    <h4
+                      style={{
+                        fontSize: '2rem',
+                        fontWeight: '500',
+                        color: 'rgba(255, 255, 255, 0.95)',
+                        marginBottom: '1rem',
+                      }}
+                    >
+                      {project.title}
+                    </h4>
 
-                  <div
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      fontSize: '0.9375rem',
-                      fontWeight: '500',
-                      color: 'rgba(255, 255, 255, 0.9)',
-                    }}
-                  >
-                    View case study
-                    <ArrowRight size={16} />
-                  </div>
-                </Link>
-              ))}
+                    <p
+                      style={{
+                        fontSize: '1.0625rem',
+                        fontWeight: '300',
+                        color: 'rgba(255, 255, 255, 0.75)',
+                        lineHeight: '1.6',
+                        marginBottom: '1.5rem',
+                      }}
+                    >
+                      {project.description}
+                    </p>
+
+                    <div
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        fontSize: '0.9375rem',
+                        fontWeight: '500',
+                        color: hoveredProject === idx
+                          ? 'rgba(255, 255, 255, 1)'
+                          : 'rgba(255, 255, 255, 0.9)',
+                        transition: 'color 0.3s ease',
+                      }}
+                    >
+                      View case study
+                      <ArrowRight size={16} />
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </div>
