@@ -24,13 +24,6 @@ const AboutSectionV2 = dynamic(
   }
 );
 
-const WorkSection = dynamic(
-  () => import('@/components/sections/WorkSection'),
-  {
-    loading: () => null
-  }
-);
-
 // Lazy load chat components
 const FloatingChatButton = dynamic(
   () => import('@/components/FloatingChatButton').then(mod => ({ default: mod.FloatingChatButton })),
@@ -59,7 +52,6 @@ export default function HomePage() {
         <IntroductionSection />
         <SectionDivider text="Who's Behind the Work?" />
         <AboutSectionV2 />
-        <WorkSection />
       </main>
 
       {/* Floating chat button */}
