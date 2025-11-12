@@ -480,13 +480,42 @@ export function JourneyTimeline() {
                     <div data-icon style={{
                       marginBottom: '1.5rem',
                     }}>
-                      <IconComponent
-                        size={32}
-                        style={{
-                          color: 'rgba(218, 14, 41, 0.8)',
-                          filter: 'drop-shadow(0 0 10px rgba(218, 14, 41, 0.3))',
-                        }}
-                      />
+                      {milestone.logoFile ? (
+                        <div style={{
+                          width: '48px',
+                          height: '48px',
+                          padding: '8px',
+                          borderRadius: '12px',
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          backdropFilter: 'blur(20px)',
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          filter: 'drop-shadow(0 0 12px rgba(218, 14, 41, 0.3))',
+                          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                        }}>
+                          <Image
+                            src={`/logos/${milestone.logoFile}`}
+                            alt={milestone.organization || milestone.title}
+                            width={32}
+                            height={32}
+                            style={{
+                              objectFit: 'contain',
+                              width: '100%',
+                              height: 'auto',
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <IconComponent
+                          size={32}
+                          style={{
+                            color: 'rgba(218, 14, 41, 0.8)',
+                            filter: 'drop-shadow(0 0 10px rgba(218, 14, 41, 0.3))',
+                          }}
+                        />
+                      )}
                     </div>
 
                     <h3 style={{
@@ -997,13 +1026,42 @@ export function JourneyTimeline() {
                         <div data-icon style={{
                           marginBottom: '1.5rem',
                         }}>
-                          <IconComponent
-                            size={32}
-                            style={{
-                              color: 'rgba(218, 14, 41, 0.8)',
-                              filter: 'drop-shadow(0 0 10px rgba(218, 14, 41, 0.3))',
-                            }}
-                          />
+                          {milestone.logoFile ? (
+                            <div style={{
+                              width: '48px',
+                              height: '48px',
+                              padding: '8px',
+                              borderRadius: '12px',
+                              background: 'rgba(255, 255, 255, 0.05)',
+                              backdropFilter: 'blur(20px)',
+                              border: '1px solid rgba(255, 255, 255, 0.1)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              filter: 'drop-shadow(0 0 12px rgba(218, 14, 41, 0.3))',
+                              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                            }}>
+                              <Image
+                                src={`/logos/${milestone.logoFile}`}
+                                alt={milestone.organization || milestone.title}
+                                width={32}
+                                height={32}
+                                style={{
+                                  objectFit: 'contain',
+                                  width: '100%',
+                                  height: 'auto',
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            <IconComponent
+                              size={32}
+                              style={{
+                                color: 'rgba(218, 14, 41, 0.8)',
+                                filter: 'drop-shadow(0 0 10px rgba(218, 14, 41, 0.3))',
+                              }}
+                            />
+                          )}
                         </div>
 
                         <h3 style={{

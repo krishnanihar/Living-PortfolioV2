@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, Compass, Sparkles, GraduationCap, Briefcase, ArrowUpRight } from 'lucide-react';
 
 interface Milestone {
@@ -13,6 +14,7 @@ interface Milestone {
   color: string;
   organization: string;
   status: 'Past' | 'Education' | 'Current';
+  logoFile?: string;
 }
 
 export default function JourneyPreview() {
@@ -50,7 +52,8 @@ export default function JourneyPreview() {
       ],
       color: '#7C3AED',
       organization: 'Srishti Manipal',
-      status: 'Education'
+      status: 'Education',
+      logoFile: 'bfa.jpeg'
     },
     {
       year: '2021',
@@ -63,7 +66,8 @@ export default function JourneyPreview() {
       ],
       color: '#2196F3',
       organization: 'National Institute of Design',
-      status: 'Education'
+      status: 'Education',
+      logoFile: 'nid.svg'
     },
     {
       year: '2024',
@@ -76,7 +80,8 @@ export default function JourneyPreview() {
       ],
       color: '#DA0E29',
       organization: 'Air India',
-      status: 'Current'
+      status: 'Current',
+      logoFile: 'air-india.svg'
     },
   ];
 
@@ -422,7 +427,7 @@ export default function JourneyPreview() {
                     }}>
                       {milestone.year}
                     </div>
-                    {/* Icon */}
+                    {/* Logo or Icon */}
                     <div style={{
                       width: '64px',
                       height: '64px',
@@ -434,8 +439,23 @@ export default function JourneyPreview() {
                       justifyContent: 'center',
                       color: milestone.color,
                       animation: isHovered ? 'journeyFloat 3s ease-in-out infinite' : 'none',
+                      padding: milestone.logoFile ? '12px' : '0',
                     }}>
-                      {milestone.icon}
+                      {milestone.logoFile ? (
+                        <Image
+                          src={`/logos/${milestone.logoFile}`}
+                          alt={milestone.organization}
+                          width={40}
+                          height={40}
+                          style={{
+                            objectFit: 'contain',
+                            width: '100%',
+                            height: 'auto',
+                          }}
+                        />
+                      ) : (
+                        milestone.icon
+                      )}
                     </div>
                   </div>
 

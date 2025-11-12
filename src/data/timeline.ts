@@ -21,6 +21,8 @@ export interface TimelineMilestone {
   lesson?: string; // Key takeaway
   tags: string[];
   icon: string; // Icon name as string
+  logoFile?: string; // Organization logo filename (e.g., 'air-india.svg')
+  organization?: string; // Organization name for alt text
   side: 'left' | 'right';
   isCollaboration?: boolean; // Special flag for collaboration milestone
 }
@@ -137,6 +139,8 @@ export const timelineMilestones: TimelineMilestone[] = [
     lesson: 'Taste is trained.',
     tags: ['Visual Design', 'Typography', 'Composition'],
     icon: 'Palette',
+    logoFile: 'bfa.jpeg',
+    organization: 'JNAFAU',
     side: 'left'
   },
 
@@ -178,6 +182,8 @@ export const timelineMilestones: TimelineMilestone[] = [
     lesson: 'Constraints are design\'s training weights.',
     tags: ['Enterprise UX', 'Design Systems', 'Agile'],
     icon: 'Briefcase',
+    logoFile: 'infosys.svg',
+    organization: 'Infosys',
     side: 'right'
   },
 
@@ -220,6 +226,8 @@ export const timelineMilestones: TimelineMilestone[] = [
     lesson: 'Design the system that designs the screen.',
     tags: ['HCI', 'Interactive Design', 'Systems Thinking'],
     icon: 'GraduationCap',
+    logoFile: 'nid.svg',
+    organization: 'National Institute of Design',
     side: 'left'
   },
 
@@ -256,6 +264,8 @@ export const timelineMilestones: TimelineMilestone[] = [
     lesson: 'Great UX is a business strategy in disguise.',
     tags: ['Product Strategy', 'Business Design', 'Metrics'],
     icon: 'Brain',
+    logoFile: 'isb.png',
+    organization: 'Indian School of Business',
     side: 'right'
   },
 
@@ -305,6 +315,8 @@ export const timelineMilestones: TimelineMilestone[] = [
     lesson: 'In high-stakes contexts, clarity beats novelty.',
     tags: ['Design Systems', 'Aviation', 'Enterprise UX'],
     icon: 'Briefcase',
+    logoFile: 'air-india.svg',
+    organization: 'Air India',
     side: 'left'
   },
 
