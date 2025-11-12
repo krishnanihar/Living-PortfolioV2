@@ -45,14 +45,21 @@ const Chatbot = dynamic(
 
 export default function HomePage() {
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatContext, setChatContext] = useState<string | undefined>(undefined);
+
+  const handleOpenChatWithContext = (contextMessage?: string) => {
+    setChatContext(contextMessage);
+    setIsChatOpen(true);
+  };
+
   return (
     <HomeNarrativeWrapper>
       <NavigationBar />
       <CosmicBackground />
       <ScrollDarkeningOverlay />
 
-      {/* First-person narrative moments */}
-      <HomeFirstPersonMoments />
+      {/* First-person narrative moments - now interactive chatbot notifications */}
+      <HomeFirstPersonMoments onOpenChat={handleOpenChatWithContext} />
 
       <main id="main-content">
         <IntroductionSection />
@@ -68,7 +75,10 @@ export default function HomePage() {
       {/* Chatbot modal */}
       <Chatbot
         isOpen={isChatOpen}
-        onClose={() => setIsChatOpen(false)}
+        onClose={() => {
+          setIsChatOpen(false);
+          setChatContext(undefined); // Clear context when closing
+        }}
         intentContext="general"
       />
     </HomeNarrativeWrapper>
