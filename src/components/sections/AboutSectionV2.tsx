@@ -706,7 +706,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           height: 8px !important;
           background: #FFFFFF !important;
           border: none;
-          opacity: 0.4 !important;
+          opacity: 0.7 !important;
           margin: 0 6px !important;
           transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -1212,7 +1212,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 const MetricIcon = project.metric.icon;
 
                 return (
-                  <SwiperSlide key={idx} style={{ width: 'clamp(75vw, 650px, 750px)' }}>
+                  <SwiperSlide key={idx} style={{ width: 'clamp(50vw, 500px, 600px)' }}>
                     <Link
                       href={project.link}
                       className={projectClassName}
@@ -1258,7 +1258,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     <div
                       style={{
                         position: 'relative',
-                        height: '200px',
+                        height: '280px',
                         background: `
                           radial-gradient(circle at 30% 30%, rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.35) 0%, rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.12) 50%, transparent 100%),
                           rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.08)
@@ -1451,13 +1451,112 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                           fontWeight: '300',
                           color: hoveredProject === idx ? 'rgba(255, 255, 255, 0.85)' : 'rgba(255, 255, 255, 0.7)',
                           lineHeight: '1.6',
-                          marginBottom: '1.25rem',
-                          flex: 1,
+                          marginBottom: '1rem',
                           transition: 'color 0.3s ease',
                         }}
                       >
                         {project.description}
                       </p>
+
+                      {/* Key Highlights */}
+                      <div
+                        style={{
+                          marginBottom: '1.25rem',
+                          paddingLeft: '0.5rem',
+                        }}
+                      >
+                        <ul
+                          style={{
+                            listStyle: 'none',
+                            padding: 0,
+                            margin: 0,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '0.5rem',
+                          }}
+                        >
+                          {idx === 0 && (
+                            <>
+                              <li style={{ fontSize: '0.8125rem', color: 'rgba(255, 255, 255, 0.6)', lineHeight: '1.5' }}>
+                                • Streamlined crew operations across 450+ flights daily
+                              </li>
+                              <li style={{ fontSize: '0.8125rem', color: 'rgba(255, 255, 255, 0.6)', lineHeight: '1.5' }}>
+                                • Reduced decision-making time from minutes to seconds
+                              </li>
+                            </>
+                          )}
+                          {idx === 1 && (
+                            <>
+                              <li style={{ fontSize: '0.8125rem', color: 'rgba(255, 255, 255, 0.6)', lineHeight: '1.5' }}>
+                                • 18 months of ethnographic research with dermatologists
+                              </li>
+                              <li style={{ fontSize: '0.8125rem', color: 'rgba(255, 255, 255, 0.6)', lineHeight: '1.5' }}>
+                                • AI-powered PASI scoring with 95% accuracy
+                              </li>
+                            </>
+                          )}
+                          {idx === 2 && (
+                            <>
+                              <li style={{ fontSize: '0.8125rem', color: 'rgba(255, 255, 255, 0.6)', lineHeight: '1.5' }}>
+                                • Scroll-driven narrative with three-act structure
+                              </li>
+                              <li style={{ fontSize: '0.8125rem', color: 'rgba(255, 255, 255, 0.6)', lineHeight: '1.5' }}>
+                                • Speculative design prototypes exploring consciousness
+                              </li>
+                            </>
+                          )}
+                          {idx === 3 && (
+                            <>
+                              <li style={{ fontSize: '0.8125rem', color: 'rgba(255, 255, 255, 0.6)', lineHeight: '1.5' }}>
+                                • Real-time data visualization for airline operations
+                              </li>
+                              <li style={{ fontSize: '0.8125rem', color: 'rgba(255, 255, 255, 0.6)', lineHeight: '1.5' }}>
+                                • Processing 10,000+ data points per minute
+                              </li>
+                            </>
+                          )}
+                          {idx === 4 && (
+                            <>
+                              <li style={{ fontSize: '0.8125rem', color: 'rgba(255, 255, 255, 0.6)', lineHeight: '1.5' }}>
+                                • Automated design token auditing system
+                              </li>
+                              <li style={{ fontSize: '0.8125rem', color: 'rgba(255, 255, 255, 0.6)', lineHeight: '1.5' }}>
+                                • Reduced QA review time by 90%
+                              </li>
+                            </>
+                          )}
+                          {idx === 5 && (
+                            <>
+                              <li style={{ fontSize: '0.8125rem', color: 'rgba(255, 255, 255, 0.6)', lineHeight: '1.5' }}>
+                                • AI-powered pattern recognition in art collections
+                              </li>
+                              <li style={{ fontSize: '0.8125rem', color: 'rgba(255, 255, 255, 0.6)', lineHeight: '1.5' }}>
+                                • Generates thematic exhibitions from natural language
+                              </li>
+                            </>
+                          )}
+                          {idx === 6 && (
+                            <>
+                              <li style={{ fontSize: '0.8125rem', color: 'rgba(255, 255, 255, 0.6)', lineHeight: '1.5' }}>
+                                • Interactive psychedelic experience installation
+                              </li>
+                              <li style={{ fontSize: '0.8125rem', color: 'rgba(255, 255, 255, 0.6)', lineHeight: '1.5' }}>
+                                • Real-time audio-reactive visuals with TouchDesigner
+                              </li>
+                            </>
+                          )}
+                          {idx === 7 && (
+                            <>
+                              <li style={{ fontSize: '0.8125rem', color: 'rgba(255, 255, 255, 0.6)', lineHeight: '1.5' }}>
+                                • 40+ production-ready mobile UI patterns
+                              </li>
+                              <li style={{ fontSize: '0.8125rem', color: 'rgba(255, 255, 255, 0.6)', lineHeight: '1.5' }}>
+                                • iOS and Android platform-specific components
+                              </li>
+                            </>
+                          )}
+                        </ul>
+                      </div>
 
                       {/* Tags */}
                       <div
@@ -1561,7 +1660,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   justifyContent: 'center',
                   gap: '24px',
                   marginTop: '56px',
-                  flexWrap: 'wrap',
+                  flexWrap: 'nowrap',
                 }}
               >
                 {/* Previous Button */}
