@@ -410,7 +410,8 @@ export function Work() {
                   position: 'absolute',
                   inset: 0,
                   borderRadius: '32px',
-                  background: 'linear-gradient(180deg, transparent 0%, var(--overlay-light) 100%)',
+                  background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.02) 100%)',
+                  opacity: 0.3,
                   pointerEvents: 'none',
                 }} />
 
@@ -427,9 +428,9 @@ export function Work() {
                   <div style={{
                     position: 'relative',
                     background: `linear-gradient(135deg,
-                      rgba(${project.color}, 0.02) 0%,
-                      var(--surface-secondary) 100%)`,
-                    opacity: 0.8,
+                      rgba(${project.color}, 0.01) 0%,
+                      rgba(255, 255, 255, 0.003) 100%)`,
+                    opacity: 0.3,
                     overflow: 'hidden',
                     borderRadius: '32px 0 0 32px',
                   }}>
@@ -437,10 +438,10 @@ export function Work() {
                     <div style={{
                       position: 'absolute',
                       inset: 0,
-                      background: 'var(--surface-primary)',
-                      backdropFilter: 'blur(40px)',
-                      WebkitBackdropFilter: 'blur(40px)',
-                      opacity: 0.5,
+                      background: 'rgba(255, 255, 255, 0.015)',
+                      backdropFilter: 'blur(40px) saturate(150%)',
+                      WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                      opacity: 0.15,
                     }} />
 
                     {/* Pattern */}
