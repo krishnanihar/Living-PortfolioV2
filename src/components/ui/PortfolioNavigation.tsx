@@ -92,33 +92,6 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
         }
       `}</style>
 
-      {/* Skip to main content - Accessibility */}
-      <a
-        href="#main-content"
-        style={{
-          position: 'absolute',
-          left: '-9999px',
-          zIndex: 10000,
-          padding: '1rem 1.5rem',
-          background: 'var(--brand-red)',
-          color: 'white',
-          textDecoration: 'none',
-          borderRadius: '8px',
-          fontWeight: '500',
-          fontSize: '0.9rem',
-          boxShadow: '0 4px 12px rgba(218, 14, 41, 0.4)',
-        }}
-        onFocus={(e) => {
-          e.currentTarget.style.left = '1rem';
-          e.currentTarget.style.top = '1rem';
-        }}
-        onBlur={(e) => {
-          e.currentTarget.style.left = '-9999px';
-        }}
-      >
-        Skip to main content
-      </a>
-
       {/* Navigation with floating effect when scrolled */}
       <nav style={{
         position: 'fixed',
