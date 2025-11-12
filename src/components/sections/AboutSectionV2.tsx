@@ -495,7 +495,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           overflow-x: auto;
           scroll-snap-type: x mandatory;
           scroll-behavior: smooth;
-          padding: 0 3rem;
+          padding: 0 2.5rem;
           -webkit-overflow-scrolling: touch;
           scrollbar-width: none;
         }
@@ -614,8 +614,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           left: 0;
           top: 0;
           bottom: 0;
-          width: 100px;
-          background: linear-gradient(to right, rgba(10, 10, 10, 1) 0%, transparent 100%);
+          width: 60px;
+          background: linear-gradient(to right, rgba(10, 10, 10, 0.7) 0%, transparent 100%);
           pointer-events: none;
           z-index: 5;
         }
@@ -625,8 +625,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           right: 0;
           top: 0;
           bottom: 0;
-          width: 100px;
-          background: linear-gradient(to left, rgba(10, 10, 10, 1) 0%, transparent 100%);
+          width: 60px;
+          background: linear-gradient(to left, rgba(10, 10, 10, 0.7) 0%, transparent 100%);
           pointer-events: none;
           z-index: 5;
         }
@@ -1160,22 +1160,16 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                       style={{
                         position: 'relative',
                         height: '200px',
-                        background: `radial-gradient(circle at 30% 30%, rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.25) 0%, rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.05) 50%, transparent 100%)`,
+                        background: `
+                          radial-gradient(circle at 30% 30%, rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.35) 0%, rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.12) 50%, transparent 100%),
+                          rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.08)
+                        `,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         overflow: 'hidden',
                       }}
                     >
-                      {/* Glass overlay */}
-                      <div
-                        style={{
-                          position: 'absolute',
-                          inset: 0,
-                          backdropFilter: 'blur(30px) saturate(120%)',
-                          WebkitBackdropFilter: 'blur(30px) saturate(120%)',
-                        }}
-                      />
 
                       {/* Shimmer effect on hover */}
                       {hoveredProject === idx && (
@@ -1234,7 +1228,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                         height="200"
                         viewBox="0 0 200 200"
                         style={{
-                          opacity: 0.2,
+                          opacity: 0.4,
                           position: 'relative',
                           zIndex: 1,
                         }}
@@ -1242,23 +1236,23 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                         {idx === 0 && (
                           // Air India - circles pattern
                           <>
-                            <circle cx="100" cy="100" r="60" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.3)`} strokeWidth="2" />
-                            <circle cx="100" cy="100" r="40" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} strokeWidth="2" />
-                            <circle cx="100" cy="100" r="20" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} />
+                            <circle cx="100" cy="100" r="60" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} strokeWidth="2" />
+                            <circle cx="100" cy="100" r="40" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} strokeWidth="2" />
+                            <circle cx="100" cy="100" r="20" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.6)`} />
                           </>
                         )}
                         {idx === 1 && (
                           // PsoriAssist - medical cross
                           <>
-                            <rect x="85" y="50" width="30" height="100" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} rx="5" />
-                            <rect x="50" y="85" width="100" height="30" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} rx="5" />
+                            <rect x="85" y="50" width="30" height="100" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} rx="5" />
+                            <rect x="50" y="85" width="100" height="30" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} rx="5" />
                           </>
                         )}
                         {idx === 2 && (
                           // Latent Space - hexagons
                           <>
-                            <polygon points="100,40 130,55 130,85 100,100 70,85 70,55" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} strokeWidth="2" />
-                            <polygon points="100,70 120,80 120,100 100,110 80,100 80,80" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.3)`} />
+                            <polygon points="100,40 130,55 130,85 100,100 70,85 70,55" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} strokeWidth="2" />
+                            <polygon points="100,70 120,80 120,100 100,110 80,100 80,80" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.5)`} />
                           </>
                         )}
                       </svg>
