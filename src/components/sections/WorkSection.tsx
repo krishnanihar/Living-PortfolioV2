@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowUpRight, Circle, Hexagon, Grid3X3, Heart, ArrowRight, Brain } from 'lucide-react';
 import Link from 'next/link';
-import { JourneyBadge, RoleBadge, ImpactBadge } from '@/components/ui';
+import { JourneyBadge, RoleBadge } from '@/components/ui';
 import { ProgressiveCounter } from '@/components/ui/ProgressiveDataReveal';
 
 interface Project {
@@ -694,7 +694,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     {project.description}
                   </p>
 
-                  {/* Journey & Impact Badges */}
+                  {/* Journey Badge */}
                   <div style={{
                     display: 'flex',
                     gap: '0.75rem',
@@ -702,10 +702,6 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     marginBottom: '0.5rem',
                     flexWrap: 'wrap',
                   }}>
-                    {/* Impact Badge */}
-                    <ImpactBadge status={project.status as any} />
-
-                    {/* Journey Badge */}
                     <JourneyBadge
                       duration={project.meta.duration}
                       team={project.meta.team}
