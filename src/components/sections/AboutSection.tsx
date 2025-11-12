@@ -96,31 +96,41 @@ export function AboutSection() {
       year: '2018',
       label: 'BFA',
       id: 'undergrad-2018',
-      detail: 'Bachelor of Fine Arts - exploring visual design, typography, and the foundations of creative thinking.'
+      detail: 'Bachelor of Fine Arts - exploring visual design, typography, and the foundations of creative thinking.',
+      logoFile: 'bfa.jpeg',
+      organization: 'JNAFAU'
     },
     {
       year: '2020',
       label: 'Infosys',
       id: 'infosys-2020',
-      detail: 'UX Designer at Infosys - learning design systems, enterprise scale, and working with cross-functional teams on production features.'
+      detail: 'UX Designer at Infosys - learning design systems, enterprise scale, and working with cross-functional teams on production features.',
+      logoFile: 'infosys.svg',
+      organization: 'Infosys'
     },
     {
       year: '2021',
       label: 'NID',
       id: 'nid-2021',
-      detail: 'National Institute of Design Masters program - learning to build interfaces that breathe and systems thinking.'
+      detail: 'National Institute of Design Masters program - learning to build interfaces that breathe and systems thinking.',
+      logoFile: 'nid.svg',
+      organization: 'National Institute of Design'
     },
     {
       year: '2022',
       label: 'ISB',
       id: 'isb-2022',
-      detail: 'Internship at ISB Digital Learning (online) - exploring digital education platforms and online learning experiences.'
+      detail: 'Internship at ISB Digital Learning (online) - exploring digital education platforms and online learning experiences.',
+      logoFile: 'isb.png',
+      organization: 'Indian School of Business'
     },
     {
       year: '2024',
       label: 'Air India',
       id: 'air-india-2024',
-      detail: 'Leading design transformation at Air India DesignLAB - building systems that serve 450+ daily users in aviation operations.'
+      detail: 'Leading design transformation at Air India DesignLAB - building systems that serve 450+ daily users in aviation operations.',
+      logoFile: 'air-india.svg',
+      organization: 'Air India'
     },
   ];
 
@@ -375,7 +385,7 @@ export function AboutSection() {
                   width: isMobile ? '110px' : '140px',
                   height: isMobile ? '110px' : '140px',
                   borderRadius: '50%',
-                  background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.2), rgba(218, 14, 41, 0.05))',
+                  background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1))',
                   padding: '4px',
                   transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                   cursor: 'pointer',
@@ -383,11 +393,11 @@ export function AboutSection() {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'scale(1.05)';
-                  e.currentTarget.style.boxShadow = '0 12px 48px rgba(218, 14, 41, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.boxShadow = '0 16px 56px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(218, 14, 41, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05)';
+                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06)';
                 }}
               >
                 <div style={{
@@ -396,9 +406,9 @@ export function AboutSection() {
                   height: '100%',
                   borderRadius: '50%',
                   overflow: 'hidden',
-                  border: '2px solid rgba(255, 255, 255, 0.08)',
-                  boxShadow: '0 8px 32px rgba(218, 14, 41, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
-                  backdropFilter: 'blur(40px) saturate(120%)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
+                  backdropFilter: 'blur(60px) saturate(120%)',
                 }}>
                   <Image
                     src="/images/profile/mypic.png"
@@ -516,28 +526,63 @@ export function AboutSection() {
               </div>
 
               {/* Timeline Detail Expansion */}
-              {activeTimeline && (
-                <div style={{
-                  marginTop: '1.5rem',
-                  padding: '1.5rem',
-                  background: 'rgba(218, 14, 41, 0.05)',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  borderRadius: '16px',
-                  border: '1px solid rgba(218, 14, 41, 0.2)',
-                  animation: 'fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                }}>
-                  <p style={{
-                    fontSize: '0.9375rem',
-                    color: 'var(--text-secondary)',
-                    lineHeight: '1.7',
-                    fontWeight: '300',
-                    margin: 0,
+              {activeTimeline && (() => {
+                const activeMilestone = journeyMilestones.find(m => m.id === activeTimeline);
+                return (
+                  <div style={{
+                    marginTop: '1.5rem',
+                    padding: '1.5rem',
+                    background: 'rgba(218, 14, 41, 0.05)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    borderRadius: '16px',
+                    border: '1px solid rgba(218, 14, 41, 0.2)',
+                    animation: 'fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                    display: 'flex',
+                    gap: '1.25rem',
+                    alignItems: activeMilestone?.logoFile ? 'center' : 'flex-start',
                   }}>
-                    {journeyMilestones.find(m => m.id === activeTimeline)?.detail}
-                  </p>
-                </div>
-              )}
+                    {activeMilestone?.logoFile && (
+                      <div style={{
+                        width: '48px',
+                        height: '48px',
+                        minWidth: '48px',
+                        padding: '10px',
+                        borderRadius: '12px',
+                        background: 'rgba(255, 255, 255, 0.08)',
+                        backdropFilter: 'blur(20px)',
+                        border: '1px solid rgba(255, 255, 255, 0.12)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        filter: 'drop-shadow(0 0 12px rgba(218, 14, 41, 0.25))',
+                      }}>
+                        <Image
+                          src={`/logos/${activeMilestone.logoFile}`}
+                          alt={activeMilestone.organization || activeMilestone.label}
+                          width={28}
+                          height={28}
+                          style={{
+                            objectFit: 'contain',
+                            width: '100%',
+                            height: 'auto',
+                          }}
+                        />
+                      </div>
+                    )}
+                    <p style={{
+                      fontSize: '0.9375rem',
+                      color: 'var(--text-secondary)',
+                      lineHeight: '1.7',
+                      fontWeight: '300',
+                      margin: 0,
+                      flex: 1,
+                    }}>
+                      {activeMilestone?.detail}
+                    </p>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>
