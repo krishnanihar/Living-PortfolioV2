@@ -726,8 +726,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
         /* Center/side card transitions */
         .swiper-slide {
           transition: all 0.3s ease;
-          opacity: 0.6;
-          transform: scale(0.95);
+          opacity: 0.85;
+          transform: scale(0.98);
         }
 
         .swiper-slide-active {
@@ -738,7 +738,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
         .swiper-slide-prev,
         .swiper-slide-next {
-          opacity: 0.7;
+          opacity: 0.9;
         }
 
         /* Mobile responsive adjustments for Act 2 timeline */
