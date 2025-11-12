@@ -18,6 +18,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   const [milestonesInView, setMilestonesInView] = useState<boolean[]>([false, false, false, false]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [cardTilt, setCardTilt] = useState({ rotateX: 0, rotateY: 0 });
+  const [currentCard, setCurrentCard] = useState(0);
   const timelineRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
 
@@ -78,6 +79,46 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
     return () => observers.forEach(o => o.disconnect());
   }, []);
+
+  // Scroll tracking for carousel
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    const handleScroll = () => {
+      const scrollLeft = carousel.scrollLeft;
+      const cardWidth = 520 + 32; // card width + gap
+      const newIndex = Math.round(scrollLeft / cardWidth);
+      setCurrentCard(newIndex);
+    };
+
+    carousel.addEventListener('scroll', handleScroll);
+    return () => carousel.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Navigation functions
+  const scrollToCard = (index: number) => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    const cardWidth = 520 + 32; // card width + gap
+    carousel.scrollTo({
+      left: index * cardWidth,
+      behavior: 'smooth',
+    });
+  };
+
+  const handlePrevCard = () => {
+    if (currentCard > 0) {
+      scrollToCard(currentCard - 1);
+    }
+  };
+
+  const handleNextCard = () => {
+    if (currentCard < projects.length - 1) {
+      scrollToCard(currentCard + 1);
+    }
+  };
 
   // 3D tilt effect for card hover
   const handleCardMouseMove = (e: MouseEvent) => {
@@ -464,8 +505,9 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
         }
 
         .project-carousel-card {
-          flex: 0 0 420px;
+          flex: 0 0 520px;
           scroll-snap-align: start;
+          min-height: 520px;
         }
 
         /* Mobile responsive adjustments */
@@ -474,7 +516,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             padding: 0 1.5rem;
           }
           .project-carousel-card {
-            flex: 0 0 360px;
+            flex: 0 0 460px;
+            min-height: 520px;
           }
         }
 
@@ -484,8 +527,108 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           }
           .project-carousel-card {
             flex: 0 0 90vw;
-            max-width: 400px;
+            max-width: 480px;
+            min-height: 520px;
           }
+        }
+
+        /* Carousel navigation controls */
+        .carousel-nav-button {
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
+          background: rgba(10, 10, 10, 0.7);
+          backdrop-filter: blur(100px) saturate(180%);
+          -webkit-backdrop-filter: blur(100px) saturate(180%);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 10;
+        }
+
+        .carousel-nav-button:hover {
+          background: rgba(10, 10, 10, 0.85);
+          border-color: rgba(255, 255, 255, 0.15);
+          box-shadow: 0px 12px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+          transform: translateY(-50%) scale(1.05);
+        }
+
+        .carousel-nav-button:active {
+          transform: translateY(-50%) scale(0.98);
+        }
+
+        .carousel-nav-button:disabled {
+          opacity: 0.3;
+          cursor: not-allowed;
+          pointer-events: none;
+        }
+
+        .carousel-nav-left {
+          left: -28px;
+        }
+
+        .carousel-nav-right {
+          right: -28px;
+        }
+
+        /* Progress dots */
+        .carousel-dots {
+          display: flex;
+          gap: 0.75rem;
+          justify-content: center;
+          margin-top: 3rem;
+        }
+
+        .carousel-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .carousel-dot:hover {
+          background: rgba(255, 255, 255, 0.4);
+          transform: scale(1.2);
+        }
+
+        .carousel-dot-active {
+          background: rgba(218, 14, 41, 0.8);
+          border-color: rgba(218, 14, 41, 0.6);
+          width: 24px;
+          border-radius: 4px;
+        }
+
+        /* Fade gradients on carousel edges */
+        .carousel-fade-left {
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 100px;
+          background: linear-gradient(to right, rgba(10, 10, 10, 1) 0%, transparent 100%);
+          pointer-events: none;
+          z-index: 5;
+        }
+
+        .carousel-fade-right {
+          position: absolute;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          width: 100px;
+          background: linear-gradient(to left, rgba(10, 10, 10, 1) 0%, transparent 100%);
+          pointer-events: none;
+          z-index: 5;
         }
 
         /* Mobile responsive adjustments for Act 2 timeline */
@@ -496,6 +639,15 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
           #act-2-journey .metrics-grid {
             grid-template-columns: repeat(2, 1fr) !important;
+          }
+
+          .carousel-nav-button {
+            display: none;
+          }
+
+          .carousel-fade-left,
+          .carousel-fade-right {
+            display: none;
           }
         }
       `}</style>
@@ -921,16 +1073,41 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               What this looks like in practice
             </h3>
 
-            {/* Horizontal carousel */}
-            <div
-              ref={carouselRef}
-              className="project-carousel"
-              style={{
-                marginTop: '4rem',
-                position: 'relative',
-              }}
-            >
-              {projects.map((project, idx) => {
+            {/* Carousel Container with Navigation */}
+            <div style={{ position: 'relative', marginTop: '4rem' }}>
+              {/* Left Arrow Button */}
+              <button
+                className="carousel-nav-button carousel-nav-left"
+                onClick={handlePrevCard}
+                disabled={currentCard === 0}
+                aria-label="Previous project"
+              >
+                <ChevronLeft size={24} style={{ color: 'rgba(255, 255, 255, 0.7)' }} />
+              </button>
+
+              {/* Right Arrow Button */}
+              <button
+                className="carousel-nav-button carousel-nav-right"
+                onClick={handleNextCard}
+                disabled={currentCard === projects.length - 1}
+                aria-label="Next project"
+              >
+                <ChevronRight size={24} style={{ color: 'rgba(255, 255, 255, 0.7)' }} />
+              </button>
+
+              {/* Fade gradients */}
+              <div className="carousel-fade-left" />
+              <div className="carousel-fade-right" />
+
+              {/* Horizontal carousel */}
+              <div
+                ref={carouselRef}
+                className="project-carousel"
+                style={{
+                  position: 'relative',
+                }}
+              >
+                {projects.map((project, idx) => {
                 // Generate unique class name for each project
                 const projectClassName = `project-card project-card-${project.title.toLowerCase().replace(/\s+/g, '-')} project-carousel-card`;
                 const MetricIcon = project.metric.icon;
@@ -982,7 +1159,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     <div
                       style={{
                         position: 'relative',
-                        height: '180px',
+                        height: '200px',
                         background: `radial-gradient(circle at 30% 30%, rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.25) 0%, rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.05) 50%, transparent 100%)`,
                         display: 'flex',
                         alignItems: 'center',
@@ -1222,6 +1399,19 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   </Link>
                 );
               })}
+              </div>
+
+              {/* Progress Dots */}
+              <div className="carousel-dots">
+                {projects.map((_, idx) => (
+                  <button
+                    key={idx}
+                    className={`carousel-dot ${idx === currentCard ? 'carousel-dot-active' : ''}`}
+                    onClick={() => scrollToCard(idx)}
+                    aria-label={`Go to project ${idx + 1}`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
