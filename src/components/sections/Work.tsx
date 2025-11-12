@@ -553,7 +553,11 @@ export function Work() {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
-                    background: 'var(--surface-secondary)',
+                    background: 'rgba(10, 10, 10, 0.15)',
+                    backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+                    WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.06)',
+                    borderRadius: '32px',
                   }}>
                     {/* Category */}
                     <div style={{
