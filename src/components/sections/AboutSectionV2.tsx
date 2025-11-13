@@ -1227,8 +1227,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 'clamp(1rem, 2vw, 1.5rem)',
-                    overflowX: 'auto',
+                    justifyContent: 'space-between',
+                    gap: 'clamp(0.5rem, 1vw, 0.75rem)',
                     paddingBottom: '1rem',
                   }}
                 >
@@ -1249,8 +1249,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                       >
                         <div
                           style={{
-                            width: 'clamp(80px, 9vw, 96px)',
-                            height: 'clamp(80px, 9vw, 96px)',
+                            width: 'clamp(70px, 8vw, 85px)',
+                            height: 'clamp(70px, 8vw, 85px)',
                             borderRadius: '50%',
                             display: 'flex',
                             alignItems: 'center',
@@ -1306,13 +1306,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                       {index < journeyMilestones.length - 1 && (
                         <div
                           style={{
-                            flex: 1,
+                            width: 'clamp(20px, 3vw, 40px)',
                             height: '1px',
                             background:
                               'linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05))',
                             alignSelf: 'flex-start',
                             marginTop: 'clamp(40px, 4.5vw, 48px)',
-                            minWidth: 'clamp(40px, 8vw, 80px)',
                           }}
                         />
                       )}
