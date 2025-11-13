@@ -237,12 +237,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       detail: 'Growing up in Hyderabad, tinkering with computers and wondering how interfaces could feel more human.'
     },
     {
-      year: '2019',
-      label: 'BFA',
-      id: 'undergrad-2018',
-      detail: 'Bachelor of Fine Arts in Communication Design from JNAFAU, exploring the intersection of art and interaction.',
-      logoFile: 'bfa.jpeg',
-      organization: 'JNAFAU'
+      year: '2023',
+      label: 'ISB',
+      id: 'isb-2022',
+      detail: 'Strategic Management Program at Indian School of Business, blending design thinking with business strategy.',
+      logoFile: 'isb.png',
+      organization: 'ISB Hyderabad'
     },
     {
       year: '2020',
@@ -261,12 +261,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       organization: 'NID Gandhinagar'
     },
     {
-      year: '2023',
-      label: 'ISB',
-      id: 'isb-2022',
-      detail: 'Strategic Management Program at Indian School of Business, blending design thinking with business strategy.',
-      logoFile: 'isb.png',
-      organization: 'ISB Hyderabad'
+      year: '2019',
+      label: 'BFA',
+      id: 'undergrad-2018',
+      detail: 'Bachelor of Fine Arts in Communication Design from JNAFAU, exploring the intersection of art and interaction.',
+      logoFile: 'bfa.jpeg',
+      organization: 'JNAFAU'
     },
     {
       year: '2024',

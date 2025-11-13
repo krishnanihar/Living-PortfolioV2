@@ -93,12 +93,12 @@ export function AboutSection() {
       detail: 'Growing up in Hyderabad, tinkering with computers and flashing custom ROMs. The beginning of a lifelong curiosity.'
     },
     {
-      year: '2019',
-      label: 'BFA',
-      id: 'undergrad-2018',
-      detail: 'Bachelor of Fine Arts - exploring visual design, typography, and the foundations of creative thinking.',
-      logoFile: 'bfa.jpeg',
-      organization: 'JNAFAU'
+      year: '2023',
+      label: 'ISB',
+      id: 'isb-2022',
+      detail: 'Internship at ISB Digital Learning (online) - exploring digital education platforms and online learning experiences.',
+      logoFile: 'isb.png',
+      organization: 'Indian School of Business'
     },
     {
       year: '2020',
@@ -117,12 +117,12 @@ export function AboutSection() {
       organization: 'National Institute of Design'
     },
     {
-      year: '2023',
-      label: 'ISB',
-      id: 'isb-2022',
-      detail: 'Internship at ISB Digital Learning (online) - exploring digital education platforms and online learning experiences.',
-      logoFile: 'isb.png',
-      organization: 'Indian School of Business'
+      year: '2019',
+      label: 'BFA',
+      id: 'undergrad-2018',
+      detail: 'Bachelor of Fine Arts - exploring visual design, typography, and the foundations of creative thinking.',
+      logoFile: 'bfa.jpeg',
+      organization: 'JNAFAU'
     },
     {
       year: '2024',
