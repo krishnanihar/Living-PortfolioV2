@@ -90,6 +90,18 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
             transform: translateX(100%);
           }
         }
+
+        @keyframes gradientShift {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
       `}</style>
 
       {/* Navigation with floating effect when scrolled */}
@@ -179,21 +191,40 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
               letterSpacing: '0.08em',
               transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
               position: 'relative',
+              cursor: 'pointer',
             }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)';
+              const span = e.currentTarget.querySelector('span') as HTMLElement;
+              if (span) {
+                span.style.backgroundPosition = '100% 50%';
+                span.style.filter = 'drop-shadow(0 0 30px rgba(218, 14, 41, 0.4)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.3))';
+              }
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
+              const span = e.currentTarget.querySelector('span') as HTMLElement;
+              if (span) {
+                span.style.backgroundPosition = '0% 50%';
+                span.style.filter = isActive('/')
+                  ? 'drop-shadow(0 0 25px rgba(180, 210, 240, 0.3)) drop-shadow(0 0 12px rgba(180, 210, 240, 0.2))'
+                  : 'drop-shadow(0 0 20px rgba(218, 14, 41, 0.2)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15))';
+              }
             }}>
               <span style={{
                 display: 'inline-block',
                 background: isActive('/')
-                  ? 'linear-gradient(120deg, rgba(180, 210, 240, 1) 0%, rgba(180, 210, 240, 0.8) 100%)'
-                  : 'linear-gradient(120deg, var(--text-primary) 0%, var(--text-secondary) 100%)',
+                  ? 'linear-gradient(90deg, rgba(180, 210, 240, 0.7) 0%, rgba(180, 210, 240, 1) 30%, rgba(180, 210, 240, 1) 70%, rgba(180, 210, 240, 0.7) 100%)'
+                  : 'linear-gradient(90deg, rgba(218, 14, 41, 0.6) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.95) 70%, rgba(218, 14, 41, 0.6) 100%)',
+                backgroundSize: '200% 100%',
+                backgroundPosition: '0% 50%',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
+                filter: isActive('/')
+                  ? 'drop-shadow(0 0 25px rgba(180, 210, 240, 0.3)) drop-shadow(0 0 12px rgba(180, 210, 240, 0.2))'
+                  : 'drop-shadow(0 0 20px rgba(218, 14, 41, 0.2)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15))',
+                transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
               }}>
                 NIHAR
               </span>
