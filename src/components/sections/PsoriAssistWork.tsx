@@ -532,11 +532,29 @@ export function PsoriAssistWork() {
           transition: 'background 0.3s ease-out'
         }}
       />
-      {/* Back Button */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto', marginBottom: '2rem' }}>
+      {/* Hero - Full Viewport */}
+      <section
+        id="hero"
+        style={{
+          minHeight: isMobile ? 'calc(100vh - 48px)' : '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+          padding: isMobile ? '6rem 1rem 3rem' : '8rem 2rem 4rem',
+          overflow: 'hidden',
+          textAlign: 'center'
+        }}
+      >
+        {/* Back Button - Absolute Top-Left */}
         <Link
           href="/work"
           style={{
+            position: 'absolute',
+            top: isMobile ? '1rem' : '2rem',
+            left: isMobile ? '1rem' : '2rem',
+            zIndex: 10,
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.5rem',
@@ -565,210 +583,260 @@ export function PsoriAssistWork() {
           <ArrowLeft size={16} />
           All Work
         </Link>
-      </div>
 
-      {/* Hero */}
-      <div id="hero" style={{ maxWidth: '1400px', margin: '0 auto 10rem', position: 'relative' }}>
+        {/* Centered Hero Content */}
         <div style={{
-          display: 'inline-block',
-          padding: '0.5rem 1rem',
-          borderRadius: '20px',
-          backgroundColor: 'rgba(74, 144, 226, 0.1)',
-          border: '1px solid rgba(74, 144, 226, 0.2)',
-          color: 'rgb(74, 144, 226)',
-          fontSize: '0.8rem',
-          fontWeight: '500',
-          letterSpacing: '0.02em',
-          marginBottom: '1.5rem',
-          transform: `translateY(${scrollY * 0.1}px)`,
-          transition: 'transform 0.05s ease-out'
-        }}>
-          Digital Health · AI/ML · 18 Months
-        </div>
-
-        <h1 style={{
-          fontSize: isMobile ? '2.5rem' : '4.5rem',
-          fontWeight: '200',
-          letterSpacing: '-0.02em',
-          marginBottom: '1.5rem',
-          lineHeight: '1.1',
-          background: 'linear-gradient(135deg, #FFFFFF 0%, rgba(255, 255, 255, 0.7) 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          transform: `translateY(${scrollY * 0.05}px)`,
-          transition: 'transform 0.05s ease-out'
-        }}>
-          PsoriAssist
-        </h1>
-
-        <p style={{
-          fontSize: isMobile ? '1.25rem' : '1.5rem',
-          color: 'rgba(255, 255, 255, 0.7)',
-          marginBottom: '2rem',
           maxWidth: '900px',
-          lineHeight: '1.6',
-          transform: `translateY(${scrollY * 0.08}px)`,
-          transition: 'transform 0.05s ease-out'
-        }}>
-          Reimagining psoriasis care through AI-powered digital therapeutics. An 18-month design concept addressing treatment adherence, mental health integration, and early comorbidity detection for 125 million patients globally.
-        </p>
-
-        {/* Hero CTAs */}
-        <div style={{
+          width: '100%',
+          margin: '0 auto',
           display: 'flex',
-          gap: '1rem',
-          marginBottom: '2.5rem',
-          flexWrap: 'wrap'
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '2rem',
+          position: 'relative',
+          zIndex: 1
         }}>
-          <button
-            onClick={() => {
-              const section = document.getElementById('interactive-prototypes');
-              section?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.875rem 1.75rem',
-              borderRadius: '16px',
-              background: 'rgba(218, 14, 41, 0.15)',
-              backdropFilter: 'blur(60px) saturate(180%)',
-              WebkitBackdropFilter: 'blur(60px) saturate(180%)',
-              border: '1px solid rgba(218, 14, 41, 0.3)',
-              color: '#DA0E29',
-              fontSize: '0.95rem',
-              fontWeight: '500',
-              cursor: 'pointer',
-              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-              outline: 'none'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(218, 14, 41, 0.25)';
-              e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.5)';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(218, 14, 41, 0.15)';
-              e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-          >
-            View Interactive Prototypes
-          </button>
-          <button
-            onClick={() => {
-              const section = document.getElementById('research');
-              section?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.875rem 1.75rem',
-              borderRadius: '16px',
-              background: 'rgba(15, 15, 15, 0.65)',
-              backdropFilter: 'blur(120px) saturate(180%)',
-              WebkitBackdropFilter: 'blur(120px) saturate(180%)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              color: 'rgba(255, 255, 255, 0.9)',
-              fontSize: '0.95rem',
-              fontWeight: '500',
-              cursor: 'pointer',
-              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-              outline: 'none'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(18, 18, 18, 0.75)';
-              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(15, 15, 15, 0.65)';
-              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-          >
-            Read Research
-          </button>
-        </div>
+          {/* Badge */}
+          <div style={{
+            display: 'inline-block',
+            padding: '0.5rem 1rem',
+            borderRadius: '20px',
+            backgroundColor: 'rgba(74, 144, 226, 0.1)',
+            border: '1px solid rgba(74, 144, 226, 0.2)',
+            color: 'rgb(74, 144, 226)',
+            fontSize: '0.8rem',
+            fontWeight: '500',
+            letterSpacing: '0.02em'
+          }}>
+            Digital Health · AI/ML · 18 Months
+          </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-          gap: '1rem',
-          maxWidth: '900px'
-        }}>
-          {[
-            { label: 'Role', value: 'Lead Designer & Researcher' },
-            { label: 'Duration', value: '18 Months' },
-            { label: 'Platform', value: 'iOS · Android · Web Portal' }
-          ].map((item, i) => {
-            const isHovered = hoveredMetaCard === i;
-            return (
-              <div
-                key={i}
-                onMouseEnter={() => setHoveredMetaCard(i)}
-                onMouseLeave={() => setHoveredMetaCard(null)}
-                style={{
-                  padding: '1rem 1.25rem',
-                  borderRadius: '20px',
-                  background: isHovered ? 'rgba(18, 18, 18, 0.75)' : 'rgba(15, 15, 15, 0.65)',
-                  backdropFilter: 'blur(120px) saturate(180%)',
-                  WebkitBackdropFilter: 'blur(120px) saturate(180%)',
-                  border: isHovered ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(255, 255, 255, 0.12)',
-                  boxShadow: isHovered
-                    ? `0px 20px 56px rgba(0, 0, 0, 0.8),
-                       0px 0px 1px rgba(255, 255, 255, 0.4) inset,
-                       0px -1px 0px rgba(255, 255, 255, 0.12) inset`
-                    : `0px 16px 48px rgba(0, 0, 0, 0.6),
-                       0px 0px 1px rgba(255, 255, 255, 0.3) inset,
-                       0px -1px 0px rgba(255, 255, 255, 0.08) inset`,
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
-                  cursor: 'default'
-                }}
-              >
-                <div style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.5)', marginBottom: '0.25rem' }}>
-                  {item.label}
-                </div>
-                <div style={{ fontSize: '1rem', color: 'rgba(255, 255, 255, 0.9)', fontWeight: '500' }}>
-                  {item.value}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+          {/* Title */}
+          <h1 style={{
+            fontSize: isMobile ? '2rem' : '4rem',
+            fontWeight: '200',
+            letterSpacing: '-0.02em',
+            marginBottom: '0',
+            lineHeight: '1.1',
+            background: 'linear-gradient(135deg, #FFFFFF 0%, rgba(255, 255, 255, 0.7) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent'
+          }}>
+            PsoriAssist
+          </h1>
 
-        {/* Tags */}
-        <div style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '0.5rem',
-          marginTop: '2rem',
-          maxWidth: '900px'
-        }}>
-          {['AI/ML', 'Digital Health', 'Clinical Validation', 'iOS 17', 'HIPAA', 'React Native'].map((tag, i) => (
-            <span
-              key={i}
+          {/* Description */}
+          <p style={{
+            fontSize: isMobile ? '1.125rem' : '1.375rem',
+            color: 'rgba(255, 255, 255, 0.7)',
+            marginBottom: '0',
+            maxWidth: '800px',
+            lineHeight: '1.6'
+          }}>
+            Reimagining psoriasis care through AI-powered digital therapeutics. An 18-month design concept addressing treatment adherence, mental health integration, and early comorbidity detection for 125 million patients globally.
+          </p>
+
+          {/* Hero CTAs - Centered */}
+          <div style={{
+            display: 'flex',
+            gap: '1rem',
+            flexWrap: 'wrap',
+            justifyContent: 'center'
+          }}>
+            <button
+              onClick={() => {
+                const section = document.getElementById('interactive-prototypes');
+                section?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
               style={{
-                display: 'inline-block',
-                padding: '0.375rem 0.875rem',
-                borderRadius: '12px',
-                background: 'rgba(255, 255, 255, 0.05)',
-                backdropFilter: 'blur(60px) saturate(150%)',
-                WebkitBackdropFilter: 'blur(60px) saturate(150%)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                color: 'rgba(255, 255, 255, 0.6)',
-                fontSize: '0.75rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.875rem 1.75rem',
+                borderRadius: '16px',
+                background: 'rgba(218, 14, 41, 0.15)',
+                backdropFilter: 'blur(60px) saturate(180%)',
+                WebkitBackdropFilter: 'blur(60px) saturate(180%)',
+                border: '1px solid rgba(218, 14, 41, 0.3)',
+                color: '#DA0E29',
+                fontSize: '0.95rem',
                 fontWeight: '500',
-                letterSpacing: '0.02em'
+                cursor: 'pointer',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                outline: 'none'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(218, 14, 41, 0.25)';
+                e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.5)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(218, 14, 41, 0.15)';
+                e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
+                e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
-              #{tag.replace(/s+/g, '-')}
-            </span>
-          ))}
+              View Interactive Prototypes
+            </button>
+            <button
+              onClick={() => {
+                const section = document.getElementById('research');
+                section?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.875rem 1.75rem',
+                borderRadius: '16px',
+                background: 'rgba(15, 15, 15, 0.65)',
+                backdropFilter: 'blur(120px) saturate(180%)',
+                WebkitBackdropFilter: 'blur(120px) saturate(180%)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                color: 'rgba(255, 255, 255, 0.9)',
+                fontSize: '0.95rem',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                outline: 'none'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(18, 18, 18, 0.75)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(15, 15, 15, 0.65)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              Read Research
+            </button>
+          </div>
+
+          {/* Meta Cards - Compact & Centered */}
+          <div style={{
+            display: 'flex',
+            gap: '1rem',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            maxWidth: '600px'
+          }}>
+            {[
+              { label: '18 Months', icon: '⏱️' },
+              { label: 'iOS · Android · Web', icon: '📱' }
+            ].map((item, i) => {
+              const isHovered = hoveredMetaCard === i;
+              return (
+                <div
+                  key={i}
+                  onMouseEnter={() => setHoveredMetaCard(i)}
+                  onMouseLeave={() => setHoveredMetaCard(null)}
+                  style={{
+                    padding: '0.75rem 1.25rem',
+                    borderRadius: '16px',
+                    background: isHovered ? 'rgba(18, 18, 18, 0.75)' : 'rgba(15, 15, 15, 0.65)',
+                    backdropFilter: 'blur(120px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(120px) saturate(180%)',
+                    border: isHovered ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(255, 255, 255, 0.12)',
+                    boxShadow: isHovered
+                      ? `0px 20px 56px rgba(0, 0, 0, 0.8),
+                         0px 0px 1px rgba(255, 255, 255, 0.4) inset,
+                         0px -1px 0px rgba(255, 255, 255, 0.12) inset`
+                      : `0px 16px 48px rgba(0, 0, 0, 0.6),
+                         0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                         0px -1px 0px rgba(255, 255, 255, 0.08) inset`,
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
+                    cursor: 'default',
+                    fontSize: '0.95rem',
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    fontWeight: '500',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem'
+                  }}
+                >
+                  <span>{item.icon}</span>
+                  <span>{item.label}</span>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Tags - Centered */}
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '0.5rem',
+            justifyContent: 'center',
+            maxWidth: '700px'
+          }}>
+            {['AI/ML', 'Digital Health', 'Clinical Validation', 'iOS 17', 'HIPAA', 'React Native'].map((tag, i) => (
+              <span
+                key={i}
+                style={{
+                  display: 'inline-block',
+                  padding: '0.375rem 0.875rem',
+                  borderRadius: '12px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  backdropFilter: 'blur(60px) saturate(150%)',
+                  WebkitBackdropFilter: 'blur(60px) saturate(150%)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  fontSize: '0.75rem',
+                  fontWeight: '500',
+                  letterSpacing: '0.02em'
+                }}
+              >
+                #{tag.replace(/\s+/g, '-')}
+              </span>
+            ))}
+          </div>
         </div>
-      </div>
+
+        {/* Scroll Indicator - Absolute Bottom-Center */}
+        <div
+          onClick={() => {
+            const section = document.getElementById('stats');
+            section?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }}
+          style={{
+            position: 'absolute',
+            bottom: isMobile ? '1.5rem' : '2rem',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            cursor: 'pointer',
+            zIndex: 10,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '0.5rem',
+            animation: 'bounce 2s infinite',
+            opacity: 0,
+            animationDelay: '2s',
+            animationFillMode: 'forwards'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateX(-50%) translateY(4px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateX(-50%) translateY(0)';
+          }}
+        >
+          <span style={{
+            fontSize: '0.7rem',
+            color: 'rgba(255, 255, 255, 0.4)',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            fontWeight: '500'
+          }}>
+            Scroll to Explore
+          </span>
+          <ChevronDown size={18} style={{ color: 'rgba(74, 144, 226, 0.6)' }} />
+        </div>
+      </section>
 
       {/* Stats - Progressive Reveal */}
       <div style={{ maxWidth: '1400px', margin: '0 auto 8rem' }}>
