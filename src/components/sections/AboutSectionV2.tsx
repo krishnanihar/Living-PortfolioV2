@@ -960,187 +960,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               </p>
             </div>
 
-            {/* Three Pillars Grid */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                gap: '2rem',
-                marginBottom: '4rem',
-              }}
-            >
-              {/* Right Now Card */}
-              <div
-                ref={pillar1Ref}
-                style={{
-                  position: 'relative',
-                  background: 'rgba(10, 10, 10, 0.15)',
-                  backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
-                  WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
-                  borderRadius: '28px',
-                  padding: '2.5rem',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
-                  opacity: pillar1InView && mounted ? 1 : 0,
-                  transform: pillar1InView && mounted ? 'translateY(0) scale(1)' : 'translateY(60px) scale(0.95)',
-                  transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
-                  cursor: 'default',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.02) translateY(-8px)';
-                  e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.4)';
-                  e.currentTarget.style.boxShadow = '0 12px 48px rgba(0, 0, 0, 0.5), 0px 0px 24px rgba(218, 14, 41, 0.1), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1) translateY(0)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
-                }}
-              >
-                <Briefcase size={36} style={{ color: 'rgba(218, 14, 41, 0.9)', marginBottom: '1.5rem' }} />
-                <h4
-                  style={{
-                    fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
-                    fontWeight: '500',
-                    marginBottom: '1rem',
-                    color: 'rgba(255, 255, 255, 0.95)',
-                    lineHeight: '1.3',
-                  }}
-                >
-                  Right Now
-                </h4>
-                <p
-                  style={{
-                    fontSize: 'clamp(1rem, 1.5vw, 1.0625rem)',
-                    color: 'rgba(255, 255, 255, 0.7)',
-                    lineHeight: '1.7',
-                    fontWeight: '300',
-                    marginBottom: '1.5rem',
-                  }}
-                >
-                  Building design systems at Air India. 450+ daily users. Aviation UX.
-                </p>
-                <div
-                  style={{
-                    display: 'inline-block',
-                    padding: '0.5rem 1rem',
-                    background: 'rgba(34, 197, 94, 0.15)',
-                    color: 'rgba(34, 197, 94, 1)',
-                    fontSize: '0.875rem',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(34, 197, 94, 0.3)',
-                    fontWeight: '500',
-                  }}
-                >
-                  Open to opportunities
-                </div>
-              </div>
-
-              {/* Belief Card */}
-              <div
-                ref={pillar2Ref}
-                style={{
-                  position: 'relative',
-                  background: 'rgba(10, 10, 10, 0.15)',
-                  backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
-                  WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
-                  borderRadius: '28px',
-                  padding: '2.5rem',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
-                  opacity: pillar2InView && mounted ? 1 : 0,
-                  transform: pillar2InView && mounted ? 'translateY(0) scale(1)' : 'translateY(60px) scale(0.95)',
-                  transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
-                  cursor: 'default',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.02) translateY(-8px)';
-                  e.currentTarget.style.borderColor = 'rgba(147, 51, 234, 0.4)';
-                  e.currentTarget.style.boxShadow = '0 12px 48px rgba(0, 0, 0, 0.5), 0px 0px 24px rgba(147, 51, 234, 0.1), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1) translateY(0)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
-                }}
-              >
-                <Sparkles size={36} style={{ color: 'rgba(147, 51, 234, 0.9)', marginBottom: '1.5rem' }} />
-                <h4
-                  style={{
-                    fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
-                    fontWeight: '500',
-                    marginBottom: '1rem',
-                    color: 'rgba(255, 255, 255, 0.95)',
-                    lineHeight: '1.3',
-                  }}
-                >
-                  Belief
-                </h4>
-                <p
-                  style={{
-                    fontSize: 'clamp(1rem, 1.5vw, 1.0625rem)',
-                    color: 'rgba(255, 255, 255, 0.7)',
-                    lineHeight: '1.7',
-                    fontWeight: '300',
-                  }}
-                >
-                  Interfaces should breathe, remember, and evolve. Reduce time between thought and action.
-                </p>
-              </div>
-
-              {/* How I Work Card */}
-              <div
-                ref={pillar3Ref}
-                style={{
-                  position: 'relative',
-                  background: 'rgba(10, 10, 10, 0.15)',
-                  backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
-                  WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
-                  borderRadius: '28px',
-                  padding: '2.5rem',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
-                  opacity: pillar3InView && mounted ? 1 : 0,
-                  transform: pillar3InView && mounted ? 'translateY(0) scale(1)' : 'translateY(60px) scale(0.95)',
-                  transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s',
-                  cursor: 'default',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.02) translateY(-8px)';
-                  e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.4)';
-                  e.currentTarget.style.boxShadow = '0 12px 48px rgba(0, 0, 0, 0.5), 0px 0px 24px rgba(59, 130, 246, 0.1), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1) translateY(0)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
-                }}
-              >
-                <Layers size={36} style={{ color: 'rgba(59, 130, 246, 0.9)', marginBottom: '1.5rem' }} />
-                <h4
-                  style={{
-                    fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
-                    fontWeight: '500',
-                    marginBottom: '1rem',
-                    color: 'rgba(255, 255, 255, 0.95)',
-                    lineHeight: '1.3',
-                  }}
-                >
-                  How I Work
-                </h4>
-                <p
-                  style={{
-                    fontSize: 'clamp(1rem, 1.5vw, 1.0625rem)',
-                    color: 'rgba(255, 255, 255, 0.7)',
-                    lineHeight: '1.7',
-                    fontWeight: '300',
-                  }}
-                >
-                  Systems thinking. Creative coding. Data-driven design. Prototyping first.
-                </p>
-              </div>
-            </div>
-
           {/* Journey Card */}
             <div
               style={{
@@ -1421,6 +1240,188 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     </div>
                   </Link>
                 </div>
+              </div>
+            </div>
+
+            {/* Three Pillars Grid */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gap: '2rem',
+                marginTop: '4rem',
+                marginBottom: '4rem',
+              }}
+            >
+              {/* Right Now Card */}
+              <div
+                ref={pillar1Ref}
+                style={{
+                  position: 'relative',
+                  background: 'rgba(10, 10, 10, 0.15)',
+                  backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+                  WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+                  borderRadius: '28px',
+                  padding: '2.5rem',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                  opacity: pillar1InView && mounted ? 1 : 0,
+                  transform: pillar1InView && mounted ? 'translateY(0) scale(1)' : 'translateY(60px) scale(0.95)',
+                  transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                  cursor: 'default',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.02) translateY(-8px)';
+                  e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.4)';
+                  e.currentTarget.style.boxShadow = '0 12px 48px rgba(0, 0, 0, 0.5), 0px 0px 24px rgba(218, 14, 41, 0.1), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1) translateY(0)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
+                }}
+              >
+                <Briefcase size={36} style={{ color: 'rgba(218, 14, 41, 0.9)', marginBottom: '1.5rem' }} />
+                <h4
+                  style={{
+                    fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
+                    fontWeight: '500',
+                    marginBottom: '1rem',
+                    color: 'rgba(255, 255, 255, 0.95)',
+                    lineHeight: '1.3',
+                  }}
+                >
+                  Right Now
+                </h4>
+                <p
+                  style={{
+                    fontSize: 'clamp(1rem, 1.5vw, 1.0625rem)',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    lineHeight: '1.7',
+                    fontWeight: '300',
+                    marginBottom: '1.5rem',
+                  }}
+                >
+                  Building design systems at Air India. 450+ daily users. Aviation UX.
+                </p>
+                <div
+                  style={{
+                    display: 'inline-block',
+                    padding: '0.5rem 1rem',
+                    background: 'rgba(34, 197, 94, 0.15)',
+                    color: 'rgba(34, 197, 94, 1)',
+                    fontSize: '0.875rem',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(34, 197, 94, 0.3)',
+                    fontWeight: '500',
+                  }}
+                >
+                  Open to opportunities
+                </div>
+              </div>
+
+              {/* Belief Card */}
+              <div
+                ref={pillar2Ref}
+                style={{
+                  position: 'relative',
+                  background: 'rgba(10, 10, 10, 0.15)',
+                  backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+                  WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+                  borderRadius: '28px',
+                  padding: '2.5rem',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                  opacity: pillar2InView && mounted ? 1 : 0,
+                  transform: pillar2InView && mounted ? 'translateY(0) scale(1)' : 'translateY(60px) scale(0.95)',
+                  transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
+                  cursor: 'default',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.02) translateY(-8px)';
+                  e.currentTarget.style.borderColor = 'rgba(147, 51, 234, 0.4)';
+                  e.currentTarget.style.boxShadow = '0 12px 48px rgba(0, 0, 0, 0.5), 0px 0px 24px rgba(147, 51, 234, 0.1), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1) translateY(0)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
+                }}
+              >
+                <Sparkles size={36} style={{ color: 'rgba(147, 51, 234, 0.9)', marginBottom: '1.5rem' }} />
+                <h4
+                  style={{
+                    fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
+                    fontWeight: '500',
+                    marginBottom: '1rem',
+                    color: 'rgba(255, 255, 255, 0.95)',
+                    lineHeight: '1.3',
+                  }}
+                >
+                  Belief
+                </h4>
+                <p
+                  style={{
+                    fontSize: 'clamp(1rem, 1.5vw, 1.0625rem)',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    lineHeight: '1.7',
+                    fontWeight: '300',
+                  }}
+                >
+                  Interfaces should breathe, remember, and evolve. Reduce time between thought and action.
+                </p>
+              </div>
+
+              {/* How I Work Card */}
+              <div
+                ref={pillar3Ref}
+                style={{
+                  position: 'relative',
+                  background: 'rgba(10, 10, 10, 0.15)',
+                  backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+                  WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+                  borderRadius: '28px',
+                  padding: '2.5rem',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                  opacity: pillar3InView && mounted ? 1 : 0,
+                  transform: pillar3InView && mounted ? 'translateY(0) scale(1)' : 'translateY(60px) scale(0.95)',
+                  transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s',
+                  cursor: 'default',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.02) translateY(-8px)';
+                  e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.4)';
+                  e.currentTarget.style.boxShadow = '0 12px 48px rgba(0, 0, 0, 0.5), 0px 0px 24px rgba(59, 130, 246, 0.1), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1) translateY(0)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px rgba(255, 255, 255, 0.02) inset';
+                }}
+              >
+                <Layers size={36} style={{ color: 'rgba(59, 130, 246, 0.9)', marginBottom: '1.5rem' }} />
+                <h4
+                  style={{
+                    fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
+                    fontWeight: '500',
+                    marginBottom: '1rem',
+                    color: 'rgba(255, 255, 255, 0.95)',
+                    lineHeight: '1.3',
+                  }}
+                >
+                  How I Work
+                </h4>
+                <p
+                  style={{
+                    fontSize: 'clamp(1rem, 1.5vw, 1.0625rem)',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    lineHeight: '1.7',
+                    fontWeight: '300',
+                  }}
+                >
+                  Systems thinking. Creative coding. Data-driven design. Prototyping first.
+                </p>
               </div>
             </div>
           </div>
