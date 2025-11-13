@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { Github, Mail, ChevronDown, Sparkles, ArrowRight, Map } from 'lucide-react';
+import { Github, Mail, ChevronDown } from 'lucide-react';
 import { HealthcareResearchIcon } from '@/components/icons/HealthcareResearchIcon';
 
 // Dynamically import ParticleSphere for better performance
@@ -18,19 +17,16 @@ const ParticleSphere = dynamic(
 
 export function IntroductionSection() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
+  const [hoveredStat, setHoveredStat] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
-  const [activeTimeline, setActiveTimeline] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setMounted(true);
     setIsDesktop(window.innerWidth >= 1024);
-    setIsMobile(window.innerWidth < 768);
 
     const handleResize = () => {
       setIsDesktop(window.innerWidth >= 1024);
-      setIsMobile(window.innerWidth < 768);
     };
 
     window.addEventListener('resize', handleResize);
@@ -40,53 +36,10 @@ export function IntroductionSection() {
     };
   }, []);
 
-  const journeyMilestones = [
-    {
-      year: '2005',
-      label: 'The Spark',
-      id: 'hyderabad-roots',
-      detail: 'Growing up in Hyderabad, tinkering with computers and flashing custom ROMs. The beginning of a lifelong curiosity.'
-    },
-    {
-      year: '2018',
-      label: 'BFA',
-      id: 'undergrad-2018',
-      detail: 'Bachelor of Fine Arts - exploring visual design, typography, and the foundations of creative thinking.',
-      logoFile: 'bfa.jpeg',
-      organization: 'JNAFAU'
-    },
-    {
-      year: '2020',
-      label: 'Infosys',
-      id: 'infosys-2020',
-      detail: 'UX Designer at Infosys - learning design systems, enterprise scale, and working with cross-functional teams on production features.',
-      logoFile: 'infosys.svg',
-      organization: 'Infosys'
-    },
-    {
-      year: '2021',
-      label: 'NID',
-      id: 'nid-2021',
-      detail: 'National Institute of Design Masters program - learning to build interfaces that breathe and systems thinking.',
-      logoFile: 'nid.svg',
-      organization: 'National Institute of Design'
-    },
-    {
-      year: '2022',
-      label: 'ISB',
-      id: 'isb-2022',
-      detail: 'Internship at ISB Digital Learning (online) - exploring digital education platforms and online learning experiences.',
-      logoFile: 'isb.png',
-      organization: 'Indian School of Business'
-    },
-    {
-      year: '2024',
-      label: 'Air India',
-      id: 'air-india-2024',
-      detail: 'Leading design transformation at Air India DesignLAB - building systems that serve 450+ daily users in aviation operations.',
-      logoFile: 'air-india.svg',
-      organization: 'Air India'
-    },
+  const stats = [
+    { label: 'Air India 10K users', tooltip: 'Mobile app + IFE systems serving 10K+ daily' },
+    { label: '18-month research deep dive', tooltip: 'PsoriAssist healthcare design' },
+    { label: '2 hackathons won simultaneously', tooltip: '5000 LOC in 48 hours' },
   ];
 
   const scrollToNext = () => {
@@ -221,244 +174,279 @@ export function IntroductionSection() {
           >
             {/* Left Column: Content */}
             <div>
-              {/* Glassmorphic About Card */}
-              <div style={{
-                position: 'relative',
-                background: 'linear-gradient(135deg, rgba(10, 10, 10, 0.15) 0%, rgba(10, 10, 10, 0.1) 100%)',
-                backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
-                WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
-                borderRadius: '28px',
-                padding: '3rem',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
-                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
-                marginBottom: '2rem',
-                opacity: mounted ? 1 : 0,
-              }}>
-                {/* Profile + Intro Grid */}
-                <div style={{
+              {/* Name */}
+              <h1
+                style={{
+                  fontSize: 'clamp(3rem, 6vw, 4.5rem)',
+                  fontWeight: '100',
+                  lineHeight: '1.1',
+                  letterSpacing: '-0.05em',
+                  color: 'rgba(255, 255, 255, 0.98)',
+                  marginBottom: '2rem',
+                  opacity: mounted ? 1 : 0,
+                }}
+              >
+                Krishna Nihar
+              </h1>
+
+              {/* Impact Statements */}
+              <div
+                style={{
+                  marginBottom: '2rem',
+                  opacity: mounted ? 1 : 0,
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: 'clamp(1rem, 2vw, 1.125rem)',
+                    fontWeight: '200',
+                    color: 'rgba(255, 255, 255, 0.75)',
+                    letterSpacing: '0.01em',
+                    lineHeight: '1.7',
+                    marginBottom: '0.75rem',
+                  }}
+                >
+                  From <span style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: '300' }}>ego death simulators</span> to <span style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: '300' }}>enterprise systems</span> — building experiences that matter
+                </p>
+                <p
+                  style={{
+                    fontSize: 'clamp(0.9375rem, 1.75vw, 1.0625rem)',
+                    fontWeight: '200',
+                    color: 'rgba(255, 255, 255, 0.85)',
+                    letterSpacing: '0.01em',
+                    lineHeight: '1.6',
+                  }}
+                >
+                  Designing systems that <span style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: '300' }}>millions interact with daily</span> — from 30,000ft to healthcare
+                </p>
+              </div>
+
+
+              {/* Stats Grid */}
+              <div
+                style={{
                   display: 'grid',
-                  gridTemplateColumns: 'auto 1fr',
-                  gap: '2rem',
-                  alignItems: 'center',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                  gap: '1rem',
                   marginBottom: '2.5rem',
-                }}>
-                  {/* Profile Picture */}
-                  <div style={{
-                    position: 'relative',
-                    width: isMobile ? '110px' : '140px',
-                    height: isMobile ? '110px' : '140px',
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1))',
-                    padding: '4px',
-                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                    flexShrink: 0,
-                  }}>
-                    <div style={{
-                      position: 'relative',
-                      width: '100%',
-                      height: '100%',
-                      borderRadius: '50%',
-                      overflow: 'hidden',
-                      border: '1px solid rgba(255, 255, 255, 0.12)',
-                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
-                      backdropFilter: 'blur(60px) saturate(120%)',
-                    }}>
-                      <Image
-                        src="/images/profile/mypic.png"
-                        alt="Nihar - Product Designer at Air India DesignLAB"
-                        width={140}
-                        height={140}
-                        priority
-                        style={{
-                          objectFit: 'cover',
-                          width: '100%',
-                          height: '100%',
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Introduction */}
-                  <div>
-                    <h1 style={{
-                      fontSize: 'clamp(2rem, 5vw, 3rem)',
-                      fontWeight: '200',
-                      marginBottom: '0.75rem',
-                      letterSpacing: '-0.02em',
-                    }}>
-                      Hi, I'm Nihar
-                    </h1>
-                    <p style={{
-                      fontSize: '1.125rem',
-                      color: 'var(--text-secondary)',
-                      fontWeight: '300',
-                      lineHeight: '1.7',
-                      letterSpacing: '0.01em',
-                    }}>
-                      Product Designer building living interfaces at{' '}
-                      <span style={{ color: 'var(--brand-red)', fontWeight: '500' }}>Air India DesignLAB</span>.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Interactive Journey Timeline */}
-                <div style={{
-                  paddingTop: '2rem',
-                  borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-                }}>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.75rem',
-                    overflowX: 'auto',
-                    marginBottom: '1.5rem',
-                  }}>
-                    {journeyMilestones.map((milestone, index) => (
-                      <React.Fragment key={milestone.id}>
-                        <div
-                          onClick={() => setActiveTimeline(activeTimeline === milestone.id ? null : milestone.id)}
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: '0.75rem',
-                            flex: 1,
-                            cursor: 'pointer',
-                            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                            minWidth: '80px',
-                          }}
-                        >
-                          {/* Logo Container */}
-                          <div style={{
-                            width: 'clamp(80px, 9vw, 96px)',
-                            height: 'clamp(80px, 9vw, 96px)',
-                            padding: '14px',
-                            borderRadius: '18px',
-                            background: activeTimeline === milestone.id
-                              ? 'rgba(218, 14, 41, 0.12)'
-                              : 'rgba(255, 255, 255, 0.95)',
-                            backdropFilter: 'blur(20px) saturate(110%)',
-                            border: activeTimeline === milestone.id
-                              ? '2px solid var(--brand-red)'
-                              : '1px solid rgba(0, 0, 0, 0.08)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            boxShadow: activeTimeline === milestone.id
-                              ? '0 0 24px rgba(218, 14, 41, 0.3), 0 2px 8px rgba(0, 0, 0, 0.1)'
-                              : '0 2px 8px rgba(0, 0, 0, 0.08)',
-                            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                          }}>
-                            {milestone.logoFile ? (
-                              <Image
-                                src={`/logos/${milestone.logoFile}`}
-                                alt={milestone.organization || milestone.label}
-                                width={62}
-                                height={62}
-                                style={{
-                                  objectFit: 'contain',
-                                  width: '100%',
-                                  height: 'auto',
-                                }}
-                              />
-                            ) : (
-                              <Sparkles
-                                size={32}
-                                style={{
-                                  color: activeTimeline === milestone.id
-                                    ? 'var(--brand-red)'
-                                    : 'rgba(0, 0, 0, 0.4)',
-                                }}
-                              />
-                            )}
-                          </div>
-
-                          {/* Year */}
-                          <div style={{
-                            fontSize: '0.875rem',
-                            fontWeight: '600',
-                            color: activeTimeline === milestone.id || index === journeyMilestones.length - 1
-                              ? 'var(--text-primary)'
-                              : 'var(--text-muted)',
-                            transition: 'color 0.3s ease',
-                          }}>
-                            {milestone.year}
-                          </div>
-
-                          {/* Label */}
-                          <div style={{
-                            fontSize: '0.75rem',
-                            color: activeTimeline === milestone.id ? 'var(--brand-red)' : 'var(--text-muted)',
-                            fontWeight: activeTimeline === milestone.id ? '400' : '300',
-                            transition: 'all 0.3s ease',
-                          }}>
-                            {milestone.label}
-                          </div>
-                        </div>
-                        {index < journeyMilestones.length - 1 && (
-                          <div style={{
-                            flex: 1,
-                            height: '1px',
-                            background: 'linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05))',
-                            alignSelf: 'flex-start',
-                            marginTop: 'clamp(40px, 4.5vw, 48px)',
-                          }} />
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </div>
-
-                  {/* Timeline Detail Expansion */}
-                  {activeTimeline && (() => {
-                    const activeMilestone = journeyMilestones.find(m => m.id === activeTimeline);
-                    return (
-                      <div style={{
-                        marginBottom: '1.5rem',
-                        padding: '1.5rem',
-                        background: 'rgba(218, 14, 41, 0.05)',
-                        backdropFilter: 'blur(20px)',
-                        WebkitBackdropFilter: 'blur(20px)',
-                        borderRadius: '16px',
-                        border: '1px solid rgba(218, 14, 41, 0.2)',
-                      }}>
-                        <p style={{
-                          fontSize: '0.9375rem',
-                          color: 'var(--text-secondary)',
-                          lineHeight: '1.7',
-                          fontWeight: '300',
-                          margin: 0,
-                        }}>
-                          {activeMilestone?.detail}
-                        </p>
-                      </div>
-                    );
-                  })()}
-
-                  {/* View Full Journey Button */}
-                  <Link
-                    href="/journey"
+                }}
+              >
+                {stats.map((stat, idx) => (
+                  <div
+                    key={idx}
+                    onMouseEnter={() => setHoveredStat(idx)}
+                    onMouseLeave={() => setHoveredStat(null)}
                     style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.75rem',
-                      padding: '0.875rem 1.5rem',
-                      background: 'rgba(218, 14, 41, 0.1)',
-                      border: '1px solid rgba(218, 14, 41, 0.3)',
-                      borderRadius: '12px',
-                      color: 'rgba(255, 255, 255, 0.92)',
-                      fontSize: '0.9375rem',
-                      fontWeight: '500',
-                      textDecoration: 'none',
+                      position: 'relative',
+                      padding: '1rem 1.25rem',
+                      background: hoveredStat === idx
+                        ? 'rgba(15, 15, 15, 0.5)'
+                        : 'rgba(8, 8, 8, 0.4)',
+                      backdropFilter: 'blur(120px) saturate(180%)',
+                      WebkitBackdropFilter: 'blur(120px) saturate(180%)',
+                      border: hoveredStat === idx
+                        ? '1px solid rgba(255, 255, 255, 0.15)'
+                        : '1px solid rgba(255, 255, 255, 0.12)',
+                      borderRadius: '15px',
+                      fontSize: '0.875rem',
+                      fontWeight: '300',
+                      color: 'rgba(255, 255, 255, 0.85)',
+                      cursor: 'pointer',
                       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                      backdropFilter: 'blur(10px)',
-                      WebkitBackdropFilter: 'blur(10px)',
+                      transform: hoveredStat === idx ? 'translateY(-2px)' : 'translateY(0)',
+                      boxShadow: hoveredStat === idx
+                        ? `0px 20px 48px rgba(0, 0, 0, 0.7),
+                           0px 0px 1px rgba(255, 255, 255, 0.35) inset,
+                           0px -1px 0px rgba(255, 255, 255, 0.1) inset`
+                        : `0px 10px 30px rgba(0, 0, 0, 0.5),
+                           0px 0px 1px rgba(255, 255, 255, 0.25) inset,
+                           0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
+                      opacity: mounted ? 1 : 0,
                     }}
                   >
-                    <Map size={18} style={{ strokeWidth: 2, color: 'rgba(255, 255, 255, 0.92)' }} />
-                    Explore Full Journey
-                    <ArrowRight size={18} style={{ strokeWidth: 2, color: 'rgba(255, 255, 255, 0.92)' }} />
-                  </Link>
-                </div>
+                    {stat.label}
+                    {hoveredStat === idx && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          bottom: 'calc(100% + 8px)',
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                          padding: '0.5rem 0.75rem',
+                          background: 'rgba(10, 10, 10, 0.95)',
+                          backdropFilter: 'blur(20px)',
+                          border: '1px solid rgba(255, 255, 255, 0.15)',
+                          borderRadius: '8px',
+                          fontSize: '0.75rem',
+                          fontWeight: '300',
+                          color: 'rgba(255, 255, 255, 0.9)',
+                          whiteSpace: 'nowrap',
+                          pointerEvents: 'none',
+                          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                          zIndex: 10,
+                        }}
+                      >
+                        {stat.tooltip}
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: '100%',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            width: 0,
+                            height: 0,
+                            borderLeft: '6px solid transparent',
+                            borderRight: '6px solid transparent',
+                            borderTop: '6px solid rgba(10, 10, 10, 0.95)',
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA Buttons */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 'clamp(0.75rem, 1.5vw, 1rem)',
+                  flexWrap: 'wrap',
+                }}
+              >
+                {/* Primary: Featured Work */}
+                <Link
+                  href="/work/psoriassist"
+                  className="featured-work-button"
+                  onMouseEnter={() => setHoveredButton('featured')}
+                  onMouseLeave={() => setHoveredButton(null)}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.625rem',
+                    padding: 'clamp(1rem, 2vw, 1.125rem) clamp(1.75rem, 3.5vw, 2.25rem)',
+                    background: 'rgba(15, 15, 15, 0.5)',
+                    backdropFilter: 'blur(40px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+                    border: '1px solid transparent',
+                    borderRadius: '15px',
+                    color: 'rgba(255, 255, 255, 0.98)',
+                    textDecoration: 'none',
+                    fontSize: 'clamp(0.9375rem, 1.75vw, 1rem)',
+                    fontWeight: '300',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    transform: hoveredButton === 'featured' ? 'translateY(-3px) scale(1.05)' : 'translateY(0) scale(1)',
+                    boxShadow: hoveredButton === 'featured'
+                      ? `inset 0 1px 0 rgba(255, 255, 255, 0.02),
+                         inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                         0 16px 40px rgba(0, 0, 0, 0.7),
+                         0 0 40px rgba(124, 58, 237, 0.4),
+                         0 0 20px rgba(33, 150, 243, 0.3)`
+                      : `inset 0 1px 0 rgba(255, 255, 255, 0.02),
+                         inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                         0 8px 24px rgba(0, 0, 0, 0.6),
+                         0 0 20px rgba(124, 58, 237, 0.2)`,
+                    opacity: mounted ? 1 : 0,
+                  }}
+                >
+                  <HealthcareResearchIcon size={20} />
+                  <span>View Featured Work</span>
+                  <div
+                    style={{
+                      padding: '0.25rem 0.625rem',
+                      background: 'rgba(124, 58, 237, 0.15)',
+                      border: '1px solid rgba(124, 58, 237, 0.3)',
+                      borderRadius: '10px',
+                      fontSize: '0.75rem',
+                      fontWeight: '300',
+                      color: 'rgba(255, 255, 255, 0.95)',
+                      letterSpacing: '0.02em',
+                    }}
+                  >
+                    18 Months
+                  </div>
+                </Link>
+
+                {/* Secondary: Contact */}
+                <Link
+                  href="/contact"
+                  onMouseEnter={() => setHoveredButton('contact')}
+                  onMouseLeave={() => setHoveredButton(null)}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.25rem, 2.5vw, 1.5rem)',
+                    background: hoveredButton === 'contact'
+                      ? 'rgba(15, 15, 15, 0.5)'
+                      : 'rgba(8, 8, 8, 0.4)',
+                    backdropFilter: 'blur(120px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(120px) saturate(180%)',
+                    border: hoveredButton === 'contact'
+                      ? '1px solid rgba(255, 255, 255, 0.15)'
+                      : '1px solid rgba(255, 255, 255, 0.12)',
+                    borderRadius: '15px',
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    textDecoration: 'none',
+                    fontSize: '0.875rem',
+                    fontWeight: '300',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    transform: hoveredButton === 'contact' ? 'translateY(-2px)' : 'translateY(0)',
+                    boxShadow: hoveredButton === 'contact'
+                      ? `0px 20px 48px rgba(0, 0, 0, 0.7),
+                         0px 0px 1px rgba(255, 255, 255, 0.35) inset,
+                         0px -1px 0px rgba(255, 255, 255, 0.1) inset`
+                      : `0px 10px 30px rgba(0, 0, 0, 0.5),
+                         0px 0px 1px rgba(255, 255, 255, 0.25) inset,
+                         0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
+                    opacity: mounted ? 1 : 0,
+                  }}
+                >
+                  <Mail size={16} />
+                  <span>Contact</span>
+                </Link>
+
+                {/* Tertiary: GitHub */}
+                <a
+                  href="https://github.com/krishnanihar"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onMouseEnter={() => setHoveredButton('github')}
+                  onMouseLeave={() => setHoveredButton(null)}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.25rem, 2.5vw, 1.5rem)',
+                    background: hoveredButton === 'github'
+                      ? 'rgba(15, 15, 15, 0.5)'
+                      : 'rgba(8, 8, 8, 0.4)',
+                    backdropFilter: 'blur(120px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(120px) saturate(180%)',
+                    border: hoveredButton === 'github'
+                      ? '1px solid rgba(255, 255, 255, 0.15)'
+                      : '1px solid rgba(255, 255, 255, 0.12)',
+                    borderRadius: '15px',
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    textDecoration: 'none',
+                    fontSize: '0.875rem',
+                    fontWeight: '300',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    transform: hoveredButton === 'github' ? 'translateY(-2px)' : 'translateY(0)',
+                    boxShadow: hoveredButton === 'github'
+                      ? `0px 20px 48px rgba(0, 0, 0, 0.7),
+                         0px 0px 1px rgba(255, 255, 255, 0.35) inset,
+                         0px -1px 0px rgba(255, 255, 255, 0.1) inset`
+                      : `0px 10px 30px rgba(0, 0, 0, 0.5),
+                         0px 0px 1px rgba(255, 255, 255, 0.25) inset,
+                         0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
+                    opacity: mounted ? 1 : 0,
+                  }}
+                >
+                  <Github size={16} />
+                  <span>GitHub</span>
+                </a>
               </div>
             </div>
 
