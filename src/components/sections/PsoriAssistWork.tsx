@@ -588,7 +588,8 @@ export function PsoriAssistWork() {
 
         <h1 style={{
           fontSize: isMobile ? '2.5rem' : '4.5rem',
-          fontWeight: '300',
+          fontWeight: '200',
+          letterSpacing: '-0.02em',
           marginBottom: '1.5rem',
           lineHeight: '1.1',
           background: 'linear-gradient(135deg, #FFFFFF 0%, rgba(255, 255, 255, 0.7) 100%)',
@@ -858,8 +859,10 @@ export function PsoriAssistWork() {
         }}>
           <h2 style={{
             fontSize: isMobile ? '1.75rem' : '2.5rem',
-            fontWeight: '700',
-            marginBottom: '1.5rem',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
+          marginBottom: '1.5rem',
             color: 'rgba(255, 255, 255, 0.95)'
           }}>
             The Genesis: Personal Experience as Research
@@ -954,7 +957,7 @@ export function PsoriAssistWork() {
                 }}>
                   <h4 style={{
                     fontSize: '1.1rem',
-                    fontWeight: '600',
+                    fontWeight: '500',
                     color: `rgb(${gap.color})`,
                     marginBottom: '0.75rem'
                   }}>
@@ -990,7 +993,9 @@ export function PsoriAssistWork() {
       <div id="stakeholders" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
-          fontWeight: '700',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
           marginBottom: '1.5rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
@@ -1035,8 +1040,9 @@ export function PsoriAssistWork() {
             </div>
             <h3 style={{
               fontSize: '1.5rem',
-              fontWeight: '600',
-              marginBottom: '1rem',
+          fontWeight: '500',
+          letterSpacing: '0.005em',
+          marginBottom: '1rem',
               color: 'rgba(255, 255, 255, 0.95)'
             }}>
               Dermatologists (n=8)
@@ -1107,8 +1113,9 @@ export function PsoriAssistWork() {
             </div>
             <h3 style={{
               fontSize: '1.5rem',
-              fontWeight: '600',
-              marginBottom: '1rem',
+          fontWeight: '500',
+          letterSpacing: '0.005em',
+          marginBottom: '1rem',
               color: 'rgba(255, 255, 255, 0.95)'
             }}>
               Rheumatologists (n=4)
@@ -1123,7 +1130,7 @@ export function PsoriAssistWork() {
             }}>
               <div style={{
                 fontSize: '3rem',
-                fontWeight: '700',
+                fontWeight: '500',
                 color: 'rgb(239, 68, 68)',
                 marginBottom: '0.5rem'
               }}>
@@ -1177,7 +1184,9 @@ export function PsoriAssistWork() {
       <div id="research" style={{ maxWidth: '1400px', margin: '0 auto 7rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
-          fontWeight: '700',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
           marginBottom: '1.5rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
@@ -1266,7 +1275,7 @@ export function PsoriAssistWork() {
             >
               <div style={{
                 fontSize: '3rem',
-                fontWeight: '700',
+                fontWeight: '500',
                 color: `rgb(${theme.color})`,
                 marginBottom: '0.5rem'
               }}>
@@ -1278,7 +1287,7 @@ export function PsoriAssistWork() {
               </div>
               <h3 style={{
                 fontSize: '1.25rem',
-                fontWeight: '600',
+                fontWeight: '500',
                 marginBottom: '1rem',
                 color: 'rgba(255, 255, 255, 0.95)'
               }}>
@@ -1322,7 +1331,7 @@ export function PsoriAssistWork() {
         }}>
           <h3 style={{
             fontSize: '1.75rem',
-            fontWeight: '600',
+            fontWeight: '500',
             marginBottom: '1rem',
             color: 'rgba(255, 255, 255, 0.95)',
             textAlign: 'center'
@@ -1396,7 +1405,9 @@ export function PsoriAssistWork() {
       <div id="competitors" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
-          fontWeight: '700',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
           marginBottom: '1.5rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
@@ -1480,7 +1491,7 @@ export function PsoriAssistWork() {
               }}>
                 <h3 style={{
                   fontSize: '1.25rem',
-                  fontWeight: '600',
+                  fontWeight: '500',
                   color: 'rgba(255, 255, 255, 0.95)'
                 }}>
                   {app.name}
@@ -1490,7 +1501,7 @@ export function PsoriAssistWork() {
                   borderRadius: '12px',
                   backgroundColor: `rgba(${app.color}, 0.15)`,
                   fontSize: '0.75rem',
-                  fontWeight: '600',
+                  fontWeight: '500',
                   color: `rgb(${app.color})`
                 }}>
                   {app.rating}
@@ -1507,7 +1518,7 @@ export function PsoriAssistWork() {
               <div style={{ marginBottom: '1.25rem' }}>
                 <h4 style={{
                   fontSize: '0.8rem',
-                  fontWeight: '600',
+                  fontWeight: '500',
                   color: 'rgb(80, 200, 120)',
                   marginBottom: '0.75rem',
                   textTransform: 'uppercase',
@@ -1544,7 +1555,7 @@ export function PsoriAssistWork() {
               <div>
                 <h4 style={{
                   fontSize: '0.8rem',
-                  fontWeight: '600',
+                  fontWeight: '500',
                   color: 'rgb(239, 68, 68)',
                   marginBottom: '0.75rem',
                   textTransform: 'uppercase',
@@ -1591,7 +1602,7 @@ export function PsoriAssistWork() {
         }}>
           <h3 style={{
             fontSize: isMobile ? '1.5rem' : '2rem',
-            fontWeight: '600',
+            fontWeight: '500',
             marginBottom: '1.5rem',
             color: 'rgb(251, 191, 36)'
           }}>
@@ -1610,7 +1621,7 @@ export function PsoriAssistWork() {
               <div key={i}>
                 <div style={{
                   fontSize: '2.5rem',
-                  fontWeight: '700',
+                  fontWeight: '500',
                   color: 'rgb(251, 191, 36)',
                   marginBottom: '0.5rem'
                 }}>
@@ -1640,7 +1651,9 @@ export function PsoriAssistWork() {
       <div id="problem" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
-          fontWeight: '700',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
           marginBottom: '3rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
@@ -1670,7 +1683,7 @@ export function PsoriAssistWork() {
               borderRadius: '12px',
               backgroundColor: 'rgba(239, 68, 68, 0.2)',
               fontSize: '0.75rem',
-              fontWeight: '600',
+              fontWeight: '500',
               color: 'rgb(239, 68, 68)',
               textTransform: 'uppercase'
             }}>
@@ -1678,7 +1691,7 @@ export function PsoriAssistWork() {
             </div>
             <h3 style={{
               fontSize: '1.25rem',
-              fontWeight: '600',
+              fontWeight: '500',
               marginBottom: '1rem',
               color: 'rgba(255, 255, 255, 0.95)'
             }}>
@@ -1698,7 +1711,7 @@ export function PsoriAssistWork() {
             textAlign: 'center',
             fontSize: isMobile ? '2rem' : '3rem',
             color: 'rgb(80, 200, 120)',
-            fontWeight: '700'
+            fontWeight: '500'
           }}>
             →
           </div>
@@ -1720,7 +1733,7 @@ export function PsoriAssistWork() {
               borderRadius: '12px',
               backgroundColor: 'rgba(80, 200, 120, 0.2)',
               fontSize: '0.75rem',
-              fontWeight: '600',
+              fontWeight: '500',
               color: 'rgb(80, 200, 120)',
               textTransform: 'uppercase'
             }}>
@@ -1728,7 +1741,7 @@ export function PsoriAssistWork() {
             </div>
             <h3 style={{
               fontSize: '1.25rem',
-              fontWeight: '600',
+              fontWeight: '500',
               marginBottom: '1rem',
               color: 'rgba(255, 255, 255, 0.95)'
             }}>
@@ -1768,7 +1781,9 @@ export function PsoriAssistWork() {
       <div id="principles" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
-          fontWeight: '700',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
           marginBottom: '1.5rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
@@ -1857,7 +1872,7 @@ export function PsoriAssistWork() {
                 </div>
                 <h3 style={{
                   fontSize: '1.25rem',
-                  fontWeight: '600',
+                  fontWeight: '500',
                   marginBottom: '0.75rem',
                   color: `rgb(${p.color})`
                 }}>
@@ -1888,7 +1903,7 @@ export function PsoriAssistWork() {
               }}>
                 <h4 style={{
                   fontSize: '0.9rem',
-                  fontWeight: '600',
+                  fontWeight: '500',
                   color: `rgb(${p.color})`,
                   marginBottom: '1rem',
                   textTransform: 'uppercase',
@@ -1934,7 +1949,9 @@ export function PsoriAssistWork() {
       <div id="personas" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
-          fontWeight: '700',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
           marginBottom: '1.5rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
@@ -1993,7 +2010,7 @@ export function PsoriAssistWork() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontSize: '1.75rem',
-                  fontWeight: '700',
+                  fontWeight: '500',
                   color: `rgb(${persona.color})`,
                   marginBottom: '1rem'
                 }}>
@@ -2001,8 +2018,9 @@ export function PsoriAssistWork() {
                 </div>
                 <h3 style={{
                   fontSize: '1.5rem',
-                  fontWeight: '600',
-                  marginBottom: '0.5rem',
+          fontWeight: '500',
+          letterSpacing: '0.005em',
+          marginBottom: '0.5rem',
                   color: 'rgba(255, 255, 255, 0.95)'
                 }}>
                   {persona.name}, {persona.age}
@@ -2038,7 +2056,7 @@ export function PsoriAssistWork() {
                 <div style={{ marginBottom: '1.25rem' }}>
                   <h4 style={{
                     fontSize: '0.8rem',
-                    fontWeight: '600',
+                    fontWeight: '500',
                     color: 'rgba(255, 255, 255, 0.5)',
                     marginBottom: '0.75rem',
                     textTransform: 'uppercase',
@@ -2075,7 +2093,7 @@ export function PsoriAssistWork() {
                 <div>
                   <h4 style={{
                     fontSize: '0.8rem',
-                    fontWeight: '600',
+                    fontWeight: '500',
                     color: 'rgba(255, 255, 255, 0.5)',
                     marginBottom: '0.75rem',
                     textTransform: 'uppercase',
@@ -2127,7 +2145,7 @@ export function PsoriAssistWork() {
               >
                 <h3 style={{
                   fontSize: '1.25rem',
-                  fontWeight: '600',
+                  fontWeight: '500',
                   marginBottom: '1rem',
                   color: `rgb(${persona.color})`
                 }}>
@@ -2199,7 +2217,9 @@ export function PsoriAssistWork() {
       <div id="process" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
-          fontWeight: '700',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
           marginBottom: '1.5rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
@@ -2291,7 +2311,7 @@ export function PsoriAssistWork() {
                 backgroundColor: `rgba(${stage.color}, 0.15)`,
                 color: `rgb(${stage.color})`,
                 fontSize: '0.85rem',
-                fontWeight: '600',
+                fontWeight: '500',
                 marginBottom: '0.75rem'
               }}>
                 {stage.phase}
@@ -2336,7 +2356,9 @@ export function PsoriAssistWork() {
       <div id="features" style={{ maxWidth: '1400px', margin: '0 auto 7rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
-          fontWeight: '700',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
           marginBottom: '1.5rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
@@ -2420,15 +2442,16 @@ export function PsoriAssistWork() {
                           backgroundColor: `rgba(${feature.color}, 0.15)`,
                           color: `rgb(${feature.color})`,
                           fontSize: '0.75rem',
-                          fontWeight: '600',
+                          fontWeight: '500',
                           marginBottom: '0.5rem'
                         }}>
                           {feature.priority} HAVE
                         </div>
                         <h3 style={{
                           fontSize: '1.5rem',
-                          fontWeight: '600',
-                          marginBottom: '0.25rem',
+          fontWeight: '500',
+          letterSpacing: '0.005em',
+          marginBottom: '0.25rem',
                           color: 'rgba(255, 255, 255, 0.95)'
                         }}>
                           {feature.title}
@@ -2490,7 +2513,7 @@ export function PsoriAssistWork() {
                           }}>
                             <div style={{
                               fontSize: '0.85rem',
-                              fontWeight: '600',
+                              fontWeight: '500',
                               color: 'rgba(255, 255, 255, 0.6)',
                               marginBottom: '0.5rem',
                               textTransform: 'uppercase',
@@ -2554,7 +2577,9 @@ export function PsoriAssistWork() {
       <div id="testing" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
-          fontWeight: '700',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
           marginBottom: '1.5rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
@@ -2597,7 +2622,7 @@ export function PsoriAssistWork() {
                 <div>
                   <h3 style={{
                     fontSize: '1.25rem',
-                    fontWeight: '600',
+                    fontWeight: '500',
                     marginBottom: '0.5rem',
                     color: 'rgba(255, 255, 255, 0.95)'
                   }}>
@@ -2663,7 +2688,7 @@ export function PsoriAssistWork() {
                 }}>
                   <div style={{
                     fontSize: '3rem',
-                    fontWeight: '700',
+                    fontWeight: '500',
                     color: 'rgb(80, 200, 120)',
                     marginBottom: '0.25rem'
                   }}>
@@ -2690,7 +2715,7 @@ export function PsoriAssistWork() {
         }}>
           <h3 style={{
             fontSize: isMobile ? '1.5rem' : '2rem',
-            fontWeight: '600',
+            fontWeight: '500',
             marginBottom: '2rem',
             color: 'rgba(255, 255, 255, 0.95)'
           }}>
@@ -2710,7 +2735,7 @@ export function PsoriAssistWork() {
               <div key={i}>
                 <div style={{
                   fontSize: '2rem',
-                  fontWeight: '700',
+                  fontWeight: '500',
                   color: 'rgb(80, 200, 120)',
                   marginBottom: '0.5rem'
                 }}>
@@ -2740,7 +2765,9 @@ export function PsoriAssistWork() {
       <div id="design-system" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
-          fontWeight: '700',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
           marginBottom: '1.5rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
@@ -2762,8 +2789,9 @@ export function PsoriAssistWork() {
         <div style={{ marginBottom: '3rem' }}>
           <h3 style={{
             fontSize: '1.5rem',
-            fontWeight: '600',
-            marginBottom: '1.5rem',
+          fontWeight: '500',
+          letterSpacing: '0.005em',
+          marginBottom: '1.5rem',
             color: 'rgba(255, 255, 255, 0.95)'
           }}>
             Color Palette
@@ -2807,7 +2835,7 @@ export function PsoriAssistWork() {
                 }} />
                 <h4 style={{
                   fontSize: '1rem',
-                  fontWeight: '600',
+                  fontWeight: '500',
                   color: color.hex,
                   marginBottom: '0.5rem'
                 }}>
@@ -2844,8 +2872,9 @@ export function PsoriAssistWork() {
         <div style={{ marginBottom: '3rem' }}>
           <h3 style={{
             fontSize: '1.5rem',
-            fontWeight: '600',
-            marginBottom: '1.5rem',
+          fontWeight: '500',
+          letterSpacing: '0.005em',
+          marginBottom: '1.5rem',
             color: 'rgba(255, 255, 255, 0.95)'
           }}>
             Typography Scale
@@ -2906,8 +2935,9 @@ export function PsoriAssistWork() {
         <div>
           <h3 style={{
             fontSize: '1.5rem',
-            fontWeight: '600',
-            marginBottom: '1.5rem',
+          fontWeight: '500',
+          letterSpacing: '0.005em',
+          marginBottom: '1.5rem',
             color: 'rgba(255, 255, 255, 0.95)'
           }}>
             Component Library
@@ -2950,7 +2980,7 @@ export function PsoriAssistWork() {
               >
                 <h4 style={{
                   fontSize: '1.1rem',
-                  fontWeight: '600',
+                  fontWeight: '500',
                   color: `rgb(${comp.color})`,
                   marginBottom: '1rem'
                 }}>
@@ -2990,7 +3020,9 @@ export function PsoriAssistWork() {
       <div id="flows" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
-          fontWeight: '700',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
           marginBottom: '1.5rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
@@ -3065,8 +3097,9 @@ export function PsoriAssistWork() {
             >
               <h3 style={{
                 fontSize: '1.5rem',
-                fontWeight: '600',
-                marginBottom: '2rem',
+          fontWeight: '500',
+          letterSpacing: '0.005em',
+          marginBottom: '2rem',
                 color: `rgb(${flow.color})`
               }}>
                 {flow.title}
@@ -3103,7 +3136,7 @@ export function PsoriAssistWork() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       fontSize: '1rem',
-                      fontWeight: '700',
+                      fontWeight: '500',
                       color: `rgb(${flow.color})`,
                       flexShrink: 0,
                       zIndex: 1
@@ -3143,7 +3176,9 @@ export function PsoriAssistWork() {
       <div id="technical" style={{ maxWidth: '1400px', margin: '0 auto 7rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
-          fontWeight: '700',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
           marginBottom: '1.5rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
@@ -3210,8 +3245,9 @@ export function PsoriAssistWork() {
         <div style={{ marginBottom: '3rem' }}>
           <h3 style={{
             fontSize: '1.5rem',
-            fontWeight: '600',
-            marginBottom: '1.5rem',
+          fontWeight: '500',
+          letterSpacing: '0.005em',
+          marginBottom: '1.5rem',
             color: 'rgba(255, 255, 255, 0.95)'
           }}>
             AI/ML Pipeline
@@ -3259,7 +3295,7 @@ export function PsoriAssistWork() {
               >
                 <h4 style={{
                   fontSize: '1.25rem',
-                  fontWeight: '600',
+                  fontWeight: '500',
                   color: `rgb(${ml.color})`,
                   marginBottom: '1.5rem'
                 }}>
@@ -3298,7 +3334,7 @@ export function PsoriAssistWork() {
                 }}>
                   <div style={{
                     fontSize: '0.8rem',
-                    fontWeight: '600',
+                    fontWeight: '500',
                     color: 'rgba(255, 255, 255, 0.6)',
                     marginBottom: '0.5rem',
                     textTransform: 'uppercase'
@@ -3322,8 +3358,9 @@ export function PsoriAssistWork() {
         <div>
           <h3 style={{
             fontSize: '1.5rem',
-            fontWeight: '600',
-            marginBottom: '1.5rem',
+          fontWeight: '500',
+          letterSpacing: '0.005em',
+          marginBottom: '1.5rem',
             color: 'rgba(255, 255, 255, 0.95)'
           }}>
             Security & HIPAA Compliance
@@ -3378,7 +3415,7 @@ export function PsoriAssistWork() {
                   </div>
                   <h4 style={{
                     fontSize: '1.1rem',
-                    fontWeight: '600',
+                    fontWeight: '500',
                     color: `rgb(${sec.color})`,
                     marginBottom: '1rem'
                   }}>
@@ -3419,7 +3456,9 @@ export function PsoriAssistWork() {
       <div id="impact" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
-          fontWeight: '700',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
           marginBottom: '3rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
@@ -3431,7 +3470,7 @@ export function PsoriAssistWork() {
         <div style={{ marginBottom: '3rem' }}>
           <h3 style={{
             fontSize: isMobile ? '1.5rem' : '2rem',
-            fontWeight: '600',
+            fontWeight: '500',
             marginBottom: '2rem',
             textAlign: 'center',
             color: 'rgba(255, 255, 255, 0.95)'
@@ -3463,7 +3502,7 @@ export function PsoriAssistWork() {
                 <div style={{
                   marginTop: '1rem',
                   fontSize: '1.75rem',
-                  fontWeight: '700',
+                  fontWeight: '500',
                   color: 'rgb(251, 191, 36)'
                 }}>
                   $27.20B
@@ -3488,7 +3527,7 @@ export function PsoriAssistWork() {
                 <div style={{
                   marginTop: '1rem',
                   fontSize: '1.75rem',
-                  fontWeight: '700',
+                  fontWeight: '500',
                   color: 'rgb(80, 200, 120)'
                 }}>
                   $4.4-14.1B
@@ -3513,7 +3552,7 @@ export function PsoriAssistWork() {
                 <div style={{
                   marginTop: '1rem',
                   fontSize: '1.75rem',
-                  fontWeight: '700',
+                  fontWeight: '500',
                   color: 'rgb(74, 144, 226)'
                 }}>
                   $220-705M
@@ -3535,7 +3574,7 @@ export function PsoriAssistWork() {
             }}>
               <h4 style={{
                 fontSize: '1rem',
-                fontWeight: '600',
+                fontWeight: '500',
                 color: 'rgba(255, 255, 255, 0.9)',
                 marginBottom: '1rem'
               }}>
@@ -3563,13 +3602,13 @@ export function PsoriAssistWork() {
                       fontSize: '0.75rem',
                       color: 'rgba(255, 255, 255, 0.6)',
                       marginBottom: '0.5rem',
-                      fontWeight: '600'
+                      fontWeight: '500'
                     }}>
                       {y.year}
                     </div>
                     <div style={{
                       fontSize: '1.25rem',
-                      fontWeight: '700',
+                      fontWeight: '500',
                       color: 'rgb(251, 191, 36)',
                       marginBottom: '0.25rem'
                     }}>
@@ -3627,8 +3666,9 @@ export function PsoriAssistWork() {
             >
               <h3 style={{
                 fontSize: '1.5rem',
-                fontWeight: '600',
-                marginBottom: '1.5rem',
+          fontWeight: '500',
+          letterSpacing: '0.005em',
+          marginBottom: '1.5rem',
                 color: 'rgba(255, 255, 255, 0.95)'
               }}>
                 {section.title}
@@ -3646,7 +3686,7 @@ export function PsoriAssistWork() {
                   >
                     <div style={{
                       fontSize: '1rem',
-                      fontWeight: '600',
+                      fontWeight: '500',
                       color: `rgb(${metric.color})`,
                       marginBottom: '0.25rem'
                     }}>
@@ -3675,7 +3715,7 @@ export function PsoriAssistWork() {
         }}>
           <h3 style={{
             fontSize: isMobile ? '1.5rem' : '2rem',
-            fontWeight: '600',
+            fontWeight: '500',
             marginBottom: '1rem',
             color: 'rgba(255, 255, 255, 0.95)'
           }}>
@@ -3704,7 +3744,7 @@ export function PsoriAssistWork() {
               <div key={i}>
                 <div style={{
                   fontSize: '2rem',
-                  fontWeight: '700',
+                  fontWeight: '500',
                   color: 'rgb(74, 144, 226)',
                   marginBottom: '0.5rem'
                 }}>
@@ -3741,7 +3781,9 @@ export function PsoriAssistWork() {
       <div style={{ maxWidth: '1400px', margin: '0 auto 8rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
-          fontWeight: '700',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
           marginBottom: '1.5rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
@@ -3793,8 +3835,10 @@ export function PsoriAssistWork() {
         }}>
           <h2 style={{
             fontSize: isMobile ? '2rem' : '3rem',
-            fontWeight: '700',
-            marginBottom: '1.5rem',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
+          marginBottom: '1.5rem',
             color: 'rgba(255, 255, 255, 0.95)'
           }}>
             Personal Reflection
@@ -3852,7 +3896,9 @@ export function PsoriAssistWork() {
       <div id="learnings" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
-          fontWeight: '700',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
           marginBottom: '3rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
@@ -3864,8 +3910,9 @@ export function PsoriAssistWork() {
         <div style={{ marginBottom: '3rem' }}>
           <h3 style={{
             fontSize: '1.5rem',
-            fontWeight: '600',
-            marginBottom: '1.5rem',
+          fontWeight: '500',
+          letterSpacing: '0.005em',
+          marginBottom: '1.5rem',
             color: 'rgb(80, 200, 120)'
           }}>
             What Worked Well
@@ -3916,7 +3963,7 @@ export function PsoriAssistWork() {
                 </div>
                 <h4 style={{
                   fontSize: '1.1rem',
-                  fontWeight: '600',
+                  fontWeight: '500',
                   color: 'rgb(80, 200, 120)',
                   marginBottom: '0.75rem'
                 }}>
@@ -3939,8 +3986,9 @@ export function PsoriAssistWork() {
         <div style={{ marginBottom: '3rem' }}>
           <h3 style={{
             fontSize: '1.5rem',
-            fontWeight: '600',
-            marginBottom: '1.5rem',
+          fontWeight: '500',
+          letterSpacing: '0.005em',
+          marginBottom: '1.5rem',
             color: 'rgb(251, 191, 36)'
           }}>
             Challenges & How I Addressed Them
@@ -3994,7 +4042,7 @@ export function PsoriAssistWork() {
                   <div>
                     <h4 style={{
                       fontSize: '1.1rem',
-                      fontWeight: '600',
+                      fontWeight: '500',
                       color: `rgb(${item.color})`,
                       marginBottom: '0.75rem'
                     }}>
@@ -4008,7 +4056,7 @@ export function PsoriAssistWork() {
                     }}>
                       <div style={{
                         fontSize: '0.8rem',
-                        fontWeight: '600',
+                        fontWeight: '500',
                         color: 'rgb(239, 68, 68)',
                         marginBottom: '0.5rem',
                         textTransform: 'uppercase'
@@ -4027,7 +4075,7 @@ export function PsoriAssistWork() {
                   <div style={{
                     fontSize: '2rem',
                     color: `rgb(${item.color})`,
-                    fontWeight: '700'
+                    fontWeight: '500'
                   }}>
                     →
                   </div>
@@ -4039,7 +4087,7 @@ export function PsoriAssistWork() {
                   }}>
                     <div style={{
                       fontSize: '0.8rem',
-                      fontWeight: '600',
+                      fontWeight: '500',
                       color: 'rgb(80, 200, 120)',
                       marginBottom: '0.5rem',
                       textTransform: 'uppercase'
@@ -4064,8 +4112,9 @@ export function PsoriAssistWork() {
         <div>
           <h3 style={{
             fontSize: '1.5rem',
-            fontWeight: '600',
-            marginBottom: '1.5rem',
+          fontWeight: '500',
+          letterSpacing: '0.005em',
+          marginBottom: '1.5rem',
             color: 'rgb(168, 85, 247)'
           }}>
             What I'd Do Differently
@@ -4112,7 +4161,7 @@ export function PsoriAssistWork() {
                 </div>
                 <h4 style={{
                   fontSize: '1.1rem',
-                  fontWeight: '600',
+                  fontWeight: '500',
                   color: 'rgb(168, 85, 247)',
                   marginBottom: '0.75rem'
                 }}>
@@ -4136,7 +4185,9 @@ export function PsoriAssistWork() {
       <div id="roadmap" style={{ maxWidth: '1400px', margin: '0 auto 10rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
-          fontWeight: '700',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
           marginBottom: '1.5rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
@@ -4216,7 +4267,7 @@ export function PsoriAssistWork() {
                 borderRadius: '12px',
                 backgroundColor: `rgba(${phase.color}, 0.2)`,
                 fontSize: '0.75rem',
-                fontWeight: '600',
+                fontWeight: '500',
                 color: `rgb(${phase.color})`,
                 textTransform: 'uppercase'
               }}>
@@ -4224,7 +4275,7 @@ export function PsoriAssistWork() {
               </div>
               <h3 style={{
                 fontSize: '1.5rem',
-                fontWeight: '600',
+                fontWeight: '500',
                 color: `rgb(${phase.color})`,
                 marginBottom: '2rem'
               }}>
@@ -4265,7 +4316,9 @@ export function PsoriAssistWork() {
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         <h2 style={{
           fontSize: isMobile ? '1.75rem' : '2.5rem',
-          fontWeight: '700',
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          lineHeight: '1.3',
           marginBottom: '3rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
@@ -4330,8 +4383,9 @@ export function PsoriAssistWork() {
                     </div>
                     <h3 style={{
                       fontSize: '1.5rem',
-                      fontWeight: '600',
-                      marginBottom: '0.75rem',
+          fontWeight: '500',
+          letterSpacing: '0.005em',
+          marginBottom: '0.75rem',
                       color: 'rgba(255, 255, 255, 0.95)'
                     }}>
                       {project.title}
