@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { MousePointer2, ArrowDown, Check, ChevronDown, ExternalLink, Image as ImageIcon } from 'lucide-react';
+import { MousePointer2, ArrowDown, ExternalLink } from 'lucide-react';
 import { timelineMilestones, iconMap } from '@/data/timeline';
 import Image from 'next/image';
 import { useScrollProgress } from '@/hooks/useScrollProgress';
@@ -21,7 +21,6 @@ export function JourneyTimeline() {
   const [visibleMilestones, setVisibleMilestones] = useState<Set<number>>(new Set());
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState(0);
-  const [expandedMilestones, setExpandedMilestones] = useState<Set<number>>(new Set());
   const [cardHovers, setCardHovers] = useState<Record<number, boolean>>({});
   const milestonesRef = useRef<(HTMLElement | null)[]>([]);
   const heroRef = useRef<HTMLDivElement>(null);
@@ -232,18 +231,6 @@ export function JourneyTimeline() {
     setCardHovers(prev => ({ ...prev, [index]: false }));
   };
 
-  const toggleMilestone = (index: number) => {
-    setExpandedMilestones(prev => {
-      const next = new Set(prev);
-      if (next.has(index)) {
-        next.delete(index);
-      } else {
-        next.add(index);
-      }
-      return next;
-    });
-  };
-
   return (
     <div ref={containerRef} style={{
       minHeight: '100vh',
@@ -279,11 +266,41 @@ export function JourneyTimeline() {
         position: 'relative',
         padding: '2rem',
       }}>
+        {/* Badge */}
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          padding: '0.5rem 1rem',
+          borderRadius: '12px',
+          background: 'rgba(255, 255, 255, 0.04)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          marginBottom: '1.5rem',
+          fontSize: '0.875rem',
+          color: 'var(--text-secondary)',
+          letterSpacing: '0.05em',
+        }}>
+          <span style={{
+            width: '6px',
+            height: '6px',
+            borderRadius: '50%',
+            background: 'rgba(218, 14, 41, 0.8)',
+            boxShadow: '0 0 8px rgba(218, 14, 41, 0.5)',
+            animation: 'pulse 2s ease-in-out infinite',
+          }} />
+          The Journey
+        </div>
+
         <h1 style={{
           fontSize: 'clamp(2.5rem, 8vw, 5rem)',
           fontWeight: '200',
           letterSpacing: '-0.03em',
-          color: 'var(--text-primary)',
+          background: 'linear-gradient(135deg, var(--text-primary) 0%, rgba(255, 255, 255, 0.7) 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
           marginBottom: '1.5rem',
           textAlign: 'center',
         }}>
@@ -297,9 +314,38 @@ export function JourneyTimeline() {
           textAlign: 'center',
           maxWidth: '600px',
           lineHeight: '1.7',
+          marginBottom: '2rem',
         }}>
           From curiosity to craft—designing systems that serve people
         </p>
+
+        {/* Stats Counter */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 'clamp(1rem, 2vw, 2rem)',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
+          color: 'var(--text-muted)',
+          letterSpacing: '0.05em',
+        }}>
+          <span>10 Milestones</span>
+          <span style={{
+            width: '4px',
+            height: '4px',
+            borderRadius: '50%',
+            background: 'rgba(255, 255, 255, 0.3)',
+          }} />
+          <span>19 Years</span>
+          <span style={{
+            width: '4px',
+            height: '4px',
+            borderRadius: '50%',
+            background: 'rgba(255, 255, 255, 0.3)',
+          }} />
+          <span>∞ Curiosity</span>
+        </div>
 
         {/* Scroll Indicator */}
         <div data-scroll-indicator style={{
@@ -326,6 +372,7 @@ export function JourneyTimeline() {
             style={{
               color: 'var(--text-muted)',
               animation: 'scrollBounce 2s ease-in-out infinite',
+              filter: 'drop-shadow(0 0 8px rgba(218, 14, 41, 0.3))',
             }}
           />
         </div>
@@ -370,15 +417,6 @@ export function JourneyTimeline() {
           const isActive = activeSection === index;
           const isPast = visibleMilestones.has(index) && activeSection > index;
           const isHovered = cardHovers[index] || false;
-          const isExpanded = expandedMilestones.has(index);
-
-          // Count expandable items for better label
-          const expandableCount = [
-            (milestone.achievements?.length ?? 0) > 0,
-            (milestone.metrics?.length ?? 0) > 0,
-            milestone.media || (milestone.artifacts?.length ?? 0) > 0,
-            milestone.details
-          ].filter(Boolean).length;
 
           return (
             <article
@@ -445,6 +483,7 @@ export function JourneyTimeline() {
                     role="article"
                     aria-label={`${milestone.title} - ${milestone.year}`}
                     style={{
+                      position: 'relative',
                       background: isActive
                         ? `linear-gradient(135deg, rgba(10, 10, 10, 0.12), rgba(10, 10, 10, 0.08))`
                         : isHovered
@@ -454,74 +493,144 @@ export function JourneyTimeline() {
                       WebkitBackdropFilter: `blur(120px) saturate(120%) brightness(1.05)`,
                       border: `1px solid ${isActive ? 'rgba(255, 255, 255, 0.20)' : isHovered ? 'rgba(255, 255, 255, 0.14)' : 'rgba(255, 255, 255, 0.10)'}`,
                       borderRadius: '24px',
-                      padding: 'clamp(1.5rem, 3vw, 2.5rem)',
+                      padding: 0,
+                      overflow: 'hidden',
                       boxShadow: isHovered
                         ? `0 8px 32px rgba(0, 0, 0, 0.4),
                            inset 0 1px 1px rgba(255, 255, 255, 0.05)`
                         : isActive
                         ? `0 8px 32px rgba(0, 0, 0, 0.4)`
                         : '0 8px 32px rgba(0, 0, 0, 0.3)',
-                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                      transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                       transform: isHovered ? 'scale(1.01)' : 'scale(1)',
                       cursor: 'pointer',
                     }}
                   >
-                    <span data-year style={{
-                      display: 'inline-block',
-                      fontSize: '0.75rem',
-                      color: 'var(--text-muted)',
-                      letterSpacing: '0.1em',
-                      textTransform: 'uppercase',
-                      marginBottom: '1.5rem',
+                    {/* Cover Image Area */}
+                    <div style={{
+                      position: 'relative',
+                      width: '100%',
+                      height: 'clamp(200px, 25vw, 280px)',
+                      background: milestone.coverGradient
+                        ? `linear-gradient(135deg, ${milestone.coverGradient[0]}, ${milestone.coverGradient[1]})`
+                        : `linear-gradient(135deg, ${milestone.brandColor}40, ${milestone.brandColor}20)`,
+                      overflow: 'hidden',
+                      transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                      transform: isHovered ? 'scale(1.02)' : 'scale(1)',
+                      transformOrigin: 'center',
                     }}>
-                      {milestone.year}
-                    </span>
+                      {/* Dual Gradient Overlays */}
+                      <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: `
+                          linear-gradient(
+                            to bottom,
+                            transparent 0%,
+                            transparent 40%,
+                            rgba(0, 0, 0, 0.6) 80%,
+                            rgba(0, 0, 0, 0.85) 100%
+                          ),
+                          linear-gradient(
+                            135deg,
+                            ${milestone.brandColor}30 0%,
+                            ${milestone.brandColor}15 30%,
+                            transparent 60%
+                          )
+                        `,
+                      }} />
 
-                    <div data-icon style={{
-                      marginBottom: '1.5rem',
-                    }}>
-                      {milestone.logoFile ? (
-                        <div style={{
-                          width: 'clamp(72px, 8vw, 96px)',
-                          height: 'clamp(72px, 8vw, 96px)',
-                          padding: '16px',
-                          borderRadius: '16px',
-                          background: milestone.logoFile === 'bfa.jpeg'
-                            ? 'rgba(255, 255, 255, 0.15)'
-                            : 'rgba(255, 255, 255, 0.10)',
-                          backdropFilter: 'blur(20px) saturate(140%)',
-                          border: `1px solid rgba(255, 255, 255, ${milestone.logoFile === 'bfa.jpeg' ? '0.20' : '0.18'})`,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          boxShadow: milestone.logoFile === 'bfa.jpeg'
-                            ? 'inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.2)'
-                            : '0 4px 16px rgba(0, 0, 0, 0.2)',
-                          transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                        }}>
-                          <Image
-                            src={`/logos/${milestone.logoFile}`}
-                            alt={milestone.organization || milestone.title}
-                            width={64}
-                            height={64}
-                            style={{
-                              objectFit: 'contain',
-                              width: '100%',
-                              height: 'auto',
-                            }}
-                          />
-                        </div>
-                      ) : (
-                        <IconComponent
-                          size={32}
-                          style={{
-                            color: 'rgba(218, 14, 41, 0.8)',
-                            filter: 'drop-shadow(0 0 10px rgba(218, 14, 41, 0.3))',
-                          }}
-                        />
-                      )}
+                      {/* Year Badge - Top Left */}
+                      <span data-year style={{
+                        position: 'absolute',
+                        top: '16px',
+                        left: '16px',
+                        padding: '8px 16px',
+                        borderRadius: '12px',
+                        background: 'rgba(0, 0, 0, 0.4)',
+                        backdropFilter: 'blur(20px)',
+                        WebkitBackdropFilter: 'blur(20px)',
+                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                        fontSize: '0.75rem',
+                        color: 'rgba(255, 255, 255, 0.9)',
+                        fontWeight: 600,
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                        zIndex: 2,
+                      }}>
+                        {milestone.year}
+                      </span>
+
+                      {/* Logo - Bottom Left Overlap */}
+                      <div data-icon style={{
+                        position: 'absolute',
+                        bottom: '-10px',
+                        left: '24px',
+                        zIndex: 3,
+                        transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                        transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
+                      }}>
+                        {milestone.logoFile ? (
+                          <div style={{
+                            width: 'clamp(72px, 8vw, 96px)',
+                            height: 'clamp(72px, 8vw, 96px)',
+                            padding: '16px',
+                            borderRadius: '20px',
+                            background: milestone.logoFile === 'bfa.jpeg'
+                              ? 'rgba(255, 255, 255, 0.15)'
+                              : 'rgba(255, 255, 255, 0.12)',
+                            backdropFilter: 'blur(40px) saturate(150%)',
+                            WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                            border: `2px solid rgba(255, 255, 255, ${milestone.logoFile === 'bfa.jpeg' ? '0.20' : '0.18'})`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: `0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05)`,
+                            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                          }}>
+                            <Image
+                              src={`/logos/${milestone.logoFile}`}
+                              alt={milestone.organization || milestone.title}
+                              width={64}
+                              height={64}
+                              style={{
+                                objectFit: 'contain',
+                                width: '100%',
+                                height: 'auto',
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <div style={{
+                            width: 'clamp(72px, 8vw, 96px)',
+                            height: 'clamp(72px, 8vw, 96px)',
+                            borderRadius: '20px',
+                            background: 'rgba(255, 255, 255, 0.12)',
+                            backdropFilter: 'blur(40px) saturate(150%)',
+                            WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                            border: '2px solid rgba(255, 255, 255, 0.18)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+                          }}>
+                            <IconComponent
+                              size={32}
+                              style={{
+                                color: milestone.brandColor,
+                                filter: `drop-shadow(0 0 10px ${milestone.brandColor}50)`,
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
                     </div>
 
+                    {/* Card Body - Adjusted for logo overlap */}
+                    <div style={{
+                      padding: 'clamp(1.5rem, 3vw, 2.5rem)',
+                      paddingTop: 'clamp(2.5rem, 4vw, 3.5rem)', // Extra padding for logo overlap
+                    }}>
                     <h3 style={{
                       fontSize: '1.5rem',
                       fontWeight: '500',
@@ -596,228 +705,6 @@ export function JourneyTimeline() {
                     }}>
                       {milestone.description}
                     </p>
-
-                    {/* Expandable Details Section */}
-                    {expandableCount > 0 && (
-                      <>
-                        <button
-                          onClick={() => toggleMilestone(index)}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault();
-                              toggleMilestone(index);
-                            }
-                          }}
-                          aria-expanded={isExpanded}
-                          aria-controls={`milestone-details-${index}`}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            marginBottom: isExpanded ? '1.5rem' : '1rem',
-                            background: 'rgba(255, 255, 255, 0.04)',
-                            border: '1px solid rgba(255, 255, 255, 0.12)',
-                            borderRadius: '10px',
-                            padding: '0.875rem 1.25rem',
-                            color: 'var(--text-secondary)',
-                            cursor: 'pointer',
-                            fontSize: '0.9rem',
-                            transition: 'all 0.3s ease',
-                            width: '100%',
-                            justifyContent: 'space-between',
-                            fontWeight: '500',
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
-                            e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.4)';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
-                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-                          }}
-                        >
-                          <span>{isExpanded ? 'Hide' : 'View'} Details {expandableCount > 0 && `(${expandableCount} items)`}</span>
-                          <ChevronDown size={18} style={{
-                            transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)',
-                            transition: 'transform 0.3s ease',
-                          }} />
-                        </button>
-
-                        {isExpanded && (
-                          <div id={`milestone-details-${index}`} style={{
-                            marginBottom: '1.5rem',
-                          }}>
-                            {/* Achievements */}
-                            {milestone.achievements && milestone.achievements.length > 0 && (
-                              <ul style={{
-                                marginBottom: '1.5rem',
-                                listStyle: 'none',
-                                padding: 0,
-                              }}>
-                                {milestone.achievements.map((achievement, idx) => (
-                                  <li key={idx} style={{
-                                    display: 'flex',
-                                    gap: '0.75rem',
-                                    marginBottom: '0.75rem',
-                                    alignItems: 'flex-start',
-                                  }}>
-                                    <Check size={16} style={{
-                                      color: 'rgba(218, 14, 41, 0.8)',
-                                      flexShrink: 0,
-                                      marginTop: '0.2rem',
-                                    }} />
-                                    <span style={{
-                                      fontSize: '0.9rem',
-                                      color: 'var(--text-secondary)',
-                                      lineHeight: '1.6',
-                                    }}>
-                                      {achievement}
-                                    </span>
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-
-                            {/* Metrics Grid */}
-                            {milestone.metrics && milestone.metrics.length > 0 && (
-                              <div className="journey-metrics-grid" style={{
-                                display: 'grid',
-                                gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
-                                gap: '1rem',
-                                marginBottom: '1.5rem',
-                              }}>
-                                {milestone.metrics.map((metric, idx) => (
-                                  <div key={idx} style={{
-                                    background: 'rgba(255, 255, 255, 0.04)',
-                                    borderRadius: '12px',
-                                    padding: '1rem',
-                                    textAlign: 'center',
-                                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                                  }}>
-                                    <div style={{
-                                      fontSize: '1.5rem',
-                                      fontWeight: '600',
-                                      color: 'rgba(218, 14, 41, 0.9)',
-                                      marginBottom: '0.25rem',
-                                    }}>
-                                      {metric.value}
-                                    </div>
-                                    <div style={{
-                                      fontSize: '0.75rem',
-                                      color: 'var(--text-muted)',
-                                      textTransform: 'uppercase',
-                                      letterSpacing: '0.05em',
-                                    }}>
-                                      {metric.label}
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-
-                            {/* Media Placeholder */}
-                            {milestone.media ? (
-                              <div style={{
-                                position: 'relative',
-                                width: '100%',
-                                aspectRatio: '4/3',
-                                marginBottom: '1.5rem',
-                                borderRadius: '16px',
-                                overflow: 'hidden',
-                                background: 'rgba(255, 255, 255, 0.03)',
-                              }}>
-                                <Image
-                                  src={milestone.media}
-                                  alt={milestone.title}
-                                  fill
-                                  style={{ objectFit: 'cover' }}
-                                  onError={(e) => {
-                                    e.currentTarget.style.display = 'none';
-                                  }}
-                                />
-                              </div>
-                            ) : (
-                              <div style={{
-                                width: '100%',
-                                aspectRatio: '4/3',
-                                background: `linear-gradient(135deg, rgba(218, 14, 41, ${index * 0.05 + 0.05}), rgba(255, 255, 255, 0.05))`,
-                                borderRadius: '16px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                marginBottom: '1.5rem',
-                                border: '1px solid rgba(255, 255, 255, 0.08)',
-                              }}>
-                                <ImageIcon size={48} style={{ color: 'rgba(255, 255, 255, 0.2)' }} />
-                              </div>
-                            )}
-
-                            {/* Artifact Gallery */}
-                            {milestone.artifacts && milestone.artifacts.length > 0 && (
-                              <div className="journey-artifact-gallery" style={{
-                                display: 'flex',
-                                gap: '0.75rem',
-                                overflowX: 'auto',
-                                marginBottom: '1.5rem',
-                                padding: '0.5rem 0',
-                                scrollbarWidth: 'thin',
-                              }}>
-                                {milestone.artifacts.map((artifact, idx) => (
-                                  <div key={idx} className="journey-artifact-item" style={{
-                                    minWidth: '140px',
-                                    aspectRatio: '4/3',
-                                    background: `linear-gradient(135deg, rgba(218, 14, 41, ${0.08 - idx * 0.02}), rgba(255, 255, 255, 0.05))`,
-                                    borderRadius: '12px',
-                                    cursor: 'pointer',
-                                    border: '1px solid rgba(255, 255, 255, 0.08)',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    padding: '1rem',
-                                    transition: 'all 0.3s ease',
-                                  }}
-                                  onMouseEnter={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(-4px)';
-                                    e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
-                                  }}
-                                  onMouseLeave={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(0)';
-                                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-                                  }}
-                                  >
-                                    <ImageIcon size={24} style={{ color: 'rgba(255, 255, 255, 0.3)', marginBottom: '0.5rem' }} />
-                                    <span style={{
-                                      fontSize: '0.7rem',
-                                      color: 'var(--text-muted)',
-                                      textAlign: 'center',
-                                      lineHeight: '1.3',
-                                    }}>
-                                      {artifact.caption}
-                                    </span>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-
-                            {/* Full Story */}
-                            {milestone.details && (
-                              <div style={{
-                                fontSize: '0.95rem',
-                                color: 'var(--text-secondary)',
-                                lineHeight: '1.8',
-                                padding: '1.5rem',
-                                background: 'rgba(255, 255, 255, 0.03)',
-                                borderRadius: '12px',
-                                border: '1px solid rgba(255, 255, 255, 0.08)',
-                              }}>
-                                {milestone.details}
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </>
-                    )}
 
                     <div data-tags style={{
                       display: 'flex',
@@ -896,6 +783,7 @@ export function JourneyTimeline() {
                         }} />
                       </Link>
                     )}
+                    </div>
                   </div>
                 )}
               </div>
@@ -932,6 +820,7 @@ export function JourneyTimeline() {
                     role="article"
                     aria-label={`${milestone.title} - ${milestone.year}`}
                     style={{
+                      position: 'relative',
                       background: isActive
                         ? `linear-gradient(135deg, rgba(10, 10, 10, 0.12), rgba(10, 10, 10, 0.08))`
                         : isHovered
@@ -941,44 +830,147 @@ export function JourneyTimeline() {
                       WebkitBackdropFilter: `blur(120px) saturate(120%) brightness(1.05)`,
                       border: `1px solid ${isActive ? 'rgba(255, 255, 255, 0.20)' : isHovered ? 'rgba(255, 255, 255, 0.14)' : 'rgba(255, 255, 255, 0.10)'}`,
                       borderRadius: '24px',
-                      padding: 'clamp(1.5rem, 3vw, 2.5rem)',
+                      padding: 0,
+                      overflow: 'hidden',
                       boxShadow: isHovered
                         ? `0 8px 32px rgba(0, 0, 0, 0.4),
                            inset 0 1px 1px rgba(255, 255, 255, 0.05)`
                         : isActive
                         ? `0 8px 32px rgba(0, 0, 0, 0.4)`
                         : '0 8px 32px rgba(0, 0, 0, 0.3)',
-                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                      transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                       transform: isHovered ? 'scale(1.01)' : 'scale(1)',
                       cursor: 'pointer',
                     }}
                   >
+                    {/* Cover Image Area */}
+                    <div style={{
+                      position: 'relative',
+                      width: '100%',
+                      height: 'clamp(200px, 25vw, 280px)',
+                      background: milestone.coverGradient
+                        ? `linear-gradient(135deg, ${milestone.coverGradient[0]}, ${milestone.coverGradient[1]})`
+                        : `linear-gradient(135deg, ${milestone.brandColor}40, ${milestone.brandColor}20)`,
+                      overflow: 'hidden',
+                      transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                      transform: isHovered ? 'scale(1.02)' : 'scale(1)',
+                      transformOrigin: 'center',
+                    }}>
+                      {/* Dual Gradient Overlays */}
+                      <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: `
+                          linear-gradient(
+                            to bottom,
+                            transparent 0%,
+                            transparent 40%,
+                            rgba(0, 0, 0, 0.6) 80%,
+                            rgba(0, 0, 0, 0.85) 100%
+                          ),
+                          linear-gradient(
+                            135deg,
+                            ${milestone.brandColor}30 0%,
+                            ${milestone.brandColor}15 30%,
+                            transparent 60%
+                          )
+                        `,
+                      }} />
+
+                      {/* Year Badge - Top Left */}
+                      <span data-year style={{
+                        position: 'absolute',
+                        top: '16px',
+                        left: '16px',
+                        padding: '8px 16px',
+                        borderRadius: '12px',
+                        background: 'rgba(0, 0, 0, 0.4)',
+                        backdropFilter: 'blur(20px)',
+                        WebkitBackdropFilter: 'blur(20px)',
+                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                        fontSize: '0.75rem',
+                        color: 'rgba(255, 255, 255, 0.9)',
+                        fontWeight: 600,
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                        zIndex: 2,
+                      }}>
+                        {milestone.year}
+                      </span>
+
+                      {/* Logo - Bottom Left Overlap */}
+                      <div data-icon style={{
+                        position: 'absolute',
+                        bottom: '-10px',
+                        left: '24px',
+                        zIndex: 3,
+                        transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                        transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
+                      }}>
+                        {milestone.logoFile ? (
+                          <div style={{
+                            width: 'clamp(72px, 8vw, 96px)',
+                            height: 'clamp(72px, 8vw, 96px)',
+                            padding: '16px',
+                            borderRadius: '20px',
+                            background: milestone.logoFile === 'bfa.jpeg'
+                              ? 'rgba(255, 255, 255, 0.15)'
+                              : 'rgba(255, 255, 255, 0.12)',
+                            backdropFilter: 'blur(40px) saturate(150%)',
+                            WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                            border: `2px solid rgba(255, 255, 255, ${milestone.logoFile === 'bfa.jpeg' ? '0.20' : '0.18'})`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: `0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05)`,
+                            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                          }}>
+                            <Image
+                              src={`/logos/${milestone.logoFile}`}
+                              alt={milestone.organization || milestone.title}
+                              width={64}
+                              height={64}
+                              style={{
+                                objectFit: 'contain',
+                                width: '100%',
+                                height: 'auto',
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <div style={{
+                            width: 'clamp(72px, 8vw, 96px)',
+                            height: 'clamp(72px, 8vw, 96px)',
+                            borderRadius: '20px',
+                            background: 'rgba(255, 255, 255, 0.12)',
+                            backdropFilter: 'blur(40px) saturate(150%)',
+                            WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                            border: '2px solid rgba(255, 255, 255, 0.18)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+                          }}>
+                            <IconComponent
+                              size={32}
+                              style={{
+                                color: milestone.brandColor,
+                                filter: `drop-shadow(0 0 10px ${milestone.brandColor}50)`,
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Card Body */}
+                    <div style={{
+                      padding: 'clamp(1.5rem, 3vw, 2.5rem)',
+                      paddingTop: 'clamp(2.5rem, 4vw, 3.5rem)', // Extra padding for logo overlap
+                    }}>
                     {milestone.isCollaboration ? (
                       // Collaboration milestone - render chat interface
                       <>
-                        <span data-year style={{
-                          display: 'inline-block',
-                          fontSize: '0.75rem',
-                          color: 'var(--text-muted)',
-                          letterSpacing: '0.1em',
-                          textTransform: 'uppercase',
-                          marginBottom: '1.5rem',
-                        }}>
-                          {milestone.year}
-                        </span>
-
-                        <div data-icon style={{
-                          marginBottom: '1.5rem',
-                        }}>
-                          <IconComponent
-                            size={32}
-                            style={{
-                              color: 'rgba(218, 14, 41, 0.8)',
-                              filter: 'drop-shadow(0 0 10px rgba(218, 14, 41, 0.3))',
-                            }}
-                          />
-                        </div>
-
                         <h3 style={{
                           fontSize: '1.5rem',
                           fontWeight: '500',
@@ -1016,62 +1008,6 @@ export function JourneyTimeline() {
                     ) : (
                       // Normal milestone
                       <>
-                        <span data-year style={{
-                          display: 'inline-block',
-                          fontSize: '0.75rem',
-                          color: 'var(--text-muted)',
-                          letterSpacing: '0.1em',
-                          textTransform: 'uppercase',
-                          marginBottom: '1.5rem',
-                        }}>
-                          {milestone.year}
-                        </span>
-
-                        <div data-icon style={{
-                          marginBottom: '1.5rem',
-                        }}>
-                          {milestone.logoFile ? (
-                            <div style={{
-                              width: 'clamp(72px, 8vw, 96px)',
-                              height: 'clamp(72px, 8vw, 96px)',
-                              padding: '16px',
-                              borderRadius: '16px',
-                              background: milestone.logoFile === 'bfa.jpeg'
-                                ? 'rgba(255, 255, 255, 0.15)'
-                                : 'rgba(255, 255, 255, 0.10)',
-                              backdropFilter: 'blur(20px) saturate(140%)',
-                              border: `1px solid rgba(255, 255, 255, ${milestone.logoFile === 'bfa.jpeg' ? '0.20' : '0.18'})`,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              boxShadow: milestone.logoFile === 'bfa.jpeg'
-                                ? 'inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.2)'
-                                : '0 4px 16px rgba(0, 0, 0, 0.2)',
-                              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                            }}>
-                              <Image
-                                src={`/logos/${milestone.logoFile}`}
-                                alt={milestone.organization || milestone.title}
-                                width={64}
-                                height={64}
-                                style={{
-                                  objectFit: 'contain',
-                                  width: '100%',
-                                  height: 'auto',
-                                }}
-                              />
-                            </div>
-                          ) : (
-                            <IconComponent
-                              size={32}
-                              style={{
-                                color: 'rgba(218, 14, 41, 0.8)',
-                                filter: 'drop-shadow(0 0 10px rgba(218, 14, 41, 0.3))',
-                              }}
-                            />
-                          )}
-                        </div>
-
                         <h3 style={{
                           fontSize: '1.5rem',
                           fontWeight: '500',
@@ -1146,228 +1082,6 @@ export function JourneyTimeline() {
                       {milestone.description}
                     </p>
 
-                    {/* Expandable Details Section */}
-                    {expandableCount > 0 && (
-                      <>
-                        <button
-                          onClick={() => toggleMilestone(index)}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault();
-                              toggleMilestone(index);
-                            }
-                          }}
-                          aria-expanded={isExpanded}
-                          aria-controls={`milestone-details-${index}`}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            marginBottom: isExpanded ? '1.5rem' : '1rem',
-                            background: 'rgba(255, 255, 255, 0.04)',
-                            border: '1px solid rgba(255, 255, 255, 0.12)',
-                            borderRadius: '10px',
-                            padding: '0.875rem 1.25rem',
-                            color: 'var(--text-secondary)',
-                            cursor: 'pointer',
-                            fontSize: '0.9rem',
-                            transition: 'all 0.3s ease',
-                            width: '100%',
-                            justifyContent: 'space-between',
-                            fontWeight: '500',
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
-                            e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.4)';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
-                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-                          }}
-                        >
-                          <span>{isExpanded ? 'Hide' : 'View'} Details {expandableCount > 0 && `(${expandableCount} items)`}</span>
-                          <ChevronDown size={18} style={{
-                            transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)',
-                            transition: 'transform 0.3s ease',
-                          }} />
-                        </button>
-
-                        {isExpanded && (
-                          <div id={`milestone-details-${index}`} style={{
-                            marginBottom: '1.5rem',
-                          }}>
-                            {/* Achievements */}
-                            {milestone.achievements && milestone.achievements.length > 0 && (
-                              <ul style={{
-                                marginBottom: '1.5rem',
-                                listStyle: 'none',
-                                padding: 0,
-                              }}>
-                                {milestone.achievements.map((achievement, idx) => (
-                                  <li key={idx} style={{
-                                    display: 'flex',
-                                    gap: '0.75rem',
-                                    marginBottom: '0.75rem',
-                                    alignItems: 'flex-start',
-                                  }}>
-                                    <Check size={16} style={{
-                                      color: 'rgba(218, 14, 41, 0.8)',
-                                      flexShrink: 0,
-                                      marginTop: '0.2rem',
-                                    }} />
-                                    <span style={{
-                                      fontSize: '0.9rem',
-                                      color: 'var(--text-secondary)',
-                                      lineHeight: '1.6',
-                                    }}>
-                                      {achievement}
-                                    </span>
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-
-                            {/* Metrics Grid */}
-                            {milestone.metrics && milestone.metrics.length > 0 && (
-                              <div className="journey-metrics-grid" style={{
-                                display: 'grid',
-                                gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
-                                gap: '1rem',
-                                marginBottom: '1.5rem',
-                              }}>
-                                {milestone.metrics.map((metric, idx) => (
-                                  <div key={idx} style={{
-                                    background: 'rgba(255, 255, 255, 0.04)',
-                                    borderRadius: '12px',
-                                    padding: '1rem',
-                                    textAlign: 'center',
-                                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                                  }}>
-                                    <div style={{
-                                      fontSize: '1.5rem',
-                                      fontWeight: '600',
-                                      color: 'rgba(218, 14, 41, 0.9)',
-                                      marginBottom: '0.25rem',
-                                    }}>
-                                      {metric.value}
-                                    </div>
-                                    <div style={{
-                                      fontSize: '0.75rem',
-                                      color: 'var(--text-muted)',
-                                      textTransform: 'uppercase',
-                                      letterSpacing: '0.05em',
-                                    }}>
-                                      {metric.label}
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-
-                            {/* Media Placeholder */}
-                            {milestone.media ? (
-                              <div style={{
-                                position: 'relative',
-                                width: '100%',
-                                aspectRatio: '4/3',
-                                marginBottom: '1.5rem',
-                                borderRadius: '16px',
-                                overflow: 'hidden',
-                                background: 'rgba(255, 255, 255, 0.03)',
-                              }}>
-                                <Image
-                                  src={milestone.media}
-                                  alt={milestone.title}
-                                  fill
-                                  style={{ objectFit: 'cover' }}
-                                  onError={(e) => {
-                                    e.currentTarget.style.display = 'none';
-                                  }}
-                                />
-                              </div>
-                            ) : (
-                              <div style={{
-                                width: '100%',
-                                aspectRatio: '4/3',
-                                background: `linear-gradient(135deg, rgba(218, 14, 41, ${index * 0.05 + 0.05}), rgba(255, 255, 255, 0.05))`,
-                                borderRadius: '16px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                marginBottom: '1.5rem',
-                                border: '1px solid rgba(255, 255, 255, 0.08)',
-                              }}>
-                                <ImageIcon size={48} style={{ color: 'rgba(255, 255, 255, 0.2)' }} />
-                              </div>
-                            )}
-
-                            {/* Artifact Gallery */}
-                            {milestone.artifacts && milestone.artifacts.length > 0 && (
-                              <div className="journey-artifact-gallery" style={{
-                                display: 'flex',
-                                gap: '0.75rem',
-                                overflowX: 'auto',
-                                marginBottom: '1.5rem',
-                                padding: '0.5rem 0',
-                                scrollbarWidth: 'thin',
-                              }}>
-                                {milestone.artifacts.map((artifact, idx) => (
-                                  <div key={idx} className="journey-artifact-item" style={{
-                                    minWidth: '140px',
-                                    aspectRatio: '4/3',
-                                    background: `linear-gradient(135deg, rgba(218, 14, 41, ${0.08 - idx * 0.02}), rgba(255, 255, 255, 0.05))`,
-                                    borderRadius: '12px',
-                                    cursor: 'pointer',
-                                    border: '1px solid rgba(255, 255, 255, 0.08)',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    padding: '1rem',
-                                    transition: 'all 0.3s ease',
-                                  }}
-                                  onMouseEnter={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(-4px)';
-                                    e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
-                                  }}
-                                  onMouseLeave={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(0)';
-                                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-                                  }}
-                                  >
-                                    <ImageIcon size={24} style={{ color: 'rgba(255, 255, 255, 0.3)', marginBottom: '0.5rem' }} />
-                                    <span style={{
-                                      fontSize: '0.7rem',
-                                      color: 'var(--text-muted)',
-                                      textAlign: 'center',
-                                      lineHeight: '1.3',
-                                    }}>
-                                      {artifact.caption}
-                                    </span>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-
-                            {/* Full Story */}
-                            {milestone.details && (
-                              <div style={{
-                                fontSize: '0.95rem',
-                                color: 'var(--text-secondary)',
-                                lineHeight: '1.8',
-                                padding: '1.5rem',
-                                background: 'rgba(255, 255, 255, 0.03)',
-                                borderRadius: '12px',
-                                border: '1px solid rgba(255, 255, 255, 0.08)',
-                              }}>
-                                {milestone.details}
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </>
-                    )}
-
                     <div data-tags style={{
                       display: 'flex',
                       flexWrap: 'wrap',
@@ -1407,6 +1121,7 @@ export function JourneyTimeline() {
                     </div>
                       </>
                     )}
+                    </div>
                   </div>
                 )}
               </div>

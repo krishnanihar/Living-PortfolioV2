@@ -25,6 +25,8 @@ export interface TimelineMilestone {
   organization?: string; // Organization name for alt text
   side: 'left' | 'right';
   isCollaboration?: boolean; // Special flag for collaboration milestone
+  brandColor: string; // Primary brand color for the milestone
+  coverGradient?: string[]; // Two-color gradient array [color1, color2] for cover background
 }
 
 export const timelineMilestones: TimelineMilestone[] = [
@@ -61,7 +63,9 @@ export const timelineMilestones: TimelineMilestone[] = [
     lesson: 'Curiosity compounds before credentials.',
     tags: ['Tinkering', 'Hardware', 'Problem Solving'],
     icon: 'Sparkles',
-    side: 'left'
+    side: 'left',
+    brandColor: '#D97706',
+    coverGradient: ['#F59E0B', '#D97706']
   },
 
   // Phase 2: Kid Technologist
@@ -97,7 +101,9 @@ export const timelineMilestones: TimelineMilestone[] = [
     lesson: 'Tools are superpowers; learn to forge them.',
     tags: ['Web Development', 'Automation', 'Self-Taught'],
     icon: 'Code2',
-    side: 'right'
+    side: 'right',
+    brandColor: '#7C3AED',
+    coverGradient: ['#8B5CF6', '#7C3AED']
   },
 
   // Phase 3: BFA @ JNAFAU
@@ -141,7 +147,9 @@ export const timelineMilestones: TimelineMilestone[] = [
     icon: 'Palette',
     logoFile: 'bfa.jpeg',
     organization: 'JNAFAU',
-    side: 'left'
+    side: 'left',
+    brandColor: '#EA580C',
+    coverGradient: ['#F97316', '#EA580C']
   },
 
   // Phase 4: Infosys
@@ -184,7 +192,9 @@ export const timelineMilestones: TimelineMilestone[] = [
     icon: 'Briefcase',
     logoFile: 'infosys.svg',
     organization: 'Infosys',
-    side: 'right'
+    side: 'right',
+    brandColor: '#0284C7',
+    coverGradient: ['#0EA5E9', '#0284C7']
   },
 
   // Phase 5: NID (New Media)
@@ -228,7 +238,9 @@ export const timelineMilestones: TimelineMilestone[] = [
     icon: 'GraduationCap',
     logoFile: 'nid.svg',
     organization: 'National Institute of Design',
-    side: 'left'
+    side: 'left',
+    brandColor: '#059669',
+    coverGradient: ['#10B981', '#059669']
   },
 
   // Phase 6: ISB
@@ -266,7 +278,9 @@ export const timelineMilestones: TimelineMilestone[] = [
     icon: 'Brain',
     logoFile: 'isb.png',
     organization: 'Indian School of Business',
-    side: 'right'
+    side: 'right',
+    brandColor: '#8B5CF6',
+    coverGradient: ['#A78BFA', '#8B5CF6']
   },
 
   // Phase 7: Air India
@@ -317,7 +331,9 @@ export const timelineMilestones: TimelineMilestone[] = [
     icon: 'Briefcase',
     logoFile: 'air-india.svg',
     organization: 'Air India',
-    side: 'left'
+    side: 'left',
+    brandColor: '#DA0E29',
+    coverGradient: ['#EF4444', '#DA0E29']
   },
 
   // Phase 8: Pixel Radar
@@ -365,7 +381,9 @@ export const timelineMilestones: TimelineMilestone[] = [
     lesson: 'Consistency is a product, not a deck.',
     tags: ['Tooling', 'Automation', 'Design Systems'],
     icon: 'Zap',
-    side: 'right'
+    side: 'right',
+    brandColor: '#F59E0B',
+    coverGradient: ['#FBBF24', '#F59E0B']
   },
 
   // Phase 9: Throughline
@@ -389,7 +407,9 @@ export const timelineMilestones: TimelineMilestone[] = [
     lesson: 'Make. Measure. Mature.',
     tags: ['Philosophy', 'Systems Thinking', 'Impact'],
     icon: 'Palette',
-    side: 'left'
+    side: 'left',
+    brandColor: '#4F46E5',
+    coverGradient: ['#6366F1', '#4F46E5']
   },
 
   // Phase 10: Collaboration
@@ -402,7 +422,9 @@ export const timelineMilestones: TimelineMilestone[] = [
     tags: ['Collaboration', 'Future', 'Projects'],
     icon: 'MessageSquarePlus',
     side: 'right',
-    isCollaboration: true
+    isCollaboration: true,
+    brandColor: '#E11D48',
+    coverGradient: ['#F43F5E', '#E11D48']
   }
 ];
 
