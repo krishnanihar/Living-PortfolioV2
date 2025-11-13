@@ -343,63 +343,8 @@ export function PsoriAssistPhoneMockup() {
       justifyContent: 'center',
       alignItems: 'center',
       padding: '4rem 2rem',
-      position: 'relative',
-      // Transparent Atmospheric Background (Portfolio-Grade)
-      background: `
-        radial-gradient(circle at 30% 20%, rgba(74,144,226,0.12) 0%, transparent 60%),
-        radial-gradient(circle at 70% 80%, rgba(80,200,120,0.10) 0%, transparent 60%),
-        transparent
-      `
+      position: 'relative'
     }}>
-      {/* Floating Orb Elements */}
-      <motion.div
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.3, 0.5, 0.3]
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: 'easeInOut'
-        }}
-        style={{
-          position: 'absolute',
-          top: '15%',
-          left: '20%',
-          width: '300px',
-          height: '300px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(74,144,226,0.3) 0%, transparent 70%)',
-          filter: 'blur(60px)',
-          pointerEvents: 'none',
-          zIndex: 0
-        }}
-      />
-      <motion.div
-        animate={{
-          scale: [1, 1.15, 1],
-          opacity: [0.25, 0.45, 0.25]
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: 'easeInOut',
-          delay: 1
-        }}
-        style={{
-          position: 'absolute',
-          bottom: '20%',
-          right: '15%',
-          width: '400px',
-          height: '400px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(80,200,120,0.25) 0%, transparent 70%)',
-          filter: 'blur(80px)',
-          pointerEvents: 'none',
-          zIndex: 0
-        }}
-      />
-
       {/* iPhone 14 Pro Mockup Frame */}
       <div style={{
         width: '393px',
