@@ -344,11 +344,11 @@ export function PsoriAssistPhoneMockup() {
       alignItems: 'center',
       padding: '4rem 2rem',
       position: 'relative',
-      // Dark Atmospheric Background (Portfolio-Grade)
+      // Transparent Atmospheric Background (Portfolio-Grade)
       background: `
         radial-gradient(circle at 30% 20%, rgba(74,144,226,0.12) 0%, transparent 60%),
         radial-gradient(circle at 70% 80%, rgba(80,200,120,0.10) 0%, transparent 60%),
-        #000000
+        transparent
       `
     }}>
       {/* Floating Orb Elements */}
