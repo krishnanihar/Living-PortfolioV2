@@ -162,7 +162,7 @@ export function NavigationBar() {
               const span = e.currentTarget.querySelector('span') as HTMLElement;
               if (span) {
                 span.style.backgroundPosition = '100% 50%';
-                span.style.filter = 'drop-shadow(0 0 30px rgba(218, 14, 41, 0.4)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.3))';
+                span.style.filter = 'drop-shadow(0 0 30px rgba(180, 210, 240, 0.4)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.3))';
               }
             }}
             onMouseLeave={(e) => {
@@ -170,20 +170,20 @@ export function NavigationBar() {
               const span = e.currentTarget.querySelector('span') as HTMLElement;
               if (span) {
                 span.style.backgroundPosition = '0% 50%';
-                span.style.filter = 'drop-shadow(0 0 20px rgba(218, 14, 41, 0.2)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15))';
+                span.style.filter = 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15))';
               }
             }}
           >
             <span
               style={{
                 display: 'inline-block',
-                background: 'linear-gradient(90deg, rgba(218, 14, 41, 0.6) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.95) 70%, rgba(218, 14, 41, 0.6) 100%)',
+                background: 'linear-gradient(90deg, rgba(180, 210, 240, 0.6) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.95) 70%, rgba(180, 210, 240, 0.6) 100%)',
                 backgroundSize: '200% 100%',
                 backgroundPosition: '0% 50%',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
-                filter: 'drop-shadow(0 0 20px rgba(218, 14, 41, 0.2)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15))',
+                filter: 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15))',
                 transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
               }}
             >
