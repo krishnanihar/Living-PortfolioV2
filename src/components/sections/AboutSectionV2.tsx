@@ -231,13 +231,13 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
   const journeyMilestones = [
     {
-      year: '2005',
+      year: '1996',
       label: 'The Spark',
       id: 'hyderabad-roots',
       detail: 'Growing up in Hyderabad, tinkering with computers and wondering how interfaces could feel more human.'
     },
     {
-      year: '2018',
+      year: '2019',
       label: 'BFA',
       id: 'undergrad-2018',
       detail: 'Bachelor of Fine Arts in Communication Design from JNAFAU, exploring the intersection of art and interaction.',
@@ -245,7 +245,15 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       organization: 'JNAFAU'
     },
     {
-      year: '2021',
+      year: '2020',
+      label: 'Infosys',
+      id: 'infosys-2023',
+      detail: 'Digital Experience Design at Infosys, crafting enterprise-scale design systems.',
+      logoFile: 'infosys.svg',
+      organization: 'Infosys'
+    },
+    {
+      year: '2022',
       label: 'MDes',
       id: 'nid-2021',
       detail: 'Master of Design at National Institute of Design, specializing in Interaction Design.',
@@ -253,20 +261,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       organization: 'NID Gandhinagar'
     },
     {
-      year: '2022',
+      year: '2023',
       label: 'ISB',
       id: 'isb-2022',
       detail: 'Strategic Management Program at Indian School of Business, blending design thinking with business strategy.',
       logoFile: 'isb.png',
       organization: 'ISB Hyderabad'
-    },
-    {
-      year: '2023',
-      label: 'Infosys',
-      id: 'infosys-2023',
-      detail: 'Digital Experience Design at Infosys, crafting enterprise-scale design systems.',
-      logoFile: 'infosys.svg',
-      organization: 'Infosys'
     },
     {
       year: '2024',
