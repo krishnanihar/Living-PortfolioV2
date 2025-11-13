@@ -564,7 +564,7 @@ export function JourneyTimeline() {
                       {/* Logo - Bottom Left Overlap */}
                       <div data-icon style={{
                         position: 'absolute',
-                        bottom: '-10px',
+                        bottom: '0px',
                         left: '24px',
                         zIndex: 3,
                         transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -901,7 +901,7 @@ export function JourneyTimeline() {
                       {/* Logo - Bottom Left Overlap */}
                       <div data-icon style={{
                         position: 'absolute',
-                        bottom: '-10px',
+                        bottom: '0px',
                         left: '24px',
                         zIndex: 3,
                         transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
