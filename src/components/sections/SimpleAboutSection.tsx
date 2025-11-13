@@ -26,21 +26,21 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
 
   const journeyMilestones = [
     {
-      year: '2005',
+      year: '1996',
       label: 'The Spark',
       opacity: 0.4,
       id: 'hyderabad-roots',
       description: 'Where creativity first ignited in Hyderabad'
     },
     {
-      year: '2018',
+      year: '2019',
       label: 'BFA Journey',
       opacity: 0.55,
       id: 'undergrad-2018',
       description: 'Foundation years exploring visual design'
     },
     {
-      year: '2021',
+      year: '2022',
       label: 'NID Masters',
       opacity: 0.7,
       id: 'nid-2021',

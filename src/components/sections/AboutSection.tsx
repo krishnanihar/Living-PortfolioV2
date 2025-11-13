@@ -87,13 +87,13 @@ export function AboutSection() {
 
   const journeyMilestones = [
     {
-      year: '2005',
+      year: '1996',
       label: 'The Spark',
       id: 'hyderabad-roots',
       detail: 'Growing up in Hyderabad, tinkering with computers and flashing custom ROMs. The beginning of a lifelong curiosity.'
     },
     {
-      year: '2018',
+      year: '2019',
       label: 'BFA',
       id: 'undergrad-2018',
       detail: 'Bachelor of Fine Arts - exploring visual design, typography, and the foundations of creative thinking.',
@@ -109,7 +109,7 @@ export function AboutSection() {
       organization: 'Infosys'
     },
     {
-      year: '2021',
+      year: '2022',
       label: 'NID',
       id: 'nid-2021',
       detail: 'National Institute of Design Masters program - learning to build interfaces that breathe and systems thinking.',
@@ -117,7 +117,7 @@ export function AboutSection() {
       organization: 'National Institute of Design'
     },
     {
-      year: '2022',
+      year: '2023',
       label: 'ISB',
       id: 'isb-2022',
       detail: 'Internship at ISB Digital Learning (online) - exploring digital education platforms and online learning experiences.',

@@ -31,7 +31,7 @@ export const timelineMilestones: TimelineMilestone[] = [
   // Phase 1: Hyderabad Roots
   {
     id: 'hyderabad-roots',
-    year: '2005-2015',
+    year: '1996-2015',
     title: 'The Spark',
     subtitle: 'Hyderabad · Childhood-Early Teens',
     hook: 'Born and brought up in Hyderabad; curiosity, wires, and wonder.',
@@ -103,7 +103,7 @@ export const timelineMilestones: TimelineMilestone[] = [
   // Phase 3: BFA @ JNAFAU
   {
     id: 'bfa-jnafau',
-    year: '2018-2022',
+    year: '2019-2022',
     title: 'Design as Discipline',
     subtitle: 'JNAFAU · BFA in Visual Communication',
     hook: 'From pixels to practice: visual foundations, critique culture, and form.',
@@ -190,7 +190,7 @@ export const timelineMilestones: TimelineMilestone[] = [
   // Phase 5: NID (New Media)
   {
     id: 'nid-2021',
-    year: '2021-2023',
+    year: '2022-2023',
     title: 'Systems, Not Screens',
     subtitle: 'National Institute of Design · New Media',
     hook: 'New Media re-wired how I think: interaction, narrative systems, installation.',
@@ -234,7 +234,7 @@ export const timelineMilestones: TimelineMilestone[] = [
   // Phase 6: ISB
   {
     id: 'isb-2022',
-    year: '2022',
+    year: '2023',
     title: 'Craft Meets Commerce',
     subtitle: 'Indian School of Business · Product Strategy',
     hook: 'Translating design craft into business leverage.',
