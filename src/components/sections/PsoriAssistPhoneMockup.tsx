@@ -10,7 +10,28 @@ import {
 
 type Screen = 'home' | 'photo' | 'pasi' | 'meds' | 'mental' | 'triggers' | 'report' | 'settings';
 
-// iOS 17 Light Mode Design System
+// PsoriAssist Brand Color System (Portfolio-Grade)
+const BRAND_COLORS = {
+  // Primary Brand Colors
+  primary: '#4A90E2',      // Trust blue
+  secondary: '#50C878',    // Wellness green
+  accent: '#FF9E67',       // Human warmth
+
+  // Semantic Health Colors
+  healing: '#50C878',
+  improving: '#9B7EF2',
+  stable: '#4A90E2',
+  flareup: '#FF6B6B',
+  moderate: '#FBD24C',
+
+  // Gradients
+  primaryGradient: 'linear-gradient(135deg, #4A90E2 0%, #50C878 100%)',
+  warmGradient: 'linear-gradient(135deg, #FF9E67 0%, #FBD24C 100%)',
+  healingGradient: 'linear-gradient(135deg, #50C878 0%, #9B7EF2 100%)',
+  glowGradient: 'radial-gradient(circle, rgba(74,144,226,0.3) 0%, rgba(80,200,120,0.2) 100%)'
+};
+
+// iOS 17 Light Mode Design System (Enhanced)
 const IOS_COLORS = {
   // Backgrounds
   systemBackground: '#FFFFFF',
@@ -24,14 +45,14 @@ const IOS_COLORS = {
   tertiaryLabel: 'rgba(60, 60, 67, 0.3)',
   quaternaryLabel: 'rgba(60, 60, 67, 0.18)',
 
-  // System Colors
-  systemBlue: '#007AFF',
-  systemGreen: '#34C759',
+  // System Colors - Using brand colors where applicable
+  systemBlue: BRAND_COLORS.primary,
+  systemGreen: BRAND_COLORS.healing,
   systemRed: '#FF3B30',
   systemPink: '#FF2D55',
-  systemYellow: '#FFCC00',
-  systemPurple: '#AF52DE',
-  systemOrange: '#FF9500',
+  systemYellow: BRAND_COLORS.moderate,
+  systemPurple: BRAND_COLORS.improving,
+  systemOrange: BRAND_COLORS.accent,
 
   // Separators
   separator: 'rgba(60, 60, 67, 0.29)',
@@ -57,31 +78,132 @@ const IOS_TYPOGRAPHY = {
   caption2: { size: 11, lineHeight: 13, weight: '400' as const, tracking: 0.06 }
 };
 
-// iOS Shadow System
+// Advanced Shadow System (Portfolio-Grade - 4-6 layers)
 const IOS_SHADOWS = {
-  card: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.06)',
-  button: '0 1px 2px rgba(0,0,0,0.08)',
-  elevated: '0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.05)'
+  // Standard card with depth
+  card: `
+    0 2px 4px rgba(0,0,0,0.04),
+    0 4px 8px rgba(0,0,0,0.06),
+    0 8px 16px rgba(0,0,0,0.08),
+    0 16px 32px rgba(0,0,0,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.9)
+  `,
+
+  // Button with subtle depth
+  button: `
+    0 2px 6px rgba(0,0,0,0.10),
+    0 4px 12px rgba(0,0,0,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.8)
+  `,
+
+  // Elevated elements (modals, popovers)
+  elevated: `
+    0 20px 40px rgba(0,0,0,0.15),
+    0 10px 20px rgba(0,0,0,0.10),
+    0 4px 8px rgba(0,0,0,0.08),
+    inset 0 1px 1px rgba(255,255,255,0.9)
+  `,
+
+  // Colored shadows for brand elements
+  brandBlue: `
+    0 8px 24px rgba(74,144,226,0.25),
+    0 4px 12px rgba(74,144,226,0.15),
+    0 2px 6px rgba(0,0,0,0.08)
+  `,
+
+  brandGreen: `
+    0 8px 24px rgba(80,200,120,0.25),
+    0 4px 12px rgba(80,200,120,0.15),
+    0 2px 6px rgba(0,0,0,0.08)
+  `,
+
+  // Floating effect for interactive elements
+  floating: `
+    0 20px 40px rgba(0,0,0,0.15),
+    0 10px 20px rgba(0,0,0,0.10),
+    0 4px 8px rgba(0,0,0,0.08),
+    inset 0 1px 1px rgba(255,255,255,1),
+    inset 0 -1px 1px rgba(0,0,0,0.05)
+  `
 };
 
-// iOS Glassmorphism System
+// Advanced Glassmorphism System (Portfolio-Grade)
+const NOISE_TEXTURE = `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E")`;
+
 const IOS_GLASS = {
   card: {
-    background: 'rgba(255, 255, 255, 0.72)',
-    backdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
-    border: '0.5px solid rgba(255, 255, 255, 0.8)',
-    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08), 0 8px 16px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.9)'
+    background: `
+      linear-gradient(135deg,
+        rgba(255,255,255,0.85) 0%,
+        rgba(255,255,255,0.65) 100%
+      )
+    `,
+    backdropFilter: 'blur(40px) saturate(180%) brightness(1.08)',
+    border: '1px solid rgba(255,255,255,0.9)',
+    boxShadow: `
+      0 8px 32px rgba(0,0,0,0.08),
+      inset 0 1px 1px rgba(255,255,255,1),
+      inset 0 -1px 1px rgba(0,0,0,0.05)
+    `,
+    backgroundImage: NOISE_TEXTURE
   },
+
   cardSubtle: {
-    background: 'rgba(255, 255, 255, 0.6)',
-    backdropFilter: 'blur(30px) saturate(150%) brightness(1.03)',
-    border: '0.5px solid rgba(255, 255, 255, 0.6)',
-    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.06), inset 0 1px 0.5px rgba(255, 255, 255, 0.8)'
+    background: `
+      linear-gradient(135deg,
+        rgba(255,255,255,0.70) 0%,
+        rgba(255,255,255,0.50) 100%
+      )
+    `,
+    backdropFilter: 'blur(30px) saturate(150%) brightness(1.05)',
+    border: '1px solid rgba(255,255,255,0.6)',
+    boxShadow: `
+      0 4px 16px rgba(0,0,0,0.06),
+      inset 0 1px 0.5px rgba(255,255,255,0.8)
+    `,
+    backgroundImage: NOISE_TEXTURE
   },
+
+  // Brand-colored glass variants
+  brandBlueGlass: {
+    background: `
+      linear-gradient(135deg,
+        rgba(74,144,226,0.15) 0%,
+        rgba(74,144,226,0.08) 100%
+      )
+    `,
+    backdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
+    border: '1px solid rgba(74,144,226,0.3)',
+    boxShadow: `
+      0 8px 32px rgba(74,144,226,0.15),
+      0 4px 16px rgba(0,0,0,0.05),
+      inset 0 1px 1px rgba(255,255,255,0.5),
+      inset 0 -1px 1px rgba(74,144,226,0.1)
+    `
+  },
+
+  brandGreenGlass: {
+    background: `
+      linear-gradient(135deg,
+        rgba(80,200,120,0.15) 0%,
+        rgba(80,200,120,0.08) 100%
+      )
+    `,
+    backdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
+    border: '1px solid rgba(80,200,120,0.3)',
+    boxShadow: `
+      0 8px 32px rgba(80,200,120,0.15),
+      0 4px 16px rgba(0,0,0,0.05),
+      inset 0 1px 1px rgba(255,255,255,0.5),
+      inset 0 -1px 1px rgba(80,200,120,0.1)
+    `
+  },
+
   statusBar: {
     background: 'rgba(242, 242, 247, 0.75)',
     backdropFilter: 'blur(30px) saturate(180%)'
   },
+
   tabBar: {
     background: 'rgba(249, 249, 249, 0.82)',
     backdropFilter: 'blur(30px) saturate(180%)'
@@ -156,23 +278,36 @@ export function PsoriAssistPhoneMockup() {
   };
 
   const triggerConfetti = (x: number, y: number) => {
-    const colors = ['#50C878', '#4A90E2', '#EC4899', '#FBD24C'];
-    const newConfetti: ConfettiParticle[] = Array.from({ length: 12 }, (_, i) => ({
-      id: Date.now() + i,
-      x,
-      y,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      rotation: Math.random() * 360,
-      velocity: {
-        x: (Math.random() - 0.5) * 4,
-        y: -Math.random() * 4 - 2
-      }
-    }));
+    // Portfolio-Grade Confetti: 50+ particles with realistic physics
+    const colors = [
+      BRAND_COLORS.healing,      // Green
+      BRAND_COLORS.primary,      // Blue
+      BRAND_COLORS.accent,       // Orange
+      BRAND_COLORS.moderate,     // Yellow
+      BRAND_COLORS.improving     // Purple
+    ];
+
+    const newConfetti: ConfettiParticle[] = Array.from({ length: 50 }, (_, i) => {
+      const angle = (i / 50) * Math.PI * 2; // Full 360° spread
+      const speed = 3 + Math.random() * 3; // Variable speed for depth
+
+      return {
+        id: Date.now() + i,
+        x,
+        y,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rotation: Math.random() * 360,
+        velocity: {
+          x: Math.cos(angle) * speed,
+          y: Math.sin(angle) * speed - 4 // Initial upward burst
+        }
+      };
+    });
 
     setConfetti(prev => [...prev, ...newConfetti]);
     setTimeout(() => {
       setConfetti(prev => prev.filter(p => !newConfetti.find(n => n.id === p.id)));
-    }, 1000);
+    }, 2000); // Longer duration for better celebration
   };
 
   // Swipe gesture handling
@@ -208,8 +343,63 @@ export function PsoriAssistPhoneMockup() {
       justifyContent: 'center',
       alignItems: 'center',
       padding: '4rem 2rem',
-      position: 'relative'
+      position: 'relative',
+      // Atmospheric Background (Portfolio-Grade)
+      background: `
+        radial-gradient(circle at 30% 20%, rgba(74,144,226,0.18) 0%, transparent 60%),
+        radial-gradient(circle at 70% 80%, rgba(80,200,120,0.15) 0%, transparent 60%),
+        linear-gradient(180deg, #F8F9FC 0%, #E8ECF2 100%)
+      `
     }}>
+      {/* Floating Orb Elements */}
+      <motion.div
+        animate={{
+          scale: [1, 1.1, 1],
+          opacity: [0.3, 0.5, 0.3]
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: 'easeInOut'
+        }}
+        style={{
+          position: 'absolute',
+          top: '15%',
+          left: '20%',
+          width: '300px',
+          height: '300px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(74,144,226,0.3) 0%, transparent 70%)',
+          filter: 'blur(60px)',
+          pointerEvents: 'none',
+          zIndex: 0
+        }}
+      />
+      <motion.div
+        animate={{
+          scale: [1, 1.15, 1],
+          opacity: [0.25, 0.45, 0.25]
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: 'easeInOut',
+          delay: 1
+        }}
+        style={{
+          position: 'absolute',
+          bottom: '20%',
+          right: '15%',
+          width: '400px',
+          height: '400px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(80,200,120,0.25) 0%, transparent 70%)',
+          filter: 'blur(80px)',
+          pointerEvents: 'none',
+          zIndex: 0
+        }}
+      />
+
       {/* iPhone 14 Pro Mockup Frame */}
       <div style={{
         width: '393px',
@@ -217,9 +407,16 @@ export function PsoriAssistPhoneMockup() {
         backgroundColor: '#1a1a1a',
         borderRadius: '60px',
         padding: '14px',
-        boxShadow: '0 40px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+        // Enhanced phone shadow (deep multi-layer)
+        boxShadow: `
+          0 40px 80px rgba(0, 0, 0, 0.25),
+          0 20px 40px rgba(0, 0, 0, 0.20),
+          0 10px 20px rgba(0, 0, 0, 0.15),
+          0 0 0 1px rgba(255, 255, 255, 0.1)
+        `,
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        zIndex: 1
       }}>
         {/* Screen Container */}
         <div style={{
@@ -369,34 +566,50 @@ export function PsoriAssistPhoneMockup() {
             zIndex: 200
           }}>
             <AnimatePresence>
-              {confetti.map(particle => (
-                <motion.div
-                  key={particle.id}
-                  initial={{
-                    x: particle.x,
-                    y: particle.y,
-                    opacity: 1,
-                    scale: 1,
-                    rotate: particle.rotation
-                  }}
-                  animate={{
-                    x: particle.x + particle.velocity.x * 100,
-                    y: particle.y + particle.velocity.y * 50 + 500,
-                    opacity: 0,
-                    scale: 0.5,
-                    rotate: particle.rotation + 360
-                  }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 1, ease: 'easeOut' }}
-                  style={{
-                    position: 'absolute',
-                    width: '8px',
-                    height: '8px',
-                    backgroundColor: particle.color,
-                    borderRadius: '2px'
-                  }}
-                />
-              ))}
+              {confetti.map((particle, i) => {
+                // Realistic physics with gravity
+                const gravity = 800; // Pixels per second squared
+                const airResistance = 0.98;
+                const finalX = particle.x + particle.velocity.x * 120 * airResistance;
+                const finalY = particle.y + particle.velocity.y * 60 + gravity; // Gravity pulls down
+
+                // Vary particle size for depth perception
+                const size = 6 + Math.random() * 6; // 6-12px
+                const isRounded = i % 3 === 0; // Mix of circles and squares
+
+                return (
+                  <motion.div
+                    key={particle.id}
+                    initial={{
+                      x: particle.x,
+                      y: particle.y,
+                      opacity: 1,
+                      scale: 1,
+                      rotate: particle.rotation
+                    }}
+                    animate={{
+                      x: finalX,
+                      y: finalY,
+                      opacity: 0,
+                      scale: 0.3,
+                      rotate: particle.rotation + (Math.random() > 0.5 ? 720 : -720) // Double spin
+                    }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                      duration: 2, // Longer celebration
+                      ease: [0.25, 0.46, 0.45, 0.94] // Realistic easing with gravity
+                    }}
+                    style={{
+                      position: 'absolute',
+                      width: `${size}px`,
+                      height: `${size}px`,
+                      backgroundColor: particle.color,
+                      borderRadius: isRounded ? '50%' : '2px',
+                      boxShadow: `0 0 ${size}px ${particle.color}40` // Subtle glow
+                    }}
+                  />
+                );
+              })}
             </AnimatePresence>
           </div>
 
@@ -469,16 +682,20 @@ function HomeScreen({
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif'
       }}
     >
-      {/* Header */}
+      {/* Header with Gradient Text (Portfolio-Grade) */}
       <div style={{ marginBottom: '16px' }}>
         <h1 style={{
           fontSize: `${IOS_TYPOGRAPHY.largeTitle.size}px`,
           fontWeight: IOS_TYPOGRAPHY.largeTitle.weight,
-          color: IOS_COLORS.label,
+          background: BRAND_COLORS.primaryGradient,
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
           marginBottom: '2px',
           letterSpacing: `${IOS_TYPOGRAPHY.largeTitle.tracking}px`,
-          lineHeight: `${IOS_TYPOGRAPHY.largeTitle.lineHeight}px`
-        }}>
+          lineHeight: `${IOS_TYPOGRAPHY.largeTitle.lineHeight}px`,
+          textShadow: '0 2px 4px rgba(74,144,226,0.15)'
+        } as React.CSSProperties}>
           Dashboard
         </h1>
         <p style={{
@@ -487,7 +704,7 @@ function HomeScreen({
           lineHeight: `${IOS_TYPOGRAPHY.body.lineHeight}px`,
           letterSpacing: `${IOS_TYPOGRAPHY.body.tracking}px`
         }}>
-          Welcome back, Alex
+          Welcome back, Alex 👋
         </p>
       </div>
 
@@ -519,13 +736,17 @@ function HomeScreen({
         <div style={{
           fontSize: '40px',
           fontWeight: '700',
-          color: IOS_COLORS.systemBlue,
+          background: BRAND_COLORS.healingGradient,
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
           marginBottom: '8px',
-          letterSpacing: '-1px'
-        }}>
+          letterSpacing: '-1px',
+          textShadow: '0 4px 8px rgba(80,200,120,0.2)'
+        } as React.CSSProperties}>
           12.4
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
           <TrendingUp size={14} color={IOS_COLORS.systemGreen} />
           <span style={{
             fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
@@ -536,33 +757,82 @@ function HomeScreen({
             ↓ 18% from last month
           </span>
         </div>
-        {/* Mini Chart with Elastic Animation */}
-        <div style={{ height: '48px', display: 'flex', alignItems: 'flex-end', gap: '3px' }}>
-          {[65, 55, 58, 52, 48, 45, 42].map((height, i) => (
-            <motion.div
-              key={i}
-              initial={{ height: 0, opacity: 0, scaleY: 0 }}
-              animate={{
-                height: `${height}%`,
-                opacity: 1,
-                scaleY: 1
-              }}
-              transition={
-                prefersReducedMotion
-                  ? { duration: 0.3, delay: i * 0.05 }
-                  : {
-                      ...SPRING_CONFIG.elastic,
-                      delay: 0.2 + i * 0.08
-                    }
-              }
-              style={{
-                flex: 1,
-                backgroundColor: IOS_COLORS.systemBlue,
-                borderRadius: '3px 3px 0 0',
-                transformOrigin: 'bottom'
-              }}
-            />
-          ))}
+        <div style={{
+          fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+          color: IOS_COLORS.secondaryLabel,
+          lineHeight: `${IOS_TYPOGRAPHY.footnote.lineHeight}px`,
+          marginBottom: '12px',
+          fontStyle: 'italic'
+        }}>
+          Your skin is improving! Keep it up 🌟
+        </div>
+        {/* Mini Chart with Gradient Bars & Glow (Portfolio-Grade) */}
+        <div style={{ height: '48px', display: 'flex', alignItems: 'flex-end', gap: '4px' }}>
+          {[65, 55, 58, 52, 48, 45, 42].map((height, i) => {
+            // Color gradient based on severity (high=red, medium=yellow, low=green)
+            const getBarColor = (value: number) => {
+              if (value > 55) return { main: '#FF6B6B', glow: 'rgba(255,107,107,0.4)' }; // Red (flareup)
+              if (value > 45) return { main: '#FBD24C', glow: 'rgba(251,210,76,0.4)' }; // Yellow (moderate)
+              return { main: '#50C878', glow: 'rgba(80,200,120,0.4)' }; // Green (healing)
+            };
+
+            const colors = getBarColor(height);
+            const isLastBar = i === 6; // Highlight current value
+
+            return (
+              <motion.div
+                key={i}
+                initial={{ height: 0, opacity: 0, scaleY: 0 }}
+                animate={{
+                  height: `${height}%`,
+                  opacity: 1,
+                  scaleY: 1
+                }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0.3, delay: i * 0.05 }
+                    : {
+                        ...SPRING_CONFIG.elastic,
+                        delay: 0.2 + i * 0.08
+                      }
+                }
+                style={{
+                  flex: 1,
+                  background: isLastBar
+                    ? `linear-gradient(180deg, ${colors.main} 0%, ${colors.main}DD 100%)`
+                    : colors.main,
+                  borderRadius: '4px 4px 0 0',
+                  transformOrigin: 'bottom',
+                  boxShadow: isLastBar
+                    ? `0 0 12px ${colors.glow}, 0 -2px 8px ${colors.glow}`
+                    : 'none',
+                  position: 'relative'
+                }}
+              >
+                {isLastBar && (
+                  <motion.div
+                    animate={{
+                      opacity: [0.5, 1, 0.5]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: 'easeInOut'
+                    }}
+                    style={{
+                      position: 'absolute',
+                      top: '-2px',
+                      left: 0,
+                      right: 0,
+                      height: '2px',
+                      background: 'rgba(255,255,255,0.8)',
+                      borderRadius: '2px'
+                    }}
+                  />
+                )}
+              </motion.div>
+            );
+          })}
         </div>
       </motion.div>
 
@@ -633,9 +903,10 @@ function HomeScreen({
           marginTop: '8px',
           fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
           color: IOS_COLORS.secondaryLabel,
-          lineHeight: `${IOS_TYPOGRAPHY.footnote.lineHeight}px`
+          lineHeight: `${IOS_TYPOGRAPHY.footnote.lineHeight}px`,
+          fontStyle: 'italic'
         }}>
-          Keep it up! 16 days until your next milestone 🎉
+          You're doing amazing! Just 16 days until your 30-day milestone 🎉
         </div>
       </div>
 
@@ -1343,22 +1614,65 @@ function MedicationScreen({
         </div>
       </div>
 
-      {/* Calendar Heatmap */}
+      {/* Calendar Heatmap with Realistic Patterns (Portfolio-Grade) */}
       <div>
         <h3 style={{ fontSize: '16px', fontWeight: '600', color: 'white', marginBottom: '12px' }}>
           Last 4 Weeks
         </h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px' }}>
           {[...Array(28)].map((_, i) => {
-            const intensity = Math.random();
+            const dayOfWeek = i % 7;
+            const weekNumber = Math.floor(i / 7);
+            const isWeekend = dayOfWeek === 5 || dayOfWeek === 6; // Sat, Sun
+
+            // Realistic adherence pattern:
+            // - Weekdays: 85-100% (better adherence)
+            // - Weekends: 70-90% (slightly lower)
+            // - Gradual improvement over 4 weeks
+            // - Occasional missed days (1-2 per week)
+            const improvementFactor = weekNumber * 0.05; // Each week gets 5% better
+            const randomMiss = Math.random() > 0.85; // 15% chance of missed day
+
+            let adherence;
+            if (randomMiss) {
+              adherence = 0; // Missed day
+            } else if (isWeekend) {
+              adherence = 0.70 + Math.random() * 0.20 + improvementFactor; // 70-90% + improvement
+            } else {
+              adherence = 0.85 + Math.random() * 0.15 + improvementFactor; // 85-100% + improvement
+            }
+
+            // Clamp to 0-1
+            adherence = Math.min(1, Math.max(0, adherence));
+
+            // Smooth color gradient: gray → light green → dark green
+            const getColor = (value: number) => {
+              if (value === 0) return 'rgba(255,255,255,0.08)'; // Missed (gray)
+              if (value < 0.5) return `rgba(80, 200, 120, ${0.2 + value * 0.3})`; // Light green
+              return `rgba(80, 200, 120, ${0.5 + value * 0.4})`; // Dark green
+            };
+
+            // Highlight current week
+            const isCurrentWeek = weekNumber === 3;
+
             return (
-              <div key={i} style={{
-                aspectRatio: '1',
-                borderRadius: '4px',
-                backgroundColor: intensity > 0.3
-                  ? `rgba(80, 200, 120, ${0.3 + intensity * 0.5})`
-                  : 'rgba(255,255,255,0.1)'
-              }} />
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                  delay: (weekNumber * 7 + dayOfWeek) * 0.02, // Row-by-row reveal
+                  duration: 0.3,
+                  ease: 'easeOut'
+                }}
+                style={{
+                  aspectRatio: '1',
+                  borderRadius: '4px',
+                  backgroundColor: getColor(adherence),
+                  border: isCurrentWeek ? '1px solid rgba(80, 200, 120, 0.5)' : 'none',
+                  boxShadow: adherence > 0.9 ? '0 0 8px rgba(80, 200, 120, 0.3)' : 'none'
+                }}
+              />
             );
           })}
         </div>
@@ -1366,9 +1680,10 @@ function MedicationScreen({
           marginTop: '8px',
           fontSize: '12px',
           color: 'rgba(255,255,255,0.5)',
-          textAlign: 'center'
+          textAlign: 'center',
+          fontStyle: 'italic'
         }}>
-          89% adherence rate this month
+          89% adherence rate • Your consistency is inspiring! 💚
         </div>
       </div>
     </motion.div>
