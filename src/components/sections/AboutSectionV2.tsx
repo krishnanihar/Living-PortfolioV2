@@ -1377,39 +1377,50 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 )}
 
                 {/* Explore Full Journey Button */}
-                <Link href="/journey">
-                  <div
-                    style={{
-                      marginTop: '2rem',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      padding: '0.875rem 1.5rem',
-                      background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(218, 14, 41, 0.05))',
-                      border: '1px solid rgba(218, 14, 41, 0.3)',
-                      borderRadius: '12px',
-                      color: 'var(--brand-red)',
-                      fontSize: '0.9375rem',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background =
-                        'linear-gradient(135deg, rgba(218, 14, 41, 0.25), rgba(218, 14, 41, 0.1))';
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background =
-                        'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(218, 14, 41, 0.05))';
-                      e.currentTarget.style.transform = 'translateY(0)';
-                    }}
-                  >
-                    <Map size={18} />
-                    Explore Full Journey
-                    <ArrowRight size={18} />
-                  </div>
-                </Link>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginTop: '3.5rem',
+                  }}
+                >
+                  <Link href="/journey">
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.75rem',
+                        padding: '1.25rem 2.5rem',
+                        background: 'rgba(255, 255, 255, 0.04)',
+                        backdropFilter: 'blur(40px) saturate(150%)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        borderRadius: '16px',
+                        color: 'rgba(255, 255, 255, 0.95)',
+                        fontSize: '1.0625rem',
+                        fontWeight: '500',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                        e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.2)';
+                        e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
+                        e.currentTarget.style.boxShadow = '0 12px 48px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                        e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                        e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                        e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)';
+                      }}
+                    >
+                      <Map size={20} />
+                      Explore Full Journey
+                      <ArrowRight size={20} />
+                    </div>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
