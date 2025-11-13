@@ -36,11 +36,7 @@ export function IntroductionSection() {
     };
   }, []);
 
-  const stats = [
-    { label: 'Air India 10K users', tooltip: 'Mobile app + IFE systems serving 10K+ daily' },
-    { label: '18-month research deep dive', tooltip: 'PsoriAssist healthcare design' },
-    { label: '2 hackathons won simultaneously', tooltip: '5000 LOC in 48 hours' },
-  ];
+  const stats: Array<{ label: string; tooltip: string }> = [];
 
   const scrollToNext = () => {
     const aboutSection = document.querySelector('[id*="about"]');
