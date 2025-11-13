@@ -503,22 +503,46 @@ export function PsoriAssistWork() {
       {/* Scroll Progress Indicator */}
       {!isMobile && <ScrollProgress sections={sections} color="74, 144, 226" />}
 
-      {/* Narrative Atmosphere Layer */}
+      {/* Layer 1: Base Mesh Gradient */}
       <div
         style={{
           position: 'fixed',
           inset: 0,
           pointerEvents: 'none',
-          zIndex: -1,
+          zIndex: -4,
+          background: `
+            radial-gradient(circle at 25% 40%, rgba(74, 144, 226, 0.12) 0%, transparent 50%),
+            radial-gradient(circle at 75% 60%, rgba(168, 85, 247, 0.10) 0%, transparent 50%),
+            radial-gradient(circle at 50% 20%, rgba(236, 72, 153, 0.08) 0%, transparent 50%)
+          `
+        }}
+      />
+
+      {/* Layer 2: Narrative Atmosphere (Enhanced) */}
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          pointerEvents: 'none',
+          zIndex: -3,
           background: `radial-gradient(ellipse at 50% 50%, ${narrativeState.color.atmosphere}, transparent 70%)`,
+          opacity: 0.6,
           transition: 'background 2s cubic-bezier(0.22, 1, 0.36, 1)',
         }}
       />
 
-      {/* Patient Perspective Moments */}
-      <PsoriAssistFirstPersonMoments />
+      {/* Layer 3: Vignette Effect */}
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          pointerEvents: 'none',
+          zIndex: -2,
+          background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%)'
+        }}
+      />
 
-      {/* Ambient Gradient Orb (follows mouse) */}
+      {/* Layer 4: Mouse-Tracked Orb (Enhanced) */}
       <div
         style={{
           position: 'fixed',
@@ -528,10 +552,13 @@ export function PsoriAssistWork() {
           height: '100%',
           pointerEvents: 'none',
           zIndex: -1,
-          background: `radial-gradient(circle 600px at ${mousePosition.x}% ${mousePosition.y}%, rgba(74, 144, 226, 0.06) 0%, transparent 50%)`,
+          background: `radial-gradient(circle 600px at ${mousePosition.x}% ${mousePosition.y}%, rgba(74, 144, 226, 0.10) 0%, transparent 50%)`,
           transition: 'background 0.3s ease-out'
         }}
       />
+
+      {/* Patient Perspective Moments */}
+      <PsoriAssistFirstPersonMoments />
       {/* Hero - Full Viewport */}
       <section
         id="hero"
@@ -547,43 +574,6 @@ export function PsoriAssistWork() {
           textAlign: 'center'
         }}
       >
-        {/* Back Button - Absolute Top-Left */}
-        <Link
-          href="/work"
-          style={{
-            position: 'absolute',
-            top: isMobile ? '1rem' : '2rem',
-            left: isMobile ? '1rem' : '2rem',
-            zIndex: 10,
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            color: 'rgba(255, 255, 255, 0.6)',
-            textDecoration: 'none',
-            fontSize: '0.9rem',
-            transition: 'all 0.3s ease',
-            padding: '0.5rem 1rem',
-            borderRadius: '12px',
-            background: 'rgba(15, 15, 15, 0.65)',
-            backdropFilter: 'blur(120px) saturate(180%)',
-            WebkitBackdropFilter: 'blur(120px) saturate(180%)',
-            border: '1px solid rgba(255, 255, 255, 0.12)'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = 'rgba(255, 255, 255, 1)';
-            e.currentTarget.style.background = 'rgba(18, 18, 18, 0.75)';
-            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = 'rgba(255, 255, 255, 0.6)';
-            e.currentTarget.style.background = 'rgba(15, 15, 15, 0.65)';
-            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-          }}
-        >
-          <ArrowLeft size={16} />
-          All Work
-        </Link>
-
         {/* Centered Hero Content */}
         <div style={{
           maxWidth: '900px',
@@ -813,10 +803,7 @@ export function PsoriAssistWork() {
             flexDirection: 'column',
             alignItems: 'center',
             gap: '0.5rem',
-            animation: 'bounce 2s infinite',
-            opacity: 0,
-            animationDelay: '2s',
-            animationFillMode: 'forwards'
+            animation: 'bounce 2s infinite'
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'translateX(-50%) translateY(4px)';
