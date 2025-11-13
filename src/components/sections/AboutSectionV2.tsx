@@ -1637,53 +1637,20 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
             {/* Swiper Carousel */}
             <div style={{ maxWidth: '100vw', margin: '4rem auto 0', padding: '0', overflow: 'visible', position: 'relative' }} className="carousel-container">
-              {/* Ambient Light Rays - Spotlight Effect */}
-              <svg
+              {/* Subtle depth gradient */}
+              <div
                 style={{
                   position: 'absolute',
                   top: '50%',
                   left: '50%',
                   transform: 'translate(-50%, -50%)',
-                  width: '800px',
-                  height: '800px',
+                  width: '600px',
+                  height: '600px',
+                  background: 'radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%)',
                   zIndex: 0,
-                  opacity: 0.15,
                   pointerEvents: 'none',
-                  mixBlendMode: 'screen',
                 }}
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <defs>
-                  <radialGradient id="lightRayGrad" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" style={{ stopColor: 'rgba(255, 255, 255, 0.8)', stopOpacity: 1 }} />
-                    <stop offset="40%" style={{ stopColor: 'rgba(147, 51, 234, 0.4)', stopOpacity: 0.5 }}>
-                      <animate attributeName="stop-color" values="rgba(147, 51, 234, 0.4); rgba(218, 14, 41, 0.4); rgba(59, 130, 246, 0.4); rgba(147, 51, 234, 0.4)" dur="8s" repeatCount="indefinite" />
-                    </stop>
-                    <stop offset="100%" style={{ stopColor: 'transparent', stopOpacity: 0 }} />
-                  </radialGradient>
-                </defs>
-
-                <circle cx="400" cy="400" r="350" fill="url(#lightRayGrad)" opacity="0.6">
-                  <animate attributeName="r" values="350; 380; 350" dur="4s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" values="0.6; 0.8; 0.6" dur="3s" repeatCount="indefinite" />
-                </circle>
-
-                {/* Light ray beams */}
-                <g opacity="0.3">
-                  <line x1="400" y1="400" x2="400" y2="50" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="2" opacity="0.4">
-                    <animate attributeName="opacity" values="0.4; 0.7; 0.4" dur="3s" repeatCount="indefinite" />
-                    <animateTransform attributeName="transform" type="rotate" from="0 400 400" to="360 400 400" dur="40s" repeatCount="indefinite" />
-                  </line>
-                  <line x1="400" y1="400" x2="600" y2="150" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1.5" opacity="0.3">
-                    <animate attributeName="opacity" values="0.3; 0.6; 0.3" dur="4s" repeatCount="indefinite" />
-                    <animateTransform attributeName="transform" type="rotate" from="0 400 400" to="360 400 400" dur="35s" repeatCount="indefinite" />
-                  </line>
-                  <line x1="400" y1="400" x2="200" y2="150" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1.5" opacity="0.3">
-                    <animate attributeName="opacity" values="0.3; 0.6; 0.3" dur="5s" repeatCount="indefinite" />
-                    <animateTransform attributeName="transform" type="rotate" from="0 400 400" to="360 400 400" dur="45s" repeatCount="indefinite" />
-                  </line>
-                </g>
-              </svg>
+              />
 
               <Swiper
                 modules={[Navigation, Pagination]}
@@ -1743,19 +1710,15 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                       textDecoration: 'none',
                       overflow: 'hidden',
                       boxShadow: hoveredProject === idx
-                        ? `0px 20px 56px rgba(0, 0, 0, 0.7),
-                           0px 0px 40px ${project.color.replace('0.15', '0.25')},
-                           inset 0 2px 8px rgba(0, 0, 0, 0.5),
-                           inset 0 1px 0 rgba(255, 255, 255, 0.03),
+                        ? `0px 16px 32px rgba(0, 0, 0, 0.25),
+                           inset 0 1px 0 rgba(255, 255, 255, 0.05),
                            inset 0 -1px 0 rgba(0, 0, 0, 0.3)`
-                        : `0px 12px 36px rgba(0, 0, 0, 0.5),
-                           0px 0px 20px ${project.color.replace('0.15', '0.15')},
-                           inset 0 2px 8px rgba(0, 0, 0, 0.5),
+                        : `0px 8px 20px rgba(0, 0, 0, 0.15),
                            inset 0 1px 0 rgba(255, 255, 255, 0.02),
                            inset 0 -1px 0 rgba(0, 0, 0, 0.25)`,
-                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                      transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease',
                       transform: hoveredProject === idx
-                        ? `translateY(-10px) scale(1.01) rotateX(${cardTilt.rotateX}deg) rotateY(${cardTilt.rotateY}deg)`
+                        ? 'translateY(-6px) scale(1.02)'
                         : 'translateY(0) scale(1)',
                       opacity: act4InView && mounted ? 1 : 0,
                       animation: act4InView && mounted ? `fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) ${0.3 + idx * 0.15}s both` : 'none',
@@ -1767,8 +1730,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                         position: 'relative',
                         height: '380px',
                         background: `
-                          radial-gradient(circle at 30% 30%, rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.35) 0%, rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.12) 50%, transparent 100%),
-                          rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.08)
+                          radial-gradient(circle at 30% 30%, rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.12) 0%, rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.05) 50%, transparent 100%),
+                          rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.03)
                         `,
                         display: 'flex',
                         alignItems: 'center',
@@ -1776,19 +1739,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                         overflow: 'hidden',
                       }}
                     >
-
-                      {/* Shimmer effect on hover */}
-                      {hoveredProject === idx && (
-                        <div
-                          style={{
-                            position: 'absolute',
-                            inset: 0,
-                            background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent)',
-                            backgroundSize: '200% 100%',
-                            animation: 'shimmerSweep 2s linear infinite',
-                          }}
-                        />
-                      )}
 
                       {/* Status Badge */}
                       <div
