@@ -546,16 +546,20 @@ export function PsoriAssistWork() {
             transition: 'all 0.3s ease',
             padding: '0.5rem 1rem',
             borderRadius: '12px',
-            backgroundColor: 'rgba(255, 255, 255, 0.03)',
-            border: '1px solid rgba(255, 255, 255, 0.06)'
+            background: 'rgba(15, 15, 15, 0.65)',
+            backdropFilter: 'blur(120px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(120px) saturate(180%)',
+            border: '1px solid rgba(255, 255, 255, 0.12)'
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.color = 'rgba(255, 255, 255, 1)';
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+            e.currentTarget.style.background = 'rgba(18, 18, 18, 0.75)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.color = 'rgba(255, 255, 255, 0.6)';
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.03)';
+            e.currentTarget.style.background = 'rgba(15, 15, 15, 0.65)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
           }}
         >
           <ArrowLeft size={16} />
@@ -564,7 +568,7 @@ export function PsoriAssistWork() {
       </div>
 
       {/* Hero */}
-      <div id="hero" style={{ maxWidth: '1400px', margin: '0 auto 6rem', position: 'relative' }}>
+      <div id="hero" style={{ maxWidth: '1400px', margin: '0 auto 10rem', position: 'relative' }}>
         <div style={{
           display: 'inline-block',
           padding: '0.5rem 1rem',
@@ -572,17 +576,18 @@ export function PsoriAssistWork() {
           backgroundColor: 'rgba(74, 144, 226, 0.1)',
           border: '1px solid rgba(74, 144, 226, 0.2)',
           color: 'rgb(74, 144, 226)',
-          fontSize: '0.85rem',
+          fontSize: '0.8rem',
           fontWeight: '500',
+          letterSpacing: '0.02em',
           marginBottom: '1.5rem',
           transform: `translateY(${scrollY * 0.1}px)`,
           transition: 'transform 0.05s ease-out'
         }}>
-          Digital Health · AI/ML · Clinical Validation · 18-Month Research
+          Digital Health · AI/ML · 18 Months
         </div>
 
         <h1 style={{
-          fontSize: isMobile ? '2.5rem' : '4rem',
+          fontSize: isMobile ? '2.5rem' : '4.5rem',
           fontWeight: '300',
           marginBottom: '1.5rem',
           lineHeight: '1.1',
@@ -607,6 +612,85 @@ export function PsoriAssistWork() {
           Reimagining psoriasis care through AI-powered digital therapeutics. An 18-month design concept addressing treatment adherence, mental health integration, and early comorbidity detection for 125 million patients globally.
         </p>
 
+        {/* Hero CTAs */}
+        <div style={{
+          display: 'flex',
+          gap: '1rem',
+          marginBottom: '2.5rem',
+          flexWrap: 'wrap'
+        }}>
+          <button
+            onClick={() => {
+              const section = document.getElementById('interactive-prototypes');
+              section?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.875rem 1.75rem',
+              borderRadius: '16px',
+              background: 'rgba(218, 14, 41, 0.15)',
+              backdropFilter: 'blur(60px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(60px) saturate(180%)',
+              border: '1px solid rgba(218, 14, 41, 0.3)',
+              color: '#DA0E29',
+              fontSize: '0.95rem',
+              fontWeight: '500',
+              cursor: 'pointer',
+              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              outline: 'none'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(218, 14, 41, 0.25)';
+              e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.5)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(218, 14, 41, 0.15)';
+              e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            View Interactive Prototypes
+          </button>
+          <button
+            onClick={() => {
+              const section = document.getElementById('research');
+              section?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.875rem 1.75rem',
+              borderRadius: '16px',
+              background: 'rgba(15, 15, 15, 0.65)',
+              backdropFilter: 'blur(120px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(120px) saturate(180%)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              color: 'rgba(255, 255, 255, 0.9)',
+              fontSize: '0.95rem',
+              fontWeight: '500',
+              cursor: 'pointer',
+              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              outline: 'none'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(18, 18, 18, 0.75)';
+              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(15, 15, 15, 0.65)';
+              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            Read Research
+          </button>
+        </div>
+
         <div style={{
           display: 'grid',
           gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
@@ -614,9 +698,9 @@ export function PsoriAssistWork() {
           maxWidth: '900px'
         }}>
           {[
-            { label: 'Role', value: 'Lead Product Designer & Researcher' },
-            { label: 'Duration', value: '18-month design concept' },
-            { label: 'Platform', value: 'Cross-platform mobile + Provider web portal' }
+            { label: 'Role', value: 'Lead Designer & Researcher' },
+            { label: 'Duration', value: '18 Months' },
+            { label: 'Platform', value: 'iOS · Android · Web Portal' }
           ].map((item, i) => {
             const isHovered = hoveredMetaCard === i;
             return (
@@ -653,10 +737,40 @@ export function PsoriAssistWork() {
             );
           })}
         </div>
+
+        {/* Tags */}
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '0.5rem',
+          marginTop: '2rem',
+          maxWidth: '900px'
+        }}>
+          {['AI/ML', 'Digital Health', 'Clinical Validation', 'iOS 17', 'HIPAA', 'React Native'].map((tag, i) => (
+            <span
+              key={i}
+              style={{
+                display: 'inline-block',
+                padding: '0.375rem 0.875rem',
+                borderRadius: '12px',
+                background: 'rgba(255, 255, 255, 0.05)',
+                backdropFilter: 'blur(60px) saturate(150%)',
+                WebkitBackdropFilter: 'blur(60px) saturate(150%)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                color: 'rgba(255, 255, 255, 0.6)',
+                fontSize: '0.75rem',
+                fontWeight: '500',
+                letterSpacing: '0.02em'
+              }}
+            >
+              #{tag.replace(/s+/g, '-')}
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* Stats - Progressive Reveal */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto 8rem' }}>
         <div style={{
           display: 'grid',
           gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)',
@@ -1060,7 +1174,7 @@ export function PsoriAssistWork() {
       </div>
 
       {/* Research Discovery */}
-      <div id="research" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+      <div id="research" style={{ maxWidth: '1400px', margin: '0 auto 7rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
           fontWeight: '700',
@@ -2219,7 +2333,7 @@ export function PsoriAssistWork() {
       </div>
 
       {/* Features */}
-      <div id="features" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+      <div id="features" style={{ maxWidth: '1400px', margin: '0 auto 7rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
           fontWeight: '700',
@@ -3026,7 +3140,7 @@ export function PsoriAssistWork() {
       </div>
 
       {/* Technical Architecture */}
-      <div id="technical" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+      <div id="technical" style={{ maxWidth: '1400px', margin: '0 auto 7rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
           fontWeight: '700',
@@ -4019,7 +4133,7 @@ export function PsoriAssistWork() {
       </div>
 
       {/* Future Roadmap */}
-      <div id="roadmap" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
+      <div id="roadmap" style={{ maxWidth: '1400px', margin: '0 auto 10rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
           fontWeight: '700',
