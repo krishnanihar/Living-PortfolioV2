@@ -71,6 +71,7 @@ interface TestingRound {
 export function PsoriAssistWork() {
   const [inView, setInView] = useState(false);
   const [hoveredStat, setHoveredStat] = useState<number | null>(null);
+  const [hoveredMetaCard, setHoveredMetaCard] = useState<number | null>(null);
   const [expandedFeature, setExpandedFeature] = useState<string | null>(null);
   const [hoveredFeature, setHoveredFeature] = useState<string | null>(null);
   const [hoveredPersona, setHoveredPersona] = useState<string | null>(null);
@@ -492,7 +493,7 @@ export function PsoriAssistWork() {
       ref={sectionRef}
       style={{
         minHeight: '100vh',
-        backgroundColor: '#0A0A0A',
+        backgroundColor: '#000000',
         color: '#FFFFFF',
         padding: isMobile ? '5rem 1rem 3rem' : '6rem 2rem 4rem',
         position: 'relative',
@@ -508,7 +509,7 @@ export function PsoriAssistWork() {
           position: 'fixed',
           inset: 0,
           pointerEvents: 'none',
-          zIndex: 0,
+          zIndex: -1,
           background: `radial-gradient(ellipse at 50% 50%, ${narrativeState.color.atmosphere}, transparent 70%)`,
           transition: 'background 2s cubic-bezier(0.22, 1, 0.36, 1)',
         }}
@@ -526,7 +527,7 @@ export function PsoriAssistWork() {
           width: '100%',
           height: '100%',
           pointerEvents: 'none',
-          zIndex: 0,
+          zIndex: -1,
           background: `radial-gradient(circle 600px at ${mousePosition.x}% ${mousePosition.y}%, rgba(74, 144, 226, 0.06) 0%, transparent 50%)`,
           transition: 'background 0.3s ease-out'
         }}
@@ -582,7 +583,7 @@ export function PsoriAssistWork() {
 
         <h1 style={{
           fontSize: isMobile ? '2.5rem' : '4rem',
-          fontWeight: '700',
+          fontWeight: '300',
           marginBottom: '1.5rem',
           lineHeight: '1.1',
           background: 'linear-gradient(135deg, #FFFFFF 0%, rgba(255, 255, 255, 0.7) 100%)',
@@ -616,21 +617,41 @@ export function PsoriAssistWork() {
             { label: 'Role', value: 'Lead Product Designer & Researcher' },
             { label: 'Duration', value: '18-month design concept' },
             { label: 'Platform', value: 'Cross-platform mobile + Provider web portal' }
-          ].map((item, i) => (
-            <div key={i} style={{
-              padding: '1rem',
-              borderRadius: '16px',
-              backgroundColor: 'rgba(255, 255, 255, 0.03)',
-              border: '1px solid rgba(255, 255, 255, 0.06)'
-            }}>
-              <div style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.5)', marginBottom: '0.25rem' }}>
-                {item.label}
+          ].map((item, i) => {
+            const isHovered = hoveredMetaCard === i;
+            return (
+              <div
+                key={i}
+                onMouseEnter={() => setHoveredMetaCard(i)}
+                onMouseLeave={() => setHoveredMetaCard(null)}
+                style={{
+                  padding: '1rem 1.25rem',
+                  borderRadius: '20px',
+                  background: isHovered ? 'rgba(18, 18, 18, 0.75)' : 'rgba(15, 15, 15, 0.65)',
+                  backdropFilter: 'blur(120px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(120px) saturate(180%)',
+                  border: isHovered ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(255, 255, 255, 0.12)',
+                  boxShadow: isHovered
+                    ? `0px 20px 56px rgba(0, 0, 0, 0.8),
+                       0px 0px 1px rgba(255, 255, 255, 0.4) inset,
+                       0px -1px 0px rgba(255, 255, 255, 0.12) inset`
+                    : `0px 16px 48px rgba(0, 0, 0, 0.6),
+                       0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                       0px -1px 0px rgba(255, 255, 255, 0.08) inset`,
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
+                  cursor: 'default'
+                }}
+              >
+                <div style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.5)', marginBottom: '0.25rem' }}>
+                  {item.label}
+                </div>
+                <div style={{ fontSize: '1rem', color: 'rgba(255, 255, 255, 0.9)', fontWeight: '500' }}>
+                  {item.value}
+                </div>
               </div>
-              <div style={{ fontSize: '1rem', color: 'rgba(255, 255, 255, 0.9)', fontWeight: '500' }}>
-                {item.value}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -658,9 +679,19 @@ export function PsoriAssistWork() {
                 style={{
                   padding: '2rem 1.5rem',
                   borderRadius: '24px',
-                  backgroundColor: isHovered ? `rgba(${stat.color}, 0.1)` : 'rgba(255, 255, 255, 0.03)',
-                  border: isHovered ? `1px solid rgba(${stat.color}, 0.3)` : '1px solid rgba(255, 255, 255, 0.06)',
-                  transition: 'all 0.4s ease',
+                  background: isHovered ? 'rgba(18, 18, 18, 0.75)' : 'rgba(15, 15, 15, 0.65)',
+                  backdropFilter: 'blur(120px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(120px) saturate(180%)',
+                  border: isHovered ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(255, 255, 255, 0.12)',
+                  boxShadow: isHovered
+                    ? `0px 20px 56px rgba(0, 0, 0, 0.8),
+                       0px 0px 1px rgba(255, 255, 255, 0.4) inset,
+                       0px -1px 0px rgba(255, 255, 255, 0.12) inset,
+                       0px 0px 40px rgba(${stat.color}, 0.2)`
+                    : `0px 16px 48px rgba(0, 0, 0, 0.6),
+                       0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                       0px -1px 0px rgba(255, 255, 255, 0.08) inset`,
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                   transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
                   cursor: 'pointer'
                 }}
@@ -703,9 +734,13 @@ export function PsoriAssistWork() {
         <div style={{
           padding: isMobile ? '2rem 1.5rem' : '3rem 3rem',
           borderRadius: '32px',
-          backgroundColor: 'rgba(255, 255, 255, 0.02)',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          backdropFilter: 'blur(20px)'
+          background: 'rgba(15, 15, 15, 0.65)',
+          backdropFilter: 'blur(120px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(120px) saturate(180%)',
+          border: '1px solid rgba(255, 255, 255, 0.12)',
+          boxShadow: `0px 16px 48px rgba(0, 0, 0, 0.6),
+                      0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                      0px -1px 0px rgba(255, 255, 255, 0.08) inset`
         }}>
           <h2 style={{
             fontSize: isMobile ? '1.75rem' : '2.5rem',
@@ -1090,17 +1125,29 @@ export function PsoriAssistWork() {
               style={{
                 padding: isMobile ? '2rem 1.5rem' : '2.5rem 2rem',
                 borderRadius: '24px',
-                backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
-                transition: 'all 0.3s ease'
+                background: 'rgba(15, 15, 15, 0.65)',
+                backdropFilter: 'blur(120px) saturate(180%)',
+                WebkitBackdropFilter: 'blur(120px) saturate(180%)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                boxShadow: `0px 16px 48px rgba(0, 0, 0, 0.6),
+                            0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                            0px -1px 0px rgba(255, 255, 255, 0.08) inset`,
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = `rgba(${theme.color}, 0.05)`;
-                e.currentTarget.style.borderColor = `rgba(${theme.color}, 0.2)`;
+                e.currentTarget.style.background = 'rgba(18, 18, 18, 0.75)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                e.currentTarget.style.boxShadow = `0px 20px 56px rgba(0, 0, 0, 0.8),
+                                                     0px 0px 1px rgba(255, 255, 255, 0.4) inset,
+                                                     0px -1px 0px rgba(255, 255, 255, 0.12) inset,
+                                                     0px 0px 40px rgba(${theme.color}, 0.2)`;
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.03)';
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                e.currentTarget.style.background = 'rgba(15, 15, 15, 0.65)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+                e.currentTarget.style.boxShadow = `0px 16px 48px rgba(0, 0, 0, 0.6),
+                                                     0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                                                     0px -1px 0px rgba(255, 255, 255, 0.08) inset`;
               }}
             >
               <div style={{
@@ -1805,9 +1852,19 @@ export function PsoriAssistWork() {
                 style={{
                   padding: isMobile ? '2rem 1.5rem' : '2rem 1.5rem',
                   borderRadius: '24px',
-                  backgroundColor: isHovered ? `rgba(${persona.color}, 0.05)` : 'rgba(255, 255, 255, 0.03)',
-                  border: isHovered ? `1px solid rgba(${persona.color}, 0.3)` : '1px solid rgba(255, 255, 255, 0.06)',
-                  transition: 'all 0.4s ease',
+                  background: isHovered ? 'rgba(18, 18, 18, 0.75)' : 'rgba(15, 15, 15, 0.65)',
+                  backdropFilter: 'blur(120px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(120px) saturate(180%)',
+                  border: isHovered ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(255, 255, 255, 0.12)',
+                  boxShadow: isHovered
+                    ? `0px 20px 56px rgba(0, 0, 0, 0.8),
+                       0px 0px 1px rgba(255, 255, 255, 0.4) inset,
+                       0px -1px 0px rgba(255, 255, 255, 0.12) inset,
+                       0px 0px 40px rgba(${persona.color}, 0.2)`
+                    : `0px 16px 48px rgba(0, 0, 0, 0.6),
+                       0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                       0px -1px 0px rgba(255, 255, 255, 0.08) inset`,
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                   height: '100%',
                   display: 'flex',
                   flexDirection: 'column'
@@ -2197,9 +2254,19 @@ export function PsoriAssistWork() {
                 style={{
                   padding: isMobile ? '2rem 1.5rem' : '2.5rem 2rem',
                   borderRadius: '24px',
-                  backgroundColor: isHovered || isExpanded ? `rgba(${feature.color}, 0.05)` : 'rgba(255, 255, 255, 0.03)',
-                  border: isHovered || isExpanded ? `1px solid rgba(${feature.color}, 0.3)` : '1px solid rgba(255, 255, 255, 0.06)',
-                  transition: 'all 0.4s ease',
+                  background: isHovered || isExpanded ? 'rgba(18, 18, 18, 0.75)' : 'rgba(15, 15, 15, 0.65)',
+                  backdropFilter: 'blur(120px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(120px) saturate(180%)',
+                  border: isHovered || isExpanded ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(255, 255, 255, 0.12)',
+                  boxShadow: isHovered || isExpanded
+                    ? `0px 20px 56px rgba(0, 0, 0, 0.8),
+                       0px 0px 1px rgba(255, 255, 255, 0.4) inset,
+                       0px -1px 0px rgba(255, 255, 255, 0.12) inset,
+                       0px 0px 40px rgba(${feature.color}, 0.2)`
+                    : `0px 16px 48px rgba(0, 0, 0, 0.6),
+                       0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                       0px -1px 0px rgba(255, 255, 255, 0.08) inset`,
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                   cursor: 'pointer'
                 }}
                 onClick={() => setExpandedFeature(isExpanded ? null : feature.id)}
@@ -4173,3 +4240,6 @@ export function PsoriAssistWork() {
     </div>
   );
 }
+
+
+
