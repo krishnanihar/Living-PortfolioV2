@@ -493,9 +493,8 @@ export function PsoriAssistWork() {
       ref={sectionRef}
       style={{
         minHeight: '100vh',
-        backgroundColor: '#000000',
         color: '#FFFFFF',
-        padding: isMobile ? '5rem 1rem 3rem' : '6rem 2rem 4rem',
+        padding: '0 2rem 2rem',
         position: 'relative',
         overflow: 'hidden'
       }}
@@ -569,7 +568,7 @@ export function PsoriAssistWork() {
           alignItems: 'center',
           justifyContent: 'center',
           position: 'relative',
-          padding: isMobile ? '6rem 1rem 3rem' : '8rem 2rem 4rem',
+          padding: isMobile ? '2rem 1rem 2rem' : '3rem 2rem 3rem',
           overflow: 'hidden',
           textAlign: 'center'
         }}
@@ -793,12 +792,12 @@ export function PsoriAssistWork() {
             section?.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }}
           style={{
-            position: 'absolute',
-            bottom: isMobile ? '1.5rem' : '2rem',
+            position: 'fixed',
+            bottom: isMobile ? '2rem' : '3rem',
             left: '50%',
             transform: 'translateX(-50%)',
             cursor: 'pointer',
-            zIndex: 10,
+            zIndex: 100,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
