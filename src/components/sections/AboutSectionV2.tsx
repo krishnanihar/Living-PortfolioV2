@@ -1685,45 +1685,46 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
                 return (
                   <SwiperSlide key={idx}>
-                    <Link
-                      href={project.link}
-                      className={projectClassName}
-                    onMouseEnter={(e) => {
-                      setHoveredProject(idx);
-                      const card = e.currentTarget;
-                      card.addEventListener('mousemove', handleCardMouseMove);
-                    }}
-                    onMouseLeave={(e) => {
-                      setHoveredProject(null);
-                      setCardTilt({ rotateX: 0, rotateY: 0 });
-                      const card = e.currentTarget;
-                      card.removeEventListener('mousemove', handleCardMouseMove);
-                    }}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      background: 'rgba(10, 10, 10, 0.3)',
-                      backdropFilter: 'blur(140px) saturate(180%) brightness(0.95)',
-                      WebkitBackdropFilter: 'blur(140px) saturate(180%) brightness(0.95)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      borderRadius: '20px',
-                      textDecoration: 'none',
-                      overflow: 'hidden',
-                      boxShadow: hoveredProject === idx
-                        ? `0px 16px 32px rgba(0, 0, 0, 0.25),
-                           inset 0 1px 0 rgba(255, 255, 255, 0.05),
-                           inset 0 -1px 0 rgba(0, 0, 0, 0.3)`
-                        : `0px 8px 20px rgba(0, 0, 0, 0.15),
-                           inset 0 1px 0 rgba(255, 255, 255, 0.02),
-                           inset 0 -1px 0 rgba(0, 0, 0, 0.25)`,
-                      transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease',
-                      transform: hoveredProject === idx
-                        ? 'translateY(-6px) scale(1.02)'
-                        : 'translateY(0) scale(1)',
-                      opacity: act4InView && mounted ? 1 : 0,
-                      animation: act4InView && mounted ? `fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) ${0.3 + idx * 0.15}s both` : 'none',
-                    }}
-                  >
+                    {({ isActive }) => (
+                      <Link
+                        href={project.link}
+                        className={projectClassName}
+                      onMouseEnter={(e) => {
+                        setHoveredProject(idx);
+                        const card = e.currentTarget;
+                        card.addEventListener('mousemove', handleCardMouseMove);
+                      }}
+                      onMouseLeave={(e) => {
+                        setHoveredProject(null);
+                        setCardTilt({ rotateX: 0, rotateY: 0 });
+                        const card = e.currentTarget;
+                        card.removeEventListener('mousemove', handleCardMouseMove);
+                      }}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        background: 'rgba(10, 10, 10, 0.3)',
+                        backdropFilter: 'blur(140px) saturate(180%) brightness(0.95)',
+                        WebkitBackdropFilter: 'blur(140px) saturate(180%) brightness(0.95)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        borderRadius: '20px',
+                        textDecoration: 'none',
+                        overflow: 'hidden',
+                        boxShadow: hoveredProject === idx
+                          ? `0px 16px 32px rgba(0, 0, 0, 0.25),
+                             inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                             inset 0 -1px 0 rgba(0, 0, 0, 0.3)`
+                          : `0px 8px 20px rgba(0, 0, 0, 0.15),
+                             inset 0 1px 0 rgba(255, 255, 255, 0.02),
+                             inset 0 -1px 0 rgba(0, 0, 0, 0.25)`,
+                        transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease',
+                        transform: hoveredProject === idx
+                          ? `translateY(-6px) scale(${isActive ? 1.08 : 0.98})`
+                          : `translateY(0) scale(${isActive ? 1.05 : 0.92})`,
+                        opacity: act4InView && mounted ? (isActive ? 1 : 0.5) : 0,
+                        animation: act4InView && mounted ? `fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) ${0.3 + idx * 0.15}s both` : 'none',
+                      }}
+                    >
                     {/* Top: Image Area */}
                     <div
                       style={{
@@ -2233,6 +2234,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                       </div>
                     </div>
                   </Link>
+                    )}
                   </SwiperSlide>
                 );
               })}
