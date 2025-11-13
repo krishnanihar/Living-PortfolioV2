@@ -7,7 +7,6 @@ import { ScrollDarkeningOverlay } from '@/components/effects/ScrollDarkeningOver
 import { IntroductionSection } from '@/components/sections/IntroductionSection';
 import { SectionDivider } from '@/components/ui/SectionDivider';
 import { HomeNarrativeWrapper } from '@/components/sections/HomeNarrativeWrapper';
-import { HomeFirstPersonMoments } from '@/components/sections/HomeFirstPersonMoments';
 
 // Dynamically import CosmicBackground for better performance
 const CosmicBackground = dynamic(
@@ -45,21 +44,12 @@ const Chatbot = dynamic(
 
 export default function HomePage() {
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [chatContext, setChatContext] = useState<string | undefined>(undefined);
-
-  const handleOpenChatWithContext = (contextMessage?: string) => {
-    setChatContext(contextMessage);
-    setIsChatOpen(true);
-  };
 
   return (
     <HomeNarrativeWrapper>
       <PortfolioNavigation />
       <CosmicBackground />
       <ScrollDarkeningOverlay />
-
-      {/* First-person narrative moments - now interactive chatbot notifications */}
-      <HomeFirstPersonMoments onOpenChat={handleOpenChatWithContext} />
 
       <main id="main-content">
         <IntroductionSection />
@@ -75,10 +65,7 @@ export default function HomePage() {
       {/* Chatbot modal */}
       <Chatbot
         isOpen={isChatOpen}
-        onClose={() => {
-          setIsChatOpen(false);
-          setChatContext(undefined); // Clear context when closing
-        }}
+        onClose={() => setIsChatOpen(false)}
         intentContext="general"
       />
     </HomeNarrativeWrapper>
