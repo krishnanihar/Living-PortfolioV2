@@ -569,6 +569,8 @@ export function AboutSection() {
                         flex: 1,
                         height: '1px',
                         background: 'linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05))',
+                        alignSelf: 'flex-start',
+                        marginTop: 'clamp(40px, 4.5vw, 48px)',
                       }} />
                     )}
                   </React.Fragment>
