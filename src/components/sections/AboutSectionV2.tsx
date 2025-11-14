@@ -1715,7 +1715,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                           : `0px 8px 20px rgba(0, 0, 0, 0.15),
                              inset 0 1px 0 rgba(255, 255, 255, 0.02),
                              inset 0 -1px 0 rgba(0, 0, 0, 0.25)`,
-                        transition: 'box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                        transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                       }}
                     >
                     {/* Top: Image Area */}
