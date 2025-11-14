@@ -354,8 +354,8 @@ export function PsoriAssistPhoneMockup() {
     const mouseX = e.clientX - centerX;
     const mouseY = e.clientY - centerY;
 
-    // Max tilt: 15 degrees for subtle, premium effect
-    const maxTilt = 15;
+    // Max tilt: 3 degrees for extremely subtle, premium micro-interaction
+    const maxTilt = 3;
     const tiltX = -(mouseY / (rect.height / 2)) * maxTilt;
     const tiltY = (mouseX / (rect.width / 2)) * maxTilt;
 
@@ -413,9 +413,9 @@ export function PsoriAssistPhoneMockup() {
           rotateY,
           transition: {
             type: 'spring',
-            stiffness: 150,
-            damping: 20,
-            mass: 0.5
+            stiffness: 300,
+            damping: 30,
+            mass: 0.3
           }
         }}
         style={{
