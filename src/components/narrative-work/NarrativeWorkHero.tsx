@@ -74,9 +74,10 @@ export function NarrativeWorkHero() {
         >
           {/* Eyebrow */}
           <motion.p
-            className="font-light tracking-[0.2em] uppercase text-white/60 mb-8"
+            className="font-light tracking-[0.2em] uppercase text-white/60"
             style={{
               fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+              marginBottom: '2rem',
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -87,9 +88,10 @@ export function NarrativeWorkHero() {
 
           {/* Main title */}
           <h1
-            className="font-extralight leading-[1.1] mb-12"
+            className="font-extralight leading-[1.1]"
             style={{
               fontSize: 'clamp(2.5rem, 8vw, 5rem)',
+              marginBottom: '3rem',
               background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.7) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -103,7 +105,10 @@ export function NarrativeWorkHero() {
 
           {/* Subtitle */}
           <motion.p
-            className="text-lg md:text-xl font-light text-white/70 mb-16 max-w-2xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl font-light text-white/70 max-w-2xl mx-auto leading-relaxed"
+            style={{
+              marginBottom: '4rem',
+            }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.8 }}
@@ -117,7 +122,10 @@ export function NarrativeWorkHero() {
 
           {/* Stats pills */}
           <motion.div
-            className="flex flex-wrap items-center justify-center gap-4 mb-20"
+            className="flex flex-wrap items-center justify-center gap-4"
+            style={{
+              marginBottom: '5rem',
+            }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.1 }}
