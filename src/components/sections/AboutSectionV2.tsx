@@ -750,6 +750,36 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           border-radius: 4px !important;
         }
 
+        /* Center card prominence - CSS-only approach */
+        :global(.swiper-slide) {
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+          opacity: 0.5 !important;
+        }
+
+        :global(.swiper-slide) > * {
+          transform: scale(0.92);
+          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        :global(.swiper-slide-active) {
+          opacity: 1 !important;
+          z-index: 10 !important;
+        }
+
+        :global(.swiper-slide-active) > * {
+          transform: scale(1.05);
+        }
+
+        :global(.swiper-slide-prev),
+        :global(.swiper-slide-next) {
+          opacity: 0.5 !important;
+        }
+
+        :global(.swiper-slide-prev) > *,
+        :global(.swiper-slide-next) > * {
+          transform: scale(0.95);
+        }
+
         /* Navigation positioning */
         .carousel-navigation {
           margin-top: 32px;
