@@ -2240,7 +2240,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '12px',
+                  gap: '64px',
                   marginTop: '32px',
                   flexWrap: 'nowrap',
                 }}
