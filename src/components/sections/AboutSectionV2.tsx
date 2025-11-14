@@ -1715,12 +1715,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                           : `0px 8px 20px rgba(0, 0, 0, 0.15),
                              inset 0 1px 0 rgba(255, 255, 255, 0.02),
                              inset 0 -1px 0 rgba(0, 0, 0, 0.25)`,
-                        transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease',
-                        transform: hoveredProject === idx
-                          ? `translateY(-6px) scale(${isActive ? 1.08 : 0.98})`
-                          : `translateY(0) scale(${isActive ? 1.05 : 0.92})`,
-                        opacity: act4InView && mounted ? (isActive ? 1 : 0.5) : 0,
-                        animation: act4InView && mounted ? `fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) ${0.3 + idx * 0.15}s both` : 'none',
+                        transition: 'box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                       }}
                     >
                     {/* Top: Image Area */}
