@@ -37,7 +37,7 @@ export function NarrativeWorkHero() {
         position: 'absolute',
         inset: 0,
         overflow: 'hidden',
-        opacity: 0.45,
+        opacity: Math.max(0, 1 - scrollY / 400) * 0.45,
       }}>
         {[...Array(20)].map((_, i) => {
           const colors = [
