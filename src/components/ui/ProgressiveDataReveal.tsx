@@ -364,7 +364,7 @@ export function ProgressiveCounter({
         style={{
           fontSize: 'clamp(2.5rem, 6vw, 4rem)',
           fontWeight: '200',
-          color: 'rgba(147, 51, 234, 0.9)',
+          color: 'rgba(255, 255, 255, 0.95)',
           lineHeight: '1',
           marginBottom: '0.5rem',
         }}

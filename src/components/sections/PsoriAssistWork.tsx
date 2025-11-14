@@ -726,7 +726,7 @@ export function PsoriAssistWork() {
                   style={{
                     padding: '0.75rem 1.25rem',
                     borderRadius: '16px',
-                    background: isHovered ? 'rgba(18, 18, 18, 0.75)' : 'rgba(15, 15, 15, 0.65)',
+                    background: isHovered ? 'rgba(12, 12, 12, 0.90)' : 'rgba(8, 8, 8, 0.85)',
                     backdropFilter: 'blur(120px) saturate(180%)',
                     WebkitBackdropFilter: 'blur(120px) saturate(180%)',
                     border: isHovered ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(255, 255, 255, 0.12)',
@@ -849,7 +849,7 @@ export function PsoriAssistWork() {
                 style={{
                   padding: '2rem 1.5rem',
                   borderRadius: '24px',
-                  background: isHovered ? 'rgba(18, 18, 18, 0.75)' : 'rgba(15, 15, 15, 0.65)',
+                  background: isHovered ? 'rgba(12, 12, 12, 0.90)' : 'rgba(8, 8, 8, 0.85)',
                   backdropFilter: 'blur(120px) saturate(180%)',
                   WebkitBackdropFilter: 'blur(120px) saturate(180%)',
                   border: isHovered ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(255, 255, 255, 0.12)',
@@ -2038,7 +2038,7 @@ export function PsoriAssistWork() {
                 style={{
                   padding: isMobile ? '2rem 1.5rem' : '2rem 1.5rem',
                   borderRadius: '24px',
-                  background: isHovered ? 'rgba(18, 18, 18, 0.75)' : 'rgba(15, 15, 15, 0.65)',
+                  background: isHovered ? 'rgba(12, 12, 12, 0.90)' : 'rgba(8, 8, 8, 0.85)',
                   backdropFilter: 'blur(120px) saturate(180%)',
                   WebkitBackdropFilter: 'blur(120px) saturate(180%)',
                   border: isHovered ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(255, 255, 255, 0.12)',
