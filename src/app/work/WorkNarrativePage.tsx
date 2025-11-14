@@ -458,14 +458,14 @@ export function WorkNarrativePage() {
         paddingBottom: '6rem',
         paddingLeft: '1.5rem',
         paddingRight: '1.5rem',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '6rem',
       }}>
         <div style={{
           maxWidth: '96rem',
           marginLeft: 'auto',
           marginRight: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '4rem',
         }}>
           {/* Latent Space */}
           <ResearchShowcase
