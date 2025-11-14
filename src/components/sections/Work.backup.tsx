@@ -1,0 +1,793 @@
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { ArrowDown, ArrowUpRight, Circle, Hexagon, Grid3x3, Heart, Brain } from 'lucide-react';
+
+interface LocalProject {
+  id: number;
+  number: string;
+  icon: any;
+  title: string;
+  category: string;
+  description: string;
+  metric: string;
+  tags: string[];
+  status: string;
+  year: string;
+  color: string;
+  url?: string;
+}
+
+export function Work() {
+  const [currentProject, setCurrentProject] = useState(0);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let rafId: number;
+    let isThrottled = false;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isThrottled) return;
+
+      isThrottled = true;
+      rafId = requestAnimationFrame(() => {
+        const x = (e.clientX / window.innerWidth) * 100;
+        const y = (e.clientY / window.innerHeight) * 100;
+        setMousePos({ x, y });
+        isThrottled = false;
+      });
+    };
+
+    const handleScroll = () => {
+      if (containerRef.current) {
+        const scrollTop = containerRef.current.scrollTop;
+        const height = window.innerHeight;
+        const newIndex = Math.round(scrollTop / height);
+        setCurrentProject(newIndex);
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    if (containerRef.current) {
+      containerRef.current.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (containerRef.current) {
+        containerRef.current.removeEventListener('scroll', handleScroll);
+      }
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  const projects: LocalProject[] = [
+    {
+      id: 1,
+      number: '01',
+      icon: Circle,
+      title: 'Design at Air India',
+      category: 'Design Systems',
+      description: 'Leading design transformation for India\'s flag carrier airline. Building scalable design systems and reimagining digital experiences across web, mobile, and in-flight entertainment platforms.',
+      metric: '450+ Daily Active Users',
+      tags: ['React', 'Design Systems', 'Aviation UX', 'Enterprise'],
+      status: 'Active',
+      year: '2024',
+      color: '218, 14, 41',
+      url: '/work/air-india',
+    },
+    {
+      id: 2,
+      number: '02',
+      icon: Hexagon,
+      title: 'mythOS',
+      category: 'AI Art Curator',
+      description: 'An AI-powered digital art curator that explores visual motifs across art history. Uses computer vision and machine learning to generate thematic exhibitions and discover hidden patterns in artistic movements.',
+      metric: 'Algorithmic Curation',
+      tags: ['Computer Vision', 'AI/ML', 'Art History', 'Pattern Recognition'],
+      status: 'Research',
+      year: '2024',
+      color: '236, 72, 153',
+      url: '/work/mythos',
+    },
+    {
+      id: 3,
+      number: '03',
+      icon: Brain,
+      title: 'PsoriAssist',
+      category: 'Digital Health',
+      description: '18-month digital therapeutic design concept reimagining psoriasis care through AI-powered interventions. Clinical validation RCT pathway, ghost overlay innovation, and comprehensive research (25 interviews, 75+ studies).',
+      metric: '125M Global Patients',
+      tags: ['AI/ML', 'Digital Health', 'Clinical Validation', 'UX Research'],
+      status: 'Research',
+      year: '2024',
+      color: '74, 144, 226',
+      url: '/work/psoriassist',
+    },
+    {
+      id: 4,
+      number: '04',
+      icon: Hexagon,
+      title: 'Latent Space',
+      category: 'Speculative Design',
+      description: 'Speculative design exploration of dream technology ethics. Interactive prototype exploring the boundaries between consciousness, privacy, and AI through dream interface concepts.',
+      metric: '∞ Unique Dream Maps',
+      tags: ['Ethics', 'Consciousness', 'Future Concepts', 'Speculative'],
+      status: 'Research',
+      year: '2024',
+      color: '140, 100, 255',
+      url: '/work/latent-space',
+    },
+    {
+      id: 5,
+      number: '05',
+      icon: Grid3x3,
+      title: 'Metamorphic Fractal Reflections',
+      category: 'Psychedelic Journey',
+      description: 'An immersive installation exploring consciousness through ego dissolution. Participants enter a bathroom mirror portal and traverse a trippy multiverse of liquid color and pattern-creatures.',
+      metric: '2 Months Development',
+      tags: ['TouchDesigner', 'Arduino', 'VR + Installation', 'Interactive Art'],
+      status: 'Completed',
+      year: '2023',
+      color: '50, 200, 150',
+      url: '/work/metamorphic-fractal-reflections',
+    },
+    {
+      id: 6,
+      number: '06',
+      icon: Heart,
+      title: 'Living Organism',
+      category: 'Meta Design',
+      description: 'This portfolio website itself - architected to feel like a living organism. Features breathing animations, consciousness-aware interactions, and adaptive micro-behaviors that respond to user presence and intent.',
+      metric: 'Living & Breathing',
+      tags: ['Next.js', 'Framer Motion', 'Consciousness UI', 'Glassmorphism'],
+      status: 'Active',
+      year: '2024',
+      color: '255, 100, 150',
+      url: '/',
+    }
+  ];
+
+  const scrollToProject = (index: number) => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        top: index * window.innerHeight,
+        behavior: 'auto'
+      });
+    }
+  };
+
+  return (
+    <>
+      <style jsx>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap');
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        ::-webkit-scrollbar {
+          width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: var(--border-primary);
+          border-radius: 2px;
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(40px) translateZ(0);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) translateZ(0);
+          }
+        }
+
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-60px) translateZ(0);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0) translateZ(0);
+          }
+        }
+
+        @keyframes slideInRight {
+          from {
+            opacity: 0;
+            transform: translateX(60px) translateZ(0);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0) translateZ(0);
+          }
+        }
+
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(100%);
+          }
+        }
+
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 0.4;
+          }
+          50% {
+            opacity: 0.8;
+          }
+        }
+
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0) scale(1);
+          }
+          50% {
+            transform: translateY(-10px) scale(1.02);
+          }
+        }
+
+        @keyframes rotate {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes bounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-5px);
+          }
+        }
+      `}</style>
+
+      <div
+        ref={containerRef}
+        style={{
+          height: '100vh',
+          overflowY: 'auto',
+          scrollSnapType: 'y mandatory',
+          scrollBehavior: 'auto',
+          background: 'transparent',
+          fontFamily: 'Inter, sans-serif',
+          position: 'relative',
+          paddingTop: '10rem',
+        }}
+      >
+        {/* Background gradient */}
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          background: `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%,
+            rgba(218, 14, 41, 0.01) 0%,
+            transparent 50%)`,
+          pointerEvents: 'none',
+          transition: 'background 1.5s cubic-bezier(0.16, 1, 0.3, 1)',
+        }} />
+
+        {/* Side Navigation Dots */}
+        <div style={{
+          position: 'fixed',
+          right: '3rem',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          zIndex: 9998,
+        }}>
+          {projects.map((_, index) => (
+            <div
+              key={index}
+              onClick={() => scrollToProject(index)}
+              style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                background: currentProject === index
+                  ? 'var(--text-primary)'
+                  : 'var(--text-muted)',
+                border: '1px solid var(--border-primary)',
+                marginBottom: '1.5rem',
+                cursor: 'pointer',
+                transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                transform: currentProject === index ? 'scale(1.5)' : 'scale(1)',
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Project Sections */}
+        {projects.map((project, index) => {
+          const Icon = project.icon;
+          const isActive = currentProject === index;
+          const [cardTilt, setCardTilt] = useState({ x: 0, y: 0 });
+
+          const handleMouseMove = (e: React.MouseEvent) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const x = ((e.clientY - centerY) / (rect.height / 2)) * 1.5;
+            const y = ((e.clientX - centerX) / (rect.width / 2)) * -1.5;
+            setCardTilt({ x, y });
+          };
+
+          const handleMouseLeave = () => {
+            setCardTilt({ x: 0, y: 0 });
+          };
+
+          return (
+            <section
+              key={project.id}
+              style={{
+                height: '100vh',
+                scrollSnapAlign: 'start',
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '3rem',
+                perspective: '2000px',
+              }}
+            >
+              {/* Project Number Background */}
+              <div style={{
+                position: 'absolute',
+                top: '50%',
+                left: '10%',
+                transform: 'translateY(-50%)',
+                fontSize: '20vw',
+                fontWeight: '200',
+                color: 'var(--surface-primary)',
+                letterSpacing: '-0.05em',
+                pointerEvents: 'none',
+                animation: isActive ? 'fadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
+              }}>
+                {project.number}
+              </div>
+
+              {/* Main Card Container */}
+              <div
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                onClick={project.url ? () => window.location.href = project.url! : undefined}
+                style={{
+                  width: '100%',
+                  maxWidth: '1400px',
+                  height: '80vh',
+                  maxHeight: '700px',
+                  position: 'relative',
+                  transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`,
+                  transformStyle: 'preserve-3d',
+                  transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                  cursor: project.url ? 'pointer' : 'default',
+                }}
+              >
+                {/* Card Background Layers */}
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: '32px',
+                  background: 'rgba(10, 10, 10, 0.15)',
+                  backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+                  WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
+                  overflow: 'hidden',
+                  transition: 'border 0.3s ease, box-shadow 0.3s ease',
+                }}>
+                  {/* Shimmer Effect */}
+                  <div style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(105deg, transparent 40%, var(--highlight-subtle) 50%, transparent 60%)',
+                    animation: isActive ? 'shimmer 3s ease-out' : 'none',
+                  }} />
+                </div>
+
+                {/* Dark Overlay */}
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: '32px',
+                  background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.02) 100%)',
+                  opacity: 0.3,
+                  pointerEvents: 'none',
+                }} />
+
+                {/* Content Grid */}
+                <div style={{
+                  position: 'relative',
+                  height: '100%',
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  borderRadius: '32px',
+                  overflow: 'hidden',
+                }}>
+                  {/* Left Side - Image Placeholder */}
+                  <div style={{
+                    position: 'relative',
+                    background: `linear-gradient(135deg,
+                      rgba(${project.color}, 0.01) 0%,
+                      rgba(255, 255, 255, 0.003) 100%)`,
+                    opacity: 0.3,
+                    overflow: 'hidden',
+                    borderRadius: '32px 0 0 32px',
+                  }}>
+                    {/* Glass overlay */}
+                    <div style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'rgba(255, 255, 255, 0.015)',
+                      backdropFilter: 'blur(40px) saturate(150%)',
+                      WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                      opacity: 0.15,
+                    }} />
+
+                    {/* Pattern */}
+                    <svg style={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      width: '300px',
+                      height: '300px',
+                      opacity: 0.05,
+                      animation: isActive ? 'rotate 30s linear infinite' : 'none',
+                    }}>
+                      {project.id === 1 && (
+                        <g>
+                          <circle cx="150" cy="150" r="60" stroke="white" strokeWidth="0.5" fill="none" />
+                          <circle cx="150" cy="150" r="90" stroke="white" strokeWidth="0.5" fill="none" />
+                          <circle cx="150" cy="150" r="120" stroke="white" strokeWidth="0.5" fill="none" />
+                          <circle cx="150" cy="150" r="140" stroke="white" strokeWidth="0.5" fill="none" />
+                        </g>
+                      )}
+                      {project.id === 2 && (
+                        <g>
+                          <polygon points="150,50 250,100 250,200 150,250 50,200 50,100" stroke="white" strokeWidth="0.5" fill="none" />
+                          <polygon points="150,80 220,115 220,185 150,220 80,185 80,115" stroke="white" strokeWidth="0.5" fill="none" />
+                          <polygon points="150,110 190,130 190,170 150,190 110,170 110,130" stroke="white" strokeWidth="0.5" fill="none" />
+                        </g>
+                      )}
+                      {project.id === 3 && (
+                        <g>
+                          {/* Medical theme: Concentric circles representing holistic patient care */}
+                          <circle cx="150" cy="150" r="30" stroke="white" strokeWidth="0.5" fill="none" />
+                          <circle cx="150" cy="150" r="60" stroke="white" strokeWidth="0.5" fill="none" />
+                          <circle cx="150" cy="150" r="90" stroke="white" strokeWidth="0.5" fill="none" />
+                          <circle cx="150" cy="150" r="120" stroke="white" strokeWidth="0.5" fill="none" />
+                          {/* Plus sign for healthcare */}
+                          <line x1="150" y1="130" x2="150" y2="170" stroke="white" strokeWidth="0.5" />
+                          <line x1="130" y1="150" x2="170" y2="150" stroke="white" strokeWidth="0.5" />
+                          {/* Four dots representing 125M patients */}
+                          <circle cx="80" cy="80" r="3" fill="white" opacity="0.3" />
+                          <circle cx="220" cy="80" r="3" fill="white" opacity="0.3" />
+                          <circle cx="80" cy="220" r="3" fill="white" opacity="0.3" />
+                          <circle cx="220" cy="220" r="3" fill="white" opacity="0.3" />
+                        </g>
+                      )}
+                      {project.id === 4 && (
+                        <g>
+                          {[...Array(16)].map((_, i) => (
+                            <rect
+                              key={i}
+                              x={(i % 4) * 70 + 10}
+                              y={Math.floor(i / 4) * 70 + 10}
+                              width="60"
+                              height="60"
+                              stroke="white"
+                              strokeWidth="0.5"
+                              fill="none"
+                            />
+                          ))}
+                        </g>
+                      )}
+                      {project.id === 5 && (
+                        <g>
+                          {/* Heart-based organic pattern */}
+                          <path d="M150,80 C120,50 80,50 80,90 C80,130 150,180 150,180 C150,180 220,130 220,90 C220,50 180,50 150,80 Z" stroke="white" strokeWidth="0.5" fill="none" />
+                          <path d="M150,110 C135,100 120,100 120,115 C120,130 150,150 150,150 C150,150 180,130 180,115 C180,100 165,100 150,110 Z" stroke="white" strokeWidth="0.5" fill="none" />
+                          <path d="M150,140 C142,135 135,135 135,142 C135,149 150,160 150,160 C150,160 165,149 165,142 C165,135 158,135 150,140 Z" stroke="white" strokeWidth="0.5" fill="none" />
+                        </g>
+                      )}
+                    </svg>
+
+                    {/* Status Indicator */}
+                    <div style={{
+                      position: 'absolute',
+                      top: '2rem',
+                      left: '2rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                    }}>
+                      <div style={{
+                        width: '8px',
+                        height: '8px',
+                        borderRadius: '50%',
+                        background: project.status === 'Active'
+                          ? 'rgba(52, 211, 153, 0.8)'
+                          : project.status === 'Research'
+                          ? 'rgba(251, 191, 36, 0.8)'
+                          : 'var(--text-muted)',
+                        boxShadow: project.status === 'Active'
+                          ? '0 0 20px rgba(52, 211, 153, 0.6)'
+                          : 'none',
+                        animation: project.status === 'Active' ? 'pulse 2s ease-in-out infinite' : 'none',
+                      }} />
+                      <span style={{
+                        fontSize: '0.75rem',
+                        fontWeight: '300',
+                        color: 'var(--text-secondary)',
+                        letterSpacing: '0.05em',
+                        textTransform: 'uppercase',
+                      }}>
+                        {project.status}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Right Side - Content */}
+                  <div style={{
+                    position: 'relative',
+                    padding: '4rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    background: 'rgba(10, 10, 10, 0.15)',
+                    backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+                    WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.06)',
+                    borderRadius: '32px',
+                  }}>
+                    {/* Category */}
+                    <div style={{
+                      fontSize: '0.875rem',
+                      fontWeight: '300',
+                      color: `rgba(${project.color}, 0.9)`,
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase',
+                      marginBottom: '1rem',
+                      animation: isActive ? 'slideInLeft 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
+                    }}>
+                      {project.category}
+                    </div>
+
+                    {/* Title */}
+                    <h2 style={{
+                      fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+                      fontWeight: '200',
+                      color: 'var(--text-primary)',
+                      letterSpacing: '-0.02em',
+                      marginBottom: '2rem',
+                      lineHeight: '1.1',
+                      animation: isActive ? 'slideInLeft 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both' : 'none',
+                    }}>
+                      {project.title}
+                    </h2>
+
+                    {/* Description */}
+                    <p style={{
+                      fontSize: '1rem',
+                      fontWeight: '300',
+                      color: 'var(--text-secondary)',
+                      lineHeight: '1.8',
+                      letterSpacing: '0.02em',
+                      marginBottom: '3rem',
+                      maxWidth: '500px',
+                      animation: isActive ? 'slideInLeft 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both' : 'none',
+                    }}>
+                      {project.description}
+                    </p>
+
+                    {/* Metrics */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '3rem',
+                      marginBottom: '3rem',
+                      animation: isActive ? 'slideInLeft 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both' : 'none',
+                    }}>
+                      <div>
+                        <div style={{
+                          fontSize: '1.5rem',
+                          fontWeight: '200',
+                          color: 'var(--text-primary)',
+                          marginBottom: '0.25rem',
+                        }}>
+                          {project.metric.split(' ')[0]}
+                        </div>
+                        <div style={{
+                          fontSize: '0.75rem',
+                          fontWeight: '300',
+                          color: 'var(--text-muted)',
+                          letterSpacing: '0.05em',
+                        }}>
+                          {project.metric.split(' ').slice(1).join(' ')}
+                        </div>
+                      </div>
+                      <div>
+                        <div style={{
+                          fontSize: '1.5rem',
+                          fontWeight: '200',
+                          color: 'var(--text-primary)',
+                          marginBottom: '0.25rem',
+                        }}>
+                          {project.year}
+                        </div>
+                        <div style={{
+                          fontSize: '0.75rem',
+                          fontWeight: '300',
+                          color: 'var(--text-muted)',
+                          letterSpacing: '0.05em',
+                        }}>
+                          Year
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Tags */}
+                    <div style={{
+                      display: 'flex',
+                      gap: '0.75rem',
+                      flexWrap: 'wrap',
+                      marginBottom: '3rem',
+                      animation: isActive ? 'slideInLeft 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both' : 'none',
+                    }}>
+                      {project.tags.map(tag => (
+                        <span
+                          key={tag}
+                          style={{
+                            padding: '0.5rem 1rem',
+                            borderRadius: '12px',
+                            background: 'var(--surface-primary)',
+                            backdropFilter: 'blur(20px)',
+                            WebkitBackdropFilter: 'blur(20px)',
+                            border: '1px solid var(--border-primary)',
+                            fontSize: '0.75rem',
+                            fontWeight: '300',
+                            color: 'var(--text-secondary)',
+                            letterSpacing: '0.02em',
+                            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'var(--surface-secondary)';
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'var(--surface-primary)';
+                            e.currentTarget.style.transform = 'translateY(0)';
+                          }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* View Project Button */}
+                    <div style={{
+                      animation: isActive ? 'slideInLeft 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both' : 'none',
+                    }}>
+                      {project.url ? (
+                        <Link href={project.url as any} style={{ textDecoration: 'none' }}>
+                          <button
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '1rem',
+                              padding: '1rem 2rem',
+                              borderRadius: '16px',
+                              background: 'var(--surface-primary)',
+                              backdropFilter: 'blur(20px)',
+                              WebkitBackdropFilter: 'blur(20px)',
+                              border: '1px solid var(--border-primary)',
+                              color: 'var(--text-primary)',
+                              fontSize: '0.875rem',
+                              fontWeight: '400',
+                              letterSpacing: '0.02em',
+                              cursor: 'pointer',
+                              transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                              animation: 'float 4s ease-in-out infinite',
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = 'var(--surface-secondary)';
+                              e.currentTarget.style.transform = 'translateX(5px)';
+                              e.currentTarget.style.borderColor = 'var(--border-secondary)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = 'var(--surface-primary)';
+                              e.currentTarget.style.transform = 'translateX(0)';
+                              e.currentTarget.style.borderColor = 'var(--border-primary)';
+                            }}
+                          >
+                            View Project
+                            <ArrowUpRight size={16} />
+                          </button>
+                        </Link>
+                      ) : (
+                        <button
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '1rem',
+                            padding: '1rem 2rem',
+                            borderRadius: '16px',
+                            background: 'var(--surface-primary)',
+                            backdropFilter: 'blur(20px)',
+                            WebkitBackdropFilter: 'blur(20px)',
+                            border: '1px solid var(--border-primary)',
+                            color: 'var(--text-muted)',
+                            fontSize: '0.875rem',
+                            fontWeight: '400',
+                            letterSpacing: '0.02em',
+                            cursor: 'default',
+                            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                            animation: 'float 4s ease-in-out infinite',
+                            pointerEvents: 'none',
+                          }}
+                        >
+                          Coming Soon
+                          <ArrowUpRight size={16} />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Next Project Indicator */}
+                {index < projects.length - 1 && (
+                  <div
+                    onClick={() => scrollToProject(index + 1)}
+                    style={{
+                      position: 'absolute',
+                      bottom: '-4rem',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      cursor: 'pointer',
+                      animation: 'bounce 2s ease-in-out infinite',
+                    }}
+                  >
+                    <span style={{
+                      fontSize: '0.75rem',
+                      fontWeight: '300',
+                      color: 'var(--text-muted)',
+                      letterSpacing: '0.05em',
+                    }}>
+                      Next Project
+                    </span>
+                    <ArrowDown size={20} style={{
+                      color: 'var(--text-muted)',
+                    }} />
+                  </div>
+                )}
+              </div>
+            </section>
+          );
+        })}
+      </div>
+    </>
+  );
+}
