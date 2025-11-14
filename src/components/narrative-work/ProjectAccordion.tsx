@@ -33,7 +33,11 @@ export function ProjectAccordion({ projects, inView }: ProjectAccordionProps) {
   const [hoveredProject, setHoveredProject] = React.useState<string | null>(null);
 
   return (
-    <div className="space-y-8">
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '2rem',
+    }}>
       {projects.map((project, index) => {
         const isExpanded = expandedProject === project.id;
         const isHovered = hoveredProject === project.id;
@@ -46,8 +50,10 @@ export function ProjectAccordion({ projects, inView }: ProjectAccordionProps) {
             transition={{ duration: 0.6, delay: index * 0.15 }}
             onMouseEnter={() => setHoveredProject(project.id)}
             onMouseLeave={() => setHoveredProject(null)}
-            className="relative rounded-2xl overflow-hidden"
             style={{
+              position: 'relative',
+              borderRadius: '1rem',
+              overflow: 'hidden',
               background: 'rgba(255, 255, 255, 0.02)',
               backdropFilter: 'blur(40px)',
               WebkitBackdropFilter: 'blur(40px)',
@@ -57,8 +63,14 @@ export function ProjectAccordion({ projects, inView }: ProjectAccordionProps) {
             {/* Animated outline on hover/expand */}
             {(isHovered || isExpanded) && (
               <div
-                className="absolute inset-0 rounded-2xl pointer-events-none"
                 style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  left: 0,
+                  borderRadius: '1rem',
+                  pointerEvents: 'none',
                   padding: '1px',
                   background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.6), rgba(218, 14, 41, 0.2), rgba(218, 14, 41, 0.6))',
                   backgroundSize: '200% 200%',
@@ -73,28 +85,61 @@ export function ProjectAccordion({ projects, inView }: ProjectAccordionProps) {
             {/* Project header - clickable */}
             <div
               onClick={() => setExpandedProject(isExpanded ? null : project.id)}
-              className="p-8 cursor-pointer"
+              style={{
+                padding: '2rem',
+                cursor: 'pointer',
+              }}
             >
-              <div className="flex justify-between items-start flex-wrap gap-4 mb-4">
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                flexWrap: 'wrap',
+                gap: '1rem',
+                marginBottom: '1rem',
+              }}>
                 <div>
                   <div
-                    className="text-xs font-normal tracking-[0.1em] uppercase mb-2"
-                    style={{ color: 'rgba(255, 255, 255, 0.5)' }}
+                    style={{
+                      fontSize: '0.75rem',
+                      fontWeight: '400',
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase',
+                      marginBottom: '0.5rem',
+                      color: 'rgba(255, 255, 255, 0.5)',
+                    }}
                   >
                     {project.category}
                   </div>
                   <h3
-                    className="text-2xl font-medium tracking-tight"
-                    style={{ color: 'rgba(255, 255, 255, 0.95)' }}
+                    style={{
+                      fontSize: '1.5rem',
+                      fontWeight: '500',
+                      letterSpacing: '-0.025em',
+                      color: 'rgba(255, 255, 255, 0.95)',
+                    }}
                   >
                     {project.title}
                   </h3>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                }}>
                   <span
-                    className="inline-block px-4 py-2 rounded-xl text-xs uppercase tracking-[0.12em] font-semibold"
                     style={{
+                      display: 'inline-block',
+                      paddingLeft: '1rem',
+                      paddingRight: '1rem',
+                      paddingTop: '0.5rem',
+                      paddingBottom: '0.5rem',
+                      borderRadius: '0.75rem',
+                      fontSize: '0.75rem',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.12em',
+                      fontWeight: '600',
                       background: project.isWinner ? 'rgba(251, 146, 60, 0.15)' : 'rgba(255, 255, 255, 0.05)',
                       border: project.isWinner ? '1px solid rgba(251, 146, 60, 0.3)' : '1px solid rgba(255, 255, 255, 0.08)',
                       color: project.isWinner ? 'rgba(251, 146, 60, 1)' : 'rgba(255, 255, 255, 0.7)',
@@ -103,27 +148,42 @@ export function ProjectAccordion({ projects, inView }: ProjectAccordionProps) {
                     {project.badge}
                   </span>
                   {isExpanded ? (
-                    <ChevronUp size={20} className="text-white/70" />
+                    <ChevronUp size={20} style={{ color: 'rgba(255, 255, 255, 0.7)' }} />
                   ) : (
-                    <ChevronDown size={20} className="text-white/70" />
+                    <ChevronDown size={20} style={{ color: 'rgba(255, 255, 255, 0.7)' }} />
                   )}
                 </div>
               </div>
 
               <p
-                className="text-base leading-relaxed mb-4"
-                style={{ color: 'rgba(255, 255, 255, 0.7)' }}
+                style={{
+                  fontSize: '1rem',
+                  lineHeight: '1.625',
+                  marginBottom: '1rem',
+                  color: 'rgba(255, 255, 255, 0.7)',
+                }}
               >
                 {project.description}
               </p>
 
               {/* Tech tags */}
-              <div className="flex flex-wrap gap-2">
+              <div style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '0.5rem',
+              }}>
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-2.5 py-1 rounded-lg text-xs font-light tracking-wide"
                     style={{
+                      paddingLeft: '0.625rem',
+                      paddingRight: '0.625rem',
+                      paddingTop: '0.25rem',
+                      paddingBottom: '0.25rem',
+                      borderRadius: '0.5rem',
+                      fontSize: '0.75rem',
+                      fontWeight: '300',
+                      letterSpacing: '0.025em',
                       background: 'rgba(255, 255, 255, 0.05)',
                       border: '1px solid rgba(255, 255, 255, 0.08)',
                       color: 'rgba(255, 255, 255, 0.7)',
@@ -143,52 +203,82 @@ export function ProjectAccordion({ projects, inView }: ProjectAccordionProps) {
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="overflow-hidden"
+                  style={{ overflow: 'hidden' }}
                 >
-                  <div className="px-8 pb-8 space-y-6">
+                  <div style={{
+                    paddingLeft: '2rem',
+                    paddingRight: '2rem',
+                    paddingBottom: '2rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1.5rem',
+                  }}>
                     {/* Contribution */}
                     <div
-                      className="p-6 rounded-xl"
                       style={{
+                        padding: '1.5rem',
+                        borderRadius: '0.75rem',
                         background: 'rgba(255, 255, 255, 0.03)',
                       }}
                     >
                       <div
-                        className="text-xs font-medium tracking-[0.1em] uppercase mb-3"
-                        style={{ color: 'rgba(255, 255, 255, 0.5)' }}
+                        style={{
+                          fontSize: '0.75rem',
+                          fontWeight: '500',
+                          letterSpacing: '0.1em',
+                          textTransform: 'uppercase',
+                          marginBottom: '0.75rem',
+                          color: 'rgba(255, 255, 255, 0.5)',
+                        }}
                       >
                         My Contribution
                       </div>
                       <div
-                        className="text-sm leading-relaxed space-y-2"
-                        style={{ color: 'rgba(255, 255, 255, 0.7)' }}
+                        style={{
+                          fontSize: '0.875rem',
+                          lineHeight: '1.625',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '0.5rem',
+                          color: 'rgba(255, 255, 255, 0.7)',
+                        }}
                       >
                         <p>
-                          <strong className="text-white/90">Owned:</strong> {project.contribution.owned}
+                          <strong style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Owned:</strong> {project.contribution.owned}
                         </p>
                         <p>
-                          <strong className="text-white/90">Collaborated:</strong> {project.contribution.collaborated}
+                          <strong style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Collaborated:</strong> {project.contribution.collaborated}
                         </p>
                       </div>
                     </div>
 
                     {/* Outcome */}
                     <div
-                      className="p-6 rounded-xl"
                       style={{
+                        padding: '1.5rem',
+                        borderRadius: '0.75rem',
                         background: 'rgba(16, 185, 129, 0.08)',
                         border: '1px solid rgba(16, 185, 129, 0.2)',
                       }}
                     >
                       <div
-                        className="text-xs font-medium tracking-[0.1em] uppercase mb-3"
-                        style={{ color: 'rgba(16, 185, 129, 0.9)' }}
+                        style={{
+                          fontSize: '0.75rem',
+                          fontWeight: '500',
+                          letterSpacing: '0.1em',
+                          textTransform: 'uppercase',
+                          marginBottom: '0.75rem',
+                          color: 'rgba(16, 185, 129, 0.9)',
+                        }}
                       >
                         Outcome
                       </div>
                       <div
-                        className="text-sm leading-relaxed"
-                        style={{ color: 'rgba(255, 255, 255, 0.7)' }}
+                        style={{
+                          fontSize: '0.875rem',
+                          lineHeight: '1.625',
+                          color: 'rgba(255, 255, 255, 0.7)',
+                        }}
                       >
                         {project.outcome}
                       </div>

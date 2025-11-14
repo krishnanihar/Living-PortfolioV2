@@ -15,17 +15,38 @@ interface ActTransitionProps {
  */
 export function ActTransition({ actTitle, quote, actColor }: ActTransitionProps) {
   return (
-    <section className="relative min-h-screen flex items-center justify-center py-24 px-6">
+    <section style={{
+      position: 'relative',
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingTop: '6rem',
+      paddingBottom: '6rem',
+      paddingLeft: '1.5rem',
+      paddingRight: '1.5rem',
+    }}>
       {/* Ambient glow */}
       <div
-        className="absolute inset-0 opacity-20 pointer-events-none"
         style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          opacity: 0.2,
+          pointerEvents: 'none',
           background: `radial-gradient(circle at 50% 50%, ${actColor.replace('0.8', '0.1')} 0%, transparent 70%)`,
         }}
       />
 
       {/* Content */}
-      <div className="relative z-10 text-center max-w-3xl">
+      <div style={{
+        position: 'relative',
+        zIndex: 10,
+        textAlign: 'center',
+        maxWidth: '48rem',
+      }}>
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -34,8 +55,10 @@ export function ActTransition({ actTitle, quote, actColor }: ActTransitionProps)
         >
           {/* Act title */}
           <h2
-            className="text-5xl md:text-6xl font-extralight mb-8"
             style={{
+              fontSize: 'clamp(3rem, 6vw, 3.75rem)',
+              fontWeight: '200',
+              marginBottom: '2rem',
               background: `linear-gradient(135deg, ${actColor} 0%, ${actColor.replace('0.8', '0.4')} 100%)`,
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -47,7 +70,12 @@ export function ActTransition({ actTitle, quote, actColor }: ActTransitionProps)
 
           {/* Quote */}
           <motion.p
-            className="text-xl md:text-2xl font-light text-white/70 italic"
+            style={{
+              fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)',
+              fontWeight: '300',
+              color: 'rgba(255, 255, 255, 0.7)',
+              fontStyle: 'italic',
+            }}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -58,8 +86,15 @@ export function ActTransition({ actTitle, quote, actColor }: ActTransitionProps)
 
           {/* Decorative dot */}
           <motion.div
-            className="mx-auto mt-12 w-2 h-2 rounded-full"
-            style={{ background: actColor }}
+            style={{
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '3rem',
+              width: '0.5rem',
+              height: '0.5rem',
+              borderRadius: '9999px',
+              background: actColor,
+            }}
             animate={{
               scale: [1, 1.5, 1],
               opacity: [0.5, 1, 0.5],

@@ -195,47 +195,90 @@ export function WorkNarrativePage() {
       />
 
       {/* SECTION 4: Metamorphic Fractal Reflections */}
-      <section className="relative py-24 px-6" ref={sectionRef}>
-        <div className="max-w-5xl mx-auto">
+      <section style={{
+        position: 'relative',
+        paddingTop: '6rem',
+        paddingBottom: '6rem',
+        paddingLeft: '1.5rem',
+        paddingRight: '1.5rem',
+      }} ref={sectionRef}>
+        <div style={{
+          maxWidth: '80rem',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-sm font-light tracking-[0.2em] uppercase text-white/60 mb-4">
+            <p style={{
+              fontSize: '0.875rem',
+              fontWeight: '300',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'rgba(255, 255, 255, 0.6)',
+              marginBottom: '1rem',
+            }}>
               College Project · 2023
             </p>
-            <h2 className="text-4xl md:text-5xl font-extralight text-white/95 mb-6">
+            <h2 style={{
+              fontSize: 'clamp(2.25rem, 5vw, 3rem)',
+              fontWeight: '200',
+              color: 'rgba(255, 255, 255, 0.95)',
+              marginBottom: '1.5rem',
+            }}>
               Metamorphic Fractal Reflections
             </h2>
-            <p className="text-lg text-white/70 leading-relaxed mb-8 max-w-3xl">
+            <p style={{
+              fontSize: '1.125rem',
+              color: 'rgba(255, 255, 255, 0.7)',
+              lineHeight: '1.625',
+              marginBottom: '2rem',
+              maxWidth: '48rem',
+            }}>
               An immersive installation exploring consciousness through ego dissolution.
               Inspired by <em>The Psychedelic Experience</em>, this generative art piece
               guides viewers through an 8-stage journey of self-discovery.
             </p>
 
             {/* Video embed */}
-            <div className="rounded-2xl overflow-hidden mb-8" style={{
+            <div style={{
+              borderRadius: '1rem',
+              overflow: 'hidden',
+              marginBottom: '2rem',
               background: 'rgba(255, 255, 255, 0.02)',
               backdropFilter: 'blur(40px)',
               border: '1px solid rgba(255, 255, 255, 0.06)',
             }}>
               <iframe
                 src="https://www.youtube.com/embed/your-video-id"
-                className="w-full aspect-video"
+                style={{
+                  width: '100%',
+                  aspectRatio: '16 / 9',
+                }}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
             </div>
 
             {/* Tech stack */}
-            <div className="flex flex-wrap gap-2">
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '0.5rem',
+            }}>
               {['Processing', 'Generative Art', 'Projection Mapping', 'Sound Design'].map((tech) => (
                 <span
                   key={tech}
-                  className="px-3 py-1.5 rounded-lg text-xs"
                   style={{
+                    paddingLeft: '0.75rem',
+                    paddingRight: '0.75rem',
+                    paddingTop: '0.375rem',
+                    paddingBottom: '0.375rem',
+                    borderRadius: '0.5rem',
+                    fontSize: '0.75rem',
                     background: 'rgba(147, 51, 234, 0.1)',
                     border: '1px solid rgba(147, 51, 234, 0.2)',
                     color: 'rgba(147, 51, 234, 0.9)',
@@ -263,11 +306,31 @@ export function WorkNarrativePage() {
       />
 
       {/* SECTION 7: Air India Overview - Stats */}
-      <section className="relative py-24 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+      <section style={{
+        position: 'relative',
+        paddingTop: '6rem',
+        paddingBottom: '6rem',
+        paddingLeft: '1.5rem',
+        paddingRight: '1.5rem',
+      }}>
+        <div style={{
+          maxWidth: '80rem',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}>
+          <div style={{
+            textAlign: 'center',
+            marginBottom: '4rem',
+          }}>
             <motion.p
-              className="text-sm font-light tracking-[0.2em] uppercase text-white/60 mb-4"
+              style={{
+                fontSize: '0.875rem',
+                fontWeight: '300',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: 'rgba(255, 255, 255, 0.6)',
+                marginBottom: '1rem',
+              }}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -276,7 +339,12 @@ export function WorkNarrativePage() {
               2023-Present
             </motion.p>
             <motion.h2
-              className="text-3xl md:text-4xl font-extralight text-white/90 mb-4"
+              style={{
+                fontSize: 'clamp(1.875rem, 4vw, 2.25rem)',
+                fontWeight: '200',
+                color: 'rgba(255, 255, 255, 0.9)',
+                marginBottom: '1rem',
+              }}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -285,7 +353,12 @@ export function WorkNarrativePage() {
               Transforming India's Flag Carrier
             </motion.h2>
             <motion.p
-              className="text-white/60 max-w-2xl mx-auto"
+              style={{
+                color: 'rgba(255, 255, 255, 0.6)',
+                maxWidth: '42rem',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              }}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -300,10 +373,28 @@ export function WorkNarrativePage() {
       </section>
 
       {/* Impact Areas */}
-      <section className="relative py-12 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h3 className="text-2xl md:text-3xl font-light text-white/90 mb-4">
+      <section style={{
+        position: 'relative',
+        paddingTop: '3rem',
+        paddingBottom: '3rem',
+        paddingLeft: '1.5rem',
+        paddingRight: '1.5rem',
+      }}>
+        <div style={{
+          maxWidth: '80rem',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}>
+          <div style={{
+            textAlign: 'center',
+            marginBottom: '3rem',
+          }}>
+            <h3 style={{
+              fontSize: 'clamp(1.5rem, 3vw, 1.875rem)',
+              fontWeight: '300',
+              color: 'rgba(255, 255, 255, 0.9)',
+              marginBottom: '1rem',
+            }}>
               Six Areas of Impact
             </h3>
           </div>
@@ -312,13 +403,33 @@ export function WorkNarrativePage() {
       </section>
 
       {/* SECTION 8: Featured Projects - Accordion */}
-      <section className="relative py-24 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <h3 className="text-2xl md:text-3xl font-light text-white/90 mb-4">
+      <section style={{
+        position: 'relative',
+        paddingTop: '6rem',
+        paddingBottom: '6rem',
+        paddingLeft: '1.5rem',
+        paddingRight: '1.5rem',
+      }}>
+        <div style={{
+          maxWidth: '80rem',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}>
+          <div style={{
+            textAlign: 'center',
+            marginBottom: '4rem',
+          }}>
+            <h3 style={{
+              fontSize: 'clamp(1.5rem, 3vw, 1.875rem)',
+              fontWeight: '300',
+              color: 'rgba(255, 255, 255, 0.9)',
+              marginBottom: '1rem',
+            }}>
               Project Details
             </h3>
-            <p className="text-white/60">
+            <p style={{
+              color: 'rgba(255, 255, 255, 0.6)',
+            }}>
               Deep dives into key initiatives
             </p>
           </div>
@@ -341,8 +452,21 @@ export function WorkNarrativePage() {
       />
 
       {/* SECTION 11: Research Triptych */}
-      <section className="relative py-24 px-6 space-y-24">
-        <div className="max-w-6xl mx-auto">
+      <section style={{
+        position: 'relative',
+        paddingTop: '6rem',
+        paddingBottom: '6rem',
+        paddingLeft: '1.5rem',
+        paddingRight: '1.5rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '6rem',
+      }}>
+        <div style={{
+          maxWidth: '96rem',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}>
           {/* Latent Space */}
           <ResearchShowcase
             project={{
@@ -376,7 +500,11 @@ export function WorkNarrativePage() {
           />
 
           {/* PsoriAssist - HERO with interactive prototype */}
-          <div className="space-y-12">
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '3rem',
+          }}>
             <ResearchShowcase
               project={{
                 title: 'PsoriAssist',
@@ -395,7 +523,10 @@ export function WorkNarrativePage() {
             />
 
             {/* Interactive prototype - sticky section */}
-            <div className="sticky top-24">
+            <div style={{
+              position: 'sticky',
+              top: '6rem',
+            }}>
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -410,51 +541,103 @@ export function WorkNarrativePage() {
       </section>
 
       {/* SECTION 12: Closing & Navigation */}
-      <section className="relative py-32 px-6">
-        <div className="max-w-5xl mx-auto text-center">
+      <section style={{
+        position: 'relative',
+        paddingTop: '8rem',
+        paddingBottom: '8rem',
+        paddingLeft: '1.5rem',
+        paddingRight: '1.5rem',
+      }}>
+        <div style={{
+          maxWidth: '80rem',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          textAlign: 'center',
+        }}>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-4xl md:text-5xl font-extralight text-white/90 mb-8">
+            <h2 style={{
+              fontSize: 'clamp(2.25rem, 5vw, 3rem)',
+              fontWeight: '200',
+              color: 'rgba(255, 255, 255, 0.9)',
+              marginBottom: '2rem',
+            }}>
               This is just the beginning...
             </h2>
-            <p className="text-lg text-white/60 mb-12 max-w-2xl mx-auto">
+            <p style={{
+              fontSize: '1.125rem',
+              color: 'rgba(255, 255, 255, 0.6)',
+              marginBottom: '3rem',
+              maxWidth: '42rem',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+            }}>
               Explore individual case studies, view my full journey, or get in touch to collaborate.
             </p>
 
             {/* CTA Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                { label: 'View All Projects', href: '/work', icon: ArrowRight },
-                { label: 'Read Journey', href: '/journey', icon: ArrowRight },
-                { label: 'Contact Me', href: '/contact', icon: ArrowRight },
-              ].map((cta, index) => {
-                const Icon = cta.icon;
-                return (
-                  <Link
-                    key={index}
-                    href={cta.href as any}
-                    className="group p-8 rounded-2xl transition-all duration-500"
-                    style={{
-                      background: 'rgba(255, 255, 255, 0.02)',
-                      backdropFilter: 'blur(40px)',
-                      border: '1px solid rgba(255, 255, 255, 0.06)',
-                    }}
-                  >
-                    <span className="text-white/90 group-hover:text-white transition-colors">
-                      {cta.label}
-                    </span>
-                    <Icon
-                      size={20}
-                      className="inline-block ml-2 group-hover:translate-x-1 transition-transform text-white/60"
-                    />
-                  </Link>
-                );
-              })}
-            </div>
+            <>
+              <style jsx>{`
+                @media (min-width: 768px) {
+                  .cta-grid {
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
+                  }
+                }
+              `}</style>
+              <div className="cta-grid" style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(1, minmax(0, 1fr))',
+                gap: '1.5rem',
+              }}>
+                {[
+                  { label: 'View All Projects', href: '/work', icon: ArrowRight },
+                  { label: 'Read Journey', href: '/journey', icon: ArrowRight },
+                  { label: 'Contact Me', href: '/contact', icon: ArrowRight },
+                ].map((cta, index) => {
+                  const Icon = cta.icon;
+                  const [isHovered, setIsHovered] = React.useState(false);
+                  return (
+                    <Link
+                      key={index}
+                      href={cta.href as any}
+                      onMouseEnter={() => setIsHovered(true)}
+                      onMouseLeave={() => setIsHovered(false)}
+                      style={{
+                        padding: '2rem',
+                        borderRadius: '1rem',
+                        transition: 'all 500ms ease',
+                        background: 'rgba(255, 255, 255, 0.02)',
+                        backdropFilter: 'blur(40px)',
+                        border: '1px solid rgba(255, 255, 255, 0.06)',
+                        textDecoration: 'none',
+                        display: 'block',
+                      }}
+                    >
+                      <span style={{
+                        color: isHovered ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0.9)',
+                        transition: 'color 300ms ease',
+                      }}>
+                        {cta.label}
+                      </span>
+                      <Icon
+                        size={20}
+                        style={{
+                          display: 'inline-block',
+                          marginLeft: '0.5rem',
+                          transition: 'transform 300ms ease',
+                          transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
+                          color: 'rgba(255, 255, 255, 0.6)',
+                        }}
+                      />
+                    </Link>
+                  );
+                })}
+              </div>
+            </>
           </motion.div>
         </div>
       </section>

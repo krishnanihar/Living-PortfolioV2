@@ -33,8 +33,12 @@ export function StatCard({ stat, index, inView }: StatCardProps) {
       transition={{ duration: 0.6, delay: index * 0.1 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative p-8 rounded-2xl transition-all duration-500 cursor-default"
       style={{
+        position: 'relative',
+        padding: '2rem',
+        borderRadius: '1rem',
+        transition: 'all 500ms ease',
+        cursor: 'default',
         background: isHovered
           ? `linear-gradient(135deg, rgba(${stat.color}, 0.08), rgba(255, 255, 255, 0.02))`
           : 'rgba(255, 255, 255, 0.02)',
@@ -50,18 +54,33 @@ export function StatCard({ stat, index, inView }: StatCardProps) {
       {/* Shimmer Line on hover */}
       {isHovered && (
         <div
-          className="absolute top-0 left-0 right-0 h-[2px]"
           style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '2px',
             background: `linear-gradient(90deg, transparent, rgba(${stat.color}, 0.8), transparent)`,
             animation: 'shimmerLine 2s ease-in-out infinite',
           }}
         />
       )}
 
-      <div className="flex items-start gap-4 mb-4">
+      <div style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '1rem',
+        marginBottom: '1rem',
+      }}>
         <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-500"
           style={{
+            width: '2.5rem',
+            height: '2.5rem',
+            borderRadius: '0.75rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 500ms ease',
             background: `rgba(${stat.color}, 0.1)`,
             transform: isHovered ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
           }}
@@ -69,16 +88,25 @@ export function StatCard({ stat, index, inView }: StatCardProps) {
           <Icon size={20} style={{ color: `rgb(${stat.color})` }} />
         </div>
 
-        <div className="flex-1">
+        <div style={{ flex: 1 }}>
           <div
-            className="text-4xl font-semibold mb-2 leading-none"
-            style={{ color: 'rgba(255, 255, 255, 0.95)' }}
+            style={{
+              fontSize: '2.25rem',
+              fontWeight: '600',
+              marginBottom: '0.5rem',
+              lineHeight: '1',
+              color: 'rgba(255, 255, 255, 0.95)',
+            }}
           >
             {stat.value}
           </div>
           <div
-            className="text-sm font-light tracking-wide"
-            style={{ color: 'rgba(255, 255, 255, 0.6)' }}
+            style={{
+              fontSize: '0.875rem',
+              fontWeight: '300',
+              letterSpacing: '0.025em',
+              color: 'rgba(255, 255, 255, 0.6)',
+            }}
           >
             {stat.label}
           </div>
@@ -98,10 +126,28 @@ interface StatCardGridProps {
 
 export function StatCardGrid({ stats, inView }: StatCardGridProps) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {stats.map((stat, index) => (
-        <StatCard key={index} stat={stat} index={index} inView={inView} />
-      ))}
-    </div>
+    <>
+      <style jsx>{`
+        @media (min-width: 768px) {
+          .stat-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+        @media (min-width: 1024px) {
+          .stat-grid {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+          }
+        }
+      `}</style>
+      <div className="stat-grid" style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(1, minmax(0, 1fr))',
+        gap: '1.5rem',
+      }}>
+        {stats.map((stat, index) => (
+          <StatCard key={index} stat={stat} index={index} inView={inView} />
+        ))}
+      </div>
+    </>
   );
 }

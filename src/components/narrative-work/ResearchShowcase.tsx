@@ -37,32 +37,50 @@ export function ResearchShowcase({ project, inView, index = 0 }: ResearchShowcas
       transition={{ duration: 0.8, delay: index * 0.2 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative rounded-3xl overflow-hidden"
       style={{
+        position: 'relative',
+        borderRadius: '1.5rem',
+        overflow: 'hidden',
         background: 'rgba(255, 255, 255, 0.02)',
         backdropFilter: 'blur(60px) saturate(150%)',
         border: `1px solid ${isHovered ? `rgba(${project.color}, 0.3)` : 'rgba(255, 255, 255, 0.06)'}`,
         transition: 'all 0.5s ease',
       }}
     >
-      <div className="p-8 md:p-12">
+      <div style={{
+        padding: 'clamp(2rem, 4vw, 3rem)',
+      }}>
         {/* Category & Title */}
-        <div className="mb-8">
+        <div style={{ marginBottom: '2rem' }}>
           <p
-            className="text-xs font-light tracking-[0.2em] uppercase mb-3"
-            style={{ color: `rgb(${project.color})` }}
+            style={{
+              fontSize: '0.75rem',
+              fontWeight: '300',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              marginBottom: '0.75rem',
+              color: `rgb(${project.color})`,
+            }}
           >
             {project.category}
           </p>
           <h3
-            className="text-3xl md:text-4xl font-light mb-4"
-            style={{ color: 'rgba(255, 255, 255, 0.95)' }}
+            style={{
+              fontSize: 'clamp(1.875rem, 4vw, 2.25rem)',
+              fontWeight: '300',
+              marginBottom: '1rem',
+              color: 'rgba(255, 255, 255, 0.95)',
+            }}
           >
             {project.title}
           </h3>
           <p
-            className="text-base md:text-lg leading-relaxed max-w-3xl"
-            style={{ color: 'rgba(255, 255, 255, 0.7)' }}
+            style={{
+              fontSize: 'clamp(1rem, 2vw, 1.125rem)',
+              lineHeight: '1.625',
+              maxWidth: '48rem',
+              color: 'rgba(255, 255, 255, 0.7)',
+            }}
           >
             {project.description}
           </p>
@@ -70,39 +88,69 @@ export function ResearchShowcase({ project, inView, index = 0 }: ResearchShowcas
 
         {/* Stats grid (if provided) */}
         {project.stats && project.stats.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            {project.stats.map((stat, i) => (
-              <div
-                key={i}
-                className="p-4 rounded-xl"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
-                }}
-              >
+          <>
+            <style jsx>{`
+              @media (min-width: 768px) {
+                .research-stats-grid {
+                  grid-template-columns: repeat(3, minmax(0, 1fr));
+                }
+              }
+            `}</style>
+            <div className="research-stats-grid" style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(1, minmax(0, 1fr))',
+              gap: '1.5rem',
+              marginBottom: '2rem',
+            }}>
+              {project.stats.map((stat, i) => (
                 <div
-                  className="text-2xl font-light mb-1"
-                  style={{ color: `rgb(${project.color})` }}
+                  key={i}
+                  style={{
+                    padding: '1rem',
+                    borderRadius: '0.75rem',
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid rgba(255, 255, 255, 0.06)',
+                  }}
                 >
-                  {stat.value}
+                  <div
+                    style={{
+                      fontSize: '1.5rem',
+                      fontWeight: '300',
+                      marginBottom: '0.25rem',
+                      color: `rgb(${project.color})`,
+                    }}
+                  >
+                    {stat.value}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: '0.75rem',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.025em',
+                      color: 'rgba(255, 255, 255, 0.6)',
+                    }}
+                  >
+                    {stat.label}
+                  </div>
                 </div>
-                <div
-                  className="text-xs uppercase tracking-wide"
-                  style={{ color: 'rgba(255, 255, 255, 0.6)' }}
-                >
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </>
         )}
 
         {/* Video embed (if provided) */}
         {project.videoUrl && (
-          <div className="mb-8 rounded-2xl overflow-hidden">
+          <div style={{
+            marginBottom: '2rem',
+            borderRadius: '1rem',
+            overflow: 'hidden',
+          }}>
             <iframe
               src={project.videoUrl}
-              className="w-full aspect-video"
+              style={{
+                width: '100%',
+                aspectRatio: '16 / 9',
+              }}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
@@ -110,19 +158,38 @@ export function ResearchShowcase({ project, inView, index = 0 }: ResearchShowcas
         )}
 
         {/* CTAs */}
-        <div className="flex flex-wrap gap-4">
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '1rem',
+        }}>
           {project.caseStudyUrl && (
             <Link
               href={project.caseStudyUrl as any}
-              className="group flex items-center gap-2 px-6 py-3 rounded-xl transition-all duration-300"
               style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                paddingLeft: '1.5rem',
+                paddingRight: '1.5rem',
+                paddingTop: '0.75rem',
+                paddingBottom: '0.75rem',
+                borderRadius: '0.75rem',
+                transition: 'all 300ms ease',
                 background: isHovered ? `rgba(${project.color}, 0.15)` : 'rgba(255, 255, 255, 0.05)',
                 border: `1px solid ${isHovered ? `rgba(${project.color}, 0.3)` : 'rgba(255, 255, 255, 0.1)'}`,
                 color: isHovered ? `rgb(${project.color})` : 'rgba(255, 255, 255, 0.9)',
+                textDecoration: 'none',
               }}
             >
               <span>View Case Study</span>
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              <ArrowRight
+                size={16}
+                style={{
+                  transition: 'transform 300ms ease',
+                  transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
+                }}
+              />
             </Link>
           )}
 
@@ -131,11 +198,20 @@ export function ResearchShowcase({ project, inView, index = 0 }: ResearchShowcas
               href={project.demoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-6 py-3 rounded-xl transition-all duration-300"
               style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                paddingLeft: '1.5rem',
+                paddingRight: '1.5rem',
+                paddingTop: '0.75rem',
+                paddingBottom: '0.75rem',
+                borderRadius: '0.75rem',
+                transition: 'all 300ms ease',
                 background: 'rgba(255, 255, 255, 0.03)',
                 border: '1px solid rgba(255, 255, 255, 0.08)',
                 color: 'rgba(255, 255, 255, 0.8)',
+                textDecoration: 'none',
               }}
             >
               <span>Try Demo</span>
@@ -148,8 +224,14 @@ export function ResearchShowcase({ project, inView, index = 0 }: ResearchShowcas
       {/* Hover glow */}
       {isHovered && (
         <div
-          className="absolute inset-0 pointer-events-none transition-opacity duration-500"
           style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            pointerEvents: 'none',
+            transition: 'opacity 500ms ease',
             background: `radial-gradient(circle at 50% 50%, rgba(${project.color}, 0.08) 0%, transparent 70%)`,
           }}
         />

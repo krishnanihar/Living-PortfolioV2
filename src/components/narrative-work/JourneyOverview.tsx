@@ -64,11 +64,31 @@ export function JourneyOverview() {
   };
 
   return (
-    <section className="relative py-24 px-6 overflow-hidden">
+    <section style={{
+      position: 'relative',
+      paddingTop: '6rem',
+      paddingBottom: '6rem',
+      paddingLeft: '1.5rem',
+      paddingRight: '1.5rem',
+      overflow: 'hidden',
+    }}>
       {/* Section title */}
-      <div className="max-w-7xl mx-auto mb-16 text-center">
+      <div style={{
+        maxWidth: '80rem',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginBottom: '4rem',
+        textAlign: 'center',
+      }}>
         <motion.p
-          className="text-sm font-light tracking-[0.2em] uppercase text-white/60 mb-4"
+          style={{
+            fontSize: '0.875rem',
+            fontWeight: '300',
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: 'rgba(255, 255, 255, 0.6)',
+            marginBottom: '1rem',
+          }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -77,7 +97,12 @@ export function JourneyOverview() {
           The Journey Ahead
         </motion.p>
         <motion.h2
-          className="text-3xl md:text-4xl font-extralight text-white/90 mb-4"
+          style={{
+            fontSize: 'clamp(1.875rem, 4vw, 2.25rem)',
+            fontWeight: '200',
+            color: 'rgba(255, 255, 255, 0.9)',
+            marginBottom: '1rem',
+          }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -86,7 +111,12 @@ export function JourneyOverview() {
           Three Acts of Design
         </motion.h2>
         <motion.p
-          className="text-white/60 max-w-2xl mx-auto"
+          style={{
+            color: 'rgba(255, 255, 255, 0.6)',
+            maxWidth: '42rem',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+          }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -97,134 +127,226 @@ export function JourneyOverview() {
       </div>
 
       {/* Act timeline */}
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4">
-          {acts.map((act, index) => {
-            const Icon = act.icon;
-            const isHovered = hoveredAct === act.id;
+      <div style={{
+        maxWidth: '80rem',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+      }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(1, minmax(0, 1fr))',
+          gap: '1.5rem',
+        }}>
+          <style jsx>{`
+            @media (min-width: 768px) {
+              .act-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 1rem;
+              }
+            }
+          `}</style>
+          <div className="act-grid" style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(1, minmax(0, 1fr))',
+            gap: '1.5rem',
+          }}>
+            {acts.map((act, index) => {
+              const Icon = act.icon;
+              const isHovered = hoveredAct === act.id;
 
-            return (
-              <motion.div
-                key={act.id}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.15 }}
-                className="relative group cursor-pointer"
-                onMouseEnter={() => setHoveredAct(act.id)}
-                onMouseLeave={() => setHoveredAct(null)}
-                onClick={() => scrollToAct(act.id)}
-              >
-                {/* Card */}
-                <div
-                  className="relative overflow-hidden rounded-2xl p-6 md:p-8 h-full transition-all duration-500"
+              return (
+                <motion.div
+                  key={act.id}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.15 }}
                   style={{
-                    background: isHovered
-                      ? `${act.color.replace('0.8', '0.08')}`
-                      : 'rgba(255, 255, 255, 0.02)',
-                    backdropFilter: 'blur(40px)',
-                    border: `1px solid ${isHovered ? act.color.replace('0.8', '0.3') : 'rgba(255, 255, 255, 0.06)'}`,
-                    transform: isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
+                    position: 'relative',
+                    cursor: 'pointer',
                   }}
+                  onMouseEnter={() => setHoveredAct(act.id)}
+                  onMouseLeave={() => setHoveredAct(null)}
+                  onClick={() => scrollToAct(act.id)}
                 >
-                  {/* Icon */}
-                  <div className="mb-6">
-                    <div
-                      className="inline-flex items-center justify-center w-12 h-12 rounded-full transition-all duration-500"
-                      style={{
-                        background: isHovered ? act.color : 'rgba(255, 255, 255, 0.05)',
-                        boxShadow: isHovered ? `0 0 30px ${act.color}` : 'none',
-                      }}
-                    >
-                      <Icon
-                        size={20}
-                        style={{
-                          color: isHovered ? '#ffffff' : 'rgba(255, 255, 255, 0.5)',
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Title */}
-                  <h3
-                    className="text-xl md:text-2xl font-light mb-3 transition-colors duration-500"
+                  {/* Card */}
+                  <div
                     style={{
-                      color: isHovered ? act.color : 'rgba(255, 255, 255, 0.9)',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      borderRadius: '1rem',
+                      padding: 'clamp(1.5rem, 3vw, 2rem)',
+                      height: '100%',
+                      transition: 'all 500ms ease',
+                      background: isHovered
+                        ? `${act.color.replace('0.8', '0.08')}`
+                        : 'rgba(255, 255, 255, 0.02)',
+                      backdropFilter: 'blur(40px)',
+                      border: `1px solid ${isHovered ? act.color.replace('0.8', '0.3') : 'rgba(255, 255, 255, 0.06)'}`,
+                      transform: isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
                     }}
                   >
-                    {act.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-sm text-white/60 mb-6 leading-relaxed">
-                    {act.description}
-                  </p>
-
-                  {/* Projects */}
-                  <div className="space-y-2">
-                    {act.projects.map((project, i) => (
+                    {/* Icon */}
+                    <div style={{ marginBottom: '1.5rem' }}>
                       <div
-                        key={i}
-                        className="flex items-center gap-2 text-xs text-white/50 transition-colors duration-300"
                         style={{
-                          color: isHovered ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.5)',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '3rem',
+                          height: '3rem',
+                          borderRadius: '9999px',
+                          transition: 'all 500ms ease',
+                          background: isHovered ? act.color : 'rgba(255, 255, 255, 0.05)',
+                          boxShadow: isHovered ? `0 0 30px ${act.color}` : 'none',
                         }}
                       >
-                        <div
-                          className="w-1 h-1 rounded-full transition-all duration-300"
+                        <Icon
+                          size={20}
                           style={{
-                            background: isHovered ? act.color : 'rgba(255, 255, 255, 0.3)',
-                            boxShadow: isHovered ? `0 0 8px ${act.color}` : 'none',
+                            color: isHovered ? '#ffffff' : 'rgba(255, 255, 255, 0.5)',
                           }}
                         />
-                        {project}
                       </div>
-                    ))}
-                  </div>
+                    </div>
 
-                  {/* Hover arrow */}
-                  <motion.div
-                    className="absolute bottom-6 right-6"
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{
-                      opacity: isHovered ? 1 : 0,
-                      x: isHovered ? 0 : -10,
-                    }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <ArrowRight
-                      size={20}
-                      style={{ color: act.color }}
+                    {/* Title */}
+                    <h3
+                      style={{
+                        fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)',
+                        fontWeight: '300',
+                        marginBottom: '0.75rem',
+                        transition: 'color 500ms ease',
+                        color: isHovered ? act.color : 'rgba(255, 255, 255, 0.9)',
+                      }}
+                    >
+                      {act.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p style={{
+                      fontSize: '0.875rem',
+                      color: 'rgba(255, 255, 255, 0.6)',
+                      marginBottom: '1.5rem',
+                      lineHeight: '1.625',
+                    }}>
+                      {act.description}
+                    </p>
+
+                    {/* Projects */}
+                    <div style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.5rem',
+                    }}>
+                      {act.projects.map((project, i) => (
+                        <div
+                          key={i}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            fontSize: '0.75rem',
+                            transition: 'color 300ms ease',
+                            color: isHovered ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.5)',
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: '0.25rem',
+                              height: '0.25rem',
+                              borderRadius: '9999px',
+                              transition: 'all 300ms ease',
+                              background: isHovered ? act.color : 'rgba(255, 255, 255, 0.3)',
+                              boxShadow: isHovered ? `0 0 8px ${act.color}` : 'none',
+                            }}
+                          />
+                          {project}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Hover arrow */}
+                    <motion.div
+                      style={{
+                        position: 'absolute',
+                        bottom: '1.5rem',
+                        right: '1.5rem',
+                      }}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{
+                        opacity: isHovered ? 1 : 0,
+                        x: isHovered ? 0 : -10,
+                      }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <ArrowRight
+                        size={20}
+                        style={{ color: act.color }}
+                      />
+                    </motion.div>
+
+                    {/* Glow effect on hover */}
+                    <motion.div
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        bottom: 0,
+                        left: 0,
+                        borderRadius: '1rem',
+                        opacity: 0,
+                        pointerEvents: 'none',
+                        background: `radial-gradient(circle at 50% 50%, ${act.color.replace('0.8', '0.1')} 0%, transparent 70%)`,
+                      }}
+                      animate={{
+                        opacity: isHovered ? 1 : 0,
+                      }}
+                      transition={{ duration: 0.5 }}
                     />
-                  </motion.div>
-
-                  {/* Glow effect on hover */}
-                  <motion.div
-                    className="absolute inset-0 rounded-2xl opacity-0 pointer-events-none"
-                    animate={{
-                      opacity: isHovered ? 1 : 0,
-                    }}
-                    transition={{ duration: 0.5 }}
-                    style={{
-                      background: `radial-gradient(circle at 50% 50%, ${act.color.replace('0.8', '0.1')} 0%, transparent 70%)`,
-                    }}
-                  />
-                </div>
-
-                {/* Timeline connector (desktop only) */}
-                {index < acts.length - 1 && (
-                  <div className="hidden md:block absolute top-1/2 right-0 w-4 transform translate-x-full -translate-y-1/2">
-                    <div className="h-[1px] w-full bg-gradient-to-r from-white/20 to-transparent" />
                   </div>
-                )}
-              </motion.div>
-            );
-          })}
+
+                  {/* Timeline connector (desktop only) */}
+                  {index < acts.length - 1 && (
+                    <>
+                      <style jsx>{`
+                        @media (min-width: 768px) {
+                          .timeline-connector {
+                            display: block !important;
+                          }
+                        }
+                      `}</style>
+                      <div className="timeline-connector" style={{
+                        display: 'none',
+                        position: 'absolute',
+                        top: '50%',
+                        right: 0,
+                        width: '1rem',
+                        transform: 'translateX(100%) translateY(-50%)',
+                      }}>
+                        <div style={{
+                          height: '1px',
+                          width: '100%',
+                          background: 'linear-gradient(to right, rgba(255, 255, 255, 0.2), transparent)',
+                        }} />
+                      </div>
+                    </>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
 
         {/* Click instruction */}
         <motion.p
-          className="text-center text-xs text-white/40 mt-8 tracking-wide"
+          style={{
+            textAlign: 'center',
+            fontSize: '0.75rem',
+            color: 'rgba(255, 255, 255, 0.4)',
+            marginTop: '2rem',
+            letterSpacing: '0.025em',
+          }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
