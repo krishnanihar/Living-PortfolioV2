@@ -250,19 +250,6 @@ export function NarrativeWorkHero() {
           <ChevronDown size={24} style={{ color: 'rgba(255, 255, 255, 0.5)' }} />
         </motion.div>
       </motion.div>
-
-      {/* Gradient fade to next section */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: '8rem',
-          pointerEvents: 'none',
-          background: 'linear-gradient(180deg, transparent 0%, rgba(10, 10, 10, 1) 100%)',
-        }}
-      />
     </section>
   );
 }
