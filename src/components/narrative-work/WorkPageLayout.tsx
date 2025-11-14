@@ -3,6 +3,7 @@
 import React from 'react';
 import { WorkNarrativeProgressIndicator, WorkNarrativeProgressBar } from './WorkNarrativeProgressIndicator';
 import { useWorkNarrativeProgress } from '@/hooks/useWorkNarrativeProgress';
+import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 
 interface WorkPageLayoutProps {
   children: React.ReactNode;
@@ -22,12 +23,15 @@ export function WorkPageLayout({ children }: WorkPageLayoutProps) {
 
   return (
     <div className="relative min-h-screen">
+      {/* Navigation */}
+      <PortfolioNavigation />
+
       {/* Progress indicators */}
       <WorkNarrativeProgressIndicator />
       <WorkNarrativeProgressBar />
 
       {/* Main content */}
-      <main className="relative z-10">
+      <main className="relative z-[2]">
         {children}
       </main>
 
@@ -36,7 +40,7 @@ export function WorkPageLayout({ children }: WorkPageLayoutProps) {
         className="fixed inset-0 pointer-events-none transition-colors duration-1000 ease-out"
         style={{
           background: `radial-gradient(circle at 50% 50%, ${narrativeState.color.atmosphere} 0%, transparent 70%)`,
-          zIndex: -1,
+          zIndex: 1,
         }}
       />
     </div>
