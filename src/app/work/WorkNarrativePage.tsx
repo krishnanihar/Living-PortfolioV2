@@ -13,6 +13,7 @@ import { ActTransition } from '@/components/narrative-work/ActTransition';
 import { PsoriAssistPhoneMockup } from '@/components/sections/PsoriAssistPhoneMockup';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Target, Trophy, TrendingUp, CheckCircle, ArrowRight } from 'lucide-react';
 
 /**
@@ -218,9 +219,32 @@ export function WorkNarrativePage() {
               fontWeight: '300',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
-              color: 'rgba(255, 255, 255, 0.6)',
+              color: 'rgba(255, 255, 255, 1)',
               marginBottom: '1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
             }}>
+              {/* NID Logo */}
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '32px',
+                height: '32px',
+                background: 'rgba(255, 255, 255, 0.95)',
+                borderRadius: '8px',
+                padding: '4px',
+                flexShrink: 0,
+              }}>
+                <Image
+                  src="/logos/nid.svg"
+                  alt="National Institute of Design"
+                  width={24}
+                  height={24}
+                  style={{ objectFit: 'contain' }}
+                />
+              </span>
               College Project · 2023
             </p>
             <h2 style={{
@@ -233,7 +257,7 @@ export function WorkNarrativePage() {
             </h2>
             <p style={{
               fontSize: '1.125rem',
-              color: 'rgba(255, 255, 255, 0.7)',
+              color: 'rgba(255, 255, 255, 0.9)',
               lineHeight: '1.625',
               marginBottom: '2rem',
               maxWidth: '48rem',
@@ -279,15 +303,56 @@ export function WorkNarrativePage() {
                     paddingBottom: '0.375rem',
                     borderRadius: '0.5rem',
                     fontSize: '0.75rem',
-                    background: 'rgba(147, 51, 234, 0.1)',
-                    border: '1px solid rgba(147, 51, 234, 0.2)',
-                    color: 'rgba(147, 51, 234, 0.9)',
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                    color: 'rgba(255, 255, 255, 0.9)',
                   }}
                 >
                   {tech}
                 </span>
               ))}
             </div>
+
+            {/* View Case Study Button */}
+            <Link
+              href="/work/metamorphic-fractal-reflections"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                paddingLeft: '1.5rem',
+                paddingRight: '1.5rem',
+                paddingTop: '0.75rem',
+                paddingBottom: '0.75rem',
+                marginTop: '2rem',
+                borderRadius: '0.75rem',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                textDecoration: 'none',
+                background: 'rgba(255, 255, 255, 0.05)',
+                backdropFilter: 'blur(20px) saturate(150%)',
+                WebkitBackdropFilter: 'blur(20px) saturate(150%)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: 'rgba(255, 255, 255, 0.9)',
+                transition: 'all 300ms ease',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                e.currentTarget.style.color = 'rgba(255, 255, 255, 1)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                e.currentTarget.style.color = 'rgba(255, 255, 255, 0.9)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              <span>View Full Case Study</span>
+              <ArrowRight size={16} />
+            </Link>
           </motion.div>
         </div>
       </section>
