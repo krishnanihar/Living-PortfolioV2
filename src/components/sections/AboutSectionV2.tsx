@@ -750,39 +750,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           border-radius: 4px !important;
         }
 
-        /* Center/side card transitions - CSS-only approach */
-        :global(.swiper-slide) {
-          transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-          opacity: 0.7 !important;
-        }
-
-        /* Scale down all slides by default */
-        :global(.swiper-slide) > * {
-          transform: scale(0.90);
-          transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        /* Scale up active slide */
-        :global(.swiper-slide-active) {
-          opacity: 1 !important;
-          z-index: 10 !important;
-        }
-
-        :global(.swiper-slide-active) > * {
-          transform: scale(1.08);
-        }
-
-        /* Side slides slightly visible */
-        :global(.swiper-slide-prev),
-        :global(.swiper-slide-next) {
-          opacity: 0.85 !important;
-        }
-
-        :global(.swiper-slide-prev) > *,
-        :global(.swiper-slide-next) > * {
-          transform: scale(0.95);
-        }
-
         /* Navigation positioning */
         .carousel-navigation {
           margin-top: 32px;
@@ -1654,6 +1621,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
               <Swiper
                 modules={[Navigation, Pagination]}
+                watchSlidesProgress={true}
                 centeredSlides={true}
                 slidesPerView={1.6}
                 spaceBetween={30}
