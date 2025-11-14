@@ -492,6 +492,7 @@ export function PsoriAssistWork() {
     <div
       ref={sectionRef}
       style={{
+        fontFamily: 'var(--font-manrope)',
         minHeight: '100vh',
         color: '#FFFFFF',
         padding: '0 2rem 2rem',
