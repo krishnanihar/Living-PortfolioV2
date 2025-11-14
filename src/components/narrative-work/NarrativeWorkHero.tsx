@@ -90,11 +90,10 @@ export function NarrativeWorkHero() {
             className="font-extralight leading-[1.1] mb-8"
             style={{
               fontSize: 'clamp(2.5rem, 8vw, 5rem)',
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(218, 14, 41, 0.85) 50%, rgba(255,255,255,0.65) 100%)',
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.7) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              textShadow: '0 0 40px rgba(218, 14, 41, 0.15)',
             }}
           >
             From Consciousness
