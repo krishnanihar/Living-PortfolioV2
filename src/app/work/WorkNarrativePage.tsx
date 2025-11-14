@@ -548,6 +548,15 @@ export function WorkNarrativePage() {
         paddingLeft: '1.5rem',
         paddingRight: '1.5rem',
       }}>
+        {/* Responsive styles */}
+        <style jsx>{`
+          @media (min-width: 768px) {
+            .cta-grid {
+              grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            }
+          }
+        `}</style>
+
         <div style={{
           maxWidth: '80rem',
           marginLeft: 'auto',
@@ -580,15 +589,7 @@ export function WorkNarrativePage() {
             </p>
 
             {/* CTA Grid */}
-            <>
-              <style jsx>{`
-                @media (min-width: 768px) {
-                  .cta-grid {
-                    grid-template-columns: repeat(3, minmax(0, 1fr));
-                  }
-                }
-              `}</style>
-              <div className="cta-grid" style={{
+            <div className="cta-grid" style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(1, minmax(0, 1fr))',
                 gap: '1.5rem',
@@ -636,8 +637,7 @@ export function WorkNarrativePage() {
                     </Link>
                   );
                 })}
-              </div>
-            </>
+            </div>
           </motion.div>
         </div>
       </section>
