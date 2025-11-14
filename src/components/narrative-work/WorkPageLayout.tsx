@@ -27,7 +27,7 @@ export function WorkPageLayout({ children }: WorkPageLayoutProps) {
       <PortfolioNavigation />
 
       {/* Progress indicators */}
-      <WorkNarrativeProgressIndicator />
+      {/* <WorkNarrativeProgressIndicator /> */}
       <WorkNarrativeProgressBar />
 
       {/* Main content */}
