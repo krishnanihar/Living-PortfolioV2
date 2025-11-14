@@ -137,15 +137,18 @@ export function NarrativeWorkHero() {
             ].map((stat, index) => (
               <div
                 key={index}
-                className="glass-card px-4 py-2 rounded-full border border-white/10 transition-all duration-300 hover:border-white/20"
+                className="glass-card px-5 py-3 rounded-2xl border border-white/10 transition-all duration-300 hover:border-white/20"
                 style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
                   background: 'rgba(255, 255, 255, 0.07)',
                   backdropFilter: 'blur(20px) saturate(150%)',
                   fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
                 }}
               >
                 <span className="text-white/50">{stat.label}</span>
-                <span className="mx-2 text-white/30">→</span>
+                <span className="text-white/30">→</span>
                 <span className="text-white/85 font-medium">{stat.value}</span>
               </div>
             ))}
