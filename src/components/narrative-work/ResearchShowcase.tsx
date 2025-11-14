@@ -47,6 +47,14 @@ export function ResearchShowcase({ project, inView, index = 0 }: ResearchShowcas
         transition: 'all 0.5s ease',
       }}
     >
+      {/* Responsive styles */}
+      <style jsx>{`
+        @media (min-width: 768px) {
+          .research-stats-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+          }
+        }
+      `}</style>
       <div style={{
         padding: 'clamp(2rem, 4vw, 3rem)',
       }}>
@@ -88,15 +96,7 @@ export function ResearchShowcase({ project, inView, index = 0 }: ResearchShowcas
 
         {/* Stats grid (if provided) */}
         {project.stats && project.stats.length > 0 && (
-          <>
-            <style jsx>{`
-              @media (min-width: 768px) {
-                .research-stats-grid {
-                  grid-template-columns: repeat(3, minmax(0, 1fr));
-                }
-              }
-            `}</style>
-            <div className="research-stats-grid" style={{
+          <div className="research-stats-grid" style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(1, minmax(0, 1fr))',
               gap: '1.5rem',
@@ -134,8 +134,7 @@ export function ResearchShowcase({ project, inView, index = 0 }: ResearchShowcas
                   </div>
                 </div>
               ))}
-            </div>
-          </>
+          </div>
         )}
 
         {/* Video embed (if provided) */}

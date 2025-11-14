@@ -72,6 +72,19 @@ export function JourneyOverview() {
       paddingRight: '1.5rem',
       overflow: 'hidden',
     }}>
+      {/* Responsive styles */}
+      <style jsx>{`
+        @media (min-width: 768px) {
+          .act-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 1rem !important;
+          }
+          .timeline-connector {
+            display: block !important;
+          }
+        }
+      `}</style>
+
       {/* Section title */}
       <div style={{
         maxWidth: '80rem',
@@ -132,20 +145,7 @@ export function JourneyOverview() {
         marginLeft: 'auto',
         marginRight: 'auto',
       }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(1, minmax(0, 1fr))',
-          gap: '1.5rem',
-        }}>
-          <style jsx>{`
-            @media (min-width: 768px) {
-              .act-grid {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-                gap: 1rem;
-              }
-            }
-          `}</style>
-          <div className="act-grid" style={{
+        <div className="act-grid" style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(1, minmax(0, 1fr))',
             gap: '1.5rem',
@@ -308,15 +308,7 @@ export function JourneyOverview() {
 
                   {/* Timeline connector (desktop only) */}
                   {index < acts.length - 1 && (
-                    <>
-                      <style jsx>{`
-                        @media (min-width: 768px) {
-                          .timeline-connector {
-                            display: block !important;
-                          }
-                        }
-                      `}</style>
-                      <div className="timeline-connector" style={{
+                    <div className="timeline-connector" style={{
                         display: 'none',
                         position: 'absolute',
                         top: '50%',
@@ -329,13 +321,11 @@ export function JourneyOverview() {
                           width: '100%',
                           background: 'linear-gradient(to right, rgba(255, 255, 255, 0.2), transparent)',
                         }} />
-                      </div>
-                    </>
+                    </div>
                   )}
                 </motion.div>
               );
             })}
-          </div>
         </div>
 
         {/* Click instruction */}
