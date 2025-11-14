@@ -26,30 +26,37 @@ export function NarrativeWorkHero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Ambient particle field (CSS-based) */}
-      <div className="absolute inset-0 overflow-hidden opacity-30">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20"
-            style={{
-              width: `${Math.random() * 300 + 50}px`,
-              height: `${Math.random() * 300 + 50}px`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              filter: 'blur(60px)',
-            }}
-            animate={{
-              x: [0, Math.random() * 100 - 50, 0],
-              y: [0, Math.random() * 100 - 50, 0],
-              opacity: [0.2, 0.4, 0.2],
-            }}
-            transition={{
-              duration: Math.random() * 20 + 10,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          />
-        ))}
+      <div className="absolute inset-0 overflow-hidden opacity-45">
+        {[...Array(20)].map((_, i) => {
+          const colors = [
+            'from-purple-500/30 to-blue-500/30',
+            'from-red-500/25 to-purple-500/25',
+            'from-blue-500/30 to-cyan-500/30',
+          ];
+          return (
+            <motion.div
+              key={i}
+              className={`absolute rounded-full bg-gradient-to-br ${colors[i % colors.length]}`}
+              style={{
+                width: `${Math.random() * 300 + 50}px`,
+                height: `${Math.random() * 300 + 50}px`,
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                filter: 'blur(60px)',
+              }}
+              animate={{
+                x: [0, Math.random() * 100 - 50, 0],
+                y: [0, Math.random() * 100 - 50, 0],
+                opacity: [0.3, 0.6, 0.3],
+              }}
+              transition={{
+                duration: Math.random() * 20 + 10,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            />
+          );
+        })}
       </div>
 
       {/* Main content */}
@@ -67,7 +74,10 @@ export function NarrativeWorkHero() {
         >
           {/* Eyebrow */}
           <motion.p
-            className="text-sm md:text-base font-light tracking-[0.2em] uppercase text-white/60 mb-6"
+            className="font-light tracking-[0.2em] uppercase text-white/60 mb-6"
+            style={{
+              fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+            }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
@@ -80,10 +90,11 @@ export function NarrativeWorkHero() {
             className="font-extralight leading-[1.1] mb-8"
             style={{
               fontSize: 'clamp(2.5rem, 8vw, 5rem)',
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 100%)',
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(218, 14, 41, 0.85) 50%, rgba(255,255,255,0.65) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
+              textShadow: '0 0 40px rgba(218, 14, 41, 0.15)',
             }}
           >
             From Consciousness
@@ -119,15 +130,16 @@ export function NarrativeWorkHero() {
             ].map((stat, index) => (
               <div
                 key={index}
-                className="glass-card px-4 py-2 rounded-full border border-white/10"
+                className="glass-card px-4 py-2 rounded-full border border-white/10 transition-all duration-300 hover:border-white/20"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  backdropFilter: 'blur(20px)',
+                  background: 'rgba(255, 255, 255, 0.07)',
+                  backdropFilter: 'blur(20px) saturate(150%)',
+                  fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
                 }}
               >
-                <span className="text-xs md:text-sm text-white/50">{stat.label}</span>
+                <span className="text-white/50">{stat.label}</span>
                 <span className="mx-2 text-white/30">→</span>
-                <span className="text-xs md:text-sm text-white/80 font-medium">{stat.value}</span>
+                <span className="text-white/85 font-medium">{stat.value}</span>
               </div>
             ))}
           </motion.div>
@@ -136,7 +148,11 @@ export function NarrativeWorkHero() {
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
+        className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
+        style={{
+          bottom: 'clamp(2rem, 5vh, 3rem)',
+          opacity: Math.max(0, 1 - scrollY / 200),
+        }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
@@ -146,11 +162,15 @@ export function NarrativeWorkHero() {
             behavior: 'smooth',
           });
         }}
-        style={{
-          opacity: Math.max(0, 1 - scrollY / 200),
-        }}
       >
-        <span className="text-xs tracking-[0.2em] uppercase text-white/50">Begin Journey</span>
+        <span
+          className="tracking-[0.2em] uppercase text-white/50"
+          style={{
+            fontSize: 'clamp(0.625rem, 1.2vw, 0.75rem)',
+          }}
+        >
+          Begin Journey
+        </span>
         <motion.div
           animate={{
             y: [0, 10, 0],
