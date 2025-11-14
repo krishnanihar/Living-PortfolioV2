@@ -24,9 +24,21 @@ export function NarrativeWorkHero() {
   const parallaxOffset = scrollY * 0.5;
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section style={{
+      position: 'relative',
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden',
+    }}>
       {/* Ambient particle field (CSS-based) */}
-      <div className="absolute inset-0 overflow-hidden opacity-45">
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        overflow: 'hidden',
+        opacity: 0.45,
+      }}>
         {[...Array(20)].map((_, i) => {
           const colors = [
             'from-purple-500/30 to-blue-500/30',
@@ -61,8 +73,13 @@ export function NarrativeWorkHero() {
 
       {/* Main content */}
       <div
-        className="relative z-10 text-center px-6 max-w-5xl"
         style={{
+          position: 'relative',
+          zIndex: 10,
+          textAlign: 'center',
+          paddingLeft: '1.5rem',
+          paddingRight: '1.5rem',
+          maxWidth: '80rem',
           transform: `translateY(-${parallaxOffset}px)`,
           opacity: Math.max(0, 1 - scrollY / 400),
         }}
@@ -74,9 +91,12 @@ export function NarrativeWorkHero() {
         >
           {/* Eyebrow */}
           <motion.p
-            className="font-light tracking-[0.2em] uppercase text-white/60"
             style={{
               fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+              fontWeight: '300',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'rgba(255, 255, 255, 0.6)',
               marginBottom: '2rem',
             }}
             initial={{ opacity: 0 }}
@@ -88,9 +108,10 @@ export function NarrativeWorkHero() {
 
           {/* Main title */}
           <h1
-            className="font-extralight leading-[1.1]"
             style={{
               fontSize: 'clamp(2.5rem, 8vw, 5rem)',
+              fontWeight: '200',
+              lineHeight: '1.1',
               marginBottom: '3rem',
               background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.7) 100%)',
               WebkitBackgroundClip: 'text',
@@ -105,8 +126,14 @@ export function NarrativeWorkHero() {
 
           {/* Subtitle */}
           <motion.p
-            className="text-lg md:text-xl font-light text-white/70 max-w-2xl mx-auto leading-relaxed"
             style={{
+              fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+              fontWeight: '300',
+              color: 'rgba(255, 255, 255, 0.7)',
+              maxWidth: '42rem',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              lineHeight: '1.625',
               marginBottom: '4rem',
             }}
             initial={{ opacity: 0 }}
@@ -115,15 +142,19 @@ export function NarrativeWorkHero() {
           >
             4 years. 3 domains. 12+ shipped products.
             <br />
-            <span className="text-white/50">
+            <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>
               Exploring the intersection of design, technology, and human experience.
             </span>
           </motion.p>
 
           {/* Stats pills */}
           <motion.div
-            className="flex flex-wrap items-center justify-center gap-4"
             style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '1rem',
               marginBottom: '5rem',
             }}
             initial={{ opacity: 0, y: 20 }}
@@ -137,19 +168,35 @@ export function NarrativeWorkHero() {
             ].map((stat, index) => (
               <div
                 key={index}
-                className="glass-card px-5 py-3 rounded-2xl border border-white/10 transition-all duration-300 hover:border-white/20"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '0.5rem',
+                  paddingLeft: '1.25rem',
+                  paddingRight: '1.25rem',
+                  paddingTop: '0.75rem',
+                  paddingBottom: '0.75rem',
+                  borderRadius: '1rem',
                   background: 'rgba(255, 255, 255, 0.07)',
                   backdropFilter: 'blur(20px) saturate(150%)',
+                  WebkitBackdropFilter: 'blur(20px) saturate(150%)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
                   fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                  transition: 'all 300ms ease',
+                  cursor: 'default',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.07)';
                 }}
               >
-                <span className="text-white/50">{stat.label}</span>
-                <span className="text-white/30">→</span>
-                <span className="text-white/85 font-medium">{stat.value}</span>
+                <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>{stat.label}</span>
+                <span style={{ color: 'rgba(255, 255, 255, 0.3)' }}>→</span>
+                <span style={{ color: 'rgba(255, 255, 255, 0.85)', fontWeight: '500' }}>{stat.value}</span>
               </div>
             ))}
           </motion.div>
@@ -158,9 +205,16 @@ export function NarrativeWorkHero() {
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
         style={{
+          position: 'absolute',
+          left: '50%',
           bottom: 'clamp(2rem, 5vh, 3rem)',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '0.5rem',
+          cursor: 'pointer',
           opacity: Math.max(0, 1 - scrollY / 200),
         }}
         initial={{ opacity: 0 }}
@@ -174,9 +228,11 @@ export function NarrativeWorkHero() {
         }}
       >
         <span
-          className="tracking-[0.2em] uppercase text-white/50"
           style={{
             fontSize: 'clamp(0.625rem, 1.2vw, 0.75rem)',
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: 'rgba(255, 255, 255, 0.5)',
           }}
         >
           Begin Journey
@@ -191,14 +247,19 @@ export function NarrativeWorkHero() {
             ease: 'easeInOut',
           }}
         >
-          <ChevronDown size={24} className="text-white/50" />
+          <ChevronDown size={24} style={{ color: 'rgba(255, 255, 255, 0.5)' }} />
         </motion.div>
       </motion.div>
 
       {/* Gradient fade to next section */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
         style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '8rem',
+          pointerEvents: 'none',
           background: 'linear-gradient(180deg, transparent 0%, rgba(10, 10, 10, 1) 100%)',
         }}
       />
