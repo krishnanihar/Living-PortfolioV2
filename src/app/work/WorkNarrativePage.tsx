@@ -197,8 +197,8 @@ export function WorkNarrativePage() {
       {/* SECTION 4: Metamorphic Fractal Reflections */}
       <section style={{
         position: 'relative',
-        paddingTop: '6rem',
-        paddingBottom: '6rem',
+        paddingTop: '3rem',
+        paddingBottom: '3rem',
         paddingLeft: '1.5rem',
         paddingRight: '1.5rem',
       }} ref={sectionRef}>
@@ -308,8 +308,8 @@ export function WorkNarrativePage() {
       {/* SECTION 7: Air India Overview - Stats */}
       <section style={{
         position: 'relative',
-        paddingTop: '6rem',
-        paddingBottom: '6rem',
+        paddingTop: '3rem',
+        paddingBottom: '3rem',
         paddingLeft: '1.5rem',
         paddingRight: '1.5rem',
       }}>
@@ -405,8 +405,8 @@ export function WorkNarrativePage() {
       {/* SECTION 8: Featured Projects - Accordion */}
       <section style={{
         position: 'relative',
-        paddingTop: '6rem',
-        paddingBottom: '6rem',
+        paddingTop: '3rem',
+        paddingBottom: '3rem',
         paddingLeft: '1.5rem',
         paddingRight: '1.5rem',
       }}>
@@ -454,8 +454,8 @@ export function WorkNarrativePage() {
       {/* SECTION 11: Research Triptych */}
       <section style={{
         position: 'relative',
-        paddingTop: '6rem',
-        paddingBottom: '6rem',
+        paddingTop: '3rem',
+        paddingBottom: '3rem',
         paddingLeft: '1.5rem',
         paddingRight: '1.5rem',
       }}>
@@ -543,8 +543,8 @@ export function WorkNarrativePage() {
       {/* SECTION 12: Closing & Navigation */}
       <section style={{
         position: 'relative',
-        paddingTop: '8rem',
-        paddingBottom: '8rem',
+        paddingTop: '4rem',
+        paddingBottom: '4rem',
         paddingLeft: '1.5rem',
         paddingRight: '1.5rem',
       }}>

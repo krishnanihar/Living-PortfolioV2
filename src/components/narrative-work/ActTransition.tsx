@@ -17,12 +17,12 @@ export function ActTransition({ actTitle, quote, actColor }: ActTransitionProps)
   return (
     <section style={{
       position: 'relative',
-      minHeight: '100vh',
+      minHeight: '60vh',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      paddingTop: '6rem',
-      paddingBottom: '6rem',
+      paddingTop: '3rem',
+      paddingBottom: '3rem',
       paddingLeft: '1.5rem',
       paddingRight: '1.5rem',
     }}>

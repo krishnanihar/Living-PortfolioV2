@@ -20,7 +20,7 @@ export function BreathingMoment({
   quote,
   author,
   type = 'pause',
-  minHeight = '60vh',
+  minHeight = '40vh',
 }: BreathingMomentProps) {
   const ref = React.useRef(null);
   const isInView = useInView(ref, { margin: '-20%' });
@@ -64,7 +64,7 @@ export function BreathingMoment({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '4rem 2rem',
+        padding: '2rem 1.5rem',
         position: 'relative',
       }}
     >
