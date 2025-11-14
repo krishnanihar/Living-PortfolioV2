@@ -244,6 +244,12 @@ export function PsoriAssistPhoneMockup() {
   const screenContainerRef = useRef<HTMLDivElement>(null);
   const dragY = useMotionValue(0);
 
+  // 3D Perspective Tilt State
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
+
   // Detect reduced motion preference
   const prefersReducedMotion = typeof window !== 'undefined'
     ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -337,32 +343,103 @@ export function PsoriAssistPhoneMockup() {
     }
   };
 
+  // 3D Perspective Tilt Handlers
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current || prefersReducedMotion) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    const mouseX = e.clientX - centerX;
+    const mouseY = e.clientY - centerY;
+
+    // Max tilt: 15 degrees for subtle, premium effect
+    const maxTilt = 15;
+    const tiltX = -(mouseY / (rect.height / 2)) * maxTilt;
+    const tiltY = (mouseX / (rect.width / 2)) * maxTilt;
+
+    setRotateX(tiltX);
+    setRotateY(tiltY);
+    setMousePosition({ x: mouseX, y: mouseY });
+  };
+
+  const handleMouseLeave = () => {
+    if (prefersReducedMotion) return;
+    setRotateX(0);
+    setRotateY(0);
+    setMousePosition({ x: 0, y: 0 });
+  };
+
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: '4rem 2rem',
-      position: 'relative'
-    }}>
-      {/* iPhone 14 Pro Mockup Frame */}
-      <div style={{
-        width: '393px',
-        height: '852px',
-        backgroundColor: '#1a1a1a',
-        borderRadius: '60px',
-        padding: '14px',
-        // Enhanced phone shadow (deep multi-layer)
-        boxShadow: `
-          0 40px 80px rgba(0, 0, 0, 0.25),
-          0 20px 40px rgba(0, 0, 0, 0.20),
-          0 10px 20px rgba(0, 0, 0, 0.15),
-          0 0 0 1px rgba(255, 255, 255, 0.1)
-        `,
+    <div
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '4rem 2rem',
         position: 'relative',
-        overflow: 'hidden',
-        zIndex: 1
-      }}>
+        perspective: '1200px',
+        perspectiveOrigin: 'center center'
+      }}
+    >
+      {/* Environmental Gradient Spotlight - Follows Mouse for Depth */}
+      <motion.div
+        animate={{
+          background: `radial-gradient(
+            600px circle at ${50 + (mousePosition.x / 10)}% ${50 + (mousePosition.y / 10)}%,
+            rgba(74, 144, 226, 0.15),
+            rgba(80, 200, 120, 0.10) 40%,
+            transparent 70%
+          )`
+        }}
+        transition={{ type: 'spring', stiffness: 100, damping: 30 }}
+        style={{
+          position: 'absolute',
+          inset: '-200px',
+          pointerEvents: 'none',
+          zIndex: 0,
+          opacity: 0.6
+        }}
+      />
+
+      {/* iPhone 14 Pro Mockup Frame - 3D Interactive */}
+      <motion.div
+        animate={{
+          rotateX,
+          rotateY,
+          transition: {
+            type: 'spring',
+            stiffness: 150,
+            damping: 20,
+            mass: 0.5
+          }
+        }}
+        style={{
+          width: '393px',
+          height: '852px',
+          backgroundColor: '#1a1a1a',
+          borderRadius: '60px',
+          padding: '14px',
+          // Premium 6-layer shadow system for 3D floating effect
+          boxShadow: `
+            0 50px 100px rgba(0, 0, 0, 0.30),
+            0 30px 60px rgba(0, 0, 0, 0.25),
+            0 20px 40px rgba(0, 0, 0, 0.20),
+            0 10px 20px rgba(0, 0, 0, 0.15),
+            0 5px 10px rgba(0, 0, 0, 0.10),
+            0 2px 4px rgba(0, 0, 0, 0.08),
+            0 0 0 1px rgba(255, 255, 255, 0.1)
+          `,
+          position: 'relative',
+          overflow: 'hidden',
+          zIndex: 1,
+          transformStyle: 'preserve-3d'
+        }}
+      >
         {/* Screen Container */}
         <div style={{
           width: '100%',
@@ -599,7 +676,7 @@ export function PsoriAssistPhoneMockup() {
             />
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
