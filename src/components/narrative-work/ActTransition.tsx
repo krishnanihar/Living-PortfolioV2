@@ -59,10 +59,7 @@ export function ActTransition({ actTitle, quote, actColor }: ActTransitionProps)
               fontSize: 'clamp(3rem, 6vw, 3.75rem)',
               fontWeight: '200',
               marginBottom: '2rem',
-              background: `linear-gradient(135deg, ${actColor} 0%, ${actColor.replace('0.8', '0.4')} 100%)`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
+              color: 'white',
             }}
           >
             {actTitle}
