@@ -7,17 +7,17 @@ import { shimmerVertexShader, shimmerFragmentShader } from '@/shaders/gladeye';
 
 // Determine particle count based on device capabilities
 function getParticleCount(): number {
-  if (typeof window === 'undefined') return 3000;
+  if (typeof window === 'undefined') return 1800;
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const pixelRatio = window.devicePixelRatio || 1;
   const isHighDPI = pixelRatio > 2;
 
-  // Adaptive particle count for performance (50% reduction for elegant minimal aesthetic)
-  if (isMobile && isHighDPI) return 1000; // iPhone 13 Pro, etc.
-  if (isMobile) return 1500; // Standard mobile
-  if (isHighDPI) return 2500; // Retina displays
-  return 3000; // Standard desktop
+  // Adaptive particle count for performance (further reduced for ultra-minimal aesthetic)
+  if (isMobile && isHighDPI) return 600; // iPhone 13 Pro, etc.
+  if (isMobile) return 900; // Standard mobile
+  if (isHighDPI) return 1500; // Retina displays
+  return 1800; // Standard desktop
 }
 
 interface GladeyeParticlesProps {
