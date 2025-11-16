@@ -93,12 +93,12 @@ export function AboutSection() {
       detail: 'Growing up in Hyderabad, tinkering with computers and flashing custom ROMs. The beginning of a lifelong curiosity.'
     },
     {
-      year: '2023',
-      label: 'ISB',
-      id: 'isb-2022',
-      detail: 'Internship at ISB Digital Learning (online) - exploring digital education platforms and online learning experiences.',
-      logoFile: 'ISB.svg',
-      organization: 'Indian School of Business'
+      year: '2016',
+      label: 'BFA',
+      id: 'undergrad-2018',
+      detail: 'Bachelor of Fine Arts - exploring visual design, typography, and the foundations of creative thinking.',
+      logoFile: 'JNAFAU.svg',
+      organization: 'JNAFAU'
     },
     {
       year: '2020',
@@ -109,7 +109,7 @@ export function AboutSection() {
       organization: 'Infosys'
     },
     {
-      year: '2022',
+      year: '2021',
       label: 'NID',
       id: 'nid-2021',
       detail: 'National Institute of Design Masters program - learning to build interfaces that breathe and systems thinking.',
@@ -117,12 +117,12 @@ export function AboutSection() {
       organization: 'National Institute of Design'
     },
     {
-      year: '2019',
-      label: 'BFA',
-      id: 'undergrad-2018',
-      detail: 'Bachelor of Fine Arts - exploring visual design, typography, and the foundations of creative thinking.',
-      logoFile: 'JNAFAU.svg',
-      organization: 'JNAFAU'
+      year: '2023',
+      label: 'ISB',
+      id: 'isb-2022',
+      detail: 'Internship at ISB Digital Learning (online) - exploring digital education platforms and online learning experiences.',
+      logoFile: 'ISB.svg',
+      organization: 'Indian School of Business'
     },
     {
       year: '2024',

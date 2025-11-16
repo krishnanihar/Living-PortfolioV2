@@ -132,7 +132,7 @@ function TunnelParticles({ scrollProgress, isActive }: TunnelParticlesProps) {
     <points ref={pointsRef} geometry={geometry}>
       <pointsMaterial
         map={circleTexture}
-        size={0.8}
+        size={0.4}
         vertexColors
         transparent
         opacity={0.90}
@@ -240,58 +240,6 @@ export function ParticleTunnelEffect({ className = '' }: ParticleTunnelEffectPro
             {/* Optional ambient light for subtle illumination */}
             <ambientLight intensity={0.2} />
           </Canvas>
-        </div>
-      )}
-
-      {/* Text overlay with glassmorphic backdrop */}
-      {scrollProgress > 0.35 && scrollProgress < 0.75 && (
-        <div
-          className="fixed inset-0 flex items-center justify-center pointer-events-none"
-          style={{
-            zIndex: 1,
-            opacity: scrollProgress > 0.6 ? 1 - ((scrollProgress - 0.6) / 0.15) : (scrollProgress - 0.35) / 0.15,
-          }}
-        >
-          <div
-            style={{
-              background: 'rgba(0, 0, 0, 0.4)',
-              backdropFilter: 'blur(12px) saturate(180%)',
-              WebkitBackdropFilter: 'blur(12px) saturate(180%)',
-              padding: '2.5rem 3rem',
-              borderRadius: '24px',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-              maxWidth: '600px',
-            }}
-          >
-            <div
-              style={{
-                color: 'rgba(255, 255, 255, 0.95)',
-                textShadow: '0 2px 12px rgba(0, 0, 0, 0.6)',
-                textAlign: 'left',
-              }}
-            >
-              <p className="text-lg md:text-xl font-light mb-4">
-                Most interfaces forget.
-                <br />
-                They demand you remember their patterns, their flows, their logic.
-                <br />
-                I build the opposite.
-              </p>
-
-              <p className="text-lg md:text-xl font-light mb-3">
-                Systems that remember context.
-              </p>
-
-              <p className="text-lg md:text-xl font-light mb-3">
-                Interfaces that breathe with human rhythms.
-              </p>
-
-              <p className="text-lg md:text-xl font-light">
-                Design that respects the space between intention and interaction.
-              </p>
-            </div>
-          </div>
         </div>
       )}
     </div>

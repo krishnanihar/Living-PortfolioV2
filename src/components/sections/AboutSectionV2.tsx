@@ -855,42 +855,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               I build the <span style={{ color: '#DA0E29', fontWeight: '400' }}>opposite</span>.
             </p>
 
-            <div
-              style={{
-                maxWidth: '800px',
-                margin: '0 auto',
-                opacity: act1InView && mounted ? 1 : 0,
-                animation: act1InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both' : 'none',
-              }}
-            >
-              <p style={{
-                fontSize: 'clamp(1.125rem, 2vw, 1.5rem)',
-                fontWeight: '300',
-                lineHeight: '1.7',
-                color: 'rgba(255, 255, 255, 0.75)',
-                marginBottom: '1rem',
-              }}>
-                Systems that <span style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: '400' }}>remember context</span>.
-              </p>
-              <p style={{
-                fontSize: 'clamp(1.125rem, 2vw, 1.5rem)',
-                fontWeight: '300',
-                lineHeight: '1.7',
-                color: 'rgba(255, 255, 255, 0.75)',
-                marginBottom: '1rem',
-              }}>
-                Interfaces that <span style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: '400' }}>breathe with human rhythms</span>.
-              </p>
-              <p style={{
-                fontSize: 'clamp(1.125rem, 2vw, 1.5rem)',
-                fontWeight: '300',
-                lineHeight: '1.7',
-                color: 'rgba(255, 255, 255, 0.75)',
-              }}>
-                Design that respects the space between intention and interaction.
-              </p>
-            </div>
-
             {/* Breathing Orb */}
             <div
               style={{
