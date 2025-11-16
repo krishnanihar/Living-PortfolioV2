@@ -151,7 +151,7 @@ export function JourneyOverview() {
             gap: '1.5rem',
           }}>
             {acts.map((act, index) => {
-              const Icon = act.icon;
+              const Icon = act.icon as React.FC<{ size?: number; style?: React.CSSProperties }>;
               const isHovered = hoveredAct === act.id;
 
               return (
