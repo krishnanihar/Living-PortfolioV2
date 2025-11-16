@@ -37,7 +37,7 @@ interface TunnelParticlesProps {
 
 function TunnelParticles({ scrollProgress, isActive }: TunnelParticlesProps) {
   const pointsRef = useRef<THREE.Points>(null);
-  const particleCount = 2000; // Increased for richer effect
+  const particleCount = 500; // Optimized for performance while maintaining visual richness
   const tunnelRadius = 15;
   const tunnelDepth = 150;
 
@@ -132,10 +132,10 @@ function TunnelParticles({ scrollProgress, isActive }: TunnelParticlesProps) {
     <points ref={pointsRef} geometry={geometry}>
       <pointsMaterial
         map={circleTexture}
-        size={1.2}
+        size={2.0}
         vertexColors
         transparent
-        opacity={0.85}
+        opacity={0.90}
         alphaTest={0.01}
         sizeAttenuation
         depthWrite={false}
@@ -153,36 +153,62 @@ export function ParticleTunnelEffect({ className = '' }: ParticleTunnelEffectPro
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isActive, setIsActive] = useState(false);
+  const [sectionHeight, setSectionHeight] = useState(0);
+  const rafRef = useRef<number | null>(null);
+  const lastProgressRef = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
       if (!containerRef.current) return;
 
-      const rect = containerRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
+      // Use requestAnimationFrame for smoother updates
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
 
-      // Section is visible if any part is on screen
-      const visible = rect.top < windowHeight && rect.bottom > 0;
-      setIsActive(visible);
+      rafRef.current = requestAnimationFrame(() => {
+        if (!containerRef.current) return;
 
-      // Calculate progress: 0 = section at bottom of viewport, 1 = section at top
-      const sectionHeight = rect.height;
-      const scrolled = windowHeight - rect.top;
-      const progress = Math.max(0, Math.min(1, scrolled / (sectionHeight + windowHeight)));
+        const rect = containerRef.current.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
 
-      setScrollProgress(progress);
+        // Section is visible if any part is on screen
+        const visible = rect.top < windowHeight && rect.bottom > 0;
+        setIsActive(visible);
+
+        // Use cached section height (calculated on mount/resize)
+        const height = sectionHeight || rect.height;
+        const scrolled = windowHeight - rect.top;
+        const progress = Math.max(0, Math.min(1, scrolled / (height + windowHeight)));
+
+        // Skip update if change is negligible (performance optimization)
+        if (Math.abs(progress - lastProgressRef.current) > 0.001) {
+          setScrollProgress(progress);
+          lastProgressRef.current = progress;
+        }
+      });
     };
+
+    // Cache section height on mount
+    if (containerRef.current) {
+      setSectionHeight(containerRef.current.getBoundingClientRect().height);
+    }
 
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, [sectionHeight]);
 
   // Camera Z position based on scroll
   const cameraZ = scrollProgress * 60; // Move camera forward into tunnel
 
-  // Smooth fade-in for tunnel (starts at 15% scroll, fully visible at 30%)
-  const tunnelOpacity = Math.max(0, Math.min(1, (scrollProgress - 0.15) / 0.15));
+  // Smooth fade-in for tunnel (starts at 20% scroll, fully visible at 35%)
+  const tunnelOpacity = Math.max(0, Math.min(1, (scrollProgress - 0.20) / 0.15));
 
   return (
     <div
@@ -190,30 +216,32 @@ export function ParticleTunnelEffect({ className = '' }: ParticleTunnelEffectPro
       className={`relative w-full ${className}`}
       style={{ height: '150vh' }} // Tall section for scroll range
     >
-      {/* Three.js Canvas - Fixed position */}
-      <div
-        className="fixed inset-0 pointer-events-none"
-        style={{
-          zIndex: 0,
-          opacity: isActive ? tunnelOpacity : 0,
-          transition: 'opacity 0.8s ease-out',
-        }}
-      >
-        <Canvas
-          camera={{
-            position: [0, 0, cameraZ],
-            fov: 75,
-            near: 0.1,
-            far: 200,
+      {/* Three.js Canvas - Fixed position (conditional rendering for performance) */}
+      {isActive && (
+        <div
+          className="fixed inset-0 pointer-events-none"
+          style={{
+            zIndex: 0,
+            opacity: tunnelOpacity,
+            transition: 'opacity 0.8s ease-out',
           }}
-          style={{ background: 'transparent' }}
         >
-          <TunnelParticles scrollProgress={scrollProgress} isActive={isActive} />
+          <Canvas
+            camera={{
+              position: [0, 0, cameraZ],
+              fov: 75,
+              near: 0.1,
+              far: 200,
+            }}
+            style={{ background: 'transparent' }}
+          >
+            <TunnelParticles scrollProgress={scrollProgress} isActive={isActive} />
 
-          {/* Optional ambient light for subtle illumination */}
-          <ambientLight intensity={0.2} />
-        </Canvas>
-      </div>
+            {/* Optional ambient light for subtle illumination */}
+            <ambientLight intensity={0.2} />
+          </Canvas>
+        </div>
+      )}
 
       {/* Text overlay with glassmorphic backdrop */}
       {scrollProgress > 0.35 && scrollProgress < 0.75 && (

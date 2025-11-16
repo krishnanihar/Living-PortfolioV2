@@ -100,8 +100,8 @@ export function CosmicBackground() {
 
   // Generate additional particles based on scroll progress
   const scrollParticles = React.useMemo(() => {
-    // Generate up to 400 extra particles as scroll increases
-    const extraCount = Math.floor(scrollProgress * 400);
+    // Generate up to 300 extra particles as scroll increases (optimized for performance)
+    const extraCount = Math.floor(scrollProgress * 300);
     return Array.from({ length: extraCount }, (_, i) => ({
       left: Math.random() * 100,
       top: Math.random() * 100,
@@ -209,9 +209,10 @@ export function CosmicBackground() {
   }, []);
 
   // Fade out cosmic background when tunnel becomes active (scroll > 15%)
+  // Complete fade-out by 25% for seamless handoff to tunnel (5% buffer before tunnel fade-in at 20%)
   const isTunnelActive = scrollProgress > 0.15;
   const cosmicOpacity = isTunnelActive
-    ? Math.max(0, 1 - (scrollProgress - 0.15) / 0.35) // Fade out 15-50% scroll
+    ? Math.max(0, 1 - (scrollProgress - 0.15) / 0.10) // Fade out 15-25% scroll
     : 1;
 
   return (
