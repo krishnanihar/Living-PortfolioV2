@@ -17,6 +17,15 @@ const CosmicBackground = dynamic(
   }
 );
 
+// Lazy load particle tunnel effect
+const ParticleTunnelEffect = dynamic(
+  () => import('@/components/effects/ParticleTunnelEffect').then(mod => ({ default: mod.ParticleTunnelEffect })),
+  {
+    ssr: false,
+    loading: () => null
+  }
+);
+
 // Lazy load below-the-fold sections for faster initial load
 const AboutSectionV2 = dynamic(
   () => import('@/components/sections/AboutSectionV2'),
@@ -53,6 +62,9 @@ export default function HomePage() {
 
       <main id="main-content">
         <IntroductionSection />
+
+        {/* 3D Particle Tunnel Effect */}
+        <ParticleTunnelEffect />
 
         <SectionDivider text="Who thinks like this?" />
 
