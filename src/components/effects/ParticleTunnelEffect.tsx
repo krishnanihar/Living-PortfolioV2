@@ -4,6 +4,32 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
+// Generate smooth circular particle texture
+function createCircleTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = 64;
+  canvas.height = 64;
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Could not get 2D context');
+
+  // Radial gradient: bright center → soft glow → transparent edge
+  const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+  gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.8)');
+  gradient.addColorStop(0.7, 'rgba(255, 255, 255, 0.4)');
+  gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+  ctx.fillStyle = gradient;
+  ctx.beginPath();
+  ctx.arc(32, 32, 32, 0, Math.PI * 2);
+  ctx.fill();
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
 interface TunnelParticlesProps {
   scrollProgress: number;
   isActive: boolean;
@@ -11,9 +37,12 @@ interface TunnelParticlesProps {
 
 function TunnelParticles({ scrollProgress, isActive }: TunnelParticlesProps) {
   const pointsRef = useRef<THREE.Points>(null);
-  const particleCount = 1500;
+  const particleCount = 2000; // Increased for richer effect
   const tunnelRadius = 15;
   const tunnelDepth = 150;
+
+  // Create smooth circular texture (once)
+  const circleTexture = React.useMemo(() => createCircleTexture(), []);
 
   // Generate cylindrical tunnel particles
   const [positions, colors, velocities] = React.useMemo(() => {
@@ -32,25 +61,28 @@ function TunnelParticles({ scrollProgress, isActive }: TunnelParticlesProps) {
       positions[i * 3 + 1] = Math.sin(angle) * radius;
       positions[i * 3 + 2] = -depth; // Negative Z = into screen
 
-      // Color gradient by depth (white → blue → purple)
+      // Enhanced color gradient by depth for elegant depth perception
+      // Near (white/cyan) → Mid (electric blue/purple) → Far (deep purple/navy)
       const depthRatio = depth / tunnelDepth;
-      if (depthRatio < 0.3) {
-        // Near: bright white/blue
-        colors[i * 3] = 0.8 + 0.2 * (1 - depthRatio / 0.3);     // R
-        colors[i * 3 + 1] = 0.9 + 0.1 * (1 - depthRatio / 0.3); // G
-        colors[i * 3 + 2] = 1.0;                                 // B
-      } else if (depthRatio < 0.7) {
-        // Mid: cyan/purple
-        const midProgress = (depthRatio - 0.3) / 0.4;
-        colors[i * 3] = 0.5 + 0.3 * midProgress;     // R
-        colors[i * 3 + 1] = 0.4 - 0.2 * midProgress; // G
-        colors[i * 3 + 2] = 0.95;                    // B
+
+      if (depthRatio < 0.25) {
+        // Near: bright white with subtle cyan tint
+        const nearProgress = depthRatio / 0.25;
+        colors[i * 3] = 0.95 - nearProgress * 0.15;      // R: 0.95 → 0.80
+        colors[i * 3 + 1] = 0.97 - nearProgress * 0.17;  // G: 0.97 → 0.80
+        colors[i * 3 + 2] = 1.0;                          // B: 1.0 (constant bright)
+      } else if (depthRatio < 0.6) {
+        // Mid: cyan → electric blue → purple transition
+        const midProgress = (depthRatio - 0.25) / 0.35;
+        colors[i * 3] = 0.80 - midProgress * 0.35;       // R: 0.80 → 0.45
+        colors[i * 3 + 1] = 0.80 - midProgress * 0.50;   // G: 0.80 → 0.30
+        colors[i * 3 + 2] = 1.0 - midProgress * 0.05;    // B: 1.0 → 0.95
       } else {
-        // Far: deep purple/navy
-        const farProgress = (depthRatio - 0.7) / 0.3;
-        colors[i * 3] = 0.4 - 0.2 * farProgress;     // R
-        colors[i * 3 + 1] = 0.2 - 0.1 * farProgress; // G
-        colors[i * 3 + 2] = 0.6 - 0.3 * farProgress; // B
+        // Far: deep purple → navy fade
+        const farProgress = (depthRatio - 0.6) / 0.4;
+        colors[i * 3] = 0.45 - farProgress * 0.25;       // R: 0.45 → 0.20
+        colors[i * 3 + 1] = 0.30 - farProgress * 0.20;   // G: 0.30 → 0.10
+        colors[i * 3 + 2] = 0.95 - farProgress * 0.45;   // B: 0.95 → 0.50
       }
 
       // Individual velocities for organic feel
@@ -99,10 +131,12 @@ function TunnelParticles({ scrollProgress, isActive }: TunnelParticlesProps) {
   return (
     <points ref={pointsRef} geometry={geometry}>
       <pointsMaterial
-        size={0.8}
+        map={circleTexture}
+        size={1.2}
         vertexColors
         transparent
-        opacity={0.9}
+        opacity={0.85}
+        alphaTest={0.01}
         sizeAttenuation
         depthWrite={false}
         blending={THREE.AdditiveBlending} // Warp speed glow
@@ -147,6 +181,9 @@ export function ParticleTunnelEffect({ className = '' }: ParticleTunnelEffectPro
   // Camera Z position based on scroll
   const cameraZ = scrollProgress * 60; // Move camera forward into tunnel
 
+  // Smooth fade-in for tunnel (starts at 15% scroll, fully visible at 30%)
+  const tunnelOpacity = Math.max(0, Math.min(1, (scrollProgress - 0.15) / 0.15));
+
   return (
     <div
       ref={containerRef}
@@ -158,8 +195,8 @@ export function ParticleTunnelEffect({ className = '' }: ParticleTunnelEffectPro
         className="fixed inset-0 pointer-events-none"
         style={{
           zIndex: 0,
-          opacity: isActive ? 1 : 0,
-          transition: 'opacity 0.5s ease',
+          opacity: isActive ? tunnelOpacity : 0,
+          transition: 'opacity 0.8s ease-out',
         }}
       >
         <Canvas
@@ -178,18 +215,36 @@ export function ParticleTunnelEffect({ className = '' }: ParticleTunnelEffectPro
         </Canvas>
       </div>
 
-      {/* Optional text overlay in tunnel */}
-      {scrollProgress > 0.3 && scrollProgress < 0.7 && (
+      {/* Text overlay with glassmorphic backdrop */}
+      {scrollProgress > 0.35 && scrollProgress < 0.75 && (
         <div
           className="fixed inset-0 flex items-center justify-center pointer-events-none"
           style={{
             zIndex: 1,
-            opacity: scrollProgress > 0.5 ? 1 - ((scrollProgress - 0.5) / 0.2) : (scrollProgress - 0.3) / 0.2,
+            opacity: scrollProgress > 0.6 ? 1 - ((scrollProgress - 0.6) / 0.15) : (scrollProgress - 0.35) / 0.15,
           }}
         >
-          <h2 className="text-4xl md:text-6xl font-light text-white/90 text-center px-6">
-            Diving deeper...
-          </h2>
+          <div
+            style={{
+              background: 'rgba(0, 0, 0, 0.4)',
+              backdropFilter: 'blur(12px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(12px) saturate(180%)',
+              padding: '2rem 3rem',
+              borderRadius: '24px',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+            }}
+          >
+            <h2
+              className="text-4xl md:text-6xl font-light text-center"
+              style={{
+                color: 'rgba(255, 255, 255, 0.95)',
+                textShadow: '0 2px 12px rgba(0, 0, 0, 0.6)',
+              }}
+            >
+              Diving deeper...
+            </h2>
+          </div>
         </div>
       )}
     </div>

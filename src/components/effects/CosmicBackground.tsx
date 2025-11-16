@@ -208,6 +208,12 @@ export function CosmicBackground() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Fade out cosmic background when tunnel becomes active (scroll > 15%)
+  const isTunnelActive = scrollProgress > 0.15;
+  const cosmicOpacity = isTunnelActive
+    ? Math.max(0, 1 - (scrollProgress - 0.15) / 0.35) // Fade out 15-50% scroll
+    : 1;
+
   return (
     <>
       {/* Fixed cosmic background that stays visible */}
@@ -217,6 +223,8 @@ export function CosmicBackground() {
           inset: 0,
           pointerEvents: 'none',
           zIndex: 0,
+          opacity: cosmicOpacity,
+          transition: 'opacity 0.8s ease-out',
         }}
       >
         {/* Particle layer - Far (slowest, smoothest) with mouse attraction */}
