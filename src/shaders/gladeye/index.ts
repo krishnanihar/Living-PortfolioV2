@@ -60,13 +60,13 @@ void main() {
   float alpha = 1.0 - smoothstep(0.0, 1.0, r);
 
   // Exponential glow (outer halo)
-  float glow = exp(-r * 3.5) * 0.4;
+  float glow = exp(-r * 3.5) * 0.3;
 
   // Add glow to white color for luminosity
   vec3 finalColor = color + vec3(glow);
 
-  // Apply twinkle to alpha
-  float finalAlpha = alpha * (0.6 + twinkle * 0.4);
+  // Apply twinkle to alpha (reduced for subtlety)
+  float finalAlpha = alpha * (0.35 + twinkle * 0.25);
 
   gl_FragColor = vec4(finalColor, finalAlpha);
 }

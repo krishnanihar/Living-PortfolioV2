@@ -79,7 +79,7 @@ function GladeyeParticles({ scrollProgress, mousePosition }: GladeyeParticlesPro
     return new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
-        shimmerIntensity: { value: prefersReducedMotion ? 0 : 0.5 },
+        shimmerIntensity: { value: prefersReducedMotion ? 0 : 0.2 },
         scrollProgress: { value: 0 },
         // Pure white for elegant star-like particles
         color: { value: new THREE.Color(1.0, 1.0, 1.0) },
