@@ -3,21 +3,21 @@
 import dynamic from 'next/dynamic';
 import { WorkNarrativePage } from './WorkNarrativePage';
 
-// Dynamic import of CosmicBackground for performance (client-side only)
-const CosmicBackground = dynamic(
-  () => import('@/components/effects/CosmicBackground').then(mod => ({ default: mod.CosmicBackground })),
+// Dynamic import of Gladeye particle scroll system for performance (client-side only)
+const GladeyeParticleScroll = dynamic(
+  () => import('@/components/effects/GladeyeParticleScroll').then(mod => ({ default: mod.GladeyeParticleScroll })),
   { ssr: false, loading: () => null }
 );
 
 /**
  * Client component wrapper for work page
- * Handles client-side only components (CosmicBackground)
+ * Handles client-side only components (GladeyeParticleScroll)
  */
 export function WorkPageClient() {
   return (
     <>
-      {/* Cosmic Stars Background */}
-      <CosmicBackground />
+      {/* Gladeye Particle Scroll Background */}
+      <GladeyeParticleScroll />
 
       <WorkNarrativePage />
     </>

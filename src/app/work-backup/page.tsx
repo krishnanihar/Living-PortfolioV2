@@ -10,9 +10,9 @@ import WorkSection from '@/components/sections/WorkSection';
 import { projects, getProjectsByCategory } from '@/data/projects';
 import { FilterCategory } from '@/types/projects';
 
-// Dynamic import of CosmicBackground for performance
-const CosmicBackground = dynamic(
-  () => import('@/components/effects/CosmicBackground').then(mod => ({ default: mod.CosmicBackground })),
+// Dynamic import of Gladeye particle scroll system for performance
+const GladeyeParticleScroll = dynamic(
+  () => import('@/components/effects/GladeyeParticleScroll').then(mod => ({ default: mod.GladeyeParticleScroll })),
   { ssr: false, loading: () => null }
 );
 
@@ -66,8 +66,8 @@ export default function WorkPage() {
 
   return (
     <>
-      {/* Cosmic Stars Background */}
-      <CosmicBackground />
+      {/* Gladeye Particle Scroll Background */}
+      <GladeyeParticleScroll />
 
       <PortfolioNavigation />
 

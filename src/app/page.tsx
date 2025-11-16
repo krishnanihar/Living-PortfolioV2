@@ -8,18 +8,9 @@ import { IntroductionSection } from '@/components/sections/IntroductionSection';
 import { SectionDivider } from '@/components/ui/SectionDivider';
 import { HomeNarrativeWrapper } from '@/components/sections/HomeNarrativeWrapper';
 
-// Dynamically import CosmicBackground for better performance
-const CosmicBackground = dynamic(
-  () => import('@/components/effects/CosmicBackground').then(mod => ({ default: mod.CosmicBackground })),
-  {
-    ssr: false,
-    loading: () => null
-  }
-);
-
-// Lazy load particle tunnel effect
-const ParticleTunnelEffect = dynamic(
-  () => import('@/components/effects/ParticleTunnelEffect').then(mod => ({ default: mod.ParticleTunnelEffect })),
+// Dynamically import Gladeye particle scroll system for better performance
+const GladeyeParticleScroll = dynamic(
+  () => import('@/components/effects/GladeyeParticleScroll').then(mod => ({ default: mod.GladeyeParticleScroll })),
   {
     ssr: false,
     loading: () => null
@@ -57,14 +48,11 @@ export default function HomePage() {
   return (
     <HomeNarrativeWrapper>
       <PortfolioNavigation />
-      <CosmicBackground />
+      <GladeyeParticleScroll />
       <ScrollDarkeningOverlay />
 
       <main id="main-content">
         <IntroductionSection />
-
-        {/* 3D Particle Tunnel Effect */}
-        <ParticleTunnelEffect />
 
         <AboutSectionV2 />
       </main>

@@ -5,9 +5,9 @@ import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import { AboutSection } from '@/components/sections/AboutSection';
 import { ScrollDarkeningOverlay } from '@/components/effects/ScrollDarkeningOverlay';
 
-// Dynamically import CosmicBackground for better performance
-const CosmicBackground = dynamic(
-  () => import('@/components/effects/CosmicBackground').then(mod => ({ default: mod.CosmicBackground })),
+// Dynamically import Gladeye particle scroll system for better performance
+const GladeyeParticleScroll = dynamic(
+  () => import('@/components/effects/GladeyeParticleScroll').then(mod => ({ default: mod.GladeyeParticleScroll })),
   {
     ssr: false,
     loading: () => null
@@ -18,7 +18,7 @@ export default function AboutPage() {
   return (
     <>
       <PortfolioNavigation />
-      <CosmicBackground />
+      <GladeyeParticleScroll />
       <ScrollDarkeningOverlay />
       <AboutSection />
     </>
