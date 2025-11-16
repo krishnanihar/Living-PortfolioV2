@@ -7,17 +7,17 @@ import { shimmerVertexShader, shimmerFragmentShader } from '@/shaders/gladeye';
 
 // Determine particle count based on device capabilities
 function getParticleCount(): number {
-  if (typeof window === 'undefined') return 6000;
+  if (typeof window === 'undefined') return 3000;
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const pixelRatio = window.devicePixelRatio || 1;
   const isHighDPI = pixelRatio > 2;
 
-  // Adaptive particle count for performance
-  if (isMobile && isHighDPI) return 2000; // iPhone 13 Pro, etc.
-  if (isMobile) return 3000; // Standard mobile
-  if (isHighDPI) return 5000; // Retina displays
-  return 6000; // Standard desktop
+  // Adaptive particle count for performance (50% reduction for elegant minimal aesthetic)
+  if (isMobile && isHighDPI) return 1000; // iPhone 13 Pro, etc.
+  if (isMobile) return 1500; // Standard mobile
+  if (isHighDPI) return 2500; // Retina displays
+  return 3000; // Standard desktop
 }
 
 interface GladeyeParticlesProps {
@@ -81,11 +81,8 @@ function GladeyeParticles({ scrollProgress, mousePosition }: GladeyeParticlesPro
         time: { value: 0 },
         shimmerIntensity: { value: prefersReducedMotion ? 0 : 0.5 },
         scrollProgress: { value: 0 },
-        // 4-stage color palette (Gladeye style)
-        color1: { value: new THREE.Color(0.486, 0.227, 0.929) }, // Deep purple
-        color2: { value: new THREE.Color(0.129, 0.588, 0.953) }, // Electric blue
-        color3: { value: new THREE.Color(0.024, 0.714, 0.831) }, // Cyan
-        color4: { value: new THREE.Color(0.659, 0.333, 0.965) }, // Magenta
+        // Pure white for elegant star-like particles
+        color: { value: new THREE.Color(1.0, 1.0, 1.0) },
       },
       vertexShader: shimmerVertexShader,
       fragmentShader: shimmerFragmentShader,
@@ -107,11 +104,14 @@ function GladeyeParticles({ scrollProgress, mousePosition }: GladeyeParticlesPro
     mat.uniforms.time.value = state.clock.elapsedTime;
     mat.uniforms.scrollProgress.value = scrollProgress;
 
-    // Camera movement: travel through particle field
-    // Start at z=0, move to z=200 (traveling forward through tunnel)
-    const targetCameraZ = scrollProgress * 200;
+    // Camera movement: travel through particle field during hero, then freeze
+    // Threshold: 15% scroll (end of hero section) = stationary background
+    const STATIC_THRESHOLD = 0.15;
+    const targetCameraZ = scrollProgress < STATIC_THRESHOLD
+      ? scrollProgress * 200 // Move during hero
+      : STATIC_THRESHOLD * 200; // Freeze at threshold (30 units)
 
-    // Mouse parallax (subtle)
+    // Mouse parallax (subtle, always active for interactivity)
     const targetCameraX = mousePosition.x * 3;
     const targetCameraY = mousePosition.y * 3;
 
@@ -138,9 +138,9 @@ function GladeyeParticles({ scrollProgress, mousePosition }: GladeyeParticlesPro
 
     pointsRef.current.geometry.attributes.position.needsUpdate = true;
 
-    // Subtle rotation for visual interest
-    pointsRef.current.rotation.y = state.clock.elapsedTime * 0.015 + scrollProgress * 0.4;
-    pointsRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.04) * 0.03;
+    // Very subtle rotation for visual interest (time-based only, no scroll acceleration)
+    pointsRef.current.rotation.y = state.clock.elapsedTime * 0.008;
+    pointsRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.04) * 0.02;
   });
 
   // Cleanup
