@@ -576,9 +576,7 @@ export function JourneyTimeline() {
                             height: 'clamp(72px, 8vw, 96px)',
                             padding: '16px',
                             borderRadius: '20px',
-                            background: milestone.logoFile === 'JNAFAU.svg'
-                              ? 'rgba(10, 10, 10, 0.80)'
-                              : 'rgba(10, 10, 10, 0.75)',
+                            background: 'transparent',
                             backdropFilter: 'blur(40px) saturate(150%)',
                             WebkitBackdropFilter: 'blur(40px) saturate(150%)',
                             border: `2px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.svg' ? '0.12' : '0.10'})`,
@@ -913,9 +911,7 @@ export function JourneyTimeline() {
                             height: 'clamp(72px, 8vw, 96px)',
                             padding: '16px',
                             borderRadius: '20px',
-                            background: milestone.logoFile === 'JNAFAU.svg'
-                              ? 'rgba(10, 10, 10, 0.80)'
-                              : 'rgba(10, 10, 10, 0.75)',
+                            background: 'transparent',
                             backdropFilter: 'blur(40px) saturate(150%)',
                             WebkitBackdropFilter: 'blur(40px) saturate(150%)',
                             border: `2px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.svg' ? '0.12' : '0.10'})`,
