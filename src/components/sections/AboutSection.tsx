@@ -522,8 +522,8 @@ export function AboutSection() {
                           <Image
                             src={`/logos/${milestone.logoFile}`}
                             alt={milestone.organization || milestone.label}
-                            width={62}
-                            height={62}
+                            width={milestone.logoFile === 'JNAFAU.svg' ? 80 : 62}
+                            height={milestone.logoFile === 'JNAFAU.svg' ? 80 : 62}
                             style={{
                               objectFit: 'contain',
                               width: '100%',
