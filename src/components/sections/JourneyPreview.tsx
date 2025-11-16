@@ -53,7 +53,7 @@ export default function JourneyPreview() {
       color: '#7C3AED',
       organization: 'Srishti Manipal',
       status: 'Education',
-      logoFile: 'bfa.jpeg'
+      logoFile: 'JNAFAU.svg'
     },
     {
       year: '2021',
@@ -433,12 +433,12 @@ export default function JourneyPreview() {
                       height: 'clamp(88px, 10vw, 112px)',
                       borderRadius: '20px',
                       background: milestone.logoFile
-                        ? (milestone.logoFile === 'bfa.jpeg'
+                        ? (milestone.logoFile === 'JNAFAU.svg'
                           ? 'rgba(255, 255, 255, 0.15)'
                           : 'rgba(255, 255, 255, 0.10)')
                         : `${milestone.color}15`,
                       border: milestone.logoFile
-                        ? `1px solid rgba(255, 255, 255, ${milestone.logoFile === 'bfa.jpeg' ? '0.20' : '0.18'})`
+                        ? `1px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.svg' ? '0.20' : '0.18'})`
                         : `1px solid ${milestone.color}40`,
                       display: 'flex',
                       alignItems: 'center',
@@ -448,7 +448,7 @@ export default function JourneyPreview() {
                       padding: milestone.logoFile ? '18px' : '0',
                       backdropFilter: milestone.logoFile ? 'blur(20px) saturate(140%)' : 'none',
                       boxShadow: milestone.logoFile
-                        ? (milestone.logoFile === 'bfa.jpeg'
+                        ? (milestone.logoFile === 'JNAFAU.svg'
                           ? 'inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.2)'
                           : '0 4px 16px rgba(0, 0, 0, 0.2)')
                         : 'none',

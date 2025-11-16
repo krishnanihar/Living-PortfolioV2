@@ -97,7 +97,7 @@ export function AboutSection() {
       label: 'BFA',
       id: 'isb-2022',
       detail: 'Internship at ISB Digital Learning (online) - exploring digital education platforms and online learning experiences.',
-      logoFile: 'isb.png',
+      logoFile: 'ISB.svg',
       organization: 'Indian School of Business'
     },
     {
@@ -121,7 +121,7 @@ export function AboutSection() {
       label: 'ISB',
       id: 'undergrad-2018',
       detail: 'Bachelor of Fine Arts - exploring visual design, typography, and the foundations of creative thinking.',
-      logoFile: 'bfa.jpeg',
+      logoFile: 'JNAFAU.svg',
       organization: 'JNAFAU'
     },
     {

@@ -241,7 +241,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       label: 'ISB',
       id: 'isb-2022',
       detail: 'Strategic Management Program at Indian School of Business, blending design thinking with business strategy.',
-      logoFile: 'isb.png',
+      logoFile: 'ISB.svg',
       organization: 'ISB Hyderabad'
     },
     {
@@ -265,7 +265,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       label: 'BFA',
       id: 'undergrad-2018',
       detail: 'Bachelor of Fine Arts in Communication Design from JNAFAU, exploring the intersection of art and interaction.',
-      logoFile: 'bfa.jpeg',
+      logoFile: 'JNAFAU.svg',
       organization: 'JNAFAU'
     },
     {
