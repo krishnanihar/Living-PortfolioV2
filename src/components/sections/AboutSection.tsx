@@ -504,7 +504,7 @@ export function AboutSection() {
                           borderRadius: '18px',
                           background: activeTimeline === milestone.id
                             ? 'rgba(218, 14, 41, 0.12)'
-                            : 'rgba(255, 255, 255, 0.95)',
+                            : 'rgba(10, 10, 10, 0.85)',
                           backdropFilter: 'blur(20px) saturate(110%)',
                           border: activeTimeline === milestone.id
                             ? '2px solid var(--brand-red)'

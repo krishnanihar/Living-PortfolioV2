@@ -577,11 +577,11 @@ export function JourneyTimeline() {
                             padding: '16px',
                             borderRadius: '20px',
                             background: milestone.logoFile === 'JNAFAU.svg'
-                              ? 'rgba(255, 255, 255, 0.15)'
-                              : 'rgba(255, 255, 255, 0.12)',
+                              ? 'rgba(10, 10, 10, 0.80)'
+                              : 'rgba(10, 10, 10, 0.75)',
                             backdropFilter: 'blur(40px) saturate(150%)',
                             WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-                            border: `2px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.svg' ? '0.20' : '0.18'})`,
+                            border: `2px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.svg' ? '0.12' : '0.10'})`,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -914,11 +914,11 @@ export function JourneyTimeline() {
                             padding: '16px',
                             borderRadius: '20px',
                             background: milestone.logoFile === 'JNAFAU.svg'
-                              ? 'rgba(255, 255, 255, 0.15)'
-                              : 'rgba(255, 255, 255, 0.12)',
+                              ? 'rgba(10, 10, 10, 0.80)'
+                              : 'rgba(10, 10, 10, 0.75)',
                             backdropFilter: 'blur(40px) saturate(150%)',
                             WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-                            border: `2px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.svg' ? '0.20' : '0.18'})`,
+                            border: `2px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.svg' ? '0.12' : '0.10'})`,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
