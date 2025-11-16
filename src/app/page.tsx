@@ -17,15 +17,6 @@ const CosmicBackground = dynamic(
   }
 );
 
-// Lazy load ParticleTunnel for better performance
-const ParticleTunnel = dynamic(
-  () => import('@/components/effects/ParticleTunnel'),
-  {
-    ssr: false,
-    loading: () => null
-  }
-);
-
 // Lazy load below-the-fold sections for faster initial load
 const AboutSectionV2 = dynamic(
   () => import('@/components/sections/AboutSectionV2'),
@@ -62,9 +53,6 @@ export default function HomePage() {
 
       <main id="main-content">
         <IntroductionSection />
-
-        {/* Immersive particle tunnel section */}
-        <ParticleTunnel />
 
         <SectionDivider text="Who thinks like this?" />
 

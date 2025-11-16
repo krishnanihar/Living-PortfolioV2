@@ -2,30 +2,85 @@
 
 import React, { useState, useEffect } from 'react';
 
+// Colorful particle colors for scroll transformation
+const PARTICLE_COLORS = [
+  { r: 139, g: 92, b: 246 },   // Purple
+  { r: 236, g: 72, b: 153 },   // Pink
+  { r: 245, g: 158, b: 11 },   // Amber
+  { r: 59, g: 130, b: 246 },   // Blue
+  { r: 16, g: 185, b: 129 },   // Emerald
+  { r: 168, g: 85, b: 247 },   // Light purple
+  { r: 244, g: 114, b: 182 },  // Light pink
+  { r: 251, g: 191, b: 36 },   // Yellow
+];
+
 export function CosmicBackground() {
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   // Sphere position (static - right side of hero section, approximately 65% x, 45% y)
   const spherePosition = { x: 65, y: 45 };
 
   // Color reflection helper - calculates star color based on distance to particle sphere
-  const getReflectedColor = (starX: number, starY: number, layerStrength: number = 0.6, layerOpacity: number = 0.7) => {
+  // Now also blends with colorful particles on scroll
+  const getReflectedColor = (starX: number, starY: number, layerStrength: number = 0.6, layerOpacity: number = 0.7, particleIndex: number = 0) => {
     const dx = starX - spherePosition.x;
     const dy = starY - spherePosition.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
     const influenceRadius = 45; // % of viewport
 
-    // No influence if too far from sphere
+    // Get scroll-based colorful color
+    const colorfulColor = PARTICLE_COLORS[particleIndex % PARTICLE_COLORS.length];
+
+    // If scroll progress is significant, blend towards colorful
+    if (scrollProgress > 0.1) {
+      // Start color transformation at 10% scroll
+      const colorTransition = Math.min(1, (scrollProgress - 0.1) / 0.4); // Full transition by 50% scroll
+
+      // Blend white/sphere colors with colorful particles
+      let baseColor = { r: 255, g: 255, b: 255 }; // Start with white
+
+      // If near sphere, get sphere color
+      if (distance <= influenceRadius) {
+        const influence = 1 - (distance / influenceRadius);
+        const angle = Math.atan2(dy, dx);
+        const normalizedAngle = ((angle + Math.PI) / (Math.PI * 2) + 1) % 1;
+
+        let sphereColor;
+        if (normalizedAngle < 0.33) {
+          sphereColor = { r: 33, g: 150, b: 243 }; // Electric Blue
+        } else if (normalizedAngle < 0.66) {
+          sphereColor = { r: 124, g: 58, b: 237 }; // Deep Purple
+        } else {
+          sphereColor = { r: 6, g: 182, b: 212 }; // Cyan
+        }
+
+        const mixStrength = influence * layerStrength;
+        baseColor = {
+          r: Math.round(255 * (1 - mixStrength) + sphereColor.r * mixStrength),
+          g: Math.round(255 * (1 - mixStrength) + sphereColor.g * mixStrength),
+          b: Math.round(255 * (1 - mixStrength) + sphereColor.b * mixStrength),
+        };
+      }
+
+      // Now blend base color with colorful color based on scroll
+      const r = Math.round(baseColor.r * (1 - colorTransition) + colorfulColor.r * colorTransition);
+      const g = Math.round(baseColor.g * (1 - colorTransition) + colorfulColor.g * colorTransition);
+      const b = Math.round(baseColor.b * (1 - colorTransition) + colorfulColor.b * colorTransition);
+
+      // Increase opacity slightly on scroll for more vibrant effect
+      const scrollOpacity = layerOpacity + (scrollProgress * 0.15);
+
+      return `rgba(${r}, ${g}, ${b}, ${Math.min(1, scrollOpacity)})`;
+    }
+
+    // Original logic when scroll is minimal (< 10%)
     if (distance > influenceRadius) return `rgba(255, 255, 255, ${layerOpacity})`;
 
-    // Calculate influence strength (1 = at sphere center, 0 = at influence edge)
     const influence = 1 - (distance / influenceRadius);
-
-    // Get angle to determine which color zone (matches sphere's color distribution)
     const angle = Math.atan2(dy, dx);
     const normalizedAngle = ((angle + Math.PI) / (Math.PI * 2) + 1) % 1;
 
-    // Select base color based on angle (same as particle sphere)
     let baseColor;
     if (normalizedAngle < 0.33) {
       baseColor = { r: 33, g: 150, b: 243 }; // Electric Blue
@@ -35,8 +90,6 @@ export function CosmicBackground() {
       baseColor = { r: 6, g: 182, b: 212 }; // Cyan
     }
 
-    // Mix with white based on layer strength and influence
-    // layerStrength: far layer = 0.7 (strong), mid = 0.5, near = 0.3 (subtle)
     const mixStrength = influence * layerStrength;
     const r = Math.round(255 * (1 - mixStrength) + baseColor.r * mixStrength);
     const g = Math.round(255 * (1 - mixStrength) + baseColor.g * mixStrength);
@@ -44,6 +97,21 @@ export function CosmicBackground() {
 
     return `rgba(${r}, ${g}, ${b}, ${layerOpacity})`;
   };
+
+  // Generate additional particles based on scroll progress
+  const scrollParticles = React.useMemo(() => {
+    // Generate up to 400 extra particles as scroll increases
+    const extraCount = Math.floor(scrollProgress * 400);
+    return Array.from({ length: extraCount }, (_, i) => ({
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      size: 1 + Math.random() * 2.5, // 1-3.5px
+      delay: Math.random() * 20,
+      duration: 15 + Math.random() * 25,
+      opacity: 0.4 + Math.random() * 0.5,
+      colorIndex: i % PARTICLE_COLORS.length,
+    }));
+  }, [scrollProgress]);
 
   // Stabilize particle positions with deterministic algorithm - organic distribution
   const particlePositions = React.useMemo(() => {
@@ -120,6 +188,26 @@ export function CosmicBackground() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  // Track scroll progress for particle transformation
+  useEffect(() => {
+    const handleScroll = () => {
+      const windowHeight = window.innerHeight;
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      // Calculate progress from hero (0-2 viewport heights = 0-1 progress)
+      // This gives us a smooth transformation over 2 screen heights
+      const progress = Math.min(1, Math.max(0, scrollTop / (windowHeight * 2)));
+
+      requestAnimationFrame(() => {
+        setScrollProgress(progress);
+      });
+    };
+
+    handleScroll(); // Initial calculation
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <>
       {/* Fixed cosmic background that stays visible */}
@@ -147,7 +235,11 @@ export function CosmicBackground() {
             const attractX = dx * force * 0.15;
             const attractY = dy * force * 0.15;
 
-            const color = getReflectedColor(particle.left, particle.top, 0.7, 0.7);
+            const color = getReflectedColor(particle.left, particle.top, 0.7, 0.7, i);
+
+            // Increase size on scroll (up to 2x at full scroll)
+            const scrollSizeMultiplier = 1 + (scrollProgress * 1);
+            const finalSize = particle.size * scrollSizeMultiplier;
 
             return (
               <div
@@ -156,8 +248,8 @@ export function CosmicBackground() {
                 style={{
                   left: `${particle.left}%`,
                   top: `${particle.top}%`,
-                  width: `${particle.size}px`,
-                  height: `${particle.size}px`,
+                  width: `${finalSize}px`,
+                  height: `${finalSize}px`,
                   animationDelay: `${particle.delay1}s, ${particle.delay2}s`,
                   animationDuration: `${particle.duration1}s, ${particle.duration2}s`,
                   transform: `translate(${attractX}px, ${attractY}px)`,
@@ -184,7 +276,10 @@ export function CosmicBackground() {
             const attractX = dx * force * 0.2;
             const attractY = dy * force * 0.2;
 
-            const color = getReflectedColor(particle.left, particle.top, 0.5, 0.75);
+            const color = getReflectedColor(particle.left, particle.top, 0.5, 0.75, i + 50);
+
+            const scrollSizeMultiplier = 1 + (scrollProgress * 1);
+            const finalSize = particle.size * scrollSizeMultiplier;
 
             return (
               <div
@@ -193,8 +288,8 @@ export function CosmicBackground() {
                 style={{
                   left: `${particle.left}%`,
                   top: `${particle.top}%`,
-                  width: `${particle.size}px`,
-                  height: `${particle.size}px`,
+                  width: `${finalSize}px`,
+                  height: `${finalSize}px`,
                   animationDelay: `${particle.delay1}s, ${particle.delay2}s`,
                   animationDuration: `${particle.duration1}s, ${particle.duration2}s`,
                   transform: `translate(${attractX}px, ${attractY}px)`,
@@ -221,7 +316,10 @@ export function CosmicBackground() {
             const attractX = dx * force * 0.25;
             const attractY = dy * force * 0.25;
 
-            const color = getReflectedColor(particle.left, particle.top, 0.3, 0.85);
+            const color = getReflectedColor(particle.left, particle.top, 0.3, 0.85, i + 80);
+
+            const scrollSizeMultiplier = 1 + (scrollProgress * 1);
+            const finalSize = particle.size * scrollSizeMultiplier;
 
             return (
               <div
@@ -230,8 +328,8 @@ export function CosmicBackground() {
                 style={{
                   left: `${particle.left}%`,
                   top: `${particle.top}%`,
-                  width: `${particle.size}px`,
-                  height: `${particle.size}px`,
+                  width: `${finalSize}px`,
+                  height: `${finalSize}px`,
                   animationDelay: `${particle.delay1}s, ${particle.delay2}s`,
                   animationDuration: `${particle.duration1}s, ${particle.duration2}s`,
                   transform: `translate(${attractX}px, ${attractY}px)`,
@@ -259,8 +357,11 @@ export function CosmicBackground() {
             const attractY = dy * force * 0.18;
 
             // Accent particles shift from red to sphere colors when near sphere
-            const accentColor = getReflectedColor(particle.left, particle.top, 0.8, 0.8);
+            const accentColor = getReflectedColor(particle.left, particle.top, 0.8, 0.8, i + 95);
             const isNearSphere = distance < 30; // Within 30% of viewport
+
+            const scrollSizeMultiplier = 1 + (scrollProgress * 1);
+            const finalSize = particle.size * scrollSizeMultiplier;
 
             return (
               <div
@@ -269,8 +370,8 @@ export function CosmicBackground() {
                 style={{
                   left: `${particle.left}%`,
                   top: `${particle.top}%`,
-                  width: `${particle.size}px`,
-                  height: `${particle.size}px`,
+                  width: `${finalSize}px`,
+                  height: `${finalSize}px`,
                   animationDelay: `${particle.delay1}s, ${particle.delay2}s`,
                   animationDuration: `${particle.duration1}s, ${particle.duration2}s`,
                   transform: `translate(${attractX}px, ${attractY}px)`,
@@ -285,6 +386,35 @@ export function CosmicBackground() {
             );
           })}
         </div>
+
+        {/* Scroll-generated colorful particles */}
+        {scrollProgress > 0.05 && (
+          <div className="cosmic-particle-layer cosmic-particle-layer-scroll">
+            {scrollParticles.map((particle, i) => {
+              const colorObj = PARTICLE_COLORS[particle.colorIndex];
+              const color = `rgba(${colorObj.r}, ${colorObj.g}, ${colorObj.b}, ${particle.opacity})`;
+
+              return (
+                <div
+                  key={`scroll-${i}`}
+                  className="cosmic-particle"
+                  style={{
+                    left: `${particle.left}%`,
+                    top: `${particle.top}%`,
+                    width: `${particle.size}px`,
+                    height: `${particle.size}px`,
+                    animationDelay: `${particle.delay}s`,
+                    animationDuration: `${particle.duration}s`,
+                    background: color,
+                    boxShadow: `0 0 ${3 + particle.size}px ${color}`,
+                    opacity: particle.opacity * scrollProgress, // Fade in with scroll
+                    transition: 'opacity 0.8s ease-out',
+                  }}
+                />
+              );
+            })}
+          </div>
+        )}
 
         {/* Subtle grid pattern */}
         <div
