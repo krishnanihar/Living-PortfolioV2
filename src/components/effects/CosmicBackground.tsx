@@ -208,12 +208,17 @@ export function CosmicBackground() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Fade out cosmic background when tunnel becomes active (scroll > 15%)
-  // Complete fade-out by 25% for seamless handoff to tunnel (5% buffer before tunnel fade-in at 20%)
-  const isTunnelActive = scrollProgress > 0.15;
-  const cosmicOpacity = isTunnelActive
-    ? Math.max(0, 1 - (scrollProgress - 0.15) / 0.10) // Fade out 15-25% scroll
-    : 1;
+  // Fade out during tunnel, fade back in after tunnel completes
+  // Fade out 15-25%, hidden 25-75%, fade in 75-85%, visible 85%+
+  const cosmicOpacity = scrollProgress < 0.15
+    ? 1 // Full visibility before tunnel
+    : scrollProgress < 0.25
+    ? Math.max(0, 1 - (scrollProgress - 0.15) / 0.10) // Fade out 15-25%
+    : scrollProgress < 0.75
+    ? 0 // Hidden during tunnel
+    : scrollProgress < 0.85
+    ? Math.min(1, (scrollProgress - 0.75) / 0.10) // Fade in 75-85%
+    : 1; // Full visibility after tunnel
 
   return (
     <>

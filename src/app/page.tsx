@@ -66,8 +66,6 @@ export default function HomePage() {
         {/* 3D Particle Tunnel Effect */}
         <ParticleTunnelEffect />
 
-        <SectionDivider text="Who thinks like this?" />
-
         <AboutSectionV2 />
       </main>
 

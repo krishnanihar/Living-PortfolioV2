@@ -94,7 +94,7 @@ export function AboutSection() {
     },
     {
       year: '2023',
-      label: 'BFA',
+      label: 'ISB',
       id: 'isb-2022',
       detail: 'Internship at ISB Digital Learning (online) - exploring digital education platforms and online learning experiences.',
       logoFile: 'ISB.svg',
@@ -118,7 +118,7 @@ export function AboutSection() {
     },
     {
       year: '2019',
-      label: 'ISB',
+      label: 'BFA',
       id: 'undergrad-2018',
       detail: 'Bachelor of Fine Arts - exploring visual design, typography, and the foundations of creative thinking.',
       logoFile: 'JNAFAU.svg',

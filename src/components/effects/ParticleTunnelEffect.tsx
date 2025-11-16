@@ -132,7 +132,7 @@ function TunnelParticles({ scrollProgress, isActive }: TunnelParticlesProps) {
     <points ref={pointsRef} geometry={geometry}>
       <pointsMaterial
         map={circleTexture}
-        size={2.0}
+        size={0.8}
         vertexColors
         transparent
         opacity={0.90}
@@ -257,21 +257,40 @@ export function ParticleTunnelEffect({ className = '' }: ParticleTunnelEffectPro
               background: 'rgba(0, 0, 0, 0.4)',
               backdropFilter: 'blur(12px) saturate(180%)',
               WebkitBackdropFilter: 'blur(12px) saturate(180%)',
-              padding: '2rem 3rem',
+              padding: '2.5rem 3rem',
               borderRadius: '24px',
               border: '1px solid rgba(255, 255, 255, 0.1)',
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+              maxWidth: '600px',
             }}
           >
-            <h2
-              className="text-4xl md:text-6xl font-light text-center"
+            <div
               style={{
                 color: 'rgba(255, 255, 255, 0.95)',
                 textShadow: '0 2px 12px rgba(0, 0, 0, 0.6)',
+                textAlign: 'left',
               }}
             >
-              Diving deeper...
-            </h2>
+              <p className="text-lg md:text-xl font-light mb-4">
+                Most interfaces forget.
+                <br />
+                They demand you remember their patterns, their flows, their logic.
+                <br />
+                I build the opposite.
+              </p>
+
+              <p className="text-lg md:text-xl font-light mb-3">
+                Systems that remember context.
+              </p>
+
+              <p className="text-lg md:text-xl font-light mb-3">
+                Interfaces that breathe with human rhythms.
+              </p>
+
+              <p className="text-lg md:text-xl font-light">
+                Design that respects the space between intention and interaction.
+              </p>
+            </div>
           </div>
         </div>
       )}
