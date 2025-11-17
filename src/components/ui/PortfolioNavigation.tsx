@@ -198,7 +198,9 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
               const span = e.currentTarget.querySelector('span') as HTMLElement;
               if (span) {
                 span.style.backgroundPosition = '100% 50%';
-                span.style.filter = 'drop-shadow(0 0 30px rgba(180, 210, 240, 0.4)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.3))';
+                span.style.filter = resolvedTheme === 'light'
+                  ? 'drop-shadow(0 0 30px rgba(180, 210, 240, 0.4)) drop-shadow(0 0 15px rgba(0, 0, 0, 0.3))'
+                  : 'drop-shadow(0 0 30px rgba(180, 210, 240, 0.4)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.3))';
               }
             }}
             onMouseLeave={(e) => {
@@ -208,14 +210,18 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                 span.style.backgroundPosition = '0% 50%';
                 span.style.filter = isActive('/')
                   ? 'drop-shadow(0 0 25px rgba(180, 210, 240, 0.3)) drop-shadow(0 0 12px rgba(180, 210, 240, 0.2))'
-                  : 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15))';
+                  : resolvedTheme === 'light'
+                    ? 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(0, 0, 0, 0.15))'
+                    : 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15))';
               }
             }}>
               <span style={{
                 display: 'inline-block',
                 background: isActive('/')
                   ? 'linear-gradient(90deg, rgba(180, 210, 240, 0.7) 0%, rgba(180, 210, 240, 1) 30%, rgba(180, 210, 240, 1) 70%, rgba(180, 210, 240, 0.7) 100%)'
-                  : 'linear-gradient(90deg, rgba(180, 210, 240, 0.6) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.95) 70%, rgba(180, 210, 240, 0.6) 100%)',
+                  : resolvedTheme === 'light'
+                    ? 'linear-gradient(90deg, rgba(180, 210, 240, 0.6) 0%, rgba(0, 0, 0, 0.95) 30%, rgba(0, 0, 0, 0.95) 70%, rgba(180, 210, 240, 0.6) 100%)'
+                    : 'linear-gradient(90deg, rgba(180, 210, 240, 0.6) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.95) 70%, rgba(180, 210, 240, 0.6) 100%)',
                 backgroundSize: '200% 100%',
                 backgroundPosition: '0% 50%',
                 WebkitBackgroundClip: 'text',
@@ -223,7 +229,9 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                 backgroundClip: 'text',
                 filter: isActive('/')
                   ? 'drop-shadow(0 0 25px rgba(180, 210, 240, 0.3)) drop-shadow(0 0 12px rgba(180, 210, 240, 0.2))'
-                  : 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15))',
+                  : resolvedTheme === 'light'
+                    ? 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(0, 0, 0, 0.15))'
+                    : 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15))',
                 transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
               }}>
                 NIHAR

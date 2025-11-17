@@ -177,7 +177,7 @@ export function IntroductionSection() {
                   fontWeight: '100',
                   lineHeight: '1.1',
                   letterSpacing: '-0.05em',
-                  color: 'rgba(255, 255, 255, 0.98)',
+                  color: 'var(--text-primary)',
                   marginBottom: '2rem',
                   opacity: mounted ? 1 : 0,
                 }}
@@ -196,24 +196,24 @@ export function IntroductionSection() {
                   style={{
                     fontSize: 'clamp(1rem, 2vw, 1.125rem)',
                     fontWeight: '200',
-                    color: 'rgba(255, 255, 255, 0.75)',
+                    color: 'var(--text-secondary)',
                     letterSpacing: '0.01em',
                     lineHeight: '1.7',
                     marginBottom: '0.75rem',
                   }}
                 >
-                  From <span style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: '300' }}>ego death simulators</span> to <span style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: '300' }}>enterprise systems</span> — building experiences that matter
+                  From <span style={{ color: 'var(--text-primary)', fontWeight: '300' }}>ego death simulators</span> to <span style={{ color: 'var(--text-primary)', fontWeight: '300' }}>enterprise systems</span> — building experiences that matter
                 </p>
                 <p
                   style={{
                     fontSize: 'clamp(0.9375rem, 1.75vw, 1.0625rem)',
                     fontWeight: '200',
-                    color: 'rgba(255, 255, 255, 0.85)',
+                    color: 'var(--text-secondary)',
                     letterSpacing: '0.01em',
                     lineHeight: '1.6',
                   }}
                 >
-                  Designing systems that <span style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: '300' }}>millions interact with daily</span> — from 30,000ft to healthcare
+                  Designing systems that <span style={{ color: 'var(--text-primary)', fontWeight: '300' }}>millions interact with daily</span> — from 30,000ft to healthcare
                 </p>
               </div>
 
@@ -246,7 +246,7 @@ export function IntroductionSection() {
                       borderRadius: '15px',
                       fontSize: '0.875rem',
                       fontWeight: '300',
-                      color: 'rgba(255, 255, 255, 0.85)',
+                      color: 'var(--text-primary)',
                       cursor: 'pointer',
                       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                       transform: hoveredStat === idx ? 'translateY(-2px)' : 'translateY(0)',
@@ -275,7 +275,7 @@ export function IntroductionSection() {
                           borderRadius: '8px',
                           fontSize: '0.75rem',
                           fontWeight: '300',
-                          color: 'rgba(255, 255, 255, 0.9)',
+                          color: 'var(--text-primary)',
                           whiteSpace: 'nowrap',
                           pointerEvents: 'none',
                           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
@@ -327,7 +327,7 @@ export function IntroductionSection() {
                     WebkitBackdropFilter: 'blur(40px) saturate(180%)',
                     border: '1px solid transparent',
                     borderRadius: '15px',
-                    color: 'rgba(255, 255, 255, 0.98)',
+                    color: 'var(--text-primary)',
                     textDecoration: 'none',
                     fontSize: 'clamp(0.9375rem, 1.75vw, 1rem)',
                     fontWeight: '300',
@@ -356,7 +356,7 @@ export function IntroductionSection() {
                       borderRadius: '10px',
                       fontSize: '0.75rem',
                       fontWeight: '300',
-                      color: 'rgba(255, 255, 255, 0.95)',
+                      color: 'var(--text-primary)',
                       letterSpacing: '0.02em',
                     }}
                   >
@@ -383,7 +383,7 @@ export function IntroductionSection() {
                       ? '1px solid rgba(255, 255, 255, 0.15)'
                       : '1px solid rgba(255, 255, 255, 0.12)',
                     borderRadius: '15px',
-                    color: 'rgba(255, 255, 255, 0.9)',
+                    color: 'var(--text-primary)',
                     textDecoration: 'none',
                     fontSize: '0.875rem',
                     fontWeight: '300',
@@ -424,7 +424,7 @@ export function IntroductionSection() {
                       ? '1px solid rgba(255, 255, 255, 0.15)'
                       : '1px solid rgba(255, 255, 255, 0.12)',
                     borderRadius: '15px',
-                    color: 'rgba(255, 255, 255, 0.9)',
+                    color: 'var(--text-primary)',
                     textDecoration: 'none',
                     fontSize: '0.875rem',
                     fontWeight: '300',
