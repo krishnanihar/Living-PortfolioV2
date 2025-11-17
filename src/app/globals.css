@@ -18,8 +18,8 @@ html {
 }
 
 body {
-  background-color: #000000;
-  color: white;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -215,6 +215,34 @@ button {
   -webkit-backdrop-filter: blur(var(--blur-md));
   border: 1px solid rgba(218, 14, 41, 0.15);
   border-radius: var(--radius-xl);
+}
+
+/* Light Theme Glassmorphism Overrides */
+[data-theme="light"] .glass-nav {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    0 1px 0 rgba(0, 0, 0, 0.05) inset;
+}
+
+[data-theme="light"] .glass-hero {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.1),
+    0 1px 0 rgba(0, 0, 0, 0.05) inset,
+    0 0 0 1px rgba(218, 14, 41, 0.05);
+}
+
+[data-theme="light"] .glass-hero-inner {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .glass-hero-accent {
+  background: linear-gradient(135deg, rgba(218, 14, 41, 0.08), rgba(0, 0, 0, 0.04));
+  border: 1px solid rgba(218, 14, 41, 0.15);
 }
 
 /* === TYPOGRAPHY SYSTEM === */
