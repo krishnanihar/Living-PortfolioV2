@@ -442,10 +442,11 @@ export default function Portfolio() {
             style={{
               position: 'absolute',
               inset: 0,
-              backgroundImage: `
-                linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px)
-              `,
+              backgroundImage: resolvedTheme === 'light'
+                ? `linear-gradient(rgba(0, 0, 0, 0.01) 1px, transparent 1px),
+                   linear-gradient(90deg, rgba(0, 0, 0, 0.01) 1px, transparent 1px)`
+                : `linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+                   linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px)`,
               backgroundSize: '60px 60px',
               opacity: 0.15,
             }}
@@ -456,9 +457,13 @@ export default function Portfolio() {
         <div style={{
           position: 'fixed',
           inset: 0,
-          background: `radial-gradient(circle 600px at ${mousePos.x}% ${mousePos.y}%,
-            rgba(255, 255, 255, 0.015) 0%,
-            transparent 50%)`,
+          background: resolvedTheme === 'light'
+            ? `radial-gradient(circle 600px at ${mousePos.x}% ${mousePos.y}%,
+               rgba(0, 0, 0, 0.015) 0%,
+               transparent 50%)`
+            : `radial-gradient(circle 600px at ${mousePos.x}% ${mousePos.y}%,
+               rgba(255, 255, 255, 0.015) 0%,
+               transparent 50%)`,
           pointerEvents: 'none',
           transition: 'background 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
           zIndex: 1,
@@ -501,14 +506,14 @@ export default function Portfolio() {
             backdropFilter: 'blur(40px) saturate(150%)',
             WebkitBackdropFilter: 'blur(40px) saturate(150%)',
             borderBottom: '1px solid var(--border-primary)',
-            boxShadow: scrolled ? '0 4px 12px rgba(0, 0, 0, 0.2)' : 'none',
+            boxShadow: scrolled ? 'var(--shadow-md)' : 'none',
             pointerEvents: 'none',
           }}>
             {/* Animated shimmer overlay */}
             <div style={{
               position: 'absolute',
               inset: 0,
-              background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 50%, transparent 100%)',
+              background: 'linear-gradient(90deg, transparent 0%, var(--surface-primary) 50%, transparent 100%)',
               animation: 'shimmer 8s linear infinite',
               pointerEvents: 'none',
             }} />
@@ -539,7 +544,9 @@ export default function Portfolio() {
             }}>
               <span style={{
                 display: 'inline-block',
-                background: 'linear-gradient(120deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%)',
+                background: resolvedTheme === 'light'
+                  ? 'linear-gradient(120deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 100%)'
+                  : 'linear-gradient(120deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -573,7 +580,7 @@ export default function Portfolio() {
               <div style={{
                 width: '1px',
                 height: '18px',
-                background: 'rgba(255, 255, 255, 0.1)',
+                background: 'var(--border-primary)',
                 margin: '0 0.5rem',
               }} />
 
@@ -588,20 +595,20 @@ export default function Portfolio() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   color: 'var(--text-secondary)',
-                  background: 'rgba(255, 255, 255, 0.03)',
+                  background: 'var(--surface-primary)',
                   backdropFilter: 'blur(20px) brightness(0.8)',
                   WebkitBackdropFilter: 'blur(20px) brightness(0.8)',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  border: '1px solid var(--border-primary)',
                   transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                   cursor: 'pointer',
                 }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLElement).style.transform = 'scale(1.1) rotate(15deg)';
-                  (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.1)';
+                  (e.currentTarget as HTMLElement).style.background = 'var(--surface-hover)';
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLElement).style.transform = 'scale(1) rotate(0)';
-                  (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.03)';
+                  (e.currentTarget as HTMLElement).style.background = 'var(--surface-primary)';
                 }}
               >
                 {theme === 'system' ? <Palette size={15} /> : (resolvedTheme === 'dark' ? <Moon size={15} /> : <Sun size={15} />)}
@@ -619,21 +626,21 @@ export default function Portfolio() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     color: 'var(--text-secondary)',
-                    background: 'rgba(255, 255, 255, 0.03)',
+                    background: 'var(--surface-primary)',
                     backdropFilter: 'blur(20px) brightness(0.8)',
                     WebkitBackdropFilter: 'blur(20px) brightness(0.8)',
-                    border: '1px solid rgba(255, 255, 255, 0.06)',
+                    border: '1px solid var(--border-primary)',
                     transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                     cursor: 'pointer',
                   }}
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLElement).style.transform = 'scale(1.1)';
-                    (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.1)';
+                    (e.currentTarget as HTMLElement).style.background = 'var(--surface-hover)';
                     (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)';
                   }}
                   onMouseLeave={(e) => {
                     (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
-                    (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.03)';
+                    (e.currentTarget as HTMLElement).style.background = 'var(--surface-primary)';
                     (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)';
                   }}
                 >
@@ -679,7 +686,9 @@ export default function Portfolio() {
               backdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
               WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
               border: '1px solid var(--border-primary)',
-              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
+              boxShadow: resolvedTheme === 'light'
+                ? 'inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 8px rgba(0, 0, 0, 0.08)'
+                : 'inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 4px 8px rgba(0, 0, 0, 0.2)',
             }} />
 
             {/* Hero Card */}
@@ -709,7 +718,7 @@ export default function Portfolio() {
                 gap: '0.5rem',
                 marginTop: 'clamp(1.25rem, 2vw, 1.75rem)',
                 paddingTop: 'clamp(0.75rem, 1.5vw, 1rem)',
-                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                borderTop: '1px solid var(--border-primary)',
                 opacity: scrollIndicatorOpacity,
                 animation: 'scrollFadeIn 0.8s ease-out 1s both',
                 cursor: 'pointer',

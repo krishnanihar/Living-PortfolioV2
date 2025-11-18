@@ -3,8 +3,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Github, Mail } from 'lucide-react';
+import { useTheme } from '@/components/effects/ThemeProvider';
 
 export function HeroCard() {
+  const { resolvedTheme } = useTheme();
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
   const [hoveredStat, setHoveredStat] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -51,16 +53,21 @@ export function HeroCard() {
           zIndex: 1,
           backdropFilter: 'blur(120px) saturate(200%)',
           WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-          background: 'rgba(18, 18, 18, 0.72)',
-          border: '1px solid rgba(255, 255, 255, 0.12)',
+          background: resolvedTheme === 'light'
+            ? 'rgba(255, 255, 255, 0.72)'
+            : 'rgba(18, 18, 18, 0.72)',
+          border: '1px solid var(--border-primary)',
           borderRadius: '30px',
           padding: 'clamp(2rem, 3vw, 2.5rem)',
-          boxShadow: `
-            0px 16px 48px rgba(0, 0, 0, 0.6),
-            0px 0px 1px rgba(255, 255, 255, 0.3) inset,
-            0px -1px 0px rgba(255, 255, 255, 0.08) inset,
-            0px 1px 2px rgba(0, 0, 0, 0.8)
-          `,
+          boxShadow: resolvedTheme === 'light'
+            ? `0px 16px 48px rgba(0, 0, 0, 0.15),
+               0px 0px 1px rgba(0, 0, 0, 0.3) inset,
+               0px -1px 0px rgba(0, 0, 0, 0.08) inset,
+               0px 1px 2px rgba(0, 0, 0, 0.2)`
+            : `0px 16px 48px rgba(0, 0, 0, 0.6),
+               0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+               0px -1px 0px rgba(255, 255, 255, 0.08) inset,
+               0px 1px 2px rgba(0, 0, 0, 0.8)`,
           overflow: 'hidden',
         }}
       >
@@ -69,10 +76,15 @@ export function HeroCard() {
           style={{
             position: 'absolute',
             inset: 0,
-            background: `radial-gradient(circle 400px at ${mousePosition.x}% ${mousePosition.y}%,
-              rgba(255, 255, 255, 0.08) 0%,
-              rgba(255, 255, 255, 0.04) 30%,
-              transparent 60%)`,
+            background: resolvedTheme === 'light'
+              ? `radial-gradient(circle 400px at ${mousePosition.x}% ${mousePosition.y}%,
+                  rgba(0, 0, 0, 0.08) 0%,
+                  rgba(0, 0, 0, 0.04) 30%,
+                  transparent 60%)`
+              : `radial-gradient(circle 400px at ${mousePosition.x}% ${mousePosition.y}%,
+                  rgba(255, 255, 255, 0.08) 0%,
+                  rgba(255, 255, 255, 0.04) 30%,
+                  transparent 60%)`,
             pointerEvents: 'none',
             zIndex: 0,
             borderRadius: '30px',
@@ -91,7 +103,7 @@ export function HeroCard() {
           <h1 style={{
             fontSize: 'clamp(2.5rem, 5vw, 4rem)',
             fontWeight: '200',
-            color: 'rgba(255, 255, 255, 0.95)',
+            color: 'var(--text-primary)',
             marginBottom: '0.625rem',
             lineHeight: '1.1',
             letterSpacing: '-0.04em',
@@ -106,7 +118,7 @@ export function HeroCard() {
           <p style={{
             fontSize: 'clamp(1rem, 2vw, 1.25rem)',
             fontWeight: '300',
-            color: 'rgba(255, 255, 255, 0.8)',
+            color: 'var(--text-secondary)',
             letterSpacing: '0.01em',
             marginBottom: '0.5rem',
             opacity: mounted ? 1 : 0,
@@ -120,7 +132,7 @@ export function HeroCard() {
           <p style={{
             fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
             fontWeight: '400',
-            color: 'rgba(255, 255, 255, 0.6)',
+            color: 'var(--text-tertiary)',
             letterSpacing: '0.02em',
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
@@ -143,11 +155,11 @@ export function HeroCard() {
           <p style={{
             fontSize: 'clamp(0.9375rem, 1.75vw, 1.0625rem)',
             fontWeight: '400',
-            color: 'rgba(255, 255, 255, 0.85)',
+            color: 'var(--text-secondary)',
             letterSpacing: '0.01em',
             lineHeight: '1.5',
           }}>
-            Designing systems that <span style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: '500' }}>millions interact with daily</span> — from 30,000ft to healthcare
+            Designing systems that <span style={{ color: 'var(--text-primary)', fontWeight: '500' }}>millions interact with daily</span> — from 30,000ft to healthcare
           </p>
         </div>
 
@@ -167,20 +179,24 @@ export function HeroCard() {
             alignItems: 'center',
             gap: '0.5rem',
             padding: '0.625rem 1.25rem',
-            background: 'rgba(12, 12, 12, 0.65)',
+            background: resolvedTheme === 'light'
+              ? 'rgba(255, 255, 255, 0.65)'
+              : 'rgba(12, 12, 12, 0.65)',
             backdropFilter: 'blur(120px) saturate(200%)',
             WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-            border: '1px solid rgba(255, 255, 255, 0.12)',
+            border: '1px solid var(--border-primary)',
             borderRadius: '15px',
             fontSize: '0.875rem',
             fontWeight: '400',
-            color: 'rgba(255, 255, 255, 0.85)',
+            color: 'var(--text-secondary)',
             letterSpacing: '0.01em',
-            boxShadow: `
-              0px 12px 36px rgba(0, 0, 0, 0.5),
-              0px 0px 1px rgba(255, 255, 255, 0.25) inset,
-              0px -1px 0px rgba(255, 255, 255, 0.06) inset
-            `,
+            boxShadow: resolvedTheme === 'light'
+              ? `0px 12px 36px rgba(0, 0, 0, 0.12),
+                 0px 0px 1px rgba(0, 0, 0, 0.25) inset,
+                 0px -1px 0px rgba(0, 0, 0, 0.06) inset`
+              : `0px 12px 36px rgba(0, 0, 0, 0.5),
+                 0px 0px 1px rgba(255, 255, 255, 0.25) inset,
+                 0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
           }}>
             <div style={{
               width: '6px',
@@ -219,26 +235,34 @@ export function HeroCard() {
               style={{
                 position: 'relative',
                 padding: '0.625rem 1rem',
-                background: hoveredStat === idx
-                  ? 'rgba(15, 15, 15, 0.7)'
-                  : 'rgba(12, 12, 12, 0.65)',
+                background: resolvedTheme === 'light'
+                  ? (hoveredStat === idx ? 'rgba(245, 245, 245, 0.7)' : 'rgba(255, 255, 255, 0.65)')
+                  : (hoveredStat === idx ? 'rgba(15, 15, 15, 0.7)' : 'rgba(12, 12, 12, 0.65)'),
                 backdropFilter: 'blur(120px) saturate(200%)',
                 WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
+                border: '1px solid var(--border-primary)',
                 borderRadius: '15px',
                 fontSize: '0.8125rem',
                 fontWeight: '400',
-                color: 'rgba(255, 255, 255, 0.8)',
+                color: 'var(--text-secondary)',
                 cursor: 'pointer',
                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                 transform: hoveredStat === idx ? 'translateY(-2px)' : 'translateY(0)',
-                boxShadow: hoveredStat === idx
-                  ? `0px 16px 40px rgba(0, 0, 0, 0.6),
-                     0px 0px 1px rgba(255, 255, 255, 0.3) inset,
-                     0px -1px 0px rgba(255, 255, 255, 0.08) inset`
-                  : `0px 8px 24px rgba(0, 0, 0, 0.4),
-                     0px 0px 1px rgba(255, 255, 255, 0.2) inset,
-                     0px -1px 0px rgba(255, 255, 255, 0.04) inset`,
+                boxShadow: resolvedTheme === 'light'
+                  ? (hoveredStat === idx
+                    ? `0px 16px 40px rgba(0, 0, 0, 0.15),
+                       0px 0px 1px rgba(0, 0, 0, 0.3) inset,
+                       0px -1px 0px rgba(0, 0, 0, 0.08) inset`
+                    : `0px 8px 24px rgba(0, 0, 0, 0.1),
+                       0px 0px 1px rgba(0, 0, 0, 0.2) inset,
+                       0px -1px 0px rgba(0, 0, 0, 0.04) inset`)
+                  : (hoveredStat === idx
+                    ? `0px 16px 40px rgba(0, 0, 0, 0.6),
+                       0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                       0px -1px 0px rgba(255, 255, 255, 0.08) inset`
+                    : `0px 8px 24px rgba(0, 0, 0, 0.4),
+                       0px 0px 1px rgba(255, 255, 255, 0.2) inset,
+                       0px -1px 0px rgba(255, 255, 255, 0.04) inset`),
               }}
             >
               {stat.label}
@@ -249,13 +273,15 @@ export function HeroCard() {
                   left: '50%',
                   transform: 'translateX(-50%)',
                   padding: '0.5rem 0.75rem',
-                  background: 'rgba(10, 10, 10, 0.95)',
+                  background: resolvedTheme === 'light'
+                    ? 'rgba(255, 255, 255, 0.95)'
+                    : 'rgba(10, 10, 10, 0.95)',
                   backdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  border: '1px solid var(--border-primary)',
                   borderRadius: '8px',
                   fontSize: '0.75rem',
                   fontWeight: '400',
-                  color: 'rgba(255, 255, 255, 0.9)',
+                  color: 'var(--text-secondary)',
                   whiteSpace: 'nowrap',
                   pointerEvents: 'none',
                   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
@@ -271,7 +297,9 @@ export function HeroCard() {
                     height: 0,
                     borderLeft: '6px solid transparent',
                     borderRight: '6px solid transparent',
-                    borderTop: '6px solid rgba(10, 10, 10, 0.95)',
+                    borderTop: resolvedTheme === 'light'
+                      ? '6px solid rgba(255, 255, 255, 0.95)'
+                      : '6px solid rgba(10, 10, 10, 0.95)',
                   }} />
                 </div>
               )}
@@ -312,19 +340,27 @@ export function HeroCard() {
                 ? '1px solid rgba(16, 185, 129, 0.6)'
                 : '1px solid rgba(16, 185, 129, 0.4)',
               borderRadius: '15px',
-              color: 'rgba(255, 255, 255, 0.98)',
+              color: 'var(--text-primary)',
               textDecoration: 'none',
               fontSize: 'clamp(0.9375rem, 1.75vw, 1rem)',
               fontWeight: '500',
               transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
               transform: hoveredButton === 'featured' ? 'translateY(-3px) scale(1.02)' : 'translateY(0) scale(1)',
-              boxShadow: hoveredButton === 'featured'
-                ? `0 20px 48px rgba(16, 185, 129, 0.3),
-                   0px 0px 1px rgba(255, 255, 255, 0.3) inset,
-                   0px -1px 0px rgba(255, 255, 255, 0.1) inset`
-                : `0px 12px 36px rgba(0, 0, 0, 0.4),
-                   0px 0px 1px rgba(255, 255, 255, 0.2) inset,
-                   0px -1px 0px rgba(255, 255, 255, 0.05) inset`,
+              boxShadow: resolvedTheme === 'light'
+                ? (hoveredButton === 'featured'
+                  ? `0 20px 48px rgba(16, 185, 129, 0.2),
+                     0px 0px 1px rgba(0, 0, 0, 0.3) inset,
+                     0px -1px 0px rgba(0, 0, 0, 0.1) inset`
+                  : `0px 12px 36px rgba(0, 0, 0, 0.1),
+                     0px 0px 1px rgba(0, 0, 0, 0.2) inset,
+                     0px -1px 0px rgba(0, 0, 0, 0.05) inset`)
+                : (hoveredButton === 'featured'
+                  ? `0 20px 48px rgba(16, 185, 129, 0.3),
+                     0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                     0px -1px 0px rgba(255, 255, 255, 0.1) inset`
+                  : `0px 12px 36px rgba(0, 0, 0, 0.4),
+                     0px 0px 1px rgba(255, 255, 255, 0.2) inset,
+                     0px -1px 0px rgba(255, 255, 255, 0.05) inset`),
               position: 'relative',
             }}
           >
@@ -352,28 +388,34 @@ export function HeroCard() {
               alignItems: 'center',
               gap: '0.5rem',
               padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.25rem, 2.5vw, 1.5rem)',
-              background: hoveredButton === 'contact'
-                ? 'rgba(15, 15, 15, 0.7)'
-                : 'rgba(12, 12, 12, 0.65)',
+              background: resolvedTheme === 'light'
+                ? (hoveredButton === 'contact' ? 'rgba(245, 245, 245, 0.7)' : 'rgba(255, 255, 255, 0.65)')
+                : (hoveredButton === 'contact' ? 'rgba(15, 15, 15, 0.7)' : 'rgba(12, 12, 12, 0.65)'),
               backdropFilter: 'blur(120px) saturate(200%)',
               WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-              border: hoveredButton === 'contact'
-                ? '1px solid rgba(255, 255, 255, 0.15)'
-                : '1px solid rgba(255, 255, 255, 0.12)',
+              border: '1px solid var(--border-primary)',
               borderRadius: '15px',
-              color: 'rgba(255, 255, 255, 0.9)',
+              color: 'var(--text-secondary)',
               textDecoration: 'none',
               fontSize: '0.875rem',
               fontWeight: '400',
               transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
               transform: hoveredButton === 'contact' ? 'translateY(-2px)' : 'translateY(0)',
-              boxShadow: hoveredButton === 'contact'
-                ? `0px 16px 40px rgba(0, 0, 0, 0.6),
-                   0px 0px 1px rgba(255, 255, 255, 0.3) inset,
-                   0px -1px 0px rgba(255, 255, 255, 0.08) inset`
-                : `0px 8px 24px rgba(0, 0, 0, 0.4),
-                   0px 0px 1px rgba(255, 255, 255, 0.2) inset,
-                   0px -1px 0px rgba(255, 255, 255, 0.04) inset`,
+              boxShadow: resolvedTheme === 'light'
+                ? (hoveredButton === 'contact'
+                  ? `0px 16px 40px rgba(0, 0, 0, 0.15),
+                     0px 0px 1px rgba(0, 0, 0, 0.3) inset,
+                     0px -1px 0px rgba(0, 0, 0, 0.08) inset`
+                  : `0px 8px 24px rgba(0, 0, 0, 0.1),
+                     0px 0px 1px rgba(0, 0, 0, 0.2) inset,
+                     0px -1px 0px rgba(0, 0, 0, 0.04) inset`)
+                : (hoveredButton === 'contact'
+                  ? `0px 16px 40px rgba(0, 0, 0, 0.6),
+                     0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                     0px -1px 0px rgba(255, 255, 255, 0.08) inset`
+                  : `0px 8px 24px rgba(0, 0, 0, 0.4),
+                     0px 0px 1px rgba(255, 255, 255, 0.2) inset,
+                     0px -1px 0px rgba(255, 255, 255, 0.04) inset`),
             }}
           >
             <Mail size={16} />
@@ -392,28 +434,34 @@ export function HeroCard() {
               alignItems: 'center',
               gap: '0.5rem',
               padding: 'clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.25rem, 2.5vw, 1.5rem)',
-              background: hoveredButton === 'github'
-                ? 'rgba(15, 15, 15, 0.7)'
-                : 'rgba(12, 12, 12, 0.65)',
+              background: resolvedTheme === 'light'
+                ? (hoveredButton === 'github' ? 'rgba(245, 245, 245, 0.7)' : 'rgba(255, 255, 255, 0.65)')
+                : (hoveredButton === 'github' ? 'rgba(15, 15, 15, 0.7)' : 'rgba(12, 12, 12, 0.65)'),
               backdropFilter: 'blur(120px) saturate(200%)',
               WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-              border: hoveredButton === 'github'
-                ? '1px solid rgba(255, 255, 255, 0.14)'
-                : '1px solid rgba(255, 255, 255, 0.12)',
+              border: '1px solid var(--border-primary)',
               borderRadius: '15px',
-              color: 'rgba(255, 255, 255, 0.85)',
+              color: 'var(--text-secondary)',
               textDecoration: 'none',
               fontSize: '0.875rem',
               fontWeight: '400',
               transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
               transform: hoveredButton === 'github' ? 'translateY(-2px)' : 'translateY(0)',
-              boxShadow: hoveredButton === 'github'
-                ? `0px 16px 40px rgba(0, 0, 0, 0.6),
-                   0px 0px 1px rgba(255, 255, 255, 0.3) inset,
-                   0px -1px 0px rgba(255, 255, 255, 0.08) inset`
-                : `0px 8px 24px rgba(0, 0, 0, 0.4),
-                   0px 0px 1px rgba(255, 255, 255, 0.2) inset,
-                   0px -1px 0px rgba(255, 255, 255, 0.04) inset`,
+              boxShadow: resolvedTheme === 'light'
+                ? (hoveredButton === 'github'
+                  ? `0px 16px 40px rgba(0, 0, 0, 0.15),
+                     0px 0px 1px rgba(0, 0, 0, 0.3) inset,
+                     0px -1px 0px rgba(0, 0, 0, 0.08) inset`
+                  : `0px 8px 24px rgba(0, 0, 0, 0.1),
+                     0px 0px 1px rgba(0, 0, 0, 0.2) inset,
+                     0px -1px 0px rgba(0, 0, 0, 0.04) inset`)
+                : (hoveredButton === 'github'
+                  ? `0px 16px 40px rgba(0, 0, 0, 0.6),
+                     0px 0px 1px rgba(255, 255, 255, 0.3) inset,
+                     0px -1px 0px rgba(255, 255, 255, 0.08) inset`
+                  : `0px 8px 24px rgba(0, 0, 0, 0.4),
+                     0px 0px 1px rgba(255, 255, 255, 0.2) inset,
+                     0px -1px 0px rgba(255, 255, 255, 0.04) inset`),
             }}
           >
             <Github size={15} />
@@ -426,26 +474,30 @@ export function HeroCard() {
           position: 'relative',
           zIndex: 1,
           padding: 'clamp(1rem, 2vw, 1.25rem)',
-          background: 'rgba(12, 12, 12, 0.65)',
+          background: resolvedTheme === 'light'
+            ? 'rgba(255, 255, 255, 0.65)'
+            : 'rgba(12, 12, 12, 0.65)',
           backdropFilter: 'blur(120px) saturate(200%)',
           WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-          border: '1px solid rgba(255, 255, 255, 0.12)',
+          border: '1px solid var(--border-primary)',
           borderRadius: '15px',
           fontSize: 'clamp(0.8125rem, 1.5vw, 0.9375rem)',
           fontWeight: '300',
-          color: 'rgba(255, 255, 255, 0.75)',
+          color: 'var(--text-tertiary)',
           lineHeight: '1.6',
           textAlign: 'center',
           opacity: mounted ? 1 : 0,
           transform: mounted ? 'translateY(0)' : 'translateY(30px)',
           transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s',
-          boxShadow: `
-            0px 12px 36px rgba(0, 0, 0, 0.5),
-            0px 0px 1px rgba(255, 255, 255, 0.25) inset,
-            0px -1px 0px rgba(255, 255, 255, 0.06) inset
-          `,
+          boxShadow: resolvedTheme === 'light'
+            ? `0px 12px 36px rgba(0, 0, 0, 0.12),
+               0px 0px 1px rgba(0, 0, 0, 0.25) inset,
+               0px -1px 0px rgba(0, 0, 0, 0.06) inset`
+            : `0px 12px 36px rgba(0, 0, 0, 0.5),
+               0px 0px 1px rgba(255, 255, 255, 0.25) inset,
+               0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
         }}>
-          <span style={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: '400' }}>INTP</span> building at the intersection of <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>healthcare × AI × consciousness</span>. 18-month deep dive into digital therapeutics culminating in <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>PsoriAssist</span>. Built <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>5000 lines in 48 hours</span> while winning <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>2 hackathons simultaneously</span>. Currently transforming enterprise systems at <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Air India</span> (10K+ daily users) while exploring the future of <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>human-computer symbiosis</span>.
+          <span style={{ color: 'var(--text-secondary)', fontWeight: '400' }}>INTP</span> building at the intersection of <span style={{ color: 'var(--text-secondary)' }}>healthcare × AI × consciousness</span>. 18-month deep dive into digital therapeutics culminating in <span style={{ color: 'var(--text-secondary)' }}>PsoriAssist</span>. Built <span style={{ color: 'var(--text-secondary)' }}>5000 lines in 48 hours</span> while winning <span style={{ color: 'var(--text-secondary)' }}>2 hackathons simultaneously</span>. Currently transforming enterprise systems at <span style={{ color: 'var(--text-secondary)' }}>Air India</span> (10K+ daily users) while exploring the future of <span style={{ color: 'var(--text-secondary)' }}>human-computer symbiosis</span>.
         </div>
       </div>
     </>
