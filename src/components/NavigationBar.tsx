@@ -116,7 +116,7 @@ export function NavigationBar() {
             backdropFilter: scrolled ? 'blur(40px) saturate(150%)' : 'blur(20px) saturate(120%)',
             WebkitBackdropFilter: scrolled ? 'blur(40px) saturate(150%)' : 'blur(20px) saturate(120%)',
             borderBottom: scrolled ? '1px solid var(--border-primary)' : '1px solid transparent',
-            boxShadow: scrolled ? '0 4px 12px rgba(0, 0, 0, 0.2)' : 'none',
+            boxShadow: scrolled ? 'var(--shadow-md)' : 'none',
             pointerEvents: 'none',
             transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
@@ -127,7 +127,7 @@ export function NavigationBar() {
               style={{
                 position: 'absolute',
                 inset: 0,
-                background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 50%, transparent 100%)',
+                background: 'linear-gradient(90deg, transparent 0%, var(--surface-primary) 50%, transparent 100%)',
                 animation: 'shimmer 8s linear infinite',
                 pointerEvents: 'none',
               }}
@@ -162,7 +162,9 @@ export function NavigationBar() {
               const span = e.currentTarget.querySelector('span') as HTMLElement;
               if (span) {
                 span.style.backgroundPosition = '100% 50%';
-                span.style.filter = 'drop-shadow(0 0 30px rgba(180, 210, 240, 0.4)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.3))';
+                span.style.filter = resolvedTheme === 'light'
+                  ? 'drop-shadow(0 0 30px rgba(180, 210, 240, 0.4)) drop-shadow(0 0 15px rgba(0, 0, 0, 0.3))'
+                  : 'drop-shadow(0 0 30px rgba(180, 210, 240, 0.4)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.3))';
               }
             }}
             onMouseLeave={(e) => {
@@ -170,20 +172,26 @@ export function NavigationBar() {
               const span = e.currentTarget.querySelector('span') as HTMLElement;
               if (span) {
                 span.style.backgroundPosition = '0% 50%';
-                span.style.filter = 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15))';
+                span.style.filter = resolvedTheme === 'light'
+                  ? 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(0, 0, 0, 0.15))'
+                  : 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15))';
               }
             }}
           >
             <span
               style={{
                 display: 'inline-block',
-                background: 'linear-gradient(90deg, rgba(180, 210, 240, 0.6) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.95) 70%, rgba(180, 210, 240, 0.6) 100%)',
+                background: resolvedTheme === 'light'
+                  ? 'linear-gradient(90deg, rgba(180, 210, 240, 0.6) 0%, rgba(0, 0, 0, 0.95) 30%, rgba(0, 0, 0, 0.95) 70%, rgba(180, 210, 240, 0.6) 100%)'
+                  : 'linear-gradient(90deg, rgba(180, 210, 240, 0.6) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.95) 70%, rgba(180, 210, 240, 0.6) 100%)',
                 backgroundSize: '200% 100%',
                 backgroundPosition: '0% 50%',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
-                filter: 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15))',
+                filter: resolvedTheme === 'light'
+                  ? 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(0, 0, 0, 0.15))'
+                  : 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15))',
                 transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
               }}
             >
@@ -222,7 +230,7 @@ export function NavigationBar() {
               style={{
                 width: '1px',
                 height: '18px',
-                background: 'rgba(255, 255, 255, 0.1)',
+                background: 'var(--border-primary)',
                 margin: '0 0.5rem',
               }}
             />
@@ -239,20 +247,20 @@ export function NavigationBar() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: 'var(--text-secondary)',
-                background: 'rgba(255, 255, 255, 0.03)',
+                background: 'var(--surface-primary)',
                 backdropFilter: 'blur(20px) brightness(0.8)',
                 WebkitBackdropFilter: 'blur(20px) brightness(0.8)',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
+                border: '1px solid var(--border-primary)',
                 transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                 cursor: 'pointer',
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.transform = 'scale(1.1) rotate(15deg)';
-                (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.1)';
+                (e.currentTarget as HTMLElement).style.background = 'var(--surface-hover)';
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.transform = 'scale(1) rotate(0)';
-                (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.03)';
+                (e.currentTarget as HTMLElement).style.background = 'var(--surface-primary)';
               }}
             >
               {theme === 'system' ? (
@@ -276,21 +284,21 @@ export function NavigationBar() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   color: 'var(--text-secondary)',
-                  background: 'rgba(255, 255, 255, 0.03)',
+                  background: 'var(--surface-primary)',
                   backdropFilter: 'blur(20px) brightness(0.8)',
                   WebkitBackdropFilter: 'blur(20px) brightness(0.8)',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  border: '1px solid var(--border-primary)',
                   transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                   cursor: 'pointer',
                 }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLElement).style.transform = 'scale(1.1)';
-                  (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.1)';
+                  (e.currentTarget as HTMLElement).style.background = 'var(--surface-hover)';
                   (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)';
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
-                  (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.03)';
+                  (e.currentTarget as HTMLElement).style.background = 'var(--surface-primary)';
                   (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)';
                 }}
               >
