@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useNarrativeProgress } from '@/hooks/useNarrativeProgress';
+import { useTheme } from '@/components/effects/ThemeProvider';
 
 interface BreathingMomentProps {
   quote?: string;
@@ -25,6 +26,7 @@ export function BreathingMoment({
   const ref = React.useRef(null);
   const isInView = useInView(ref, { margin: '-20%' });
   const narrativeState = useNarrativeProgress();
+  const { resolvedTheme } = useTheme();
 
   const getContent = () => {
     if (quote) return { text: quote, attribution: author };
@@ -105,7 +107,7 @@ export function BreathingMoment({
             style={{
               fontSize: type === 'transition' ? '3rem' : 'clamp(1.5rem, 3vw, 2.5rem)',
               fontWeight: '200',
-              color: 'rgba(255, 255, 255, 0.8)',
+              color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)',
               lineHeight: '1.4',
               fontStyle: type === 'question' ? 'italic' : 'normal',
               marginBottom: content.attribution ? '1.5rem' : '0',
@@ -121,7 +123,7 @@ export function BreathingMoment({
               transition={{ duration: 0.8, delay: 0.6 }}
               style={{
                 fontSize: '0.875rem',
-                color: 'rgba(255, 255, 255, 0.5)',
+                color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)',
                 textTransform: 'uppercase',
                 letterSpacing: '0.1em',
               }}
@@ -143,6 +145,7 @@ export function NarrativeHook({ question }: { question: string }) {
   const ref = React.useRef(null);
   const isInView = useInView(ref, { margin: '-30%' });
   const narrativeState = useNarrativeProgress();
+  const { resolvedTheme } = useTheme();
 
   return (
     <div
@@ -161,7 +164,7 @@ export function NarrativeHook({ question }: { question: string }) {
           maxWidth: '700px',
           margin: '0 auto',
           padding: '3rem 2rem',
-          background: 'rgba(255, 255, 255, 0.02)',
+          background: resolvedTheme === 'light' ? 'rgba(255, 255, 255, 0.6)' : 'rgba(255, 255, 255, 0.02)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
           borderRadius: '24px',
@@ -195,7 +198,7 @@ export function NarrativeHook({ question }: { question: string }) {
           style={{
             fontSize: 'clamp(1.25rem, 3vw, 1.875rem)',
             fontWeight: '300',
-            color: 'rgba(255, 255, 255, 0.9)',
+            color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.9)' : 'rgba(255, 255, 255, 0.9)',
             lineHeight: '1.4',
             fontStyle: 'italic',
           }}
@@ -248,6 +251,7 @@ export function ActTransition({
 }) {
   const ref = React.useRef(null);
   const isInView = useInView(ref, { margin: '-20%' });
+  const { resolvedTheme } = useTheme();
 
   const getActColor = (act: string) => {
     switch (act) {
@@ -369,19 +373,27 @@ export function ActTransition({
         style={{
           position: 'relative',
           zIndex: 1,
-          background: 'rgba(10, 10, 10, 0.75)',
+          background: resolvedTheme === 'light' ? 'rgba(255, 255, 255, 0.75)' : 'rgba(10, 10, 10, 0.75)',
           backdropFilter: 'blur(60px) saturate(180%) brightness(0.95)',
           WebkitBackdropFilter: 'blur(60px) saturate(180%) brightness(0.95)',
           borderRadius: '32px',
-          border: '1px solid rgba(255, 255, 255, 0.06)',
+          border: resolvedTheme === 'light' ? '1px solid rgba(0, 0, 0, 0.06)' : '1px solid rgba(255, 255, 255, 0.06)',
           padding: 'clamp(2.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem)',
-          boxShadow: `
-            0 30px 60px rgba(0, 0, 0, 0.5),
-            0 0 1px rgba(255, 255, 255, 0.1) inset,
-            0 -2px 4px rgba(255, 255, 255, 0.06) inset,
-            0 0 60px ${fromColor.replace('0.8', '0.15')},
-            0 0 80px ${toColor.replace('0.8', '0.1')}
-          `,
+          boxShadow: resolvedTheme === 'light'
+            ? `
+              0 30px 60px rgba(0, 0, 0, 0.1),
+              0 0 1px rgba(0, 0, 0, 0.1) inset,
+              0 -2px 4px rgba(0, 0, 0, 0.06) inset,
+              0 0 60px ${fromColor.replace('0.8', '0.15')},
+              0 0 80px ${toColor.replace('0.8', '0.1')}
+            `
+            : `
+              0 30px 60px rgba(0, 0, 0, 0.5),
+              0 0 1px rgba(255, 255, 255, 0.1) inset,
+              0 -2px 4px rgba(255, 255, 255, 0.06) inset,
+              0 0 60px ${fromColor.replace('0.8', '0.15')},
+              0 0 80px ${toColor.replace('0.8', '0.1')}
+            `,
           maxWidth: '900px',
           textAlign: 'center',
         }}
@@ -396,7 +408,7 @@ export function ActTransition({
             fontWeight: '400',
             letterSpacing: '0.25em',
             textTransform: 'uppercase',
-            color: 'rgba(255, 255, 255, 0.4)',
+            color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.4)',
             marginBottom: '1.5rem',
           }}
         >
@@ -411,7 +423,7 @@ export function ActTransition({
           style={{
             fontSize: 'clamp(2.5rem, 6vw, 5rem)',
             fontWeight: '100',
-            color: 'rgba(255, 255, 255, 0.95)',
+            color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.95)' : 'rgba(255, 255, 255, 0.95)',
             lineHeight: '1.1',
             marginBottom: '2rem',
             letterSpacing: '-0.02em',
@@ -517,6 +529,7 @@ export function ContemplativeSpace({ height = '40vh' }: { height?: string }) {
   const ref = React.useRef(null);
   const isInView = useInView(ref, { margin: '-10%' });
   const narrativeState = useNarrativeProgress();
+  const { resolvedTheme } = useTheme();
 
   return (
     <div

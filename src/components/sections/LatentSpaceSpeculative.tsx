@@ -10,6 +10,7 @@ import { NarrativeProgressIndicator, NarrativeProgressBar } from '@/components/u
 import { FirstPersonMoments, NarrativeWhispers } from '@/components/sections/FirstPersonMoments';
 import { DreamRecorderPrototype } from '@/components/sections/DreamRecorderPrototype';
 import { useNarrativeProgress } from '@/hooks/useNarrativeProgress';
+import { useThemeHelpers } from '@/hooks/useThemeHelpers';
 import {
   ChevronDown,
   ChevronRight,
@@ -65,39 +66,6 @@ const stagger = {
   }
 };
 
-// Base styles that work - using proven inline approach
-const baseStyles = {
-  main: {
-    position: 'relative' as const,
-    minHeight: '100vh',
-    backgroundColor: 'var(--bg-primary)',
-    color: 'var(--text-primary)',
-    overflow: 'hidden' as const,
-  },
-  section: {
-    position: 'relative' as const,
-    padding: '5rem 1rem',
-    maxWidth: '1400px',
-    margin: '0 auto',
-  },
-  glassCard: {
-    background: 'rgba(255, 255, 255, 0.02)',
-    backdropFilter: 'blur(20px) saturate(150%)',
-    WebkitBackdropFilter: 'blur(20px) saturate(150%)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    borderRadius: '16px',
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-  },
-  heroGlass: {
-    background: 'rgba(255, 255, 255, 0.03)',
-    backdropFilter: 'blur(40px) saturate(150%)',
-    WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-    border: '1px solid rgba(255, 255, 255, 0.15)',
-    borderRadius: '24px',
-    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)',
-  }
-};
-
 // Narrative-Aware Section Divider Component
 function SectionDivider() {
   const narrativeState = useNarrativeProgress();
@@ -123,6 +91,7 @@ export default function LatentSpaceSpeculative() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const narrativeState = useNarrativeProgress();
+  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
 
   useEffect(() => {
     setIsLoaded(true);
@@ -186,7 +155,7 @@ export default function LatentSpaceSpeculative() {
                 fontWeight: '500',
                 letterSpacing: '0.3em',
                 textTransform: 'uppercase' as const,
-                color: 'rgba(255, 255, 255, 0.5)',
+                color: getTextPrimary(0.5),
               }}>
                 Generative AI Prototype
               </span>
@@ -203,7 +172,7 @@ export default function LatentSpaceSpeculative() {
             </motion.h2>
             <motion.p variants={fadeInUp} style={{
               fontSize: '1.125rem',
-              color: 'rgba(255, 255, 255, 0.6)',
+              color: getTextPrimary(0.6),
               maxWidth: '700px',
               margin: '0 auto',
               lineHeight: '1.7',
@@ -245,7 +214,7 @@ export default function LatentSpaceSpeculative() {
                 fontWeight: '500',
                 letterSpacing: '0.3em',
                 textTransform: 'uppercase' as const,
-                color: 'rgba(255, 255, 255, 0.5)',
+                color: getTextPrimary(0.5),
               }}>
                 Pattern Recognition AI
               </span>
@@ -262,7 +231,7 @@ export default function LatentSpaceSpeculative() {
             </motion.h2>
             <motion.p variants={fadeInUp} style={{
               fontSize: '1.125rem',
-              color: 'rgba(255, 255, 255, 0.6)',
+              color: getTextPrimary(0.6),
               maxWidth: '700px',
               margin: '0 auto',
               lineHeight: '1.7',
@@ -325,6 +294,7 @@ export default function LatentSpaceSpeculative() {
 
 // Hero Section with proven inline styles
 function HeroSection({ isLoaded }: { isLoaded: boolean }) {
+  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
@@ -501,7 +471,7 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
               fontSize: 'clamp(1rem, 2vw, 1.125rem)',
               fontWeight: '400',
               lineHeight: '1.6',
-              color: 'rgba(255, 255, 255, 0.6)',
+              color: getTextPrimary(0.6),
               maxWidth: '700px',
               margin: '0 auto',
             }}>
@@ -526,7 +496,7 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
               fontWeight: '500',
               letterSpacing: '0.1em',
               textTransform: 'uppercase' as const,
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: getTextPrimary(0.5),
             }}>
               Explore the Questions
             </span>
@@ -534,7 +504,7 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
               animate={{ y: [0, 8, 0] }}
               transition={{ repeat: Infinity, duration: 2 }}
             >
-              <ChevronDown size={20} style={{ color: 'rgba(255, 255, 255, 0.5)' }} />
+              <ChevronDown size={20} style={{ color: getTextPrimary(0.5) }} />
             </motion.div>
           </motion.div>
         </div>
@@ -545,7 +515,9 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
 
 // Design Research Section
 function DesignResearchSection() {
-  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  
+  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   const researchAreas = [
@@ -590,7 +562,7 @@ function DesignResearchSection() {
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: getTextPrimary(0.5),
             }}>
               Critical Questions
             </span>
@@ -635,7 +607,7 @@ function DesignResearchSection() {
                 transition: 'all 0.3s ease',
                 position: 'relative' as const,
                 transform: (isHovered && !isExpanded) ? 'translateY(-4px)' : 'translateY(0)',
-                background: isExpanded ? 'rgba(255, 255, 255, 0.04)' : (isHovered ? 'rgba(255, 255, 255, 0.03)' : 'rgba(255, 255, 255, 0.02)'),
+                background: isExpanded ? getSurfaceColor(0.04) : (isHovered ? '${getSurfaceColor(0.03)}' : '${getSurfaceColor(0.02)}'),
               }}
             >
               {/* Animated Outline Effect */}
@@ -658,7 +630,7 @@ function DesignResearchSection() {
                 <div style={{
                   fontSize: '3rem',
                   fontWeight: '200',
-                  color: 'rgba(255, 255, 255, 0.9)',
+                  color: getTextPrimary(0.9),
                   marginBottom: '0.5rem',
                   filter: isHovered ? 'drop-shadow(0 0 20px rgba(147, 51, 234, 0.6))' : 'none',
                   transition: 'filter 0.3s ease',
@@ -676,7 +648,7 @@ function DesignResearchSection() {
                 </h3>
                 <p style={{
                   fontSize: '0.875rem',
-                  color: 'rgba(255, 255, 255, 0.6)',
+                  color: getTextPrimary(0.6),
                   lineHeight: '1.5',
                 }}>
                   {area.brief}
@@ -693,12 +665,12 @@ function DesignResearchSection() {
                     style={{
                       marginTop: '1.5rem',
                       paddingTop: '1.5rem',
-                      borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                      borderTop: `1px solid ${getBorderColor(0.1)}`,
                     }}
                   >
                     <p style={{
                       fontSize: '0.875rem',
-                      color: 'rgba(255, 255, 255, 0.7)',
+                      color: getTextPrimary(0.7),
                       lineHeight: '1.6',
                     }}>
                       {area.expanded}
@@ -717,7 +689,9 @@ function DesignResearchSection() {
 
 // Narrative Arc Section
 function NarrativeArcSection() {
-  const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
+  
+  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
 
   const chapters = [
     {
@@ -768,7 +742,7 @@ function NarrativeArcSection() {
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: getTextPrimary(0.5),
             }}>
               Narrative Arc
             </span>
@@ -785,7 +759,7 @@ function NarrativeArcSection() {
           </motion.h2>
           <motion.p variants={fadeInUp} style={{
             fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-            color: 'rgba(255, 255, 255, 0.7)',
+            color: getTextPrimary(0.7),
             maxWidth: '600px',
             margin: '0 auto',
             lineHeight: '1.6',
@@ -812,7 +786,7 @@ function NarrativeArcSection() {
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
                 ...(expandedChapter === index ? {
-                  background: 'rgba(255, 255, 255, 0.04)',
+                  background: getSurfaceColor(0.04),
                   borderColor: 'rgba(218, 14, 41, 0.3)',
                 } : {})
               }}
@@ -828,7 +802,7 @@ function NarrativeArcSection() {
                     <span style={{
                       fontSize: '3rem',
                       fontWeight: '200',
-                      color: 'rgba(255, 255, 255, 0.4)',
+                      color: getTextPrimary(0.4),
                     }}>
                       {chapter.number}
                     </span>
@@ -836,7 +810,7 @@ function NarrativeArcSection() {
                       <h3 style={{
                         fontSize: '1.5rem',
                         fontWeight: '300',
-                        color: 'rgba(255, 255, 255, 0.9)',
+                        color: getTextPrimary(0.9),
                         marginBottom: '0.5rem',
                       }}>
                         {chapter.title}
@@ -844,7 +818,7 @@ function NarrativeArcSection() {
                       <p style={{
                         fontSize: '1.125rem',
                         fontWeight: '300',
-                        color: 'rgba(255, 255, 255, 0.7)',
+                        color: getTextPrimary(0.7),
                       }}>
                         {chapter.question}
                       </p>
@@ -854,7 +828,7 @@ function NarrativeArcSection() {
                 <ChevronRight
                   size={24}
                   style={{
-                    color: 'rgba(255, 255, 255, 0.5)',
+                    color: getTextPrimary(0.5),
                     transition: 'transform 0.3s ease',
                     transform: expandedChapter === index ? 'rotate(90deg)' : 'rotate(0deg)',
                   }}
@@ -871,12 +845,12 @@ function NarrativeArcSection() {
                     style={{
                       marginTop: '2rem',
                       paddingTop: '2rem',
-                      borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                      borderTop: `1px solid ${getBorderColor(0.1)}`,
                     }}
                   >
                     <p style={{
                       fontSize: '1rem',
-                      color: 'rgba(255, 255, 255, 0.7)',
+                      color: getTextPrimary(0.7),
                       lineHeight: '1.6',
                       marginBottom: '1.5rem',
                     }}>
@@ -886,7 +860,7 @@ function NarrativeArcSection() {
                       <h4 style={{
                         fontSize: '0.875rem',
                         fontWeight: '400',
-                        color: 'rgba(255, 255, 255, 0.5)',
+                        color: getTextPrimary(0.5),
                         marginBottom: '0.75rem',
                         letterSpacing: '0.05em',
                         textTransform: 'uppercase' as const,
@@ -900,10 +874,10 @@ function NarrativeArcSection() {
                             style={{
                               padding: '0.25rem 0.75rem',
                               borderRadius: '999px',
-                              background: 'rgba(255, 255, 255, 0.05)',
-                              border: '1px solid rgba(255, 255, 255, 0.1)',
+                              background: getSurfaceColor(0.05),
+                              border: `1px solid ${getBorderColor(0.1)}`,
                               fontSize: '0.75rem',
-                              color: 'rgba(255, 255, 255, 0.7)',
+                              color: getTextPrimary(0.7),
                             }}
                           >
                             {implication}
@@ -924,7 +898,9 @@ function NarrativeArcSection() {
 
 // Science Exploration Section
 function ScienceExplorationSection() {
-  const [activeTab, setActiveTab] = useState('stages');
+  
+  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+const [activeTab, setActiveTab] = useState('stages');
 
   const tabs = [
     { id: 'stages', label: 'Sleep Stages', icon: Moon },
@@ -948,7 +924,7 @@ function ScienceExplorationSection() {
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: getTextPrimary(0.5),
             }}>
               Speculative Science
             </span>
@@ -965,7 +941,7 @@ function ScienceExplorationSection() {
           </motion.h2>
           <motion.p variants={fadeInUp} style={{
             fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-            color: 'rgba(255, 255, 255, 0.7)',
+            color: getTextPrimary(0.7),
             maxWidth: '600px',
             margin: '0 auto',
             lineHeight: '1.6',
@@ -1006,20 +982,20 @@ function ScienceExplorationSection() {
                 border: '1px solid',
                 cursor: 'pointer',
                 position: 'relative' as const,
-                background: isActive ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.02)',
-                borderColor: isActive ? 'rgba(147, 51, 234, 0.5)' : 'rgba(255, 255, 255, 0.1)',
-                color: isActive ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.7)',
+                background: isActive ? getSurfaceColor(0.08) : getSurfaceColor(0.02),
+                borderColor: isActive ? 'rgba(147, 51, 234, 0.5)' : getBorderColor(0.1),
+                color: isActive ? getTextPrimary(0.9) : getTextPrimary(0.7),
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
-                  (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.04)';
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                  (e.currentTarget as HTMLElement).style.background = getSurfaceColor(0.04);
+                  (e.currentTarget as HTMLElement).style.borderColor = '${getBorderColor(0.2)}';
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isActive) {
-                  (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.02)';
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                  (e.currentTarget as HTMLElement).style.background = '${getSurfaceColor(0.02)}';
+                  (e.currentTarget as HTMLElement).style.borderColor = '${getBorderColor(0.1)}';
                 }
               }}
             >
@@ -1062,7 +1038,9 @@ function ScienceExplorationSection() {
 
 // Sleep Stages Tab
 function SleepStagesTab() {
-  const [hoveredStage, setHoveredStage] = useState<number | null>(null);
+  
+  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+const [hoveredStage, setHoveredStage] = useState<number | null>(null);
 
   const stages = [
     {
@@ -1123,13 +1101,13 @@ function SleepStagesTab() {
         <h3 style={{
           fontSize: '1.5rem',
           fontWeight: '300',
-          color: 'rgba(255, 255, 255, 0.9)',
+          color: getTextPrimary(0.9),
           marginBottom: '1.5rem',
         }}>
           What if we could navigate between sleep stages?
         </h3>
         <p style={{
-          color: 'rgba(255, 255, 255, 0.7)',
+          color: getTextPrimary(0.7),
           marginBottom: '2rem',
           lineHeight: '1.6',
         }}>
@@ -1151,8 +1129,8 @@ function SleepStagesTab() {
                 ...baseStyles.glassCard,
                 padding: '1.5rem',
                 background: isHovered
-                  ? `linear-gradient(90deg, ${stage.color.replace('0.2', '0.3')} 0%, rgba(255, 255, 255, 0.04) 100%)`
-                  : `linear-gradient(90deg, ${stage.color} 0%, rgba(255, 255, 255, 0.02) 100%)`,
+                  ? `linear-gradient(90deg, ${stage.color.replace('0.2', '0.3')} 0%, ${getSurfaceColor(0.04)} 100%)`
+                  : `linear-gradient(90deg, ${stage.color} 0%, ${getSurfaceColor(0.02)} 100%)`,
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
                 transform: isHovered ? 'translateX(8px)' : 'translateX(0)',
@@ -1182,14 +1160,14 @@ function SleepStagesTab() {
                   <h4 style={{
                     fontSize: '1.125rem',
                     fontWeight: '300',
-                    color: isHovered ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0.9)',
+                    color: isHovered ? getTextPrimary(1) : getTextPrimary(0.9),
                     transition: 'color 0.3s ease',
                   }}>
                     {stage.name}
                   </h4>
                   <p style={{
                     fontSize: '0.875rem',
-                    color: 'rgba(255, 255, 255, 0.7)',
+                    color: getTextPrimary(0.7),
                   }}>
                     {stage.description}
                   </p>
@@ -1215,7 +1193,7 @@ function SleepStagesTab() {
                     paddingTop: '0.75rem',
                     borderTop: `1px solid ${stage.accentColor.replace('0.8', '0.3')}`,
                     fontSize: '0.8125rem',
-                    color: 'rgba(255, 255, 255, 0.6)',
+                    color: getTextPrimary(0.6),
                     fontStyle: 'italic',
                   }}
                 >
@@ -1233,7 +1211,9 @@ function SleepStagesTab() {
 
 // Brain Waves Tab
 function BrainWavesTab() {
-  const waves = [
+  
+  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+const waves = [
     { name: "Delta", range: "0.5-4 Hz", purpose: "Deep sleep", power: 85 },
     { name: "Theta", range: "4-8 Hz", purpose: "REM dreams", power: 65 },
     { name: "Alpha", range: "8-13 Hz", purpose: "Relaxed awareness", power: 45 },
@@ -1257,13 +1237,13 @@ function BrainWavesTab() {
         <h3 style={{
           fontSize: '1.5rem',
           fontWeight: '300',
-          color: 'rgba(255, 255, 255, 0.9)',
+          color: getTextPrimary(0.9),
           marginBottom: '1.5rem',
         }}>
           What if consciousness had a frequency?
         </h3>
         <p style={{
-          color: 'rgba(255, 255, 255, 0.7)',
+          color: getTextPrimary(0.7),
           marginBottom: '2rem',
           lineHeight: '1.6',
         }}>
@@ -1290,13 +1270,13 @@ function BrainWavesTab() {
               }}>
                 <div>
                   <span style={{
-                    color: 'rgba(255, 255, 255, 0.9)',
+                    color: getTextPrimary(0.9),
                     fontWeight: '300',
                   }}>
                     {wave.name} Wave
                   </span>
                   <span style={{
-                    color: 'rgba(255, 255, 255, 0.6)',
+                    color: getTextPrimary(0.6),
                     fontSize: '0.875rem',
                     marginLeft: '0.75rem',
                   }}>
@@ -1304,7 +1284,7 @@ function BrainWavesTab() {
                   </span>
                 </div>
                 <span style={{
-                  color: 'rgba(255, 255, 255, 0.7)',
+                  color: getTextPrimary(0.7),
                   fontSize: '0.875rem',
                 }}>
                   {wave.purpose}
@@ -1312,7 +1292,7 @@ function BrainWavesTab() {
               </div>
               <div style={{
                 height: '8px',
-                background: 'rgba(255, 255, 255, 0.1)',
+                background: getBorderColor(0.1),
                 borderRadius: '4px',
                 overflow: 'hidden' as const,
                 position: 'relative' as const,
@@ -1341,7 +1321,9 @@ function BrainWavesTab() {
 
 // Detection Tab
 function DetectionTab() {
-  const detectionMethods = [
+  
+  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+const detectionMethods = [
     {
       name: "EEG Sensors",
       accuracy: "92%",
@@ -1379,13 +1361,13 @@ function DetectionTab() {
         <h3 style={{
           fontSize: '1.5rem',
           fontWeight: '300',
-          color: 'rgba(255, 255, 255, 0.9)',
+          color: getTextPrimary(0.9),
           marginBottom: '1.5rem',
         }}>
           What patterns would reveal our inner worlds?
         </h3>
         <p style={{
-          color: 'rgba(255, 255, 255, 0.7)',
+          color: getTextPrimary(0.7),
           marginBottom: '2rem',
           maxWidth: '600px',
           margin: '0 auto',
@@ -1422,14 +1404,14 @@ function DetectionTab() {
               <h4 style={{
                 fontSize: '1.125rem',
                 fontWeight: '300',
-                color: 'rgba(255, 255, 255, 0.9)',
+                color: getTextPrimary(0.9),
                 marginBottom: '0.5rem',
               }}>
                 {method.name}
               </h4>
               <p style={{
                 fontSize: '0.8125rem',
-                color: 'rgba(255, 255, 255, 0.6)',
+                color: getTextPrimary(0.6),
                 marginBottom: '1.5rem',
                 fontStyle: 'italic',
               }}>
@@ -1437,16 +1419,16 @@ function DetectionTab() {
               </p>
               <div style={{ display: 'flex', flexDirection: 'column' as const, gap: '0.75rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.5)' }}>Accuracy</span>
+                  <span style={{ fontSize: '0.75rem', color: getTextPrimary(0.5) }}>Accuracy</span>
                   <span style={{ fontSize: '0.875rem', color: 'rgba(14, 165, 233, 0.9)', fontWeight: '500' }}>{method.accuracy}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.5)' }}>Latency</span>
+                  <span style={{ fontSize: '0.75rem', color: getTextPrimary(0.5) }}>Latency</span>
                   <span style={{ fontSize: '0.875rem', color: 'rgba(147, 51, 234, 0.9)', fontWeight: '500' }}>{method.latency}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.5)' }}>Method</span>
-                  <span style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.7)' }}>{method.invasiveness}</span>
+                  <span style={{ fontSize: '0.75rem', color: getTextPrimary(0.5) }}>Method</span>
+                  <span style={{ fontSize: '0.875rem', color: getTextPrimary(0.7) }}>{method.invasiveness}</span>
                 </div>
               </div>
             </motion.div>
@@ -1459,7 +1441,9 @@ function DetectionTab() {
 
 // Processing Tab
 function ProcessingTab() {
-  const processingStages = [
+  
+  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+const processingStages = [
     {
       stage: "01",
       name: "Signal Filtering",
@@ -1505,13 +1489,13 @@ function ProcessingTab() {
         <h3 style={{
           fontSize: '1.5rem',
           fontWeight: '300',
-          color: 'rgba(255, 255, 255, 0.9)',
+          color: getTextPrimary(0.9),
           marginBottom: '1.5rem',
         }}>
           How do you process a dream?
         </h3>
         <p style={{
-          color: 'rgba(255, 255, 255, 0.7)',
+          color: getTextPrimary(0.7),
           maxWidth: '600px',
           margin: '0 auto',
           lineHeight: '1.6',
@@ -1562,14 +1546,14 @@ function ProcessingTab() {
                 <h4 style={{
                   fontSize: '1.125rem',
                   fontWeight: '300',
-                  color: 'rgba(255, 255, 255, 0.9)',
+                  color: getTextPrimary(0.9),
                   marginBottom: '0.25rem',
                 }}>
                   {stage.name}
                 </h4>
                 <p style={{
                   fontSize: '0.875rem',
-                  color: 'rgba(255, 255, 255, 0.6)',
+                  color: getTextPrimary(0.6),
                   fontFamily: 'monospace',
                 }}>
                   {stage.process}
@@ -1597,7 +1581,7 @@ function ProcessingTab() {
                   bottom: '-1rem',
                   left: '50%',
                   transform: 'translateX(-50%)',
-                  color: 'rgba(255, 255, 255, 0.2)',
+                  color: getTextPrimary(0.2),
                   fontSize: '1.5rem',
                 }}>
                   ↓
@@ -1613,7 +1597,9 @@ function ProcessingTab() {
 
 // Six Pillars Section
 function SixPillarsSection() {
-  const pillars = [
+  
+  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+const pillars = [
     {
       title: "Consent",
       question: "How do we consent to consciousness technology?",
@@ -1682,7 +1668,7 @@ function SixPillarsSection() {
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: getTextPrimary(0.5),
             }}>
               Critical Pillars
             </span>
@@ -1699,7 +1685,7 @@ function SixPillarsSection() {
           </motion.h2>
           <motion.p variants={fadeInUp} style={{
             fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-            color: 'rgba(255, 255, 255, 0.7)',
+            color: getTextPrimary(0.7),
             maxWidth: '600px',
             margin: '0 auto',
             lineHeight: '1.6',
@@ -1758,7 +1744,7 @@ function SixPillarsSection() {
           </p>
           <p style={{
             fontSize: '1rem',
-            color: 'rgba(255, 255, 255, 0.7)',
+            color: getTextPrimary(0.7),
             lineHeight: '1.6',
             maxWidth: '500px',
             margin: '0 auto',
@@ -1785,7 +1771,7 @@ function SixPillarsSection() {
               border: 'none',
               background: index === activePillar
                 ? 'rgba(147, 51, 234, 0.9)'
-                : 'rgba(255, 255, 255, 0.2)',
+                : getBorderColor(0.2),
               cursor: 'pointer',
               transition: 'all 0.3s ease',
             }}
@@ -1799,7 +1785,9 @@ function SixPillarsSection() {
 // Footer Section
 // System Architecture Visualization Section
 function SystemArchitectureSection() {
-  const [selectedNode, setSelectedNode] = useState<string | null>(null);
+  
+  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [dataFlowActive, setDataFlowActive] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -1927,7 +1915,7 @@ function SystemArchitectureSection() {
     },
     {
       name: "Output Layer",
-      color: "rgba(255, 255, 255, 0.6)",
+      color: getTextPrimary(0.6),
       components: [
         {
           id: "display",
@@ -1983,7 +1971,7 @@ function SystemArchitectureSection() {
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: getTextPrimary(0.5),
             }}>
               System Architecture
             </span>
@@ -2000,7 +1988,7 @@ function SystemArchitectureSection() {
           </motion.h2>
           <motion.p variants={fadeInUp} style={{
             fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-            color: 'rgba(255, 255, 255, 0.7)',
+            color: getTextPrimary(0.7),
             maxWidth: '600px',
             margin: '0 auto',
             lineHeight: '1.6',
@@ -2075,7 +2063,7 @@ function SystemArchitectureSection() {
                     position: 'relative',
                     border: selectedNode === component.id
                       ? `2px solid ${layer.color}`
-                      : '1px solid rgba(255, 255, 255, 0.1)',
+                      : `1px solid ${getBorderColor(0.1)}`,
                     outline: 'none',
                     ...(dataFlowActive ? {
                       boxShadow: `0 0 20px ${layer.color}`,
@@ -2084,14 +2072,14 @@ function SystemArchitectureSection() {
                   }}
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px) scale(1.02)';
-                    (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.04)';
+                    (e.currentTarget as HTMLElement).style.background = getSurfaceColor(0.04);
                     (e.currentTarget as HTMLElement).style.borderColor = layer.color;
                   }}
                   onMouseLeave={(e) => {
                     if (selectedNode !== component.id) {
                       (e.currentTarget as HTMLElement).style.transform = 'translateY(0) scale(1)';
-                      (e.currentTarget as HTMLElement).style.background = 'rgba(255, 255, 255, 0.02)';
-                      (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                      (e.currentTarget as HTMLElement).style.background = '${getSurfaceColor(0.02)}';
+                      (e.currentTarget as HTMLElement).style.borderColor = '${getBorderColor(0.1)}';
                     }
                   }}
                   onFocus={(e) => {
@@ -2134,14 +2122,14 @@ function SystemArchitectureSection() {
                     <h4 style={{
                       fontSize: '0.875rem',
                       fontWeight: '400',
-                      color: 'rgba(255, 255, 255, 0.9)',
+                      color: getTextPrimary(0.9),
                       marginBottom: '0.5rem',
                     }}>
                       {component.name}
                     </h4>
                     <p style={{
                       fontSize: '0.75rem',
-                      color: 'rgba(255, 255, 255, 0.6)',
+                      color: getTextPrimary(0.6),
                       lineHeight: '1.4',
                       marginBottom: '0.5rem',
                     }}>
@@ -2166,7 +2154,7 @@ function SystemArchitectureSection() {
                         {/* Critical detail */}
                         <p style={{
                           fontSize: '0.75rem',
-                          color: 'rgba(255, 255, 255, 0.7)',
+                          color: getTextPrimary(0.7),
                           lineHeight: '1.5',
                           marginBottom: '1rem',
                           fontStyle: 'italic',
@@ -2182,15 +2170,15 @@ function SystemArchitectureSection() {
                           fontSize: '0.6875rem',
                         }}>
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>Latency:</span>
+                            <span style={{ color: getTextPrimary(0.5) }}>Latency:</span>
                             <span style={{ color: layer.color, fontWeight: '500' }}>{component.specs.latency}</span>
                           </div>
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>Data Rate:</span>
+                            <span style={{ color: getTextPrimary(0.5) }}>Data Rate:</span>
                             <span style={{ color: layer.color, fontWeight: '500' }}>{component.specs.dataRate}</span>
                           </div>
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>Method:</span>
+                            <span style={{ color: getTextPrimary(0.5) }}>Method:</span>
                             <span style={{ color: layer.color, fontWeight: '500' }}>{component.specs.invasive}</span>
                           </div>
                         </div>
@@ -2236,7 +2224,7 @@ function SystemArchitectureSection() {
                 </div>
                 <div style={{
                   fontSize: '0.75rem',
-                  color: 'rgba(255, 255, 255, 0.6)',
+                  color: getTextPrimary(0.6),
                   textTransform: 'uppercase' as const,
                   letterSpacing: '0.1em',
                 }}>
@@ -2254,7 +2242,7 @@ function SystemArchitectureSection() {
                 </div>
                 <div style={{
                   fontSize: '0.75rem',
-                  color: 'rgba(255, 255, 255, 0.6)',
+                  color: getTextPrimary(0.6),
                   textTransform: 'uppercase' as const,
                   letterSpacing: '0.1em',
                 }}>
@@ -2272,7 +2260,7 @@ function SystemArchitectureSection() {
                 </div>
                 <div style={{
                   fontSize: '0.75rem',
-                  color: 'rgba(255, 255, 255, 0.6)',
+                  color: getTextPrimary(0.6),
                   textTransform: 'uppercase' as const,
                   letterSpacing: '0.1em',
                 }}>
@@ -2283,14 +2271,14 @@ function SystemArchitectureSection() {
                 <div style={{
                   fontSize: '2rem',
                   fontWeight: '200',
-                  color: 'rgba(255, 255, 255, 0.9)',
+                  color: getTextPrimary(0.9),
                   marginBottom: '0.5rem',
                 }}>
                   100%
                 </div>
                 <div style={{
                   fontSize: '0.75rem',
-                  color: 'rgba(255, 255, 255, 0.6)',
+                  color: getTextPrimary(0.6),
                   textTransform: 'uppercase' as const,
                   letterSpacing: '0.1em',
                 }}>
@@ -2301,9 +2289,9 @@ function SystemArchitectureSection() {
             <div style={{
               marginTop: '1rem',
               paddingTop: '1rem',
-              borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+              borderTop: `1px solid ${getBorderColor(0.1)}`,
               fontSize: '0.75rem',
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: getTextPrimary(0.5),
               textAlign: 'center' as const,
               fontStyle: 'italic',
             }}>
@@ -2325,7 +2313,7 @@ function SystemArchitectureSection() {
             fontSize: '1rem',
             fontWeight: '400',
             color: dataFlowActive ? 'rgba(147, 51, 234, 0.9)' : 'var(--text-secondary)',
-            border: dataFlowActive ? '2px solid rgba(147, 51, 234, 0.6)' : '1px solid rgba(255, 255, 255, 0.2)',
+            border: dataFlowActive ? '2px solid rgba(147, 51, 234, 0.6)' : `1px solid ${getBorderColor(0.2)}`,
             cursor: 'pointer',
             transition: 'all 0.3s ease',
             display: 'flex',
@@ -2361,8 +2349,8 @@ function SystemArchitectureSection() {
           100% { box-shadow: 0 0 30px rgba(14, 165, 233, 0.6); }
         }
         @keyframes pulse-3 {
-          0% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
-          100% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.6); }
+          0% { box-shadow: 0 0 20px ${getTextPrimary(0.3)}; }
+          100% { box-shadow: 0 0 30px ${getTextPrimary(0.6)}; }
         }
       `}</style>
     </section>
@@ -2371,7 +2359,9 @@ function SystemArchitectureSection() {
 
 // Interactive Prototypes Section
 function InteractivePrototypesSection() {
-  const [activePrototype, setActivePrototype] = useState('recorder');
+  
+  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+const [activePrototype, setActivePrototype] = useState('recorder');
   const [dreamFragments, setDreamFragments] = useState<Array<{id: string, x: number, y: number, text: string}>>([]);
   const [isRecording, setIsRecording] = useState(false);
 
@@ -2449,7 +2439,7 @@ function InteractivePrototypesSection() {
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: getTextPrimary(0.5),
             }}>
               Interactive Prototypes
             </span>
@@ -2495,10 +2485,10 @@ function InteractivePrototypesSection() {
                 transition: 'all 0.3s ease',
                 border: activePrototype === prototype.id
                   ? '2px solid rgba(147, 51, 234, 0.6)'
-                  : '1px solid rgba(255, 255, 255, 0.2)',
+                  : `1px solid ${getBorderColor(0.2)}`,
                 background: activePrototype === prototype.id
                   ? 'rgba(147, 51, 234, 0.1)'
-                  : 'rgba(255, 255, 255, 0.02)',
+                  : getSurfaceColor(0.02),
                 color: activePrototype === prototype.id
                   ? 'rgba(147, 51, 234, 0.9)'
                   : 'var(--text-secondary)',
@@ -2556,14 +2546,14 @@ function InteractivePrototypesSection() {
                 <h3 style={{
                   fontSize: '1.5rem',
                   fontWeight: '300',
-                  color: 'rgba(255, 255, 255, 0.9)',
+                  color: getTextPrimary(0.9),
                   marginBottom: '0.5rem',
                 }}>
                   Dream Fragment Explorer
                 </h3>
                 <p style={{
                   fontSize: '0.875rem',
-                  color: 'rgba(255, 255, 255, 0.6)',
+                  color: getTextPrimary(0.6),
                 }}>
                   Click anywhere to add dream fragments and watch them connect
                 </p>
@@ -2585,7 +2575,7 @@ function InteractivePrototypesSection() {
                     borderRadius: '999px',
                     padding: '0.5rem 1rem',
                     fontSize: '0.75rem',
-                    color: 'rgba(255, 255, 255, 0.9)',
+                    color: getTextPrimary(0.9),
                     backdropFilter: 'blur(10px)',
                     WebkitBackdropFilter: 'blur(10px)',
                     cursor: 'pointer',
@@ -2641,7 +2631,7 @@ function InteractivePrototypesSection() {
               <h3 style={{
                 fontSize: '1.5rem',
                 fontWeight: '300',
-                color: 'rgba(255, 255, 255, 0.9)',
+                color: getTextPrimary(0.9),
                 marginBottom: '1.5rem',
               }}>
                 Voice Dream Capture
@@ -2655,10 +2645,10 @@ function InteractivePrototypesSection() {
                   borderRadius: '50%',
                   background: isRecording
                     ? 'rgba(147, 51, 234, 0.2)'
-                    : 'rgba(255, 255, 255, 0.05)',
+                    : getSurfaceColor(0.05),
                   border: isRecording
                     ? '3px solid rgba(147, 51, 234, 0.6)'
-                    : '2px solid rgba(255, 255, 255, 0.2)',
+                    : `2px solid ${getBorderColor(0.2)}`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -2673,7 +2663,7 @@ function InteractivePrototypesSection() {
                 } : {}}
                 transition={isRecording ? { duration: 1.5, repeat: Infinity } : {}}
               >
-                <Mic size={32} color={isRecording ? 'rgba(147, 51, 234, 0.9)' : 'rgba(255, 255, 255, 0.6)'} />
+                <Mic size={32} color={isRecording ? 'rgba(147, 51, 234, 0.9)' : getTextPrimary(0.6)} />
               </motion.button>
 
               {/* Waveform Visualization */}
@@ -2713,7 +2703,7 @@ function InteractivePrototypesSection() {
 
               <p style={{
                 fontSize: '0.875rem',
-                color: 'rgba(255, 255, 255, 0.6)',
+                color: getTextPrimary(0.6),
               }}>
                 {isRecording ? 'Recording your dream narrative...' : 'Click to start recording'}
               </p>
@@ -2732,14 +2722,14 @@ function InteractivePrototypesSection() {
                 <h3 style={{
                   fontSize: '1.5rem',
                   fontWeight: '300',
-                  color: 'rgba(255, 255, 255, 0.9)',
+                  color: getTextPrimary(0.9),
                   marginBottom: '0.5rem',
                 }}>
                   Sleep Timeline Visualization
                 </h3>
                 <p style={{
                   fontSize: '0.875rem',
-                  color: 'rgba(255, 255, 255, 0.6)',
+                  color: getTextPrimary(0.6),
                 }}>
                   Hourly breakdown of a typical sleep cycle (22:00 - 06:00)
                 </p>
@@ -2777,7 +2767,7 @@ function InteractivePrototypesSection() {
                   >
                     <span style={{
                       fontSize: '0.75rem',
-                      color: 'rgba(255, 255, 255, 0.5)',
+                      color: getTextPrimary(0.5),
                       minWidth: '50px',
                       fontFamily: 'monospace',
                     }}>
@@ -2810,7 +2800,7 @@ function InteractivePrototypesSection() {
                     </div>
                     <span style={{
                       fontSize: '0.6875rem',
-                      color: 'rgba(255, 255, 255, 0.4)',
+                      color: getTextPrimary(0.4),
                       minWidth: '50px',
                       textAlign: 'right' as const,
                     }}>
@@ -2842,7 +2832,7 @@ function InteractivePrototypesSection() {
                       borderRadius: '2px',
                       background: stage.color,
                     }} />
-                    <span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>{stage.name}</span>
+                    <span style={{ color: getTextPrimary(0.7) }}>{stage.name}</span>
                   </div>
                 ))}
               </div>
@@ -2861,14 +2851,14 @@ function InteractivePrototypesSection() {
                 <h3 style={{
                   fontSize: '1.5rem',
                   fontWeight: '300',
-                  color: 'rgba(255, 255, 255, 0.9)',
+                  color: getTextPrimary(0.9),
                   marginBottom: '0.5rem',
                 }}>
                   Pattern Recognition Engine
                 </h3>
                 <p style={{
                   fontSize: '0.875rem',
-                  color: 'rgba(255, 255, 255, 0.6)',
+                  color: getTextPrimary(0.6),
                 }}>
                   Recurring themes detected across 30 nights of dream data
                 </p>
@@ -2902,7 +2892,7 @@ function InteractivePrototypesSection() {
                     }}>
                       <span style={{
                         fontSize: '0.875rem',
-                        color: 'rgba(255, 255, 255, 0.9)',
+                        color: getTextPrimary(0.9),
                       }}>
                         {pattern.theme}
                       </span>
@@ -2916,7 +2906,7 @@ function InteractivePrototypesSection() {
                     </div>
                     <div style={{
                       height: '8px',
-                      background: 'rgba(255, 255, 255, 0.1)',
+                      background: getBorderColor(0.1),
                       borderRadius: '4px',
                       overflow: 'hidden' as const,
                       position: 'relative' as const,
@@ -2948,9 +2938,9 @@ function InteractivePrototypesSection() {
               <div style={{
                 marginTop: '2rem',
                 padding: '1rem',
-                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                borderTop: `1px solid ${getBorderColor(0.1)}`,
                 fontSize: '0.75rem',
-                color: 'rgba(255, 255, 255, 0.5)',
+                color: getTextPrimary(0.5),
                 fontStyle: 'italic',
                 textAlign: 'center' as const,
               }}>
@@ -2966,7 +2956,9 @@ function InteractivePrototypesSection() {
 
 // Vision Section
 function VisionSection() {
-  const [activeQuestion, setActiveQuestion] = useState(0);
+  
+  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+const [activeQuestion, setActiveQuestion] = useState(0);
 
   const visionQuestions = [
     {
@@ -2996,7 +2988,7 @@ function VisionSection() {
   return (
     <section style={{
       ...baseStyles.section,
-      background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%)',
+      background: `linear-gradient(180deg, transparent 0%, ${getShadowColor(0.4)} 50%, transparent 100%)`,
       paddingTop: '8rem',
       paddingBottom: '8rem',
     }}>
@@ -3013,7 +3005,7 @@ function VisionSection() {
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: getTextPrimary(0.5),
             }}>
               Speculative Futures
             </span>
@@ -3030,7 +3022,7 @@ function VisionSection() {
           </motion.h2>
           <motion.p variants={fadeInUp} style={{
             fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-            color: 'rgba(255, 255, 255, 0.7)',
+            color: getTextPrimary(0.7),
             maxWidth: '700px',
             margin: '0 auto',
             lineHeight: '1.6',
@@ -3075,7 +3067,7 @@ function VisionSection() {
               width: '80px',
               height: '80px',
               borderRadius: '50%',
-              background: 'rgba(255, 255, 255, 0.1)',
+              background: getBorderColor(0.1),
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -3091,7 +3083,7 @@ function VisionSection() {
           <h3 style={{
             fontSize: '1.5rem',
             fontWeight: '300',
-            color: 'rgba(255, 255, 255, 0.9)',
+            color: getTextPrimary(0.9),
             marginBottom: '0.5rem',
             textAlign: 'center',
           }}>
@@ -3100,7 +3092,7 @@ function VisionSection() {
 
           <p style={{
             fontSize: '0.875rem',
-            color: 'rgba(255, 255, 255, 0.6)',
+            color: getTextPrimary(0.6),
             textAlign: 'center',
             maxWidth: '400px',
           }}>
@@ -3132,14 +3124,14 @@ function VisionSection() {
               transition: 'all 0.5s ease',
               border: activeQuestion === index
                 ? '2px solid rgba(218, 14, 41, 0.4)'
-                : '1px solid rgba(255, 255, 255, 0.1)',
+                : `1px solid ${getBorderColor(0.1)}`,
               background: activeQuestion === index
                 ? 'rgba(218, 14, 41, 0.05)'
-                : 'rgba(255, 255, 255, 0.02)',
+                : getSurfaceColor(0.02),
             }}
             whileHover={{
               scale: 1.02,
-              background: 'rgba(255, 255, 255, 0.04)',
+              background: getSurfaceColor(0.04),
             }}
           >
             <h3 style={{
@@ -3154,7 +3146,7 @@ function VisionSection() {
 
             <p style={{
               fontSize: 'clamp(0.875rem, 2vw, 1rem)',
-              color: 'rgba(255, 255, 255, 0.7)',
+              color: getTextPrimary(0.7),
               lineHeight: '1.6',
               marginBottom: '2rem',
             }}>
@@ -3219,7 +3211,9 @@ function VisionSection() {
 
 // Interface Speculation Section
 function InterfaceSpeculationSection() {
-  const [currentScreen, setCurrentScreen] = useState(0);
+  
+  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+const [currentScreen, setCurrentScreen] = useState(0);
   const [isRotating, setIsRotating] = useState(false);
   const [hoveredPrinciple, setHoveredPrinciple] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -3313,7 +3307,7 @@ function InterfaceSpeculationSection() {
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: getTextPrimary(0.5),
             }}>
               Interface Speculation
             </span>
@@ -3330,7 +3324,7 @@ function InterfaceSpeculationSection() {
           </motion.h2>
           <motion.p variants={fadeInUp} style={{
             fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-            color: 'rgba(255, 255, 255, 0.7)',
+            color: getTextPrimary(0.7),
             maxWidth: '600px',
             margin: '0 auto',
             lineHeight: '1.6',
@@ -3362,10 +3356,10 @@ function InterfaceSpeculationSection() {
             style={{
               width: '280px',
               height: '580px',
-              background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)',
+              background: 'linear-gradient(145deg, ${getSurfaceColor(0.05)} 0%, ${getSurfaceColor(0.02)} 100%)',
               borderRadius: '40px',
               padding: '20px',
-              border: '2px solid rgba(255, 255, 255, 0.1)',
+              border: `2px solid ${getBorderColor(0.1)}`,
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
               position: 'relative',
@@ -3426,7 +3420,7 @@ function InterfaceSpeculationSection() {
                     }}>
                       {React.createElement(interfaceScreens[currentScreen].icon, {
                         size: 32,
-                        color: 'rgba(255, 255, 255, 0.95)'
+                        color: '${getTextPrimary(0.95)}'
                       })}
                     </div>
                   </motion.div>
@@ -3442,7 +3436,7 @@ function InterfaceSpeculationSection() {
 
                   <p style={{
                     fontSize: '0.875rem',
-                    color: 'rgba(255, 255, 255, 0.7)',
+                    color: getTextPrimary(0.7),
                     marginBottom: '2rem',
                     lineHeight: '1.5',
                   }}>
@@ -3466,7 +3460,7 @@ function InterfaceSpeculationSection() {
                           border: `1px solid ${interfaceScreens[currentScreen].color}`,
                           borderRadius: '12px',
                           fontSize: '0.75rem',
-                          color: 'rgba(255, 255, 255, 0.9)',
+                          color: getTextPrimary(0.9),
                           position: 'relative',
                           overflow: 'hidden',
                         }}
@@ -3506,7 +3500,7 @@ function InterfaceSpeculationSection() {
                       borderRadius: '4px',
                       background: currentScreen === index
                         ? screen.color
-                        : 'rgba(255, 255, 255, 0.3)',
+                        : getTextPrimary(0.3),
                       transition: 'all 0.3s ease',
                       cursor: 'pointer',
                       boxShadow: currentScreen === index ? `0 0 10px ${screen.color}` : 'none',
@@ -3559,7 +3553,7 @@ function InterfaceSpeculationSection() {
                     gap: '1rem',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
-                    background: isHovered ? 'rgba(255, 255, 255, 0.04)' : 'rgba(255, 255, 255, 0.02)',
+                    background: isHovered ? getSurfaceColor(0.04) : getSurfaceColor(0.02),
                     transform: isHovered ? 'translateX(8px)' : 'translateX(0)',
                     position: 'relative',
                     overflow: 'hidden',
@@ -3604,7 +3598,7 @@ function InterfaceSpeculationSection() {
                     <h4 style={{
                       fontSize: '1rem',
                       fontWeight: '400',
-                      color: 'rgba(255, 255, 255, 0.9)',
+                      color: getTextPrimary(0.9),
                       marginBottom: '0.5rem',
                     }}>
                       {principle.title}
@@ -3612,7 +3606,7 @@ function InterfaceSpeculationSection() {
 
                     <p style={{
                       fontSize: '0.875rem',
-                      color: 'rgba(255, 255, 255, 0.6)',
+                      color: getTextPrimary(0.6),
                       lineHeight: '1.5',
                       marginBottom: isHovered ? '0.75rem' : 0,
                       transition: 'margin 0.3s ease',
@@ -3630,7 +3624,7 @@ function InterfaceSpeculationSection() {
                           transition={{ duration: 0.3 }}
                           style={{
                             fontSize: '0.8rem',
-                            color: 'rgba(255, 255, 255, 0.5)',
+                            color: getTextPrimary(0.5),
                             lineHeight: '1.6',
                             paddingTop: '0.75rem',
                             borderTop: `1px solid ${principle.color}30`,
@@ -3653,7 +3647,9 @@ function InterfaceSpeculationSection() {
 
 // Team as Perspectives Section
 function TeamPerspectivesSection() {
-  const [activeQuestioner, setActiveQuestioner] = useState(0);
+  
+  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+const [activeQuestioner, setActiveQuestioner] = useState(0);
 
   const questioners = [
     {
@@ -3686,7 +3682,7 @@ function TeamPerspectivesSection() {
       perspective: "Lived Experience",
       question: "What magic do we lose when dreams become data?",
       concern: "Dreams have always been mysteries—fleeting gifts from our unconscious minds. In making them visible, tangible, analyzable, do we kill the very thing that makes them powerful? Some doors perhaps should remain closed.",
-      color: "rgba(255, 255, 255, 0.6)"
+      color: getTextPrimary(0.6)
     }
   ];
 
@@ -3700,7 +3696,7 @@ function TeamPerspectivesSection() {
   return (
     <section style={{
       ...baseStyles.section,
-      background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.2) 50%, transparent 100%)',
+      background: 'linear-gradient(180deg, transparent 0%, ${getShadowColor(0.2)} 50%, transparent 100%)',
       paddingTop: '8rem',
       paddingBottom: '8rem',
     }}>
@@ -3717,7 +3713,7 @@ function TeamPerspectivesSection() {
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: getTextPrimary(0.5),
             }}>
               Critical Voices
             </span>
@@ -3734,7 +3730,7 @@ function TeamPerspectivesSection() {
           </motion.h2>
           <motion.p variants={fadeInUp} style={{
             fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-            color: 'rgba(255, 255, 255, 0.7)',
+            color: getTextPrimary(0.7),
             maxWidth: '700px',
             margin: '0 auto',
             lineHeight: '1.6',
@@ -3766,10 +3762,10 @@ function TeamPerspectivesSection() {
               transition: 'all 0.5s ease',
               border: activeQuestioner === index
                 ? `2px solid ${questioner.color}`
-                : '1px solid rgba(255, 255, 255, 0.1)',
+                : `1px solid ${getBorderColor(0.1)}`,
               background: activeQuestioner === index
                 ? questioner.color.replace('0.6', '0.05')
-                : 'rgba(255, 255, 255, 0.02)',
+                : getSurfaceColor(0.02),
               textAlign: 'center' as const,
             }}
             whileHover={{
@@ -3815,7 +3811,7 @@ function TeamPerspectivesSection() {
 
             <p style={{
               fontSize: '0.875rem',
-              color: 'rgba(255, 255, 255, 0.7)',
+              color: getTextPrimary(0.7),
               fontStyle: 'italic',
               lineHeight: '1.5',
             }}>
@@ -3889,7 +3885,7 @@ function TeamPerspectivesSection() {
               borderRadius: '50%',
               background: activeQuestioner === index
                 ? questioners[index].color
-                : 'rgba(255, 255, 255, 0.3)',
+                : getTextPrimary(0.3),
               border: 'none',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
@@ -3902,7 +3898,9 @@ function TeamPerspectivesSection() {
 }
 
 function MoreProjectsSection() {
-  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  
+  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [hoveredCTA, setHoveredCTA] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -4012,7 +4010,7 @@ function MoreProjectsSection() {
                 transform: isHovered ? 'translateY(-8px)' : 'translateY(0)',
                 boxShadow: isHovered
                   ? `0 20px 40px rgba(${project.orbColor}, 0.15)`
-                  : '0 4px 8px rgba(0, 0, 0, 0.2)',
+                  : '0 4px 8px ${getShadowColor(0.2)}',
               }}
             >
               {isHovered && (
@@ -4093,7 +4091,9 @@ function MoreProjectsSection() {
 }
 
 function FooterSection() {
-  return (
+  
+  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+return (
     <footer style={{
       padding: '3rem 1.5rem',
       textAlign: 'center' as const,

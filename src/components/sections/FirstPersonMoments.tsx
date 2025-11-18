@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNarrativeProgress } from '@/hooks/useNarrativeProgress';
+import { useTheme } from '@/components/effects/ThemeProvider';
 import { Moon, Eye, Brain, Waves } from 'lucide-react';
 
 interface FirstPersonMoment {
@@ -21,6 +22,7 @@ interface FirstPersonMoment {
  */
 export function FirstPersonMoments() {
   const narrativeState = useNarrativeProgress();
+  const { resolvedTheme } = useTheme();
   const [activeMoment, setActiveMoment] = useState<FirstPersonMoment | null>(null);
   const [shownMoments, setShownMoments] = useState<Set<number>>(new Set());
 
@@ -128,12 +130,14 @@ export function FirstPersonMoments() {
             maxWidth: '420px',
             width: 'calc(100vw - 4rem)',
             padding: '1.5rem 1.75rem',
-            background: 'rgba(10, 10, 10, 0.85)',
+            background: resolvedTheme === 'light' ? 'rgba(255, 255, 255, 0.85)' : 'rgba(10, 10, 10, 0.85)',
             backdropFilter: 'blur(60px) saturate(180%) brightness(0.9)',
             WebkitBackdropFilter: 'blur(60px) saturate(180%) brightness(0.9)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            border: `1px solid ${resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.08)' : 'rgba(255, 255, 255, 0.08)'}`,
             borderRadius: '20px',
-            boxShadow: `0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px ${narrativeState.color.primary.replace('0.8', '0.1')}, inset 0 1px 0 0 rgba(255, 255, 255, 0.05)`,
+            boxShadow: resolvedTheme === 'light'
+              ? `0 8px 32px rgba(0, 0, 0, 0.15), 0 0 0 1px ${narrativeState.color.primary.replace('0.8', '0.1')}, inset 0 1px 0 0 rgba(0, 0, 0, 0.05)`
+              : `0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px ${narrativeState.color.primary.replace('0.8', '0.1')}, inset 0 1px 0 0 rgba(255, 255, 255, 0.05)`,
             textAlign: 'left',
             pointerEvents: 'none',
           }}
@@ -180,7 +184,7 @@ export function FirstPersonMoments() {
               fontWeight: '400',
               letterSpacing: '-0.01em',
               lineHeight: '1.3',
-              color: 'rgba(255, 255, 255, 0.95)',
+              color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.95)' : 'rgba(255, 255, 255, 0.95)',
               marginBottom: activeMoment.subtext ? '0.5rem' : '0',
             }}
           >
@@ -196,7 +200,7 @@ export function FirstPersonMoments() {
               style={{
                 fontSize: '0.8125rem',
                 fontWeight: '300',
-                color: 'rgba(255, 255, 255, 0.6)',
+                color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)',
                 fontStyle: 'italic',
                 lineHeight: '1.5',
               }}

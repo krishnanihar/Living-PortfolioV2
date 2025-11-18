@@ -18,6 +18,7 @@ import {
   AlertCircle,
   Check,
 } from 'lucide-react';
+import { useTheme } from '@/components/effects/ThemeProvider';
 
 /**
  * Speculative Dream Recorder Interface
@@ -25,6 +26,7 @@ import {
  * through interface design - showing rather than telling the dilemmas
  */
 export function DreamRecorderPrototype() {
+  const { resolvedTheme } = useTheme();
   const [isRecording, setIsRecording] = useState(false);
   const [sleepStage, setSleepStage] = useState<'wake' | 'n1' | 'n2' | 'n3' | 'rem'>('wake');
   const [privacyMode, setPrivacyMode] = useState<'full' | 'limited' | 'off'>('off');
@@ -103,13 +105,13 @@ export function DreamRecorderPrototype() {
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
         style={{
-          background: 'rgba(10, 10, 10, 0.95)',
+          background: resolvedTheme === 'light' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(10, 10, 10, 0.95)',
           backdropFilter: 'blur(20px) saturate(150%)',
           WebkitBackdropFilter: 'blur(20px) saturate(150%)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
+          border: resolvedTheme === 'light' ? '1px solid rgba(0, 0, 0, 0.1)' : '1px solid rgba(255, 255, 255, 0.1)',
           borderRadius: '24px',
           padding: '2.5rem',
-          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+          boxShadow: resolvedTheme === 'light' ? '0 20px 40px rgba(0, 0, 0, 0.1)' : '0 20px 40px rgba(0, 0, 0, 0.3)',
         }}
       >
         {/* Header */}
@@ -118,7 +120,7 @@ export function DreamRecorderPrototype() {
             style={{
               fontSize: '1.5rem',
               fontWeight: '300',
-              color: 'rgba(255, 255, 255, 0.9)',
+              color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.9)' : 'rgba(255, 255, 255, 0.9)',
               marginBottom: '0.5rem',
             }}
           >
@@ -127,7 +129,7 @@ export function DreamRecorderPrototype() {
           <p
             style={{
               fontSize: '0.875rem',
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)',
               fontStyle: 'italic',
             }}
           >
@@ -148,15 +150,15 @@ export function DreamRecorderPrototype() {
           <div
             style={{
               padding: '1.5rem',
-              background: 'rgba(255, 255, 255, 0.02)',
+              background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.02)' : 'rgba(255, 255, 255, 0.02)',
               borderRadius: '16px',
-              border: '1px solid rgba(255, 255, 255, 0.05)',
+              border: resolvedTheme === 'light' ? '1px solid rgba(0, 0, 0, 0.05)' : '1px solid rgba(255, 255, 255, 0.05)',
             }}
           >
             <div
               style={{
                 fontSize: '0.75rem',
-                color: 'rgba(255, 255, 255, 0.5)',
+                color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)',
                 marginBottom: '0.5rem',
                 textTransform: 'uppercase',
                 letterSpacing: '0.1em',
@@ -185,7 +187,7 @@ export function DreamRecorderPrototype() {
                 style={{
                   fontSize: '1.25rem',
                   fontWeight: '300',
-                  color: 'rgba(255, 255, 255, 0.9)',
+                  color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.9)' : 'rgba(255, 255, 255, 0.9)',
                   textTransform: 'uppercase',
                 }}
               >
@@ -198,15 +200,15 @@ export function DreamRecorderPrototype() {
           <div
             style={{
               padding: '1.5rem',
-              background: 'rgba(255, 255, 255, 0.02)',
+              background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.02)' : 'rgba(255, 255, 255, 0.02)',
               borderRadius: '16px',
-              border: '1px solid rgba(255, 255, 255, 0.05)',
+              border: resolvedTheme === 'light' ? '1px solid rgba(0, 0, 0, 0.05)' : '1px solid rgba(255, 255, 255, 0.05)',
             }}
           >
             <div
               style={{
                 fontSize: '0.75rem',
-                color: 'rgba(255, 255, 255, 0.5)',
+                color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)',
                 marginBottom: '0.5rem',
                 textTransform: 'uppercase',
                 letterSpacing: '0.1em',
@@ -220,10 +222,10 @@ export function DreamRecorderPrototype() {
               style={{
                 width: '100%',
                 padding: '0.5rem',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)',
+                border: resolvedTheme === 'light' ? '1px solid rgba(0, 0, 0, 0.1)' : '1px solid rgba(255, 255, 255, 0.1)',
                 borderRadius: '8px',
-                color: 'rgba(255, 255, 255, 0.9)',
+                color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.9)' : 'rgba(255, 255, 255, 0.9)',
                 fontSize: '0.875rem',
                 cursor: 'pointer',
               }}
@@ -235,7 +237,7 @@ export function DreamRecorderPrototype() {
             <p
               style={{
                 fontSize: '0.6875rem',
-                color: 'rgba(255, 255, 255, 0.4)',
+                color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.4)',
                 marginTop: '0.5rem',
                 fontStyle: 'italic',
               }}
@@ -255,7 +257,7 @@ export function DreamRecorderPrototype() {
             alignItems: 'center',
             gap: '2rem',
             padding: '2rem',
-            background: 'rgba(255, 255, 255, 0.01)',
+            background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.01)' : 'rgba(255, 255, 255, 0.01)',
             borderRadius: '16px',
             marginBottom: '2rem',
           }}
@@ -316,7 +318,7 @@ export function DreamRecorderPrototype() {
               style={{
                 fontSize: '1rem',
                 fontWeight: '400',
-                color: 'rgba(255, 255, 255, 0.9)',
+                color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.9)' : 'rgba(255, 255, 255, 0.9)',
                 marginBottom: '0.25rem',
               }}
             >
@@ -325,7 +327,7 @@ export function DreamRecorderPrototype() {
             <div
               style={{
                 fontSize: '0.75rem',
-                color: 'rgba(255, 255, 255, 0.5)',
+                color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)',
               }}
             >
               {isRecording ? 'Click to stop' : 'Click to begin monitoring'}
@@ -356,9 +358,9 @@ export function DreamRecorderPrototype() {
                   padding: '1rem',
                   background: sensor.active
                     ? 'rgba(34, 197, 94, 0.1)'
-                    : 'rgba(255, 255, 255, 0.02)',
+                    : resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.02)' : 'rgba(255, 255, 255, 0.02)',
                   borderRadius: '12px',
-                  border: `1px solid ${sensor.active ? 'rgba(34, 197, 94, 0.3)' : 'rgba(255, 255, 255, 0.05)'}`,
+                  border: `1px solid ${sensor.active ? 'rgba(34, 197, 94, 0.3)' : resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)'}`,
                   textAlign: 'center',
                   transition: 'all 0.3s ease',
                 }}
@@ -366,14 +368,14 @@ export function DreamRecorderPrototype() {
                 <Icon
                   size={20}
                   style={{
-                    color: sensor.active ? 'rgba(34, 197, 94, 0.9)' : 'rgba(255, 255, 255, 0.3)',
+                    color: sensor.active ? 'rgba(34, 197, 94, 0.9)' : resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)',
                     marginBottom: '0.5rem',
                   }}
                 />
                 <div
                   style={{
                     fontSize: '0.75rem',
-                    color: sensor.active ? 'rgba(34, 197, 94, 0.9)' : 'rgba(255, 255, 255, 0.5)',
+                    color: sensor.active ? 'rgba(34, 197, 94, 0.9)' : resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)',
                   }}
                 >
                   {sensor.label}
@@ -400,7 +402,7 @@ export function DreamRecorderPrototype() {
               <div
                 style={{
                   fontSize: '0.75rem',
-                  color: 'rgba(255, 255, 255, 0.5)',
+                  color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)',
                   marginBottom: '1rem',
                   textTransform: 'uppercase',
                   letterSpacing: '0.1em',
@@ -420,10 +422,10 @@ export function DreamRecorderPrototype() {
                     animate={{ opacity: 1, x: 0 }}
                     style={{
                       padding: '0.75rem',
-                      background: 'rgba(255, 255, 255, 0.03)',
+                      background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.03)' : 'rgba(255, 255, 255, 0.03)',
                       borderRadius: '8px',
                       fontSize: '0.875rem',
-                      color: 'rgba(255, 255, 255, 0.8)',
+                      color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)',
                     }}
                   >
                     {fragment}
@@ -468,7 +470,7 @@ export function DreamRecorderPrototype() {
               <div
                 style={{
                   fontSize: '0.875rem',
-                  color: 'rgba(255, 255, 255, 0.8)',
+                  color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)',
                   fontStyle: 'italic',
                 }}
               >
@@ -488,16 +490,16 @@ export function DreamRecorderPrototype() {
         style={{
           marginTop: '2rem',
           padding: '1.5rem',
-          background: 'rgba(255, 255, 255, 0.02)',
+          background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.02)' : 'rgba(255, 255, 255, 0.02)',
           borderRadius: '16px',
-          border: '1px solid rgba(255, 255, 255, 0.05)',
+          border: resolvedTheme === 'light' ? '1px solid rgba(0, 0, 0, 0.05)' : '1px solid rgba(255, 255, 255, 0.05)',
           textAlign: 'center',
         }}
       >
         <p
           style={{
             fontSize: '0.875rem',
-            color: 'rgba(255, 255, 255, 0.6)',
+            color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)',
             lineHeight: '1.6',
           }}
         >
