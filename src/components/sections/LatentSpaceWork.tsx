@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useRef, useState, useCallback, memo } from "
 import { motion, useMotionValue, useSpring, AnimatePresence, useTransform, useScroll } from "framer-motion";
 import { Play, Download, Sparkles, CircuitBoard, Network, Shield, ArrowRight, Moon, Zap, Brain, Cpu, Activity, Waves, ChevronRight, ChevronDown, Volume2, Mic, Camera, FileText, Lock, Cloud, Layers, BarChart3, Eye, Heart, Timer } from "lucide-react";
 import { SleepStagesInteractive, BrainWavesInteractive, DetectionSystemInteractive, ProcessingPipelineInteractive, ResearchPapers, Hypnogram, WaveformPattern, MultiChannelEEG, DetectionVisualization, ConceptVisualization } from './LatentSpaceComponents';
+import { useTheme } from '@/components/effects/ThemeProvider';
 
 /**
  * LATENT SPACE — Interactive OLED Experience
@@ -18,17 +19,6 @@ const DESIGN = {
   black: "#000000",
   white: "#ffffff",
 
-  glass: "rgba(255,255,255,0.03)",
-  glassBorder: "rgba(255,255,255,0.08)",
-  glassHover: "rgba(255,255,255,0.05)",
-
-  text: {
-    primary: "rgba(255,255,255,0.95)",
-    secondary: "rgba(255,255,255,0.70)",
-    tertiary: "rgba(255,255,255,0.50)",
-    ghost: "rgba(255,255,255,0.25)",
-  },
-
   gradient: {
     from: "#da1b60",
     via: "#7c3aed",
@@ -38,6 +28,19 @@ const DESIGN = {
   ease: [0.19, 1, 0.22, 1] as const,
   spring: { damping: 20, stiffness: 100 },
 };
+
+// Theme-aware design tokens
+const getThemeColors = (theme: string | undefined) => ({
+  glass: theme === 'light' ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.03)',
+  glassBorder: theme === 'light' ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.08)',
+  glassHover: theme === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)',
+  text: {
+    primary: theme === 'light' ? 'rgba(0,0,0,0.95)' : 'rgba(255,255,255,0.95)',
+    secondary: theme === 'light' ? 'rgba(0,0,0,0.70)' : 'rgba(255,255,255,0.70)',
+    tertiary: theme === 'light' ? 'rgba(0,0,0,0.50)' : 'rgba(255,255,255,0.50)',
+    ghost: theme === 'light' ? 'rgba(0,0,0,0.25)' : 'rgba(255,255,255,0.25)',
+  },
+});
 
 const cx = (...cls: (string | boolean | undefined)[]) => cls.filter(Boolean).join(" ");
 
@@ -68,6 +71,7 @@ const STATIC_PARTICLES = [
 // Types
 interface ComponentProps {
   onInteract: () => void;
+  resolvedTheme?: string;
 }
 
 interface HeroSectionProps {
@@ -96,6 +100,7 @@ interface InteractiveButtonProps {
 
 // ---------- Main Page ----------
 export default function LatentSpacePage() {
+  const { resolvedTheme } = useTheme();
   const [activeSection, setActiveSection] = useState('hero');
   const [isLoaded, setIsLoaded] = useState(false);
   const [globalInteractions, setGlobalInteractions] = useState(0);
@@ -269,7 +274,7 @@ export default function LatentSpacePage() {
                     y1="0"
                     x2={`${15}%`}
                     y2={i % 2 === 0 ? "40%" : "-40%"}
-                    stroke="rgba(255,255,255,0.05)"
+                    stroke={resolvedTheme === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)'}
                     strokeWidth="1"
                   />
                 </svg>
@@ -374,16 +379,16 @@ export default function LatentSpacePage() {
       </NarrativeConnector>
 
       {/* First-Person Memory Sequence */}
-      <FirstPersonMemory onInteract={trackInteraction} />
+      <FirstPersonMemory onInteract={trackInteraction} resolvedTheme={resolvedTheme} />
 
       <ResearchOverview />
       <StoryActOne onInteract={trackInteraction} />
 
       {/* Interactive Dream Simulator Bridge */}
-      <DreamSimulator onInteract={trackInteraction} />
+      <DreamSimulator onInteract={trackInteraction} resolvedTheme={resolvedTheme} />
 
       {/* Choose Your Path Decision Point */}
-      <ChooseYourPath onInteract={trackInteraction} />
+      <ChooseYourPath onInteract={trackInteraction} resolvedTheme={resolvedTheme} />
 
       {/* ACT II: THE TECHNOLOGY (Confrontation) */}
       <div data-act="act-ii">
@@ -401,7 +406,7 @@ export default function LatentSpacePage() {
 
       <ComprehensiveScienceSection onInteract={trackInteraction} />
       <InteractiveConceptsSection onInteract={trackInteraction} />
-      <TechnicalArchitecture onInteract={trackInteraction} />
+      <TechnicalArchitecture onInteract={trackInteraction} resolvedTheme={resolvedTheme} />
 
       <StoryActTwo onInteract={trackInteraction} />
 
@@ -411,7 +416,7 @@ export default function LatentSpacePage() {
         Here's what responsible dream technology might look like...
       </NarrativeConnector>
 
-      <LivePrototypes onInteract={trackInteraction} />
+      <LivePrototypes onInteract={trackInteraction} resolvedTheme={resolvedTheme} />
       <DetailedAppExperience onInteract={trackInteraction} />
       <HardwareLab onInteract={trackInteraction} />
 
@@ -419,7 +424,7 @@ export default function LatentSpacePage() {
         Ultimately, the choice is yours. Your dreams. Your data. Your consciousness.
       </NarrativeConnector>
 
-      <DreamExplorer onInteract={trackInteraction} />
+      <DreamExplorer onInteract={trackInteraction} resolvedTheme={resolvedTheme} />
       <TeamSection />
       <FooterSection interactions={globalInteractions} />
     </div>
@@ -1000,7 +1005,7 @@ const InteractiveConceptsSection = ({ onInteract }: ComponentProps) => {
 };
 
 // ---------- Technical Architecture ----------
-const TechnicalArchitecture = ({ onInteract }: ComponentProps) => {
+const TechnicalArchitecture = ({ onInteract, resolvedTheme }: ComponentProps) => {
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
 
   const nodes = [
@@ -1089,7 +1094,7 @@ const TechnicalArchitecture = ({ onInteract }: ComponentProps) => {
                   y1={`${node.position.y}%`}
                   x2={`${nextNode.position.x}%`}
                   y2={`${nextNode.position.y}%`}
-                  stroke="rgba(255,255,255,0.1)"
+                  stroke={resolvedTheme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)'}
                   strokeWidth="2"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
@@ -1219,7 +1224,7 @@ const TechnicalArchitecture = ({ onInteract }: ComponentProps) => {
 };
 
 // ---------- Live Prototypes ----------
-const LivePrototypes = ({ onInteract }: ComponentProps) => {
+const LivePrototypes = ({ onInteract, resolvedTheme }: ComponentProps) => {
   const [activeProto, setActiveProto] = useState('explorer');
   const [dreamClusters, setDreamClusters] = useState([
     { id: 1, x: 30, y: 40, size: 60, label: 'Flying', count: 12, color: 'from-blue-500/30' },
@@ -1340,7 +1345,7 @@ const LivePrototypes = ({ onInteract }: ComponentProps) => {
                         y1="50%"
                         x2="150%"
                         y2="80%"
-                        stroke="rgba(255,255,255,0.1)"
+                        stroke={resolvedTheme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)'}
                         strokeWidth="1"
                         strokeDasharray="4 4"
                       />
@@ -2035,7 +2040,7 @@ const HardwareLab = ({ onInteract }: ComponentProps) => {
 };
 
 // ---------- Dream Explorer ----------
-const DreamExplorer = ({ onInteract }: ComponentProps) => {
+const DreamExplorer = ({ onInteract, resolvedTheme }: ComponentProps) => {
   const [selectedDream, setSelectedDream] = useState<number | null>(null);
   const [hoveredDream, setHoveredDream] = useState<number | null>(null);
 
@@ -2096,7 +2101,10 @@ const DreamExplorer = ({ onInteract }: ComponentProps) => {
                     y1={`${dream.y}%`}
                     x2={`${target.x}%`}
                     y2={`${target.y}%`}
-                    stroke={isActive ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.1)"}
+                    stroke={isActive
+                      ? (resolvedTheme === 'light' ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.3)')
+                      : (resolvedTheme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)')
+                    }
                     strokeWidth={isActive ? "2" : "1"}
                     strokeDasharray="4 4"
                     animate={isActive ? { strokeDashoffset: [0, 8] } : {}}
@@ -2390,7 +2398,7 @@ const NarrativeConnector = ({ children, act }: { children: React.ReactNode; act?
 );
 
 // ---------- Interactive Dream Simulator ----------
-const DreamSimulator = ({ onInteract }: ComponentProps) => {
+const DreamSimulator = ({ onInteract, resolvedTheme }: ComponentProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [dreamFragments, setDreamFragments] = useState([
@@ -2615,9 +2623,10 @@ type PathChoice = 'science' | 'ethics' | null;
 
 interface ChooseYourPathProps {
   onInteract: (interaction: string) => void;
+  resolvedTheme?: string;
 }
 
-const ChooseYourPath = ({ onInteract }: ChooseYourPathProps) => {
+const ChooseYourPath = ({ onInteract, resolvedTheme }: ChooseYourPathProps) => {
   const [selectedPath, setSelectedPath] = useState<PathChoice>(null);
   const [isHoveringScience, setIsHoveringScience] = useState(false);
   const [isHoveringEthics, setIsHoveringEthics] = useState(false);
@@ -2700,13 +2709,13 @@ const ChooseYourPath = ({ onInteract }: ChooseYourPathProps) => {
               background: selectedPath === 'science'
                 ? 'rgba(59, 130, 246, 0.15)'
                 : isHoveringScience
-                ? 'rgba(255, 255, 255, 0.04)'
-                : 'rgba(255, 255, 255, 0.02)',
+                ? (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.04)')
+                : (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.02)' : 'rgba(255, 255, 255, 0.02)'),
               borderColor: selectedPath === 'science'
                 ? 'rgba(59, 130, 246, 0.5)'
                 : isHoveringScience
-                ? 'rgba(255, 255, 255, 0.2)'
-                : 'rgba(255, 255, 255, 0.1)',
+                ? (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.2)')
+                : (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)'),
               backdropFilter: 'blur(20px)',
             }}
           >
@@ -2716,7 +2725,7 @@ const ChooseYourPath = ({ onInteract }: ChooseYourPathProps) => {
               style={{
                 background: selectedPath === 'science' || isHoveringScience
                   ? 'rgba(59, 130, 246, 0.2)'
-                  : 'rgba(255, 255, 255, 0.05)',
+                  : (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)'),
               }}
             >
               <Brain
@@ -2725,7 +2734,7 @@ const ChooseYourPath = ({ onInteract }: ChooseYourPathProps) => {
                 style={{
                   color: selectedPath === 'science' || isHoveringScience
                     ? 'rgb(59, 130, 246)'
-                    : 'rgba(255, 255, 255, 0.4)',
+                    : (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.4)'),
                 }}
               />
             </div>
@@ -2751,7 +2760,7 @@ const ChooseYourPath = ({ onInteract }: ChooseYourPathProps) => {
                     style={{
                       color: selectedPath === 'science' || isHoveringScience
                         ? 'rgb(59, 130, 246)'
-                        : 'rgba(255, 255, 255, 0.3)',
+                        : (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)'),
                     }}
                   />
                   {feature}
@@ -2776,7 +2785,7 @@ const ChooseYourPath = ({ onInteract }: ChooseYourPathProps) => {
               <div
                 className="text-sm font-medium transition-opacity duration-300"
                 style={{
-                  color: isHoveringScience ? 'rgb(59, 130, 246)' : 'rgba(255, 255, 255, 0.4)',
+                  color: isHoveringScience ? 'rgb(59, 130, 246)' : (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.4)'),
                   opacity: isHoveringScience ? 1 : 0.6,
                 }}
               >
@@ -2801,13 +2810,13 @@ const ChooseYourPath = ({ onInteract }: ChooseYourPathProps) => {
               background: selectedPath === 'ethics'
                 ? 'rgba(232, 121, 249, 0.15)'
                 : isHoveringEthics
-                ? 'rgba(255, 255, 255, 0.04)'
-                : 'rgba(255, 255, 255, 0.02)',
+                ? (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.04)')
+                : (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.02)' : 'rgba(255, 255, 255, 0.02)'),
               borderColor: selectedPath === 'ethics'
                 ? 'rgba(232, 121, 249, 0.5)'
                 : isHoveringEthics
-                ? 'rgba(255, 255, 255, 0.2)'
-                : 'rgba(255, 255, 255, 0.1)',
+                ? (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.2)')
+                : (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)'),
               backdropFilter: 'blur(20px)',
             }}
           >
@@ -2817,7 +2826,7 @@ const ChooseYourPath = ({ onInteract }: ChooseYourPathProps) => {
               style={{
                 background: selectedPath === 'ethics' || isHoveringEthics
                   ? 'rgba(232, 121, 249, 0.2)'
-                  : 'rgba(255, 255, 255, 0.05)',
+                  : (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)'),
               }}
             >
               <Shield
@@ -2826,7 +2835,7 @@ const ChooseYourPath = ({ onInteract }: ChooseYourPathProps) => {
                 style={{
                   color: selectedPath === 'ethics' || isHoveringEthics
                     ? 'rgb(232, 121, 249)'
-                    : 'rgba(255, 255, 255, 0.4)',
+                    : (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.4)'),
                 }}
               />
             </div>
@@ -2852,7 +2861,7 @@ const ChooseYourPath = ({ onInteract }: ChooseYourPathProps) => {
                     style={{
                       color: selectedPath === 'ethics' || isHoveringEthics
                         ? 'rgb(232, 121, 249)'
-                        : 'rgba(255, 255, 255, 0.3)',
+                        : (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)'),
                     }}
                   />
                   {feature}
@@ -2877,7 +2886,7 @@ const ChooseYourPath = ({ onInteract }: ChooseYourPathProps) => {
               <div
                 className="text-sm font-medium transition-opacity duration-300"
                 style={{
-                  color: isHoveringEthics ? 'rgb(232, 121, 249)' : 'rgba(255, 255, 255, 0.4)',
+                  color: isHoveringEthics ? 'rgb(232, 121, 249)' : (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.4)'),
                   opacity: isHoveringEthics ? 1 : 0.6,
                 }}
               >
@@ -2939,9 +2948,10 @@ const ChooseYourPath = ({ onInteract }: ChooseYourPathProps) => {
 
 interface FirstPersonMemoryProps {
   onInteract: (interaction: string) => void;
+  resolvedTheme?: string;
 }
 
-const FirstPersonMemory = ({ onInteract }: FirstPersonMemoryProps) => {
+const FirstPersonMemory = ({ onInteract, resolvedTheme }: FirstPersonMemoryProps) => {
   const [currentScene, setCurrentScene] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -3062,8 +3072,8 @@ const FirstPersonMemory = ({ onInteract }: FirstPersonMemoryProps) => {
                 whileTap={{ scale: 0.95 }}
                 className="group relative px-8 py-4 rounded-full border transition-all duration-300"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  borderColor: 'rgba(255, 255, 255, 0.2)',
+                  background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.03)' : 'rgba(255, 255, 255, 0.03)',
+                  borderColor: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.2)',
                   backdropFilter: 'blur(20px)',
                 }}
               >
@@ -3177,8 +3187,8 @@ const FirstPersonMemory = ({ onInteract }: FirstPersonMemoryProps) => {
                           background: i === currentScene
                             ? 'rgba(139, 92, 246, 0.8)'
                             : i < currentScene
-                            ? 'rgba(255, 255, 255, 0.3)'
-                            : 'rgba(255, 255, 255, 0.1)',
+                            ? (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)')
+                            : (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)'),
                           transform: i === currentScene ? 'scale(1.5)' : 'scale(1)',
                         }}
                       />

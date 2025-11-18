@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import { Target, Trophy, TrendingUp, CheckCircle, ArrowLeft, ChevronDown, ChevronUp, Circle, Hexagon, Grid3X3, Heart, type LucideIcon } from 'lucide-react';
+import { useTheme } from '@/components/effects/ThemeProvider';
 
 interface StatItem {
   value: string;
@@ -38,6 +39,7 @@ interface ProjectDetails {
 }
 
 export function AirIndiaWork() {
+  const { resolvedTheme } = useTheme();
   const [inView, setInView] = useState(false);
   const [hoveredStat, setHoveredStat] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
@@ -507,7 +509,7 @@ export function AirIndiaWork() {
                   animation: inView ? `statCardReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.3 + index * 0.1}s both` : 'none',
                   boxShadow: isHovered
                     ? `0 20px 40px rgba(${stat.color}, 0.15)`
-                    : '0 4px 8px rgba(0, 0, 0, 0.2)',
+                    : resolvedTheme === 'light' ? '0 4px 8px rgba(0, 0, 0, 0.08)' : '0 4px 8px rgba(0, 0, 0, 0.2)',
                   overflow: 'hidden',
                 }}
               >
@@ -644,7 +646,7 @@ export function AirIndiaWork() {
                     animation: inView ? `scrollRevealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.7 + index * 0.1}s both` : 'none',
                     boxShadow: isHovered
                       ? `0 20px 40px rgba(${card.color}, 0.15)`
-                      : '0 4px 8px rgba(0, 0, 0, 0.2)',
+                      : resolvedTheme === 'light' ? '0 4px 8px rgba(0, 0, 0, 0.08)' : '0 4px 8px rgba(0, 0, 0, 0.2)',
                     overflow: 'hidden',
                   }}
                 >
@@ -759,7 +761,7 @@ export function AirIndiaWork() {
                       transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                       boxShadow: isHovered
                         ? `0 20px 40px rgba(${card.color}, 0.15)`
-                        : '0 4px 8px rgba(0, 0, 0, 0.2)',
+                        : resolvedTheme === 'light' ? '0 4px 8px rgba(0, 0, 0, 0.08)' : '0 4px 8px rgba(0, 0, 0, 0.2)',
                     }}
                   >
                     <div style={{
@@ -1138,7 +1140,7 @@ export function AirIndiaWork() {
                   transform: isHovered ? 'translateY(-8px)' : 'translateY(0)',
                   boxShadow: isHovered
                     ? `0 20px 40px rgba(${project.orbColor}, 0.15)`
-                    : '0 4px 8px rgba(0, 0, 0, 0.2)',
+                    : resolvedTheme === 'light' ? '0 4px 8px rgba(0, 0, 0, 0.08)' : '0 4px 8px rgba(0, 0, 0, 0.2)',
                 }}
               >
                 {/* Animated Outline on Hover */}
