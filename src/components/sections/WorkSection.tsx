@@ -5,6 +5,7 @@ import { ArrowUpRight, Circle, Hexagon, Grid3X3, Heart, ArrowRight, Brain } from
 import Link from 'next/link';
 import { JourneyBadge, RoleBadge } from '@/components/ui';
 import { ProgressiveCounter } from '@/components/ui/ProgressiveDataReveal';
+import { useTheme } from '@/components/effects/ThemeProvider';
 
 interface Project {
   id: number;
@@ -30,6 +31,7 @@ interface WorkSectionProps {
 }
 
 export default function WorkSection({ className = '' }: WorkSectionProps) {
+  const { resolvedTheme } = useTheme();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [cardTilts, setCardTilts] = useState<Record<number, { x: number; y: number }>>({});
   const [inView, setInView] = useState(false);
@@ -376,7 +378,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
             const getStatusColor = () => {
               if (project.status === 'Active') return 'rgba(52, 211, 153, 0.8)';
               if (project.status === 'Research') return 'rgba(251, 191, 36, 0.8)';
-              return 'rgba(255, 255, 255, 0.3)';
+              return resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)';
             };
 
             const cardContent = (
@@ -417,7 +419,7 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     width: '20px',
                     height: '20px',
                     borderRadius: '50%',
-                    background: 'rgba(255, 255, 255, 0.3)',
+                    background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)',
                     animation: 'workRipple 0.6s ease-out',
                     pointerEvents: 'none',
                     zIndex: 100,
@@ -429,7 +431,9 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                   position: 'absolute',
                   inset: 0,
                   borderRadius: '20px',
-                  border: isHovered ? '1px solid transparent' : '1px solid rgba(255, 255, 255, 0.09)',
+                  border: isHovered ? '1px solid transparent' : resolvedTheme === 'light'
+                    ? '1px solid rgba(0, 0, 0, 0.09)'
+                    : '1px solid rgba(255, 255, 255, 0.09)',
                   animation: isHovered ? 'borderShimmer 2s ease-in-out infinite' : 'none',
                   pointerEvents: 'none',
                   zIndex: 10,
@@ -466,9 +470,9 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                   <div style={{
                     position: 'absolute',
                     inset: 0,
-                    background: isHovered
-                      ? 'rgba(255, 255, 255, 0.015)'
-                      : 'rgba(255, 255, 255, 0.003)',
+                    background: resolvedTheme === 'light'
+                      ? (isHovered ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.3)')
+                      : (isHovered ? 'rgba(255, 255, 255, 0.015)' : 'rgba(255, 255, 255, 0.003)'),
                     backdropFilter: 'blur(40px) saturate(150%)',
                     WebkitBackdropFilter: 'blur(40px) saturate(150%)',
                     transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -488,7 +492,9 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     <div style={{
                       position: 'absolute',
                       inset: 0,
-                      background: 'linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.03) 50%, transparent 60%)',
+                      background: resolvedTheme === 'light'
+                        ? 'linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.6) 50%, transparent 60%)'
+                        : 'linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.03) 50%, transparent 60%)',
                       animation: 'workShimmer 1.5s ease-out',
                     }} />
                   )}
@@ -561,7 +567,9 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     right: '1rem',
                     padding: '0.375rem 0.75rem',
                     borderRadius: '10px',
-                    background: 'rgba(255, 255, 255, 0.03)',
+                    background: resolvedTheme === 'light'
+                      ? 'rgba(255, 255, 255, 0.7)'
+                      : 'rgba(255, 255, 255, 0.03)',
                     backdropFilter: 'blur(100px) saturate(150%)',
                     WebkitBackdropFilter: 'blur(100px) saturate(150%)',
                     border: `1px solid ${getStatusColor()}`,
@@ -569,7 +577,9 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                     alignItems: 'center',
                     gap: '0.5rem',
                     transition: 'all 0.3s ease',
-                    boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                    boxShadow: resolvedTheme === 'light'
+                      ? '0px 4px 12px rgba(0, 0, 0, 0.1), 0px 0px 8px rgba(255, 255, 255, 0.8) inset'
+                      : '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
                   }}>
                     <div style={{
                       width: '6px',
@@ -595,16 +605,24 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                   position: 'absolute',
                   inset: 0,
                   top: '180px',
-                  background: 'rgba(255, 255, 255, 0.02)',
+                  background: resolvedTheme === 'light'
+                    ? 'rgba(255, 255, 255, 0.7)'
+                    : 'rgba(255, 255, 255, 0.02)',
                   backdropFilter: 'blur(100px) saturate(200%)',
                   WebkitBackdropFilter: 'blur(100px) saturate(200%)',
-                  border: isHovered ? '1px solid rgba(255, 255, 255, 0.18)' : '1px solid rgba(255, 255, 255, 0.06)',
+                  border: resolvedTheme === 'light'
+                    ? (isHovered ? '1px solid rgba(0, 0, 0, 0.18)' : '1px solid rgba(0, 0, 0, 0.06)')
+                    : (isHovered ? '1px solid rgba(255, 255, 255, 0.18)' : '1px solid rgba(255, 255, 255, 0.06)'),
                   borderTop: 'none',
                   borderRadius: '0 0 20px 20px',
                   transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                  boxShadow: isHovered
-                    ? '0px 20px 60px rgba(0, 0, 0, 0.7), 0px 0px 24px rgba(255, 255, 255, 0.05) inset'
-                    : '0px 12px 40px rgba(0, 0, 0, 0.65), 0px 0px 20px rgba(255, 255, 255, 0.02) inset',
+                  boxShadow: resolvedTheme === 'light'
+                    ? (isHovered
+                      ? '0px 20px 60px rgba(0, 0, 0, 0.15), 0px 0px 24px rgba(255, 255, 255, 0.8) inset'
+                      : '0px 12px 40px rgba(0, 0, 0, 0.1), 0px 0px 20px rgba(255, 255, 255, 0.6) inset')
+                    : (isHovered
+                      ? '0px 20px 60px rgba(0, 0, 0, 0.7), 0px 0px 24px rgba(255, 255, 255, 0.05) inset'
+                      : '0px 12px 40px rgba(0, 0, 0, 0.65), 0px 0px 20px rgba(255, 255, 255, 0.02) inset'),
                 }} />
 
                 {/* Very light translucent overlay */}
@@ -661,17 +679,23 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                       width: '32px',
                       height: '32px',
                       borderRadius: '10px',
-                      background: 'rgba(255, 255, 255, 0.03)',
+                      background: resolvedTheme === 'light'
+                        ? 'rgba(255, 255, 255, 0.7)'
+                        : 'rgba(255, 255, 255, 0.03)',
                       backdropFilter: 'blur(100px) saturate(150%)',
                       WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                      border: resolvedTheme === 'light'
+                        ? '1px solid rgba(0, 0, 0, 0.08)'
+                        : '1px solid rgba(255, 255, 255, 0.08)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                       transform: isHovered ? 'rotate(45deg) scale(1.1)' : 'rotate(0) scale(1)',
                       animation: isHovered ? 'workFloat 3s ease-in-out infinite' : 'none',
-                      boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.3), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                      boxShadow: resolvedTheme === 'light'
+                        ? '0px 4px 12px rgba(0, 0, 0, 0.1), 0px 0px 8px rgba(255, 255, 255, 0.8) inset'
+                        : '0px 4px 12px rgba(0, 0, 0, 0.3), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
                     }}>
                       <ArrowUpRight size={14} style={{
                         color: 'var(--text-secondary)',
@@ -778,10 +802,14 @@ export default function WorkSection({ className = '' }: WorkSectionProps) {
                           style={{
                             padding: '0.25rem 0.625rem',
                             borderRadius: '8px',
-                            background: 'rgba(255, 255, 255, 0.04)',
+                            background: resolvedTheme === 'light'
+                              ? 'rgba(255, 255, 255, 0.6)'
+                              : 'rgba(255, 255, 255, 0.04)',
                             backdropFilter: 'blur(60px) saturate(130%)',
                             WebkitBackdropFilter: 'blur(60px) saturate(130%)',
-                            border: '1px solid rgba(255, 255, 255, 0.08)',
+                            border: resolvedTheme === 'light'
+                              ? '1px solid rgba(0, 0, 0, 0.08)'
+                              : '1px solid rgba(255, 255, 255, 0.08)',
                             fontSize: '0.688rem',
                             fontWeight: '300',
                             color: 'var(--text-secondary)',

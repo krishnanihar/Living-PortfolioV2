@@ -10,6 +10,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ContactChat } from '../ContactChat';
 import { Chatbot } from '../Chatbot';
+import { useTheme } from '@/components/effects/ThemeProvider';
 
 // Register GSAP plugins
 if (typeof window !== 'undefined') {
@@ -17,6 +18,7 @@ if (typeof window !== 'undefined') {
 }
 
 export function JourneyTimeline() {
+  const { resolvedTheme } = useTheme();
   const scrollProgress = useScrollProgress();
   const [visibleMilestones, setVisibleMilestones] = useState<Set<number>>(new Set());
   const [scrolled, setScrolled] = useState(false);
@@ -245,7 +247,7 @@ export function JourneyTimeline() {
         left: 0,
         right: 0,
         height: '2px',
-        background: 'rgba(255, 255, 255, 0.05)',
+        background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)',
         zIndex: 10000,
       }}>
         <div style={{
@@ -273,10 +275,10 @@ export function JourneyTimeline() {
           gap: '0.5rem',
           padding: '0.5rem 1rem',
           borderRadius: '12px',
-          background: 'rgba(255, 255, 255, 0.04)',
+          background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.04)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
+          border: resolvedTheme === 'light' ? '1px solid rgba(0, 0, 0, 0.1)' : '1px solid rgba(255, 255, 255, 0.1)',
           marginBottom: '1.5rem',
           fontSize: '0.875rem',
           color: 'var(--text-secondary)',
@@ -297,7 +299,9 @@ export function JourneyTimeline() {
           fontSize: 'clamp(2.5rem, 8vw, 5rem)',
           fontWeight: '200',
           letterSpacing: '-0.03em',
-          background: 'linear-gradient(135deg, var(--text-primary) 0%, rgba(255, 255, 255, 0.7) 100%)',
+          background: resolvedTheme === 'light'
+            ? 'linear-gradient(135deg, var(--text-primary) 0%, rgba(0, 0, 0, 0.7) 100%)'
+            : 'linear-gradient(135deg, var(--text-primary) 0%, rgba(255, 255, 255, 0.7) 100%)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text',
@@ -335,14 +339,14 @@ export function JourneyTimeline() {
             width: '4px',
             height: '4px',
             borderRadius: '50%',
-            background: 'rgba(255, 255, 255, 0.3)',
+            background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)',
           }} />
           <span>19 Years</span>
           <span style={{
             width: '4px',
             height: '4px',
             borderRadius: '50%',
-            background: 'rgba(255, 255, 255, 0.3)',
+            background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)',
           }} />
           <span>∞ Curiosity</span>
         </div>
@@ -393,7 +397,7 @@ export function JourneyTimeline() {
           top: '8rem',
           bottom: '15rem',
           width: '2px',
-          background: 'rgba(255, 255, 255, 0.1)',
+          background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)',
           transform: 'translateX(-50%)',
           overflow: 'hidden',
         }}>
@@ -484,23 +488,38 @@ export function JourneyTimeline() {
                     aria-label={`${milestone.title} - ${milestone.year}`}
                     style={{
                       position: 'relative',
-                      background: isActive
-                        ? `linear-gradient(135deg, rgba(10, 10, 10, 0.12), rgba(10, 10, 10, 0.08))`
-                        : isHovered
-                        ? `linear-gradient(135deg, rgba(10, 10, 10, 0.08), rgba(10, 10, 10, 0.05))`
-                        : `linear-gradient(135deg, rgba(10, 10, 10, 0.05), rgba(10, 10, 10, 0.03))`,
+                      background: resolvedTheme === 'light'
+                        ? (isActive
+                          ? `linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.85))`
+                          : isHovered
+                          ? `linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.8))`
+                          : `linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.75))`)
+                        : (isActive
+                          ? `linear-gradient(135deg, rgba(10, 10, 10, 0.12), rgba(10, 10, 10, 0.08))`
+                          : isHovered
+                          ? `linear-gradient(135deg, rgba(10, 10, 10, 0.08), rgba(10, 10, 10, 0.05))`
+                          : `linear-gradient(135deg, rgba(10, 10, 10, 0.05), rgba(10, 10, 10, 0.03))`),
                       backdropFilter: `blur(120px) saturate(120%) brightness(1.05)`,
                       WebkitBackdropFilter: `blur(120px) saturate(120%) brightness(1.05)`,
-                      border: `1px solid ${isActive ? 'rgba(255, 255, 255, 0.20)' : isHovered ? 'rgba(255, 255, 255, 0.14)' : 'rgba(255, 255, 255, 0.10)'}`,
+                      border: resolvedTheme === 'light'
+                        ? `1px solid ${isActive ? 'rgba(0, 0, 0, 0.20)' : isHovered ? 'rgba(0, 0, 0, 0.14)' : 'rgba(0, 0, 0, 0.10)'}`
+                        : `1px solid ${isActive ? 'rgba(255, 255, 255, 0.20)' : isHovered ? 'rgba(255, 255, 255, 0.14)' : 'rgba(255, 255, 255, 0.10)'}`,
                       borderRadius: '24px',
                       padding: 0,
                       overflow: 'hidden',
-                      boxShadow: isHovered
-                        ? `0 8px 32px rgba(0, 0, 0, 0.4),
-                           inset 0 1px 1px rgba(255, 255, 255, 0.05)`
-                        : isActive
-                        ? `0 8px 32px rgba(0, 0, 0, 0.4)`
-                        : '0 8px 32px rgba(0, 0, 0, 0.3)',
+                      boxShadow: resolvedTheme === 'light'
+                        ? (isHovered
+                          ? `0 8px 32px rgba(0, 0, 0, 0.15),
+                             inset 0 1px 1px rgba(0, 0, 0, 0.05)`
+                          : isActive
+                          ? `0 8px 32px rgba(0, 0, 0, 0.15)`
+                          : '0 8px 32px rgba(0, 0, 0, 0.1)')
+                        : (isHovered
+                          ? `0 8px 32px rgba(0, 0, 0, 0.4),
+                             inset 0 1px 1px rgba(255, 255, 255, 0.05)`
+                          : isActive
+                          ? `0 8px 32px rgba(0, 0, 0, 0.4)`
+                          : '0 8px 32px rgba(0, 0, 0, 0.3)'),
                       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                       transform: isHovered ? 'scale(1.01)' : 'scale(1)',
                       cursor: 'pointer',
@@ -547,12 +566,12 @@ export function JourneyTimeline() {
                         left: '16px',
                         padding: '8px 16px',
                         borderRadius: '12px',
-                        background: 'rgba(0, 0, 0, 0.4)',
+                        background: resolvedTheme === 'light' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.4)',
                         backdropFilter: 'blur(20px)',
                         WebkitBackdropFilter: 'blur(20px)',
-                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                        border: resolvedTheme === 'light' ? '1px solid rgba(0, 0, 0, 0.15)' : '1px solid rgba(255, 255, 255, 0.15)',
                         fontSize: '0.75rem',
-                        color: 'rgba(255, 255, 255, 0.9)',
+                        color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.9)' : 'rgba(255, 255, 255, 0.9)',
                         fontWeight: 600,
                         letterSpacing: '0.1em',
                         textTransform: 'uppercase',
@@ -579,11 +598,15 @@ export function JourneyTimeline() {
                             background: 'transparent',
                             backdropFilter: 'blur(40px) saturate(150%)',
                             WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-                            border: `2px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.svg' ? '0.12' : '0.10'})`,
+                            border: resolvedTheme === 'light'
+                              ? `2px solid rgba(0, 0, 0, ${milestone.logoFile === 'JNAFAU.svg' ? '0.12' : '0.10'})`
+                              : `2px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.svg' ? '0.12' : '0.10'})`,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            boxShadow: `0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05)`,
+                            boxShadow: resolvedTheme === 'light'
+                              ? `0 8px 24px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(0, 0, 0, 0.05)`
+                              : `0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05)`,
                             transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                           }}>
                             <Image
@@ -603,14 +626,16 @@ export function JourneyTimeline() {
                             width: 'clamp(72px, 8vw, 96px)',
                             height: 'clamp(72px, 8vw, 96px)',
                             borderRadius: '20px',
-                            background: 'rgba(255, 255, 255, 0.12)',
+                            background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.08)' : 'rgba(255, 255, 255, 0.12)',
                             backdropFilter: 'blur(40px) saturate(150%)',
                             WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-                            border: '2px solid rgba(255, 255, 255, 0.18)',
+                            border: resolvedTheme === 'light' ? '2px solid rgba(0, 0, 0, 0.18)' : '2px solid rgba(255, 255, 255, 0.18)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+                            boxShadow: resolvedTheme === 'light'
+                              ? '0 8px 24px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(0, 0, 0, 0.05)'
+                              : '0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
                           }}>
                             <IconComponent
                               size={32}
@@ -651,7 +676,9 @@ export function JourneyTimeline() {
                     {/* Lesson Badge - Moved to top for prominence */}
                     {milestone.lesson && (
                       <div style={{
-                        background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(255, 255, 255, 0.08))',
+                        background: resolvedTheme === 'light'
+                          ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(0, 0, 0, 0.05))'
+                          : 'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(255, 255, 255, 0.08))',
                         border: '2px solid rgba(218, 14, 41, 0.4)',
                         borderRadius: '12px',
                         padding: '1.25rem',
@@ -717,8 +744,8 @@ export function JourneyTimeline() {
                           style={{
                             padding: '0.4rem 1rem',
                             borderRadius: '16px',
-                            background: 'rgba(255, 255, 255, 0.05)',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)',
+                            border: resolvedTheme === 'light' ? '1px solid rgba(0, 0, 0, 0.1)' : '1px solid rgba(255, 255, 255, 0.1)',
                             fontSize: '0.75rem',
                             color: 'var(--text-secondary)',
                             transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -727,12 +754,12 @@ export function JourneyTimeline() {
                           onMouseEnter={(e) => {
                             e.currentTarget.style.background = 'rgba(218, 14, 41, 0.15)';
                             e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
-                            e.currentTarget.style.color = 'rgba(255, 255, 255, 0.95)';
+                            e.currentTarget.style.color = resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.95)' : 'rgba(255, 255, 255, 0.95)';
                             e.currentTarget.style.transform = 'translateY(-2px)';
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                            e.currentTarget.style.background = resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)';
+                            e.currentTarget.style.borderColor = resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)';
                             e.currentTarget.style.color = 'var(--text-secondary)';
                             e.currentTarget.style.transform = 'translateY(0)';
                           }}
@@ -752,7 +779,9 @@ export function JourneyTimeline() {
                           justifyContent: 'space-between',
                           marginTop: '1.5rem',
                           padding: '1rem 1.25rem',
-                          background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))',
+                          background: resolvedTheme === 'light'
+                            ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(0, 0, 0, 0.05))'
+                            : 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))',
                           border: '1px solid rgba(218, 14, 41, 0.3)',
                           borderRadius: '14px',
                           color: 'var(--text-primary)',
@@ -762,13 +791,17 @@ export function JourneyTimeline() {
                           transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(255, 255, 255, 0.08))';
+                          e.currentTarget.style.background = resolvedTheme === 'light'
+                            ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(0, 0, 0, 0.08))'
+                            : 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(255, 255, 255, 0.08))';
                           e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.5)';
                           e.currentTarget.style.transform = 'translateY(-2px)';
                           e.currentTarget.style.boxShadow = '0 8px 24px rgba(218, 14, 41, 0.2)';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))';
+                          e.currentTarget.style.background = resolvedTheme === 'light'
+                            ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(0, 0, 0, 0.05))'
+                            : 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))';
                           e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
                           e.currentTarget.style.transform = 'translateY(0)';
                           e.currentTarget.style.boxShadow = 'none';
@@ -798,8 +831,12 @@ export function JourneyTimeline() {
                   width: isPast || isActive ? '16px' : '12px',
                   height: isPast || isActive ? '16px' : '12px',
                   borderRadius: '50%',
-                  background: isPast || isActive ? 'rgba(218, 14, 41, 0.9)' : 'rgba(255, 255, 255, 0.2)',
-                  border: isPast || isActive ? '2px solid rgba(218, 14, 41, 0.5)' : '2px solid rgba(255, 255, 255, 0.3)',
+                  background: isPast || isActive
+                    ? 'rgba(218, 14, 41, 0.9)'
+                    : (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.2)'),
+                  border: isPast || isActive
+                    ? '2px solid rgba(218, 14, 41, 0.5)'
+                    : (resolvedTheme === 'light' ? '2px solid rgba(0, 0, 0, 0.3)' : '2px solid rgba(255, 255, 255, 0.3)'),
                   boxShadow: isActive ? '0 0 0 8px rgba(218, 14, 41, 0.2)' : 'none',
                   transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                   animation: isActive ? 'dotPulse 2s ease-in-out infinite' : 'none',
@@ -819,23 +856,38 @@ export function JourneyTimeline() {
                     aria-label={`${milestone.title} - ${milestone.year}`}
                     style={{
                       position: 'relative',
-                      background: isActive
-                        ? `linear-gradient(135deg, rgba(10, 10, 10, 0.12), rgba(10, 10, 10, 0.08))`
-                        : isHovered
-                        ? `linear-gradient(135deg, rgba(10, 10, 10, 0.08), rgba(10, 10, 10, 0.05))`
-                        : `linear-gradient(135deg, rgba(10, 10, 10, 0.05), rgba(10, 10, 10, 0.03))`,
+                      background: resolvedTheme === 'light'
+                        ? (isActive
+                          ? `linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.85))`
+                          : isHovered
+                          ? `linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.8))`
+                          : `linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.75))`)
+                        : (isActive
+                          ? `linear-gradient(135deg, rgba(10, 10, 10, 0.12), rgba(10, 10, 10, 0.08))`
+                          : isHovered
+                          ? `linear-gradient(135deg, rgba(10, 10, 10, 0.08), rgba(10, 10, 10, 0.05))`
+                          : `linear-gradient(135deg, rgba(10, 10, 10, 0.05), rgba(10, 10, 10, 0.03))`),
                       backdropFilter: `blur(120px) saturate(120%) brightness(1.05)`,
                       WebkitBackdropFilter: `blur(120px) saturate(120%) brightness(1.05)`,
-                      border: `1px solid ${isActive ? 'rgba(255, 255, 255, 0.20)' : isHovered ? 'rgba(255, 255, 255, 0.14)' : 'rgba(255, 255, 255, 0.10)'}`,
+                      border: resolvedTheme === 'light'
+                        ? `1px solid ${isActive ? 'rgba(0, 0, 0, 0.20)' : isHovered ? 'rgba(0, 0, 0, 0.14)' : 'rgba(0, 0, 0, 0.10)'}`
+                        : `1px solid ${isActive ? 'rgba(255, 255, 255, 0.20)' : isHovered ? 'rgba(255, 255, 255, 0.14)' : 'rgba(255, 255, 255, 0.10)'}`,
                       borderRadius: '24px',
                       padding: 0,
                       overflow: 'hidden',
-                      boxShadow: isHovered
-                        ? `0 8px 32px rgba(0, 0, 0, 0.4),
-                           inset 0 1px 1px rgba(255, 255, 255, 0.05)`
-                        : isActive
-                        ? `0 8px 32px rgba(0, 0, 0, 0.4)`
-                        : '0 8px 32px rgba(0, 0, 0, 0.3)',
+                      boxShadow: resolvedTheme === 'light'
+                        ? (isHovered
+                          ? `0 8px 32px rgba(0, 0, 0, 0.15),
+                             inset 0 1px 1px rgba(0, 0, 0, 0.05)`
+                          : isActive
+                          ? `0 8px 32px rgba(0, 0, 0, 0.15)`
+                          : '0 8px 32px rgba(0, 0, 0, 0.1)')
+                        : (isHovered
+                          ? `0 8px 32px rgba(0, 0, 0, 0.4),
+                             inset 0 1px 1px rgba(255, 255, 255, 0.05)`
+                          : isActive
+                          ? `0 8px 32px rgba(0, 0, 0, 0.4)`
+                          : '0 8px 32px rgba(0, 0, 0, 0.3)'),
                       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                       transform: isHovered ? 'scale(1.01)' : 'scale(1)',
                       cursor: 'pointer',
@@ -882,12 +934,12 @@ export function JourneyTimeline() {
                         left: '16px',
                         padding: '8px 16px',
                         borderRadius: '12px',
-                        background: 'rgba(0, 0, 0, 0.4)',
+                        background: resolvedTheme === 'light' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.4)',
                         backdropFilter: 'blur(20px)',
                         WebkitBackdropFilter: 'blur(20px)',
-                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                        border: resolvedTheme === 'light' ? '1px solid rgba(0, 0, 0, 0.15)' : '1px solid rgba(255, 255, 255, 0.15)',
                         fontSize: '0.75rem',
-                        color: 'rgba(255, 255, 255, 0.9)',
+                        color: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.9)' : 'rgba(255, 255, 255, 0.9)',
                         fontWeight: 600,
                         letterSpacing: '0.1em',
                         textTransform: 'uppercase',
@@ -914,11 +966,15 @@ export function JourneyTimeline() {
                             background: 'transparent',
                             backdropFilter: 'blur(40px) saturate(150%)',
                             WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-                            border: `2px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.svg' ? '0.12' : '0.10'})`,
+                            border: resolvedTheme === 'light'
+                              ? `2px solid rgba(0, 0, 0, ${milestone.logoFile === 'JNAFAU.svg' ? '0.12' : '0.10'})`
+                              : `2px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.svg' ? '0.12' : '0.10'})`,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            boxShadow: `0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05)`,
+                            boxShadow: resolvedTheme === 'light'
+                              ? `0 8px 24px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(0, 0, 0, 0.05)`
+                              : `0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05)`,
                             transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                           }}>
                             <Image
@@ -938,14 +994,16 @@ export function JourneyTimeline() {
                             width: 'clamp(72px, 8vw, 96px)',
                             height: 'clamp(72px, 8vw, 96px)',
                             borderRadius: '20px',
-                            background: 'rgba(255, 255, 255, 0.12)',
+                            background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.08)' : 'rgba(255, 255, 255, 0.12)',
                             backdropFilter: 'blur(40px) saturate(150%)',
                             WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-                            border: '2px solid rgba(255, 255, 255, 0.18)',
+                            border: resolvedTheme === 'light' ? '2px solid rgba(0, 0, 0, 0.18)' : '2px solid rgba(255, 255, 255, 0.18)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+                            boxShadow: resolvedTheme === 'light'
+                              ? '0 8px 24px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(0, 0, 0, 0.05)'
+                              : '0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
                           }}>
                             <IconComponent
                               size={32}
@@ -1025,7 +1083,9 @@ export function JourneyTimeline() {
                         {/* Lesson Badge - Moved to top for prominence */}
                         {milestone.lesson && (
                       <div style={{
-                        background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(255, 255, 255, 0.08))',
+                        background: resolvedTheme === 'light'
+                          ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(0, 0, 0, 0.05))'
+                          : 'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(255, 255, 255, 0.08))',
                         border: '2px solid rgba(218, 14, 41, 0.4)',
                         borderRadius: '12px',
                         padding: '1.25rem',
@@ -1091,8 +1151,8 @@ export function JourneyTimeline() {
                           style={{
                             padding: '0.4rem 1rem',
                             borderRadius: '16px',
-                            background: 'rgba(255, 255, 255, 0.05)',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)',
+                            border: resolvedTheme === 'light' ? '1px solid rgba(0, 0, 0, 0.1)' : '1px solid rgba(255, 255, 255, 0.1)',
                             fontSize: '0.75rem',
                             color: 'var(--text-secondary)',
                             transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -1101,12 +1161,12 @@ export function JourneyTimeline() {
                           onMouseEnter={(e) => {
                             e.currentTarget.style.background = 'rgba(218, 14, 41, 0.15)';
                             e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
-                            e.currentTarget.style.color = 'rgba(255, 255, 255, 0.95)';
+                            e.currentTarget.style.color = resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.95)' : 'rgba(255, 255, 255, 0.95)';
                             e.currentTarget.style.transform = 'translateY(-2px)';
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                            e.currentTarget.style.background = resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)';
+                            e.currentTarget.style.borderColor = resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)';
                             e.currentTarget.style.color = 'var(--text-secondary)';
                             e.currentTarget.style.transform = 'translateY(0)';
                           }}

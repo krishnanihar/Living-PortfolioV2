@@ -3,12 +3,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ArrowRight, GraduationCap, Briefcase, Star, Building2, Sparkles, Code, Palette, Mail } from 'lucide-react';
+import { useTheme } from '@/components/effects/ThemeProvider';
 
 interface SimpleAboutSectionProps {
   className?: string;
 }
 
 export default function SimpleAboutSection({ className = '' }: SimpleAboutSectionProps) {
+  const { resolvedTheme } = useTheme();
   const [isHovered, setIsHovered] = useState(false);
   const [hoveredMilestone, setHoveredMilestone] = useState<number | null>(null);
   const [hoveredSkillTag, setHoveredSkillTag] = useState<string | null>(null);
@@ -326,7 +328,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
             <div style={{
               padding: '0.5rem 1rem',
               borderRadius: '16px',
-              background: 'rgba(255, 255, 255, 0.04)',
+              background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.04)',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
               border: '1px solid rgba(251, 191, 36, 0.2)',
@@ -374,21 +376,32 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
             {/* Layer 2: Frosted Glass Panel with Enhanced Shadow */}
             <div style={{
               position: 'relative',
-              background: isHovered
-                ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)'
-                : 'linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.04) 100%)',
+              background: resolvedTheme === 'light'
+                ? (isHovered
+                  ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 100%)'
+                  : 'linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.75) 100%)')
+                : (isHovered
+                  ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)'
+                  : 'linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.04) 100%)'),
               backdropFilter: 'blur(40px) saturate(140%) brightness(0.95)',
               WebkitBackdropFilter: 'blur(40px) saturate(140%) brightness(0.95)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              border: resolvedTheme === 'light' ? '1px solid rgba(0, 0, 0, 0.1)' : '1px solid rgba(255, 255, 255, 0.1)',
               borderRadius: '28px',
               padding: 'clamp(2rem, 4vw, 3rem)',
               transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
               boxShadow: isHovered
-                ? `0 8px 32px rgba(0, 0, 0, 0.15),
-                   inset 0 1px 0 rgba(255, 255, 255, 0.05),
-                   0 0 80px rgba(251, 191, 36, 0.08)`
-                : `0 4px 16px rgba(0, 0, 0, 0.1),
-                   inset 0 1px 0 rgba(255, 255, 255, 0.02)`,
+                ? (resolvedTheme === 'light'
+                  ? `0 8px 32px rgba(0, 0, 0, 0.15),
+                     inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                     0 0 80px rgba(251, 191, 36, 0.08)`
+                  : `0 8px 32px rgba(0, 0, 0, 0.15),
+                     inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                     0 0 80px rgba(251, 191, 36, 0.08)`)
+                : (resolvedTheme === 'light'
+                  ? `0 4px 16px rgba(0, 0, 0, 0.1),
+                     inset 0 1px 0 rgba(255, 255, 255, 0.6)`
+                  : `0 4px 16px rgba(0, 0, 0, 0.1),
+                     inset 0 1px 0 rgba(255, 255, 255, 0.02)`),
               overflow: 'hidden',
             }}>
 
@@ -396,7 +409,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
               <p style={{
                 fontSize: 'clamp(0.938rem, 2vw, 1.125rem)',
                 fontWeight: '300',
-                color: 'rgba(255, 255, 255, 0.9)',
+                color: 'var(--text-primary)',
                 lineHeight: '1.7',
                 marginBottom: 'clamp(2rem, 4vw, 3rem)',
                 maxWidth: '900px',
@@ -450,7 +463,9 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                           borderRadius: '12px',
                           background: isFactHovered
                             ? `linear-gradient(135deg, rgba(${fact.color}, 0.10), rgba(${fact.color}, 0.04))`
-                            : `linear-gradient(135deg, rgba(${fact.color}, 0.08), rgba(255, 255, 255, 0.04))`,
+                            : (resolvedTheme === 'light'
+                              ? `linear-gradient(135deg, rgba(${fact.color}, 0.08), rgba(0, 0, 0, 0.04))`
+                              : `linear-gradient(135deg, rgba(${fact.color}, 0.08), rgba(255, 255, 255, 0.04))`),
                           backdropFilter: 'blur(20px)',
                           WebkitBackdropFilter: 'blur(20px)',
                           border: `1px solid rgba(${fact.color}, ${isFactHovered ? '0.35' : '0.2'})`,
@@ -499,7 +514,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                             <div style={{
                               fontSize: '0.813rem',
                               fontWeight: '300',
-                              color: 'rgba(255, 255, 255, 0.85)',
+                              color: 'var(--text-primary)',
                               lineHeight: '1.5',
                               transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                             }}>
@@ -547,7 +562,9 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                               borderRadius: '10px',
                               background: isTagHovered
                                 ? 'linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(245, 158, 11, 0.08))'
-                                : 'linear-gradient(135deg, var(--surface-primary), rgba(255, 255, 255, 0.03))',
+                                : (resolvedTheme === 'light'
+                                  ? 'linear-gradient(135deg, var(--surface-primary), rgba(0, 0, 0, 0.03))'
+                                  : 'linear-gradient(135deg, var(--surface-primary), rgba(255, 255, 255, 0.03))'),
                               backdropFilter: 'blur(20px)',
                               WebkitBackdropFilter: 'blur(20px)',
                               border: isTagHovered
@@ -555,7 +572,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                                 : '1px solid var(--border-primary)',
                               fontSize: '0.75rem',
                               fontWeight: '400',
-                              color: isTagHovered ? 'rgba(251, 191, 36, 1)' : 'rgba(255, 255, 255, 0.75)',
+                              color: isTagHovered ? 'rgba(251, 191, 36, 1)' : 'var(--text-secondary)',
                               letterSpacing: '0.01em',
                               cursor: 'pointer',
                               textDecoration: 'none',
@@ -567,10 +584,16 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                                 ? 'translateY(-2px) scale(1.04)'
                                 : 'translateY(0) scale(1)',
                               boxShadow: isTagHovered
-                                ? `0 4px 12px rgba(251, 191, 36, 0.15),
-                                   inset 0 1px 0 rgba(255, 255, 255, 0.08)`
-                                : `0 1px 3px rgba(0, 0, 0, 0.08),
-                                   inset 0 1px 0 rgba(255, 255, 255, 0.02)`,
+                                ? (resolvedTheme === 'light'
+                                  ? `0 4px 12px rgba(251, 191, 36, 0.15),
+                                     inset 0 1px 0 rgba(255, 255, 255, 0.8)`
+                                  : `0 4px 12px rgba(251, 191, 36, 0.15),
+                                     inset 0 1px 0 rgba(255, 255, 255, 0.08)`)
+                                : (resolvedTheme === 'light'
+                                  ? `0 1px 3px rgba(0, 0, 0, 0.08),
+                                     inset 0 1px 0 rgba(255, 255, 255, 0.6)`
+                                  : `0 1px 3px rgba(0, 0, 0, 0.08),
+                                     inset 0 1px 0 rgba(255, 255, 255, 0.02)`),
                               opacity: inView ? 1 : 0,
                               animationDelay: `${0.7 + index * 0.05}s`,
                               animationName: inView ? 'factCardReveal' : 'none',
@@ -775,7 +798,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                               }}>
                                 <span style={{
                                   fontSize: '0.688rem',
-                                  color: 'rgba(255, 255, 255, 0.6)',
+                                  color: 'var(--text-muted)',
                                   fontWeight: '400',
                                   letterSpacing: '0.05em',
                                   opacity: isMilestoneHovered ? 1 : 0.8,
@@ -786,7 +809,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                                 <span style={{
                                   fontSize: '0.875rem',
                                   fontWeight: '400',
-                                  color: 'rgba(255, 255, 255, 0.9)',
+                                  color: 'var(--text-primary)',
                                   opacity: isMilestoneHovered ? 1 : 0.85,
                                   transition: 'all 0.3s ease',
                                 }}>
@@ -848,7 +871,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                               borderRadius: '4px',
                               background: activeMilestoneIndex === index
                                 ? 'var(--brand-red)'
-                                : 'rgba(255, 255, 255, 0.2)',
+                                : (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.2)'),
                               border: 'none',
                               cursor: 'pointer',
                               transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -920,7 +943,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                       background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(218, 14, 41, 0.12))',
                       border: '1.5px solid rgba(218, 14, 41, 0.4)',
                       borderRadius: '16px',
-                      color: 'rgba(255, 255, 255, 0.95)',
+                      color: 'var(--text-primary)',
                       textDecoration: 'none',
                       fontSize: '0.875rem',
                       fontWeight: '500',
@@ -976,7 +999,9 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                       alignItems: 'center',
                       gap: '0.5rem',
                       padding: '0.75rem 1.5rem',
-                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(255, 255, 255, 0.04))',
+                      background: resolvedTheme === 'light'
+                        ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(0, 0, 0, 0.04))'
+                        : 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(255, 255, 255, 0.04))',
                       border: '1px solid rgba(59, 130, 246, 0.25)',
                       borderRadius: '16px',
                       color: 'var(--text-primary)',
@@ -986,13 +1011,17 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(255, 255, 255, 0.06))';
+                      e.currentTarget.style.background = resolvedTheme === 'light'
+                        ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(0, 0, 0, 0.06))'
+                        : 'linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(255, 255, 255, 0.06))';
                       e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.4)';
                       e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
                       e.currentTarget.style.boxShadow = '0 12px 32px rgba(59, 130, 246, 0.15)';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(255, 255, 255, 0.04))';
+                      e.currentTarget.style.background = resolvedTheme === 'light'
+                        ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(0, 0, 0, 0.04))'
+                        : 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(255, 255, 255, 0.04))';
                       e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.25)';
                       e.currentTarget.style.transform = 'translateY(0) scale(1)';
                       e.currentTarget.style.boxShadow = 'none';

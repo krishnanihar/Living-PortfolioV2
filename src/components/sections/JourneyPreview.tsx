@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Compass, Sparkles, GraduationCap, Briefcase, ArrowUpRight } from 'lucide-react';
+import { useTheme } from '@/components/effects/ThemeProvider';
 
 interface Milestone {
   year: string;
@@ -18,6 +19,7 @@ interface Milestone {
 }
 
 export default function JourneyPreview() {
+  const { resolvedTheme } = useTheme();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [cardTilts, setCardTilts] = useState<Record<number, { x: number; y: number }>>({});
@@ -142,7 +144,7 @@ export default function JourneyPreview() {
   const getStatusColor = (status: string) => {
     if (status === 'Current') return 'rgba(52, 211, 153, 0.8)';
     if (status === 'Education') return 'rgba(251, 191, 36, 0.8)';
-    return 'rgba(255, 255, 255, 0.3)';
+    return resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)';
   };
 
   return (
@@ -283,14 +285,16 @@ export default function JourneyPreview() {
               width: '32px',
               height: '32px',
               borderRadius: '50%',
-              background: 'rgba(255, 255, 255, 0.03)',
+              background: 'var(--surface-primary)',
               backdropFilter: 'blur(100px) saturate(150%)',
               WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
+              border: '1px solid var(--border-primary)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
+              boxShadow: resolvedTheme === 'light'
+                ? '0px 8px 30px rgba(0, 0, 0, 0.08), 0px 0px 12px rgba(255, 255, 255, 0.5) inset'
+                : '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
             }}>
               <Compass size={16} style={{ color: 'rgba(218, 14, 41, 0.8)' }} />
             </div>
@@ -305,15 +309,17 @@ export default function JourneyPreview() {
             <div style={{
               padding: '0.375rem 0.875rem',
               borderRadius: '15px',
-              background: 'rgba(255, 255, 255, 0.04)',
+              background: 'var(--surface-primary)',
               backdropFilter: 'blur(100px) saturate(150%)',
               WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
+              border: '1px solid var(--border-primary)',
               fontSize: '0.75rem',
               fontWeight: '300',
               color: 'var(--text-secondary)',
               letterSpacing: '0.02em',
-              boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+              boxShadow: resolvedTheme === 'light'
+                ? '0px 4px 12px rgba(0, 0, 0, 0.08), 0px 0px 8px rgba(255, 255, 255, 0.5) inset'
+                : '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
             }}>
               {milestones.length} Milestones
             </div>
@@ -379,7 +385,7 @@ export default function JourneyPreview() {
                     width: '20px',
                     height: '20px',
                     borderRadius: '50%',
-                    background: 'rgba(255, 255, 255, 0.3)',
+                    background: resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)',
                     animation: 'journeyRipple 0.6s ease-out',
                     pointerEvents: 'none',
                     zIndex: 100,
@@ -391,7 +397,7 @@ export default function JourneyPreview() {
                   position: 'absolute',
                   inset: 0,
                   borderRadius: '20px',
-                  border: isHovered ? '1px solid transparent' : '1px solid rgba(255, 255, 255, 0.09)',
+                  border: isHovered ? '1px solid transparent' : '1px solid var(--border-primary)',
                   animation: isHovered ? 'borderShimmer 2s ease-in-out infinite' : 'none',
                   pointerEvents: 'none',
                   zIndex: 10,
@@ -433,12 +439,14 @@ export default function JourneyPreview() {
                       height: 'clamp(88px, 10vw, 112px)',
                       borderRadius: '20px',
                       background: milestone.logoFile
-                        ? (milestone.logoFile === 'JNAFAU.svg'
-                          ? 'rgba(255, 255, 255, 0.15)'
-                          : 'rgba(255, 255, 255, 0.10)')
+                        ? (resolvedTheme === 'light'
+                          ? (milestone.logoFile === 'JNAFAU.svg' ? 'rgba(0, 0, 0, 0.08)' : 'rgba(0, 0, 0, 0.05)')
+                          : (milestone.logoFile === 'JNAFAU.svg' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.10)'))
                         : `${milestone.color}15`,
                       border: milestone.logoFile
-                        ? `1px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.svg' ? '0.20' : '0.18'})`
+                        ? (resolvedTheme === 'light'
+                          ? `1px solid rgba(0, 0, 0, ${milestone.logoFile === 'JNAFAU.svg' ? '0.15' : '0.12'})`
+                          : `1px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.svg' ? '0.20' : '0.18'})`)
                         : `1px solid ${milestone.color}40`,
                       display: 'flex',
                       alignItems: 'center',
@@ -448,9 +456,13 @@ export default function JourneyPreview() {
                       padding: milestone.logoFile ? '18px' : '0',
                       backdropFilter: milestone.logoFile ? 'blur(20px) saturate(140%)' : 'none',
                       boxShadow: milestone.logoFile
-                        ? (milestone.logoFile === 'JNAFAU.svg'
-                          ? 'inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.2)'
-                          : '0 4px 16px rgba(0, 0, 0, 0.2)')
+                        ? (resolvedTheme === 'light'
+                          ? (milestone.logoFile === 'JNAFAU.svg'
+                            ? 'inset 0 0 0 1px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.08)'
+                            : '0 4px 16px rgba(0, 0, 0, 0.08)')
+                          : (milestone.logoFile === 'JNAFAU.svg'
+                            ? 'inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.2)'
+                            : '0 4px 16px rgba(0, 0, 0, 0.2)'))
                         : 'none',
                       transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                     }}>
@@ -477,8 +489,8 @@ export default function JourneyPreview() {
                     position: 'absolute',
                     inset: 0,
                     background: isHovered
-                      ? 'rgba(255, 255, 255, 0.02)'
-                      : 'rgba(255, 255, 255, 0.005)',
+                      ? (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.02)' : 'rgba(255, 255, 255, 0.02)')
+                      : (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.005)' : 'rgba(255, 255, 255, 0.005)'),
                     backdropFilter: 'blur(30px) saturate(120%)',
                     WebkitBackdropFilter: 'blur(30px) saturate(120%)',
                     transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -488,7 +500,9 @@ export default function JourneyPreview() {
                   <div style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.02) 80%, rgba(0, 0, 0, 0.05) 100%)',
+                    background: resolvedTheme === 'light'
+                      ? 'linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.02) 80%, rgba(0, 0, 0, 0.05) 100%)'
+                      : 'linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.02) 80%, rgba(0, 0, 0, 0.05) 100%)',
                     pointerEvents: 'none',
                     opacity: 0.4,
                   }} />
@@ -498,7 +512,9 @@ export default function JourneyPreview() {
                     <div style={{
                       position: 'absolute',
                       inset: 0,
-                      background: 'linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.03) 50%, transparent 60%)',
+                      background: resolvedTheme === 'light'
+                        ? 'linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.4) 50%, transparent 60%)'
+                        : 'linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.03) 50%, transparent 60%)',
                       animation: 'journeyShimmer 1.5s ease-out',
                     }} />
                   )}
@@ -510,7 +526,7 @@ export default function JourneyPreview() {
                     right: '1rem',
                     padding: '0.375rem 0.75rem',
                     borderRadius: '10px',
-                    background: 'rgba(255, 255, 255, 0.03)',
+                    background: 'var(--surface-primary)',
                     backdropFilter: 'blur(100px) saturate(150%)',
                     WebkitBackdropFilter: 'blur(100px) saturate(150%)',
                     border: `1px solid ${getStatusColor(milestone.status)}`,
@@ -518,7 +534,9 @@ export default function JourneyPreview() {
                     alignItems: 'center',
                     gap: '0.5rem',
                     transition: 'all 0.3s ease',
-                    boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                    boxShadow: resolvedTheme === 'light'
+                      ? '0px 4px 12px rgba(0, 0, 0, 0.08), 0px 0px 8px rgba(255, 255, 255, 0.5) inset'
+                      : '0px 4px 12px rgba(0, 0, 0, 0.25), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
                   }}>
                     <div style={{
                       width: '6px',
@@ -544,16 +562,22 @@ export default function JourneyPreview() {
                   position: 'absolute',
                   inset: 0,
                   top: '180px',
-                  background: 'rgba(137, 137, 137, 0.05)',
+                  background: 'var(--surface-secondary)',
                   backdropFilter: 'blur(75px) saturate(180%)',
                   WebkitBackdropFilter: 'blur(75px) saturate(180%)',
-                  border: isHovered ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(255, 255, 255, 0.09)',
+                  border: isHovered
+                    ? (resolvedTheme === 'light' ? '1px solid rgba(0, 0, 0, 0.15)' : '1px solid rgba(255, 255, 255, 0.12)')
+                    : '1px solid var(--border-primary)',
                   borderTop: 'none',
                   borderRadius: '0 0 20px 20px',
                   transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                   boxShadow: isHovered
-                    ? '0px 16px 48px rgba(0, 0, 0, 0.5), 0px 0px 16px rgba(255, 255, 255, 0.04) inset'
-                    : '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
+                    ? (resolvedTheme === 'light'
+                      ? '0px 16px 48px rgba(0, 0, 0, 0.12), 0px 0px 16px rgba(255, 255, 255, 0.6) inset'
+                      : '0px 16px 48px rgba(0, 0, 0, 0.5), 0px 0px 16px rgba(255, 255, 255, 0.04) inset')
+                    : (resolvedTheme === 'light'
+                      ? '0px 8px 30px rgba(0, 0, 0, 0.08), 0px 0px 12px rgba(255, 255, 255, 0.5) inset'
+                      : '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset'),
                 }} />
 
                 {/* Translucent overlay */}
@@ -561,7 +585,9 @@ export default function JourneyPreview() {
                   position: 'absolute',
                   inset: 0,
                   top: '180px',
-                  background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.02) 100%)',
+                  background: resolvedTheme === 'light'
+                    ? 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.02) 100%)'
+                    : 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.02) 100%)',
                   pointerEvents: 'none',
                   opacity: isHovered ? 0.1 : 0.2,
                   transition: 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -610,17 +636,19 @@ export default function JourneyPreview() {
                       width: '32px',
                       height: '32px',
                       borderRadius: '10px',
-                      background: 'rgba(255, 255, 255, 0.03)',
+                      background: 'var(--surface-primary)',
                       backdropFilter: 'blur(100px) saturate(150%)',
                       WebkitBackdropFilter: 'blur(100px) saturate(150%)',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                      border: '1px solid var(--border-primary)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                       transform: isHovered ? 'rotate(45deg) scale(1.1)' : 'rotate(0) scale(1)',
                       animation: isHovered ? 'journeyFloat 3s ease-in-out infinite' : 'none',
-                      boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.3), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
+                      boxShadow: resolvedTheme === 'light'
+                        ? '0px 4px 12px rgba(0, 0, 0, 0.08), 0px 0px 8px rgba(255, 255, 255, 0.5) inset'
+                        : '0px 4px 12px rgba(0, 0, 0, 0.3), 0px 0px 8px rgba(255, 255, 255, 0.02) inset',
                     }}>
                       <ArrowUpRight size={14} style={{
                         color: 'var(--text-secondary)',
@@ -659,10 +687,10 @@ export default function JourneyPreview() {
                           style={{
                             padding: '0.75rem',
                             borderRadius: '8px',
-                            background: 'rgba(255, 255, 255, 0.04)',
+                            background: 'var(--surface-primary)',
                             backdropFilter: 'blur(60px) saturate(130%)',
                             WebkitBackdropFilter: 'blur(60px) saturate(130%)',
-                            border: '1px solid rgba(255, 255, 255, 0.08)',
+                            border: '1px solid var(--border-primary)',
                             transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${idx * 0.05}s`,
                             transform: isHovered ? 'translateY(-1px)' : 'translateY(0)',
                           }}
@@ -709,7 +737,7 @@ export default function JourneyPreview() {
                 overflow: 'hidden',
                 padding: '0.875rem 2rem',
                 borderRadius: '28px',
-                background: 'rgba(255, 255, 255, 0.04)',
+                background: 'var(--surface-primary)',
                 backdropFilter: 'blur(30px)',
                 WebkitBackdropFilter: 'blur(30px)',
                 border: '1px solid var(--border-primary)',
@@ -724,12 +752,12 @@ export default function JourneyPreview() {
                 transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                e.currentTarget.style.background = resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.08)' : 'rgba(255, 255, 255, 0.08)';
                 e.currentTarget.style.borderColor = 'var(--border-hover)';
                 e.currentTarget.style.transform = 'scale(1.05)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                e.currentTarget.style.background = 'var(--surface-primary)';
                 e.currentTarget.style.borderColor = 'var(--border-primary)';
                 e.currentTarget.style.transform = 'scale(1)';
               }}
