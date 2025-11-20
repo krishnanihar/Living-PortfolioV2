@@ -3,10 +3,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { BookOpen, Lightbulb, Box, Wrench, Home, Sparkles, Cpu, TestTube, Circle, Hexagon, Heart, ArrowLeft, type LucideIcon } from 'lucide-react';
-import { useTheme } from '@/components/effects/ThemeProvider';
 
 export function MetamorphicFractalWork() {
-  const { resolvedTheme } = useTheme();
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const [visibleElements, setVisibleElements] = useState(new Set<string>());
@@ -171,7 +169,7 @@ export function MetamorphicFractalWork() {
           min-height: 100vh;
           padding: 60px 24px;
           overflow: hidden;
-          background: radial-gradient(ellipse at top center, ${resolvedTheme === 'light' ? 'rgba(181,131,255,.15)' : 'rgba(181,131,255,.08)'} 0%, transparent 50%);
+          background: radial-gradient(ellipse at top center, rgba(181,131,255,.08) 0%, transparent 50%);
         }
 
         .psych-hero-content {
@@ -246,7 +244,7 @@ export function MetamorphicFractalWork() {
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
-          opacity: ${resolvedTheme === 'light' ? '.25' : '.18'};
+          opacity: .18;
           animation: psych-hue 12s linear infinite;
         }
 
@@ -288,8 +286,8 @@ export function MetamorphicFractalWork() {
           border-radius: 100px;
           background: linear-gradient(90deg,
             transparent,
-            ${resolvedTheme === 'light' ? 'rgba(181, 131, 255, 0.4)' : 'rgba(181, 131, 255, 0.3)'},
-            ${resolvedTheme === 'light' ? 'rgba(0, 255, 255, 0.4)' : 'rgba(0, 255, 255, 0.3)'},
+            rgba(181, 131, 255, 0.3),
+            rgba(0, 255, 255, 0.3),
             transparent
           );
           transform: translateX(-100%);
@@ -302,38 +300,38 @@ export function MetamorphicFractalWork() {
 
         .psych-btn:hover {
           transform: translateY(-2px);
-          border-color: ${resolvedTheme === 'light' ? 'rgba(181,131,255,.4)' : 'rgba(181,131,255,.3)'};
+          border-color: rgba(181,131,255,.3);
           background: var(--surface-secondary);
-          box-shadow: 0 10px 30px ${resolvedTheme === 'light' ? 'rgba(181, 131, 255, 0.2)' : 'rgba(181, 131, 255, 0.15)'};
+          box-shadow: 0 10px 30px rgba(181, 131, 255, 0.15);
         }
 
         .psych-btn.primary {
-          background: radial-gradient(100% 100% at 0% 0%, ${resolvedTheme === 'light' ? 'rgba(181,131,255,.2)' : 'rgba(181,131,255,.15)'}, transparent);
-          border-color: ${resolvedTheme === 'light' ? 'rgba(181,131,255,.4)' : 'rgba(181,131,255,.3)'};
+          background: radial-gradient(100% 100% at 0% 0%, rgba(181,131,255,.15), transparent);
+          border-color: rgba(181,131,255,.3);
         }
 
         .psych-btn.primary::before {
           background: linear-gradient(90deg,
             transparent,
-            ${resolvedTheme === 'light' ? 'rgba(255, 0, 122, 0.4)' : 'rgba(255, 0, 122, 0.3)'},
-            ${resolvedTheme === 'light' ? 'rgba(255, 184, 0, 0.4)' : 'rgba(255, 184, 0, 0.3)'},
-            ${resolvedTheme === 'light' ? 'rgba(0, 255, 255, 0.4)' : 'rgba(0, 255, 255, 0.3)'},
+            rgba(255, 0, 122, 0.3),
+            rgba(255, 184, 0, 0.3),
+            rgba(0, 255, 255, 0.3),
             transparent
           );
         }
 
         .psych-btn.primary:hover {
-          background: radial-gradient(100% 100% at 0% 0%, ${resolvedTheme === 'light' ? 'rgba(181,131,255,.3)' : 'rgba(181,131,255,.25)'}, transparent);
-          border-color: ${resolvedTheme === 'light' ? 'rgba(181,131,255,.6)' : 'rgba(181,131,255,.5)'};
-          box-shadow: 0 10px 40px ${resolvedTheme === 'light' ? 'rgba(181, 131, 255, 0.3)' : 'rgba(181, 131, 255, 0.25)'};
+          background: radial-gradient(100% 100% at 0% 0%, rgba(181,131,255,.25), transparent);
+          border-color: rgba(181,131,255,.5);
+          box-shadow: 0 10px 40px rgba(181, 131, 255, 0.25);
         }
 
         .psych-ribbon {
           position: absolute;
           inset: auto -20vw -50% -20vw;
           height: 60vh;
-          background: radial-gradient(120% 60% at 50% 50%, ${resolvedTheme === 'light' ? 'rgba(181,131,255,.15)' : 'rgba(181,131,255,.08)'}, transparent 60%),
-            conic-gradient(from 90deg at 50% 50%, ${resolvedTheme === 'light' ? 'rgba(255,0,122,.12)' : 'rgba(255,0,122,.08)'}, ${resolvedTheme === 'light' ? 'rgba(0,255,255,.1)' : 'rgba(0,255,255,.06)'}, ${resolvedTheme === 'light' ? 'rgba(0,255,170,.12)' : 'rgba(0,255,170,.08)'}, ${resolvedTheme === 'light' ? 'rgba(255,184,0,.12)' : 'rgba(255,184,0,.08)'}, ${resolvedTheme === 'light' ? 'rgba(255,0,122,.12)' : 'rgba(255,0,122,.08)'});
+          background: radial-gradient(120% 60% at 50% 50%, rgba(181,131,255,.08), transparent 60%),
+            conic-gradient(from 90deg at 50% 50%, rgba(255,0,122,.08), rgba(0,255,255,.06), rgba(0,255,170,.08), rgba(255,184,0,.08), rgba(255,0,122,.08));
           filter: blur(100px) saturate(130%);
           opacity: .5;
           pointer-events: none;
@@ -350,8 +348,8 @@ export function MetamorphicFractalWork() {
           height: 200px;
           background: linear-gradient(to bottom,
             transparent 0%,
-            ${resolvedTheme === 'light' ? 'rgba(181,131,255,.08)' : 'rgba(181,131,255,.03)'} 30%,
-            ${resolvedTheme === 'light' ? 'rgba(181,131,255,.1)' : 'rgba(181,131,255,.05)'} 60%,
+            rgba(181,131,255,.03) 30%,
+            rgba(181,131,255,.05) 60%,
             transparent 100%
           );
           margin-top: -100px;
@@ -386,13 +384,13 @@ export function MetamorphicFractalWork() {
           overflow: hidden;
           background: var(--surface-primary);
           border: 1px solid var(--border-primary);
-          box-shadow: 0 20px 40px ${resolvedTheme === 'light' ? 'rgba(0,0,0,.15)' : 'rgba(0,0,0,.3)'};
+          box-shadow: var(--shadow-md);
         }
 
         .psych-video-veil {
           position: absolute;
           inset: 0;
-          background: radial-gradient(100% 80% at 50% 0%, transparent, ${resolvedTheme === 'light' ? 'rgba(0,0,0,.1)' : 'rgba(0,0,0,.2)'} 90%);
+          background: radial-gradient(100% 80% at 50% 0%, transparent, rgba(0,0,0,.2) 90%);
           pointer-events: none;
         }
 
@@ -428,12 +426,12 @@ export function MetamorphicFractalWork() {
           padding: 2px;
           background: linear-gradient(45deg,
             transparent,
-            ${resolvedTheme === 'light' ? 'rgba(255, 0, 122, 0.5)' : 'rgba(255, 0, 122, 0.4)'},
-            ${resolvedTheme === 'light' ? 'rgba(255, 184, 0, 0.5)' : 'rgba(255, 184, 0, 0.4)'},
-            ${resolvedTheme === 'light' ? 'rgba(0, 255, 255, 0.5)' : 'rgba(0, 255, 255, 0.4)'},
-            ${resolvedTheme === 'light' ? 'rgba(102, 255, 0, 0.5)' : 'rgba(102, 255, 0, 0.4)'},
-            ${resolvedTheme === 'light' ? 'rgba(181, 131, 255, 0.5)' : 'rgba(181, 131, 255, 0.4)'},
-            ${resolvedTheme === 'light' ? 'rgba(255, 0, 122, 0.5)' : 'rgba(255, 0, 122, 0.4)'},
+            rgba(255, 0, 122, 0.4),
+            rgba(255, 184, 0, 0.4),
+            rgba(0, 255, 255, 0.4),
+            rgba(102, 255, 0, 0.4),
+            rgba(181, 131, 255, 0.4),
+            rgba(255, 0, 122, 0.4),
             transparent
           );
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -456,7 +454,7 @@ export function MetamorphicFractalWork() {
         .psych-process-card:hover {
           transform: translateY(-4px);
           background: var(--surface-secondary);
-          box-shadow: 0 30px 60px ${resolvedTheme === 'light' ? 'rgba(0,0,0,.15)' : 'rgba(0,0,0,.3)'}, 0 0 40px ${resolvedTheme === 'light' ? 'rgba(181, 131, 255, 0.15)' : 'rgba(181, 131, 255, 0.1)'};
+          box-shadow: var(--shadow-lg), 0 0 40px rgba(181, 131, 255, 0.1);
         }
 
         .psych-process-icon {
@@ -526,11 +524,11 @@ export function MetamorphicFractalWork() {
           border-radius: 20px;
           padding: 1px;
           background: conic-gradient(from 0deg,
-            ${resolvedTheme === 'light' ? 'rgba(255, 0, 122, 0.6)' : 'rgba(255, 0, 122, 0.5)'},
-            ${resolvedTheme === 'light' ? 'rgba(255, 184, 0, 0.6)' : 'rgba(255, 184, 0, 0.5)'},
-            ${resolvedTheme === 'light' ? 'rgba(0, 255, 255, 0.6)' : 'rgba(0, 255, 255, 0.5)'},
-            ${resolvedTheme === 'light' ? 'rgba(181, 131, 255, 0.6)' : 'rgba(181, 131, 255, 0.5)'},
-            ${resolvedTheme === 'light' ? 'rgba(255, 0, 122, 0.6)' : 'rgba(255, 0, 122, 0.5)'}
+            rgba(255, 0, 122, 0.5),
+            rgba(255, 184, 0, 0.5),
+            rgba(0, 255, 255, 0.5),
+            rgba(181, 131, 255, 0.5),
+            rgba(255, 0, 122, 0.5)
           );
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           -webkit-mask-composite: xor;
@@ -552,7 +550,7 @@ export function MetamorphicFractalWork() {
         .psych-card:hover {
           background: var(--surface-secondary);
           transform: translateY(-2px);
-          box-shadow: 0 20px 40px ${resolvedTheme === 'light' ? 'rgba(0,0,0,.15)' : 'rgba(0,0,0,.3)'}, 0 0 30px ${resolvedTheme === 'light' ? 'rgba(181, 131, 255, 0.12)' : 'rgba(181, 131, 255, 0.08)'};
+          box-shadow: var(--shadow-md), 0 0 30px rgba(181, 131, 255, 0.08);
         }
 
         .psych-card p {
@@ -587,8 +585,8 @@ export function MetamorphicFractalWork() {
           border-radius: 100px;
           background: linear-gradient(90deg,
             transparent,
-            ${resolvedTheme === 'light' ? 'rgba(181, 131, 255, 0.3)' : 'rgba(181, 131, 255, 0.2)'},
-            ${resolvedTheme === 'light' ? 'rgba(0, 255, 255, 0.3)' : 'rgba(0, 255, 255, 0.2)'},
+            rgba(181, 131, 255, 0.2),
+            rgba(0, 255, 255, 0.2),
             transparent
           );
           transform: translateX(-100%);
@@ -600,10 +598,10 @@ export function MetamorphicFractalWork() {
         }
 
         .psych-chip:hover {
-          border-color: ${resolvedTheme === 'light' ? 'rgba(181, 131, 255, 0.4)' : 'rgba(181, 131, 255, 0.3)'};
+          border-color: rgba(181, 131, 255, 0.3);
           transform: translateY(-2px);
           background: var(--surface-secondary);
-          box-shadow: 0 5px 15px ${resolvedTheme === 'light' ? 'rgba(181, 131, 255, 0.15)' : 'rgba(181, 131, 255, 0.1)'};
+          box-shadow: 0 5px 15px rgba(181, 131, 255, 0.1);
         }
 
         .reveal {
@@ -726,7 +724,7 @@ export function MetamorphicFractalWork() {
 
         <main>
           {/* Experience / Video */}
-          <section id="experience" className="psych-section" style={{ paddingTop: 0, background: `radial-gradient(ellipse at top center, ${resolvedTheme === 'light' ? 'rgba(181,131,255,.08)' : 'rgba(181,131,255,.03)'} 0%, transparent 40%)` }}>
+          <section id="experience" className="psych-section" style={{ paddingTop: 0, background: 'radial-gradient(ellipse at top center, rgba(181,131,255,.03) 0%, transparent 40%)' }}>
             <div className="psych-wrap">
               <h2 id="exp-title" className={`psych-section-title reveal ${visibleElements.has('exp-title') ? 'on' : ''}`}>
                 Experience Film
@@ -808,7 +806,7 @@ export function MetamorphicFractalWork() {
                       className={`psych-process-card reveal ${visibleElements.has(`step-${index}`) ? 'on' : ''}`}
                     >
                       <div className="psych-process-icon" style={{
-                        background: `rgba(${step.color}, ${resolvedTheme === 'light' ? '0.15' : '0.1'})`
+                        background: `rgba(${step.color}, 0.1)`
                       }}>
                         <Icon size={40} style={{ color: `rgb(${step.color})` }} />
                       </div>
@@ -949,8 +947,8 @@ export function MetamorphicFractalWork() {
                         transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                         transform: isHovered ? 'translateY(-8px)' : 'translateY(0)',
                         boxShadow: isHovered
-                          ? `0 20px 40px rgba(${project.orbColor}, ${resolvedTheme === 'light' ? '0.2' : '0.15'})`
-                          : `0 4px 8px ${resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(0, 0, 0, 0.2)'}`,
+                          ? `0 20px 40px rgba(${project.orbColor}, 0.15)`
+                          : 'var(--shadow-sm)',
                       }}
                     >
                       {/* Animated Outline */}
@@ -960,7 +958,7 @@ export function MetamorphicFractalWork() {
                           inset: 0,
                           borderRadius: '20px',
                           padding: '1px',
-                          background: `linear-gradient(135deg, rgba(${project.orbColor}, ${resolvedTheme === 'light' ? '0.7' : '0.6'}), rgba(${project.orbColor}, ${resolvedTheme === 'light' ? '0.3' : '0.2'}), rgba(${project.orbColor}, ${resolvedTheme === 'light' ? '0.7' : '0.6'}))`,
+                          background: `linear-gradient(135deg, rgba(${project.orbColor}, 0.6), rgba(${project.orbColor}, 0.2), rgba(${project.orbColor}, 0.6))`,
                           backgroundSize: '200% 200%',
                           animation: 'borderShimmer 3s ease-in-out infinite',
                           WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
@@ -974,7 +972,7 @@ export function MetamorphicFractalWork() {
                         width: '48px',
                         height: '48px',
                         borderRadius: '12px',
-                        background: `rgba(${project.orbColor}, ${resolvedTheme === 'light' ? '0.15' : '0.1'})`,
+                        background: `rgba(${project.orbColor}, 0.1)`,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',

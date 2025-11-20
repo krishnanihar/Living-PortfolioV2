@@ -25,10 +25,8 @@ import { StaticGraphThumbnail } from '../ui/StaticGraphThumbnail';
 import { InteractiveGraphModal } from '../ui/InteractiveGraphModal';
 import { ContactChat } from '../ContactChat';
 import { Chatbot } from '../Chatbot';
-import { useTheme } from '@/components/effects/ThemeProvider';
 
 export function AboutSection() {
-  const { resolvedTheme } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [activeTimeline, setActiveTimeline] = useState<string | null>(null);
@@ -40,33 +38,6 @@ export function AboutSection() {
   const [chatOpen, setChatOpen] = useState(false);
   const [initialMessage, setInitialMessage] = useState('');
   const [isMobile, setIsMobile] = useState(false);
-
-  // Theme-aware color helper functions
-  const getTextPrimary = (opacity: number) =>
-    resolvedTheme === 'light' ? `rgba(0, 0, 0, ${opacity})` : `rgba(255, 255, 255, ${opacity})`;
-
-  const getBorderColor = (opacity: number) =>
-    resolvedTheme === 'light' ? `rgba(0, 0, 0, ${opacity})` : `rgba(255, 255, 255, ${opacity})`;
-
-  const getSurfaceColor = (opacity: number) =>
-    resolvedTheme === 'light' ? `rgba(255, 255, 255, ${opacity})` : `rgba(10, 10, 10, ${opacity})`;
-
-  const getOverlayColor = (opacity: number) =>
-    resolvedTheme === 'light' ? `rgba(255, 255, 255, ${opacity})` : `rgba(0, 0, 0, ${opacity})`;
-
-  const getBoxShadow = (type: 'small' | 'medium' | 'large') => {
-    const shadowOpacity = resolvedTheme === 'light' ? 0.08 : 0.2;
-    const largeShadowOpacity = resolvedTheme === 'light' ? 0.15 : 0.4;
-    const insetHighlight = resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.01)' : 'rgba(255, 255, 255, 0.01)';
-
-    if (type === 'small') {
-      return `inset 0 1px 0 ${insetHighlight}, 0 4px 8px rgba(0, 0, 0, ${shadowOpacity})`;
-    } else if (type === 'medium') {
-      return `inset 0 1px 0 ${insetHighlight}, 0 8px 32px rgba(0, 0, 0, ${largeShadowOpacity})`;
-    } else {
-      return `inset 0 1px 0 ${insetHighlight}, 0 20px 60px rgba(0, 0, 0, ${resolvedTheme === 'light' ? 0.12 : 0.3})`;
-    }
-  };
 
   useEffect(() => {
     setIsVisible(true);
@@ -355,7 +326,7 @@ export function AboutSection() {
         left: 0,
         width: '100%',
         height: '3px',
-        background: getBorderColor(0.05),
+        background: 'var(--border-primary)',
         zIndex: 100,
       }}>
         <div style={{
@@ -390,13 +361,13 @@ export function AboutSection() {
         >
           <div style={{
             position: 'relative',
-            background: `linear-gradient(135deg, ${getSurfaceColor(0.15)} 0%, ${getSurfaceColor(0.1)} 100%)`,
+            background: 'var(--glass-bg)',
             backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
             WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
             borderRadius: '28px',
             padding: '3rem',
             border: '1px solid var(--border-primary)',
-            boxShadow: getBoxShadow('small'),
+            boxShadow: 'var(--shadow-small)',
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}>
             <div style={{
@@ -414,7 +385,7 @@ export function AboutSection() {
                   width: isMobile ? '110px' : '140px',
                   height: isMobile ? '110px' : '140px',
                   borderRadius: '50%',
-                  background: `linear-gradient(135deg, ${getOverlayColor(0.4)}, ${getOverlayColor(0.1)})`,
+                  background: 'var(--glass-surface)',
                   padding: '4px',
                   transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                   cursor: 'pointer',
@@ -422,11 +393,11 @@ export function AboutSection() {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'scale(1.05)';
-                  e.currentTarget.style.boxShadow = `0 16px 56px rgba(0, 0, 0, ${resolvedTheme === 'light' ? 0.2 : 0.5}), inset 0 1px 0 ${getBorderColor(0.12)}`;
+                  e.currentTarget.style.boxShadow = 'var(--shadow-large)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.boxShadow = `0 8px 32px rgba(0, 0, 0, ${resolvedTheme === 'light' ? 0.12 : 0.3}), inset 0 1px 0 ${getBorderColor(0.06)}`;
+                  e.currentTarget.style.boxShadow = 'var(--shadow-medium)';
                 }}
               >
                 <div style={{
@@ -435,8 +406,8 @@ export function AboutSection() {
                   height: '100%',
                   borderRadius: '50%',
                   overflow: 'hidden',
-                  border: `1px solid ${getBorderColor(0.12)}`,
-                  boxShadow: `0 8px 32px rgba(0, 0, 0, ${resolvedTheme === 'light' ? 0.12 : 0.3}), inset 0 1px 0 ${getBorderColor(0.06)}`,
+                  border: '1px solid var(--border-secondary)',
+                  boxShadow: 'var(--shadow-medium)',
                   backdropFilter: 'blur(60px) saturate(120%)',
                 }}>
                   <Image
@@ -482,7 +453,7 @@ export function AboutSection() {
             {/* Interactive Journey Timeline */}
             <div style={{
               paddingTop: '2rem',
-              borderTop: `1px solid ${getBorderColor(0.06)}`,
+              borderTop: '1px solid var(--border-primary)',
             }}>
               <div style={{
                 display: 'flex',
@@ -507,7 +478,7 @@ export function AboutSection() {
                         if (container) {
                           container.style.transform = 'scale(1.06)';
                           container.style.borderColor = 'rgba(218, 14, 41, 0.4)';
-                          container.style.boxShadow = `0 0 20px rgba(218, 14, 41, 0.25), 0 4px 12px rgba(0, 0, 0, ${resolvedTheme === 'light' ? 0.08 : 0.12})`;
+                          container.style.boxShadow = '0 0 20px rgba(218, 14, 41, 0.25), var(--shadow-small)';
                         }
                       }}
                       onMouseLeave={(e) => {
@@ -516,10 +487,10 @@ export function AboutSection() {
                           container.style.transform = 'scale(1)';
                           container.style.borderColor = activeTimeline === milestone.id
                             ? 'var(--brand-red)'
-                            : getOverlayColor(0.08);
+                            : 'var(--border-muted)';
                           container.style.boxShadow = activeTimeline === milestone.id
-                            ? `0 0 24px rgba(218, 14, 41, 0.3), 0 2px 8px rgba(0, 0, 0, ${resolvedTheme === 'light' ? 0.06 : 0.1})`
-                            : `0 2px 8px rgba(0, 0, 0, ${resolvedTheme === 'light' ? 0.04 : 0.08})`;
+                            ? '0 0 24px rgba(218, 14, 41, 0.3), var(--shadow-small)'
+                            : 'var(--shadow-small)';
                         }
                       }}
                     >
@@ -537,13 +508,13 @@ export function AboutSection() {
                           backdropFilter: 'blur(20px) saturate(110%)',
                           border: activeTimeline === milestone.id
                             ? '2px solid var(--brand-red)'
-                            : `1px solid ${getOverlayColor(0.08)}`,
+                            : '1px solid var(--border-muted)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           boxShadow: activeTimeline === milestone.id
-                            ? `0 0 24px rgba(218, 14, 41, 0.3), 0 2px 8px rgba(0, 0, 0, ${resolvedTheme === 'light' ? 0.06 : 0.1})`
-                            : `0 2px 8px rgba(0, 0, 0, ${resolvedTheme === 'light' ? 0.04 : 0.08})`,
+                            ? '0 0 24px rgba(218, 14, 41, 0.3), var(--shadow-small)'
+                            : 'var(--shadow-small)',
                           transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                         }}
                       >
@@ -565,7 +536,7 @@ export function AboutSection() {
                             style={{
                               color: activeTimeline === milestone.id
                                 ? 'var(--brand-red)'
-                                : getOverlayColor(0.4),
+                                : 'var(--text-secondary)',
                             }}
                           />
                         )}
@@ -597,7 +568,7 @@ export function AboutSection() {
                       <div style={{
                         flex: 1,
                         height: '1px',
-                        background: `linear-gradient(to right, ${getBorderColor(0.2)}, ${getBorderColor(0.05)})`,
+                        background: 'linear-gradient(to right, var(--border-secondary), var(--border-primary))',
                         alignSelf: 'flex-start',
                         marginTop: 'clamp(40px, 4.5vw, 48px)',
                       }} />
@@ -647,13 +618,13 @@ export function AboutSection() {
         >
           <div style={{
             position: 'relative',
-            background: `linear-gradient(135deg, ${getSurfaceColor(0.15)} 0%, ${getSurfaceColor(0.1)} 100%)`,
+            background: 'var(--glass-bg)',
             backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
             WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
             borderRadius: '28px',
             padding: '3rem',
             border: '1px solid var(--border-primary)',
-            boxShadow: getBoxShadow('small'),
+            boxShadow: 'var(--shadow-small)',
           }}>
             <h2 style={{
               fontSize: '1.5rem',
@@ -698,7 +669,7 @@ export function AboutSection() {
                 background: 'rgba(218, 14, 41, 0.1)',
                 border: '1px solid rgba(218, 14, 41, 0.3)',
                 borderRadius: '12px',
-                color: getTextPrimary(0.92),
+                color: 'var(--text-primary)',
                 fontSize: '0.9375rem',
                 fontWeight: '500',
                 textDecoration: 'none',
@@ -719,9 +690,9 @@ export function AboutSection() {
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              <Map size={18} style={{ strokeWidth: 2, color: getTextPrimary(0.92) }} />
+              <Map size={18} style={{ strokeWidth: 2, color: 'var(--text-primary)' }} />
               Explore full journey timeline
-              <ArrowRight size={18} style={{ strokeWidth: 2, color: getTextPrimary(0.92) }} />
+              <ArrowRight size={18} style={{ strokeWidth: 2, color: 'var(--text-primary)' }} />
             </Link>
           </div>
         </div>
@@ -741,22 +712,22 @@ export function AboutSection() {
           {/* Current Focus Card */}
           <div style={{
             position: 'relative',
-            background: getSurfaceColor(0.15),
+            background: 'var(--glass-bg)',
             backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
             WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
             borderRadius: '28px',
             padding: '2.5rem',
-            border: `1px solid ${getBorderColor(0.06)}`,
-            boxShadow: getBoxShadow('medium'),
+            border: '1px solid var(--border-primary)',
+            boxShadow: 'var(--shadow-medium)',
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'scale(1.02)';
-            e.currentTarget.style.borderColor = getBorderColor(0.12);
+            e.currentTarget.style.borderColor = 'var(--border-secondary)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'scale(1)';
-            e.currentTarget.style.borderColor = getBorderColor(0.08);
+            e.currentTarget.style.borderColor = 'var(--border-primary)';
           }}>
             <Briefcase size={32} style={{ color: 'var(--brand-red)', marginBottom: '1rem' }} />
             <h3 style={{
@@ -793,22 +764,22 @@ export function AboutSection() {
           {/* Philosophy Card */}
           <div style={{
             position: 'relative',
-            background: getSurfaceColor(0.15),
+            background: 'var(--glass-bg)',
             backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
             WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
             borderRadius: '28px',
             padding: '2.5rem',
-            border: `1px solid ${getBorderColor(0.06)}`,
-            boxShadow: getBoxShadow('medium'),
+            border: '1px solid var(--border-primary)',
+            boxShadow: 'var(--shadow-medium)',
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'scale(1.02)';
-            e.currentTarget.style.borderColor = getBorderColor(0.12);
+            e.currentTarget.style.borderColor = 'var(--border-secondary)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'scale(1)';
-            e.currentTarget.style.borderColor = getBorderColor(0.08);
+            e.currentTarget.style.borderColor = 'var(--border-primary)';
           }}>
             <Sparkles size={32} style={{ color: 'rgba(147, 51, 234, 0.8)', marginBottom: '1rem' }} />
             <h3 style={{
@@ -832,22 +803,22 @@ export function AboutSection() {
           {/* Approach Card */}
           <div style={{
             position: 'relative',
-            background: getSurfaceColor(0.15),
+            background: 'var(--glass-bg)',
             backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
             WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
             borderRadius: '28px',
             padding: '2.5rem',
-            border: `1px solid ${getBorderColor(0.06)}`,
-            boxShadow: getBoxShadow('medium'),
+            border: '1px solid var(--border-primary)',
+            boxShadow: 'var(--shadow-medium)',
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'scale(1.02)';
-            e.currentTarget.style.borderColor = getBorderColor(0.12);
+            e.currentTarget.style.borderColor = 'var(--border-secondary)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'scale(1)';
-            e.currentTarget.style.borderColor = getBorderColor(0.08);
+            e.currentTarget.style.borderColor = 'var(--border-primary)';
           }}>
             <Layers size={32} style={{ color: 'rgba(59, 130, 246, 0.8)', marginBottom: '1rem' }} />
             <h3 style={{
@@ -876,13 +847,13 @@ export function AboutSection() {
             opacity: isVisible ? 1 : 0,
             animationDelay: '300ms',
             marginBottom: '4rem',
-            background: getSurfaceColor(0.15),
+            background: 'var(--glass-bg)',
             backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
             WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
             borderRadius: '32px',
             border: '1px solid var(--border-primary)',
             padding: '4rem',
-            boxShadow: getBoxShadow('large'),
+            boxShadow: 'var(--shadow-large)',
           }}
         >
           {/* Section Header */}
@@ -1079,7 +1050,7 @@ export function AboutSection() {
                                 borderRadius: '20px',
                                 padding: '1.5rem',
                                 border: '1px solid var(--border-primary)',
-                                boxShadow: `inset 0 1px 0 ${getBorderColor(0.05)}, 0 4px 12px rgba(0, 0, 0, ${resolvedTheme === 'light' ? 0.06 : 0.1})`,
+                                boxShadow: 'var(--shadow-small)',
                               }}
                             >
                               <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
@@ -1149,7 +1120,7 @@ export function AboutSection() {
                                 borderRadius: '20px',
                                 padding: '1.5rem',
                                 border: '1px solid var(--border-primary)',
-                                boxShadow: `inset 0 1px 0 ${getBorderColor(0.05)}, 0 4px 12px rgba(0, 0, 0, ${resolvedTheme === 'light' ? 0.06 : 0.1})`,
+                                boxShadow: 'var(--shadow-small)',
                               }}
                             >
                               <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
@@ -1502,23 +1473,23 @@ export function AboutSection() {
                           WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
                           borderRadius: '20px',
                           padding: '1.5rem',
-                          border: isExpanded ? '1px solid rgba(218, 14, 41, 0.3)' : `1px solid ${getBorderColor(0.06)}`,
+                          border: isExpanded ? '1px solid rgba(218, 14, 41, 0.3)' : '1px solid var(--border-primary)',
                           boxShadow: isExpanded
-                            ? `inset 0 1px 0 ${getBorderColor(0.01)}, 0 8px 32px rgba(218, 14, 41, 0.15)`
-                            : getBoxShadow('small'),
+                            ? '0 8px 32px rgba(218, 14, 41, 0.15)'
+                            : 'var(--shadow-small)',
                           transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                           cursor: 'pointer',
                         }}
                         onMouseEnter={(e) => {
                           if (!isExpanded) {
                             e.currentTarget.style.transform = 'translateY(-8px)';
-                            e.currentTarget.style.borderColor = getBorderColor(0.12);
+                            e.currentTarget.style.borderColor = 'var(--border-secondary)';
                           }
                         }}
                         onMouseLeave={(e) => {
                           if (!isExpanded) {
                             e.currentTarget.style.transform = 'translateY(0)';
-                            e.currentTarget.style.borderColor = getBorderColor(0.06);
+                            e.currentTarget.style.borderColor = 'var(--border-primary)';
                           }
                         }}
                       >
@@ -1573,7 +1544,7 @@ export function AboutSection() {
                           </div>
                           <div style={{
                             height: '6px',
-                            background: getBorderColor(0.08),
+                            background: 'var(--border-muted)',
                             borderRadius: '3px',
                             overflow: 'hidden',
                             position: 'relative',
@@ -1594,9 +1565,7 @@ export function AboutSection() {
                               <div style={{
                                 position: 'absolute',
                                 inset: 0,
-                                background: resolvedTheme === 'light'
-                                  ? 'linear-gradient(90deg, transparent, rgba(0,0,0,0.15), transparent)'
-                                  : 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+                                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
                                 animation: 'shimmerTransform 2s infinite',
                               }} />
                             </motion.div>
@@ -1627,7 +1596,7 @@ export function AboutSection() {
                             >
                               <div style={{
                                 paddingTop: '1rem',
-                                borderTop: `1px solid ${getBorderColor(0.06)}`,
+                                borderTop: '1px solid var(--border-primary)',
                               }}>
                                 {/* Started Date */}
                                 <div style={{
@@ -1753,23 +1722,23 @@ export function AboutSection() {
                           WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
                           borderRadius: '20px',
                           padding: '1.5rem',
-                          border: isExpanded ? '1px solid rgba(218, 14, 41, 0.3)' : `1px solid ${getBorderColor(0.06)}`,
+                          border: isExpanded ? '1px solid rgba(218, 14, 41, 0.3)' : '1px solid var(--border-primary)',
                           boxShadow: isExpanded
-                            ? `inset 0 1px 0 ${getBorderColor(0.01)}, 0 8px 32px rgba(218, 14, 41, 0.15)`
-                            : getBoxShadow('small'),
+                            ? '0 8px 32px rgba(218, 14, 41, 0.15)'
+                            : 'var(--shadow-small)',
                           transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                           cursor: 'pointer',
                         }}
                         onMouseEnter={(e) => {
                           if (!isExpanded) {
                             e.currentTarget.style.transform = 'translateY(-8px)';
-                            e.currentTarget.style.borderColor = getBorderColor(0.12);
+                            e.currentTarget.style.borderColor = 'var(--border-secondary)';
                           }
                         }}
                         onMouseLeave={(e) => {
                           if (!isExpanded) {
                             e.currentTarget.style.transform = 'translateY(0)';
-                            e.currentTarget.style.borderColor = getBorderColor(0.06);
+                            e.currentTarget.style.borderColor = 'var(--border-primary)';
                           }
                         }}
                       >
@@ -1795,7 +1764,7 @@ export function AboutSection() {
                                 fontSize: '0.75rem',
                                 color: 'var(--text-muted)',
                                 padding: '0.125rem 0.5rem',
-                                background: getBorderColor(0.05),
+                                background: 'var(--surface-muted)',
                                 borderRadius: '8px',
                               }}>
                                 {game.platform}
@@ -1860,7 +1829,7 @@ export function AboutSection() {
                             >
                               <div style={{
                                 paddingTop: '1rem',
-                                borderTop: `1px solid ${getBorderColor(0.06)}`,
+                                borderTop: '1px solid var(--border-primary)',
                               }}>
                                 {/* Started Date */}
                                 <div style={{
@@ -1989,13 +1958,13 @@ export function AboutSection() {
           zIndex: 1,
           maxWidth: '800px',
           margin: '0 auto',
-          background: getSurfaceColor(0.2),
+          background: 'var(--glass-surface)',
           backdropFilter: 'blur(120px) saturate(180%) brightness(1.05)',
           WebkitBackdropFilter: 'blur(120px) saturate(180%) brightness(1.05)',
-          border: `1px solid ${getBorderColor(0.08)}`,
+          border: '1px solid var(--border-muted)',
           borderRadius: '24px',
           padding: '3rem',
-          boxShadow: `0 20px 60px rgba(0, 0, 0, ${resolvedTheme === 'light' ? 0.12 : 0.3}), inset 0 1px 0 ${getBorderColor(0.05)}`,
+          boxShadow: 'var(--shadow-large)',
         }}>
           <h2 style={{
             fontSize: 'clamp(2rem, 4vw, 2.75rem)',

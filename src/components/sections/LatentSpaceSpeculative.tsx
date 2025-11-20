@@ -10,7 +10,6 @@ import { NarrativeProgressIndicator, NarrativeProgressBar } from '@/components/u
 import { FirstPersonMoments, NarrativeWhispers } from '@/components/sections/FirstPersonMoments';
 import { DreamRecorderPrototype } from '@/components/sections/DreamRecorderPrototype';
 import { useNarrativeProgress } from '@/hooks/useNarrativeProgress';
-import { useThemeHelpers } from '@/hooks/useThemeHelpers';
 import {
   ChevronDown,
   ChevronRight,
@@ -66,6 +65,41 @@ const stagger = {
   }
 };
 
+// Glass effect styles using CSS variables (module-level for access by all components)
+const baseStyles = {
+  main: {
+    position: 'relative' as const,
+    minHeight: '100vh',
+    backgroundColor: 'var(--bg-primary)',
+    color: 'var(--text-primary)',
+    overflow: 'hidden' as const,
+  },
+  section: {
+    position: 'relative' as const,
+    padding: '5rem 1rem',
+    maxWidth: '1400px',
+    margin: '0 auto',
+  },
+};
+
+const glassCardStyles = {
+  background: 'var(--glass-02)',
+  backdropFilter: 'blur(20px) saturate(150%)',
+  WebkitBackdropFilter: 'blur(20px) saturate(150%)',
+  border: '1px solid var(--glass-10)',
+  borderRadius: '16px',
+  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+};
+
+const heroGlassStyles = {
+  background: 'var(--glass-03)',
+  backdropFilter: 'blur(40px) saturate(150%)',
+  WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+  border: '1px solid var(--glass-15)',
+  borderRadius: '24px',
+  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)',
+};
+
 // Narrative-Aware Section Divider Component
 function SectionDivider() {
   const narrativeState = useNarrativeProgress();
@@ -91,7 +125,6 @@ export default function LatentSpaceSpeculative() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const narrativeState = useNarrativeProgress();
-  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
 
   useEffect(() => {
     setIsLoaded(true);
@@ -155,7 +188,7 @@ export default function LatentSpaceSpeculative() {
                 fontWeight: '500',
                 letterSpacing: '0.3em',
                 textTransform: 'uppercase' as const,
-                color: getTextPrimary(0.5),
+                color: 'var(--text-50)',
               }}>
                 Generative AI Prototype
               </span>
@@ -172,7 +205,7 @@ export default function LatentSpaceSpeculative() {
             </motion.h2>
             <motion.p variants={fadeInUp} style={{
               fontSize: '1.125rem',
-              color: getTextPrimary(0.6),
+              color: 'var(--text-60)',
               maxWidth: '700px',
               margin: '0 auto',
               lineHeight: '1.7',
@@ -214,7 +247,7 @@ export default function LatentSpaceSpeculative() {
                 fontWeight: '500',
                 letterSpacing: '0.3em',
                 textTransform: 'uppercase' as const,
-                color: getTextPrimary(0.5),
+                color: 'var(--text-50)',
               }}>
                 Pattern Recognition AI
               </span>
@@ -231,7 +264,7 @@ export default function LatentSpaceSpeculative() {
             </motion.h2>
             <motion.p variants={fadeInUp} style={{
               fontSize: '1.125rem',
-              color: getTextPrimary(0.6),
+              color: 'var(--text-60)',
               maxWidth: '700px',
               margin: '0 auto',
               lineHeight: '1.7',
@@ -294,7 +327,7 @@ export default function LatentSpaceSpeculative() {
 
 // Hero Section with proven inline styles
 function HeroSection({ isLoaded }: { isLoaded: boolean }) {
-  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+  
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
@@ -363,7 +396,7 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
       >
         {/* Hero Card */}
         <div style={{
-          ...baseStyles.heroGlass,
+          ...heroGlassStyles,
           padding: 'clamp(2rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3rem)',
           maxWidth: '900px',
           margin: '0 auto',
@@ -471,7 +504,7 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
               fontSize: 'clamp(1rem, 2vw, 1.125rem)',
               fontWeight: '400',
               lineHeight: '1.6',
-              color: getTextPrimary(0.6),
+              color: 'var(--text-60)',
               maxWidth: '700px',
               margin: '0 auto',
             }}>
@@ -496,7 +529,7 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
               fontWeight: '500',
               letterSpacing: '0.1em',
               textTransform: 'uppercase' as const,
-              color: getTextPrimary(0.5),
+              color: 'var(--text-50)',
             }}>
               Explore the Questions
             </span>
@@ -504,7 +537,7 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
               animate={{ y: [0, 8, 0] }}
               transition={{ repeat: Infinity, duration: 2 }}
             >
-              <ChevronDown size={20} style={{ color: getTextPrimary(0.5) }} />
+              <ChevronDown size={20} style={{ color: 'var(--text-50)' }} />
             </motion.div>
           </motion.div>
         </div>
@@ -516,7 +549,7 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
 // Design Research Section
 function DesignResearchSection() {
   
-  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+  
 const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
@@ -562,7 +595,7 @@ const [expandedCard, setExpandedCard] = useState<number | null>(null);
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: getTextPrimary(0.5),
+              color: 'var(--text-50)',
             }}>
               Critical Questions
             </span>
@@ -601,13 +634,13 @@ const [expandedCard, setExpandedCard] = useState<number | null>(null);
               onMouseEnter={() => setHoveredCard(index)}
               onMouseLeave={() => setHoveredCard(null)}
               style={{
-                ...baseStyles.glassCard,
+                ...glassCardStyles,
                 padding: '2rem',
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
                 position: 'relative' as const,
                 transform: (isHovered && !isExpanded) ? 'translateY(-4px)' : 'translateY(0)',
-                background: isExpanded ? getSurfaceColor(0.04) : (isHovered ? '${getSurfaceColor(0.03)}' : '${getSurfaceColor(0.02)}'),
+                background: isExpanded ? 'var(--glass-04)' : (isHovered ? 'var(--glass-03)' : 'var(--glass-02)'),
               }}
             >
               {/* Animated Outline Effect */}
@@ -630,7 +663,7 @@ const [expandedCard, setExpandedCard] = useState<number | null>(null);
                 <div style={{
                   fontSize: '3rem',
                   fontWeight: '200',
-                  color: getTextPrimary(0.9),
+                  color: 'var(--text-90)',
                   marginBottom: '0.5rem',
                   filter: isHovered ? 'drop-shadow(0 0 20px rgba(147, 51, 234, 0.6))' : 'none',
                   transition: 'filter 0.3s ease',
@@ -648,7 +681,7 @@ const [expandedCard, setExpandedCard] = useState<number | null>(null);
                 </h3>
                 <p style={{
                   fontSize: '0.875rem',
-                  color: getTextPrimary(0.6),
+                  color: 'var(--text-60)',
                   lineHeight: '1.5',
                 }}>
                   {area.brief}
@@ -665,12 +698,12 @@ const [expandedCard, setExpandedCard] = useState<number | null>(null);
                     style={{
                       marginTop: '1.5rem',
                       paddingTop: '1.5rem',
-                      borderTop: `1px solid ${getBorderColor(0.1)}`,
+                      borderTop: `1px solid var(--text-10)`,
                     }}
                   >
                     <p style={{
                       fontSize: '0.875rem',
-                      color: getTextPrimary(0.7),
+                      color: 'var(--text-70)',
                       lineHeight: '1.6',
                     }}>
                       {area.expanded}
@@ -690,7 +723,7 @@ const [expandedCard, setExpandedCard] = useState<number | null>(null);
 // Narrative Arc Section
 function NarrativeArcSection() {
   
-  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+  
 const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
 
   const chapters = [
@@ -742,7 +775,7 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: getTextPrimary(0.5),
+              color: 'var(--text-50)',
             }}>
               Narrative Arc
             </span>
@@ -759,7 +792,7 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
           </motion.h2>
           <motion.p variants={fadeInUp} style={{
             fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-            color: getTextPrimary(0.7),
+            color: 'var(--text-70)',
             maxWidth: '600px',
             margin: '0 auto',
             lineHeight: '1.6',
@@ -781,12 +814,12 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
             <div
               onClick={() => setExpandedChapter(expandedChapter === index ? null : index)}
               style={{
-                ...baseStyles.glassCard,
+                ...glassCardStyles,
                 padding: '2.5rem',
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
                 ...(expandedChapter === index ? {
-                  background: getSurfaceColor(0.04),
+                  background: 'var(--glass-04)',
                   borderColor: 'rgba(218, 14, 41, 0.3)',
                 } : {})
               }}
@@ -802,7 +835,7 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
                     <span style={{
                       fontSize: '3rem',
                       fontWeight: '200',
-                      color: getTextPrimary(0.4),
+                      color: 'var(--text-40)',
                     }}>
                       {chapter.number}
                     </span>
@@ -810,7 +843,7 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
                       <h3 style={{
                         fontSize: '1.5rem',
                         fontWeight: '300',
-                        color: getTextPrimary(0.9),
+                        color: 'var(--text-90)',
                         marginBottom: '0.5rem',
                       }}>
                         {chapter.title}
@@ -818,7 +851,7 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
                       <p style={{
                         fontSize: '1.125rem',
                         fontWeight: '300',
-                        color: getTextPrimary(0.7),
+                        color: 'var(--text-70)',
                       }}>
                         {chapter.question}
                       </p>
@@ -828,7 +861,7 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
                 <ChevronRight
                   size={24}
                   style={{
-                    color: getTextPrimary(0.5),
+                    color: 'var(--text-50)',
                     transition: 'transform 0.3s ease',
                     transform: expandedChapter === index ? 'rotate(90deg)' : 'rotate(0deg)',
                   }}
@@ -845,12 +878,12 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
                     style={{
                       marginTop: '2rem',
                       paddingTop: '2rem',
-                      borderTop: `1px solid ${getBorderColor(0.1)}`,
+                      borderTop: `1px solid var(--text-10)`,
                     }}
                   >
                     <p style={{
                       fontSize: '1rem',
-                      color: getTextPrimary(0.7),
+                      color: 'var(--text-70)',
                       lineHeight: '1.6',
                       marginBottom: '1.5rem',
                     }}>
@@ -860,7 +893,7 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
                       <h4 style={{
                         fontSize: '0.875rem',
                         fontWeight: '400',
-                        color: getTextPrimary(0.5),
+                        color: 'var(--text-50)',
                         marginBottom: '0.75rem',
                         letterSpacing: '0.05em',
                         textTransform: 'uppercase' as const,
@@ -874,10 +907,10 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
                             style={{
                               padding: '0.25rem 0.75rem',
                               borderRadius: '999px',
-                              background: getSurfaceColor(0.05),
-                              border: `1px solid ${getBorderColor(0.1)}`,
+                              background: 'var(--glass-05)',
+                              border: `1px solid var(--text-10)`,
                               fontSize: '0.75rem',
-                              color: getTextPrimary(0.7),
+                              color: 'var(--text-70)',
                             }}
                           >
                             {implication}
@@ -899,7 +932,7 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
 // Science Exploration Section
 function ScienceExplorationSection() {
   
-  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+  
 const [activeTab, setActiveTab] = useState('stages');
 
   const tabs = [
@@ -924,7 +957,7 @@ const [activeTab, setActiveTab] = useState('stages');
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: getTextPrimary(0.5),
+              color: 'var(--text-50)',
             }}>
               Speculative Science
             </span>
@@ -941,7 +974,7 @@ const [activeTab, setActiveTab] = useState('stages');
           </motion.h2>
           <motion.p variants={fadeInUp} style={{
             fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-            color: getTextPrimary(0.7),
+            color: 'var(--text-70)',
             maxWidth: '600px',
             margin: '0 auto',
             lineHeight: '1.6',
@@ -982,20 +1015,20 @@ const [activeTab, setActiveTab] = useState('stages');
                 border: '1px solid',
                 cursor: 'pointer',
                 position: 'relative' as const,
-                background: isActive ? getSurfaceColor(0.08) : getSurfaceColor(0.02),
-                borderColor: isActive ? 'rgba(147, 51, 234, 0.5)' : getBorderColor(0.1),
-                color: isActive ? getTextPrimary(0.9) : getTextPrimary(0.7),
+                background: isActive ? 'var(--glass-08)' : 'var(--glass-02)',
+                borderColor: isActive ? 'rgba(147, 51, 234, 0.5)' : 'var(--text-10)',
+                color: isActive ? 'var(--text-90)' : 'var(--text-70)',
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
-                  (e.currentTarget as HTMLElement).style.background = getSurfaceColor(0.04);
-                  (e.currentTarget as HTMLElement).style.borderColor = '${getBorderColor(0.2)}';
+                  (e.currentTarget as HTMLElement).style.background = 'var(--glass-04)';
+                  (e.currentTarget as HTMLElement).style.borderColor = 'var(--text-20)';
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isActive) {
-                  (e.currentTarget as HTMLElement).style.background = '${getSurfaceColor(0.02)}';
-                  (e.currentTarget as HTMLElement).style.borderColor = '${getBorderColor(0.1)}';
+                  (e.currentTarget as HTMLElement).style.background = 'var(--glass-02)';
+                  (e.currentTarget as HTMLElement).style.borderColor = 'var(--text-10)';
                 }
               }}
             >
@@ -1039,7 +1072,7 @@ const [activeTab, setActiveTab] = useState('stages');
 // Sleep Stages Tab
 function SleepStagesTab() {
   
-  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+  
 const [hoveredStage, setHoveredStage] = useState<number | null>(null);
 
   const stages = [
@@ -1101,13 +1134,13 @@ const [hoveredStage, setHoveredStage] = useState<number | null>(null);
         <h3 style={{
           fontSize: '1.5rem',
           fontWeight: '300',
-          color: getTextPrimary(0.9),
+          color: 'var(--text-90)',
           marginBottom: '1.5rem',
         }}>
           What if we could navigate between sleep stages?
         </h3>
         <p style={{
-          color: getTextPrimary(0.7),
+          color: 'var(--text-70)',
           marginBottom: '2rem',
           lineHeight: '1.6',
         }}>
@@ -1126,11 +1159,11 @@ const [hoveredStage, setHoveredStage] = useState<number | null>(null);
               onMouseEnter={() => setHoveredStage(index)}
               onMouseLeave={() => setHoveredStage(null)}
               style={{
-                ...baseStyles.glassCard,
+                ...glassCardStyles,
                 padding: '1.5rem',
                 background: isHovered
-                  ? `linear-gradient(90deg, ${stage.color.replace('0.2', '0.3')} 0%, ${getSurfaceColor(0.04)} 100%)`
-                  : `linear-gradient(90deg, ${stage.color} 0%, ${getSurfaceColor(0.02)} 100%)`,
+                  ? `linear-gradient(90deg, ${stage.color.replace('0.2', '0.3')} 0%, var(--glass-04) 100%)`
+                  : `linear-gradient(90deg, ${stage.color} 0%, var(--glass-02) 100%)`,
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
                 transform: isHovered ? 'translateX(8px)' : 'translateX(0)',
@@ -1160,14 +1193,14 @@ const [hoveredStage, setHoveredStage] = useState<number | null>(null);
                   <h4 style={{
                     fontSize: '1.125rem',
                     fontWeight: '300',
-                    color: isHovered ? getTextPrimary(1) : getTextPrimary(0.9),
+                    color: isHovered ? 'var(--text-100)' : 'var(--text-90)',
                     transition: 'color 0.3s ease',
                   }}>
                     {stage.name}
                   </h4>
                   <p style={{
                     fontSize: '0.875rem',
-                    color: getTextPrimary(0.7),
+                    color: 'var(--text-70)',
                   }}>
                     {stage.description}
                   </p>
@@ -1193,7 +1226,7 @@ const [hoveredStage, setHoveredStage] = useState<number | null>(null);
                     paddingTop: '0.75rem',
                     borderTop: `1px solid ${stage.accentColor.replace('0.8', '0.3')}`,
                     fontSize: '0.8125rem',
-                    color: getTextPrimary(0.6),
+                    color: 'var(--text-60)',
                     fontStyle: 'italic',
                   }}
                 >
@@ -1212,7 +1245,7 @@ const [hoveredStage, setHoveredStage] = useState<number | null>(null);
 // Brain Waves Tab
 function BrainWavesTab() {
   
-  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+  
 const waves = [
     { name: "Delta", range: "0.5-4 Hz", purpose: "Deep sleep", power: 85 },
     { name: "Theta", range: "4-8 Hz", purpose: "REM dreams", power: 65 },
@@ -1237,13 +1270,13 @@ const waves = [
         <h3 style={{
           fontSize: '1.5rem',
           fontWeight: '300',
-          color: getTextPrimary(0.9),
+          color: 'var(--text-90)',
           marginBottom: '1.5rem',
         }}>
           What if consciousness had a frequency?
         </h3>
         <p style={{
-          color: getTextPrimary(0.7),
+          color: 'var(--text-70)',
           marginBottom: '2rem',
           lineHeight: '1.6',
         }}>
@@ -1258,7 +1291,7 @@ const waves = [
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
               style={{
-                ...baseStyles.glassCard,
+                ...glassCardStyles,
                 padding: '1rem',
               }}
             >
@@ -1270,13 +1303,13 @@ const waves = [
               }}>
                 <div>
                   <span style={{
-                    color: getTextPrimary(0.9),
+                    color: 'var(--text-90)',
                     fontWeight: '300',
                   }}>
                     {wave.name} Wave
                   </span>
                   <span style={{
-                    color: getTextPrimary(0.6),
+                    color: 'var(--text-60)',
                     fontSize: '0.875rem',
                     marginLeft: '0.75rem',
                   }}>
@@ -1284,7 +1317,7 @@ const waves = [
                   </span>
                 </div>
                 <span style={{
-                  color: getTextPrimary(0.7),
+                  color: 'var(--text-70)',
                   fontSize: '0.875rem',
                 }}>
                   {wave.purpose}
@@ -1292,7 +1325,7 @@ const waves = [
               </div>
               <div style={{
                 height: '8px',
-                background: getBorderColor(0.1),
+                background: 'var(--text-10)',
                 borderRadius: '4px',
                 overflow: 'hidden' as const,
                 position: 'relative' as const,
@@ -1322,7 +1355,7 @@ const waves = [
 // Detection Tab
 function DetectionTab() {
   
-  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+  
 const detectionMethods = [
     {
       name: "EEG Sensors",
@@ -1361,13 +1394,13 @@ const detectionMethods = [
         <h3 style={{
           fontSize: '1.5rem',
           fontWeight: '300',
-          color: getTextPrimary(0.9),
+          color: 'var(--text-90)',
           marginBottom: '1.5rem',
         }}>
           What patterns would reveal our inner worlds?
         </h3>
         <p style={{
-          color: getTextPrimary(0.7),
+          color: 'var(--text-70)',
           marginBottom: '2rem',
           maxWidth: '600px',
           margin: '0 auto',
@@ -1392,7 +1425,7 @@ const detectionMethods = [
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 + 0.2 }}
               style={{
-                ...baseStyles.glassCard,
+                ...glassCardStyles,
                 padding: '2rem',
               }}
             >
@@ -1404,14 +1437,14 @@ const detectionMethods = [
               <h4 style={{
                 fontSize: '1.125rem',
                 fontWeight: '300',
-                color: getTextPrimary(0.9),
+                color: 'var(--text-90)',
                 marginBottom: '0.5rem',
               }}>
                 {method.name}
               </h4>
               <p style={{
                 fontSize: '0.8125rem',
-                color: getTextPrimary(0.6),
+                color: 'var(--text-60)',
                 marginBottom: '1.5rem',
                 fontStyle: 'italic',
               }}>
@@ -1419,16 +1452,16 @@ const detectionMethods = [
               </p>
               <div style={{ display: 'flex', flexDirection: 'column' as const, gap: '0.75rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.75rem', color: getTextPrimary(0.5) }}>Accuracy</span>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-50)' }}>Accuracy</span>
                   <span style={{ fontSize: '0.875rem', color: 'rgba(14, 165, 233, 0.9)', fontWeight: '500' }}>{method.accuracy}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.75rem', color: getTextPrimary(0.5) }}>Latency</span>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-50)' }}>Latency</span>
                   <span style={{ fontSize: '0.875rem', color: 'rgba(147, 51, 234, 0.9)', fontWeight: '500' }}>{method.latency}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.75rem', color: getTextPrimary(0.5) }}>Method</span>
-                  <span style={{ fontSize: '0.875rem', color: getTextPrimary(0.7) }}>{method.invasiveness}</span>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-50)' }}>Method</span>
+                  <span style={{ fontSize: '0.875rem', color: 'var(--text-70)' }}>{method.invasiveness}</span>
                 </div>
               </div>
             </motion.div>
@@ -1442,7 +1475,7 @@ const detectionMethods = [
 // Processing Tab
 function ProcessingTab() {
   
-  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+  
 const processingStages = [
     {
       stage: "01",
@@ -1489,13 +1522,13 @@ const processingStages = [
         <h3 style={{
           fontSize: '1.5rem',
           fontWeight: '300',
-          color: getTextPrimary(0.9),
+          color: 'var(--text-90)',
           marginBottom: '1.5rem',
         }}>
           How do you process a dream?
         </h3>
         <p style={{
-          color: getTextPrimary(0.7),
+          color: 'var(--text-70)',
           maxWidth: '600px',
           margin: '0 auto',
           lineHeight: '1.6',
@@ -1515,7 +1548,7 @@ const processingStages = [
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 + 0.2 }}
               style={{
-                ...baseStyles.glassCard,
+                ...glassCardStyles,
                 padding: '1.5rem',
                 display: 'flex',
                 alignItems: 'center',
@@ -1546,14 +1579,14 @@ const processingStages = [
                 <h4 style={{
                   fontSize: '1.125rem',
                   fontWeight: '300',
-                  color: getTextPrimary(0.9),
+                  color: 'var(--text-90)',
                   marginBottom: '0.25rem',
                 }}>
                   {stage.name}
                 </h4>
                 <p style={{
                   fontSize: '0.875rem',
-                  color: getTextPrimary(0.6),
+                  color: 'var(--text-60)',
                   fontFamily: 'monospace',
                 }}>
                   {stage.process}
@@ -1581,7 +1614,7 @@ const processingStages = [
                   bottom: '-1rem',
                   left: '50%',
                   transform: 'translateX(-50%)',
-                  color: getTextPrimary(0.2),
+                  color: 'var(--text-20)',
                   fontSize: '1.5rem',
                 }}>
                   ↓
@@ -1598,7 +1631,7 @@ const processingStages = [
 // Six Pillars Section
 function SixPillarsSection() {
   
-  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+  
 const pillars = [
     {
       title: "Consent",
@@ -1668,7 +1701,7 @@ const pillars = [
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: getTextPrimary(0.5),
+              color: 'var(--text-50)',
             }}>
               Critical Pillars
             </span>
@@ -1685,7 +1718,7 @@ const pillars = [
           </motion.h2>
           <motion.p variants={fadeInUp} style={{
             fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-            color: getTextPrimary(0.7),
+            color: 'var(--text-70)',
             maxWidth: '600px',
             margin: '0 auto',
             lineHeight: '1.6',
@@ -1709,7 +1742,7 @@ const pillars = [
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           style={{
-            ...baseStyles.heroGlass,
+            ...heroGlassStyles,
             padding: '3rem',
             textAlign: 'center' as const,
           }}
@@ -1744,7 +1777,7 @@ const pillars = [
           </p>
           <p style={{
             fontSize: '1rem',
-            color: getTextPrimary(0.7),
+            color: 'var(--text-70)',
             lineHeight: '1.6',
             maxWidth: '500px',
             margin: '0 auto',
@@ -1771,7 +1804,7 @@ const pillars = [
               border: 'none',
               background: index === activePillar
                 ? 'rgba(147, 51, 234, 0.9)'
-                : getBorderColor(0.2),
+                : 'var(--text-20)',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
             }}
@@ -1786,7 +1819,7 @@ const pillars = [
 // System Architecture Visualization Section
 function SystemArchitectureSection() {
   
-  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+  
 const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [dataFlowActive, setDataFlowActive] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -1915,7 +1948,7 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
     },
     {
       name: "Output Layer",
-      color: getTextPrimary(0.6),
+      color: 'var(--text-60)',
       components: [
         {
           id: "display",
@@ -1971,7 +2004,7 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: getTextPrimary(0.5),
+              color: 'var(--text-50)',
             }}>
               System Architecture
             </span>
@@ -1988,7 +2021,7 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
           </motion.h2>
           <motion.p variants={fadeInUp} style={{
             fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-            color: getTextPrimary(0.7),
+            color: 'var(--text-70)',
             maxWidth: '600px',
             margin: '0 auto',
             lineHeight: '1.6',
@@ -2056,14 +2089,14 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
                     }
                   }}
                   style={{
-                    ...baseStyles.glassCard,
+                    ...glassCardStyles,
                     padding: '1rem',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
                     position: 'relative',
                     border: selectedNode === component.id
                       ? `2px solid ${layer.color}`
-                      : `1px solid ${getBorderColor(0.1)}`,
+                      : `1px solid var(--text-10)`,
                     outline: 'none',
                     ...(dataFlowActive ? {
                       boxShadow: `0 0 20px ${layer.color}`,
@@ -2072,14 +2105,14 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
                   }}
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px) scale(1.02)';
-                    (e.currentTarget as HTMLElement).style.background = getSurfaceColor(0.04);
+                    (e.currentTarget as HTMLElement).style.background = 'var(--glass-04)';
                     (e.currentTarget as HTMLElement).style.borderColor = layer.color;
                   }}
                   onMouseLeave={(e) => {
                     if (selectedNode !== component.id) {
                       (e.currentTarget as HTMLElement).style.transform = 'translateY(0) scale(1)';
-                      (e.currentTarget as HTMLElement).style.background = '${getSurfaceColor(0.02)}';
-                      (e.currentTarget as HTMLElement).style.borderColor = '${getBorderColor(0.1)}';
+                      (e.currentTarget as HTMLElement).style.background = 'var(--glass-02)';
+                      (e.currentTarget as HTMLElement).style.borderColor = 'var(--text-10)';
                     }
                   }}
                   onFocus={(e) => {
@@ -2122,14 +2155,14 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
                     <h4 style={{
                       fontSize: '0.875rem',
                       fontWeight: '400',
-                      color: getTextPrimary(0.9),
+                      color: 'var(--text-90)',
                       marginBottom: '0.5rem',
                     }}>
                       {component.name}
                     </h4>
                     <p style={{
                       fontSize: '0.75rem',
-                      color: getTextPrimary(0.6),
+                      color: 'var(--text-60)',
                       lineHeight: '1.4',
                       marginBottom: '0.5rem',
                     }}>
@@ -2154,7 +2187,7 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
                         {/* Critical detail */}
                         <p style={{
                           fontSize: '0.75rem',
-                          color: getTextPrimary(0.7),
+                          color: 'var(--text-70)',
                           lineHeight: '1.5',
                           marginBottom: '1rem',
                           fontStyle: 'italic',
@@ -2170,15 +2203,15 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
                           fontSize: '0.6875rem',
                         }}>
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span style={{ color: getTextPrimary(0.5) }}>Latency:</span>
+                            <span style={{ color: 'var(--text-50)' }}>Latency:</span>
                             <span style={{ color: layer.color, fontWeight: '500' }}>{component.specs.latency}</span>
                           </div>
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span style={{ color: getTextPrimary(0.5) }}>Data Rate:</span>
+                            <span style={{ color: 'var(--text-50)' }}>Data Rate:</span>
                             <span style={{ color: layer.color, fontWeight: '500' }}>{component.specs.dataRate}</span>
                           </div>
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span style={{ color: getTextPrimary(0.5) }}>Method:</span>
+                            <span style={{ color: 'var(--text-50)' }}>Method:</span>
                             <span style={{ color: layer.color, fontWeight: '500' }}>{component.specs.invasive}</span>
                           </div>
                         </div>
@@ -2201,7 +2234,7 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4 }}
             style={{
-              ...baseStyles.glassCard,
+              ...glassCardStyles,
               padding: '1.5rem',
               marginBottom: '2rem',
               border: '1px solid rgba(147, 51, 234, 0.4)',
@@ -2224,7 +2257,7 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
                 </div>
                 <div style={{
                   fontSize: '0.75rem',
-                  color: getTextPrimary(0.6),
+                  color: 'var(--text-60)',
                   textTransform: 'uppercase' as const,
                   letterSpacing: '0.1em',
                 }}>
@@ -2242,7 +2275,7 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
                 </div>
                 <div style={{
                   fontSize: '0.75rem',
-                  color: getTextPrimary(0.6),
+                  color: 'var(--text-60)',
                   textTransform: 'uppercase' as const,
                   letterSpacing: '0.1em',
                 }}>
@@ -2260,7 +2293,7 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
                 </div>
                 <div style={{
                   fontSize: '0.75rem',
-                  color: getTextPrimary(0.6),
+                  color: 'var(--text-60)',
                   textTransform: 'uppercase' as const,
                   letterSpacing: '0.1em',
                 }}>
@@ -2271,14 +2304,14 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
                 <div style={{
                   fontSize: '2rem',
                   fontWeight: '200',
-                  color: getTextPrimary(0.9),
+                  color: 'var(--text-90)',
                   marginBottom: '0.5rem',
                 }}>
                   100%
                 </div>
                 <div style={{
                   fontSize: '0.75rem',
-                  color: getTextPrimary(0.6),
+                  color: 'var(--text-60)',
                   textTransform: 'uppercase' as const,
                   letterSpacing: '0.1em',
                 }}>
@@ -2289,9 +2322,9 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
             <div style={{
               marginTop: '1rem',
               paddingTop: '1rem',
-              borderTop: `1px solid ${getBorderColor(0.1)}`,
+              borderTop: `1px solid var(--text-10)`,
               fontSize: '0.75rem',
-              color: getTextPrimary(0.5),
+              color: 'var(--text-50)',
               textAlign: 'center' as const,
               fontStyle: 'italic',
             }}>
@@ -2308,12 +2341,12 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
           aria-label={dataFlowActive ? 'Stop data flow animation' : 'Start data flow animation to visualize system architecture'}
           aria-pressed={dataFlowActive}
           style={{
-            ...baseStyles.glassCard,
+            ...glassCardStyles,
             padding: '1rem 2rem',
             fontSize: '1rem',
             fontWeight: '400',
             color: dataFlowActive ? 'rgba(147, 51, 234, 0.9)' : 'var(--text-secondary)',
-            border: dataFlowActive ? '2px solid rgba(147, 51, 234, 0.6)' : `1px solid ${getBorderColor(0.2)}`,
+            border: dataFlowActive ? '2px solid rgba(147, 51, 234, 0.6)' : `1px solid var(--text-20)`,
             cursor: 'pointer',
             transition: 'all 0.3s ease',
             display: 'flex',
@@ -2349,8 +2382,8 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
           100% { box-shadow: 0 0 30px rgba(14, 165, 233, 0.6); }
         }
         @keyframes pulse-3 {
-          0% { box-shadow: 0 0 20px ${getTextPrimary(0.3)}; }
-          100% { box-shadow: 0 0 30px ${getTextPrimary(0.6)}; }
+          0% { box-shadow: 0 0 20px var(--text-30); }
+          100% { box-shadow: 0 0 30px var(--text-60); }
         }
       `}</style>
     </section>
@@ -2360,7 +2393,7 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
 // Interactive Prototypes Section
 function InteractivePrototypesSection() {
   
-  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+  
 const [activePrototype, setActivePrototype] = useState('recorder');
   const [dreamFragments, setDreamFragments] = useState<Array<{id: string, x: number, y: number, text: string}>>([]);
   const [isRecording, setIsRecording] = useState(false);
@@ -2439,7 +2472,7 @@ const [activePrototype, setActivePrototype] = useState('recorder');
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: getTextPrimary(0.5),
+              color: 'var(--text-50)',
             }}>
               Interactive Prototypes
             </span>
@@ -2485,10 +2518,10 @@ const [activePrototype, setActivePrototype] = useState('recorder');
                 transition: 'all 0.3s ease',
                 border: activePrototype === prototype.id
                   ? '2px solid rgba(147, 51, 234, 0.6)'
-                  : `1px solid ${getBorderColor(0.2)}`,
+                  : `1px solid var(--text-20)`,
                 background: activePrototype === prototype.id
                   ? 'rgba(147, 51, 234, 0.1)'
-                  : getSurfaceColor(0.02),
+                  : 'var(--glass-02)',
                 color: activePrototype === prototype.id
                   ? 'rgba(147, 51, 234, 0.9)'
                   : 'var(--text-secondary)',
@@ -2508,7 +2541,7 @@ const [activePrototype, setActivePrototype] = useState('recorder');
 
       {/* Prototype Display */}
       <div style={{
-        ...baseStyles.glassCard,
+        ...glassCardStyles,
         padding: '3rem',
         minHeight: '400px',
         position: 'relative',
@@ -2546,14 +2579,14 @@ const [activePrototype, setActivePrototype] = useState('recorder');
                 <h3 style={{
                   fontSize: '1.5rem',
                   fontWeight: '300',
-                  color: getTextPrimary(0.9),
+                  color: 'var(--text-90)',
                   marginBottom: '0.5rem',
                 }}>
                   Dream Fragment Explorer
                 </h3>
                 <p style={{
                   fontSize: '0.875rem',
-                  color: getTextPrimary(0.6),
+                  color: 'var(--text-60)',
                 }}>
                   Click anywhere to add dream fragments and watch them connect
                 </p>
@@ -2575,7 +2608,7 @@ const [activePrototype, setActivePrototype] = useState('recorder');
                     borderRadius: '999px',
                     padding: '0.5rem 1rem',
                     fontSize: '0.75rem',
-                    color: getTextPrimary(0.9),
+                    color: 'var(--text-90)',
                     backdropFilter: 'blur(10px)',
                     WebkitBackdropFilter: 'blur(10px)',
                     cursor: 'pointer',
@@ -2631,7 +2664,7 @@ const [activePrototype, setActivePrototype] = useState('recorder');
               <h3 style={{
                 fontSize: '1.5rem',
                 fontWeight: '300',
-                color: getTextPrimary(0.9),
+                color: 'var(--text-90)',
                 marginBottom: '1.5rem',
               }}>
                 Voice Dream Capture
@@ -2645,10 +2678,10 @@ const [activePrototype, setActivePrototype] = useState('recorder');
                   borderRadius: '50%',
                   background: isRecording
                     ? 'rgba(147, 51, 234, 0.2)'
-                    : getSurfaceColor(0.05),
+                    : 'var(--glass-05)',
                   border: isRecording
                     ? '3px solid rgba(147, 51, 234, 0.6)'
-                    : `2px solid ${getBorderColor(0.2)}`,
+                    : `2px solid var(--text-20)`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -2663,7 +2696,7 @@ const [activePrototype, setActivePrototype] = useState('recorder');
                 } : {}}
                 transition={isRecording ? { duration: 1.5, repeat: Infinity } : {}}
               >
-                <Mic size={32} color={isRecording ? 'rgba(147, 51, 234, 0.9)' : getTextPrimary(0.6)} />
+                <Mic size={32} color={isRecording ? 'rgba(147, 51, 234, 0.9)' : 'var(--text-60)'} />
               </motion.button>
 
               {/* Waveform Visualization */}
@@ -2703,7 +2736,7 @@ const [activePrototype, setActivePrototype] = useState('recorder');
 
               <p style={{
                 fontSize: '0.875rem',
-                color: getTextPrimary(0.6),
+                color: 'var(--text-60)',
               }}>
                 {isRecording ? 'Recording your dream narrative...' : 'Click to start recording'}
               </p>
@@ -2722,14 +2755,14 @@ const [activePrototype, setActivePrototype] = useState('recorder');
                 <h3 style={{
                   fontSize: '1.5rem',
                   fontWeight: '300',
-                  color: getTextPrimary(0.9),
+                  color: 'var(--text-90)',
                   marginBottom: '0.5rem',
                 }}>
                   Sleep Timeline Visualization
                 </h3>
                 <p style={{
                   fontSize: '0.875rem',
-                  color: getTextPrimary(0.6),
+                  color: 'var(--text-60)',
                 }}>
                   Hourly breakdown of a typical sleep cycle (22:00 - 06:00)
                 </p>
@@ -2767,7 +2800,7 @@ const [activePrototype, setActivePrototype] = useState('recorder');
                   >
                     <span style={{
                       fontSize: '0.75rem',
-                      color: getTextPrimary(0.5),
+                      color: 'var(--text-50)',
                       minWidth: '50px',
                       fontFamily: 'monospace',
                     }}>
@@ -2800,7 +2833,7 @@ const [activePrototype, setActivePrototype] = useState('recorder');
                     </div>
                     <span style={{
                       fontSize: '0.6875rem',
-                      color: getTextPrimary(0.4),
+                      color: 'var(--text-40)',
                       minWidth: '50px',
                       textAlign: 'right' as const,
                     }}>
@@ -2832,7 +2865,7 @@ const [activePrototype, setActivePrototype] = useState('recorder');
                       borderRadius: '2px',
                       background: stage.color,
                     }} />
-                    <span style={{ color: getTextPrimary(0.7) }}>{stage.name}</span>
+                    <span style={{ color: 'var(--text-70)' }}>{stage.name}</span>
                   </div>
                 ))}
               </div>
@@ -2851,14 +2884,14 @@ const [activePrototype, setActivePrototype] = useState('recorder');
                 <h3 style={{
                   fontSize: '1.5rem',
                   fontWeight: '300',
-                  color: getTextPrimary(0.9),
+                  color: 'var(--text-90)',
                   marginBottom: '0.5rem',
                 }}>
                   Pattern Recognition Engine
                 </h3>
                 <p style={{
                   fontSize: '0.875rem',
-                  color: getTextPrimary(0.6),
+                  color: 'var(--text-60)',
                 }}>
                   Recurring themes detected across 30 nights of dream data
                 </p>
@@ -2892,7 +2925,7 @@ const [activePrototype, setActivePrototype] = useState('recorder');
                     }}>
                       <span style={{
                         fontSize: '0.875rem',
-                        color: getTextPrimary(0.9),
+                        color: 'var(--text-90)',
                       }}>
                         {pattern.theme}
                       </span>
@@ -2906,7 +2939,7 @@ const [activePrototype, setActivePrototype] = useState('recorder');
                     </div>
                     <div style={{
                       height: '8px',
-                      background: getBorderColor(0.1),
+                      background: 'var(--text-10)',
                       borderRadius: '4px',
                       overflow: 'hidden' as const,
                       position: 'relative' as const,
@@ -2938,9 +2971,9 @@ const [activePrototype, setActivePrototype] = useState('recorder');
               <div style={{
                 marginTop: '2rem',
                 padding: '1rem',
-                borderTop: `1px solid ${getBorderColor(0.1)}`,
+                borderTop: `1px solid var(--text-10)`,
                 fontSize: '0.75rem',
-                color: getTextPrimary(0.5),
+                color: 'var(--text-50)',
                 fontStyle: 'italic',
                 textAlign: 'center' as const,
               }}>
@@ -2957,7 +2990,7 @@ const [activePrototype, setActivePrototype] = useState('recorder');
 // Vision Section
 function VisionSection() {
   
-  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+  
 const [activeQuestion, setActiveQuestion] = useState(0);
 
   const visionQuestions = [
@@ -2988,7 +3021,7 @@ const [activeQuestion, setActiveQuestion] = useState(0);
   return (
     <section style={{
       ...baseStyles.section,
-      background: `linear-gradient(180deg, transparent 0%, ${getShadowColor(0.4)} 50%, transparent 100%)`,
+      background: `linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%)`,
       paddingTop: '8rem',
       paddingBottom: '8rem',
     }}>
@@ -3005,7 +3038,7 @@ const [activeQuestion, setActiveQuestion] = useState(0);
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: getTextPrimary(0.5),
+              color: 'var(--text-50)',
             }}>
               Speculative Futures
             </span>
@@ -3022,7 +3055,7 @@ const [activeQuestion, setActiveQuestion] = useState(0);
           </motion.h2>
           <motion.p variants={fadeInUp} style={{
             fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-            color: getTextPrimary(0.7),
+            color: 'var(--text-70)',
             maxWidth: '700px',
             margin: '0 auto',
             lineHeight: '1.6',
@@ -3044,7 +3077,7 @@ const [activeQuestion, setActiveQuestion] = useState(0);
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
           style={{
-            ...baseStyles.glassCard,
+            ...glassCardStyles,
             width: '100%',
             maxWidth: '800px',
             height: '400px',
@@ -3067,7 +3100,7 @@ const [activeQuestion, setActiveQuestion] = useState(0);
               width: '80px',
               height: '80px',
               borderRadius: '50%',
-              background: getBorderColor(0.1),
+              background: 'var(--text-10)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -3083,7 +3116,7 @@ const [activeQuestion, setActiveQuestion] = useState(0);
           <h3 style={{
             fontSize: '1.5rem',
             fontWeight: '300',
-            color: getTextPrimary(0.9),
+            color: 'var(--text-90)',
             marginBottom: '0.5rem',
             textAlign: 'center',
           }}>
@@ -3092,7 +3125,7 @@ const [activeQuestion, setActiveQuestion] = useState(0);
 
           <p style={{
             fontSize: '0.875rem',
-            color: getTextPrimary(0.6),
+            color: 'var(--text-60)',
             textAlign: 'center',
             maxWidth: '400px',
           }}>
@@ -3118,20 +3151,20 @@ const [activeQuestion, setActiveQuestion] = useState(0);
             transition={{ delay: index * 0.2, duration: 0.8 }}
             onClick={() => setActiveQuestion(index)}
             style={{
-              ...baseStyles.glassCard,
+              ...glassCardStyles,
               padding: '3rem',
               cursor: 'pointer',
               transition: 'all 0.5s ease',
               border: activeQuestion === index
                 ? '2px solid rgba(218, 14, 41, 0.4)'
-                : `1px solid ${getBorderColor(0.1)}`,
+                : `1px solid var(--text-10)`,
               background: activeQuestion === index
                 ? 'rgba(218, 14, 41, 0.05)'
-                : getSurfaceColor(0.02),
+                : 'var(--glass-02)',
             }}
             whileHover={{
               scale: 1.02,
-              background: getSurfaceColor(0.04),
+              background: 'var(--glass-04)',
             }}
           >
             <h3 style={{
@@ -3146,7 +3179,7 @@ const [activeQuestion, setActiveQuestion] = useState(0);
 
             <p style={{
               fontSize: 'clamp(0.875rem, 2vw, 1rem)',
-              color: getTextPrimary(0.7),
+              color: 'var(--text-70)',
               lineHeight: '1.6',
               marginBottom: '2rem',
             }}>
@@ -3212,7 +3245,7 @@ const [activeQuestion, setActiveQuestion] = useState(0);
 // Interface Speculation Section
 function InterfaceSpeculationSection() {
   
-  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+  
 const [currentScreen, setCurrentScreen] = useState(0);
   const [isRotating, setIsRotating] = useState(false);
   const [hoveredPrinciple, setHoveredPrinciple] = useState<number | null>(null);
@@ -3307,7 +3340,7 @@ const [currentScreen, setCurrentScreen] = useState(0);
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: getTextPrimary(0.5),
+              color: 'var(--text-50)',
             }}>
               Interface Speculation
             </span>
@@ -3324,7 +3357,7 @@ const [currentScreen, setCurrentScreen] = useState(0);
           </motion.h2>
           <motion.p variants={fadeInUp} style={{
             fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-            color: getTextPrimary(0.7),
+            color: 'var(--text-70)',
             maxWidth: '600px',
             margin: '0 auto',
             lineHeight: '1.6',
@@ -3356,10 +3389,10 @@ const [currentScreen, setCurrentScreen] = useState(0);
             style={{
               width: '280px',
               height: '580px',
-              background: 'linear-gradient(145deg, ${getSurfaceColor(0.05)} 0%, ${getSurfaceColor(0.02)} 100%)',
+              background: 'linear-gradient(145deg, var(--glass-05) 0%, var(--glass-02) 100%)',
               borderRadius: '40px',
               padding: '20px',
-              border: `2px solid ${getBorderColor(0.1)}`,
+              border: `2px solid var(--text-10)`,
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
               position: 'relative',
@@ -3420,7 +3453,7 @@ const [currentScreen, setCurrentScreen] = useState(0);
                     }}>
                       {React.createElement(interfaceScreens[currentScreen].icon, {
                         size: 32,
-                        color: '${getTextPrimary(0.95)}'
+                        color: 'var(--text-95)'
                       })}
                     </div>
                   </motion.div>
@@ -3436,7 +3469,7 @@ const [currentScreen, setCurrentScreen] = useState(0);
 
                   <p style={{
                     fontSize: '0.875rem',
-                    color: getTextPrimary(0.7),
+                    color: 'var(--text-70)',
                     marginBottom: '2rem',
                     lineHeight: '1.5',
                   }}>
@@ -3460,7 +3493,7 @@ const [currentScreen, setCurrentScreen] = useState(0);
                           border: `1px solid ${interfaceScreens[currentScreen].color}`,
                           borderRadius: '12px',
                           fontSize: '0.75rem',
-                          color: getTextPrimary(0.9),
+                          color: 'var(--text-90)',
                           position: 'relative',
                           overflow: 'hidden',
                         }}
@@ -3500,7 +3533,7 @@ const [currentScreen, setCurrentScreen] = useState(0);
                       borderRadius: '4px',
                       background: currentScreen === index
                         ? screen.color
-                        : getTextPrimary(0.3),
+                        : 'var(--text-30)',
                       transition: 'all 0.3s ease',
                       cursor: 'pointer',
                       boxShadow: currentScreen === index ? `0 0 10px ${screen.color}` : 'none',
@@ -3546,14 +3579,14 @@ const [currentScreen, setCurrentScreen] = useState(0);
                   onMouseEnter={() => setHoveredPrinciple(index)}
                   onMouseLeave={() => setHoveredPrinciple(null)}
                   style={{
-                    ...baseStyles.glassCard,
+                    ...glassCardStyles,
                     padding: '1.5rem',
                     display: 'flex',
                     alignItems: 'flex-start',
                     gap: '1rem',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
-                    background: isHovered ? getSurfaceColor(0.04) : getSurfaceColor(0.02),
+                    background: isHovered ? 'var(--glass-04)' : 'var(--glass-02)',
                     transform: isHovered ? 'translateX(8px)' : 'translateX(0)',
                     position: 'relative',
                     overflow: 'hidden',
@@ -3598,7 +3631,7 @@ const [currentScreen, setCurrentScreen] = useState(0);
                     <h4 style={{
                       fontSize: '1rem',
                       fontWeight: '400',
-                      color: getTextPrimary(0.9),
+                      color: 'var(--text-90)',
                       marginBottom: '0.5rem',
                     }}>
                       {principle.title}
@@ -3606,7 +3639,7 @@ const [currentScreen, setCurrentScreen] = useState(0);
 
                     <p style={{
                       fontSize: '0.875rem',
-                      color: getTextPrimary(0.6),
+                      color: 'var(--text-60)',
                       lineHeight: '1.5',
                       marginBottom: isHovered ? '0.75rem' : 0,
                       transition: 'margin 0.3s ease',
@@ -3624,7 +3657,7 @@ const [currentScreen, setCurrentScreen] = useState(0);
                           transition={{ duration: 0.3 }}
                           style={{
                             fontSize: '0.8rem',
-                            color: getTextPrimary(0.5),
+                            color: 'var(--text-50)',
                             lineHeight: '1.6',
                             paddingTop: '0.75rem',
                             borderTop: `1px solid ${principle.color}30`,
@@ -3648,7 +3681,7 @@ const [currentScreen, setCurrentScreen] = useState(0);
 // Team as Perspectives Section
 function TeamPerspectivesSection() {
   
-  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+  
 const [activeQuestioner, setActiveQuestioner] = useState(0);
 
   const questioners = [
@@ -3682,7 +3715,7 @@ const [activeQuestioner, setActiveQuestioner] = useState(0);
       perspective: "Lived Experience",
       question: "What magic do we lose when dreams become data?",
       concern: "Dreams have always been mysteries—fleeting gifts from our unconscious minds. In making them visible, tangible, analyzable, do we kill the very thing that makes them powerful? Some doors perhaps should remain closed.",
-      color: getTextPrimary(0.6)
+      color: 'var(--text-60)'
     }
   ];
 
@@ -3696,7 +3729,7 @@ const [activeQuestioner, setActiveQuestioner] = useState(0);
   return (
     <section style={{
       ...baseStyles.section,
-      background: 'linear-gradient(180deg, transparent 0%, ${getShadowColor(0.2)} 50%, transparent 100%)',
+      background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.2) 50%, transparent 100%)',
       paddingTop: '8rem',
       paddingBottom: '8rem',
     }}>
@@ -3713,7 +3746,7 @@ const [activeQuestioner, setActiveQuestioner] = useState(0);
               fontWeight: '500',
               letterSpacing: '0.3em',
               textTransform: 'uppercase' as const,
-              color: getTextPrimary(0.5),
+              color: 'var(--text-50)',
             }}>
               Critical Voices
             </span>
@@ -3730,7 +3763,7 @@ const [activeQuestioner, setActiveQuestioner] = useState(0);
           </motion.h2>
           <motion.p variants={fadeInUp} style={{
             fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-            color: getTextPrimary(0.7),
+            color: 'var(--text-70)',
             maxWidth: '700px',
             margin: '0 auto',
             lineHeight: '1.6',
@@ -3756,16 +3789,16 @@ const [activeQuestioner, setActiveQuestioner] = useState(0);
             transition={{ delay: index * 0.1, duration: 0.6 }}
             onClick={() => setActiveQuestioner(index)}
             style={{
-              ...baseStyles.glassCard,
+              ...glassCardStyles,
               padding: '2rem',
               cursor: 'pointer',
               transition: 'all 0.5s ease',
               border: activeQuestioner === index
                 ? `2px solid ${questioner.color}`
-                : `1px solid ${getBorderColor(0.1)}`,
+                : `1px solid var(--text-10)`,
               background: activeQuestioner === index
                 ? questioner.color.replace('0.6', '0.05')
-                : getSurfaceColor(0.02),
+                : 'var(--glass-02)',
               textAlign: 'center' as const,
             }}
             whileHover={{
@@ -3811,7 +3844,7 @@ const [activeQuestioner, setActiveQuestioner] = useState(0);
 
             <p style={{
               fontSize: '0.875rem',
-              color: getTextPrimary(0.7),
+              color: 'var(--text-70)',
               fontStyle: 'italic',
               lineHeight: '1.5',
             }}>
@@ -3830,7 +3863,7 @@ const [activeQuestioner, setActiveQuestioner] = useState(0);
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.5 }}
           style={{
-            ...baseStyles.glassCard,
+            ...glassCardStyles,
             padding: '3rem',
             maxWidth: '900px',
             margin: '0 auto',
@@ -3885,7 +3918,7 @@ const [activeQuestioner, setActiveQuestioner] = useState(0);
               borderRadius: '50%',
               background: activeQuestioner === index
                 ? questioners[index].color
-                : getTextPrimary(0.3),
+                : 'var(--text-30)',
               border: 'none',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
@@ -3899,7 +3932,7 @@ const [activeQuestioner, setActiveQuestioner] = useState(0);
 
 function MoreProjectsSection() {
   
-  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+  
 const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [hoveredCTA, setHoveredCTA] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -4010,7 +4043,7 @@ const [hoveredProject, setHoveredProject] = useState<number | null>(null);
                 transform: isHovered ? 'translateY(-8px)' : 'translateY(0)',
                 boxShadow: isHovered
                   ? `0 20px 40px rgba(${project.orbColor}, 0.15)`
-                  : '0 4px 8px ${getShadowColor(0.2)}',
+                  : '0 4px 8px rgba(0, 0, 0, 0.2)',
               }}
             >
               {isHovered && (
@@ -4092,7 +4125,7 @@ const [hoveredProject, setHoveredProject] = useState<number | null>(null);
 
 function FooterSection() {
   
-  const { baseStyles, getTextPrimary, getBorderColor, getSurfaceColor, getShadowColor } = useThemeHelpers();
+  
 return (
     <footer style={{
       padding: '3rem 1.5rem',

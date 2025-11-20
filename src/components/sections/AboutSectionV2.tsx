@@ -39,24 +39,13 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   const [activeTimeline, setActiveTimeline] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Theme-aware color helpers
-  const getTextPrimary = (opacity: number) =>
-    resolvedTheme === 'light' ? `rgba(0, 0, 0, ${opacity})` : `rgba(255, 255, 255, ${opacity})`;
-
-  const getSurfaceColor = (opacity: number) =>
-    resolvedTheme === 'light' ? `rgba(255, 255, 255, ${opacity})` : `rgba(10, 10, 10, ${opacity})`;
-
-  const getBorderColor = (opacity: number) =>
-    resolvedTheme === 'light' ? `rgba(0, 0, 0, ${opacity})` : `rgba(255, 255, 255, ${opacity})`;
-
-  const getShadowColor = (opacity: number) =>
-    resolvedTheme === 'light' ? `rgba(0, 0, 0, ${opacity * 0.4})` : `rgba(0, 0, 0, ${opacity})`;
-
-  // SVG dynamic color helper (for template literals)
+  // SVG dynamic color helper (for project-specific colors that can't use CSS variables)
   const getThemedSvgColor = (r: number, g: number, b: number, alpha: number) =>
     resolvedTheme === 'light'
       ? `rgba(${r}, ${g}, ${b}, ${alpha * 0.7})`
       : `rgba(${r}, ${g}, ${b}, ${alpha})`;
+
+
 
   useEffect(() => {
     setMounted(true);
@@ -397,10 +386,10 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
         @keyframes projectGlow {
           0%, 100% {
-            filter: drop-shadow(0 0 20px ${getTextPrimary(0.1)});
+            filter: drop-shadow(0 0 20px var(--text-10));
           }
           50% {
-            filter: drop-shadow(0 0 30px ${getTextPrimary(0.15)});
+            filter: drop-shadow(0 0 30px var(--text-15));
           }
         }
 
@@ -645,10 +634,10 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
         @keyframes svgGlow {
           0%, 100% {
-            filter: drop-shadow(0 0 8px ${getTextPrimary(0.15)});
+            filter: drop-shadow(0 0 8px var(--text-15));
           }
           50% {
-            filter: drop-shadow(0 0 20px ${getTextPrimary(0.3)});
+            filter: drop-shadow(0 0 20px var(--text-30));
           }
         }
 
@@ -700,26 +689,26 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           width: 56px !important;
           height: 56px !important;
           border-radius: 50% !important;
-          background: ${getShadowColor(0.7)} !important;
+          background: rgba(0, 0, 0, 0.7) !important;
           backdrop-filter: blur(20px) !important;
           -webkit-backdrop-filter: blur(20px) !important;
-          border: 1px solid ${getBorderColor(0.1)} !important;
-          box-shadow: 0 8px 32px ${getShadowColor(0.4)}, inset 0 1px 1px ${getTextPrimary(0.1)} !important;
+          border: 1px solid var(--text-10) !important;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px var(--text-10) !important;
           display: flex !important;
           align-items: center !important;
           justify-content: center !important;
           cursor: pointer !important;
           transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-          color: ${getTextPrimary(0.9)} !important;
+          color: 'var(--text-90)' !important;
         }
 
         .custom-nav-prev:hover,
         .custom-nav-next:hover,
         .custom-nav-button:hover {
-          background: ${getSurfaceColor(0.15)} !important;
-          border: 1px solid ${getBorderColor(0.2)} !important;
+          background: 'var(--glass-15)' !important;
+          border: 1px solid var(--text-20) !important;
           transform: scale(1.05) !important;
-          box-shadow: 0 12px 40px ${getShadowColor(0.5)}, inset 0 1px 1px ${getTextPrimary(0.1)} !important;
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px var(--text-10) !important;
         }
 
         .custom-nav-prev:active,
@@ -734,8 +723,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
         }
 
         .custom-nav-button.swiper-button-disabled:hover {
-          background: ${getShadowColor(0.7)} !important;
-          border: 1px solid ${getBorderColor(0.1)} !important;
+          background: rgba(0, 0, 0, 0.7) !important;
+          border: 1px solid var(--text-10) !important;
           transform: scale(1) !important;
         }
 
@@ -851,7 +840,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 fontWeight: '200',
                 lineHeight: '1.2',
                 letterSpacing: '-0.03em',
-                color: getTextPrimary(0.95),
+                color: 'var(--text-95)',
                 marginBottom: '2rem',
                 opacity: act1InView && mounted ? 1 : 0,
                 animation: act1InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
@@ -867,7 +856,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
                 fontWeight: '300',
                 lineHeight: '1.4',
-                color: getTextPrimary(0.85),
+                color: 'var(--text-85)',
                 marginBottom: '2rem',
                 opacity: act1InView && mounted ? 1 : 0,
                 animation: act1InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both' : 'none',
@@ -919,7 +908,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 style={{
                   fontSize: 'clamp(2rem, 4vw, 3rem)',
                   fontWeight: '300',
-                  color: getTextPrimary(0.95),
+                  color: 'var(--text-95)',
                   marginBottom: '1rem',
                   opacity: act2InView && mounted ? 1 : 0,
                   animation: act2InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
@@ -931,7 +920,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 style={{
                   fontSize: 'clamp(1.125rem, 2vw, 1.375rem)',
                   fontWeight: '300',
-                  color: getTextPrimary(0.65),
+                  color: 'var(--text-65)',
                   maxWidth: '600px',
                   margin: '0 auto',
                   opacity: act2InView && mounted ? 1 : 0,
@@ -946,11 +935,11 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             <div
               style={{
                 position: 'relative',
-                background: `linear-gradient(135deg, ${getSurfaceColor(0.15)} 0%, ${getSurfaceColor(0.1)} 100%)`,
+                background: `linear-gradient(135deg, var(--glass-15) 0%, var(--glass-10) 100%)`,
                 backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
                 borderRadius: '28px',
                 padding: 'clamp(2.5rem, 5vw, 3rem)',
-                border: `1px solid ${getBorderColor(0.06)}`,
+                border: `1px solid var(--text-06)`,
                 marginTop: '3rem',
                 opacity: act2InView && mounted ? 1 : 0,
                 transform: act2InView && mounted ? 'translateY(0)' : 'translateY(30px)',
@@ -973,8 +962,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     height: isMobile ? '110px' : '140px',
                     borderRadius: '50%',
                     overflow: 'hidden',
-                    border: `2px solid ${getBorderColor(0.08)}`,
-                    background: `linear-gradient(135deg, ${getSurfaceColor(0.03)}, ${getSurfaceColor(0.01)})`,
+                    border: `2px solid var(--text-08)`,
+                    background: `linear-gradient(135deg, var(--glass-03), var(--glass-01))`,
                     margin: isMobile ? '0 auto' : '0',
                   }}
                 >
@@ -993,7 +982,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                       fontSize: 'clamp(1.75rem, 3vw, 2.25rem)',
                       fontWeight: '600',
                       marginBottom: '0.75rem',
-                      background: `linear-gradient(135deg, ${getTextPrimary(0.95)}, ${getTextPrimary(0.7)})`,
+                      background: `linear-gradient(135deg, var(--text-95), var(--text-70))`,
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
                       backgroundClip: 'text',
@@ -1004,7 +993,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   <p
                     style={{
                       fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-                      color: getTextPrimary(0.7),
+                      color: 'var(--text-70)',
                       lineHeight: '1.6',
                     }}
                   >
@@ -1021,7 +1010,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               <div
                 style={{
                   paddingTop: '2rem',
-                  borderTop: `1px solid ${getBorderColor(0.06)}`,
+                  borderTop: `1px solid var(--text-06)`,
                 }}
               >
                 <div
@@ -1057,14 +1046,14 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                             alignItems: 'center',
                             justifyContent: 'center',
                             background: milestone.logoFile
-                              ? getTextPrimary(0.95)
-                              : `linear-gradient(135deg, ${getSurfaceColor(0.08)}, ${getSurfaceColor(0.03)})`,
-                            border: `1px solid ${getBorderColor(0.1)}`,
+                              ? 'var(--text-95)'
+                              : `linear-gradient(135deg, var(--glass-08), var(--glass-03))`,
+                            border: `1px solid var(--text-10)`,
                             padding: milestone.logoFile ? '1rem' : '0',
                             boxShadow:
                               activeTimeline === milestone.id
                                 ? '0 8px 32px rgba(218, 14, 41, 0.3)'
-                                : `0 4px 16px ${getShadowColor(0.1)}`,
+                                : `0 4px 16px rgba(0, 0, 0, 0.1)`,
                             transition: 'all 0.3s ease',
                           }}
                         >
@@ -1083,7 +1072,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                           ) : (
                             <Sparkles
                               size={32}
-                              style={{ color: getTextPrimary(0.5) }}
+                              style={{ color: 'var(--text-50)' }}
                             />
                           )}
                         </div>
@@ -1094,7 +1083,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                             left: '50%',
                             transform: 'translateX(-50%)',
                             fontSize: '0.75rem',
-                            color: getTextPrimary(0.5),
+                            color: 'var(--text-50)',
                             whiteSpace: 'nowrap',
                             fontWeight: '500',
                           }}
@@ -1110,7 +1099,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                             width: 'clamp(20px, 3vw, 40px)',
                             height: '1px',
                             background:
-                              `linear-gradient(to right, ${getTextPrimary(0.2)}, ${getTextPrimary(0.05)})`,
+                              `linear-gradient(to right, var(--text-20), var(--text-05))`,
                             alignSelf: 'flex-start',
                             marginTop: 'clamp(40px, 4.5vw, 48px)',
                           }}
@@ -1126,9 +1115,9 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     style={{
                       marginTop: '2rem',
                       padding: '1.5rem',
-                      background: getSurfaceColor(0.03),
+                      background: 'var(--glass-03)',
                       borderRadius: '16px',
-                      border: `1px solid ${getBorderColor(0.05)}`,
+                      border: `1px solid var(--text-05)`,
                       animation: 'fadeIn 0.3s ease',
                     }}
                   >
@@ -1137,7 +1126,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                         fontSize: '1.125rem',
                         fontWeight: '600',
                         marginBottom: '0.5rem',
-                        color: getTextPrimary(0.9),
+                        color: 'var(--text-90)',
                       }}
                     >
                       {
@@ -1150,7 +1139,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                           style={{
                             fontSize: '0.875rem',
                             fontWeight: '400',
-                            color: getTextPrimary(0.5),
+                            color: 'var(--text-50)',
                             marginLeft: '0.5rem',
                           }}
                         >
@@ -1165,7 +1154,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     <p
                       style={{
                         fontSize: '0.9375rem',
-                        color: getTextPrimary(0.6),
+                        color: 'var(--text-60)',
                         lineHeight: '1.6',
                       }}
                     >
@@ -1192,28 +1181,28 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                         alignItems: 'center',
                         gap: '0.75rem',
                         padding: '1.25rem 2.5rem',
-                        background: getSurfaceColor(0.04),
+                        background: 'var(--glass-04)',
                         backdropFilter: 'blur(40px) saturate(150%)',
-                        border: `1px solid ${getBorderColor(0.1)}`,
+                        border: `1px solid var(--text-10)`,
                         borderRadius: '16px',
-                        color: getTextPrimary(0.95),
+                        color: 'var(--text-95)',
                         fontSize: '1.0625rem',
                         fontWeight: '500',
                         cursor: 'pointer',
                         transition: 'all 0.3s ease',
-                        boxShadow: `0 8px 32px ${getShadowColor(0.2)}, inset 0 1px 0 ${getTextPrimary(0.1)}`,
+                        boxShadow: `0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 var(--text-10)`,
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = getSurfaceColor(0.08);
-                        e.currentTarget.style.border = `1px solid ${getBorderColor(0.2)}`;
+                        e.currentTarget.style.background = 'var(--glass-08)';
+                        e.currentTarget.style.border = `1px solid var(--text-20)`;
                         e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
-                        e.currentTarget.style.boxShadow = `0 12px 48px ${getShadowColor(0.3)}, inset 0 1px 0 ${getTextPrimary(0.15)}`;
+                        e.currentTarget.style.boxShadow = `0 12px 48px rgba(0, 0, 0, 0.3), inset 0 1px 0 var(--text-15)`;
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.background = getSurfaceColor(0.04);
-                        e.currentTarget.style.border = `1px solid ${getBorderColor(0.1)}`;
+                        e.currentTarget.style.background = 'var(--glass-04)';
+                        e.currentTarget.style.border = `1px solid var(--text-10)`;
                         e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                        e.currentTarget.style.boxShadow = `0 8px 32px ${getShadowColor(0.2)}, inset 0 1px 0 ${getTextPrimary(0.1)}`;
+                        e.currentTarget.style.boxShadow = `0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 var(--text-10)`;
                       }}
                     >
                       <Map size={20} />
@@ -1240,13 +1229,13 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 ref={pillar1Ref}
                 style={{
                   position: 'relative',
-                  background: getSurfaceColor(0.15),
+                  background: 'var(--glass-15)',
                   backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
                   WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
                   borderRadius: '28px',
                   padding: '2.5rem',
-                  border: `1px solid ${getBorderColor(0.08)}`,
-                  boxShadow: `0 8px 32px ${getShadowColor(0.4)}, 0px 0px 8px ${getTextPrimary(0.02)} inset`,
+                  border: `1px solid var(--text-08)`,
+                  boxShadow: `0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px var(--text-02) inset`,
                   opacity: pillar1InView && mounted ? 1 : 0,
                   transform: pillar1InView && mounted ? 'translateY(0) scale(1)' : 'translateY(60px) scale(0.95)',
                   transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -1255,12 +1244,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'scale(1.02) translateY(-8px)';
                   e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.4)';
-                  e.currentTarget.style.boxShadow = `0 12px 48px ${getShadowColor(0.5)}, 0px 0px 24px rgba(218, 14, 41, 0.1), 0px 0px 8px ${getTextPrimary(0.02)} inset`;
+                  e.currentTarget.style.boxShadow = `0 12px 48px rgba(0, 0, 0, 0.5), 0px 0px 24px rgba(218, 14, 41, 0.1), 0px 0px 8px var(--text-02) inset`;
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'scale(1) translateY(0)';
-                  e.currentTarget.style.borderColor = getBorderColor(0.08);
-                  e.currentTarget.style.boxShadow = `0 8px 32px ${getShadowColor(0.4)}, 0px 0px 8px ${getTextPrimary(0.02)} inset`;
+                  e.currentTarget.style.borderColor = 'var(--text-08)';
+                  e.currentTarget.style.boxShadow = `0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px var(--text-02) inset`;
                 }}
               >
                 <Briefcase size={36} style={{ color: 'rgba(218, 14, 41, 0.9)', marginBottom: '1.5rem' }} />
@@ -1269,7 +1258,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
                     fontWeight: '500',
                     marginBottom: '1rem',
-                    color: getTextPrimary(0.95),
+                    color: 'var(--text-95)',
                     lineHeight: '1.3',
                   }}
                 >
@@ -1278,7 +1267,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 <p
                   style={{
                     fontSize: 'clamp(1rem, 1.5vw, 1.0625rem)',
-                    color: getTextPrimary(0.7),
+                    color: 'var(--text-70)',
                     lineHeight: '1.7',
                     fontWeight: '300',
                     marginBottom: '1.5rem',
@@ -1307,13 +1296,13 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 ref={pillar2Ref}
                 style={{
                   position: 'relative',
-                  background: getSurfaceColor(0.15),
+                  background: 'var(--glass-15)',
                   backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
                   WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
                   borderRadius: '28px',
                   padding: '2.5rem',
-                  border: `1px solid ${getBorderColor(0.08)}`,
-                  boxShadow: `0 8px 32px ${getShadowColor(0.4)}, 0px 0px 8px ${getTextPrimary(0.02)} inset`,
+                  border: `1px solid var(--text-08)`,
+                  boxShadow: `0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px var(--text-02) inset`,
                   opacity: pillar2InView && mounted ? 1 : 0,
                   transform: pillar2InView && mounted ? 'translateY(0) scale(1)' : 'translateY(60px) scale(0.95)',
                   transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
@@ -1322,12 +1311,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'scale(1.02) translateY(-8px)';
                   e.currentTarget.style.borderColor = 'rgba(147, 51, 234, 0.4)';
-                  e.currentTarget.style.boxShadow = `0 12px 48px ${getShadowColor(0.5)}, 0px 0px 24px rgba(147, 51, 234, 0.1), 0px 0px 8px ${getTextPrimary(0.02)} inset`;
+                  e.currentTarget.style.boxShadow = `0 12px 48px rgba(0, 0, 0, 0.5), 0px 0px 24px rgba(147, 51, 234, 0.1), 0px 0px 8px var(--text-02) inset`;
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'scale(1) translateY(0)';
-                  e.currentTarget.style.borderColor = getBorderColor(0.08);
-                  e.currentTarget.style.boxShadow = `0 8px 32px ${getShadowColor(0.4)}, 0px 0px 8px ${getTextPrimary(0.02)} inset`;
+                  e.currentTarget.style.borderColor = 'var(--text-08)';
+                  e.currentTarget.style.boxShadow = `0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px var(--text-02) inset`;
                 }}
               >
                 <Sparkles size={36} style={{ color: 'rgba(147, 51, 234, 0.9)', marginBottom: '1.5rem' }} />
@@ -1336,7 +1325,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
                     fontWeight: '500',
                     marginBottom: '1rem',
-                    color: getTextPrimary(0.95),
+                    color: 'var(--text-95)',
                     lineHeight: '1.3',
                   }}
                 >
@@ -1345,7 +1334,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 <p
                   style={{
                     fontSize: 'clamp(1rem, 1.5vw, 1.0625rem)',
-                    color: getTextPrimary(0.7),
+                    color: 'var(--text-70)',
                     lineHeight: '1.7',
                     fontWeight: '300',
                   }}
@@ -1359,13 +1348,13 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 ref={pillar3Ref}
                 style={{
                   position: 'relative',
-                  background: getSurfaceColor(0.15),
+                  background: 'var(--glass-15)',
                   backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
                   WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
                   borderRadius: '28px',
                   padding: '2.5rem',
-                  border: `1px solid ${getBorderColor(0.08)}`,
-                  boxShadow: `0 8px 32px ${getShadowColor(0.4)}, 0px 0px 8px ${getTextPrimary(0.02)} inset`,
+                  border: `1px solid var(--text-08)`,
+                  boxShadow: `0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px var(--text-02) inset`,
                   opacity: pillar3InView && mounted ? 1 : 0,
                   transform: pillar3InView && mounted ? 'translateY(0) scale(1)' : 'translateY(60px) scale(0.95)',
                   transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s',
@@ -1374,12 +1363,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'scale(1.02) translateY(-8px)';
                   e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.4)';
-                  e.currentTarget.style.boxShadow = `0 12px 48px ${getShadowColor(0.5)}, 0px 0px 24px rgba(59, 130, 246, 0.1), 0px 0px 8px ${getTextPrimary(0.02)} inset`;
+                  e.currentTarget.style.boxShadow = `0 12px 48px rgba(0, 0, 0, 0.5), 0px 0px 24px rgba(59, 130, 246, 0.1), 0px 0px 8px var(--text-02) inset`;
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'scale(1) translateY(0)';
-                  e.currentTarget.style.borderColor = getBorderColor(0.08);
-                  e.currentTarget.style.boxShadow = `0 8px 32px ${getShadowColor(0.4)}, 0px 0px 8px ${getTextPrimary(0.02)} inset`;
+                  e.currentTarget.style.borderColor = 'var(--text-08)';
+                  e.currentTarget.style.boxShadow = `0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px var(--text-02) inset`;
                 }}
               >
                 <Layers size={36} style={{ color: 'rgba(59, 130, 246, 0.9)', marginBottom: '1.5rem' }} />
@@ -1388,7 +1377,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
                     fontWeight: '500',
                     marginBottom: '1rem',
-                    color: getTextPrimary(0.95),
+                    color: 'var(--text-95)',
                     lineHeight: '1.3',
                   }}
                 >
@@ -1397,7 +1386,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 <p
                   style={{
                     fontSize: 'clamp(1rem, 1.5vw, 1.0625rem)',
-                    color: getTextPrimary(0.7),
+                    color: 'var(--text-70)',
                     lineHeight: '1.7',
                     fontWeight: '300',
                   }}
@@ -1566,13 +1555,13 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             }}
             xmlns="http://www.w3.org/2000/svg"
           >
-            <line x1="15" y1="0" x2="15" y2="80" stroke={getTextPrimary(0.3)} strokeWidth="1" strokeDasharray="4 4">
+            <line x1="15" y1="0" x2="15" y2="80" stroke={'var(--text-30)'} strokeWidth="1" strokeDasharray="4 4">
               <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
             </line>
-            <circle cx="15" cy="100" r="4" fill={getTextPrimary(0.4)}>
+            <circle cx="15" cy="100" r="4" fill={'var(--text-40)'}>
               <animate attributeName="opacity" values="0.4; 1; 0.4" dur="3s" repeatCount="indefinite" />
             </circle>
-            <line x1="15" y1="120" x2="15" y2="200" stroke={getTextPrimary(0.3)} strokeWidth="1" strokeDasharray="4 4">
+            <line x1="15" y1="120" x2="15" y2="200" stroke={'var(--text-30)'} strokeWidth="1" strokeDasharray="4 4">
               <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
             </line>
           </svg>
@@ -1591,13 +1580,13 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             }}
             xmlns="http://www.w3.org/2000/svg"
           >
-            <line x1="15" y1="0" x2="15" y2="80" stroke={getTextPrimary(0.3)} strokeWidth="1" strokeDasharray="4 4">
+            <line x1="15" y1="0" x2="15" y2="80" stroke={'var(--text-30)'} strokeWidth="1" strokeDasharray="4 4">
               <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
             </line>
-            <circle cx="15" cy="100" r="4" fill={getTextPrimary(0.4)}>
+            <circle cx="15" cy="100" r="4" fill={'var(--text-40)'}>
               <animate attributeName="opacity" values="0.4; 1; 0.4" dur="3s" repeatCount="indefinite" />
             </circle>
-            <line x1="15" y1="120" x2="15" y2="200" stroke={getTextPrimary(0.3)} strokeWidth="1" strokeDasharray="4 4">
+            <line x1="15" y1="120" x2="15" y2="200" stroke={'var(--text-30)'} strokeWidth="1" strokeDasharray="4 4">
               <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
             </line>
           </svg>
@@ -1607,7 +1596,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               style={{
                 fontSize: 'clamp(2rem, 4vw, 3rem)',
                 fontWeight: '300',
-                color: getTextPrimary(0.95),
+                color: 'var(--text-95)',
                 marginBottom: '1.5rem',
                 textAlign: 'center',
                 opacity: act4InView && mounted ? 1 : 0,
@@ -1628,7 +1617,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   transform: 'translate(-50%, -50%)',
                   width: '600px',
                   height: '600px',
-                  background: `radial-gradient(circle, ${getTextPrimary(0.03)} 0%, transparent 70%)`,
+                  background: `radial-gradient(circle, var(--text-03) 0%, transparent 70%)`,
                   zIndex: 0,
                   pointerEvents: 'none',
                 }}
@@ -1686,20 +1675,20 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                       style={{
                         display: 'flex',
                         flexDirection: 'column',
-                        background: getSurfaceColor(0.3),
+                        background: 'var(--glass-30)',
                         backdropFilter: 'blur(140px) saturate(180%) brightness(0.95)',
                         WebkitBackdropFilter: 'blur(140px) saturate(180%) brightness(0.95)',
-                        border: `1px solid ${getBorderColor(0.1)}`,
+                        border: `1px solid var(--text-10)`,
                         borderRadius: '20px',
                         textDecoration: 'none',
                         overflow: 'hidden',
                         boxShadow: hoveredProject === idx
-                          ? `0px 16px 32px ${getShadowColor(0.25)},
-                             inset 0 1px 0 ${getTextPrimary(0.05)},
-                             inset 0 -1px 0 ${getShadowColor(0.3)}`
-                          : `0px 8px 20px ${getShadowColor(0.15)},
-                             inset 0 1px 0 ${getTextPrimary(0.02)},
-                             inset 0 -1px 0 ${getShadowColor(0.25)}`,
+                          ? `0px 16px 32px rgba(0, 0, 0, 0.25),
+                             inset 0 1px 0 var(--text-05),
+                             inset 0 -1px 0 rgba(0, 0, 0, 0.3)`
+                          : `0px 8px 20px rgba(0, 0, 0, 0.15),
+                             inset 0 1px 0 var(--text-02),
+                             inset 0 -1px 0 rgba(0, 0, 0, 0.25)`,
                         transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                       }}
                     >
@@ -1730,7 +1719,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                             ? 'rgba(52, 211, 153, 0.2)'
                             : project.status === 'research'
                             ? 'rgba(251, 191, 36, 0.2)'
-                            : getTextPrimary(0.1),
+                            : 'var(--text-10)',
                           backdropFilter: 'blur(20px)',
                           WebkitBackdropFilter: 'blur(20px)',
                           border: `1px solid ${
@@ -1738,7 +1727,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                               ? 'rgba(52, 211, 153, 0.4)'
                               : project.status === 'research'
                               ? 'rgba(251, 191, 36, 0.4)'
-                              : getBorderColor(0.2)
+                              : 'var(--text-20)'
                           }`,
                           borderRadius: '8px',
                           fontSize: '0.688rem',
@@ -1747,7 +1736,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                             ? 'rgba(52, 211, 153, 1)'
                             : project.status === 'research'
                             ? 'rgba(251, 191, 36, 1)'
-                            : getTextPrimary(0.9),
+                            : 'var(--text-90)',
                           textTransform: 'uppercase',
                           letterSpacing: '0.05em',
                           animation: project.status === 'live' ? 'statusPulse 2s ease-in-out infinite' : 'none',
@@ -1987,7 +1976,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                         style={{
                           fontSize: '0.75rem',
                           fontWeight: '500',
-                          color: getTextPrimary(0.6),
+                          color: 'var(--text-60)',
                           letterSpacing: '0.05em',
                           textTransform: 'uppercase',
                           marginBottom: '0.5rem',
@@ -2001,7 +1990,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                         style={{
                           fontSize: '1.375rem',
                           fontWeight: '400',
-                          color: getTextPrimary(0.95),
+                          color: 'var(--text-95)',
                           marginBottom: '0.75rem',
                           lineHeight: '1.3',
                         }}
@@ -2014,7 +2003,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                         style={{
                           fontSize: '0.875rem',
                           fontWeight: '300',
-                          color: hoveredProject === idx ? getTextPrimary(0.85) : getTextPrimary(0.7),
+                          color: hoveredProject === idx ? 'var(--text-85)' : 'var(--text-70)',
                           lineHeight: '1.6',
                           marginBottom: '1rem',
                           transition: 'color 0.3s ease',
@@ -2042,80 +2031,80 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                         >
                           {idx === 0 && (
                             <>
-                              <li style={{ fontSize: '0.8125rem', color: getTextPrimary(0.6), lineHeight: '1.5' }}>
+                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
                                 • Streamlined crew operations across 450+ flights daily
                               </li>
-                              <li style={{ fontSize: '0.8125rem', color: getTextPrimary(0.6), lineHeight: '1.5' }}>
+                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
                                 • Reduced decision-making time from minutes to seconds
                               </li>
                             </>
                           )}
                           {idx === 1 && (
                             <>
-                              <li style={{ fontSize: '0.8125rem', color: getTextPrimary(0.6), lineHeight: '1.5' }}>
+                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
                                 • 18 months of ethnographic research with dermatologists
                               </li>
-                              <li style={{ fontSize: '0.8125rem', color: getTextPrimary(0.6), lineHeight: '1.5' }}>
+                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
                                 • AI-powered PASI scoring with 95% accuracy
                               </li>
                             </>
                           )}
                           {idx === 2 && (
                             <>
-                              <li style={{ fontSize: '0.8125rem', color: getTextPrimary(0.6), lineHeight: '1.5' }}>
+                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
                                 • Scroll-driven narrative with three-act structure
                               </li>
-                              <li style={{ fontSize: '0.8125rem', color: getTextPrimary(0.6), lineHeight: '1.5' }}>
+                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
                                 • Speculative design prototypes exploring consciousness
                               </li>
                             </>
                           )}
                           {idx === 3 && (
                             <>
-                              <li style={{ fontSize: '0.8125rem', color: getTextPrimary(0.6), lineHeight: '1.5' }}>
+                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
                                 • Real-time data visualization for airline operations
                               </li>
-                              <li style={{ fontSize: '0.8125rem', color: getTextPrimary(0.6), lineHeight: '1.5' }}>
+                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
                                 • Processing 10,000+ data points per minute
                               </li>
                             </>
                           )}
                           {idx === 4 && (
                             <>
-                              <li style={{ fontSize: '0.8125rem', color: getTextPrimary(0.6), lineHeight: '1.5' }}>
+                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
                                 • Automated design token auditing system
                               </li>
-                              <li style={{ fontSize: '0.8125rem', color: getTextPrimary(0.6), lineHeight: '1.5' }}>
+                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
                                 • Reduced QA review time by 90%
                               </li>
                             </>
                           )}
                           {idx === 5 && (
                             <>
-                              <li style={{ fontSize: '0.8125rem', color: getTextPrimary(0.6), lineHeight: '1.5' }}>
+                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
                                 • AI-powered pattern recognition in art collections
                               </li>
-                              <li style={{ fontSize: '0.8125rem', color: getTextPrimary(0.6), lineHeight: '1.5' }}>
+                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
                                 • Generates thematic exhibitions from natural language
                               </li>
                             </>
                           )}
                           {idx === 6 && (
                             <>
-                              <li style={{ fontSize: '0.8125rem', color: getTextPrimary(0.6), lineHeight: '1.5' }}>
+                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
                                 • Interactive psychedelic experience installation
                               </li>
-                              <li style={{ fontSize: '0.8125rem', color: getTextPrimary(0.6), lineHeight: '1.5' }}>
+                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
                                 • Real-time audio-reactive visuals with TouchDesigner
                               </li>
                             </>
                           )}
                           {idx === 7 && (
                             <>
-                              <li style={{ fontSize: '0.8125rem', color: getTextPrimary(0.6), lineHeight: '1.5' }}>
+                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
                                 • 40+ production-ready mobile UI patterns
                               </li>
-                              <li style={{ fontSize: '0.8125rem', color: getTextPrimary(0.6), lineHeight: '1.5' }}>
+                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
                                 • iOS and Android platform-specific components
                               </li>
                             </>
@@ -2137,14 +2126,14 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                             key={tagIdx}
                             style={{
                               padding: '0.25rem 0.625rem',
-                              background: getSurfaceColor(0.04),
+                              background: 'var(--glass-04)',
                               backdropFilter: 'blur(60px) saturate(130%)',
                               WebkitBackdropFilter: 'blur(60px) saturate(130%)',
-                              border: `1px solid ${getBorderColor(0.08)}`,
+                              border: `1px solid var(--text-08)`,
                               borderRadius: '8px',
                               fontSize: '0.688rem',
                               fontWeight: '300',
-                              color: getTextPrimary(0.75),
+                              color: 'var(--text-75)',
                               opacity: hoveredProject === idx ? 1 : 0.8,
                               transform: hoveredProject === idx ? `translateY(-2px)` : 'translateY(0)',
                               transition: `all 0.3s ease ${tagIdx * 0.05}s`,
@@ -2167,12 +2156,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                       >
                         {/* Metric */}
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <MetricIcon size={14} style={{ color: getTextPrimary(0.5) }} />
+                          <MetricIcon size={14} style={{ color: 'var(--text-50)' }} />
                           <span
                             style={{
                               fontSize: '0.75rem',
                               fontWeight: '300',
-                              color: getTextPrimary(0.6),
+                              color: 'var(--text-60)',
                             }}
                           >
                             {project.metric.label}
@@ -2184,7 +2173,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                           style={{
                             fontSize: '0.75rem',
                             fontWeight: '300',
-                            color: getTextPrimary(0.4),
+                            color: 'var(--text-40)',
                           }}
                         >
                           {project.year}
@@ -2196,10 +2185,10 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                             width: '32px',
                             height: '32px',
                             borderRadius: '50%',
-                            background: getSurfaceColor(0.03),
+                            background: 'var(--glass-03)',
                             backdropFilter: 'blur(20px)',
                             WebkitBackdropFilter: 'blur(20px)',
-                            border: `1px solid ${getBorderColor(0.06)}`,
+                            border: `1px solid var(--text-06)`,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -2207,7 +2196,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                             transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
                           }}
                         >
-                          <ArrowRight size={14} style={{ color: getTextPrimary(0.7) }} />
+                          <ArrowRight size={14} style={{ color: 'var(--text-70)' }} />
                         </div>
                       </div>
                     </div>
@@ -2238,17 +2227,17 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     width: 'clamp(48px, 10vw, 56px)',
                     height: 'clamp(48px, 10vw, 56px)',
                     borderRadius: '50%',
-                    background: getShadowColor(0.7),
+                    background: 'rgba(0, 0, 0, 0.7)',
                     backdropFilter: 'blur(20px)',
                     WebkitBackdropFilter: 'blur(20px)',
-                    border: `1px solid ${getBorderColor(0.1)}`,
-                    boxShadow: `0 8px 32px ${getShadowColor(0.4)}, inset 0 1px 1px ${getTextPrimary(0.1)}`,
+                    border: `1px solid var(--text-10)`,
+                    boxShadow: `0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px var(--text-10)`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     cursor: 'pointer',
                     transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                    color: getTextPrimary(0.9),
+                    color: 'var(--text-90)',
                   }}
                 >
                   <ChevronLeft size={24} />
@@ -2265,17 +2254,17 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     width: 'clamp(48px, 10vw, 56px)',
                     height: 'clamp(48px, 10vw, 56px)',
                     borderRadius: '50%',
-                    background: getShadowColor(0.7),
+                    background: 'rgba(0, 0, 0, 0.7)',
                     backdropFilter: 'blur(20px)',
                     WebkitBackdropFilter: 'blur(20px)',
-                    border: `1px solid ${getBorderColor(0.1)}`,
-                    boxShadow: `0 8px 32px ${getShadowColor(0.4)}, inset 0 1px 1px ${getTextPrimary(0.1)}`,
+                    border: `1px solid var(--text-10)`,
+                    boxShadow: `0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px var(--text-10)`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     cursor: 'pointer',
                     transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                    color: getTextPrimary(0.9),
+                    color: 'var(--text-90)',
                   }}
                 >
                   <ChevronRight size={24} />
@@ -2300,35 +2289,35 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     background: 'rgba(10, 10, 10, 0.6)',
                     backdropFilter: 'blur(100px) saturate(180%)',
                     WebkitBackdropFilter: 'blur(100px) saturate(180%)',
-                    border: `1px solid ${getBorderColor(0.08)}`,
+                    border: `1px solid var(--text-08)`,
                     borderRadius: '15px',
-                    color: getTextPrimary(0.95),
+                    color: 'var(--text-95)',
                     textDecoration: 'none',
                     fontSize: '0.9375rem',
                     fontWeight: '400',
                     transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                     boxShadow: `
-                      inset 0 1px 0 ${getTextPrimary(0.02)},
-                      inset 0 -1px 0 ${getShadowColor(0.3)},
-                      0 8px 24px ${getShadowColor(0.6)}
+                      inset 0 1px 0 var(--text-02),
+                      inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                      0 8px 24px rgba(0, 0, 0, 0.6)
                     `,
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = getSurfaceColor(0.05);
+                    e.currentTarget.style.background = 'var(--glass-05)';
                     e.currentTarget.style.transform = 'translateY(-2px)';
                     e.currentTarget.style.boxShadow = `
-                      inset 0 1px 0 ${getTextPrimary(0.02)},
-                      inset 0 -1px 0 ${getShadowColor(0.3)},
-                      0 12px 32px ${getShadowColor(0.7)}
+                      inset 0 1px 0 var(--text-02),
+                      inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                      0 12px 32px rgba(0, 0, 0, 0.7)
                     `;
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = getSurfaceColor(0.6);
+                    e.currentTarget.style.background = 'var(--glass-60)';
                     e.currentTarget.style.transform = 'translateY(0)';
                     e.currentTarget.style.boxShadow = `
-                      inset 0 1px 0 ${getTextPrimary(0.02)},
-                      inset 0 -1px 0 ${getShadowColor(0.3)},
-                      0 8px 24px ${getShadowColor(0.6)}
+                      inset 0 1px 0 var(--text-02),
+                      inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                      0 8px 24px rgba(0, 0, 0, 0.6)
                     `;
                   }}
                 >
@@ -2354,13 +2343,13 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 background: 'rgba(8, 8, 8, 0.3)',
                 backdropFilter: 'blur(140px) saturate(180%)',
                 WebkitBackdropFilter: 'blur(140px) saturate(180%)',
-                border: `1px solid ${getBorderColor(0.18)}`,
+                border: `1px solid var(--text-18)`,
                 borderRadius: '24px',
                 padding: 'clamp(3rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem)',
                 boxShadow: `
-                  0px 20px 48px ${getShadowColor(0.7)},
-                  0px 0px 1px ${getTextPrimary(0.35)} inset,
-                  0px -1px 0px ${getTextPrimary(0.1)} inset
+                  0px 20px 48px rgba(0, 0, 0, 0.7),
+                  0px 0px 1px var(--text-35) inset,
+                  0px -1px 0px var(--text-10) inset
                 `,
                 textAlign: 'center',
                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -2370,7 +2359,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 style={{
                   fontSize: 'clamp(1.5rem, 3vw, 2rem)',
                   fontWeight: '300',
-                  color: getTextPrimary(0.95),
+                  color: 'var(--text-95)',
                   marginBottom: '1rem',
                   lineHeight: '1.2',
                   letterSpacing: '-0.01em',
@@ -2382,7 +2371,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               <p
                 style={{
                   fontSize: 'clamp(0.938rem, 1.75vw, 1rem)',
-                  color: getTextPrimary(0.7),
+                  color: 'var(--text-70)',
                   marginBottom: '2.5rem',
                   fontWeight: '300',
                   letterSpacing: '0.01em',
