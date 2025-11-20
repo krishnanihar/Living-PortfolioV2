@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import { ViewToggle, ViewMode } from '@/components/ui/ViewToggle';
-import { Work } from '@/components/sections/Work';
-import WorkSection from '@/components/sections/WorkSection';
+import { Work } from '@/components/sections/archive/Work';
+import WorkSection from '@/components/sections/archive/WorkSection';
 import { projects, getProjectsByCategory } from '@/data/projects';
 import { FilterCategory } from '@/types/projects';
 

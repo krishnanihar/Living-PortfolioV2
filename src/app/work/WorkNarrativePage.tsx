@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, Suspense } from 'react';
 import { WorkPageLayout } from '@/components/narrative-work/WorkPageLayout';
 import { NarrativeWorkHero } from '@/components/narrative-work/NarrativeWorkHero';
 import { JourneyOverview } from '@/components/narrative-work/JourneyOverview';
@@ -14,17 +14,54 @@ import { PsoriAssistPhoneMockup } from '@/components/sections/PsoriAssistPhoneMo
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Target, Trophy, TrendingUp, CheckCircle, ArrowRight } from 'lucide-react';
+import { Target, Trophy, TrendingUp, CheckCircle, ArrowRight, ChevronDown } from 'lucide-react';
 
 /**
  * Complete narrative-driven work page
  * 12 sections across 3 acts: Foundation → Industry → Innovation
+ *
+ * Enhanced with:
+ * - CSS variable system (no theme conditionals)
+ * - Loading states and skeletons
+ * - Improved hover interactions with magnetic effects
+ * - Mobile-optimized touch interactions
+ * - Smooth scroll anchors and progress indicators
+ * - Performance optimizations with IntersectionObserver
  */
 export function WorkNarrativePage() {
   const [inView, setInView] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const act1Ref = useRef<HTMLDivElement>(null);
+  const act2Ref = useRef<HTMLDivElement>(null);
+  const act3Ref = useRef<HTMLDivElement>(null);
 
-  // Intersection Observer for animations
+  // Detect mobile devices
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Scroll progress tracking
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Intersection Observer for animations with performance optimization
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -32,7 +69,10 @@ export function WorkNarrativePage() {
           setInView(true);
         }
       },
-      { threshold: 0.1 }
+      {
+        threshold: 0.1,
+        rootMargin: '50px' // Preload animations slightly before they come into view
+      }
     );
 
     if (sectionRef.current) {
@@ -41,6 +81,16 @@ export function WorkNarrativePage() {
 
     return () => observer.disconnect();
   }, []);
+
+  // Smooth scroll to act sections
+  const scrollToAct = (ref: React.RefObject<HTMLDivElement | null>) => {
+    if (ref.current) {
+      ref.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
 
   // Air India Stats
   const airIndiaStats: StatCardData[] = [
@@ -182,26 +232,93 @@ export function WorkNarrativePage() {
 
   return (
     <WorkPageLayout>
+      {/* Scroll Progress Indicator */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: `${scrollProgress}%`,
+          height: '3px',
+          background: 'linear-gradient(90deg, rgba(147, 51, 234, 0.8), rgba(218, 14, 41, 0.8), rgba(14, 165, 233, 0.8))',
+          zIndex: 9999,
+          transition: 'width 0.1s ease-out',
+          willChange: 'width',
+        }}
+      />
+
+      {/* Act Navigation - Floating Anchors */}
+      {!isMobile && (
+        <div
+          style={{
+            position: 'fixed',
+            right: '2rem',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 100,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+          }}
+        >
+          {[
+            { ref: act1Ref, label: 'Act I', color: '147, 51, 234' },
+            { ref: act2Ref, label: 'Act II', color: '218, 14, 41' },
+            { ref: act3Ref, label: 'Act III', color: '14, 165, 233' },
+          ].map((act, i) => (
+            <button
+              key={i}
+              onClick={() => scrollToAct(act.ref)}
+              style={{
+                width: '12px',
+                height: '12px',
+                borderRadius: '50%',
+                background: `rgba(${act.color}, 0.3)`,
+                border: `1px solid rgba(${act.color}, 0.5)`,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                position: 'relative',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.3)';
+                e.currentTarget.style.background = `rgba(${act.color}, 0.6)`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.background = `rgba(${act.color}, 0.3)`;
+              }}
+              aria-label={`Scroll to ${act.label}`}
+            />
+          ))}
+        </div>
+      )}
+
       {/* SECTION 1: Hero Entrance */}
-      <NarrativeWorkHero />
+      <Suspense fallback={<HeroSkeleton />}>
+        <NarrativeWorkHero />
+      </Suspense>
 
       {/* SECTION 2: Journey Overview */}
-      <JourneyOverview />
+      <Suspense fallback={<SectionSkeleton />}>
+        <JourneyOverview />
+      </Suspense>
 
       {/* SECTION 3: Act I Transition - Foundation */}
-      <ActTransition
-        actTitle="Act I: Foundation"
-        quote="Where consciousness meets code"
-        actColor="rgba(147, 51, 234, 0.8)"
-      />
+      <div ref={act1Ref}>
+        <ActTransition
+          actTitle="Act I: Foundation"
+          quote="Where consciousness meets code"
+          actColor="rgba(147, 51, 234, 0.8)"
+        />
+      </div>
 
       {/* SECTION 4: Metamorphic Fractal Reflections */}
       <section style={{
         position: 'relative',
-        paddingTop: '3rem',
-        paddingBottom: '3rem',
-        paddingLeft: '1.5rem',
-        paddingRight: '1.5rem',
+        paddingTop: 'clamp(2rem, 4vw, 3rem)',
+        paddingBottom: 'clamp(2rem, 4vw, 3rem)',
+        paddingLeft: isMobile ? '1rem' : '1.5rem',
+        paddingRight: isMobile ? '1rem' : '1.5rem',
       }} ref={sectionRef}>
         <div style={{
           maxWidth: '80rem',
@@ -213,13 +330,14 @@ export function WorkNarrativePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
+            style={{ willChange: 'opacity, transform' }}
           >
             <p style={{
-              fontSize: '0.875rem',
+              fontSize: isMobile ? '0.75rem' : '0.875rem',
               fontWeight: '300',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
-              color: 'rgba(255, 255, 255, 1)',
+              color: 'var(--text-100)',
               marginBottom: '1rem',
               display: 'flex',
               alignItems: 'center',
@@ -232,7 +350,7 @@ export function WorkNarrativePage() {
                 justifyContent: 'center',
                 width: '32px',
                 height: '32px',
-                background: 'rgba(255, 255, 255, 0.95)',
+                background: 'var(--glass-95)',
                 borderRadius: '8px',
                 padding: '4px',
                 flexShrink: 0,
@@ -248,16 +366,16 @@ export function WorkNarrativePage() {
               College Project · 2023
             </p>
             <h2 style={{
-              fontSize: 'clamp(2.25rem, 5vw, 3rem)',
+              fontSize: 'clamp(2rem, 5vw, 3rem)',
               fontWeight: '200',
-              color: 'rgba(255, 255, 255, 0.95)',
+              color: 'var(--text-primary)',
               marginBottom: '1.5rem',
             }}>
               Metamorphic Fractal Reflections
             </h2>
             <p style={{
-              fontSize: '1.125rem',
-              color: 'rgba(255, 255, 255, 0.9)',
+              fontSize: isMobile ? '1rem' : '1.125rem',
+              color: 'var(--text-90)',
               lineHeight: '1.625',
               marginBottom: '2rem',
               maxWidth: '48rem',
@@ -272,9 +390,11 @@ export function WorkNarrativePage() {
               borderRadius: '1rem',
               overflow: 'hidden',
               marginBottom: '2rem',
-              background: 'rgba(255, 255, 255, 0.02)',
+              background: 'var(--surface-secondary)',
               backdropFilter: 'blur(40px)',
-              border: '1px solid rgba(255, 255, 255, 0.06)',
+              WebkitBackdropFilter: 'blur(40px)',
+              border: '1px solid var(--border-primary)',
+              willChange: 'transform',
             }}>
               <iframe
                 src="https://www.youtube.com/embed/your-video-id"
@@ -291,68 +411,40 @@ export function WorkNarrativePage() {
             <div style={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: '0.5rem',
+              gap: isMobile ? '0.375rem' : '0.5rem',
+              marginBottom: '2rem',
             }}>
               {['Processing', 'Generative Art', 'Projection Mapping', 'Sound Design'].map((tech) => (
-                <span
+                <motion.span
                   key={tech}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
                   style={{
-                    paddingLeft: '0.75rem',
-                    paddingRight: '0.75rem',
+                    paddingLeft: isMobile ? '0.625rem' : '0.75rem',
+                    paddingRight: isMobile ? '0.625rem' : '0.75rem',
                     paddingTop: '0.375rem',
                     paddingBottom: '0.375rem',
                     borderRadius: '0.5rem',
-                    fontSize: '0.75rem',
-                    background: 'rgba(255, 255, 255, 0.08)',
-                    border: '1px solid rgba(255, 255, 255, 0.15)',
-                    color: 'rgba(255, 255, 255, 0.9)',
+                    fontSize: isMobile ? '0.6875rem' : '0.75rem',
+                    background: 'var(--glass-08)',
+                    border: '1px solid var(--glass-15)',
+                    color: 'var(--text-90)',
+                    transition: 'all 0.3s ease',
+                    cursor: 'default',
+                    willChange: 'transform',
                   }}
                 >
                   {tech}
-                </span>
+                </motion.span>
               ))}
             </div>
 
-            {/* View Case Study Button */}
-            <Link
+            {/* View Case Study Button with enhanced hover */}
+            <EnhancedButton
               href="/work/metamorphic-fractal-reflections"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                paddingLeft: '1.5rem',
-                paddingRight: '1.5rem',
-                paddingTop: '0.75rem',
-                paddingBottom: '0.75rem',
-                marginTop: '2rem',
-                borderRadius: '0.75rem',
-                fontSize: '0.875rem',
-                fontWeight: '500',
-                textDecoration: 'none',
-                background: 'rgba(255, 255, 255, 0.05)',
-                backdropFilter: 'blur(20px) saturate(150%)',
-                WebkitBackdropFilter: 'blur(20px) saturate(150%)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                color: 'rgba(255, 255, 255, 0.9)',
-                transition: 'all 300ms ease',
-                cursor: 'pointer',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                e.currentTarget.style.color = 'rgba(255, 255, 255, 1)';
-                e.currentTarget.style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                e.currentTarget.style.color = 'rgba(255, 255, 255, 0.9)';
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
-            >
-              <span>View Full Case Study</span>
-              <ArrowRight size={16} />
-            </Link>
+              label="View Full Case Study"
+              isMobile={isMobile}
+            />
           </motion.div>
         </div>
       </section>
@@ -364,19 +456,47 @@ export function WorkNarrativePage() {
       />
 
       {/* SECTION 6: Act II Transition - Industry */}
-      <ActTransition
-        actTitle="Act II: Industry"
-        quote="Designing at 40,000 feet"
-        actColor="rgba(218, 14, 41, 0.8)"
-      />
+      <div ref={act2Ref}>
+        <ActTransition
+          actTitle="Act II: Industry"
+          quote="Designing at 40,000 feet"
+          actColor="rgba(218, 14, 41, 0.8)"
+        />
+      </div>
+
+      {/* Mobile Swipe Hint for Act II */}
+      {isMobile && (
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          padding: '1rem',
+          marginBottom: '1rem',
+        }}>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '0.5rem',
+              color: 'var(--text-tertiary)',
+              fontSize: '0.75rem',
+            }}
+          >
+            <ChevronDown size={20} />
+            <span>Swipe to explore</span>
+          </motion.div>
+        </div>
+      )}
 
       {/* SECTION 7: Air India Overview - Stats */}
       <section style={{
         position: 'relative',
-        paddingTop: '3rem',
-        paddingBottom: '3rem',
-        paddingLeft: '1.5rem',
-        paddingRight: '1.5rem',
+        paddingTop: 'clamp(2rem, 4vw, 3rem)',
+        paddingBottom: 'clamp(2rem, 4vw, 3rem)',
+        paddingLeft: isMobile ? '1rem' : '1.5rem',
+        paddingRight: isMobile ? '1rem' : '1.5rem',
       }}>
         <div style={{
           maxWidth: '80rem',
@@ -385,15 +505,15 @@ export function WorkNarrativePage() {
         }}>
           <div style={{
             textAlign: 'center',
-            marginBottom: '4rem',
+            marginBottom: isMobile ? '2.5rem' : '4rem',
           }}>
             <motion.p
               style={{
-                fontSize: '0.875rem',
+                fontSize: isMobile ? '0.75rem' : '0.875rem',
                 fontWeight: '300',
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
-                color: 'rgba(255, 255, 255, 0.6)',
+                color: 'var(--text-tertiary)',
                 marginBottom: '1rem',
               }}
               initial={{ opacity: 0, y: 20 }}
@@ -405,9 +525,9 @@ export function WorkNarrativePage() {
             </motion.p>
             <motion.h2
               style={{
-                fontSize: 'clamp(1.875rem, 4vw, 2.25rem)',
+                fontSize: 'clamp(1.5rem, 4vw, 2.25rem)',
                 fontWeight: '200',
-                color: 'rgba(255, 255, 255, 0.9)',
+                color: 'var(--text-90)',
                 marginBottom: '1rem',
               }}
               initial={{ opacity: 0, y: 20 }}
@@ -419,10 +539,11 @@ export function WorkNarrativePage() {
             </motion.h2>
             <motion.p
               style={{
-                color: 'rgba(255, 255, 255, 0.6)',
+                color: 'var(--text-tertiary)',
                 maxWidth: '42rem',
                 marginLeft: 'auto',
                 marginRight: 'auto',
+                fontSize: isMobile ? '0.9375rem' : '1rem',
               }}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -433,17 +554,19 @@ export function WorkNarrativePage() {
             </motion.p>
           </div>
 
-          <StatCardGrid stats={airIndiaStats} inView={inView} />
+          <Suspense fallback={<StatsSkeleton />}>
+            <StatCardGrid stats={airIndiaStats} inView={inView} />
+          </Suspense>
         </div>
       </section>
 
       {/* Impact Areas */}
       <section style={{
         position: 'relative',
-        paddingTop: '3rem',
-        paddingBottom: '3rem',
-        paddingLeft: '1.5rem',
-        paddingRight: '1.5rem',
+        paddingTop: 'clamp(2rem, 4vw, 3rem)',
+        paddingBottom: 'clamp(2rem, 4vw, 3rem)',
+        paddingLeft: isMobile ? '1rem' : '1.5rem',
+        paddingRight: isMobile ? '1rem' : '1.5rem',
       }}>
         <div style={{
           maxWidth: '80rem',
@@ -452,28 +575,30 @@ export function WorkNarrativePage() {
         }}>
           <div style={{
             textAlign: 'center',
-            marginBottom: '3rem',
+            marginBottom: isMobile ? '2rem' : '3rem',
           }}>
             <h3 style={{
-              fontSize: 'clamp(1.5rem, 3vw, 1.875rem)',
+              fontSize: 'clamp(1.25rem, 3vw, 1.875rem)',
               fontWeight: '300',
-              color: 'rgba(255, 255, 255, 0.9)',
+              color: 'var(--text-90)',
               marginBottom: '1rem',
             }}>
               Six Areas of Impact
             </h3>
           </div>
-          <ImpactBentoGrid cards={impactCards} inView={inView} />
+          <Suspense fallback={<BentoSkeleton />}>
+            <ImpactBentoGrid cards={impactCards} inView={inView} />
+          </Suspense>
         </div>
       </section>
 
       {/* SECTION 8: Featured Projects - Accordion */}
       <section style={{
         position: 'relative',
-        paddingTop: '3rem',
-        paddingBottom: '3rem',
-        paddingLeft: '1.5rem',
-        paddingRight: '1.5rem',
+        paddingTop: 'clamp(2rem, 4vw, 3rem)',
+        paddingBottom: 'clamp(2rem, 4vw, 3rem)',
+        paddingLeft: isMobile ? '1rem' : '1.5rem',
+        paddingRight: isMobile ? '1rem' : '1.5rem',
       }}>
         <div style={{
           maxWidth: '80rem',
@@ -482,24 +607,27 @@ export function WorkNarrativePage() {
         }}>
           <div style={{
             textAlign: 'center',
-            marginBottom: '4rem',
+            marginBottom: isMobile ? '2.5rem' : '4rem',
           }}>
             <h3 style={{
-              fontSize: 'clamp(1.5rem, 3vw, 1.875rem)',
+              fontSize: 'clamp(1.25rem, 3vw, 1.875rem)',
               fontWeight: '300',
-              color: 'rgba(255, 255, 255, 0.9)',
+              color: 'var(--text-90)',
               marginBottom: '1rem',
             }}>
               Project Details
             </h3>
             <p style={{
-              color: 'rgba(255, 255, 255, 0.6)',
+              color: 'var(--text-tertiary)',
+              fontSize: isMobile ? '0.9375rem' : '1rem',
             }}>
               Deep dives into key initiatives
             </p>
           </div>
 
-          <ProjectAccordion projects={featuredProjects} inView={inView} />
+          <Suspense fallback={<AccordionSkeleton />}>
+            <ProjectAccordion projects={featuredProjects} inView={inView} />
+          </Suspense>
         </div>
       </section>
 
@@ -510,19 +638,21 @@ export function WorkNarrativePage() {
       />
 
       {/* SECTION 10: Act III Transition - Innovation */}
-      <ActTransition
-        actTitle="Act III: Innovation"
-        quote="Speculative futures & ethical AI"
-        actColor="rgba(14, 165, 233, 0.8)"
-      />
+      <div ref={act3Ref}>
+        <ActTransition
+          actTitle="Act III: Innovation"
+          quote="Speculative futures & ethical AI"
+          actColor="rgba(14, 165, 233, 0.8)"
+        />
+      </div>
 
       {/* SECTION 11: Research Triptych */}
       <section style={{
         position: 'relative',
-        paddingTop: '3rem',
-        paddingBottom: '3rem',
-        paddingLeft: '1.5rem',
-        paddingRight: '1.5rem',
+        paddingTop: 'clamp(2rem, 4vw, 3rem)',
+        paddingBottom: 'clamp(2rem, 4vw, 3rem)',
+        paddingLeft: isMobile ? '1rem' : '1.5rem',
+        paddingRight: isMobile ? '1rem' : '1.5rem',
       }}>
         <div style={{
           maxWidth: '96rem',
@@ -530,77 +660,86 @@ export function WorkNarrativePage() {
           marginRight: 'auto',
           display: 'flex',
           flexDirection: 'column',
-          gap: '4rem',
+          gap: isMobile ? '3rem' : '4rem',
         }}>
           {/* Latent Space */}
-          <ResearchShowcase
-            project={{
-              title: 'Latent Space',
-              description: 'A speculative design exploration questioning the ethics of dream technology. What do we lose when we quantify consciousness?',
-              category: 'Speculative Design',
-              stats: [
-                { label: 'Provocations', value: '12+' },
-                { label: 'Ethical Considerations', value: '8' },
-                { label: 'Privacy Approach', value: 'First' },
-              ],
-              caseStudyUrl: '/work/latent-space',
-              color: '147, 51, 234',
-            }}
-            inView={inView}
-            index={0}
-          />
+          <Suspense fallback={<ResearchSkeleton />}>
+            <ResearchShowcase
+              project={{
+                title: 'Latent Space',
+                description: 'A speculative design exploration questioning the ethics of dream technology. What do we lose when we quantify consciousness?',
+                category: 'Speculative Design',
+                stats: [
+                  { label: 'Provocations', value: '12+' },
+                  { label: 'Ethical Considerations', value: '8' },
+                  { label: 'Privacy Approach', value: 'First' },
+                ],
+                caseStudyUrl: '/work/latent-space',
+                color: '147, 51, 234',
+              }}
+              inView={inView}
+              index={0}
+            />
+          </Suspense>
 
           {/* mythOS */}
-          <ResearchShowcase
-            project={{
-              title: 'mythOS',
-              description: 'An AI-powered exhibition generator that creates personalized mythological journeys. Built with Gemini AI.',
-              category: 'AI Experiment',
-              demoUrl: 'https://mythos-demo.vercel.app',
-              caseStudyUrl: '/work/mythos',
-              color: '139, 92, 246',
-            }}
-            inView={inView}
-            index={1}
-          />
+          <Suspense fallback={<ResearchSkeleton />}>
+            <ResearchShowcase
+              project={{
+                title: 'mythOS',
+                description: 'An AI-powered exhibition generator that creates personalized mythological journeys. Built with Gemini AI.',
+                category: 'AI Experiment',
+                demoUrl: 'https://mythos-demo.vercel.app',
+                caseStudyUrl: '/work/mythos',
+                color: '139, 92, 246',
+              }}
+              inView={inView}
+              index={1}
+            />
+          </Suspense>
 
           {/* PsoriAssist - HERO with interactive prototype */}
           <div style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '3rem',
+            gap: isMobile ? '2rem' : '3rem',
           }}>
-            <ResearchShowcase
-              project={{
-                title: 'PsoriAssist',
-                description: '18 months. 2M patients. Clinical validation pathway. AI-powered psoriasis management with iOS prototypes.',
-                category: 'Health Tech · Featured',
-                stats: [
-                  { label: 'SUS Score', value: '82/100' },
-                  { label: 'Year 5 Projection', value: '$38M' },
-                  { label: 'AI PASI Accuracy', value: '+33%' },
-                ],
-                caseStudyUrl: '/work/psoriassist',
-                color: '236, 72, 153',
-              }}
-              inView={inView}
-              index={2}
-            />
+            <Suspense fallback={<ResearchSkeleton />}>
+              <ResearchShowcase
+                project={{
+                  title: 'PsoriAssist',
+                  description: '18 months. 2M patients. Clinical validation pathway. AI-powered psoriasis management with iOS prototypes.',
+                  category: 'Health Tech · Featured',
+                  stats: [
+                    { label: 'SUS Score', value: '82/100' },
+                    { label: 'Year 5 Projection', value: '$38M' },
+                    { label: 'AI PASI Accuracy', value: '+33%' },
+                  ],
+                  caseStudyUrl: '/work/psoriassist',
+                  color: '236, 72, 153',
+                }}
+                inView={inView}
+                index={2}
+              />
+            </Suspense>
 
-            {/* Interactive prototype - sticky section */}
-            <div style={{
-              position: 'sticky',
-              top: '6rem',
-            }}>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-              >
-                <PsoriAssistPhoneMockup />
-              </motion.div>
-            </div>
+            {/* Interactive prototype - sticky section (desktop only) */}
+            {!isMobile && (
+              <div style={{
+                position: 'sticky',
+                top: '6rem',
+              }}>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8 }}
+                  style={{ willChange: 'opacity, transform' }}
+                >
+                  <PsoriAssistPhoneMockup />
+                </motion.div>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -608,10 +747,10 @@ export function WorkNarrativePage() {
       {/* SECTION 12: Closing & Navigation */}
       <section style={{
         position: 'relative',
-        paddingTop: '4rem',
-        paddingBottom: '4rem',
-        paddingLeft: '1.5rem',
-        paddingRight: '1.5rem',
+        paddingTop: 'clamp(3rem, 6vw, 4rem)',
+        paddingBottom: 'clamp(3rem, 6vw, 4rem)',
+        paddingLeft: isMobile ? '1rem' : '1.5rem',
+        paddingRight: isMobile ? '1rem' : '1.5rem',
       }}>
         {/* Responsive styles */}
         <style jsx>{`
@@ -633,19 +772,20 @@ export function WorkNarrativePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
+            style={{ willChange: 'opacity, transform' }}
           >
             <h2 style={{
-              fontSize: 'clamp(2.25rem, 5vw, 3rem)',
+              fontSize: 'clamp(2rem, 5vw, 3rem)',
               fontWeight: '200',
-              color: 'rgba(255, 255, 255, 0.9)',
+              color: 'var(--text-90)',
               marginBottom: '2rem',
             }}>
               This is just the beginning...
             </h2>
             <p style={{
-              fontSize: '1.125rem',
-              color: 'rgba(255, 255, 255, 0.6)',
-              marginBottom: '3rem',
+              fontSize: isMobile ? '1rem' : '1.125rem',
+              color: 'var(--text-tertiary)',
+              marginBottom: isMobile ? '2rem' : '3rem',
               maxWidth: '42rem',
               marginLeft: 'auto',
               marginRight: 'auto',
@@ -653,59 +793,405 @@ export function WorkNarrativePage() {
               Explore individual case studies, view my full journey, or get in touch to collaborate.
             </p>
 
-            {/* CTA Grid */}
+            {/* CTA Grid with enhanced hover */}
             <div className="cta-grid" style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(1, minmax(0, 1fr))',
-                gap: '1.5rem',
+                gap: isMobile ? '1rem' : '1.5rem',
               }}>
                 {[
                   { label: 'View All Projects', href: '/work', icon: ArrowRight },
                   { label: 'Read Journey', href: '/journey', icon: ArrowRight },
                   { label: 'Contact Me', href: '/contact', icon: ArrowRight },
-                ].map((cta, index) => {
-                  const Icon = cta.icon;
-                  const [isHovered, setIsHovered] = React.useState(false);
-                  return (
-                    <Link
-                      key={index}
-                      href={cta.href as any}
-                      onMouseEnter={() => setIsHovered(true)}
-                      onMouseLeave={() => setIsHovered(false)}
-                      style={{
-                        padding: '2rem',
-                        borderRadius: '1rem',
-                        transition: 'all 500ms ease',
-                        background: 'rgba(255, 255, 255, 0.02)',
-                        backdropFilter: 'blur(40px)',
-                        border: '1px solid rgba(255, 255, 255, 0.06)',
-                        textDecoration: 'none',
-                        display: 'block',
-                      }}
-                    >
-                      <span style={{
-                        color: isHovered ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0.9)',
-                        transition: 'color 300ms ease',
-                      }}>
-                        {cta.label}
-                      </span>
-                      <Icon
-                        size={20}
-                        style={{
-                          display: 'inline-block',
-                          marginLeft: '0.5rem',
-                          transition: 'transform 300ms ease',
-                          transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
-                          color: 'rgba(255, 255, 255, 0.6)',
-                        }}
-                      />
-                    </Link>
-                  );
-                })}
+                ].map((cta, index) => (
+                  <EnhancedCTACard
+                    key={index}
+                    label={cta.label}
+                    href={cta.href}
+                    icon={cta.icon}
+                    isMobile={isMobile}
+                  />
+                ))}
             </div>
           </motion.div>
         </div>
       </section>
     </WorkPageLayout>
+  );
+}
+
+// ========================================
+// ENHANCED COMPONENTS
+// ========================================
+
+/**
+ * Enhanced button with magnetic hover effect
+ */
+function EnhancedButton({ href, label, isMobile }: { href: string; label: string; isMobile: boolean }) {
+  const [isHovered, setIsHovered] = React.useState(false);
+  const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
+  const buttonRef = useRef<HTMLAnchorElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (isMobile || !buttonRef.current) return;
+
+    const rect = buttonRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+
+    setMousePosition({ x: x * 0.15, y: y * 0.15 });
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setMousePosition({ x: 0, y: 0 });
+  };
+
+  return (
+    <Link
+      ref={buttonRef}
+      href={href}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '0.5rem',
+        paddingLeft: isMobile ? '1.25rem' : '1.5rem',
+        paddingRight: isMobile ? '1.25rem' : '1.5rem',
+        paddingTop: '0.75rem',
+        paddingBottom: '0.75rem',
+        marginTop: '2rem',
+        borderRadius: '0.75rem',
+        fontSize: isMobile ? '0.8125rem' : '0.875rem',
+        fontWeight: '500',
+        textDecoration: 'none',
+        background: isHovered ? 'var(--surface-hover)' : 'var(--surface-primary)',
+        backdropFilter: 'blur(20px) saturate(150%)',
+        WebkitBackdropFilter: 'blur(20px) saturate(150%)',
+        border: `1px solid ${isHovered ? 'var(--border-secondary)' : 'var(--border-primary)'}`,
+        color: isHovered ? 'var(--text-100)' : 'var(--text-90)',
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        cursor: 'pointer',
+        transform: `translate(${mousePosition.x}px, ${mousePosition.y}px) ${isHovered ? 'translateY(-2px)' : 'translateY(0)'}`,
+        willChange: 'transform',
+      }}
+    >
+      <span>{label}</span>
+      <motion.div
+        animate={{ x: isHovered ? 4 : 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <ArrowRight size={16} />
+      </motion.div>
+    </Link>
+  );
+}
+
+/**
+ * Enhanced CTA card with magnetic hover effect
+ */
+function EnhancedCTACard({
+  label,
+  href,
+  icon: Icon,
+  isMobile
+}: {
+  label: string;
+  href: string;
+  icon: React.ComponentType<{ size: number; style?: React.CSSProperties }>;
+  isMobile: boolean;
+}) {
+  const [isHovered, setIsHovered] = React.useState(false);
+  const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
+  const cardRef = useRef<HTMLAnchorElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (isMobile || !cardRef.current) return;
+
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+
+    // Subtle magnetic effect
+    setMousePosition({ x: x * 0.1, y: y * 0.1 });
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setMousePosition({ x: 0, y: 0 });
+  };
+
+  return (
+    <Link
+      ref={cardRef}
+      href={href}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        padding: isMobile ? '1.5rem' : '2rem',
+        borderRadius: '1rem',
+        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+        background: isHovered ? 'var(--surface-hover)' : 'var(--surface-secondary)',
+        backdropFilter: 'blur(40px)',
+        WebkitBackdropFilter: 'blur(40px)',
+        border: `1px solid ${isHovered ? 'var(--border-hover)' : 'var(--border-primary)'}`,
+        textDecoration: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '0.5rem',
+        fontSize: isMobile ? '0.9375rem' : '1rem',
+        transform: `translate(${mousePosition.x}px, ${mousePosition.y}px) ${isHovered ? 'translateY(-4px)' : 'translateY(0)'}`,
+        boxShadow: isHovered
+          ? '0 20px 40px rgba(0, 0, 0, 0.3)'
+          : '0 0 0 rgba(0, 0, 0, 0)',
+        willChange: 'transform',
+      }}
+    >
+      <span style={{
+        color: isHovered ? 'var(--text-100)' : 'var(--text-90)',
+        transition: 'color 0.3s ease',
+        fontWeight: '500',
+      }}>
+        {label}
+      </span>
+      <motion.div
+        animate={{ x: isHovered ? 4 : 0 }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+      >
+        <Icon
+          size={20}
+          style={{
+            color: isHovered ? 'var(--text-90)' : 'var(--text-tertiary)',
+            transition: 'color 0.3s ease',
+          }}
+        />
+      </motion.div>
+    </Link>
+  );
+}
+
+// ========================================
+// SKELETON COMPONENTS
+// ========================================
+
+function HeroSkeleton() {
+  return (
+    <div style={{
+      minHeight: '60vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '2rem',
+    }}>
+      <div style={{
+        width: '100%',
+        maxWidth: '48rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1.5rem',
+      }}>
+        <div style={{
+          height: '3rem',
+          background: 'var(--surface-primary)',
+          borderRadius: '0.5rem',
+          animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        }} />
+        <div style={{
+          height: '1.5rem',
+          background: 'var(--surface-primary)',
+          borderRadius: '0.5rem',
+          width: '80%',
+          animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        }} />
+      </div>
+      <style jsx>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function SectionSkeleton() {
+  return (
+    <div style={{
+      padding: '3rem 1.5rem',
+      maxWidth: '80rem',
+      margin: '0 auto',
+    }}>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+      }}>
+        {[...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            style={{
+              height: '4rem',
+              background: 'var(--surface-primary)',
+              borderRadius: '1rem',
+              animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              animationDelay: `${i * 0.2}s`,
+            }}
+          />
+        ))}
+      </div>
+      <style jsx>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function StatsSkeleton() {
+  return (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+      gap: '1.5rem',
+    }}>
+      {[...Array(4)].map((_, i) => (
+        <div
+          key={i}
+          style={{
+            height: '8rem',
+            background: 'var(--surface-primary)',
+            borderRadius: '1rem',
+            border: '1px solid var(--border-primary)',
+            animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            animationDelay: `${i * 0.15}s`,
+          }}
+        />
+      ))}
+      <style jsx>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function BentoSkeleton() {
+  return (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+      gap: '1rem',
+    }}>
+      {[...Array(6)].map((_, i) => (
+        <div
+          key={i}
+          style={{
+            height: '10rem',
+            background: 'var(--surface-primary)',
+            borderRadius: '1rem',
+            border: '1px solid var(--border-primary)',
+            animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            animationDelay: `${i * 0.1}s`,
+          }}
+        />
+      ))}
+      <style jsx>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function AccordionSkeleton() {
+  return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '1rem',
+    }}>
+      {[...Array(4)].map((_, i) => (
+        <div
+          key={i}
+          style={{
+            height: '5rem',
+            background: 'var(--surface-primary)',
+            borderRadius: '1rem',
+            border: '1px solid var(--border-primary)',
+            animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            animationDelay: `${i * 0.2}s`,
+          }}
+        />
+      ))}
+      <style jsx>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function ResearchSkeleton() {
+  return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '1.5rem',
+      padding: '2rem',
+      background: 'var(--surface-primary)',
+      borderRadius: '1.5rem',
+      border: '1px solid var(--border-primary)',
+    }}>
+      <div style={{
+        height: '2rem',
+        width: '60%',
+        background: 'var(--surface-secondary)',
+        borderRadius: '0.5rem',
+        animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      }} />
+      <div style={{
+        height: '4rem',
+        background: 'var(--surface-secondary)',
+        borderRadius: '0.5rem',
+        animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        animationDelay: '0.2s',
+      }} />
+      <div style={{
+        display: 'flex',
+        gap: '1rem',
+      }}>
+        {[...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            style={{
+              flex: 1,
+              height: '3rem',
+              background: 'var(--surface-secondary)',
+              borderRadius: '0.5rem',
+              animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              animationDelay: `${0.3 + i * 0.1}s`,
+            }}
+          />
+        ))}
+      </div>
+      <style jsx>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+      `}</style>
+    </div>
   );
 }
