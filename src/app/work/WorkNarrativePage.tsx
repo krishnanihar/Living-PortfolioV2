@@ -5,7 +5,7 @@ import { WorkPageLayout } from '@/components/narrative-work/WorkPageLayout';
 import { NarrativeWorkHero } from '@/components/narrative-work/NarrativeWorkHero';
 import { JourneyOverview } from '@/components/narrative-work/JourneyOverview';
 import { StatCardGrid, type StatCardData } from '@/components/narrative-work/StatCard';
-import { ImpactBentoGrid, type ImpactCard } from '@/components/narrative-work/ImpactBentoGrid';
+import { type ImpactCard } from '@/components/narrative-work/ImpactBentoGrid';
 import { ProjectAccordion, type ProjectDetails } from '@/components/narrative-work/ProjectAccordion';
 import { ResearchShowcase } from '@/components/narrative-work/ResearchShowcase';
 import { BreathingMoment } from '@/components/ui/BreathingMoment';
@@ -31,7 +31,12 @@ import { Target, Trophy, TrendingUp, CheckCircle, ArrowRight, ChevronDown } from
 export function WorkNarrativePage() {
   const [inView, setInView] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [hoveredStat, setHoveredStat] = useState<number | null>(null);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [ripplePosition, setRipplePosition] = useState<{ x: number; y: number } | null>(null);
+  const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   // Detect mobile devices
   useEffect(() => {
@@ -65,6 +70,22 @@ export function WorkNarrativePage() {
 
     return () => observer.disconnect();
   }, []);
+
+  // Carousel scroll detection
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel || !isMobile) return;
+
+    const handleScroll = () => {
+      const scrollLeft = carousel.scrollLeft;
+      const cardWidth = carousel.offsetWidth;
+      const index = Math.round(scrollLeft / cardWidth);
+      setCurrentCarouselIndex(index);
+    };
+
+    carousel.addEventListener('scroll', handleScroll);
+    return () => carousel.removeEventListener('scroll', handleScroll);
+  }, [isMobile]);
 
   // Air India Stats
   const airIndiaStats: StatCardData[] = [
@@ -399,106 +420,411 @@ export function WorkNarrativePage() {
         </div>
       )}
 
-      {/* SECTION 7: Air India Overview - Stats */}
+      {/* SECTION 7: Air India Overview - Interactive Stats */}
       <section style={{
+        maxWidth: '1400px',
+        margin: '0 auto',
+        padding: '0 1.5rem 4rem',
         position: 'relative',
-        paddingTop: 'clamp(2rem, 4vw, 3rem)',
-        paddingBottom: 'clamp(2rem, 4vw, 3rem)',
-        paddingLeft: isMobile ? '1rem' : '1.5rem',
-        paddingRight: isMobile ? '1rem' : '1.5rem',
+        zIndex: 1,
       }}>
+        {/* Header */}
         <div style={{
-          maxWidth: '80rem',
-          marginLeft: 'auto',
-          marginRight: 'auto',
+          textAlign: 'center',
+          marginBottom: '4rem',
         }}>
-          <div style={{
-            textAlign: 'center',
-            marginBottom: isMobile ? '2.5rem' : '4rem',
-          }}>
-            <motion.p
-              style={{
-                fontSize: isMobile ? '0.75rem' : '0.875rem',
-                fontWeight: '300',
-                letterSpacing: '0.2em',
-                textTransform: 'uppercase',
-                color: 'var(--text-tertiary)',
-                marginBottom: '1rem',
-              }}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              2023-Present
-            </motion.p>
-            <motion.h2
-              style={{
-                fontSize: 'clamp(1.5rem, 4vw, 2.25rem)',
-                fontWeight: '200',
-                color: 'var(--text-90)',
-                marginBottom: '1rem',
-              }}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              Transforming India's Flag Carrier
-            </motion.h2>
-            <motion.p
-              style={{
-                color: 'var(--text-tertiary)',
-                maxWidth: '42rem',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                fontSize: isMobile ? '0.9375rem' : '1rem',
-              }}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              Systems and innovation across Air India's digital transformation
-            </motion.p>
-          </div>
+          <motion.p
+            style={{
+              fontSize: isMobile ? '0.75rem' : '0.875rem',
+              fontWeight: '300',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'var(--text-tertiary)',
+              marginBottom: '1rem',
+            }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            2023-Present
+          </motion.p>
+          <motion.h2
+            style={{
+              fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
+              fontWeight: '400',
+              letterSpacing: '-0.02em',
+              color: 'var(--text-primary)',
+              marginBottom: '1rem',
+            }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            Transforming India's Flag Carrier
+          </motion.h2>
+          <motion.p
+            style={{
+              fontSize: '1rem',
+              color: 'var(--text-tertiary)',
+            }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Systems and innovation across Air India's digital transformation
+          </motion.p>
+        </div>
 
-          <Suspense fallback={<StatsSkeleton />}>
-            <StatCardGrid stats={airIndiaStats} inView={inView} />
-          </Suspense>
+        {/* Interactive Stats Cards */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: '1.5rem',
+        }}>
+          {airIndiaStats.map((stat, index) => {
+            const Icon = stat.icon;
+            const isHovered = hoveredStat === index;
+
+            return (
+              <div
+                key={index}
+                onMouseEnter={() => setHoveredStat(index)}
+                onMouseLeave={() => setHoveredStat(null)}
+                style={{
+                  position: 'relative',
+                  padding: '2rem',
+                  borderRadius: '20px',
+                  background: isHovered
+                    ? `linear-gradient(135deg, rgba(${stat.color}, 0.08), var(--surface-primary))`
+                    : 'var(--surface-primary)',
+                  backdropFilter: 'blur(40px) saturate(120%)',
+                  WebkitBackdropFilter: 'blur(40px) saturate(120%)',
+                  border: `1px solid ${isHovered ? `rgba(${stat.color}, 0.3)` : 'var(--border-primary)'}`,
+                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                  transform: isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
+                  cursor: 'default',
+                  boxShadow: isHovered
+                    ? `0 20px 40px rgba(${stat.color}, 0.15)`
+                    : 'var(--shadow-sm)',
+                  overflow: 'hidden',
+                }}
+              >
+                {/* Shimmer Line */}
+                {isHovered && (
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '2px',
+                    background: `linear-gradient(90deg, transparent, rgba(${stat.color}, 0.8), transparent)`,
+                  }} />
+                )}
+
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '1rem',
+                  marginBottom: '1rem',
+                }}>
+                  <div style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '10px',
+                    background: `rgba(${stat.color}, 0.1)`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                    transform: isHovered ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
+                  }}>
+                    <Icon size={20} style={{ color: `rgb(${stat.color})` }} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{
+                      fontSize: '2.5rem',
+                      fontWeight: '600',
+                      color: 'var(--text-primary)',
+                      lineHeight: '1',
+                      marginBottom: '0.5rem',
+                    }}>
+                      {stat.value}
+                    </div>
+                    <div style={{
+                      fontSize: '0.875rem',
+                      color: 'var(--text-secondary)',
+                      fontWeight: '300',
+                      letterSpacing: '0.02em',
+                    }}>
+                      {stat.label}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
-      {/* Impact Areas */}
+      {/* SECTION 7B: Six Areas of Impact - Bento Grid */}
       <section style={{
+        maxWidth: '1400px',
+        margin: '0 auto',
+        padding: '4rem 1.5rem',
         position: 'relative',
-        paddingTop: 'clamp(2rem, 4vw, 3rem)',
-        paddingBottom: 'clamp(2rem, 4vw, 3rem)',
-        paddingLeft: isMobile ? '1rem' : '1.5rem',
-        paddingRight: isMobile ? '1rem' : '1.5rem',
+        zIndex: 1,
       }}>
         <div style={{
-          maxWidth: '80rem',
-          marginLeft: 'auto',
-          marginRight: 'auto',
+          textAlign: 'center',
+          marginBottom: '4rem',
+          animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both' : 'none',
+          opacity: inView ? 1 : 0,
         }}>
-          <div style={{
-            textAlign: 'center',
-            marginBottom: isMobile ? '2rem' : '3rem',
+          <h2 style={{
+            fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
+            fontWeight: '400',
+            letterSpacing: '-0.02em',
+            marginBottom: '1rem',
+            color: 'var(--text-primary)',
           }}>
-            <h3 style={{
-              fontSize: 'clamp(1.25rem, 3vw, 1.875rem)',
-              fontWeight: '300',
-              color: 'var(--text-90)',
-              marginBottom: '1rem',
-            }}>
-              Six Areas of Impact
-            </h3>
-          </div>
-          <Suspense fallback={<BentoSkeleton />}>
-            <ImpactBentoGrid cards={impactCards} inView={inView} />
-          </Suspense>
+            Six Areas of Impact
+          </h2>
+          <p style={{
+            fontSize: '1rem',
+            color: 'var(--text-tertiary)',
+          }}>
+            Systems and innovation across Air India's digital transformation
+          </p>
         </div>
+
+        {/* Desktop: Bento Grid */}
+        {!isMobile && (
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '1.5rem',
+          }}>
+            {impactCards.map((card, index) => {
+              const isHovered = hoveredCard === card.id;
+              const isFeatured = card.id === 1;
+
+              return (
+                <div
+                  key={card.id}
+                  onMouseEnter={() => setHoveredCard(card.id)}
+                  onMouseLeave={() => {
+                    setHoveredCard(null);
+                    setRipplePosition(null);
+                  }}
+                  onClick={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    setRipplePosition({
+                      x: e.clientX - rect.left,
+                      y: e.clientY - rect.top,
+                    });
+                  }}
+                  style={{
+                    position: 'relative',
+                    padding: '2rem',
+                    borderRadius: '20px',
+                    gridColumn: isFeatured ? 'span 2' : 'span 1',
+                    background: isHovered
+                      ? `linear-gradient(135deg, rgba(${card.color}, 0.06), var(--surface-primary))`
+                      : 'var(--surface-primary)',
+                    backdropFilter: 'blur(40px)',
+                    WebkitBackdropFilter: 'blur(40px)',
+                    border: `1px solid transparent`,
+                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                    transform: isHovered ? 'translateY(-4px) scale(1.01)' : 'translateY(0) scale(1)',
+                    cursor: 'pointer',
+                    animation: inView ? `scrollRevealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.7 + index * 0.1}s both` : 'none',
+                    boxShadow: isHovered
+                      ? `0 20px 40px rgba(${card.color}, 0.15)`
+                      : 'var(--shadow-sm)',
+                    overflow: 'hidden',
+                  }}
+                >
+                  {/* Border Shimmer Effect */}
+                  {isHovered && (
+                    <div style={{
+                      position: 'absolute',
+                      inset: 0,
+                      borderRadius: '20px',
+                      padding: '1px',
+                      background: `linear-gradient(90deg, transparent, rgba(${card.color}, 0.8), transparent)`,
+                      backgroundSize: '200% 100%',
+                      animation: 'borderShimmer 3s ease-in-out infinite',
+                      WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                      WebkitMaskComposite: 'xor',
+                      maskComposite: 'exclude',
+                      pointerEvents: 'none',
+                    }} />
+                  )}
+
+                  {/* Ripple Effect */}
+                  {isHovered && ripplePosition && hoveredCard === card.id && (
+                    <div style={{
+                      position: 'absolute',
+                      left: ripplePosition.x,
+                      top: ripplePosition.y,
+                      width: '20px',
+                      height: '20px',
+                      borderRadius: '50%',
+                      background: `rgba(${card.color}, 0.4)`,
+                      animation: 'ripple 0.6s ease-out',
+                      pointerEvents: 'none',
+                    }} />
+                  )}
+
+                  <div style={{
+                    fontSize: '0.75rem',
+                    fontWeight: '600',
+                    color: `rgb(${card.color})`,
+                    marginBottom: '1rem',
+                    letterSpacing: '0.1em',
+                    opacity: 0.8,
+                  }}>
+                    {card.label}
+                  </div>
+                  <h3 style={{
+                    fontSize: isFeatured ? '1.5rem' : '1.25rem',
+                    fontWeight: '500',
+                    color: 'var(--text-primary)',
+                    marginBottom: '0.75rem',
+                    letterSpacing: '-0.01em',
+                  }}>
+                    {card.title}
+                  </h3>
+                  <p style={{
+                    fontSize: '0.875rem',
+                    color: 'var(--text-tertiary)',
+                    lineHeight: '1.6',
+                    marginBottom: '1.5rem',
+                  }}>
+                    {card.description}
+                  </p>
+                  <div style={{
+                    fontSize: '0.813rem',
+                    fontWeight: '500',
+                    color: `rgb(${card.color})`,
+                    letterSpacing: '0.02em',
+                  }}>
+                    {card.metric}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Mobile: Horizontal Carousel */}
+        {isMobile && (
+          <>
+            <div
+              ref={carouselRef}
+              style={{
+                display: 'flex',
+                gap: '1rem',
+                overflowX: 'auto',
+                scrollSnapType: 'x mandatory',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch',
+              }}
+            >
+              {impactCards.map((card, index) => {
+                const isHovered = hoveredCard === card.id;
+
+                return (
+                  <div
+                    key={card.id}
+                    onMouseEnter={() => setHoveredCard(card.id)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                    style={{
+                      flex: '0 0 85%',
+                      scrollSnapAlign: 'center',
+                      position: 'relative',
+                      padding: '2rem',
+                      borderRadius: '20px',
+                      background: isHovered
+                        ? `linear-gradient(135deg, rgba(${card.color}, 0.06), var(--surface-primary))`
+                        : 'var(--surface-primary)',
+                      backdropFilter: 'blur(40px)',
+                      WebkitBackdropFilter: 'blur(40px)',
+                      border: `1px solid ${isHovered ? `rgba(${card.color}, 0.3)` : 'var(--border-primary)'}`,
+                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                      boxShadow: isHovered
+                        ? `0 20px 40px rgba(${card.color}, 0.15)`
+                        : 'var(--shadow-sm)',
+                    }}
+                  >
+                    <div style={{
+                      fontSize: '0.75rem',
+                      fontWeight: '600',
+                      color: `rgb(${card.color})`,
+                      marginBottom: '1rem',
+                      letterSpacing: '0.1em',
+                      opacity: 0.8,
+                    }}>
+                      {card.label}
+                    </div>
+                    <h3 style={{
+                      fontSize: '1.25rem',
+                      fontWeight: '500',
+                      color: 'var(--text-primary)',
+                      marginBottom: '0.75rem',
+                      letterSpacing: '-0.01em',
+                    }}>
+                      {card.title}
+                    </h3>
+                    <p style={{
+                      fontSize: '0.875rem',
+                      color: 'var(--text-tertiary)',
+                      lineHeight: '1.6',
+                      marginBottom: '1.5rem',
+                    }}>
+                      {card.description}
+                    </p>
+                    <div style={{
+                      fontSize: '0.813rem',
+                      fontWeight: '500',
+                      color: `rgb(${card.color})`,
+                      letterSpacing: '0.02em',
+                    }}>
+                      {card.metric}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Carousel Progress Dots */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              marginTop: '2rem',
+            }}>
+              {impactCards.map((_, index) => (
+                <div
+                  key={index}
+                  style={{
+                    width: currentCarouselIndex === index ? '24px' : '8px',
+                    height: '8px',
+                    borderRadius: '4px',
+                    background: currentCarouselIndex === index
+                      ? 'var(--accent-primary)'
+                      : 'var(--border-primary)',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </section>
 
       {/* SECTION 8: Featured Projects - Accordion */}
@@ -977,36 +1303,6 @@ function StatsSkeleton() {
             border: '1px solid var(--border-primary)',
             animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             animationDelay: `${i * 0.15}s`,
-          }}
-        />
-      ))}
-      <style jsx>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
-        }
-      `}</style>
-    </div>
-  );
-}
-
-function BentoSkeleton() {
-  return (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-      gap: '1rem',
-    }}>
-      {[...Array(6)].map((_, i) => (
-        <div
-          key={i}
-          style={{
-            height: '10rem',
-            background: 'var(--surface-primary)',
-            borderRadius: '1rem',
-            border: '1px solid var(--border-primary)',
-            animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            animationDelay: `${i * 0.1}s`,
           }}
         />
       ))}
