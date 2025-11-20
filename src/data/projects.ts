@@ -196,6 +196,14 @@ export const projects: Project[] = [
   },
 
   // Research Projects
+
+  /* ==================================================
+   * TEMPORARILY DISABLED FOR VERCEL BUILD OPTIMIZATION
+   * Route: /work/psoriassist (6,940 lines)
+   * To re-enable: Uncomment this block AND rename
+   * src/app/work/psoriassist/page.tsx.disabled → page.tsx
+   * ================================================== */
+  /*
   {
     id: 'psoriassist',
     title: 'PsoriAssist',
@@ -231,6 +239,7 @@ export const projects: Project[] = [
     featured: true,
     order: 9,
   },
+  */
   {
     id: 'mythos',
     title: 'mythOS',
@@ -265,6 +274,14 @@ export const projects: Project[] = [
     featured: true,
     order: 10,
   },
+
+  /* ==================================================
+   * TEMPORARILY DISABLED FOR VERCEL BUILD OPTIMIZATION
+   * Route: /work/latent-space (7,325 lines)
+   * To re-enable: Uncomment this block AND rename
+   * src/app/work/latent-space/page.tsx.disabled → page.tsx
+   * ================================================== */
+  /*
   {
     id: 'latent-space',
     title: 'Latent Space',
@@ -298,6 +315,7 @@ export const projects: Project[] = [
     featured: true,
     order: 11,
   },
+  */
   {
     id: 'metamorphic-fractal-reflections',
     title: 'Metamorphic Fractal Reflections',

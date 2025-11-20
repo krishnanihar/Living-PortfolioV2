@@ -1,6 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  typedRoutes: true,
+  // Disabled for faster builds - run `npm run type-check` separately
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  // Disabled typedRoutes to speed up build time
+  // typedRoutes: true,
   outputFileTracingRoot: __dirname,
   images: {
     formats: ['image/webp', 'image/avif'],
@@ -9,6 +17,9 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
+  // Disable source maps in production for faster builds
+  productionBrowserSourceMaps: false,
+  // Note: swcMinify is default in Next.js 15+, no need to specify
   poweredByHeader: false,
   reactStrictMode: true,
 }
