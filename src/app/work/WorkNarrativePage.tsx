@@ -216,10 +216,10 @@ export function WorkNarrativePage() {
         <JourneyOverview />
       </Suspense>
 
-      {/* SECTION 3: Act I Transition - Foundation */}
+      {/* SECTION 3: College Projects */}
       <ActTransition
-        actTitle="Act I: Foundation"
-        quote="Where consciousness meets code"
+        actTitle="College Projects"
+        quote="Academic foundations & early experiments"
         actColor="rgba(147, 51, 234, 0.8)"
       />
 
@@ -366,10 +366,10 @@ export function WorkNarrativePage() {
         type="reflection"
       />
 
-      {/* SECTION 6: Act II Transition - Industry */}
+      {/* SECTION 6: Professional Work */}
       <ActTransition
-        actTitle="Act II: Industry"
-        quote="Designing at 40,000 feet"
+        actTitle="Professional Work"
+        quote="Designing at scale for Air India"
         actColor="rgba(218, 14, 41, 0.8)"
       />
 
@@ -546,10 +546,10 @@ export function WorkNarrativePage() {
         type="question"
       />
 
-      {/* SECTION 10: Act III Transition - Innovation */}
+      {/* SECTION 10: Research & Innovation */}
       <ActTransition
-        actTitle="Act III: Innovation"
-        quote="Speculative futures & ethical AI"
+        actTitle="Research & Innovation"
+        quote="AI applications & design research"
         actColor="rgba(14, 165, 233, 0.8)"
       />
 
