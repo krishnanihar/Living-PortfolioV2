@@ -32,45 +32,6 @@ export function NarrativeWorkHero() {
       justifyContent: 'center',
       overflow: 'hidden',
     }}>
-      {/* Ambient particle field (CSS-based) */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        overflow: 'hidden',
-        opacity: Math.max(0, 1 - scrollY / 400) * 0.45,
-      }}>
-        {[...Array(20)].map((_, i) => {
-          const colors = [
-            'from-purple-500/30 to-blue-500/30',
-            'from-red-500/25 to-purple-500/25',
-            'from-blue-500/30 to-cyan-500/30',
-          ];
-          return (
-            <motion.div
-              key={i}
-              className={`absolute rounded-full bg-gradient-to-br ${colors[i % colors.length]}`}
-              style={{
-                width: `${Math.random() * 300 + 50}px`,
-                height: `${Math.random() * 300 + 50}px`,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                filter: 'blur(60px)',
-              }}
-              animate={{
-                x: [0, Math.random() * 100 - 50, 0],
-                y: [0, Math.random() * 100 - 50, 0],
-                opacity: [0.3, 0.6, 0.3],
-              }}
-              transition={{
-                duration: Math.random() * 20 + 10,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-            />
-          );
-        })}
-      </div>
-
       {/* Main content */}
       <div
         style={{

@@ -30,12 +30,8 @@ import { Target, Trophy, TrendingUp, CheckCircle, ArrowRight, ChevronDown } from
  */
 export function WorkNarrativePage() {
   const [inView, setInView] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const act1Ref = useRef<HTMLDivElement>(null);
-  const act2Ref = useRef<HTMLDivElement>(null);
-  const act3Ref = useRef<HTMLDivElement>(null);
 
   // Detect mobile devices
   useEffect(() => {
@@ -47,18 +43,6 @@ export function WorkNarrativePage() {
     window.addEventListener('resize', checkMobile);
 
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Scroll progress tracking
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (window.scrollY / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Intersection Observer for animations with performance optimization
@@ -81,16 +65,6 @@ export function WorkNarrativePage() {
 
     return () => observer.disconnect();
   }, []);
-
-  // Smooth scroll to act sections
-  const scrollToAct = (ref: React.RefObject<HTMLDivElement | null>) => {
-    if (ref.current) {
-      ref.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
-  };
 
   // Air India Stats
   const airIndiaStats: StatCardData[] = [
@@ -232,67 +206,6 @@ export function WorkNarrativePage() {
 
   return (
     <WorkPageLayout>
-      {/* Scroll Progress Indicator */}
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: `${scrollProgress}%`,
-          height: '3px',
-          background: 'linear-gradient(90deg, rgba(147, 51, 234, 0.8), rgba(218, 14, 41, 0.8), rgba(14, 165, 233, 0.8))',
-          zIndex: 9999,
-          transition: 'width 0.1s ease-out',
-          willChange: 'width',
-        }}
-      />
-
-      {/* Act Navigation - Floating Anchors */}
-      {!isMobile && (
-        <div
-          style={{
-            position: 'fixed',
-            right: '2rem',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            zIndex: 100,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem',
-          }}
-        >
-          {[
-            { ref: act1Ref, label: 'Act I', color: '147, 51, 234' },
-            { ref: act2Ref, label: 'Act II', color: '218, 14, 41' },
-            { ref: act3Ref, label: 'Act III', color: '14, 165, 233' },
-          ].map((act, i) => (
-            <button
-              key={i}
-              onClick={() => scrollToAct(act.ref)}
-              style={{
-                width: '12px',
-                height: '12px',
-                borderRadius: '50%',
-                background: `rgba(${act.color}, 0.3)`,
-                border: `1px solid rgba(${act.color}, 0.5)`,
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                position: 'relative',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.3)';
-                e.currentTarget.style.background = `rgba(${act.color}, 0.6)`;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.background = `rgba(${act.color}, 0.3)`;
-              }}
-              aria-label={`Scroll to ${act.label}`}
-            />
-          ))}
-        </div>
-      )}
-
       {/* SECTION 1: Hero Entrance */}
       <Suspense fallback={<HeroSkeleton />}>
         <NarrativeWorkHero />
@@ -304,13 +217,11 @@ export function WorkNarrativePage() {
       </Suspense>
 
       {/* SECTION 3: Act I Transition - Foundation */}
-      <div ref={act1Ref}>
-        <ActTransition
-          actTitle="Act I: Foundation"
-          quote="Where consciousness meets code"
-          actColor="rgba(147, 51, 234, 0.8)"
-        />
-      </div>
+      <ActTransition
+        actTitle="Act I: Foundation"
+        quote="Where consciousness meets code"
+        actColor="rgba(147, 51, 234, 0.8)"
+      />
 
       {/* SECTION 4: Metamorphic Fractal Reflections */}
       <section style={{
@@ -456,13 +367,11 @@ export function WorkNarrativePage() {
       />
 
       {/* SECTION 6: Act II Transition - Industry */}
-      <div ref={act2Ref}>
-        <ActTransition
-          actTitle="Act II: Industry"
-          quote="Designing at 40,000 feet"
-          actColor="rgba(218, 14, 41, 0.8)"
-        />
-      </div>
+      <ActTransition
+        actTitle="Act II: Industry"
+        quote="Designing at 40,000 feet"
+        actColor="rgba(218, 14, 41, 0.8)"
+      />
 
       {/* Mobile Swipe Hint for Act II */}
       {isMobile && (
@@ -638,13 +547,11 @@ export function WorkNarrativePage() {
       />
 
       {/* SECTION 10: Act III Transition - Innovation */}
-      <div ref={act3Ref}>
-        <ActTransition
-          actTitle="Act III: Innovation"
-          quote="Speculative futures & ethical AI"
-          actColor="rgba(14, 165, 233, 0.8)"
-        />
-      </div>
+      <ActTransition
+        actTitle="Act III: Innovation"
+        quote="Speculative futures & ethical AI"
+        actColor="rgba(14, 165, 233, 0.8)"
+      />
 
       {/* SECTION 11: Research Triptych */}
       <section style={{
