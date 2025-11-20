@@ -1,0 +1,39 @@
+# Documentation and markdown files
+*.md
+!README.md
+CLAUDE.md
+NARRATIVE_ENHANCEMENTS.md
+NARRATIVE_COMPONENTS_GUIDE.md
+PHASE_A_COMPLETE.md
+PHASE_B_C_COMPLETE.md
+iOS_LIGHT_MODE_TRANSFORMATION.md
+
+# Backup files
+*.backup
+*.bak
+*.old
+
+# Development files
+.vscode/
+.idea/
+*.log
+*.local
+
+# Git files
+.git/
+.gitignore
+.gitattributes
+
+# Environment files (usually already ignored)
+.env.local
+.env.*.local
+
+# Test files (if any exist)
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+
+# Coverage reports
+coverage/
+.nyc_output/
