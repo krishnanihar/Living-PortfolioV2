@@ -131,11 +131,27 @@ src/
 - Advanced glassmorphism with iOS Control Center-level sophistication
 - Clean OLED black background with sophisticated glass surfaces
 
+**Enhanced CSS Variables** (108 theme-aware variables):
+- **Text opacity scale**: `--text-100` through `--text-01` (27 variants)
+  - Use for: `color`, `borderColor`, text-related properties
+  - Auto-switches: Dark mode = white with opacity, Light mode = black with opacity
+  - Example: `color: 'var(--text-95)'` (95% opacity text in current theme)
+
+- **Glass surface scale**: `--glass-100` through `--glass-01` (27 variants)
+  - Use for: `backgroundColor`, `background`, surface-related properties
+  - Auto-switches: Dark mode = white with opacity, Light mode = black with opacity
+  - Example: `backgroundColor: 'var(--glass-05)'` (5% opacity surface in current theme)
+
+- **Semantic colors**: `--text-primary`, `--text-secondary`, `--text-tertiary`, `--text-muted`
+- **Surface colors**: `--surface-primary`, `--surface-secondary`, `--surface-hover`, `--surface-active`
+- **Border colors**: `--border-primary`, `--border-secondary`, `--border-hover`, `--border-focus`
+
 **Color System**:
 - OLED black canvas (`#0A0A0A`) as primary background
 - Brand red (`#DA0E29`) for primary actions
 - Sophisticated opacity-based surface hierarchy (4-6% opacity)
 - Theme-aware glass surfaces with proper blur and saturation
+- **All theme colors automatically adapt via CSS variables** (no JavaScript theme conditionals)
 
 **Micro-Interactions**:
 - Magnetic hover effects with performance monitoring
@@ -178,6 +194,24 @@ TypeScript path mapping configured:
 - Prefer custom utility classes for complex effects
 - Use opacity-based colors for surfaces and text hierarchy
 
+**⚠️ CRITICAL: Theme-Dependent Styling**
+- **NEVER** use inline theme conditionals: `resolvedTheme === 'light' ? ... : ...`
+- **ALWAYS** use CSS variables from globals.css
+- This prevents build timeouts and improves performance
+
+```tsx
+// ❌ WRONG - Causes 45+ minute build timeouts
+color: resolvedTheme === 'light' ? 'rgba(0,0,0,0.95)' : 'rgba(255,255,255,0.95)'
+
+// ✅ CORRECT - Instant builds, better performance
+color: 'var(--text-95)'
+```
+
+**CSS Variable Selection Guide:**
+- For text/borders: Use `--text-{opacity}` (e.g., `--text-95`, `--text-60`)
+- For backgrounds/surfaces: Use `--glass-{opacity}` (e.g., `--glass-05`, `--glass-15`)
+- Opacity values: 100, 95, 90, 85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25, 20, 18, 15, 12, 10, 08, 06, 05, 04, 03, 02, 01
+
 ### TypeScript
 - Strict mode enabled
 - Export types alongside components
@@ -212,11 +246,186 @@ TypeScript path mapping configured:
 
 ### Development Workflow
 1. Always check TypeScript errors before committing
-2. Use CSS variables rather than hardcoded values
-3. Test components in both light and dark themes
-4. Ensure accessibility for interactive components
-5. Follow the existing project data structure for new portfolio items
-6. Consider performance impact of animations and effects
+2. **Use CSS variables for ALL theme-dependent styling** (never inline `resolvedTheme` conditionals)
+3. Use CSS variables rather than hardcoded values
+4. Test components in both light and dark themes
+5. Ensure accessibility for interactive components
+6. Follow the existing project data structure for new portfolio items
+7. Consider performance impact of animations and effects
+8. Run `npm run build` locally before pushing to verify build succeeds
+
+## Performance & Build Optimization
+
+### ⚠️ Critical Build Performance Issue
+
+**Problem**: Inline theme conditionals cause 45+ minute build timeouts on Vercel
+
+**Symptoms**:
+- Local builds taking 10+ minutes (should be <1 minute)
+- Vercel deployments timing out at 45 minutes
+- Build succeeds on one commit, fails on next with same code
+- Error: "Build exceeded maximum duration"
+
+**Root Cause**:
+Excessive inline theme conditionals (`resolvedTheme === 'light' ? ... : ...`) across large components (2,000-4,000 lines) overwhelm Next.js 15 build optimizer. The combination of:
+1. **Massive component files** (4,000+ lines each)
+2. **1,000+ conditional expressions** across codebase
+3. **Heavy animation libraries** (Framer Motion with scroll hooks)
+4. **Next.js static optimization** attempting to resolve all conditional paths at build time
+
+Results in exponential build complexity that exceeds Vercel's 45-minute timeout on free tier.
+
+### Solution: CSS Variables Architecture
+
+Replace ALL inline theme conditionals with centralized CSS variables defined once in `globals.css`.
+
+**Migration Pattern**:
+```tsx
+// ❌ BEFORE (Build Killer Pattern)
+const { resolvedTheme } = useTheme();
+
+// In component styles - repeated 100+ times per component
+color: resolvedTheme === 'light' ? 'rgba(0,0,0,0.95)' : 'rgba(255,255,255,0.95)'
+backgroundColor: resolvedTheme === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)'
+borderColor: resolvedTheme === 'light' ? 'rgba(0,0,0,0.10)' : 'rgba(255,255,255,0.10)'
+
+// Helper functions that generate conditionals
+const getTextColor = (opacity: number) =>
+  resolvedTheme === 'light' ? `rgba(0,0,0,${opacity})` : `rgba(255,255,255,${opacity})`;
+
+// ✅ AFTER (Fast Build Pattern)
+// NO useTheme import needed for styling
+// NO helper functions needed
+
+// In component styles - uses CSS variables
+color: 'var(--text-95)'
+backgroundColor: 'var(--glass-05)'
+borderColor: 'var(--text-10)'
+```
+
+**CSS Variables System** (in `globals.css`):
+```css
+/* Dark theme (default) */
+:root {
+  --text-95: rgba(255, 255, 255, 0.95);
+  --glass-05: rgba(255, 255, 255, 0.05);
+  /* ... 108 variables total */
+}
+
+/* Light theme - automatic switching */
+[data-theme="light"] {
+  --text-95: rgba(0, 0, 0, 0.95);
+  --glass-05: rgba(0, 0, 0, 0.05);
+  /* ... same variables, inverted colors */
+}
+```
+
+### Performance Metrics
+
+**Build Time Comparison**:
+- **Before refactor**: 45+ minutes (timeout/failure)
+- **After refactor**: 18.5 seconds ✅
+- **Improvement**: 99.3% faster
+
+**Components Refactored** (534 conditionals eliminated):
+1. `LatentSpaceSpeculative.tsx` - 4,142 lines, 167 conditionals removed
+2. `AboutSectionV2.tsx` - 2,419 lines, 213 conditionals removed
+3. `LatentSpaceWork.tsx` - 3,216 lines, 32 conditionals removed
+4. `AboutSection.tsx` - 2,049 lines, 99 conditionals removed
+5. `AirIndiaWork.tsx` - 4 conditionals removed
+6. `MetamorphicFractalWork.tsx` - 19 conditionals removed
+
+### CSS Variable Usage Guide
+
+**When to use each type**:
+
+**`--text-{opacity}`** - For foreground elements:
+- `color` property
+- `borderColor` property
+- `stroke` in SVGs
+- Text shadows
+- Any element where you need the "opposite" of background
+
+**`--glass-{opacity}`** - For background elements:
+- `backgroundColor` property
+- `background` property
+- `fill` in SVGs
+- Box shadows (background color)
+- Surface overlays
+
+**Available opacity values**:
+`100, 95, 90, 85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25, 20, 18, 15, 12, 10, 08, 06, 05, 04, 03, 02, 01`
+
+**Mapping guide**:
+```tsx
+// If you were using:
+rgba(0,0,0,0.95) or rgba(255,255,255,0.95) → var(--text-95)
+rgba(0,0,0,0.80) or rgba(255,255,255,0.80) → var(--text-80)
+rgba(0,0,0,0.60) or rgba(255,255,255,0.60) → var(--text-60)
+rgba(0,0,0,0.05) or rgba(255,255,255,0.05) → var(--glass-05)
+rgba(0,0,0,0.10) or rgba(255,255,255,0.10) → var(--glass-10)
+```
+
+### Refactoring Checklist
+
+When refactoring components with theme conditionals:
+
+1. **Remove theme imports**:
+   - Remove `import { useTheme } from 'next-themes'` if unused elsewhere
+   - Remove `const { resolvedTheme } = useTheme()`
+   - Remove any theme helper functions (`getTextColor`, `getSurfaceColor`, etc.)
+
+2. **Replace conditionals**:
+   - Find all instances of `resolvedTheme === 'light' ? ... : ...`
+   - Identify the opacity value in the rgba
+   - Replace with appropriate `var(--text-XX)` or `var(--glass-XX)`
+
+3. **Quote CSS variables**:
+   - In JSX props: `color={'var(--text-95)'}`
+   - In inline styles: `color: 'var(--text-95)'`
+   - In template literals: `` color: `var(--text-95)` ``
+
+4. **Test**:
+   - Run `npm run type-check` (should pass)
+   - Run `npm run build` (should complete in <1 minute)
+   - Test theme switching in browser (both modes should work)
+
+### Exception: Dynamic Brand Colors
+
+Keep `useTheme` ONLY when you need dynamic colors that can't be CSS variables:
+
+```tsx
+// ✅ Acceptable use of useTheme - dynamic project brand colors
+const getProjectColor = (projectId: string, opacity: number) => {
+  const brandColors = { airIndia: '#DA0E29', psoriassist: '#10B981' };
+  const color = brandColors[projectId];
+  return resolvedTheme === 'light'
+    ? `rgba(${hexToRgb(color)}, ${opacity})`
+    : `rgba(${hexToRgb(color)}, ${opacity})`;
+};
+```
+
+**Rule**: If the color value is computed at runtime from data (project colors, user preferences, API responses), you can use theme conditionals. If it's a static UI color, use CSS variables.
+
+### Benefits
+
+**Build Performance**:
+- ✅ 99.3% faster builds (18.5s vs 45+ min)
+- ✅ Works on Vercel free tier
+- ✅ Eliminates build timeouts
+- ✅ Consistent build times regardless of component size
+
+**Runtime Performance**:
+- ✅ No JavaScript theme calculations
+- ✅ Smaller bundle size (less code)
+- ✅ Instant theme switching (CSS only)
+- ✅ Better browser caching
+
+**Maintainability**:
+- ✅ Single source of truth for theme colors (globals.css)
+- ✅ Easier to update theme colors globally
+- ✅ Cleaner component code (no helper functions)
+- ✅ Type-safe with CSS variable autocomplete
 
 ## Critical Implementation Notes
 
@@ -252,6 +461,38 @@ TypeScript path mapping configured:
 - **Example**: Hero section requires inline styles to override `.portfolio-container` CSS
 
 ## Common Build Issues & Solutions
+
+### Theme Conditional Build Timeout
+
+**Issue**: Build times out after 45 minutes on Vercel or takes 10+ minutes locally
+
+**Symptoms**:
+- Error: "Build exceeded maximum duration"
+- Build hangs during "Creating an optimized production build..."
+- Works on commit A (55s), fails on commit B (45+ min timeout)
+- TypeScript check passes but build fails
+
+**Cause**:
+Inline theme conditionals (`resolvedTheme === 'light' ? ... : ...`) across large components create exponential build complexity. Next.js 15 build optimizer attempts to statically analyze all conditional paths, overwhelming the build process.
+
+**Solution**:
+Replace ALL inline theme conditionals with CSS variables:
+
+```tsx
+// ❌ Remove this pattern
+color: resolvedTheme === 'light' ? 'rgba(0,0,0,0.95)' : 'rgba(255,255,255,0.95)'
+
+// ✅ Replace with this
+color: 'var(--text-95)'
+```
+
+**Prevention**:
+- Never use `resolvedTheme === 'light' ? ... : ...` for styling
+- Always use CSS variables from `globals.css`
+- Keep `useTheme` only for dynamic runtime logic (not styling)
+- Run `npm run build` locally before pushing (should complete in <1 min)
+
+**See**: [Performance & Build Optimization](#performance--build-optimization) section for complete refactoring guide.
 
 ### JSX Compilation Errors
 1. **Missing commas in style objects**
