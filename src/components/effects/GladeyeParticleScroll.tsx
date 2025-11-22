@@ -4,7 +4,7 @@ import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { shimmerVertexShader, shimmerFragmentShader } from '@/shaders/gladeye';
-import { useWorkNarrativeProgress } from '@/hooks/useWorkNarrativeProgress';
+import { useNarrativeContext } from '@/contexts/NarrativeContext';
 
 // Determine particle count based on device capabilities
 function getParticleCount(): number {
@@ -161,7 +161,7 @@ export function GladeyeParticleScroll() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const rafRef = useRef<number | null>(null);
-  const narrativeState = useWorkNarrativeProgress();
+  const { contentType } = useNarrativeContext();
 
   // Scroll handler with requestAnimationFrame for performance
   useEffect(() => {
@@ -212,8 +212,8 @@ export function GladeyeParticleScroll() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Calculate opacity based on content type
-  const containerOpacity = narrativeState.contentType === 'transition' ? 1 : 0.3;
+  // Calculate opacity based on content type from context
+  const containerOpacity = contentType === 'transition' ? 1 : 0.3;
 
   return (
     <div

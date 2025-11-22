@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { WorkNarrativePage } from './WorkNarrativePage';
 import { NoiseTextureOverlay } from '@/components/effects/NoiseTextureOverlay';
 import { useWorkNarrativeProgress } from '@/hooks/useWorkNarrativeProgress';
+import { NarrativeProvider } from '@/contexts/NarrativeContext';
 
 // Dynamic imports of background effects for performance (client-side only)
 const GradientMeshBackground = dynamic(
@@ -28,7 +29,7 @@ export function WorkPageClient() {
   const narrativeState = useWorkNarrativeProgress();
 
   return (
-    <>
+    <NarrativeProvider>
       {/* Gradient mesh background - Stripe-style morphing gradients */}
       <GradientMeshBackground />
 
@@ -43,6 +44,6 @@ export function WorkPageClient() {
       />
 
       <WorkNarrativePage />
-    </>
+    </NarrativeProvider>
   );
 }

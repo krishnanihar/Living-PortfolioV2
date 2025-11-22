@@ -1,7 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useNarrativeContext } from '@/contexts/NarrativeContext';
 
 interface ActTransitionProps {
   actTitle: string;
@@ -14,6 +15,7 @@ interface ActTransitionProps {
 /**
  * Elegant editorial-style transition between narrative acts
  * Minimal design with typography hierarchy and subtle accent lines
+ * Reports visibility to NarrativeContext for particle activation
  */
 export function ActTransition({
   actTitle,
@@ -22,8 +24,35 @@ export function ActTransition({
   actNumber,
   showDividers = true
 }: ActTransitionProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { setContentType } = useNarrativeContext();
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
+            setContentType('transition');
+          } else {
+            setContentType('content');
+          }
+        });
+      },
+      { threshold: [0, 0.3, 0.5, 0.7, 1] }
+    );
+
+    observer.observe(section);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [setContentType]);
+
   return (
-    <section style={{
+    <section ref={sectionRef} style={{
       position: 'relative',
       minHeight: '80vh',
       display: 'flex',
