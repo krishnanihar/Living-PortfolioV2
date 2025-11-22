@@ -7,9 +7,9 @@ import { IntroductionSection } from '@/components/sections/IntroductionSection';
 import { SectionDivider } from '@/components/ui/SectionDivider';
 import { HomeNarrativeWrapper } from '@/components/sections/HomeNarrativeWrapper';
 
-// Dynamically import optimized GPGPU Flow Field for ultimate visual experience
-const OptimizedFlowField = dynamic(
-  () => import('@/components/effects/OptimizedFlowField'),
+// Dynamically import Hybrid Particle System (mesh gradient + flow field particles)
+const HybridParticleSystem = dynamic(
+  () => import('@/components/effects/HybridParticleSystem'),
   {
     ssr: false,
     loading: () => null
@@ -48,8 +48,8 @@ export default function HomePage() {
     <HomeNarrativeWrapper>
       <PortfolioNavigation />
 
-      {/* Ultimate GPGPU Flow Field - Immersive particle experience */}
-      <OptimizedFlowField preset="immersive" enableFPSMonitoring={true} />
+      {/* Hybrid Particle System - Mesh gradient + flow field particles */}
+      <HybridParticleSystem enableNarrative={false} />
 
       <main id="main-content">
         <IntroductionSection />

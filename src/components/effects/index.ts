@@ -4,3 +4,7 @@
 export { default as GPGPUFlowField } from './GPGPUFlowField';
 export { default as GPGPUFlowFieldEnhanced } from './GPGPUFlowFieldEnhanced';
 export { default as OptimizedFlowField } from './OptimizedFlowField';
+
+// Premium particle systems (2025)
+export { default as MeshGradientBackground } from './MeshGradientBackground';
+export { default as HybridParticleSystem } from './HybridParticleSystem';
