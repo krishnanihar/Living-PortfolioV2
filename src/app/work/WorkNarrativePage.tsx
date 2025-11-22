@@ -180,8 +180,8 @@ export function WorkNarrativePage() {
 
       {/* SECTION 3: Professional Work */}
       <ActTransition
-        actTitle="Professional Work"
-        quote="Designing at scale for Air India"
+        actTitle="Systems Work"
+        quote="Air India, 2023—Present"
         actColor="rgba(218, 14, 41, 0.8)"
       />
 
@@ -381,7 +381,7 @@ export function WorkNarrativePage() {
             marginBottom: '1rem',
             color: 'var(--text-primary)',
           }}>
-            Six Areas of Impact
+            Six Systems
           </h2>
           <p style={{
             fontSize: '1rem',
@@ -620,8 +620,8 @@ export function WorkNarrativePage() {
 
       {/* SECTION 7: Research & Innovation */}
       <ActTransition
-        actTitle="Research & Innovation"
-        quote="AI applications & design research"
+        actTitle="Questions"
+        quote="What happens when design asks uncomfortable questions?"
         actColor="rgba(14, 165, 233, 0.8)"
       />
 
@@ -701,8 +701,8 @@ export function WorkNarrativePage() {
 
       {/* SECTION 9: College Projects */}
       <ActTransition
-        actTitle="College Projects"
-        quote="Academic foundations & early experiments"
+        actTitle="Foundation"
+        quote="Academic exploration, 2023"
         actColor="rgba(147, 51, 234, 0.8)"
       />
 
@@ -879,7 +879,7 @@ export function WorkNarrativePage() {
               color: 'var(--text-90)',
               marginBottom: '2rem',
             }}>
-              This is just the beginning...
+              Explore further
             </h2>
             <p style={{
               fontSize: isMobile ? '1rem' : '1.125rem',
