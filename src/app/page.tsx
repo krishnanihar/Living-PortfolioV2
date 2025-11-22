@@ -7,9 +7,9 @@ import { IntroductionSection } from '@/components/sections/IntroductionSection';
 import { SectionDivider } from '@/components/ui/SectionDivider';
 import { HomeNarrativeWrapper } from '@/components/sections/HomeNarrativeWrapper';
 
-// Dynamically import Hybrid Particle System (mesh gradient + flow field particles)
-const HybridParticleSystem = dynamic(
-  () => import('@/components/effects/HybridParticleSystem'),
+// Dynamically import Premium Background System (aurora mesh + dreamy particles)
+const PremiumBackgroundSystem = dynamic(
+  () => import('@/components/effects/PremiumBackgroundSystem'),
   {
     ssr: false,
     loading: () => null
@@ -48,8 +48,8 @@ export default function HomePage() {
     <HomeNarrativeWrapper>
       <PortfolioNavigation />
 
-      {/* Hybrid Particle System - Mesh gradient + flow field particles */}
-      <HybridParticleSystem enableNarrative={false} />
+      {/* Premium Background System - Aurora mesh + dreamy golden particles */}
+      <PremiumBackgroundSystem />
 
       <main id="main-content">
         <IntroductionSection />

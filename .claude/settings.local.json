@@ -61,7 +61,8 @@
       "Bash(if [ -d \".next\" ])",
       "Bash(then echo \"Build directory exists\")",
       "Bash(fi)",
-      "Bash(npm run lint:*)"
+      "Bash(npm run lint:*)",
+      "Bash(netstat:*)"
     ],
     "deny": [],
     "ask": []

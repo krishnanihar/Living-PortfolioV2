@@ -1,10 +1,11 @@
 // Effects components barrel export
 
-// Ultimate next-gen particle system (2024-2025)
+// Legacy particle systems (2024-2025) - Kept for reference
 export { default as GPGPUFlowField } from './GPGPUFlowField';
 export { default as GPGPUFlowFieldEnhanced } from './GPGPUFlowFieldEnhanced';
 export { default as OptimizedFlowField } from './OptimizedFlowField';
 
-// Premium particle systems (2025)
-export { default as MeshGradientBackground } from './MeshGradientBackground';
-export { default as HybridParticleSystem } from './HybridParticleSystem';
+// Premium Background System (2025) - Research-based from Apple/Dribbble/Awwwards
+export { default as AuroraGradientMesh } from './AuroraGradientMesh';
+export { default as DreamyGPGPUParticles } from './DreamyGPGPUParticles';
+export { default as PremiumBackgroundSystem, PremiumBackgroundPresets } from './PremiumBackgroundSystem';
