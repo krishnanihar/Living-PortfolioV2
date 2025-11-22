@@ -5,6 +5,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { shimmerVertexShader, shimmerFragmentShader } from '@/shaders/gladeye';
 import AuroraGradientMesh from './AuroraGradientMesh';
+import GPGPUPatternParticles from './GPGPUPatternParticles';
 
 // Particle count optimized for hero section
 function getHeroParticleCount(): number {
@@ -99,12 +100,10 @@ function HeroStarParticles({ scrollProgress, mousePosition }: HeroStarParticlesP
     mat.uniforms.time.value = state.clock.elapsedTime;
     mat.uniforms.scrollProgress.value = scrollProgress;
 
-    // Camera zoom effect: travel through stars on scroll
-    // Hero section: scroll from 0% to ~20% of page
-    const HERO_SCROLL_END = 0.20;
-    const targetCameraZ = scrollProgress < HERO_SCROLL_END
-      ? scrollProgress * 300 // Zoom through stars (0 → 60 units)
-      : HERO_SCROLL_END * 300; // Freeze after hero
+    // Camera zoom effect: continuous travel through stars
+    // No freeze - accelerating zoom throughout entire page
+    const zoomSpeed = 1 + scrollProgress * 2; // 1x → 3x speed (accelerating)
+    const targetCameraZ = scrollProgress * 300 * zoomSpeed; // 0 → 900 units
 
     // Mouse parallax (subtle)
     const targetCameraX = mousePosition.x * 3;
@@ -163,19 +162,22 @@ interface HeroParticleSystemProps {
 }
 
 /**
- * HeroParticleSystem - Hybrid aurora mesh + star particle tunnel
+ * HeroParticleSystem - Triple-layer GPGPU particle system
  *
  * Combines:
  * - Layer 1 (z-index: 1): AuroraGradientMesh - Soft pastel background
- * - Layer 2 (z-index: 2): White star particles with zoom scroll effect
+ * - Layer 2 (z-index: 2): White star particles - Subtle background tunnel
+ * - Layer 3 (z-index: 3): GPGPU pattern particles - Dynamic foreground formations
  *
  * Features:
- * - Star particles with z-index depth rendering
- * - Zoom scroll effect (camera travels through star field)
- * - Dynamic spherical pattern formation
+ * - GPGPU particles forming dynamic patterns (cloud → sphere → torus → helix)
+ * - Velocity-based colors (blue → purple → pink)
+ * - Continuous zoom scroll (accelerating throughout page)
+ * - White stars as subtle depth reference
  * - Mouse parallax camera movement
- * - Aurora gradient background underneath
+ * - Aurora gradient atmospheric background
  * - Infinite tunnel with particle recycling
+ * - 20,000-51,000 total particles (adaptive)
  *
  * @example
  * ```tsx
@@ -184,14 +186,14 @@ interface HeroParticleSystemProps {
  * // Customized
  * <HeroParticleSystem
  *   auroraOpacity={0.7}
- *   starOpacity={0.8}
+ *   starOpacity={0.5}
  * />
  * ```
  */
 export default function HeroParticleSystem({
   auroraOpacity = 0.6,
   auroraSpeed = 1.0,
-  starOpacity = 1.0,
+  starOpacity = 0.35, // Subtle background layer
   className = '',
 }: HeroParticleSystemProps) {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -256,7 +258,7 @@ export default function HeroParticleSystem({
         className="hero-aurora-layer"
       />
 
-      {/* Layer 2: White Star Particles with Zoom Scroll (Top) */}
+      {/* Layer 2: White Star Particles with Zoom Scroll (Middle) */}
       <div
         className="hero-stars-layer"
         style={{
@@ -291,6 +293,12 @@ export default function HeroParticleSystem({
         </Canvas>
       </div>
 
+      {/* Layer 3: GPGPU Pattern Particles (Top/Foreground) */}
+      <GPGPUPatternParticles
+        scrollProgress={scrollProgress}
+        className="hero-gpgpu-layer"
+      />
+
       <style jsx>{`
         .hero-particle-system {
           position: fixed;
@@ -309,6 +317,10 @@ export default function HeroParticleSystem({
 
         .hero-stars-layer {
           z-index: 2;
+        }
+
+        :global(.hero-gpgpu-layer) {
+          z-index: 3;
         }
       `}</style>
     </div>
