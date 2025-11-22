@@ -23,8 +23,15 @@ export function NarrativeProvider({ children }: { children: ReactNode }) {
 
 export function useNarrativeContext() {
   const context = useContext(NarrativeContext);
+
+  // Provide fallback for pages without NarrativeProvider
+  // Default to 'transition' mode (particles always active)
   if (context === undefined) {
-    throw new Error('useNarrativeContext must be used within a NarrativeProvider');
+    return {
+      contentType: 'transition' as ContentType,
+      setContentType: () => {}, // No-op when outside provider
+    };
   }
+
   return context;
 }
