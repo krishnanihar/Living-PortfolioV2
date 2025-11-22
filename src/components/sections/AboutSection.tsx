@@ -277,7 +277,7 @@ export function AboutSection() {
   ];
 
   return (
-    <section style={{
+    <section className="noise-texture" style={{
       minHeight: '100vh',
       background: 'transparent',
       color: 'var(--text-primary)',
@@ -318,6 +318,36 @@ export function AboutSection() {
           animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
       `}</style>
+
+      {/* Morphing background blobs - Award-winning ambient motion */}
+      <div style={{
+        position: 'absolute',
+        top: '10%',
+        left: '5%',
+        width: '600px',
+        height: '600px',
+        background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.12), rgba(147, 51, 234, 0.04))',
+        filter: 'blur(80px)',
+        pointerEvents: 'none',
+        borderRadius: '40% 60% 70% 30% / 40% 50% 60% 50%',
+        zIndex: 0,
+      }}
+      className="blob-morph"
+      />
+
+      <div style={{
+        position: 'absolute',
+        bottom: '15%',
+        right: '10%',
+        width: '500px',
+        height: '500px',
+        background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.10), rgba(59, 130, 246, 0.03))',
+        filter: 'blur(70px)',
+        pointerEvents: 'none',
+        borderRadius: '50% 50% 30% 70% / 50% 50% 30% 60%',
+        animation: 'morphBlob 30s ease-in-out infinite 10s',
+        zIndex: 0,
+      }} />
 
       {/* Scroll Progress Indicator */}
       <div style={{
@@ -660,11 +690,10 @@ export function AboutSection() {
             border: '1px solid var(--border-primary)',
             boxShadow: 'var(--shadow-small)',
           }}>
-            <h2 style={{
+            <h2 className="text-gradient-subtle" style={{
               fontSize: '1.5rem',
               fontWeight: '300',
               marginBottom: '1.5rem',
-              color: 'var(--text-primary)',
             }}>
               How I Got Here
             </h2>
@@ -909,11 +938,10 @@ export function AboutSection() {
             border: '1px solid var(--border-primary)',
             boxShadow: 'var(--shadow-small)',
           }}>
-            <h2 style={{
+            <h2 className="text-gradient-subtle" style={{
               fontSize: '1.5rem',
               fontWeight: '300',
               marginBottom: '0.5rem',
-              color: 'var(--text-primary)',
             }}>
               What I Bring
             </h2>
@@ -1120,11 +1148,10 @@ export function AboutSection() {
         >
           {/* Section Header */}
           <div style={{ marginBottom: '2rem' }}>
-            <h2 style={{
+            <h2 className="text-gradient-subtle" style={{
               fontSize: '1.5rem',
               fontWeight: '500',
               marginBottom: '0.5rem',
-              color: 'var(--text-primary)',
             }}>
               How I Think: Books, Games, and Systems
             </h2>
@@ -2230,11 +2257,10 @@ export function AboutSection() {
             border: '1px solid var(--border-primary)',
             boxShadow: 'var(--shadow-small)',
           }}>
-            <h2 style={{
+            <h2 className="text-gradient-subtle" style={{
               fontSize: '1.5rem',
               fontWeight: '300',
               marginBottom: '0.5rem',
-              color: 'var(--text-primary)',
             }}>
               Working With Me
             </h2>
