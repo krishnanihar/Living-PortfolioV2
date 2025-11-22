@@ -138,7 +138,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
 
   return (
     <>
-      <style jsx>{`
+      <style jsx global>{`
         @keyframes shimmer {
           0% {
             transform: translateX(-100%);
@@ -157,6 +157,25 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
           }
           100% {
             background-position: 0% 50%;
+          }
+        }
+
+        @keyframes auroraDrift {
+          0%, 100% {
+            background-position: 0% 50%;
+            filter: blur(20px) saturate(1);
+          }
+          25% {
+            background-position: 100% 25%;
+            filter: blur(16px) saturate(1.2);
+          }
+          50% {
+            background-position: 100% 75%;
+            filter: blur(20px) saturate(1);
+          }
+          75% {
+            background-position: 0% 100%;
+            filter: blur(16px) saturate(1.2);
           }
         }
 
@@ -180,6 +199,11 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
 
         .nav-item-content.active::after {
           transform: scaleX(1);
+        }
+
+        /* Hover glow effect for inactive items */
+        .nav-item:hover .hover-glow {
+          opacity: 1 !important;
         }
       `}</style>
 
@@ -269,16 +293,40 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
-          {/* Logo */}
-          <Link href="/" style={{ textDecoration: 'none' }}>
-            <div style={{
-              fontSize: '0.925rem',
-              fontWeight: isActive('/') ? '600' : '500',
-              letterSpacing: '0.08em',
-              transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-              position: 'relative',
-              cursor: 'pointer',
+          {/* Ambient Aurora Reflection - Entire Nav Bar */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: scrolled ? `${NAV_BORDER_RADIUS}px` : '0',
+              background: isActive('/')
+                ? 'radial-gradient(ellipse 600px 200px at 15% 50%, rgba(180, 210, 240, 0.12), rgba(120, 180, 240, 0.06) 40%, transparent 70%)'
+                : isActive('/work')
+                ? 'radial-gradient(ellipse 600px 200px at 70% 50%, rgba(180, 210, 240, 0.12), rgba(120, 180, 240, 0.06) 40%, transparent 70%)'
+                : isActive('/about')
+                ? 'radial-gradient(ellipse 600px 200px at 78% 50%, rgba(180, 210, 240, 0.12), rgba(120, 180, 240, 0.06) 40%, transparent 70%)'
+                : isActive('/journey')
+                ? 'radial-gradient(ellipse 600px 200px at 94% 50%, rgba(180, 210, 240, 0.12), rgba(120, 180, 240, 0.06) 40%, transparent 70%)'
+                : 'none',
+              filter: 'blur(50px)',
+              transition: 'background 0.6s ease',
+              pointerEvents: 'none',
+              zIndex: 0,
             }}
+          />
+
+          {/* Logo */}
+          <Link href="/" style={{ textDecoration: 'none', position: 'relative', zIndex: 1 }}>
+            <div
+              className="nav-item"
+              style={{
+                fontSize: '0.925rem',
+                fontWeight: isActive('/') ? '600' : '500',
+                letterSpacing: '0.08em',
+                transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                position: 'relative',
+                cursor: 'pointer',
+              }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)';
               const span = e.currentTarget.querySelector('span') as HTMLElement;
@@ -310,6 +358,46 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
               }}>
                 NIHAR
               </span>
+
+              {/* Aurora Mesh - Only for active home */}
+              {isActive('/') && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: '-20px',
+                    borderRadius: '12px',
+                    background: `
+                      radial-gradient(ellipse at 20% 50%, rgba(180, 210, 240, 0.25), transparent 60%),
+                      radial-gradient(ellipse at 80% 50%, rgba(100, 180, 255, 0.20), transparent 60%),
+                      radial-gradient(ellipse at 50% 20%, rgba(150, 200, 255, 0.15), transparent 50%),
+                      linear-gradient(135deg, rgba(180, 210, 240, 0.08) 0%, transparent 50%, rgba(120, 190, 255, 0.08) 100%)
+                    `,
+                    backgroundSize: '250% 250%',
+                    animation: 'auroraDrift 4s ease-in-out infinite',
+                    filter: 'blur(20px)',
+                    pointerEvents: 'none',
+                    zIndex: -1,
+                  }}
+                />
+              )}
+
+              {/* Simple Radial Glow - Only for inactive home on hover */}
+              {!isActive('/') && (
+                <div
+                  className="hover-glow"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    borderRadius: '12px',
+                    background: 'radial-gradient(ellipse 90% 60% at center, rgba(180, 210, 240, 0.28) 0%, rgba(180, 210, 240, 0.12) 40%, transparent 75%)',
+                    filter: 'blur(12px)',
+                    opacity: 0,
+                    transition: 'opacity 0.3s ease',
+                    pointerEvents: 'none',
+                    zIndex: -1,
+                  }}
+                />
+              )}
             </div>
           </Link>
 
@@ -326,66 +414,72 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                 <Link
                   key={item.name}
                   href={item.href}
-                  style={{ textDecoration: 'none' }}
+                  style={{ textDecoration: 'none', position: 'relative', zIndex: 1 }}
                 >
                   <div
-                    onMouseEnter={(e) => {
-                      if (!active) {
-                        const target = e.currentTarget as HTMLElement;
-                        target.style.transform = 'translateY(-2px) scale(1.02)';
-                        const bg = target.querySelector('.hover-bg') as HTMLElement;
-                        if (bg) bg.style.opacity = '1';
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!active) {
-                        const target = e.currentTarget as HTMLElement;
-                        target.style.transform = 'translateY(0) scale(1)';
-                        const bg = target.querySelector('.hover-bg') as HTMLElement;
-                        if (bg) bg.style.opacity = '0';
-                      }
-                    }}
+                    className="nav-item"
                     style={{
                       position: 'relative',
-                      padding: '0.5rem 1rem',
-                      fontSize: '0.825rem',
-                      fontWeight: active ? '500' : '400',
-                      letterSpacing: '0.025em',
-                      color: active ? 'var(--text-primary)' : 'var(--text-secondary)',
-                      transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                      padding: '0.75rem 1rem',
+                      fontSize: '0.9375rem',
+                      fontWeight: 500,
+                      color: active ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.70)',
+                      transition: 'color 0.3s ease',
                     }}
                   >
-                    {/* Glass hover background - only for inactive items */}
-                    {!active && (
-                      <div className="hover-bg" style={{
-                        position: 'absolute',
-                        inset: 0,
-                        borderRadius: '24px',
-                        background: 'var(--surface-primary)',
-                        backdropFilter: 'blur(20px)',
-                        WebkitBackdropFilter: 'blur(20px)',
-                        border: '1px solid var(--border-primary)',
-                        opacity: 0,
-                        transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05)',
-                      }} />
-                    )}
-
-                    {/* Nav item content with animated bottom border */}
+                    {/* Nav item content */}
                     <div
-                      className={`nav-item-content ${active ? 'active' : ''}`}
                       style={{
                         position: 'relative',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.5rem',
+                        zIndex: 1,
                       }}
                     >
-                      <Icon size={15} style={{
-                        transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                      }} />
+                      <Icon size={15} />
                       <span>{item.name}</span>
                     </div>
+
+                    {/* Aurora Mesh - Only for active state */}
+                    {active && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          inset: '-20px',
+                          borderRadius: '12px',
+                          background: `
+                            radial-gradient(ellipse at 20% 50%, rgba(180, 210, 240, 0.25), transparent 60%),
+                            radial-gradient(ellipse at 80% 50%, rgba(100, 180, 255, 0.20), transparent 60%),
+                            radial-gradient(ellipse at 50% 20%, rgba(150, 200, 255, 0.15), transparent 50%),
+                            linear-gradient(135deg, rgba(180, 210, 240, 0.08) 0%, transparent 50%, rgba(120, 190, 255, 0.08) 100%)
+                          `,
+                          backgroundSize: '250% 250%',
+                          animation: 'auroraDrift 4s ease-in-out infinite',
+                          filter: 'blur(20px)',
+                          pointerEvents: 'none',
+                          zIndex: -1,
+                        }}
+                      />
+                    )}
+
+                    {/* Simple Radial Glow - Only for inactive items on hover */}
+                    {!active && (
+                      <div
+                        className="hover-glow"
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          borderRadius: '12px',
+                          background: 'radial-gradient(ellipse 90% 60% at center, rgba(180, 210, 240, 0.28) 0%, rgba(180, 210, 240, 0.12) 40%, transparent 75%)',
+                          filter: 'blur(12px)',
+                          opacity: 0,
+                          transition: 'opacity 0.3s ease',
+                          pointerEvents: 'none',
+                          zIndex: -1,
+                        }}
+                      />
+                    )}
                   </div>
                 </Link>
               );

@@ -96,7 +96,7 @@ function GPGPUParticles({ scrollProgress, mousePosition }: GPGPUParticlesProps) 
 
       positions[i3] = Math.sin(phi) * Math.cos(theta) * radius;
       positions[i3 + 1] = Math.sin(phi) * Math.sin(theta) * radius;
-      positions[i3 + 2] = -Math.random() * 450; // Extended depth for zoom tunnel (0 to -450)
+      positions[i3 + 2] = -200 - Math.random() * 500; // Extended depth for zoom tunnel (-200 to -700)
 
       // Store initial positions
       initialPositions[i3] = positions[i3];
@@ -322,14 +322,14 @@ function GPGPUParticles({ scrollProgress, mousePosition }: GPGPUParticlesProps) 
       const i3 = i * 3;
       const particleZ = positions[i3 + 2];
 
-      // If particle is behind camera, reset it ahead
+      // If particle is behind camera, reset it far ahead
       if (particleZ > camera.position.z + 50) {
-        positions[i3 + 2] -= 500;
+        positions[i3 + 2] = camera.position.z - 700 - Math.random() * 100; // -700 to -800 ahead
       }
 
-      // If particle is too far ahead, reset it behind
-      if (particleZ < camera.position.z - 450) {
-        positions[i3 + 2] += 500;
+      // If particle is too far ahead, reset it closer
+      if (particleZ < camera.position.z - 800) {
+        positions[i3 + 2] = camera.position.z - 200 - Math.random() * 100; // -200 to -300 ahead
       }
     }
 
