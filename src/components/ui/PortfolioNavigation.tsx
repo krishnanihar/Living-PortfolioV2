@@ -10,70 +10,127 @@ interface PortfolioNavigationProps {
   className?: string;
 }
 
+/**
+ * PortfolioNavigation - Primary navigation component with floating effect
+ *
+ * Features:
+ * - Floating pill design when scrolled past 50px threshold
+ * - Responsive heights optimized for 13"-16" laptop screens
+ * - Multi-layer glassmorphism (iOS 18 / macOS Sequoia aesthetic)
+ * - Active route detection with visual highlighting
+ * - Theme toggle (Light / Dark / System)
+ * - Logo gradient with hover effects using CSS variables
+ *
+ * Design Philosophy:
+ * - Scroll threshold at 50px provides immediate feedback without being too sensitive
+ * - Floating effect (12px offset, 48px narrowing) creates premium app-like feel
+ * - Passive event listeners for 60fps scroll performance
+ * - CSS variables prevent build timeouts (no inline theme conditionals)
+ *
+ * @param className - Optional className (currently unused but available for extension)
+ */
+
+// Navigation constants
+const SCROLL_THRESHOLD = 50; // Pixels scrolled before floating effect activates
+const NAV_FLOATING_OFFSET = 12; // Top offset in pixels when navigation floats
+const NAV_WIDTH_OFFSET = 48; // Width reduction in pixels when navigation narrows
+const NAV_BORDER_RADIUS = 16; // Border radius in pixels for floating state
+const NAV_MAX_WIDTH = 'clamp(1200px, 90vw, 1400px)'; // Max width when floating
+
+// Screen size breakpoints for responsive navigation heights
+const BREAKPOINTS = {
+  SMALL_LAPTOP_HEIGHT: 850, // 13" vertical constraint
+  SMALL_LAPTOP_MIN: 1024,
+  SMALL_LAPTOP: 1280,
+  MEDIUM_LAPTOP: 1440,
+  LARGE_LAPTOP_SCALED: 1536,
+  LARGE_LAPTOP_NATIVE: 1728,
+  XLARGE_LAPTOP: 1920,
+  XLARGE_LAPTOP_MAX: 2560,
+  LARGE_LAPTOP_MAX: 2880,
+} as const;
+
+// Navigation height configurations by screen size
+const NAV_HEIGHTS = {
+  SMALL: { normal: 48, scrolled: 44 }, // 13" laptops
+  MEDIUM: { normal: 52, scrolled: 48 }, // 14" laptops
+  LARGE_SCALED: { normal: 54, scrolled: 50 }, // 16" scaled
+  LARGE_NATIVE: { normal: 58, scrolled: 54 }, // 16" native
+  XLARGE: { normal: 56, scrolled: 52 }, // 15" laptops
+  DEFAULT: { normal: 60, scrolled: 54 }, // Mobile and default
+} as const;
+
 export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
   const [scrolled, setScrolled] = useState(false);
   const [navHeight, setNavHeight] = useState({ normal: 60, scrolled: 54 });
   const pathname = usePathname();
   const { theme, resolvedTheme, toggleTheme } = useTheme();
 
-  // Scroll detection - triggers at 50px like NavigationBar
+  // Scroll detection - triggers at SCROLL_THRESHOLD
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > SCROLL_THRESHOLD);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-  // Responsive navigation height based on screen size (copied from NavigationBar)
+  // Responsive navigation height based on screen size
   useEffect(() => {
     const updateNavHeight = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
 
       // Height constraint for 13" vertical space
-      if (height <= 850 && width >= 1024) {
-        setNavHeight({ normal: 48, scrolled: 44 });
+      if (height <= BREAKPOINTS.SMALL_LAPTOP_HEIGHT && width >= BREAKPOINTS.SMALL_LAPTOP_MIN) {
+        setNavHeight(NAV_HEIGHTS.SMALL);
       }
-      // 13-inch laptops (1280-1439px)
-      else if (width >= 1280 && width < 1440) {
-        setNavHeight({ normal: 48, scrolled: 44 });
+      // 13-inch laptops
+      else if (width >= BREAKPOINTS.SMALL_LAPTOP && width < BREAKPOINTS.MEDIUM_LAPTOP) {
+        setNavHeight(NAV_HEIGHTS.SMALL);
       }
-      // 14-inch laptops (1440-1679px)
-      else if (width >= 1440 && width < 1680) {
-        setNavHeight({ normal: 52, scrolled: 48 });
+      // 14-inch laptops
+      else if (width >= BREAKPOINTS.MEDIUM_LAPTOP && width < BREAKPOINTS.LARGE_LAPTOP_SCALED + 192) {
+        setNavHeight(NAV_HEIGHTS.MEDIUM);
       }
-      // 16-inch scaled (1536-1727px) - takes precedence in this range
-      else if (width >= 1536 && width < 1728) {
-        setNavHeight({ normal: 54, scrolled: 50 });
+      // 16-inch scaled - takes precedence in this range
+      else if (width >= BREAKPOINTS.LARGE_LAPTOP_SCALED && width < BREAKPOINTS.LARGE_LAPTOP_NATIVE) {
+        setNavHeight(NAV_HEIGHTS.LARGE_SCALED);
       }
-      // 16-inch native/large (1728-2879px)
-      else if (width >= 1728 && width < 2880) {
-        setNavHeight({ normal: 58, scrolled: 54 });
+      // 16-inch native/large
+      else if (width >= BREAKPOINTS.LARGE_LAPTOP_NATIVE && width < BREAKPOINTS.LARGE_LAPTOP_MAX) {
+        setNavHeight(NAV_HEIGHTS.LARGE_NATIVE);
       }
-      // 15-inch laptops (1920-2559px)
-      else if (width >= 1920 && width < 2560) {
-        setNavHeight({ normal: 56, scrolled: 52 });
+      // 15-inch laptops
+      else if (width >= BREAKPOINTS.XLARGE_LAPTOP && width < BREAKPOINTS.XLARGE_LAPTOP_MAX) {
+        setNavHeight(NAV_HEIGHTS.XLARGE);
       }
       // Default (mobile and small laptops)
       else {
-        setNavHeight({ normal: 60, scrolled: 54 });
+        setNavHeight(NAV_HEIGHTS.DEFAULT);
       }
     };
 
     updateNavHeight();
-    window.addEventListener('resize', updateNavHeight);
+    window.addEventListener('resize', updateNavHeight, { passive: true });
     return () => window.removeEventListener('resize', updateNavHeight);
   }, []);
 
+  // Primary navigation items (Work, About)
   const navItems = [
     { name: 'Work', icon: Briefcase, href: '/work' as const },
     { name: 'About', icon: User, href: '/about' as const },
   ];
 
+  /**
+   * Determines if a route is currently active
+   * - Home page ('/') requires exact match
+   * - Other routes match if pathname starts with href (includes sub-routes)
+   * Example: /work/air-india activates the 'Work' nav item
+   */
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
     return pathname.startsWith(href);
@@ -107,19 +164,26 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
       {/* Navigation with floating effect when scrolled */}
       <nav style={{
         position: 'fixed',
-        top: scrolled ? '12px' : '0',
+        top: scrolled ? `${NAV_FLOATING_OFFSET}px` : '0',
         left: 0,
         right: 0,
         zIndex: 9999,
         height: scrolled ? `${navHeight.scrolled}px` : `${navHeight.normal}px`,
         transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-        width: scrolled ? 'calc(100% - 48px)' : '100%',
-        maxWidth: scrolled ? 'clamp(1200px, 90vw, 1400px)' : '100%',
+        width: scrolled ? `calc(100% - ${NAV_WIDTH_OFFSET}px)` : '100%',
+        maxWidth: scrolled ? NAV_MAX_WIDTH : '100%',
         margin: '0 auto',
-        borderRadius: scrolled ? '16px' : '0',
+        borderRadius: scrolled ? `${NAV_BORDER_RADIUS}px` : '0',
         overflow: scrolled ? 'hidden' : 'visible',
       }}>
-        {/* Multi-layer glass effect */}
+        {/*
+          Multi-layer glassmorphism system (5 layers):
+          1. Base: Radial + linear gradients for depth
+          2. Backdrop filter: 80px blur + 200% saturation when scrolled (iOS 18 aesthetic)
+          3. Multi-shadow system: Inset highlights + drop shadows
+          4. Shimmer overlay: Animated gradient sweep (8s loop)
+          5. Liquid glass: Diagonal reflection with overlay blend mode
+        */}
         <div style={{
           position: 'absolute',
           inset: 0,
@@ -198,9 +262,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
               const span = e.currentTarget.querySelector('span') as HTMLElement;
               if (span) {
                 span.style.backgroundPosition = '100% 50%';
-                span.style.filter = resolvedTheme === 'light'
-                  ? 'drop-shadow(0 0 30px rgba(180, 210, 240, 0.4)) drop-shadow(0 0 15px rgba(0, 0, 0, 0.3))'
-                  : 'drop-shadow(0 0 30px rgba(180, 210, 240, 0.4)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.3))';
+                span.style.filter = 'var(--logo-shadow-hover)';
               }
             }}
             onMouseLeave={(e) => {
@@ -209,29 +271,19 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
               if (span) {
                 span.style.backgroundPosition = '0% 50%';
                 span.style.filter = isActive('/')
-                  ? 'drop-shadow(0 0 25px rgba(180, 210, 240, 0.3)) drop-shadow(0 0 12px rgba(180, 210, 240, 0.2))'
-                  : resolvedTheme === 'light'
-                    ? 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(0, 0, 0, 0.15))'
-                    : 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15))';
+                  ? 'var(--logo-shadow-active)'
+                  : 'var(--logo-shadow-inactive)';
               }
             }}>
               <span style={{
                 display: 'inline-block',
-                background: isActive('/')
-                  ? 'linear-gradient(90deg, rgba(180, 210, 240, 0.7) 0%, rgba(180, 210, 240, 1) 30%, rgba(180, 210, 240, 1) 70%, rgba(180, 210, 240, 0.7) 100%)'
-                  : resolvedTheme === 'light'
-                    ? 'linear-gradient(90deg, rgba(180, 210, 240, 0.6) 0%, rgba(0, 0, 0, 0.95) 30%, rgba(0, 0, 0, 0.95) 70%, rgba(180, 210, 240, 0.6) 100%)'
-                    : 'linear-gradient(90deg, rgba(180, 210, 240, 0.6) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.95) 70%, rgba(180, 210, 240, 0.6) 100%)',
+                background: isActive('/') ? 'var(--logo-gradient-active)' : 'var(--logo-gradient-inactive)',
                 backgroundSize: '200% 100%',
                 backgroundPosition: '0% 50%',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
-                filter: isActive('/')
-                  ? 'drop-shadow(0 0 25px rgba(180, 210, 240, 0.3)) drop-shadow(0 0 12px rgba(180, 210, 240, 0.2))'
-                  : resolvedTheme === 'light'
-                    ? 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(0, 0, 0, 0.15))'
-                    : 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15))',
+                filter: isActive('/') ? 'var(--logo-shadow-active)' : 'var(--logo-shadow-inactive)',
                 transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
               }}>
                 NIHAR
@@ -366,7 +418,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
               {theme === 'system' ? <Palette size={15} /> : (resolvedTheme === 'dark' ? <Moon size={15} /> : <Sun size={15} />)}
             </div>
 
-            {/* Journey Button */}
+            {/* Journey Button - HelpCircle icon represents "getting to know me" / learning journey */}
             <Link href="/journey" style={{ textDecoration: 'none' }}>
               <div
                 style={{

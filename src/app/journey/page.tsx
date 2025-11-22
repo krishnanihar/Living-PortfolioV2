@@ -13,21 +13,11 @@ const GladeyeParticleScroll = dynamic(
   }
 );
 
-// Import ScrollDarkeningOverlay for depth effect
-const ScrollDarkeningOverlay = dynamic(
-  () => import('@/components/effects/ScrollDarkeningOverlay').then(mod => ({ default: mod.ScrollDarkeningOverlay })),
-  {
-    ssr: false,
-    loading: () => null
-  }
-);
-
 export default function JourneyPage() {
   return (
     <>
       <PortfolioNavigation />
       <GladeyeParticleScroll />
-      <ScrollDarkeningOverlay />
       <JourneyTimeline />
     </>
   );

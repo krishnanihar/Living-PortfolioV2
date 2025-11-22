@@ -83,8 +83,7 @@ src/
 │   │   └── ui/            # ScrollReveal, AnimatedCounter
 │   ├── ui/                # Reusable UI components
 │   │   ├── index.ts       # Barrel exports
-│   │   ├── Navigation.tsx
-│   │   ├── PortfolioNavigation.tsx
+│   │   ├── PortfolioNavigation.tsx  # Primary navigation with floating effect
 │   │   ├── Button.tsx
 │   │   ├── Card.tsx
 │   │   ├── ProjectCard.tsx
@@ -106,7 +105,6 @@ src/
 │   │   ├── ExhibitionBuilder.tsx
 │   │   ├── ArtworkModal.tsx
 │   │   └── Map.tsx
-│   ├── Portfolio.tsx      # Main portfolio wrapper with consciousness system
 │   ├── HeroCard.tsx
 │   ├── HeroScene3D.tsx
 │   ├── ContactChat.tsx
@@ -166,6 +164,12 @@ src/
 - Use CSS variables for theme-aware styling
 - Support both light and dark themes
 - Export types and components from `index.ts`
+
+**Navigation Component**:
+- **PortfolioNavigation.tsx** is the primary (and only) navigation component
+- Features: Floating effect, responsive heights, multi-layer glassmorphism, active route detection
+- Used across all pages (home, work, about, journey, case studies)
+- Fully optimized with CSS variables (no theme conditionals in styling)
 
 **Project System**:
 - Typed project data in `src/data/projects.ts`
@@ -234,9 +238,15 @@ color: 'var(--text-95)'
 ## Important Notes
 
 ### Navigation
-- Fixed 56px height on desktop, 48px on mobile
-- Glassmorphism backdrop with blur effects
-- Uses brand red for active states
+- **Responsive heights**: 44-60px depending on screen size (13"-16" laptop optimizations)
+  - 13" laptops: 48px normal, 44px scrolled
+  - 14" laptops: 52px normal, 48px scrolled
+  - 16" laptops: 54-58px normal, 50-54px scrolled
+  - Mobile: 60px normal, 54px scrolled
+- **Floating effect**: Activates at 50px scroll, lifts to 12px from top with rounded corners
+- **Multi-layer glassmorphism**: 5-layer system (base gradient, 80px backdrop blur, shadows, shimmer, liquid glass)
+- **Active route highlighting**: Glassmorphic pill background on current page
+- **Logo gradient**: Blue accent (180, 210, 240) with theme-aware text using CSS variables
 
 ### SEO & Metadata
 - Comprehensive metadata in root layout
@@ -447,12 +457,40 @@ const getProjectColor = (projectId: string, opacity: number) => {
 }}>
 ```
 
-### Navigation Fade-In System
-**Scroll-Based Visibility Implementation:**
-- Uses `pastHero` state with 80% viewport threshold (`window.innerHeight * 0.8`)
-- **Navigation opacity**: `40%` during hero (clickable), `100%` after scroll
-- **Critical**: Never use `pointerEvents: 'none'` - breaks navigation between pages
-- **Consciousness system**: Fades with navigation using same `pastHero` state
+### Navigation Floating Effect
+**Scroll-Based Transformation Implementation:**
+- **Scroll threshold**: 50px - provides immediate feedback without being too sensitive
+- **Floating effect**: Navigation lifts 12px from top, narrows by 48px, adds 16px border radius
+- **Glassmorphism enhancement**: 20px → 80px blur, 120% → 200% saturation when scrolled
+- **Max width when floating**: `clamp(1200px, 90vw, 1400px)` for breathing room on wide screens
+- **Critical**: Always use `pointerEvents: 'auto'` - navigation must be clickable at all times
+- **Performance**: Passive event listeners (`{ passive: true }`) for 60fps scroll performance
+
+### Responsive Navigation Heights
+**Screen-Size-Specific Height Adjustments:**
+
+The navigation dynamically adjusts its height based on screen size and scroll state for optimal spacing:
+
+```typescript
+// Height configurations (normal / scrolled)
+13" vertical constraint (height ≤ 850px): 48px / 44px
+13" laptops (1280-1439px width):          48px / 44px
+14" laptops (1440-1679px width):          52px / 48px
+16" scaled (1536-1727px width):           54px / 50px
+16" native (1728-2879px width):           58px / 54px
+15" laptops (1920-2559px width):          56px / 52px
+Mobile & default:                         60px / 54px
+```
+
+**Why responsive heights?**
+- Larger screens have more vertical space → taller navigation improves visual balance
+- Smaller screens benefit from compact navigation → maximizes content area
+- Scrolled state always slightly shorter → subtle feedback that page has scrolled
+
+**Implementation:**
+- Uses `window.innerWidth` and `window.innerHeight` detection
+- Updates on resize with passive listeners
+- Constants defined at component level for maintainability
 
 ### CSS Specificity Issues
 **When Tailwind Classes Don't Work:**
@@ -517,11 +555,6 @@ color: 'var(--text-95)'
 - **@next/font deprecation**: Remove from package.json, use built-in `next/font`
 - **Clear caches**: Delete `.next` and `node_modules` when encountering persistent warnings
 - **Vercel deployment**: Local `npm run build` must pass before pushing
-
-### Consciousness System Architecture
-- **Location**: ConsciousnessIndicator and AmbientWhispers moved to Portfolio.tsx
-- **Reason**: Enables scroll-based visibility control with `pastHero` state
-- **Context**: ConsciousnessProvider remains in layout.tsx for global state management
 
 ### 14-inch Screen Optimizations
 **Responsive Design for 1280-1440px screens** (e.g., 14" laptops)

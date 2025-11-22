@@ -3,7 +3,6 @@
 import dynamic from 'next/dynamic';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import { AboutSection } from '@/components/sections/AboutSection';
-import { ScrollDarkeningOverlay } from '@/components/effects/ScrollDarkeningOverlay';
 
 // Dynamically import Gladeye particle scroll system for better performance
 const GladeyeParticleScroll = dynamic(
@@ -19,7 +18,6 @@ export default function AboutPage() {
     <>
       <PortfolioNavigation />
       <GladeyeParticleScroll />
-      <ScrollDarkeningOverlay />
       <AboutSection />
     </>
   );

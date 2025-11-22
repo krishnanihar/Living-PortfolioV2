@@ -3,14 +3,13 @@
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
-import { ScrollDarkeningOverlay } from '@/components/effects/ScrollDarkeningOverlay';
 import { IntroductionSection } from '@/components/sections/IntroductionSection';
 import { SectionDivider } from '@/components/ui/SectionDivider';
 import { HomeNarrativeWrapper } from '@/components/sections/HomeNarrativeWrapper';
 
-// Dynamically import Gladeye particle scroll system for better performance
-const GladeyeParticleScroll = dynamic(
-  () => import('@/components/effects/GladeyeParticleScroll').then(mod => ({ default: mod.GladeyeParticleScroll })),
+// Dynamically import optimized GPGPU Flow Field for ultimate visual experience
+const OptimizedFlowField = dynamic(
+  () => import('@/components/effects/OptimizedFlowField'),
   {
     ssr: false,
     loading: () => null
@@ -48,8 +47,9 @@ export default function HomePage() {
   return (
     <HomeNarrativeWrapper>
       <PortfolioNavigation />
-      <GladeyeParticleScroll />
-      <ScrollDarkeningOverlay />
+
+      {/* Ultimate GPGPU Flow Field - Immersive particle experience */}
+      <OptimizedFlowField preset="immersive" enableFPSMonitoring={true} />
 
       <main id="main-content">
         <IntroductionSection />
