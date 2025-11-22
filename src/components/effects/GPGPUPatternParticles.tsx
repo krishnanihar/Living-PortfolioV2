@@ -34,9 +34,10 @@ function getGPGPUParticleCount(): number {
 
 interface GPGPUParticlesProps {
   scrollProgress: number;
+  mousePosition: { x: number; y: number };
 }
 
-function GPGPUParticles({ scrollProgress }: GPGPUParticlesProps) {
+function GPGPUParticles({ scrollProgress, mousePosition }: GPGPUParticlesProps) {
   const pointsRef = useRef<THREE.Points>(null);
   const particleCount = useMemo(() => getGPGPUParticleCount(), []);
   const noise3D = useMemo(() => createNoise3D(), []);
@@ -262,10 +263,31 @@ function GPGPUParticles({ scrollProgress }: GPGPUParticlesProps) {
 
       const attractionStrength = 0.02 * morphProgress;
 
-      // Update velocity
+      // Update velocity with flow field and pattern attraction
       velocities[i3] += fx + dx * attractionStrength;
       velocities[i3 + 1] += fy + dy * attractionStrength;
       velocities[i3 + 2] += fz + dz * attractionStrength;
+
+      // Mouse attraction force
+      // Convert normalized mouse position (-0.5 to 0.5) to world space
+      const mouseWorldX = mousePosition.x * 100; // -50 to 50
+      const mouseWorldY = mousePosition.y * 100; // -50 to 50
+      const mouseWorldZ = 0; // Mouse is at front plane
+
+      const mouseDistX = mouseWorldX - positions[i3];
+      const mouseDistY = mouseWorldY - positions[i3 + 1];
+      const mouseDistZ = mouseWorldZ - positions[i3 + 2];
+      const mouseDist = Math.sqrt(mouseDistX * mouseDistX + mouseDistY * mouseDistY + mouseDistZ * mouseDistZ);
+
+      const mouseAttractionRadius = 150; // Only attract particles within 150 units
+      const mouseAttractionStrength = 0.03; // Gentle pull
+
+      if (mouseDist < mouseAttractionRadius && mouseDist > 0.1) {
+        const mouseForce = mouseAttractionStrength / (mouseDist + 1);
+        velocities[i3] += (mouseDistX / mouseDist) * mouseForce;
+        velocities[i3 + 1] += (mouseDistY / mouseDist) * mouseForce;
+        velocities[i3 + 2] += (mouseDistZ / mouseDist) * mouseForce;
+      }
 
       // Damping
       velocities[i3] *= 0.97;
@@ -315,6 +337,7 @@ function GPGPUParticles({ scrollProgress }: GPGPUParticlesProps) {
 
 interface GPGPUPatternParticlesProps {
   scrollProgress: number;
+  mousePosition: { x: number; y: number };
   className?: string;
 }
 
@@ -323,6 +346,7 @@ interface GPGPUPatternParticlesProps {
  *
  * Features:
  * - 10,000-50,000 particles (adaptive)
+ * - Interactive mouse attraction force
  * - Dynamic pattern formation: Cloud → Sphere → Torus → Helix → Cloud
  * - Velocity-based colors (blue → purple → pink)
  * - Flow field physics with simplex noise
@@ -331,6 +355,7 @@ interface GPGPUPatternParticlesProps {
  */
 export default function GPGPUPatternParticles({
   scrollProgress,
+  mousePosition,
   className = '',
 }: GPGPUPatternParticlesProps) {
   // Respect reduced motion
@@ -365,7 +390,7 @@ export default function GPGPUPatternParticles({
         }}
         dpr={Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 1, 2)}
       >
-        <GPGPUParticles scrollProgress={scrollProgress} />
+        <GPGPUParticles scrollProgress={scrollProgress} mousePosition={mousePosition} />
       </Canvas>
     </div>
   );

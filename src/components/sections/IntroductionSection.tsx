@@ -1,39 +1,17 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import { Github, Mail, ChevronDown } from 'lucide-react';
 import { HealthcareResearchIcon } from '@/components/icons/HealthcareResearchIcon';
-
-// Dynamically import ParticleSphere for better performance
-const ParticleSphere = dynamic(
-  () => import('@/components/effects/ParticleSphere').then(mod => ({ default: mod.ParticleSphere })),
-  {
-    ssr: false,
-    loading: () => null
-  }
-);
 
 export function IntroductionSection() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
   const [hoveredStat, setHoveredStat] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    setIsDesktop(window.innerWidth >= 1024);
-
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 1024);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
   }, []);
 
   const stats: Array<{ label: string; tooltip: string }> = [];
@@ -159,16 +137,13 @@ export function IntroductionSection() {
             zIndex: 1,
           }}
         >
-          {/* Split-Screen Grid */}
+          {/* Centered Content */}
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: isDesktop ? '60% 40%' : '1fr',
-              gap: 'clamp(3rem, 6vw, 6rem)',
-              alignItems: 'center',
+              maxWidth: '900px',
+              margin: '0 auto',
             }}
           >
-            {/* Left Column: Content */}
             <div>
               {/* Name */}
               <h1
@@ -444,26 +419,6 @@ export function IntroductionSection() {
                   <span>GitHub</span>
                 </a>
               </div>
-            </div>
-
-            {/* Right Column: Particle Sphere Visual */}
-            <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                height: '700px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                overflow: 'visible', // Allow effects to extend beyond container
-                opacity: mounted ? 1 : 0,
-              }}
-            >
-              <ParticleSphere
-                radius={140}
-                particleCount={75}
-                enableInteraction={true}
-              />
             </div>
           </div>
         </div>
