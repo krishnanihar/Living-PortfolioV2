@@ -16,24 +16,24 @@ interface Act {
 const acts: Act[] = [
   {
     id: 'foundation',
-    title: 'Act I: Foundation',
-    description: 'College projects and early experiments in consciousness and generative art',
+    title: 'Foundation',
+    description: 'Immersive installations and generative art systems at National Institute of Design',
     icon: Palette,
     color: 'rgba(147, 51, 234, 0.8)',
     projects: ['Metamorphic Fractal Reflections'],
   },
   {
     id: 'industry',
-    title: 'Act II: Industry',
-    description: 'Professional work designing at scale for Air India',
+    title: 'Enterprise Work',
+    description: '8 key projects for Air India\'s digital transformation: design systems, mobile patterns, data visualization',
     icon: Briefcase,
     color: 'rgba(218, 14, 41, 0.8)',
     projects: ['Pixel Radar', 'Aviation Analytics', 'Mobile Patterns', 'Design Systems'],
   },
   {
     id: 'innovation',
-    title: 'Act III: Innovation',
-    description: 'Research and speculative futures in AI and health tech',
+    title: 'Research & Innovation',
+    description: 'AI-powered health tech (PsoriAssist), speculative design (Latent Space), and Gemini exhibitions',
     icon: Lightbulb,
     color: 'rgba(14, 165, 233, 0.8)',
     projects: ['Latent Space', 'mythOS', 'PsoriAssist'],
@@ -41,8 +41,8 @@ const acts: Act[] = [
 ];
 
 /**
- * Interactive timeline preview showing the 3-act journey structure
- * Users can see what's ahead and jump to specific acts
+ * Interactive timeline preview showing the portfolio journey structure
+ * Users can see what's ahead and jump to specific sections
  */
 export function JourneyOverview() {
   const [hoveredAct, setHoveredAct] = React.useState<string | null>(null);
@@ -121,7 +121,7 @@ export function JourneyOverview() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          Three Acts of Design
+          Portfolio Overview
         </motion.h2>
         <motion.p
           style={{
@@ -135,7 +135,7 @@ export function JourneyOverview() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          This is a story of exploration across design, systems, and speculation
+          From academic foundations to shipping enterprise systems and research-backed health tech
         </motion.p>
       </div>
 
@@ -342,7 +342,7 @@ export function JourneyOverview() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.6 }}
         >
-          Click any act to jump ahead →
+          Click any section to jump ahead →
         </motion.p>
       </div>
     </section>
