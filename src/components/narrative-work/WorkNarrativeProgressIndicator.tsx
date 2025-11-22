@@ -52,19 +52,11 @@ export function WorkNarrativeProgressIndicator({
 
   const acts = [
     {
-      id: 'foundation',
-      label: 'Foundation',
-      description: 'College & Exploration',
-      icon: Palette,
-      range: [0, 0.3],
-      color: 'rgba(147, 51, 234, 0.8)',
-    },
-    {
       id: 'industry',
       label: 'Industry',
       description: 'Professional Work',
       icon: Briefcase,
-      range: [0.3, 0.7],
+      range: [0, 0.3],
       color: 'rgba(218, 14, 41, 0.8)',
     },
     {
@@ -72,8 +64,16 @@ export function WorkNarrativeProgressIndicator({
       label: 'Innovation',
       description: 'Research & Futures',
       icon: Lightbulb,
-      range: [0.7, 1],
+      range: [0.3, 0.7],
       color: 'rgba(14, 165, 233, 0.8)',
+    },
+    {
+      id: 'foundation',
+      label: 'Foundation',
+      description: 'College & Exploration',
+      icon: Palette,
+      range: [0.7, 1],
+      color: 'rgba(147, 51, 234, 0.8)',
     },
   ];
 

@@ -15,7 +15,7 @@ import { Target, Trophy, TrendingUp, CheckCircle, ArrowRight, ChevronDown } from
 
 /**
  * Complete narrative-driven work page
- * 9 sections across 3 acts: Foundation → Industry → Innovation
+ * 9 sections across 3 acts: Industry → Innovation → Foundation
  *
  * Enhanced with:
  * - CSS variable system (no theme conditionals)
@@ -178,151 +178,7 @@ export function WorkNarrativePage() {
         <JourneyOverview />
       </Suspense>
 
-      {/* SECTION 3: College Projects */}
-      <ActTransition
-        actTitle="College Projects"
-        quote="Academic foundations & early experiments"
-        actColor="rgba(147, 51, 234, 0.8)"
-      />
-
-      {/* SECTION 4: Metamorphic Fractal Reflections */}
-      <section style={{
-        position: 'relative',
-        paddingTop: 'clamp(2rem, 4vw, 3rem)',
-        paddingBottom: 'clamp(2rem, 4vw, 3rem)',
-        paddingLeft: isMobile ? '1rem' : '1.5rem',
-        paddingRight: isMobile ? '1rem' : '1.5rem',
-      }} ref={sectionRef}>
-        <div style={{
-          maxWidth: '80rem',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-        }}>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            style={{ willChange: 'opacity, transform' }}
-          >
-            <p style={{
-              fontSize: isMobile ? '0.75rem' : '0.875rem',
-              fontWeight: '300',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--text-100)',
-              marginBottom: '1rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.75rem',
-            }}>
-              {/* NID Logo */}
-              <span style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '32px',
-                height: '32px',
-                background: 'var(--glass-95)',
-                borderRadius: '8px',
-                padding: '4px',
-                flexShrink: 0,
-              }}>
-                <Image
-                  src="/logos/nid.svg"
-                  alt="National Institute of Design"
-                  width={24}
-                  height={24}
-                  style={{ objectFit: 'contain' }}
-                />
-              </span>
-              College Project · 2023
-            </p>
-            <h2 style={{
-              fontSize: 'clamp(2rem, 5vw, 3rem)',
-              fontWeight: '200',
-              color: 'var(--text-primary)',
-              marginBottom: '1.5rem',
-            }}>
-              Metamorphic Fractal Reflections
-            </h2>
-            <p style={{
-              fontSize: isMobile ? '1rem' : '1.125rem',
-              color: 'var(--text-90)',
-              lineHeight: '1.625',
-              marginBottom: '2rem',
-              maxWidth: '48rem',
-            }}>
-              An immersive installation exploring consciousness through ego dissolution.
-              Inspired by <em>The Psychedelic Experience</em>, this generative art piece
-              guides viewers through an 8-stage journey of self-discovery.
-            </p>
-
-            {/* Video embed */}
-            <div style={{
-              borderRadius: '1rem',
-              overflow: 'hidden',
-              marginBottom: '2rem',
-              background: 'var(--surface-secondary)',
-              backdropFilter: 'blur(40px)',
-              WebkitBackdropFilter: 'blur(40px)',
-              border: '1px solid var(--border-primary)',
-              willChange: 'transform',
-            }}>
-              <iframe
-                src="https://www.youtube.com/embed/your-video-id"
-                style={{
-                  width: '100%',
-                  aspectRatio: '16 / 9',
-                }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-
-            {/* Tech stack */}
-            <div style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: isMobile ? '0.375rem' : '0.5rem',
-              marginBottom: '2rem',
-            }}>
-              {['Processing', 'Generative Art', 'Projection Mapping', 'Sound Design'].map((tech) => (
-                <motion.span
-                  key={tech}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  style={{
-                    paddingLeft: isMobile ? '0.625rem' : '0.75rem',
-                    paddingRight: isMobile ? '0.625rem' : '0.75rem',
-                    paddingTop: '0.375rem',
-                    paddingBottom: '0.375rem',
-                    borderRadius: '0.5rem',
-                    fontSize: isMobile ? '0.6875rem' : '0.75rem',
-                    background: 'var(--glass-08)',
-                    border: '1px solid var(--glass-15)',
-                    color: 'var(--text-90)',
-                    transition: 'all 0.3s ease',
-                    cursor: 'default',
-                    willChange: 'transform',
-                  }}
-                >
-                  {tech}
-                </motion.span>
-              ))}
-            </div>
-
-            {/* View Case Study Button with enhanced hover */}
-            <EnhancedButton
-              href="/work/metamorphic-fractal-reflections"
-              label="View Full Case Study"
-              isMobile={isMobile}
-            />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* SECTION 5: Professional Work */}
+      {/* SECTION 3: Professional Work */}
       <ActTransition
         actTitle="Professional Work"
         quote="Designing at scale for Air India"
@@ -843,7 +699,151 @@ export function WorkNarrativePage() {
         </div>
       </section>
 
-      {/* SECTION 9: Closing & Navigation */}
+      {/* SECTION 9: College Projects */}
+      <ActTransition
+        actTitle="College Projects"
+        quote="Academic foundations & early experiments"
+        actColor="rgba(147, 51, 234, 0.8)"
+      />
+
+      {/* SECTION 10: Metamorphic Fractal Reflections */}
+      <section style={{
+        position: 'relative',
+        paddingTop: 'clamp(2rem, 4vw, 3rem)',
+        paddingBottom: 'clamp(2rem, 4vw, 3rem)',
+        paddingLeft: isMobile ? '1rem' : '1.5rem',
+        paddingRight: isMobile ? '1rem' : '1.5rem',
+      }} ref={sectionRef}>
+        <div style={{
+          maxWidth: '80rem',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            style={{ willChange: 'opacity, transform' }}
+          >
+            <p style={{
+              fontSize: isMobile ? '0.75rem' : '0.875rem',
+              fontWeight: '300',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'var(--text-100)',
+              marginBottom: '1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+            }}>
+              {/* NID Logo */}
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '32px',
+                height: '32px',
+                background: 'var(--glass-95)',
+                borderRadius: '8px',
+                padding: '4px',
+                flexShrink: 0,
+              }}>
+                <Image
+                  src="/logos/nid.svg"
+                  alt="National Institute of Design"
+                  width={24}
+                  height={24}
+                  style={{ objectFit: 'contain' }}
+                />
+              </span>
+              College Project · 2023
+            </p>
+            <h2 style={{
+              fontSize: 'clamp(2rem, 5vw, 3rem)',
+              fontWeight: '200',
+              color: 'var(--text-primary)',
+              marginBottom: '1.5rem',
+            }}>
+              Metamorphic Fractal Reflections
+            </h2>
+            <p style={{
+              fontSize: isMobile ? '1rem' : '1.125rem',
+              color: 'var(--text-90)',
+              lineHeight: '1.625',
+              marginBottom: '2rem',
+              maxWidth: '48rem',
+            }}>
+              An immersive installation exploring consciousness through ego dissolution.
+              Inspired by <em>The Psychedelic Experience</em>, this generative art piece
+              guides viewers through an 8-stage journey of self-discovery.
+            </p>
+
+            {/* Video embed */}
+            <div style={{
+              borderRadius: '1rem',
+              overflow: 'hidden',
+              marginBottom: '2rem',
+              background: 'var(--surface-secondary)',
+              backdropFilter: 'blur(40px)',
+              WebkitBackdropFilter: 'blur(40px)',
+              border: '1px solid var(--border-primary)',
+              willChange: 'transform',
+            }}>
+              <iframe
+                src="https://www.youtube.com/embed/your-video-id"
+                style={{
+                  width: '100%',
+                  aspectRatio: '16 / 9',
+                }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+
+            {/* Tech stack */}
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: isMobile ? '0.375rem' : '0.5rem',
+              marginBottom: '2rem',
+            }}>
+              {['Processing', 'Generative Art', 'Projection Mapping', 'Sound Design'].map((tech) => (
+                <motion.span
+                  key={tech}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  style={{
+                    paddingLeft: isMobile ? '0.625rem' : '0.75rem',
+                    paddingRight: isMobile ? '0.625rem' : '0.75rem',
+                    paddingTop: '0.375rem',
+                    paddingBottom: '0.375rem',
+                    borderRadius: '0.5rem',
+                    fontSize: isMobile ? '0.6875rem' : '0.75rem',
+                    background: 'var(--glass-08)',
+                    border: '1px solid var(--glass-15)',
+                    color: 'var(--text-90)',
+                    transition: 'all 0.3s ease',
+                    cursor: 'default',
+                    willChange: 'transform',
+                  }}
+                >
+                  {tech}
+                </motion.span>
+              ))}
+            </div>
+
+            {/* View Case Study Button with enhanced hover */}
+            <EnhancedButton
+              href="/work/metamorphic-fractal-reflections"
+              label="View Full Case Study"
+              isMobile={isMobile}
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* SECTION 11: Closing & Navigation */}
       <section style={{
         position: 'relative',
         paddingTop: 'clamp(3rem, 6vw, 4rem)',

@@ -4,9 +4,9 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 
 /**
  * Work Narrative Acts Structure
- * Act I (0-30%): Foundation — College projects and early experiments
- * Act II (30-70%): Industry — Professional work at Air India
- * Act III (70-100%): Innovation — Research and speculative futures
+ * Act I (0-30%): Industry — Professional work at Air India
+ * Act II (30-70%): Innovation — Research and speculative futures
+ * Act III (70-100%): Foundation — College projects and early experiments
  */
 
 export type WorkNarrativeAct = 'foundation' | 'industry' | 'innovation';
@@ -33,14 +33,14 @@ export function useWorkNarrativeProgress(
 ) {
   const [state, setState] = useState<WorkNarrativeState>({
     progress: 0,
-    act: 'foundation',
+    act: 'industry',
     actProgress: 0,
     section: 0,
     intensity: 0,
     color: {
-      primary: 'rgba(147, 51, 234, 0.8)', // Purple - exploration
-      secondary: 'rgba(14, 165, 233, 0.8)', // Blue - creativity
-      atmosphere: 'rgba(147, 51, 234, 0.02)',
+      primary: 'rgba(218, 14, 41, 0.8)', // Red - Air India
+      secondary: 'rgba(251, 146, 60, 0.8)', // Orange - accent
+      atmosphere: 'rgba(218, 14, 41, 0.02)',
     },
   });
 
@@ -53,43 +53,43 @@ export function useWorkNarrativeProgress(
     let intensity: number;
     let color: WorkNarrativeState['color'];
 
-    // Act I: Foundation (0-30%) - Purple theme
+    // Act I: Industry (0-30%) - Red theme (Air India brand)
     if (scrollProgress < 0.3) {
-      act = 'foundation';
+      act = 'industry';
       actProgress = scrollProgress / 0.3;
       intensity = 0.3 + actProgress * 0.3; // Builds from 0.3 to 0.6
       color = {
-        primary: 'rgba(147, 51, 234, 0.8)', // Purple - exploration
-        secondary: 'rgba(14, 165, 233, 0.8)', // Blue - creativity
-        atmosphere: `rgba(147, 51, 234, ${0.02 + actProgress * 0.02})`,
+        primary: 'rgba(218, 14, 41, 0.8)', // Red - Air India
+        secondary: 'rgba(251, 146, 60, 0.8)', // Orange - accent
+        atmosphere: `rgba(218, 14, 41, ${0.02 + actProgress * 0.02})`,
       };
     }
-    // Act II: Industry (30-70%) - Red theme (Air India brand)
+    // Act II: Innovation (30-70%) - Blue theme (research)
     else if (scrollProgress < 0.7) {
-      act = 'industry';
+      act = 'innovation';
       actProgress = (scrollProgress - 0.3) / 0.4;
       intensity = 0.6 + actProgress * 0.3; // Builds from 0.6 to 0.9
 
-      // Transition from purple → red (professional)
-      const redMix = actProgress;
-      color = {
-        primary: `rgba(${147 + redMix * 71}, ${51 - redMix * 37}, ${234 - redMix * 205}, 0.8)`,
-        secondary: `rgba(${14 + redMix * 204}, ${165 - redMix * 151}, ${233 - redMix * 192}, 0.8)`,
-        atmosphere: `rgba(${147 + redMix * 71}, ${51 - redMix * 37}, ${234 - redMix * 205}, ${0.04 + actProgress * 0.02})`,
-      };
-    }
-    // Act III: Innovation (70-100%) - Blue theme (research)
-    else {
-      act = 'innovation';
-      actProgress = (scrollProgress - 0.7) / 0.3;
-      intensity = 0.9 - actProgress * 0.3; // Gentle release from 0.9 to 0.6
-
-      // Transition to blue (speculative futures)
+      // Transition from red → blue (research)
       const blueMix = actProgress;
       color = {
         primary: `rgba(${218 - blueMix * 204}, ${14 + blueMix * 151}, ${41 + blueMix * 192}, 0.8)`,
-        secondary: `rgba(${14}, ${165}, ${233}, 0.8)`, // Blue constant
-        atmosphere: `rgba(${14}, ${165}, ${233}, ${0.06 - actProgress * 0.02})`,
+        secondary: `rgba(${251 - blueMix * 112}, ${146 + blueMix * 19}, ${60 + blueMix * 173}, 0.8)`,
+        atmosphere: `rgba(${218 - blueMix * 204}, ${14 + blueMix * 151}, ${41 + blueMix * 192}, ${0.04 + actProgress * 0.02})`,
+      };
+    }
+    // Act III: Foundation (70-100%) - Purple theme (college projects)
+    else {
+      act = 'foundation';
+      actProgress = (scrollProgress - 0.7) / 0.3;
+      intensity = 0.9 - actProgress * 0.3; // Gentle release from 0.9 to 0.6
+
+      // Transition to purple (exploration)
+      const purpleMix = actProgress;
+      color = {
+        primary: `rgba(${14 + purpleMix * 133}, ${165 - purpleMix * 114}, ${233 + purpleMix * 1}, 0.8)`,
+        secondary: `rgba(${139}, ${92 + purpleMix * 73}, ${246}, 0.8)`, // Purple constant
+        atmosphere: `rgba(${147}, ${51}, ${234}, ${0.06 - actProgress * 0.02})`,
       };
     }
 
