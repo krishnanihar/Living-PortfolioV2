@@ -9,3 +9,6 @@ export { default as OptimizedFlowField } from './OptimizedFlowField';
 export { default as AuroraGradientMesh } from './AuroraGradientMesh';
 export { default as DreamyGPGPUParticles } from './DreamyGPGPUParticles';
 export { default as PremiumBackgroundSystem, PremiumBackgroundPresets } from './PremiumBackgroundSystem';
+
+// Hero Particle System (2025) - Hybrid aurora + white stars with zoom scroll
+export { default as HeroParticleSystem } from './HeroParticleSystem';

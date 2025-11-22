@@ -7,9 +7,9 @@ import { IntroductionSection } from '@/components/sections/IntroductionSection';
 import { SectionDivider } from '@/components/ui/SectionDivider';
 import { HomeNarrativeWrapper } from '@/components/sections/HomeNarrativeWrapper';
 
-// Dynamically import Premium Background System (aurora mesh + dreamy particles)
-const PremiumBackgroundSystem = dynamic(
-  () => import('@/components/effects/PremiumBackgroundSystem'),
+// Dynamically import Hero Particle System (aurora mesh + white star tunnel)
+const HeroParticleSystem = dynamic(
+  () => import('@/components/effects/HeroParticleSystem'),
   {
     ssr: false,
     loading: () => null
@@ -48,8 +48,8 @@ export default function HomePage() {
     <HomeNarrativeWrapper>
       <PortfolioNavigation />
 
-      {/* Premium Background System - Aurora mesh + dreamy golden particles */}
-      <PremiumBackgroundSystem />
+      {/* Hero Particle System - Aurora mesh + white star tunnel with zoom scroll */}
+      <HeroParticleSystem />
 
       <main id="main-content">
         <IntroductionSection />

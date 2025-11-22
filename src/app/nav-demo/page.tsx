@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Home, Briefcase, User, Compass, Beaker } from 'lucide-react';
 
 /**
@@ -25,6 +25,26 @@ const NAV_ITEMS: NavItem[] = [
 
 export default function NavDemoPage() {
   const [activeNav, setActiveNav] = useState('/work');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        background: '#0A0A0A',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'rgba(255, 255, 255, 0.7)',
+      }}>
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div
@@ -50,15 +70,15 @@ export default function NavDemoPage() {
         <div
           style={{
             position: 'relative',
-            background: 'var(--glass-05)',
+            background: 'rgba(255, 255, 255, 0.05)',
             backdropFilter: 'blur(80px) saturate(200%)',
-            border: '1px solid var(--glass-10)',
+            border: '1px solid rgba(255, 255, 255, 0.10)',
             borderRadius: '16px',
             padding: '0.75rem 1.5rem',
             boxShadow: `
               0 2px 8px rgba(0, 0, 0, 0.4),
               0 1px 2px rgba(0, 0, 0, 0.3),
-              inset 0 1px 0 var(--glass-08)
+              inset 0 1px 0 rgba(255, 255, 255, 0.08)
             `,
           }}
         >
@@ -68,7 +88,7 @@ export default function NavDemoPage() {
               position: 'absolute',
               inset: 0,
               borderRadius: '16px',
-              background: 'linear-gradient(135deg, transparent 0%, var(--glass-04) 50%, transparent 100%)',
+              background: 'linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.04) 50%, transparent 100%)',
               pointerEvents: 'none',
             }}
           />
@@ -100,7 +120,7 @@ export default function NavDemoPage() {
               <Home
                 size={18}
                 style={{
-                  color: activeNav === '/' ? 'var(--logo-accent)' : 'var(--text-primary)',
+                  color: activeNav === '/' ? 'rgba(180, 210, 240, 1)' : 'rgba(255, 255, 255, 0.95)',
                   transition: 'color 0.3s ease',
                 }}
               />
@@ -109,33 +129,91 @@ export default function NavDemoPage() {
                   fontSize: '1.125rem',
                   fontWeight: 700,
                   letterSpacing: '-0.02em',
-                  background: activeNav === '/' ? 'var(--logo-gradient-active)' : 'var(--logo-gradient-inactive)',
+                  background: activeNav === '/'
+                    ? 'linear-gradient(90deg, rgba(180, 210, 240, 0.7) 0%, rgba(180, 210, 240, 1) 30%, rgba(180, 210, 240, 1) 70%, rgba(180, 210, 240, 0.7) 100%)'
+                    : 'linear-gradient(90deg, rgba(180, 210, 240, 0.6) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.95) 70%, rgba(180, 210, 240, 0.6) 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
-                  filter: activeNav === '/' ? 'var(--logo-shadow-active)' : 'var(--logo-shadow-inactive)',
+                  filter: activeNav === '/'
+                    ? 'drop-shadow(0 0 25px rgba(180, 210, 240, 0.3)) drop-shadow(0 0 12px rgba(180, 210, 240, 0.2))'
+                    : 'drop-shadow(0 0 20px rgba(180, 210, 240, 0.2)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15))',
                   transition: 'all 0.3s ease',
                 }}
               >
                 Krishna
               </span>
 
-              {/* Aurora Mesh for Home */}
+              {/* Aurora Mesh - Only for active state */}
               {activeNav === '/' && (
+                <>
+                  {/* Background Aurora Glow */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: '-20px',
+                      borderRadius: '12px',
+                      background: `
+                        radial-gradient(ellipse at 20% 50%, rgba(180, 210, 240, 0.35), transparent 60%),
+                        radial-gradient(ellipse at 80% 50%, rgba(100, 180, 255, 0.28), transparent 60%),
+                        radial-gradient(ellipse at 50% 20%, rgba(150, 200, 255, 0.22), transparent 50%),
+                        linear-gradient(135deg, rgba(180, 210, 240, 0.12) 0%, transparent 50%, rgba(120, 190, 255, 0.12) 100%)
+                      `,
+                      backgroundSize: '250% 250%',
+                      animation: 'auroraDrift 4s ease-in-out infinite',
+                      filter: 'blur(24px)',
+                      pointerEvents: 'none',
+                      zIndex: -2,
+                    }}
+                  />
+
+                  {/* Glass Reflection Layer */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      borderRadius: '12px',
+                      background: `
+                        radial-gradient(ellipse 100% 80% at center, rgba(180, 210, 240, 0.15), transparent 70%)
+                      `,
+                      backgroundSize: '200% 200%',
+                      animation: 'auroraDrift 4s ease-in-out infinite',
+                      filter: 'blur(20px)',
+                      pointerEvents: 'none',
+                      zIndex: -1,
+                    }}
+                  />
+
+                  {/* Glow Border */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      borderRadius: '12px',
+                      boxShadow: `
+                        0 0 20px rgba(180, 210, 240, 0.4),
+                        0 0 40px rgba(180, 210, 240, 0.2),
+                        inset 0 0 20px rgba(180, 210, 240, 0.1)
+                      `,
+                      pointerEvents: 'none',
+                      zIndex: -1,
+                    }}
+                  />
+                </>
+              )}
+
+              {/* Simple Radial Glow - Only for inactive home on hover */}
+              {activeNav !== '/' && (
                 <div
+                  className="hover-glow"
                   style={{
                     position: 'absolute',
-                    inset: '-20px',
+                    inset: 0,
                     borderRadius: '12px',
-                    background: `
-                      radial-gradient(ellipse at 20% 50%, rgba(180, 210, 240, 0.25), transparent 60%),
-                      radial-gradient(ellipse at 80% 50%, rgba(100, 180, 255, 0.20), transparent 60%),
-                      radial-gradient(ellipse at 50% 20%, rgba(150, 200, 255, 0.15), transparent 50%),
-                      linear-gradient(135deg, rgba(180, 210, 240, 0.08) 0%, transparent 50%, rgba(120, 190, 255, 0.08) 100%)
-                    `,
-                    backgroundSize: '250% 250%',
-                    animation: 'auroraDrift 4s ease-in-out infinite',
-                    filter: 'blur(20px)',
+                    background: 'radial-gradient(ellipse 90% 60% at center, rgba(180, 210, 240, 0.28) 0%, rgba(180, 210, 240, 0.12) 40%, transparent 75%)',
+                    filter: 'blur(12px)',
+                    opacity: 0,
+                    transition: 'opacity 0.3s ease',
                     pointerEvents: 'none',
                     zIndex: -1,
                   }}
@@ -167,7 +245,7 @@ export default function NavDemoPage() {
                       padding: '0.75rem 1rem',
                       fontSize: '0.9375rem',
                       fontWeight: 500,
-                      color: isActive ? 'var(--text-primary)' : 'var(--text-70)',
+                      color: isActive ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.70)',
                       background: 'none',
                       border: 'none',
                       cursor: 'pointer',
@@ -178,37 +256,74 @@ export default function NavDemoPage() {
                     <Icon size={15} />
                     <span>{item.name}</span>
 
-                    {/* Aurora Mesh Gradient - Only on active */}
+                    {/* Aurora Mesh - Only for active state */}
                     {isActive && (
-                      <div
-                        style={{
-                          position: 'absolute',
-                          inset: '-20px',
-                          borderRadius: '12px',
-                          background: `
-                            radial-gradient(ellipse at 20% 50%, rgba(180, 210, 240, 0.25), transparent 60%),
-                            radial-gradient(ellipse at 80% 50%, rgba(100, 180, 255, 0.20), transparent 60%),
-                            radial-gradient(ellipse at 50% 20%, rgba(150, 200, 255, 0.15), transparent 50%),
-                            linear-gradient(135deg, rgba(180, 210, 240, 0.08) 0%, transparent 50%, rgba(120, 190, 255, 0.08) 100%)
-                          `,
-                          backgroundSize: '250% 250%',
-                          animation: 'auroraDrift 4s ease-in-out infinite',
-                          filter: 'blur(20px)',
-                          pointerEvents: 'none',
-                          zIndex: -1,
-                        }}
-                      />
+                      <>
+                        {/* Background Aurora Glow */}
+                        <div
+                          style={{
+                            position: 'absolute',
+                            inset: '-20px',
+                            borderRadius: '12px',
+                            background: `
+                              radial-gradient(ellipse at 20% 50%, rgba(180, 210, 240, 0.35), transparent 60%),
+                              radial-gradient(ellipse at 80% 50%, rgba(100, 180, 255, 0.28), transparent 60%),
+                              radial-gradient(ellipse at 50% 20%, rgba(150, 200, 255, 0.22), transparent 50%),
+                              linear-gradient(135deg, rgba(180, 210, 240, 0.12) 0%, transparent 50%, rgba(120, 190, 255, 0.12) 100%)
+                            `,
+                            backgroundSize: '250% 250%',
+                            animation: 'auroraDrift 4s ease-in-out infinite',
+                            filter: 'blur(24px)',
+                            pointerEvents: 'none',
+                            zIndex: -2,
+                          }}
+                        />
+
+                        {/* Glass Reflection Layer */}
+                        <div
+                          style={{
+                            position: 'absolute',
+                            inset: 0,
+                            borderRadius: '12px',
+                            background: `
+                              radial-gradient(ellipse 100% 80% at center, rgba(180, 210, 240, 0.15), transparent 70%)
+                            `,
+                            backgroundSize: '200% 200%',
+                            animation: 'auroraDrift 4s ease-in-out infinite',
+                            filter: 'blur(20px)',
+                            pointerEvents: 'none',
+                            zIndex: -1,
+                          }}
+                        />
+
+                        {/* Glow Border */}
+                        <div
+                          style={{
+                            position: 'absolute',
+                            inset: 0,
+                            borderRadius: '12px',
+                            boxShadow: `
+                              0 0 20px rgba(180, 210, 240, 0.4),
+                              0 0 40px rgba(180, 210, 240, 0.2),
+                              inset 0 0 20px rgba(180, 210, 240, 0.1)
+                            `,
+                            pointerEvents: 'none',
+                            zIndex: -1,
+                          }}
+                        />
+                      </>
                     )}
 
-                    {/* Hover glass effect for inactive items */}
+                    {/* Simple Radial Glow - Only for inactive items on hover */}
                     {!isActive && (
                       <div
-                        className="hover-glass"
+                        className="hover-glow"
                         style={{
                           position: 'absolute',
                           inset: 0,
                           borderRadius: '12px',
-                          background: 'var(--glass-08)',
+                          background: 'radial-gradient(ellipse 90% 60% at center, rgba(180, 210, 240, 0.28) 0%, rgba(180, 210, 240, 0.12) 40%, transparent 75%)',
+                          filter: 'blur(12px)',
                           opacity: 0,
                           transition: 'opacity 0.3s ease',
                           pointerEvents: 'none',
@@ -249,7 +364,7 @@ export default function NavDemoPage() {
         <p
           style={{
             fontSize: '1.25rem',
-            color: 'var(--text-70)',
+            color: 'rgba(255, 255, 255, 0.70)',
             marginBottom: '3rem',
             lineHeight: 1.6,
           }}
@@ -261,9 +376,9 @@ export default function NavDemoPage() {
         {/* Effect Details Card */}
         <div
           style={{
-            background: 'var(--glass-04)',
+            background: 'rgba(255, 255, 255, 0.04)',
             backdropFilter: 'blur(40px) saturate(180%)',
-            border: '1px solid var(--glass-08)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
             borderRadius: '24px',
             padding: '3rem',
             marginBottom: '3rem',
@@ -274,7 +389,7 @@ export default function NavDemoPage() {
             style={{
               fontSize: '1.5rem',
               fontWeight: 600,
-              color: 'var(--text-primary)',
+              color: 'rgba(255, 255, 255, 0.95)',
               marginBottom: '1.5rem',
             }}
           >
@@ -283,36 +398,36 @@ export default function NavDemoPage() {
 
           <div style={{ display: 'grid', gap: '1rem' }}>
             <div>
-              <strong style={{ color: 'var(--text-90)' }}>Gradient Layers:</strong>
-              <p style={{ color: 'var(--text-60)', marginTop: '0.25rem' }}>
+              <strong style={{ color: 'rgba(255, 255, 255, 0.90)' }}>Gradient Layers:</strong>
+              <p style={{ color: 'rgba(255, 255, 255, 0.60)', marginTop: '0.25rem' }}>
                 4 overlapping radial gradients at different positions (20%, 50%, 80%) with varying blue tones (180-210, 100-180, 150-200, 120-190)
               </p>
             </div>
 
             <div>
-              <strong style={{ color: 'var(--text-90)' }}>Animation:</strong>
-              <p style={{ color: 'var(--text-60)', marginTop: '0.25rem' }}>
+              <strong style={{ color: 'rgba(255, 255, 255, 0.90)' }}>Animation:</strong>
+              <p style={{ color: 'rgba(255, 255, 255, 0.60)', marginTop: '0.25rem' }}>
                 4-second ease-in-out infinite drift with 250% background-size • Dynamic blur (16-20px) and saturation (1.0-1.2x) during animation
               </p>
             </div>
 
             <div>
-              <strong style={{ color: 'var(--text-90)' }}>Opacity Range:</strong>
-              <p style={{ color: 'var(--text-60)', marginTop: '0.25rem' }}>
+              <strong style={{ color: 'rgba(255, 255, 255, 0.90)' }}>Opacity Range:</strong>
+              <p style={{ color: 'rgba(255, 255, 255, 0.60)', marginTop: '0.25rem' }}>
                 15-25% opacity across gradient layers for subtle yet visible effect
               </p>
             </div>
 
             <div>
-              <strong style={{ color: 'var(--text-90)' }}>Blur:</strong>
-              <p style={{ color: 'var(--text-60)', marginTop: '0.25rem' }}>
+              <strong style={{ color: 'rgba(255, 255, 255, 0.90)' }}>Blur:</strong>
+              <p style={{ color: 'rgba(255, 255, 255, 0.60)', marginTop: '0.25rem' }}>
                 20px blur filter with animated saturation boost creates soft, natural glow
               </p>
             </div>
 
             <div>
-              <strong style={{ color: 'var(--text-90)' }}>Performance:</strong>
-              <p style={{ color: 'var(--text-60)', marginTop: '0.25rem' }}>
+              <strong style={{ color: 'rgba(255, 255, 255, 0.90)' }}>Performance:</strong>
+              <p style={{ color: 'rgba(255, 255, 255, 0.60)', marginTop: '0.25rem' }}>
                 GPU-accelerated CSS animations • 60fps smooth rendering • No JavaScript calculations
               </p>
             </div>
@@ -322,22 +437,22 @@ export default function NavDemoPage() {
         {/* Current Active Indicator */}
         <div
           style={{
-            background: 'var(--glass-03)',
+            background: 'rgba(255, 255, 255, 0.03)',
             backdropFilter: 'blur(40px)',
-            border: '1px solid var(--glass-06)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
             borderRadius: '16px',
             padding: '1.5rem',
             textAlign: 'center',
           }}
         >
-          <p style={{ fontSize: '0.875rem', color: 'var(--text-60)', marginBottom: '0.5rem' }}>
+          <p style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.60)', marginBottom: '0.5rem' }}>
             Currently Active:
           </p>
           <p
             style={{
               fontSize: '1.5rem',
               fontWeight: 600,
-              color: 'var(--logo-accent)',
+              color: 'rgba(180, 210, 240, 1)',
             }}
           >
             {activeNav === '/' ? 'Home' : NAV_ITEMS.find(i => i.href === activeNav)?.name || 'None'}
@@ -345,7 +460,7 @@ export default function NavDemoPage() {
         </div>
       </div>
 
-      {/* Keyframes */}
+      {/* Keyframes and Hover Styles */}
       <style jsx global>{`
         @keyframes auroraDrift {
           0%, 100% {
@@ -366,7 +481,8 @@ export default function NavDemoPage() {
           }
         }
 
-        button:hover .hover-glass {
+        /* Simple radial glow hover effect - only for inactive items */
+        button:hover .hover-glow {
           opacity: 1 !important;
         }
       `}</style>
