@@ -32,7 +32,8 @@ void main() {
   // Near = large, far = small
   // Fast = larger (more energy)
   float baseSize = uSize * (0.8 + vSpeed * 0.4);
-  gl_PointSize = baseSize * (400.0 / max(vDepth, 1.0));
+  float sizeAttenuation = 180.0 / max(vDepth, 75.0);
+  gl_PointSize = clamp(baseSize * sizeAttenuation, 0.5, 5.0);
 
   // Pulse effect based on scroll progress
   float pulse = 1.0 + sin(uTime * 2.0 + randomSeed * 6.28) * 0.1;

@@ -24,12 +24,12 @@ function getGPGPUParticleCount(): number {
   const isHighDPI = pixelRatio > 2;
   const cores = navigator.hardwareConcurrency || 4;
 
-  // Adaptive counts for GPGPU particles
-  if (isMobile && isHighDPI) return 10000;  // iPhone 13 Pro
-  if (isMobile) return 15000;                // Standard mobile
-  if (cores <= 4) return 25000;              // Low-end desktop
-  if (isHighDPI) return 40000;               // Retina displays
-  return 50000;                              // High-end desktop
+  // Adaptive counts for GPGPU particles (50% reduction for performance)
+  if (isMobile && isHighDPI) return 5000;   // iPhone 13 Pro
+  if (isMobile) return 8000;                 // Standard mobile
+  if (cores <= 4) return 12000;              // Low-end desktop
+  if (isHighDPI) return 20000;               // Retina displays
+  return 25000;                              // High-end desktop
 }
 
 interface GPGPUParticlesProps {
@@ -132,7 +132,7 @@ function GPGPUParticles({ scrollProgress, mousePosition }: GPGPUParticlesProps) 
     return new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
-        uSize: { value: 2.5 },
+        uSize: { value: 1.0 },
         uScrollProgress: { value: 0 },
         // Color palette for velocity-based coloring
         uColorSlow: { value: new THREE.Color('#3B82F6') },    // Blue
@@ -248,27 +248,30 @@ function GPGPUParticles({ scrollProgress, mousePosition }: GPGPUParticlesProps) 
       targetPositions[i3 + 1] = target.y;
       targetPositions[i3 + 2] = target.z;
 
-      // Flow field force (simplex noise)
-      const noiseScale = 0.01;
-      const timeScale = time * 0.1;
+      // Flow field force (simplex noise) - optimized: only every 3rd particle
+      let fx = 0, fy = 0, fz = 0;
+      if (i % 3 === 0) {
+        const noiseScale = 0.01;
+        const timeScale = time * 0.1;
 
-      const fx = noise3D(
-        positions[i3] * noiseScale,
-        positions[i3 + 1] * noiseScale,
-        timeScale
-      ) * 0.05;
+        fx = noise3D(
+          positions[i3] * noiseScale,
+          positions[i3 + 1] * noiseScale,
+          timeScale
+        ) * 0.05;
 
-      const fy = noise3D(
-        positions[i3] * noiseScale + 100,
-        positions[i3 + 1] * noiseScale + 100,
-        timeScale
-      ) * 0.05;
+        fy = noise3D(
+          positions[i3] * noiseScale + 100,
+          positions[i3 + 1] * noiseScale + 100,
+          timeScale
+        ) * 0.05;
 
-      const fz = noise3D(
-        positions[i3] * noiseScale + 200,
-        positions[i3 + 1] * noiseScale + 200,
-        timeScale
-      ) * 0.05;
+        fz = noise3D(
+          positions[i3] * noiseScale + 200,
+          positions[i3 + 1] * noiseScale + 200,
+          timeScale
+        ) * 0.05;
+      }
 
       // Attraction to target position
       const dx = targetPositions[i3] - positions[i3];
@@ -355,8 +358,8 @@ function GPGPUParticles({ scrollProgress, mousePosition }: GPGPUParticlesProps) 
       {/* Bloom effect for glow */}
       <EffectComposer>
         <Bloom
-          intensity={0.6}
-          luminanceThreshold={0.2}
+          intensity={0.4}
+          luminanceThreshold={0.3}
           luminanceSmoothing={0.9}
           mipmapBlur
         />
