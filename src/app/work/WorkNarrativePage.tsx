@@ -6,11 +6,8 @@ import { NarrativeWorkHero } from '@/components/narrative-work/NarrativeWorkHero
 import { JourneyOverview } from '@/components/narrative-work/JourneyOverview';
 import { StatCardGrid, type StatCardData } from '@/components/narrative-work/StatCard';
 import { type ImpactCard } from '@/components/narrative-work/ImpactBentoGrid';
-import { ProjectAccordion, type ProjectDetails } from '@/components/narrative-work/ProjectAccordion';
 import { ResearchShowcase } from '@/components/narrative-work/ResearchShowcase';
-import { BreathingMoment } from '@/components/ui/BreathingMoment';
 import { ActTransition } from '@/components/narrative-work/ActTransition';
-import { PsoriAssistPhoneMockup } from '@/components/sections/PsoriAssistPhoneMockup';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -18,7 +15,7 @@ import { Target, Trophy, TrendingUp, CheckCircle, ArrowRight, ChevronDown } from
 
 /**
  * Complete narrative-driven work page
- * 12 sections across 3 acts: Foundation → Industry → Innovation
+ * 9 sections across 3 acts: Foundation → Industry → Innovation
  *
  * Enhanced with:
  * - CSS variable system (no theme conditionals)
@@ -166,62 +163,6 @@ export function WorkNarrativePage() {
       description: 'Hackathon wins now in production',
       metric: '→ Rapid validation',
       color: '14, 165, 233',
-    },
-  ];
-
-  // Featured Projects (Accordion)
-  const featuredProjects: ProjectDetails[] = [
-    {
-      id: 'pixel-radar',
-      category: 'Design Systems',
-      title: 'Pixel Radar',
-      badge: 'Figma Plugin',
-      description: 'Design drift was causing significant rework and inconsistent experiences across Air India\'s digital products. Teams struggled to maintain token compliance without manual reviews.',
-      contribution: {
-        owned: 'Plugin architecture, audit logic, token normalization algorithms',
-        collaborated: 'Design team on token naming, engineering on feasibility',
-      },
-      outcome: 'Significantly improved review speed and consistency. Teams report fewer design-dev handoff issues.',
-      tags: ['Figma', 'TypeScript', 'Design Tokens', 'Automation'],
-    },
-    {
-      id: 'analytics',
-      category: 'Data Visualization',
-      title: 'Analytics Platform',
-      badge: 'Dashboard',
-      description: 'Operations teams were overwhelmed by data complexity. Decision-making slowed as stakeholders struggled to extract insights from traditional reports.',
-      contribution: {
-        owned: 'Information architecture, narrative flow, interaction patterns',
-        collaborated: 'Data team on metrics, operations on workflows',
-      },
-      outcome: 'Reduced decision time to minute-scale. Clearer understanding and faster alignment.',
-      tags: ['React', 'D3.js', 'Data Viz', 'UX Research'],
-    },
-    {
-      id: 'mobile-patterns',
-      category: 'Mobile Experience',
-      title: 'UX Pattern Library',
-      badge: 'iOS + Android',
-      description: 'Inconsistent mobile experiences across Air India\'s apps were causing user friction and development delays. Teams needed unified patterns for both platforms.',
-      contribution: {
-        owned: 'Pattern documentation, state matrices, gesture guidelines',
-        collaborated: 'Mobile developers on constraints, QA on edge cases',
-      },
-      outcome: 'Faster mobile prototyping with consistent handoffs. Complete coverage of all states.',
-      tags: ['React Native', 'iOS', 'Android', 'Pattern Library', 'State Machines'],
-    },
-    {
-      id: 'token-architecture',
-      category: 'Design Systems',
-      title: 'Token Architecture',
-      badge: 'Foundation',
-      description: 'Beyond Pixel Radar, established comprehensive token architecture supporting themes, brands, and platforms. Created the foundation for scalable design decisions.',
-      contribution: {
-        owned: 'Token taxonomy, naming conventions, inheritance model',
-        collaborated: 'Design leadership on governance, engineering on implementation',
-      },
-      outcome: 'Single source of truth for design decisions. Teams share common language and systematic approach.',
-      tags: ['Design Tokens', 'Theming', 'Architecture', 'Documentation'],
     },
   ];
 
@@ -381,13 +322,7 @@ export function WorkNarrativePage() {
         </div>
       </section>
 
-      {/* SECTION 5: Breathing Moment I */}
-      <BreathingMoment
-        quote="From exploration to application..."
-        type="reflection"
-      />
-
-      {/* SECTION 6: Professional Work */}
+      {/* SECTION 5: Professional Work */}
       <ActTransition
         actTitle="Professional Work"
         quote="Designing at scale for Air India"
@@ -420,7 +355,7 @@ export function WorkNarrativePage() {
         </div>
       )}
 
-      {/* SECTION 7: Air India Overview - Interactive Stats */}
+      {/* SECTION 6: Air India Overview - Interactive Stats */}
       <section style={{
         maxWidth: '1400px',
         margin: '0 auto',
@@ -569,7 +504,7 @@ export function WorkNarrativePage() {
         </div>
       </section>
 
-      {/* SECTION 7B: Six Areas of Impact - Bento Grid */}
+      {/* SECTION 6B: Six Areas of Impact - Bento Grid */}
       <section style={{
         maxWidth: '1400px',
         margin: '0 auto',
@@ -827,59 +762,14 @@ export function WorkNarrativePage() {
         )}
       </section>
 
-      {/* SECTION 8: Featured Projects - Accordion */}
-      <section style={{
-        position: 'relative',
-        paddingTop: 'clamp(2rem, 4vw, 3rem)',
-        paddingBottom: 'clamp(2rem, 4vw, 3rem)',
-        paddingLeft: isMobile ? '1rem' : '1.5rem',
-        paddingRight: isMobile ? '1rem' : '1.5rem',
-      }}>
-        <div style={{
-          maxWidth: '80rem',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-        }}>
-          <div style={{
-            textAlign: 'center',
-            marginBottom: isMobile ? '2.5rem' : '4rem',
-          }}>
-            <h3 style={{
-              fontSize: 'clamp(1.25rem, 3vw, 1.875rem)',
-              fontWeight: '300',
-              color: 'var(--text-90)',
-              marginBottom: '1rem',
-            }}>
-              Project Details
-            </h3>
-            <p style={{
-              color: 'var(--text-tertiary)',
-              fontSize: isMobile ? '0.9375rem' : '1rem',
-            }}>
-              Deep dives into key initiatives
-            </p>
-          </div>
-
-          <Suspense fallback={<AccordionSkeleton />}>
-            <ProjectAccordion projects={featuredProjects} inView={inView} />
-          </Suspense>
-        </div>
-      </section>
-
-      {/* SECTION 9: Breathing Moment II */}
-      <BreathingMoment
-        quote="What if we could reimagine the future of health and consciousness?"
-        type="question"
-      />
-
-      {/* SECTION 10: Research & Innovation */}
+      {/* SECTION 7: Research & Innovation */}
       <ActTransition
         actTitle="Research & Innovation"
         quote="AI applications & design research"
         actColor="rgba(14, 165, 233, 0.8)"
       />
 
-      {/* SECTION 11: Research Triptych */}
+      {/* SECTION 8: Research Triptych */}
       <section style={{
         position: 'relative',
         paddingTop: 'clamp(2rem, 4vw, 3rem)',
@@ -931,53 +821,29 @@ export function WorkNarrativePage() {
             />
           </Suspense>
 
-          {/* PsoriAssist - HERO with interactive prototype */}
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: isMobile ? '2rem' : '3rem',
-          }}>
-            <Suspense fallback={<ResearchSkeleton />}>
-              <ResearchShowcase
-                project={{
-                  title: 'PsoriAssist',
-                  description: '18 months. 2M patients. Clinical validation pathway. AI-powered psoriasis management with iOS prototypes.',
-                  category: 'Health Tech · Featured',
-                  stats: [
-                    { label: 'SUS Score', value: '82/100' },
-                    { label: 'Year 5 Projection', value: '$38M' },
-                    { label: 'AI PASI Accuracy', value: '+33%' },
-                  ],
-                  caseStudyUrl: '/work/psoriassist',
-                  color: '236, 72, 153',
-                }}
-                inView={inView}
-                index={2}
-              />
-            </Suspense>
-
-            {/* Interactive prototype - sticky section (desktop only) */}
-            {!isMobile && (
-              <div style={{
-                position: 'sticky',
-                top: '6rem',
-              }}>
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8 }}
-                  style={{ willChange: 'opacity, transform' }}
-                >
-                  <PsoriAssistPhoneMockup />
-                </motion.div>
-              </div>
-            )}
-          </div>
+          {/* PsoriAssist */}
+          <Suspense fallback={<ResearchSkeleton />}>
+            <ResearchShowcase
+              project={{
+                title: 'PsoriAssist',
+                description: '18 months. 2M patients. Clinical validation pathway. AI-powered psoriasis management with iOS prototypes.',
+                category: 'Health Tech · Featured',
+                stats: [
+                  { label: 'SUS Score', value: '82/100' },
+                  { label: 'Year 5 Projection', value: '$38M' },
+                  { label: 'AI PASI Accuracy', value: '+33%' },
+                ],
+                caseStudyUrl: '/work/psoriassist',
+                color: '236, 72, 153',
+              }}
+              inView={inView}
+              index={2}
+            />
+          </Suspense>
         </div>
       </section>
 
-      {/* SECTION 12: Closing & Navigation */}
+      {/* SECTION 9: Closing & Navigation */}
       <section style={{
         position: 'relative',
         paddingTop: 'clamp(3rem, 6vw, 4rem)',
@@ -1303,36 +1169,6 @@ function StatsSkeleton() {
             border: '1px solid var(--border-primary)',
             animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             animationDelay: `${i * 0.15}s`,
-          }}
-        />
-      ))}
-      <style jsx>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
-        }
-      `}</style>
-    </div>
-  );
-}
-
-function AccordionSkeleton() {
-  return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '1rem',
-    }}>
-      {[...Array(4)].map((_, i) => (
-        <div
-          key={i}
-          style={{
-            height: '5rem',
-            background: 'var(--surface-primary)',
-            borderRadius: '1rem',
-            border: '1px solid var(--border-primary)',
-            animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            animationDelay: `${i * 0.2}s`,
           }}
         />
       ))}
