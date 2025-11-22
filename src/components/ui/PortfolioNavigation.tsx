@@ -159,6 +159,28 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
             background-position: 0% 50%;
           }
         }
+
+        .nav-item-content {
+          position: relative;
+          padding-bottom: 4px;
+        }
+
+        .nav-item-content::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: var(--text-primary);
+          transform: scaleX(0);
+          transform-origin: left center;
+          transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-item-content.active::after {
+          transform: scaleX(1);
+        }
       `}</style>
 
       {/* Navigation with floating effect when scrolled */}
@@ -325,8 +347,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                     }}
                     style={{
                       position: 'relative',
-                      padding: '0.5rem 1.25rem',
-                      borderRadius: '24px',
+                      padding: '0.5rem 1rem',
                       fontSize: '0.825rem',
                       fontWeight: active ? '500' : '400',
                       letterSpacing: '0.025em',
@@ -334,22 +355,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                     }}
                   >
-                    {/* Active state background */}
-                    {active && (
-                      <div style={{
-                        position: 'absolute',
-                        inset: 0,
-                        borderRadius: '24px',
-                        background: 'linear-gradient(135deg, rgba(180, 210, 240, 0.08) 0%, rgba(180, 210, 240, 0.04) 100%)',
-                        backdropFilter: 'blur(20px)',
-                        WebkitBackdropFilter: 'blur(20px)',
-                        border: '1px solid var(--border-secondary)',
-                        boxShadow: 'inset 0 1px 0 rgba(180, 210, 240, 0.1)',
-                        transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                      }} />
-                    )}
-
-                    {/* Glass hover background */}
+                    {/* Glass hover background - only for inactive items */}
                     {!active && (
                       <div className="hover-bg" style={{
                         position: 'absolute',
@@ -365,12 +371,16 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                       }} />
                     )}
 
-                    <div style={{
-                      position: 'relative',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                    }}>
+                    {/* Nav item content with animated bottom border */}
+                    <div
+                      className={`nav-item-content ${active ? 'active' : ''}`}
+                      style={{
+                        position: 'relative',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                      }}
+                    >
                       <Icon size={15} style={{
                         transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                       }} />
