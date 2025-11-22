@@ -85,8 +85,8 @@ function GradientMesh({ narrativeState }: GradientMeshProps) {
       uniforms: {
         uTime: { value: 0 },
         uNoiseFrequency: { value: 1.5 },
-        uNoiseAmplitude: { value: 0.3 },
-        uNoiseSpeed: { value: new THREE.Vector2(0.05, 0.03) },
+        uNoiseAmplitude: { value: 0.15 }, // Reduced from 0.3 for gentler movement
+        uNoiseSpeed: { value: new THREE.Vector2(0.03, 0.02) }, // Slower drift for elegance
         uColor1: { value: colors.color1 },
         uColor2: { value: colors.color2 },
         uColor3: { value: colors.color3 },
@@ -115,11 +115,11 @@ function GradientMesh({ narrativeState }: GradientMeshProps) {
     if (!meshRef.current) return;
     const mat = meshRef.current.material as THREE.ShaderMaterial;
 
-    // Slow time progression for subtle movement
-    mat.uniforms.uTime.value = state.clock.elapsedTime * 0.5;
+    // Very slow time progression for elegant, meditative movement
+    mat.uniforms.uTime.value = state.clock.elapsedTime * 0.25;
 
-    // Intensity varies with narrative progression
-    mat.uniforms.uIntensity.value = 0.4 + narrativeState.intensity * 0.3;
+    // Subtle intensity variation with narrative progression
+    mat.uniforms.uIntensity.value = 0.15 + narrativeState.intensity * 0.15;
   });
 
   return <mesh ref={meshRef} geometry={geometry} material={material} />;
@@ -141,7 +141,7 @@ export function GradientMeshBackground() {
         className="fixed inset-0 pointer-events-none"
         style={{
           zIndex: 0,
-          opacity: 0.5,
+          opacity: 0.15,
           background: `radial-gradient(circle at 50% 50%, ${narrativeState.color.primary.replace('0.8', '0.1')}, transparent 70%)`,
         }}
       />
@@ -153,7 +153,7 @@ export function GradientMeshBackground() {
       className="fixed inset-0 pointer-events-none"
       style={{
         zIndex: 0,
-        opacity: 0.5,
+        opacity: 0.2,
         contain: 'layout style paint',
       }}
     >
