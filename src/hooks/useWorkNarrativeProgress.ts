@@ -10,6 +10,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
  */
 
 export type WorkNarrativeAct = 'foundation' | 'industry' | 'innovation';
+export type ContentType = 'transition' | 'content';
 
 export interface WorkNarrativeState {
   progress: number; // 0-1 overall progress
@@ -17,6 +18,7 @@ export interface WorkNarrativeState {
   actProgress: number; // 0-1 progress within current act
   section: number; // Current section index
   intensity: number; // Visual intensity 0-1
+  contentType: ContentType; // Whether viewing section title or content
   color: {
     primary: string;
     secondary: string;
@@ -37,6 +39,7 @@ export function useWorkNarrativeProgress(
     actProgress: 0,
     section: 0,
     intensity: 0,
+    contentType: 'transition',
     color: {
       primary: 'rgba(218, 14, 41, 0.8)', // Red - Air India
       secondary: 'rgba(251, 146, 60, 0.8)', // Orange - accent
@@ -96,12 +99,21 @@ export function useWorkNarrativeProgress(
     // Calculate section (12 major sections)
     const section = Math.floor(scrollProgress * 12);
 
+    // Detect content type (transition vs content)
+    // Transitions occur at section boundaries (first 8% and last 8% of each ~8.3% section)
+    const sectionProgress = (scrollProgress * 12) % 1; // Progress within current section (0-1)
+    const contentType: ContentType =
+      sectionProgress < 0.15 || sectionProgress > 0.85 || scrollProgress < 0.08
+        ? 'transition'  // Near section boundaries or hero
+        : 'content';    // Middle of sections
+
     return {
       progress: scrollProgress,
       act,
       actProgress,
       section,
       intensity,
+      contentType,
       color,
     };
   }, []);
