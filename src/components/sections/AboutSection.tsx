@@ -90,13 +90,13 @@ export function AboutSection() {
       year: '1996',
       label: 'The Spark',
       id: 'hyderabad-roots',
-      detail: 'Growing up in Hyderabad, tinkering with computers and flashing custom ROMs. The beginning of a lifelong curiosity.'
+      detail: 'Growing up in Hyderabad, tinkering with computers and flashing custom ROMs. The beginning of a lifelong curiosity: "How does this work, and how can I make it better?"'
     },
     {
       year: '2016',
       label: 'BFA',
       id: 'undergrad-2018',
-      detail: 'Bachelor of Fine Arts - exploring visual design, typography, and the foundations of creative thinking.',
+      detail: 'Bachelor of Fine Arts - learned the language of visual design. Typography, composition, color theory. The foundation of seeing design as a system, not decoration.',
       logoFile: 'JNAFAU.svg',
       organization: 'JNAFAU'
     },
@@ -104,7 +104,7 @@ export function AboutSection() {
       year: '2020',
       label: 'Infosys',
       id: 'infosys-2020',
-      detail: 'UX Designer at Infosys - learning design systems, enterprise scale, and working with cross-functional teams on production features.',
+      detail: 'UX Designer at Infosys - where I learned design systems can\'t succeed without developer buy-in. Built my first component library. Saw the translation gap between design and code. Realized I needed to learn their language.',
       logoFile: 'infosys.svg',
       organization: 'Infosys'
     },
@@ -112,7 +112,7 @@ export function AboutSection() {
       year: '2021',
       label: 'NID',
       id: 'nid-2021',
-      detail: 'National Institute of Design Masters program - learning to build interfaces that breathe and systems thinking.',
+      detail: 'National Institute of Design Masters - learned to think in systems, not screens. Interfaces that breathe. Feedback loops. Decision latency. The philosophy that would define my work.',
       logoFile: 'nid.svg',
       organization: 'National Institute of Design'
     },
@@ -120,7 +120,7 @@ export function AboutSection() {
       year: '2023',
       label: 'ISB',
       id: 'isb-2022',
-      detail: 'Internship at ISB Digital Learning (online) - exploring digital education platforms and online learning experiences.',
+      detail: 'Internship at ISB Digital Learning - exploring how education scales through digital platforms. Applied systems thinking to learning experiences.',
       logoFile: 'ISB.svg',
       organization: 'Indian School of Business'
     },
@@ -128,7 +128,7 @@ export function AboutSection() {
       year: '2024',
       label: 'Air India',
       id: 'air-india-2024',
-      detail: 'Leading design transformation at Air India DesignLAB - building systems that serve 450+ daily users in aviation operations.',
+      detail: 'Air India DesignLAB - proving that designers and developers can speak the same language. Building component libraries where design tokens become code. 450+ daily users. Design systems that scale.',
       logoFile: 'air-india.svg',
       organization: 'Air India'
     },
@@ -437,15 +437,30 @@ export function AboutSection() {
                 </h1>
                 <p style={{
                   fontSize: '1.125rem',
+                  color: 'var(--text-primary)',
+                  fontWeight: '400',
+                  lineHeight: '1.7',
+                  letterSpacing: '0.01em',
+                  marginBottom: '0.75rem',
+                }}>
+                  I design systems that think, then ship them in code.
+                </p>
+                <p style={{
+                  fontSize: '1.0625rem',
                   color: 'var(--text-secondary)',
                   fontWeight: '300',
                   lineHeight: '1.7',
                   letterSpacing: '0.01em',
                 }}>
-                  Product Designer building living interfaces at{' '}
-                  <span style={{ color: 'var(--brand-red)', fontWeight: '500' }}>Air India DesignLAB</span>.
-                  <br />
-                  I specialize in design systems that reduce decision latency.
+                  Currently at <span style={{ color: 'var(--brand-red)', fontWeight: '500' }}>Air India DesignLAB</span>, where I've built design infrastructure serving{' '}
+                  <span style={{ color: 'var(--text-primary)', fontWeight: '400' }}>450+ daily users</span>{' '}
+                  across aviation operations. Designer by training{' '}
+                  <span style={{ color: 'var(--text-muted)', fontWeight: '400' }}>(NID, BFA)</span>,
+                  developer by practice{' '}
+                  <span style={{ color: 'var(--text-muted)', fontWeight: '400' }}>(React, TypeScript, Three.js)</span>,
+                  systems thinker by obsession.
+                  <br /><br />
+                  I specialize in <span style={{ color: 'var(--text-primary)', fontWeight: '400' }}>reducing decision latency</span> — that split-second gap between thought and action in digital interfaces.
                 </p>
               </div>
             </div>
@@ -455,6 +470,25 @@ export function AboutSection() {
               paddingTop: '2rem',
               borderTop: '1px solid var(--border-primary)',
             }}>
+              <h3 style={{
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                color: 'var(--text-muted)',
+                marginBottom: '0.5rem',
+              }}>
+                From Pixels to Production
+              </h3>
+              <p style={{
+                fontSize: '0.9375rem',
+                color: 'var(--text-secondary)',
+                fontWeight: '300',
+                marginBottom: '2rem',
+                lineHeight: '1.6',
+              }}>
+                Each chapter taught me a different language. Together, they made me fluent in building systems that scale.
+              </p>
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -607,7 +641,7 @@ export function AboutSection() {
           </div>
         </div>
 
-        {/* Story Section */}
+        {/* Origin Story Section */}
         <div
           className={isVisible ? 'animate-fade-in-up' : ''}
           style={{
@@ -632,31 +666,48 @@ export function AboutSection() {
               marginBottom: '1.5rem',
               color: 'var(--text-primary)',
             }}>
-              The Journey
+              How I Got Here
             </h2>
             <p style={{
-              fontSize: '1.125rem',
+              fontSize: '1.0625rem',
               color: 'var(--text-secondary)',
               lineHeight: '1.8',
               fontWeight: '300',
               letterSpacing: '0.01em',
               marginBottom: '1.5rem',
             }}>
-              I grew up in <span style={{ color: 'var(--text-primary)', fontWeight: '400' }}>Hyderabad</span>,
-              taking apart computers and flashing custom ROMs. That curiosity led me to <span style={{ color: 'var(--brand-red)', fontWeight: '400' }}>NID</span>,
-              where I learned to build interfaces that breathe.
+              Growing up in <span style={{ color: 'var(--text-primary)', fontWeight: '400' }}>Hyderabad</span>,
+              I was the kid who flashed custom ROMs on every phone I could find. That curiosity—"how does this work, and how can I make it better?"—became my career.
             </p>
             <p style={{
-              fontSize: '1.125rem',
+              fontSize: '1.0625rem',
               color: 'var(--text-secondary)',
               lineHeight: '1.8',
               fontWeight: '300',
               letterSpacing: '0.01em',
               marginBottom: '1.5rem',
             }}>
-              Now at <span style={{ color: 'var(--brand-red)', fontWeight: '400' }}>Air India</span>,
-              I'm designing for <span style={{ color: 'var(--text-primary)', fontWeight: '400' }}>450+ daily users</span>,
-              creating systems that help airline operations move faster.
+              I started as a visual designer (<span style={{ color: 'var(--text-muted)', fontWeight: '400' }}>BFA, NID</span>), learning typography, composition, systems thinking. But every time I handed off a design, <span style={{ color: 'var(--text-primary)', fontWeight: '400' }}>something got lost in translation</span>. So I learned to code. Not to become a developer, but to close the gap between intention and execution.
+            </p>
+            <p style={{
+              fontSize: '1.0625rem',
+              color: 'var(--text-secondary)',
+              lineHeight: '1.8',
+              fontWeight: '300',
+              letterSpacing: '0.01em',
+              marginBottom: '1.5rem',
+            }}>
+              At <span style={{ color: 'var(--text-primary)', fontWeight: '400' }}>Infosys</span>, I saw design systems fail at enterprise scale when designers and developers couldn't speak the same language. At <span style={{ color: 'var(--brand-red)', fontWeight: '400' }}>Air India</span>, I'm proving they can—building component libraries where <span style={{ color: 'var(--text-primary)', fontWeight: '400' }}>design tokens become code, and code becomes design</span>.
+            </p>
+            <p style={{
+              fontSize: '1.0625rem',
+              color: 'var(--text-secondary)',
+              lineHeight: '1.8',
+              fontWeight: '300',
+              letterSpacing: '0.01em',
+              marginBottom: '2rem',
+            }}>
+              Today, I prototype in React, animate with Three.js, and think in systems. Because the best interfaces aren't designed <span style={{ fontStyle: 'italic' }}>or</span> coded—<span style={{ color: 'var(--text-primary)', fontWeight: '400' }}>they're grown</span>.
             </p>
             <Link
               href="/journey"
@@ -664,7 +715,6 @@ export function AboutSection() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.75rem',
-                marginTop: '1rem',
                 padding: '0.875rem 1.5rem',
                 background: 'rgba(218, 14, 41, 0.1)',
                 border: '1px solid rgba(218, 14, 41, 0.3)',
@@ -840,6 +890,218 @@ export function AboutSection() {
           </div>
         </div>
 
+        {/* What I Bring - Three Column Skills Section */}
+        <div
+          className={isVisible ? 'animate-fade-in-up' : ''}
+          style={{
+            opacity: isVisible ? 1 : 0,
+            animationDelay: '250ms',
+            marginBottom: '4rem',
+          }}
+        >
+          <div style={{
+            position: 'relative',
+            background: 'var(--glass-bg)',
+            backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+            WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+            borderRadius: '28px',
+            padding: '3rem',
+            border: '1px solid var(--border-primary)',
+            boxShadow: 'var(--shadow-small)',
+          }}>
+            <h2 style={{
+              fontSize: '1.5rem',
+              fontWeight: '300',
+              marginBottom: '0.5rem',
+              color: 'var(--text-primary)',
+            }}>
+              What I Bring
+            </h2>
+            <p style={{
+              fontSize: '0.9375rem',
+              color: 'var(--text-secondary)',
+              fontWeight: '300',
+              marginBottom: '3rem',
+            }}>
+              Design thinking meets technical execution. The bridge between intention and implementation.
+            </p>
+
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+              gap: '2rem',
+            }}>
+              {/* Design Mind */}
+              <div style={{
+                padding: '2rem',
+                background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.08), rgba(147, 51, 234, 0.02))',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                borderRadius: '20px',
+                border: '1px solid rgba(147, 51, 234, 0.2)',
+              }}>
+                <Layers size={28} style={{ color: 'rgba(147, 51, 234, 0.8)', marginBottom: '1rem' }} />
+                <h3 style={{
+                  fontSize: '1rem',
+                  fontWeight: '500',
+                  marginBottom: '1.25rem',
+                  color: 'var(--text-primary)',
+                }}>
+                  Design Mind
+                </h3>
+                <ul style={{
+                  listStyle: 'none',
+                  padding: 0,
+                  margin: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.75rem',
+                }}>
+                  {['Design systems architecture', 'Information architecture', 'Visual design & typography', 'Design thinking workshops', 'User research & testing'].map((skill, i) => (
+                    <li
+                      key={i}
+                      style={{
+                        fontSize: '0.875rem',
+                        color: 'var(--text-secondary)',
+                        lineHeight: '1.5',
+                        paddingLeft: '1rem',
+                        position: 'relative',
+                      }}
+                    >
+                      <span style={{
+                        position: 'absolute',
+                        left: 0,
+                        color: 'rgba(147, 51, 234, 0.8)',
+                      }}>•</span>
+                      {skill}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* The Bridge */}
+              <div style={{
+                padding: '2rem',
+                background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(218, 14, 41, 0.04))',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                borderRadius: '20px',
+                border: '1px solid rgba(218, 14, 41, 0.3)',
+                position: 'relative',
+                overflow: 'hidden',
+              }}>
+                {/* Subtle glow effect */}
+                <div style={{
+                  position: 'absolute',
+                  top: '-50%',
+                  left: '-50%',
+                  width: '200%',
+                  height: '200%',
+                  background: 'radial-gradient(circle, rgba(218, 14, 41, 0.1) 0%, transparent 70%)',
+                  pointerEvents: 'none',
+                }} />
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <Sparkles size={28} style={{ color: 'var(--brand-red)', marginBottom: '1rem' }} />
+                  <h3 style={{
+                    fontSize: '1.125rem',
+                    fontWeight: '500',
+                    marginBottom: '0.75rem',
+                    color: 'var(--text-primary)',
+                  }}>
+                    The Bridge
+                  </h3>
+                  <p style={{
+                    fontSize: '0.875rem',
+                    color: 'var(--text-secondary)',
+                    fontWeight: '300',
+                    lineHeight: '1.6',
+                    marginBottom: '1.25rem',
+                    fontStyle: 'italic',
+                  }}>
+                    My unique value proposition
+                  </p>
+                  <ul style={{
+                    listStyle: 'none',
+                    padding: 0,
+                    margin: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.75rem',
+                  }}>
+                    {['Prototypes in production code', 'Design → development handoff eliminated (I AM the handoff)', 'Systems thinking at scale', 'Accessibility from design through implementation'].map((skill, i) => (
+                      <li
+                        key={i}
+                        style={{
+                          fontSize: '0.875rem',
+                          color: 'var(--text-secondary)',
+                          lineHeight: '1.5',
+                          paddingLeft: '1rem',
+                          position: 'relative',
+                        }}
+                      >
+                        <span style={{
+                          position: 'absolute',
+                          left: 0,
+                          color: 'var(--brand-red)',
+                        }}>•</span>
+                        {skill}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Developer Hands */}
+              <div style={{
+                padding: '2rem',
+                background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0.02))',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                borderRadius: '20px',
+                border: '1px solid rgba(59, 130, 246, 0.2)',
+              }}>
+                <Briefcase size={28} style={{ color: 'rgba(59, 130, 246, 0.8)', marginBottom: '1rem' }} />
+                <h3 style={{
+                  fontSize: '1rem',
+                  fontWeight: '500',
+                  marginBottom: '1.25rem',
+                  color: 'var(--text-primary)',
+                }}>
+                  Developer Hands
+                </h3>
+                <ul style={{
+                  listStyle: 'none',
+                  padding: 0,
+                  margin: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.75rem',
+                }}>
+                  {['React + Next.js + TypeScript', 'Framer Motion + GSAP + Three.js', 'Design tokens → code', 'Component libraries', 'Performance optimization'].map((skill, i) => (
+                    <li
+                      key={i}
+                      style={{
+                        fontSize: '0.875rem',
+                        color: 'var(--text-secondary)',
+                        lineHeight: '1.5',
+                        paddingLeft: '1rem',
+                        position: 'relative',
+                      }}
+                    >
+                      <span style={{
+                        position: 'absolute',
+                        left: 0,
+                        color: 'rgba(59, 130, 246, 0.8)',
+                      }}>•</span>
+                      {skill}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Currently Reading & Playing - Card Container */}
         <div
           className={isVisible ? 'animate-fade-in-up' : ''}
@@ -864,14 +1126,14 @@ export function AboutSection() {
               marginBottom: '0.5rem',
               color: 'var(--text-primary)',
             }}>
-              Currently Reading & Playing
+              How I Think: Books, Games, and Systems
             </h2>
             <p style={{
               fontSize: '0.9375rem',
               color: 'var(--text-secondary)',
               fontWeight: '300',
             }}>
-              Books and games shaping how I think about design, systems, and storytelling
+              I learn from stories, systems, and simulations. Here's what's shaping how I design right now.
             </p>
           </div>
 
@@ -1660,27 +1922,35 @@ export function AboutSection() {
                                   </ul>
                                 </div>
 
-                                {/* Related Work */}
+                                {/* Applied To */}
                                 <div style={{
-                                  padding: '0.75rem',
-                                  background: 'rgba(218, 14, 41, 0.05)',
-                                  borderRadius: '12px',
-                                  border: '1px solid rgba(218, 14, 41, 0.1)',
+                                  padding: '1rem',
+                                  background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.08), rgba(218, 14, 41, 0.03))',
+                                  borderRadius: '14px',
+                                  border: '1px solid rgba(218, 14, 41, 0.15)',
                                 }}>
                                   <div style={{
-                                    fontSize: '0.75rem',
-                                    color: 'var(--text-muted)',
-                                    fontWeight: '500',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.05em',
-                                    marginBottom: '0.25rem',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    marginBottom: '0.5rem',
                                   }}>
-                                    Related Work
+                                    <Sparkles size={14} style={{ color: 'var(--brand-red)' }} />
+                                    <div style={{
+                                      fontSize: '0.75rem',
+                                      color: 'var(--text-primary)',
+                                      fontWeight: '600',
+                                      textTransform: 'uppercase',
+                                      letterSpacing: '0.05em',
+                                    }}>
+                                      Applied to
+                                    </div>
                                   </div>
                                   <div style={{
-                                    fontSize: '0.8125rem',
-                                    color: 'var(--brand-red)',
+                                    fontSize: '0.875rem',
+                                    color: 'var(--text-secondary)',
                                     fontWeight: '400',
+                                    lineHeight: '1.5',
                                   }}>
                                     {book.relatedWork}
                                   </div>
@@ -1893,27 +2163,35 @@ export function AboutSection() {
                                   </ul>
                                 </div>
 
-                                {/* Related Work */}
+                                {/* Applied To */}
                                 <div style={{
-                                  padding: '0.75rem',
-                                  background: 'rgba(218, 14, 41, 0.05)',
-                                  borderRadius: '12px',
-                                  border: '1px solid rgba(218, 14, 41, 0.1)',
+                                  padding: '1rem',
+                                  background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.08), rgba(218, 14, 41, 0.03))',
+                                  borderRadius: '14px',
+                                  border: '1px solid rgba(218, 14, 41, 0.15)',
                                 }}>
                                   <div style={{
-                                    fontSize: '0.75rem',
-                                    color: 'var(--text-muted)',
-                                    fontWeight: '500',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.05em',
-                                    marginBottom: '0.25rem',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    marginBottom: '0.5rem',
                                   }}>
-                                    Related Work
+                                    <Sparkles size={14} style={{ color: 'var(--brand-red)' }} />
+                                    <div style={{
+                                      fontSize: '0.75rem',
+                                      color: 'var(--text-primary)',
+                                      fontWeight: '600',
+                                      textTransform: 'uppercase',
+                                      letterSpacing: '0.05em',
+                                    }}>
+                                      Applied to
+                                    </div>
                                   </div>
                                   <div style={{
-                                    fontSize: '0.8125rem',
-                                    color: 'var(--brand-red)',
+                                    fontSize: '0.875rem',
+                                    color: 'var(--text-secondary)',
                                     fontWeight: '400',
+                                    lineHeight: '1.5',
                                   }}>
                                     {game.relatedWork}
                                   </div>
@@ -1933,9 +2211,120 @@ export function AboutSection() {
 
       </div>
 
+      {/* Working With Me Section */}
+      <div style={{ maxWidth: '1200px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
+        <div
+          className={isVisible ? 'animate-fade-in-up' : ''}
+          style={{
+            opacity: isVisible ? 1 : 0,
+            animationDelay: '350ms',
+          }}
+        >
+          <div style={{
+            position: 'relative',
+            background: 'var(--glass-bg)',
+            backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+            WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+            borderRadius: '28px',
+            padding: '3rem',
+            border: '1px solid var(--border-primary)',
+            boxShadow: 'var(--shadow-small)',
+          }}>
+            <h2 style={{
+              fontSize: '1.5rem',
+              fontWeight: '300',
+              marginBottom: '0.5rem',
+              color: 'var(--text-primary)',
+            }}>
+              Working With Me
+            </h2>
+            <p style={{
+              fontSize: '0.9375rem',
+              color: 'var(--text-secondary)',
+              fontWeight: '300',
+              marginBottom: '2.5rem',
+            }}>
+              What it's like to collaborate
+            </p>
+
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+              gap: '1.5rem',
+            }}>
+              {[
+                {
+                  title: 'I prototype in code',
+                  description: "No static mocks. You'll see clickable, interactive prototypes from day one, built in the actual tech stack.",
+                  icon: <Layers size={24} style={{ color: 'var(--brand-red)' }} />
+                },
+                {
+                  title: 'I think in systems',
+                  description: "Every component is part of a larger whole. I'll show you how today's button becomes tomorrow's design language.",
+                  icon: <Network size={24} style={{ color: 'var(--brand-red)' }} />
+                },
+                {
+                  title: 'I speak both languages',
+                  description: 'Designer meetings in the morning, code reviews in the afternoon. I translate so no one else has to.',
+                  icon: <Sparkles size={24} style={{ color: 'var(--brand-red)' }} />
+                },
+                {
+                  title: 'I ship with intention',
+                  description: "Every pixel, every line of code serves the user. I'll show you the research, the iterations, and the reasoning.",
+                  icon: <Briefcase size={24} style={{ color: 'var(--brand-red)' }} />
+                }
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  style={{
+                    padding: '1.75rem',
+                    background: 'var(--surface-secondary)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    borderRadius: '18px',
+                    border: '1px solid var(--border-primary)',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
+                    e.currentTarget.style.background = 'rgba(218, 14, 41, 0.03)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.borderColor = 'var(--border-primary)';
+                    e.currentTarget.style.background = 'var(--surface-secondary)';
+                  }}
+                >
+                  <div style={{ marginBottom: '0.75rem' }}>
+                    {item.icon}
+                  </div>
+                  <h3 style={{
+                    fontSize: '1rem',
+                    fontWeight: '500',
+                    marginBottom: '0.5rem',
+                    color: 'var(--text-primary)',
+                  }}>
+                    {item.title}
+                  </h3>
+                  <p style={{
+                    fontSize: '0.875rem',
+                    color: 'var(--text-secondary)',
+                    lineHeight: '1.6',
+                    fontWeight: '300',
+                  }}>
+                    {item.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Let's Build Something Together Section */}
       <div style={{
-        marginTop: '8rem',
+        marginTop: '2rem',
         padding: '5rem 2rem',
         textAlign: 'center',
         position: 'relative',
@@ -1974,18 +2363,20 @@ export function AboutSection() {
             lineHeight: '1.1',
             letterSpacing: '-0.02em',
           }}>
-            Let's build something together
+            Let's build something that breathes
           </h2>
 
           <p style={{
-            fontSize: '1rem',
+            fontSize: '1.0625rem',
             color: 'var(--text-secondary)',
             marginBottom: '2.5rem',
             fontWeight: '300',
             letterSpacing: '0.01em',
             lineHeight: '1.6',
           }}>
-            Tell me about your project, and let's explore how we can collaborate
+            Building a design system? Launching a product? Need someone who can design it{' '}
+            <span style={{ fontStyle: 'italic' }}>and</span> ship it?{' '}
+            <span style={{ color: 'var(--text-primary)', fontWeight: '400' }}>Let's talk.</span>
           </p>
 
           <ContactChat onMessageSubmit={(message, intent) => {
