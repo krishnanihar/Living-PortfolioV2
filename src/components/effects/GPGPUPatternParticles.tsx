@@ -96,7 +96,7 @@ function GPGPUParticles({ scrollProgress, mousePosition }: GPGPUParticlesProps) 
 
       positions[i3] = Math.sin(phi) * Math.cos(theta) * radius;
       positions[i3 + 1] = Math.sin(phi) * Math.sin(theta) * radius;
-      positions[i3 + 2] = -Math.random() * 200 - 100; // Extended depth
+      positions[i3 + 2] = -Math.random() * 450; // Extended depth for zoom tunnel (0 to -450)
 
       // Store initial positions
       initialPositions[i3] = positions[i3];
@@ -148,8 +148,8 @@ function GPGPUParticles({ scrollProgress, mousePosition }: GPGPUParticlesProps) 
     });
   }, []);
 
-  // Pattern target position calculators
-  const calculateSpherePosition = (index: number, radius: number = 60): THREE.Vector3 => {
+  // Pattern target position calculators (camera-relative)
+  const calculateSpherePosition = (index: number, cameraZ: number, radius: number = 60): THREE.Vector3 => {
     // Fibonacci sphere distribution
     const goldenRatio = (1 + Math.sqrt(5)) / 2;
     const i = index / particleCount;
@@ -159,33 +159,33 @@ function GPGPUParticles({ scrollProgress, mousePosition }: GPGPUParticlesProps) 
     return new THREE.Vector3(
       radius * Math.sin(phi) * Math.cos(theta),
       radius * Math.sin(phi) * Math.sin(theta),
-      radius * Math.cos(phi) - 150
+      radius * Math.cos(phi) + cameraZ - 150 // 150 units ahead of camera
     );
   };
 
-  const calculateTorusPosition = (index: number, majorRadius: number = 50, minorRadius: number = 20): THREE.Vector3 => {
+  const calculateTorusPosition = (index: number, cameraZ: number, majorRadius: number = 50, minorRadius: number = 20): THREE.Vector3 => {
     const u = (index / particleCount) * Math.PI * 2;
     const v = ((index * 7) % particleCount) / particleCount * Math.PI * 2;
 
     return new THREE.Vector3(
       (majorRadius + minorRadius * Math.cos(v)) * Math.cos(u),
       (majorRadius + minorRadius * Math.cos(v)) * Math.sin(u),
-      minorRadius * Math.sin(v) - 150
+      minorRadius * Math.sin(v) + cameraZ - 150 // 150 units ahead of camera
     );
   };
 
-  const calculateHelixPosition = (index: number, radius: number = 40, pitch: number = 0.3): THREE.Vector3 => {
+  const calculateHelixPosition = (index: number, cameraZ: number, radius: number = 40, pitch: number = 0.3): THREE.Vector3 => {
     const t = (index / particleCount) * Math.PI * 10; // 5 full rotations
 
     return new THREE.Vector3(
       radius * Math.cos(t),
       radius * Math.sin(t),
-      t * pitch - 150
+      t * pitch + cameraZ - 150 // 150 units ahead of camera
     );
   };
 
   // Animation loop with pattern morphing and physics
-  useFrame(({ clock }) => {
+  useFrame(({ clock, camera }) => {
     if (!pointsRef.current) return;
 
     const time = clock.getElapsedTime();
@@ -200,6 +200,20 @@ function GPGPUParticles({ scrollProgress, mousePosition }: GPGPUParticlesProps) 
       material.uniforms.uScrollProgress.value = scrollProgress;
     }
 
+    // Camera zoom effect: synchronized with white star particles
+    // Accelerating zoom throughout entire page
+    const zoomSpeed = 1 + scrollProgress * 2; // 1x → 3x speed (accelerating)
+    const targetCameraZ = scrollProgress * 300 * zoomSpeed; // 0 → 900 units
+
+    // Mouse parallax (subtle, matching stars)
+    const targetCameraX = mousePosition.x * 3;
+    const targetCameraY = mousePosition.y * 3;
+
+    // Smooth camera movement with easing
+    camera.position.z += (targetCameraZ - camera.position.z) * 0.08;
+    camera.position.x += (targetCameraX - camera.position.x) * 0.05;
+    camera.position.y += (targetCameraY - camera.position.y) * 0.05;
+
     // Get current pattern and morph progress
     const currentPattern = getCurrentPattern(scrollProgress);
     const morphProgress = getMorphProgress(scrollProgress);
@@ -208,25 +222,25 @@ function GPGPUParticles({ scrollProgress, mousePosition }: GPGPUParticlesProps) 
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
 
-      // Calculate target based on current pattern
+      // Calculate target based on current pattern (camera-relative)
       let target: THREE.Vector3;
       switch (currentPattern) {
         case Pattern.SPHERE:
-          target = calculateSpherePosition(i);
+          target = calculateSpherePosition(i, camera.position.z);
           break;
         case Pattern.TORUS:
-          target = calculateTorusPosition(i);
+          target = calculateTorusPosition(i, camera.position.z);
           break;
         case Pattern.HELIX:
-          target = calculateHelixPosition(i);
+          target = calculateHelixPosition(i, camera.position.z);
           break;
         case Pattern.CLOUD:
         default:
-          // Random cloud position
+          // Random cloud position (camera-relative)
           target = new THREE.Vector3(
             initialPositions[i3],
             initialPositions[i3 + 1],
-            initialPositions[i3 + 2]
+            initialPositions[i3 + 2] + camera.position.z
           );
       }
 
@@ -269,10 +283,10 @@ function GPGPUParticles({ scrollProgress, mousePosition }: GPGPUParticlesProps) 
       velocities[i3 + 2] += fz + dz * attractionStrength;
 
       // Mouse attraction force
-      // Convert normalized mouse position (-0.5 to 0.5) to world space
-      const mouseWorldX = mousePosition.x * 100; // -50 to 50
-      const mouseWorldY = mousePosition.y * 100; // -50 to 50
-      const mouseWorldZ = 0; // Mouse is at front plane
+      // Convert normalized mouse position (-0.5 to 0.5) to camera-relative world space
+      const mouseWorldX = mousePosition.x * 100 + camera.position.x; // Relative to camera
+      const mouseWorldY = mousePosition.y * 100 + camera.position.y; // Relative to camera
+      const mouseWorldZ = camera.position.z; // Mouse is at camera's front plane
 
       const mouseDistX = mouseWorldX - positions[i3];
       const mouseDistY = mouseWorldY - positions[i3 + 1];
@@ -301,6 +315,22 @@ function GPGPUParticles({ scrollProgress, mousePosition }: GPGPUParticlesProps) 
 
       // Update lifetime (gentle pulse)
       lifetimes[i] = 0.7 + Math.sin(time * 2 + i * 0.01) * 0.3;
+    }
+
+    // Particle recycling for infinite tunnel effect
+    for (let i = 0; i < particleCount; i++) {
+      const i3 = i * 3;
+      const particleZ = positions[i3 + 2];
+
+      // If particle is behind camera, reset it ahead
+      if (particleZ > camera.position.z + 50) {
+        positions[i3 + 2] -= 500;
+      }
+
+      // If particle is too far ahead, reset it behind
+      if (particleZ < camera.position.z - 450) {
+        positions[i3 + 2] += 500;
+      }
     }
 
     // Mark attributes as updated
@@ -382,7 +412,7 @@ export default function GPGPUPatternParticles({
       }}
     >
       <Canvas
-        camera={{ position: [0, 0, 200], fov: 50 }}
+        camera={{ position: [0, 0, 0], fov: 50, near: 0.1, far: 1000 }}
         gl={{
           antialias: true,
           alpha: true,
