@@ -48,8 +48,8 @@ export default function HomePage() {
     <HomeNarrativeWrapper>
       <PortfolioNavigation />
 
-      {/* Ultimate GPGPU Flow Field - Elegant minimal experience */}
-      <OptimizedFlowField preset="elegant" enableFPSMonitoring={false} />
+      {/* Ultimate GPGPU Flow Field - Immersive particle experience */}
+      <OptimizedFlowField preset="immersive" enableFPSMonitoring={true} />
 
       <main id="main-content">
         <IntroductionSection />
