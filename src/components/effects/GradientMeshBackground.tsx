@@ -44,38 +44,38 @@ function GradientMesh({ narrativeState }: GradientMeshProps) {
       };
     }
     else if (act === 'innovation') {
-      // Act II: Blue theme with smooth transition from red
+      // Act II: Muted slate blue theme with smooth transition from red
       const blueMix = actProgress;
       return {
         color1: new THREE.Color().lerpColors(
           new THREE.Color(0xDA0E29), // Red
-          new THREE.Color(0x0EA5E9), // Sky blue
+          new THREE.Color(0x475569), // Muted slate blue
           blueMix
         ),
         color2: new THREE.Color().lerpColors(
           new THREE.Color(0xFB923C), // Orange
-          new THREE.Color(0x38BDF8), // Light blue
+          new THREE.Color(0x64748B), // Lighter slate
           blueMix
         ),
         color3: new THREE.Color().lerpColors(
           new THREE.Color(0x991B1B), // Dark red
-          new THREE.Color(0x0369A1), // Dark blue
+          new THREE.Color(0x1E293B), // Deep slate
           blueMix
         ),
         color4: new THREE.Color().lerpColors(
           new THREE.Color(0xDC2626), // Medium red
-          new THREE.Color(0x0284C7), // Medium blue
+          new THREE.Color(0x334155), // Medium slate
           blueMix
         ),
       };
     }
     else {
-      // Act III: Purple theme (Foundation)
+      // Act III: Muted deep purple/indigo theme (Foundation)
       return {
-        color1: new THREE.Color(0x9333EA), // Purple
-        color2: new THREE.Color(0x8B5CF6), // Light purple
-        color3: new THREE.Color(0x6B21A8), // Dark purple
-        color4: new THREE.Color(0x7C3AED), // Medium purple
+        color1: new THREE.Color(0x5B21B6), // Deep purple
+        color2: new THREE.Color(0x6B21A8), // Muted purple
+        color3: new THREE.Color(0x581C87), // Very dark purple
+        color4: new THREE.Color(0x4C1D95), // Deep indigo
       };
     }
   }, [narrativeState.act, narrativeState.actProgress]);
