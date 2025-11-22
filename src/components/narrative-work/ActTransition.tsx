@@ -7,59 +7,93 @@ interface ActTransitionProps {
   actTitle: string;
   quote: string;
   actColor: string;
+  actNumber?: string;
+  showDividers?: boolean;
 }
 
 /**
- * Visual transition between narrative acts
- * Announces new act with color theme
+ * Elegant editorial-style transition between narrative acts
+ * Minimal design with typography hierarchy and subtle accent lines
  */
-export function ActTransition({ actTitle, quote, actColor }: ActTransitionProps) {
+export function ActTransition({
+  actTitle,
+  quote,
+  actColor,
+  actNumber,
+  showDividers = true
+}: ActTransitionProps) {
   return (
     <section style={{
       position: 'relative',
-      minHeight: '60vh',
+      minHeight: '80vh',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      paddingTop: '3rem',
-      paddingBottom: '3rem',
+      paddingTop: 'clamp(6rem, 10vh, 10rem)',
+      paddingBottom: 'clamp(6rem, 10vh, 10rem)',
       paddingLeft: '1.5rem',
       paddingRight: '1.5rem',
     }}>
-      {/* Ambient glow */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0,
-          opacity: 0.2,
-          pointerEvents: 'none',
-          background: `radial-gradient(circle at 50% 50%, ${actColor.replace('0.8', '0.1')} 0%, transparent 70%)`,
-        }}
-      />
-
-      {/* Content */}
       <div style={{
         position: 'relative',
-        zIndex: 10,
         textAlign: 'center',
         maxWidth: '48rem',
+        width: '100%',
       }}>
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.2 }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         >
+          {/* Top divider line */}
+          {showDividers && (
+            <motion.div
+              style={{
+                width: '40%',
+                height: '1px',
+                background: `linear-gradient(to right, transparent, ${actColor} 20%, ${actColor} 80%, transparent)`,
+                opacity: 0.3,
+                marginBottom: '4rem',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              }}
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            />
+          )}
+
+          {/* Act number label (optional) */}
+          {actNumber && (
+            <motion.div
+              style={{
+                fontSize: '0.6875rem',
+                fontWeight: '500',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: 'var(--text-60)',
+                marginBottom: '1rem',
+              }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
+              ACT {actNumber}
+            </motion.div>
+          )}
+
           {/* Act title */}
           <h2
             style={{
-              fontSize: 'clamp(3rem, 6vw, 3.75rem)',
-              fontWeight: '200',
-              marginBottom: '2rem',
-              color: 'white',
+              fontSize: 'clamp(3.5rem, 7vw, 5rem)',
+              fontWeight: '100',
+              letterSpacing: '0.05em',
+              marginBottom: '2.5rem',
+              color: 'var(--text-95)',
+              lineHeight: '1.1',
             }}
           >
             {actTitle}
@@ -68,40 +102,39 @@ export function ActTransition({ actTitle, quote, actColor }: ActTransitionProps)
           {/* Quote */}
           <motion.p
             style={{
-              fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)',
+              fontSize: 'clamp(1.125rem, 2.25vw, 1.375rem)',
               fontWeight: '300',
-              color: 'rgba(255, 255, 255, 0.7)',
+              letterSpacing: '0.01em',
+              color: 'var(--text-60)',
               fontStyle: 'italic',
+              lineHeight: '1.6',
             }}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.5 }}
           >
-            "{quote}"
+            {quote}
           </motion.p>
 
-          {/* Decorative dot */}
-          <motion.div
-            style={{
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              marginTop: '3rem',
-              width: '0.5rem',
-              height: '0.5rem',
-              borderRadius: '9999px',
-              background: actColor,
-            }}
-            animate={{
-              scale: [1, 1.5, 1],
-              opacity: [0.5, 1, 0.5],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          />
+          {/* Bottom divider line */}
+          {showDividers && (
+            <motion.div
+              style={{
+                width: '40%',
+                height: '1px',
+                background: `linear-gradient(to right, transparent, ${actColor} 20%, ${actColor} 80%, transparent)`,
+                opacity: 0.3,
+                marginTop: '3rem',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              }}
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            />
+          )}
         </motion.div>
       </div>
     </section>
