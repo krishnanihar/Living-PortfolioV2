@@ -27,12 +27,14 @@ import { Target, Trophy, TrendingUp, CheckCircle, ArrowRight, ChevronDown } from
  */
 export function WorkNarrativePage() {
   const [inView, setInView] = useState(false);
+  const [researchInView, setResearchInView] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [hoveredStat, setHoveredStat] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [ripplePosition, setRipplePosition] = useState<{ x: number; y: number } | null>(null);
   const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const researchSectionRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   // Detect mobile devices
@@ -63,6 +65,27 @@ export function WorkNarrativePage() {
 
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Intersection Observer for Research Triptych section
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setResearchInView(true);
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px'
+      }
+    );
+
+    if (researchSectionRef.current) {
+      observer.observe(researchSectionRef.current);
     }
 
     return () => observer.disconnect();
@@ -626,13 +649,16 @@ export function WorkNarrativePage() {
       />
 
       {/* SECTION 8: Research Triptych */}
-      <section style={{
-        position: 'relative',
-        paddingTop: 'clamp(2rem, 4vw, 3rem)',
-        paddingBottom: 'clamp(2rem, 4vw, 3rem)',
-        paddingLeft: isMobile ? '1rem' : '1.5rem',
-        paddingRight: isMobile ? '1rem' : '1.5rem',
-      }}>
+      <section
+        ref={researchSectionRef}
+        style={{
+          position: 'relative',
+          paddingTop: 'clamp(2rem, 4vw, 3rem)',
+          paddingBottom: 'clamp(2rem, 4vw, 3rem)',
+          paddingLeft: isMobile ? '1rem' : '1.5rem',
+          paddingRight: isMobile ? '1rem' : '1.5rem',
+        }}
+      >
         <div style={{
           maxWidth: '96rem',
           marginLeft: 'auto',
@@ -656,7 +682,7 @@ export function WorkNarrativePage() {
                 caseStudyUrl: '/work/latent-space',
                 color: '147, 51, 234',
               }}
-              inView={inView}
+              inView={researchInView}
               index={0}
             />
           </Suspense>
@@ -672,7 +698,7 @@ export function WorkNarrativePage() {
                 caseStudyUrl: '/work/mythos',
                 color: '139, 92, 246',
               }}
-              inView={inView}
+              inView={researchInView}
               index={1}
             />
           </Suspense>
@@ -692,7 +718,7 @@ export function WorkNarrativePage() {
                 caseStudyUrl: '/work/psoriassist',
                 color: '236, 72, 153',
               }}
-              inView={inView}
+              inView={researchInView}
               index={2}
             />
           </Suspense>
