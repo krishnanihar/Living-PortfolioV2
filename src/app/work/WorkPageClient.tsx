@@ -5,7 +5,12 @@ import { WorkNarrativePage } from './WorkNarrativePage';
 import { NoiseTextureOverlay } from '@/components/effects/NoiseTextureOverlay';
 import { useWorkNarrativeProgress } from '@/hooks/useWorkNarrativeProgress';
 
-// Dynamic import of Gladeye particle scroll system for performance (client-side only)
+// Dynamic imports of background effects for performance (client-side only)
+const GradientMeshBackground = dynamic(
+  () => import('@/components/effects/GradientMeshBackground').then(mod => ({ default: mod.GradientMeshBackground })),
+  { ssr: false, loading: () => null }
+);
+
 const GladeyeParticleScroll = dynamic(
   () => import('@/components/effects/GladeyeParticleScroll').then(mod => ({ default: mod.GladeyeParticleScroll })),
   { ssr: false, loading: () => null }
@@ -13,14 +18,21 @@ const GladeyeParticleScroll = dynamic(
 
 /**
  * Client component wrapper for work page
- * Handles client-side only components (GladeyeParticleScroll, NoiseTextureOverlay)
+ * Layered background system:
+ * - z-index 0: Gradient mesh (morphing color gradients)
+ * - z-index 1: Particle system (shimmer effects)
+ * - z-index 2: Noise texture (film grain)
+ * - z-index 10+: Content
  */
 export function WorkPageClient() {
   const narrativeState = useWorkNarrativeProgress();
 
   return (
     <>
-      {/* Gladeye Particle Scroll Background */}
+      {/* Gradient mesh background - Stripe-style morphing gradients */}
+      <GradientMeshBackground />
+
+      {/* Gladeye Particle Scroll - Interactive particle system */}
       <GladeyeParticleScroll />
 
       {/* Noise texture overlay for premium tactile quality */}

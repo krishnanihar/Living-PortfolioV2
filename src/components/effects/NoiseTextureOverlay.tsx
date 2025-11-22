@@ -27,7 +27,7 @@ export function NoiseTextureOverlay({
       <div
         className="fixed inset-0 pointer-events-none"
         style={{
-          zIndex: 1,
+          zIndex: 2,
           opacity,
           mixBlendMode: blendMode,
           backgroundImage: `url("${noiseDataUri}")`,
@@ -42,7 +42,7 @@ export function NoiseTextureOverlay({
         <div
           className="fixed inset-0 pointer-events-none"
           style={{
-            zIndex: 1,
+            zIndex: 2,
             opacity: opacity * 0.5,
             mixBlendMode: 'screen',
             backgroundColor: tintColor,
