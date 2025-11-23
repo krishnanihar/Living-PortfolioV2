@@ -189,11 +189,19 @@ export default function HeroParticleSystem({
 }: HeroParticleSystemProps) {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [userScrolled, setUserScrolled] = useState(false); // NEW: Track user scroll
   const rafRef = useRef<number | null>(null);
 
   // Scroll handler with requestAnimationFrame
   useEffect(() => {
     const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      // Detect user scroll (threshold: 50px)
+      if (scrollTop > 50) {
+        setUserScrolled(true);
+      }
+
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current);
       }
@@ -201,7 +209,6 @@ export default function HeroParticleSystem({
       rafRef.current = requestAnimationFrame(() => {
         const windowHeight = window.innerHeight;
         const documentHeight = document.body.scrollHeight;
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
         // Calculate scroll progress (0-1)
         const maxScroll = documentHeight - windowHeight;
@@ -281,6 +288,7 @@ export default function HeroParticleSystem({
       <GPGPUPatternParticles
         scrollProgress={scrollProgress}
         mousePosition={mousePosition}
+        userScrolled={userScrolled}
         className="hero-gpgpu-layer"
       />
 

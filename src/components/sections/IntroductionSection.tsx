@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ChevronDown } from 'lucide-react';
-import { HealthcareResearchIcon } from '@/components/icons/HealthcareResearchIcon';
 
 export function IntroductionSection() {
   const [hoveredButton, setHoveredButton] = useState(false);
@@ -39,32 +38,6 @@ export function IntroductionSection() {
           }
         }
 
-        @keyframes gradientShift {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-
-        .gradient-text {
-          background: linear-gradient(
-            135deg,
-            #2196F3 0%,    /* Particle blue */
-            #7C3AED 50%,   /* Particle purple */
-            #EC4899 100%   /* Particle pink */
-          );
-          background-size: 200% 200%;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          animation: gradientShift 8s ease infinite;
-        }
-
         @media (max-width: 768px) {
           .hero-content {
             text-align: center !important;
@@ -86,25 +59,25 @@ export function IntroductionSection() {
           zIndex: 1,
         }}
       >
-        {/* Content Container - NO glassmorphic card */}
+        {/* Centered Content Container - NO containers, pure minimalism */}
         <div
           className="hero-content"
           style={{
-            maxWidth: '1200px',
+            maxWidth: '900px',
             margin: '0 auto',
             width: '100%',
-            textAlign: 'left', // Asymmetric layout - particles breathe on right
+            textAlign: 'center', // Centered layout
           }}
         >
-          {/* Name - Gradient Text Matching Particle Colors */}
+          {/* Name - Pure White Solid Text */}
           <h1
-            className="gradient-text"
             style={{
               fontSize: 'clamp(5rem, 12vw, 10rem)',
               fontWeight: '100',
               lineHeight: '0.9',
               letterSpacing: '-0.06em',
               marginBottom: '1.5rem',
+              color: 'rgba(255, 255, 255, 0.95)', // Pure white - NO gradient
               opacity: animationStage >= 1 ? 1 : 0,
               transform: animationStage >= 1 ? 'translateY(0)' : 'translateY(20px)',
               transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -113,10 +86,11 @@ export function IntroductionSection() {
             Krishna Nihar
           </h1>
 
-          {/* Tagline with Soft Glow */}
+          {/* Subtitle - Single Clean Line */}
           <div
             style={{
-              maxWidth: '600px',
+              maxWidth: '700px',
+              margin: '0 auto',
               marginBottom: '2.5rem',
               opacity: animationStage >= 2 ? 1 : 0,
               transform: animationStage >= 2 ? 'translateY(0)' : 'translateY(20px)',
@@ -125,32 +99,18 @@ export function IntroductionSection() {
           >
             <p
               style={{
-                fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)',
-                fontWeight: '300',
-                color: 'rgba(255, 255, 255, 0.85)',
-                letterSpacing: '0.01em',
-                lineHeight: '1.6',
-                marginBottom: '1rem',
-                textShadow: '0 0 30px rgba(255, 255, 255, 0.3)', // Soft glow instead of hard shadow
-              }}
-            >
-              From <span style={{ color: '#ffffff', fontWeight: '400' }}>ego death simulators</span> to <span style={{ color: '#ffffff', fontWeight: '400' }}>enterprise systems</span> — building experiences that matter
-            </p>
-            <p
-              style={{
-                fontSize: 'clamp(1.125rem, 2.25vw, 1.5rem)',
+                fontSize: 'clamp(1rem, 2vw, 1.3rem)',
                 fontWeight: '300',
                 color: 'rgba(255, 255, 255, 0.7)',
                 letterSpacing: '0.01em',
-                lineHeight: '1.5',
-                textShadow: '0 0 20px rgba(255, 255, 255, 0.2)',
+                lineHeight: '1.6',
               }}
             >
-              Designing systems that <span style={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: '400' }}>millions interact with daily</span> — from 30,000ft to healthcare
+              From ego death simulators to enterprise systems — designing experiences that millions interact with daily, from 30,000ft to healthcare
             </p>
           </div>
 
-          {/* Single CTA - Minimal Style */}
+          {/* Single Minimal Button */}
           <div
             style={{
               opacity: animationStage >= 3 ? 1 : 0,
@@ -165,42 +125,23 @@ export function IntroductionSection() {
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '0.75rem',
-                padding: '1rem 2rem',
-                background: 'rgba(0, 0, 0, 0.3)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
+                gap: '0.5rem',
+                padding: '0.75rem 1.75rem',
+                background: 'rgba(255, 255, 255, 0.05)',
                 border: hoveredButton
-                  ? '1px solid rgba(124, 58, 237, 0.8)'
-                  : '1px solid rgba(124, 58, 237, 0.3)',
-                borderRadius: '12px',
-                color: '#ffffff',
+                  ? '1px solid rgba(255, 255, 255, 0.9)'
+                  : '1px solid rgba(255, 255, 255, 0.8)',
+                borderRadius: '10px',
+                color: 'rgba(255, 255, 255, 0.95)',
                 textDecoration: 'none',
                 fontSize: 'clamp(0.9375rem, 1.75vw, 1rem)',
                 fontWeight: '300',
                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                transform: hoveredButton ? 'translateY(-2px)' : 'translateY(0)',
-                boxShadow: hoveredButton
-                  ? '0 0 30px rgba(124, 58, 237, 0.4), 0 8px 24px rgba(0, 0, 0, 0.6)'
-                  : '0 4px 16px rgba(0, 0, 0, 0.4)',
+                transform: hoveredButton ? 'scale(1.02)' : 'scale(1)',
+                opacity: hoveredButton ? 1 : 0.9,
               }}
             >
-              <HealthcareResearchIcon size={20} />
               <span>View Featured Work</span>
-              <div
-                style={{
-                  padding: '0.25rem 0.625rem',
-                  background: 'rgba(124, 58, 237, 0.15)',
-                  border: '1px solid rgba(124, 58, 237, 0.3)',
-                  borderRadius: '8px',
-                  fontSize: '0.75rem',
-                  fontWeight: '300',
-                  color: 'rgba(255, 255, 255, 0.9)',
-                  letterSpacing: '0.02em',
-                }}
-              >
-                18 Months
-              </div>
             </Link>
           </div>
         </div>
