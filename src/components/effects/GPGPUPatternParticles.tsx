@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useEffect, useMemo, useState } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
@@ -333,19 +333,17 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
       lifetimes[i] = 0.7 + Math.sin(time * 2 + i * 0.01) * 0.3;
     }
 
-    // Particle recycling (SCROLL phase only - infinite tunnel)
-    if (introPhase === IntroPhase.SCROLL) {
-      for (let i = 0; i < particleCount; i++) {
-        const i3 = i * 3;
-        const particleZ = positions[i3 + 2];
+    // Particle recycling for infinite tunnel effect
+    for (let i = 0; i < particleCount; i++) {
+      const i3 = i * 3;
+      const particleZ = positions[i3 + 2];
 
-        if (particleZ > camera.position.z + 50) {
-          positions[i3 + 2] = camera.position.z - 700 - Math.random() * 100;
-        }
+      if (particleZ > camera.position.z + 50) {
+        positions[i3 + 2] = camera.position.z - 700 - Math.random() * 100;
+      }
 
-        if (particleZ < camera.position.z - 800) {
-          positions[i3 + 2] = camera.position.z - 200 - Math.random() * 100;
-        }
+      if (particleZ < camera.position.z - 800) {
+        positions[i3 + 2] = camera.position.z - 200 - Math.random() * 100;
       }
     }
 
@@ -356,17 +354,8 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     geometry.attributes.lifetime.needsUpdate = true;
   });
 
-  // Dynamic bloom intensity based on intro phase
-  const bloomIntensity = useMemo(() => {
-    if (introPhase === IntroPhase.CHAOS) return 0.8;
-    if (introPhase === IntroPhase.CONVERGE) {
-      const phaseProgress = phaseStartTimeRef.current > 0
-        ? Math.min((Date.now() / 1000 - phaseStartTimeRef.current) / 2.0, 1.0)
-        : 0;
-      return 0.8 - (phaseProgress * 0.4); // 0.8 → 0.4
-    }
-    return 0.4; // SCROLL phase
-  }, [introPhase]);
+  // Static bloom intensity
+  const bloomIntensity = 0.4;
 
   // Cleanup
   useEffect(() => {
