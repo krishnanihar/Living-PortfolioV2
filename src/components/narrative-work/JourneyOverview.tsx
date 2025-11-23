@@ -1,14 +1,16 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Palette, Briefcase, Lightbulb, ArrowRight } from 'lucide-react';
+import { Lightbulb, ArrowRight } from 'lucide-react';
 
 interface Act {
   id: string;
   title: string;
   description: string;
-  icon: React.ElementType;
+  icon?: React.ElementType; // For Lucide icons
+  logo?: string; // For SVG logos
   color: string;
   projects: string[];
 }
@@ -18,7 +20,7 @@ const acts: Act[] = [
     id: 'foundation',
     title: 'Foundation',
     description: 'Immersive installations and generative art systems at National Institute of Design',
-    icon: Palette,
+    logo: '/logos/nid.svg',
     color: 'rgba(147, 51, 234, 0.8)',
     projects: ['Metamorphic Fractal Reflections'],
   },
@@ -26,7 +28,7 @@ const acts: Act[] = [
     id: 'industry',
     title: 'Enterprise Work',
     description: '8 key projects for Air India\'s digital transformation: design systems, mobile patterns, data visualization',
-    icon: Briefcase,
+    logo: '/logos/air-india.svg',
     color: 'rgba(218, 14, 41, 0.8)',
     projects: ['Pixel Radar', 'Aviation Analytics', 'Mobile Patterns', 'Design Systems'],
   },
@@ -186,7 +188,7 @@ export function JourneyOverview() {
                       transform: isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
                     }}
                   >
-                    {/* Icon */}
+                    {/* Icon or Logo */}
                     <div style={{ marginBottom: '1.5rem' }}>
                       <div
                         style={{
@@ -201,12 +203,26 @@ export function JourneyOverview() {
                           boxShadow: isHovered ? `0 0 30px ${act.color}` : 'none',
                         }}
                       >
-                        <Icon
-                          size={20}
-                          style={{
-                            color: isHovered ? '#ffffff' : 'rgba(255, 255, 255, 0.5)',
-                          }}
-                        />
+                        {act.logo ? (
+                          <Image
+                            src={act.logo}
+                            alt={act.title}
+                            width={24}
+                            height={24}
+                            style={{
+                              objectFit: 'contain',
+                              filter: isHovered ? 'brightness(1.2)' : 'brightness(0.8)',
+                              transition: 'filter 500ms ease',
+                            }}
+                          />
+                        ) : Icon ? (
+                          <Icon
+                            size={20}
+                            style={{
+                              color: isHovered ? '#ffffff' : 'rgba(255, 255, 255, 0.5)',
+                            }}
+                          />
+                        ) : null}
                       </div>
                     </div>
 
