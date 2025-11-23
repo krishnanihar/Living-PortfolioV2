@@ -15,13 +15,6 @@ enum Pattern {
   HELIX = 3,
 }
 
-// Intro animation phases
-enum IntroPhase {
-  CHAOS = 0,      // 0-2s: Explosion/vortex everywhere
-  CONVERGE = 1,   // 2-4s: Ring formation around hero
-  SCROLL = 2,     // 4s+: Scroll-reactive (normal behavior)
-}
-
 // Get adaptive particle count
 function getGPGPUParticleCount(): number {
   if (typeof window === 'undefined') return 30000;
@@ -69,11 +62,7 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
   const particleCount = useMemo(() => getGPGPUParticleCount(), []);
   const noise3D = useMemo(() => createNoise3D(), []);
 
-  // Intro phase state
-  const [introPhase, setIntroPhase] = useState<IntroPhase>(IntroPhase.CHAOS);
-  const phaseStartTimeRef = useRef<number>(0);
-
-  // Calculate current pattern based on scroll (SCROLL phase only)
+  // Calculate current pattern based on scroll
   const getCurrentPattern = (progress: number): Pattern => {
     if (progress < 0.25) return Pattern.CLOUD;
     if (progress < 0.40) return Pattern.SPHERE;
@@ -103,22 +92,6 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     return 1.0;
   };
 
-  // Helper to calculate viewport bounds at given Z depth
-  const getViewportBoundsAtDepth = (z: number, fov = 50) => {
-    const aspect = typeof window !== 'undefined'
-      ? window.innerWidth / window.innerHeight
-      : 1.777; // Default 16:9
-    const vFOV = (fov * Math.PI) / 180;
-    const height = 2 * Math.abs(z) * Math.tan(vFOV / 2);
-    const width = height * aspect;
-
-    // Return bounds with 45% coverage (safe margins)
-    return {
-      x: { min: -width * 0.45, max: width * 0.45 },
-      y: { min: -height * 0.45, max: height * 0.45 }
-    };
-  };
-
   // Generate initial particle positions and attributes
   const { geometry, initialPositions } = useMemo(() => {
     const positions = new Float32Array(particleCount * 3);
@@ -128,20 +101,19 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     const lifetimes = new Float32Array(particleCount);
     const initialPositions = new Float32Array(particleCount * 3);
 
-    // Initialize particles scattered across viewport (CHAOS phase)
-    const bounds = getViewportBoundsAtDepth(-150);
-
+    // Initialize particles directly in ring formation around hero
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
 
-      // Scatter particles across full viewport for organic chaos
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
+      // Ring formation calculation
+      const angle = (i / particleCount) * Math.PI * 2;
+      const radiusVariation = 55 + (Math.random() - 0.5) * 8; // 51-59 radius
+      const depthVariation = (Math.random() - 0.5) * 15;
 
-      // Full viewport scatter (replaces tight cluster)
-      positions[i3] = bounds.x.min + Math.random() * (bounds.x.max - bounds.x.min);
-      positions[i3 + 1] = bounds.y.min + Math.random() * (bounds.y.max - bounds.y.min);
-      positions[i3 + 2] = -150 + Math.random() * 10; // Near hero text depth
+      // Position in ring around hero text
+      positions[i3] = Math.cos(angle) * radiusVariation;
+      positions[i3 + 1] = Math.sin(angle) * radiusVariation;
+      positions[i3 + 2] = -150 + depthVariation; // Hero text depth
 
       // Store initial positions
       initialPositions[i3] = positions[i3];
@@ -153,11 +125,11 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
       targetPositions[i3 + 1] = positions[i3 + 1];
       targetPositions[i3 + 2] = positions[i3 + 2];
 
-      // Explosive radial velocity
-      const explosionSpeed = 5.0 + Math.random() * 7.0; // 5-12 units/frame
-      velocities[i3] = Math.sin(phi) * Math.cos(theta) * explosionSpeed;
-      velocities[i3 + 1] = Math.sin(phi) * Math.sin(theta) * explosionSpeed;
-      velocities[i3 + 2] = Math.cos(phi) * explosionSpeed * 0.5; // Less Z velocity
+      // Gentle orbital velocity (subtle movement)
+      const orbitalSpeed = 0.01 + Math.random() * 0.02;
+      velocities[i3] = -Math.sin(angle) * orbitalSpeed;
+      velocities[i3 + 1] = Math.cos(angle) * orbitalSpeed;
+      velocities[i3 + 2] = (Math.random() - 0.5) * 0.01; // Slight Z drift
 
       randomSeeds[i] = Math.random();
       lifetimes[i] = 0.5 + Math.random() * 0.5;
@@ -182,7 +154,6 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
         uTime: { value: 0 },
         uSize: { value: responsiveSize },
         uScrollProgress: { value: 0 },
-        uIntroPhase: { value: 0.0 }, // NEW: 0.0-1.0 = chaos→converge, 2.0 = scroll
         // Color palette
         uColorSlow: { value: new THREE.Color('#3B82F6') },    // Blue
         uColorMedium: { value: new THREE.Color('#8B5CF6') }, // Purple
@@ -197,20 +168,7 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     });
   }, []);
 
-  // Calculate ring position around hero text
-  const calculateRingPosition = (index: number): THREE.Vector3 => {
-    const angle = (index / particleCount) * Math.PI * 2;
-    const radiusVariation = 55 + (Math.random() - 0.5) * 8; // 51-59 radius
-    const depthVariation = (Math.random() - 0.5) * 15;
-
-    return new THREE.Vector3(
-      Math.cos(angle) * radiusVariation,
-      Math.sin(angle) * radiusVariation,
-      -150 + depthVariation // Hero text depth
-    );
-  };
-
-  // Pattern target position calculators (SCROLL phase - camera-relative)
+  // Pattern target position calculators (camera-relative)
   const calculateSpherePosition = (index: number, cameraZ: number, radius: number = 60): THREE.Vector3 => {
     const goldenRatio = (1 + Math.sqrt(5)) / 2;
     const i = index / particleCount;
@@ -245,12 +203,7 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     );
   };
 
-  // Easing function for smooth convergence
-  const easeOutCubic = (t: number): number => {
-    return 1 - Math.pow(1 - t, 3);
-  };
-
-  // Animation loop with 3-phase intro + scroll behavior
+  // Animation loop with scroll-reactive behavior
   useFrame(({ clock, camera }) => {
     if (!pointsRef.current) return;
 
@@ -260,241 +213,116 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     const targetPositions = geometry.attributes.targetPosition.array as Float32Array;
     const lifetimes = geometry.attributes.lifetime.array as Float32Array;
 
-    // Phase management
-    if (introPhase === IntroPhase.CHAOS) {
-      if (time >= 2.0 || userScrolled) {
-        setIntroPhase(IntroPhase.CONVERGE);
-        phaseStartTimeRef.current = time;
-
-        // Set ring targets for all particles
-        for (let i = 0; i < particleCount; i++) {
-          const target = calculateRingPosition(i);
-          targetPositions[i * 3] = target.x;
-          targetPositions[i * 3 + 1] = target.y;
-          targetPositions[i * 3 + 2] = target.z;
-        }
-      }
-    } else if (introPhase === IntroPhase.CONVERGE) {
-      if (time - phaseStartTimeRef.current >= 2.0 || scrollProgress > 0.05) {
-        setIntroPhase(IntroPhase.SCROLL);
-      }
-    }
-
     // Update shader uniforms
     if (material.uniforms) {
       material.uniforms.uTime.value = time;
       material.uniforms.uScrollProgress.value = scrollProgress;
-
-      // Smooth intro phase transition for shader
-      let phaseValue = 0.0;
-      if (introPhase === IntroPhase.CHAOS) {
-        phaseValue = 0.0;
-      } else if (introPhase === IntroPhase.CONVERGE) {
-        const phaseProgress = Math.min((time - phaseStartTimeRef.current) / 2.0, 1.0);
-        phaseValue = phaseProgress; // 0.0 → 1.0
-      } else {
-        phaseValue = 2.0;
-      }
-      material.uniforms.uIntroPhase.value = phaseValue;
     }
 
-    // Camera zoom (SCROLL phase only)
-    if (introPhase === IntroPhase.SCROLL) {
-      const zoomSpeed = 1 + scrollProgress * 2;
-      const targetCameraZ = scrollProgress * 300 * zoomSpeed;
+    // Camera zoom
+    const zoomSpeed = 1 + scrollProgress * 2;
+    const targetCameraZ = scrollProgress * 300 * zoomSpeed;
 
-      const targetCameraX = mousePosition.x * 3;
-      const targetCameraY = mousePosition.y * 3;
+    const targetCameraX = mousePosition.x * 3;
+    const targetCameraY = mousePosition.y * 3;
 
-      camera.position.z += (targetCameraZ - camera.position.z) * 0.08;
-      camera.position.x += (targetCameraX - camera.position.x) * 0.05;
-      camera.position.y += (targetCameraY - camera.position.y) * 0.05;
-    }
+    camera.position.z += (targetCameraZ - camera.position.z) * 0.08;
+    camera.position.x += (targetCameraX - camera.position.x) * 0.05;
+    camera.position.y += (targetCameraY - camera.position.y) * 0.05;
 
-    // Update particles based on phase
+    // Update particles with scroll-reactive forces
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
 
-      if (introPhase === IntroPhase.CHAOS) {
-        // ===== CHAOS FORCES =====
+      // Get current pattern and morph progress
+      const currentPattern = getCurrentPattern(scrollProgress);
+      const morphProgress = getMorphProgress(scrollProgress);
 
-        // Vortex spiral effect
-        const x = positions[i3];
-        const z = positions[i3 + 2];
-        const radius = Math.sqrt(x * x + z * z);
-        const angle = Math.atan2(z, x);
-        const vortexSpeed = 0.08;
-
-        velocities[i3] += -Math.sin(angle) * radius * vortexSpeed;
-        velocities[i3 + 2] += Math.cos(angle) * radius * vortexSpeed;
-        velocities[i3 + 1] += Math.sin(time * 0.5 + radius * 0.1) * 0.3;
-
-        // Amplified noise turbulence
-        if (i % 3 === 0) {
-          const noiseScale = 0.01;
-          const timeScale = time * 0.1;
-          const noiseStrength = 0.15;
-
-          const fx = noise3D(
-            positions[i3] * noiseScale,
-            positions[i3 + 1] * noiseScale,
-            timeScale
-          ) * noiseStrength;
-
-          const fy = noise3D(
-            positions[i3] * noiseScale + 100,
-            positions[i3 + 1] * noiseScale + 100,
-            timeScale
-          ) * noiseStrength;
-
-          const fz = noise3D(
-            positions[i3] * noiseScale + 200,
-            positions[i3 + 1] * noiseScale + 200,
-            timeScale
-          ) * noiseStrength;
-
-          velocities[i3] += fx;
-          velocities[i3 + 1] += fy;
-          velocities[i3 + 2] += fz;
-        }
-
-        // Pulsing expansion
-        const pulseStrength = 0.5 + Math.sin(time * 2.0) * 0.3;
-        velocities[i3] *= pulseStrength;
-        velocities[i3 + 1] *= pulseStrength;
-        velocities[i3 + 2] *= pulseStrength;
-
-        // Standard damping
-        velocities[i3] *= 0.97;
-        velocities[i3 + 1] *= 0.97;
-        velocities[i3 + 2] *= 0.97;
-
-      } else if (introPhase === IntroPhase.CONVERGE) {
-        // ===== CONVERGENCE FORCES =====
-
-        const phaseProgress = Math.min((time - phaseStartTimeRef.current) / 2.0, 1.0);
-        const easedProgress = easeOutCubic(phaseProgress);
-
-        // Attraction to ring target
-        const dx = targetPositions[i3] - positions[i3];
-        const dy = targetPositions[i3 + 1] - positions[i3 + 1];
-        const dz = targetPositions[i3 + 2] - positions[i3 + 2];
-
-        const attractionStrength = easedProgress * 0.08;
-
-        velocities[i3] += dx * attractionStrength;
-        velocities[i3 + 1] += dy * attractionStrength;
-        velocities[i3 + 2] += dz * attractionStrength;
-
-        // Orbital motion when near target
-        const distToTarget = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        if (distToTarget < 10.0) {
-          const currentAngle = Math.atan2(positions[i3 + 1], positions[i3]);
-          const orbitalSpeed = 0.02;
-
-          velocities[i3] += -Math.sin(currentAngle) * orbitalSpeed;
-          velocities[i3 + 1] += Math.cos(currentAngle) * orbitalSpeed;
-        }
-
-        // Higher damping during convergence
-        const dampingFactor = 0.88 - easedProgress * 0.15;
-        velocities[i3] *= dampingFactor;
-        velocities[i3 + 1] *= dampingFactor;
-        velocities[i3 + 2] *= dampingFactor;
-
-      } else {
-        // ===== SCROLL-REACTIVE FORCES (Normal behavior) =====
-
-        // Get current pattern and morph progress
-        const currentPattern = getCurrentPattern(scrollProgress);
-        const morphProgress = getMorphProgress(scrollProgress);
-
-        // Calculate target based on pattern (camera-relative)
-        let target: THREE.Vector3;
-        switch (currentPattern) {
-          case Pattern.SPHERE:
-            target = calculateSpherePosition(i, camera.position.z);
-            break;
-          case Pattern.TORUS:
-            target = calculateTorusPosition(i, camera.position.z);
-            break;
-          case Pattern.HELIX:
-            target = calculateHelixPosition(i, camera.position.z);
-            break;
-          case Pattern.CLOUD:
-          default:
-            target = new THREE.Vector3(
-              initialPositions[i3],
-              initialPositions[i3 + 1],
-              initialPositions[i3 + 2] + camera.position.z
-            );
-        }
-
-        targetPositions[i3] = target.x;
-        targetPositions[i3 + 1] = target.y;
-        targetPositions[i3 + 2] = target.z;
-
-        // Flow field force (optimized: only every 3rd particle)
-        let fx = 0, fy = 0, fz = 0;
-        if (i % 3 === 0) {
-          const noiseScale = 0.01;
-          const timeScale = time * 0.1;
-
-          fx = noise3D(
-            positions[i3] * noiseScale,
-            positions[i3 + 1] * noiseScale,
-            timeScale
-          ) * 0.05;
-
-          fy = noise3D(
-            positions[i3] * noiseScale + 100,
-            positions[i3 + 1] * noiseScale + 100,
-            timeScale
-          ) * 0.05;
-
-          fz = noise3D(
-            positions[i3] * noiseScale + 200,
-            positions[i3 + 1] * noiseScale + 200,
-            timeScale
-          ) * 0.05;
-        }
-
-        // Attraction to target position
-        const dx = targetPositions[i3] - positions[i3];
-        const dy = targetPositions[i3 + 1] - positions[i3 + 1];
-        const dz = targetPositions[i3 + 2] - positions[i3 + 2];
-
-        const attractionStrength = 0.02 * morphProgress;
-
-        velocities[i3] += fx + dx * attractionStrength;
-        velocities[i3 + 1] += fy + dy * attractionStrength;
-        velocities[i3 + 2] += fz + dz * attractionStrength;
-
-        // Mouse attraction force
-        const mouseWorldX = mousePosition.x * 100 + camera.position.x;
-        const mouseWorldY = mousePosition.y * 100 + camera.position.y;
-        const mouseWorldZ = camera.position.z;
-
-        const mouseDistX = mouseWorldX - positions[i3];
-        const mouseDistY = mouseWorldY - positions[i3 + 1];
-        const mouseDistZ = mouseWorldZ - positions[i3 + 2];
-        const mouseDist = Math.sqrt(mouseDistX * mouseDistX + mouseDistY * mouseDistY + mouseDistZ * mouseDistZ);
-
-        const mouseAttractionRadius = 150;
-        const mouseAttractionStrength = 0.03;
-
-        if (mouseDist < mouseAttractionRadius && mouseDist > 0.1) {
-          const mouseForce = mouseAttractionStrength / (mouseDist + 1);
-          velocities[i3] += (mouseDistX / mouseDist) * mouseForce;
-          velocities[i3 + 1] += (mouseDistY / mouseDist) * mouseForce;
-          velocities[i3 + 2] += (mouseDistZ / mouseDist) * mouseForce;
-        }
-
-        // Standard damping
-        velocities[i3] *= 0.97;
-        velocities[i3 + 1] *= 0.97;
-        velocities[i3 + 2] *= 0.97;
+      // Calculate target based on pattern (camera-relative)
+      let target: THREE.Vector3;
+      switch (currentPattern) {
+        case Pattern.SPHERE:
+          target = calculateSpherePosition(i, camera.position.z);
+          break;
+        case Pattern.TORUS:
+          target = calculateTorusPosition(i, camera.position.z);
+          break;
+        case Pattern.HELIX:
+          target = calculateHelixPosition(i, camera.position.z);
+          break;
+        case Pattern.CLOUD:
+        default:
+          target = new THREE.Vector3(
+            initialPositions[i3],
+            initialPositions[i3 + 1],
+            initialPositions[i3 + 2] + camera.position.z
+          );
       }
+
+      targetPositions[i3] = target.x;
+      targetPositions[i3 + 1] = target.y;
+      targetPositions[i3 + 2] = target.z;
+
+      // Flow field force (optimized: only every 3rd particle)
+      let fx = 0, fy = 0, fz = 0;
+      if (i % 3 === 0) {
+        const noiseScale = 0.01;
+        const timeScale = time * 0.1;
+
+        fx = noise3D(
+          positions[i3] * noiseScale,
+          positions[i3 + 1] * noiseScale,
+          timeScale
+        ) * 0.05;
+
+        fy = noise3D(
+          positions[i3] * noiseScale + 100,
+          positions[i3 + 1] * noiseScale + 100,
+          timeScale
+        ) * 0.05;
+
+        fz = noise3D(
+          positions[i3] * noiseScale + 200,
+          positions[i3 + 1] * noiseScale + 200,
+          timeScale
+        ) * 0.05;
+      }
+
+      // Attraction to target position
+      const dx = targetPositions[i3] - positions[i3];
+      const dy = targetPositions[i3 + 1] - positions[i3 + 1];
+      const dz = targetPositions[i3 + 2] - positions[i3 + 2];
+
+      const attractionStrength = 0.02 * morphProgress;
+
+      velocities[i3] += fx + dx * attractionStrength;
+      velocities[i3 + 1] += fy + dy * attractionStrength;
+      velocities[i3 + 2] += fz + dz * attractionStrength;
+
+      // Mouse attraction force
+      const mouseWorldX = mousePosition.x * 100 + camera.position.x;
+      const mouseWorldY = mousePosition.y * 100 + camera.position.y;
+      const mouseWorldZ = camera.position.z;
+
+      const mouseDistX = mouseWorldX - positions[i3];
+      const mouseDistY = mouseWorldY - positions[i3 + 1];
+      const mouseDistZ = mouseWorldZ - positions[i3 + 2];
+      const mouseDist = Math.sqrt(mouseDistX * mouseDistX + mouseDistY * mouseDistY + mouseDistZ * mouseDistZ);
+
+      const mouseAttractionRadius = 150;
+      const mouseAttractionStrength = 0.03;
+
+      if (mouseDist < mouseAttractionRadius && mouseDist > 0.1) {
+        const mouseForce = mouseAttractionStrength / (mouseDist + 1);
+        velocities[i3] += (mouseDistX / mouseDist) * mouseForce;
+        velocities[i3 + 1] += (mouseDistY / mouseDist) * mouseForce;
+        velocities[i3 + 2] += (mouseDistZ / mouseDist) * mouseForce;
+      }
+
+      // Standard damping
+      velocities[i3] *= 0.97;
+      velocities[i3 + 1] *= 0.97;
+      velocities[i3 + 2] *= 0.97;
 
       // Update position (all phases)
       positions[i3] += velocities[i3];

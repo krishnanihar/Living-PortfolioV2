@@ -6,7 +6,6 @@ export const gpgpuVertexShader = /* glsl */ `
 uniform float uTime;
 uniform float uSize;
 uniform float uScrollProgress;
-uniform float uIntroPhase; // NEW: 0.0 = chaos, 0.0-1.0 = converge, 2.0 = scroll
 
 attribute vec3 velocity;
 attribute vec3 targetPosition;
@@ -17,13 +16,11 @@ varying vec3 vVelocity;
 varying float vSpeed;
 varying float vLifetime;
 varying float vDepth;
-varying float vIntroPhase; // NEW: Pass to fragment shader
 
 void main() {
   vVelocity = velocity;
   vSpeed = length(velocity);
   vLifetime = lifetime;
-  vIntroPhase = uIntroPhase; // NEW
 
   vec3 pos = position;
 
@@ -37,11 +34,6 @@ void main() {
   float baseSize = uSize * (0.8 + vSpeed * 0.4);
   float sizeAttenuation = 180.0 / max(vDepth, 75.0);
   gl_PointSize = clamp(baseSize * sizeAttenuation, 0.5, 5.0);
-
-  // Larger particles during chaos phase for impact
-  if (uIntroPhase < 1.0) {
-    gl_PointSize *= 1.3;
-  }
 
   // Pulse effect
   float pulse = 1.0 + sin(uTime * 2.0 + randomSeed * 6.28) * 0.1;
@@ -62,7 +54,6 @@ varying vec3 vVelocity;
 varying float vSpeed;
 varying float vLifetime;
 varying float vDepth;
-varying float vIntroPhase; // NEW
 
 void main() {
   // Circular particle shape
@@ -74,32 +65,15 @@ void main() {
 
   // === COLOR CALCULATION ===
 
-  // Chaos phase: Rainbow cycling based on speed + time
-  vec3 chaosColor = vec3(
-    sin(vSpeed * 3.0 + uTime) * 0.5 + 0.5,
-    sin(vSpeed * 3.0 + uTime + 2.094) * 0.5 + 0.5,  // +120°
-    sin(vSpeed * 3.0 + uTime + 4.189) * 0.5 + 0.5   // +240°
-  );
-
-  // Branded gradient (normal behavior)
-  vec3 brandedGradient;
+  // Velocity-based gradient (blue → purple → pink)
+  vec3 color;
   float normalizedSpeed = clamp(vSpeed / 0.8, 0.0, 1.0);
   if (normalizedSpeed < 0.5) {
     // Blue → Purple
-    brandedGradient = mix(uColorSlow, uColorMedium, normalizedSpeed * 2.0);
+    color = mix(uColorSlow, uColorMedium, normalizedSpeed * 2.0);
   } else {
     // Purple → Pink
-    brandedGradient = mix(uColorMedium, uColorFast, (normalizedSpeed - 0.5) * 2.0);
-  }
-
-  // Blend based on intro phase
-  vec3 color;
-  if (vIntroPhase < 1.0) {
-    // Chaos → Converge transition (0.0 → 1.0)
-    color = mix(chaosColor, brandedGradient, vIntroPhase);
-  } else {
-    // Converge → Scroll (stay branded)
-    color = brandedGradient;
+    color = mix(uColorMedium, uColorFast, (normalizedSpeed - 0.5) * 2.0);
   }
 
   // Radial gradient (bright center → glow edge)
