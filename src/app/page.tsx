@@ -7,7 +7,7 @@ import { IntroductionSection } from '@/components/sections/IntroductionSection';
 import { SectionDivider } from '@/components/ui/SectionDivider';
 import { HomeNarrativeWrapper } from '@/components/sections/HomeNarrativeWrapper';
 
-// Dynamically import Hero Particle System (aurora mesh + white star tunnel)
+// Dynamically import GPGPU Pattern Particles (interactive particle formations)
 const HeroParticleSystem = dynamic(
   () => import('@/components/effects/HeroParticleSystem'),
   {
@@ -48,8 +48,8 @@ export default function HomePage() {
     <HomeNarrativeWrapper>
       <PortfolioNavigation />
 
-      {/* Hero Particle System - Aurora mesh + white star tunnel with zoom scroll */}
-      <HeroParticleSystem />
+      {/* GPGPU Pattern Particles - Interactive particle formations with zoom scroll */}
+      <HeroParticleSystem starOpacity={0} />
 
       <main id="main-content">
         <IntroductionSection />
