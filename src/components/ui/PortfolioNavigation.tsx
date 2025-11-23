@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Briefcase, User, Moon, Sun, Palette, HelpCircle } from 'lucide-react';
@@ -66,15 +66,25 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
   const pathname = usePathname();
   const { theme, resolvedTheme, toggleTheme } = useTheme();
 
-  // Scroll detection - triggers at SCROLL_THRESHOLD
+  // RAF-based scroll detection for buttery smooth 60fps performance
   useEffect(() => {
+    let rafId: number | null = null;
+    let ticking = false;
+
     const handleScroll = () => {
-      setScrolled(window.scrollY > SCROLL_THRESHOLD);
+      if (!ticking) {
+        ticking = true;
+        rafId = requestAnimationFrame(() => {
+          setScrolled(window.scrollY > SCROLL_THRESHOLD);
+          ticking = false;
+        });
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
 
@@ -119,11 +129,11 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
     return () => window.removeEventListener('resize', updateNavHeight);
   }, []);
 
-  // Primary navigation items (Work, About)
-  const navItems = [
+  // Memoize navigation items to prevent recreation on every render
+  const navItems = useMemo(() => [
     { name: 'Work', icon: Briefcase, href: '/work' as const },
     { name: 'About', icon: User, href: '/about' as const },
-  ];
+  ], []);
 
   /**
    * Determines if a route is currently active
@@ -221,6 +231,11 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
         margin: '0 auto',
         borderRadius: scrolled ? `${NAV_BORDER_RADIUS}px` : '0',
         overflow: scrolled ? 'hidden' : 'visible',
+        // GPU acceleration for buttery smooth performance
+        transform: 'translate3d(0, 0, 0)',
+        willChange: scrolled ? 'transform, opacity' : 'auto',
+        isolation: 'isolate',
+        contain: 'layout paint',
       }}>
         {/*
           Multi-layer glassmorphism system (5 layers):
@@ -254,6 +269,9 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
           pointerEvents: 'none',
           transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
           willChange: scrolled ? 'transform, box-shadow' : 'auto',
+          // GPU acceleration for smooth performance
+          transform: 'translate3d(0, 0, 0)',
+          backfaceVisibility: 'hidden',
         }}>
           {/* Animated shimmer overlay - only visible when scrolled */}
           {scrolled && (
@@ -263,6 +281,8 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
               background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 50%, transparent 100%)',
               animation: 'shimmer 8s linear infinite',
               pointerEvents: 'none',
+              transform: 'translate3d(0, 0, 0)',
+              willChange: 'transform',
             }} />
           )}
 
@@ -279,6 +299,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
               pointerEvents: 'none',
               mixBlendMode: 'overlay',
               borderRadius: 'inherit',
+              transform: 'translate3d(0, 0, 0)',
             }} />
           )}
         </div>
@@ -312,6 +333,10 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
               transition: 'background 0.6s ease',
               pointerEvents: 'none',
               zIndex: 0,
+              // GPU acceleration for smooth blur transitions
+              transform: 'translate3d(0, 0, 0)',
+              willChange: 'background',
+              backfaceVisibility: 'hidden',
             }}
           />
 
@@ -377,6 +402,10 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                     filter: 'blur(20px)',
                     pointerEvents: 'none',
                     zIndex: -1,
+                    // GPU acceleration for smooth animation
+                    transform: 'translate3d(0, 0, 0)',
+                    willChange: 'transform, filter',
+                    backfaceVisibility: 'hidden',
                   }}
                 />
               )}
@@ -459,6 +488,10 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                           filter: 'blur(20px)',
                           pointerEvents: 'none',
                           zIndex: -1,
+                          // GPU acceleration for smooth animation
+                          transform: 'translate3d(0, 0, 0)',
+                          willChange: 'transform, filter',
+                          backfaceVisibility: 'hidden',
                         }}
                       />
                     )}
