@@ -249,15 +249,15 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
           position: 'absolute',
           inset: 0,
           background: scrolled
-            ? `radial-gradient(ellipse 200% 100% at top, rgba(255, 255, 255, 0.04) 0%, transparent 50%),
+            ? `radial-gradient(ellipse 200% 100% at top, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
                linear-gradient(135deg,
-                 rgba(10, 10, 10, 0.3) 0%,
-                 rgba(0, 0, 0, 0.2) 50%,
-                 rgba(10, 10, 10, 0.3) 100%)`
+                 rgba(10, 10, 10, 0.5) 0%,
+                 rgba(0, 0, 0, 0.4) 50%,
+                 rgba(10, 10, 10, 0.5) 100%)`
             : 'transparent',
-          backdropFilter: scrolled ? 'blur(80px) saturate(200%) brightness(0.95)' : 'blur(20px) saturate(120%)',
-          WebkitBackdropFilter: scrolled ? 'blur(80px) saturate(200%) brightness(0.95)' : 'blur(20px) saturate(120%)',
-          borderBottom: scrolled ? '1px solid var(--border-primary)' : '1px solid transparent',
+          backdropFilter: scrolled ? 'blur(80px) saturate(200%) brightness(0.90)' : 'blur(20px) saturate(120%)',
+          WebkitBackdropFilter: scrolled ? 'blur(80px) saturate(200%) brightness(0.90)' : 'blur(20px) saturate(120%)',
+          borderBottom: scrolled ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid transparent',
           boxShadow: scrolled
             ? `inset 0 1px 2px rgba(255, 255, 255, 0.1),
                inset 0 -1px 2px rgba(0, 0, 0, 0.6),
@@ -321,13 +321,13 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
               inset: 0,
               borderRadius: scrolled ? `${NAV_BORDER_RADIUS}px` : '0',
               background: isActive('/')
-                ? 'radial-gradient(ellipse 600px 200px at 15% 50%, rgba(180, 210, 240, 0.12), rgba(120, 180, 240, 0.06) 40%, transparent 70%)'
+                ? 'radial-gradient(ellipse 600px 200px at 15% 50%, rgba(180, 210, 240, 0.18), rgba(120, 180, 240, 0.10) 40%, transparent 70%)'
                 : isActive('/work')
-                ? 'radial-gradient(ellipse 600px 200px at 70% 50%, rgba(180, 210, 240, 0.12), rgba(120, 180, 240, 0.06) 40%, transparent 70%)'
+                ? 'radial-gradient(ellipse 600px 200px at 70% 50%, rgba(180, 210, 240, 0.18), rgba(120, 180, 240, 0.10) 40%, transparent 70%)'
                 : isActive('/about')
-                ? 'radial-gradient(ellipse 600px 200px at 78% 50%, rgba(180, 210, 240, 0.12), rgba(120, 180, 240, 0.06) 40%, transparent 70%)'
+                ? 'radial-gradient(ellipse 600px 200px at 78% 50%, rgba(180, 210, 240, 0.18), rgba(120, 180, 240, 0.10) 40%, transparent 70%)'
                 : isActive('/journey')
-                ? 'radial-gradient(ellipse 600px 200px at 94% 50%, rgba(180, 210, 240, 0.12), rgba(120, 180, 240, 0.06) 40%, transparent 70%)'
+                ? 'radial-gradient(ellipse 600px 200px at 94% 50%, rgba(180, 210, 240, 0.18), rgba(120, 180, 240, 0.10) 40%, transparent 70%)'
                 : 'none',
               filter: 'blur(50px)',
               transition: 'background 0.6s ease',
