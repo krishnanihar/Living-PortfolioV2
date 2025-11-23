@@ -56,6 +56,8 @@ src/
 │   │   ├── ErrorBoundary.tsx
 │   │   ├── ConsciousnessParticles.tsx  # Narrative particle effects
 │   │   ├── NarrativeAudio.tsx          # Binaural audio system
+│   │   ├── GPGPUPatternParticles.tsx   # Hero GPGPU particle system
+│   │   ├── HeroParticleSystem.tsx      # Dual-layer particle wrapper
 │   │   ├── ParallaxSection.tsx
 │   │   └── ScrollReveal.tsx
 │   ├── sections/          # Page sections
@@ -606,6 +608,109 @@ color: 'var(--text-95)'
 3. **Metamorphic Fractal Reflections** - Generative art exhibition
 4. **Mythos** - Gaming platform with clean architecture
 5. **PsoriAssist** - AI-powered health management with iOS prototypes
+
+### GPGPU Pattern Particle System (Hero Page)
+**GPU-accelerated dual-layer particle system** - Instant visual impact on page load
+
+#### Architecture Overview
+
+**Dual-Layer System**:
+1. **Layer 1 (z-index: 2)**: White star particles - Subtle background tunnel with zoom scroll
+2. **Layer 2 (z-index: 3)**: GPGPU pattern particles - Interactive foreground formations
+
+**Key Design Decision - Direct Ring Formation**:
+- **No intro animation**: Particles start directly in ring formation around hero text
+- **Instant visual impact**: Ring appears immediately on page load (no chaos/convergence phases)
+- **Why**: Provides immediate professional impression without forcing users to wait for animation
+
+#### GPGPUPatternParticles.tsx - Core Particle System
+
+**Initialization**:
+- Particles initialize in circular ring around hero text (radius: 51-59 units, depth: Z=-150)
+- Initial velocity: Gentle orbital motion for subtle movement
+- Adaptive particle count: 5,000 (mobile) to 25,000 (high-end desktop)
+
+**Pattern Morphing** (scroll-reactive):
+```typescript
+// Scroll ranges for pattern transitions
+0-25%:  Pattern.CLOUD  - Ring formation (initial state)
+25-40%: Pattern.SPHERE - Fibonacci sphere distribution
+40-60%: Pattern.TORUS  - Donut shape with major/minor radius
+60-80%: Pattern.HELIX  - Spiral formation
+80-100%: Pattern.CLOUD - Return to ring
+```
+
+**Forces & Movement**:
+1. **Flow field**: Simplex noise-based 3D force (optimized: every 3rd particle)
+2. **Pattern attraction**: Particles morph toward scroll-defined pattern (0.02 strength)
+3. **Mouse attraction**: Interactive force within 150-unit radius (0.03 strength)
+4. **Damping**: 0.97 velocity damping for smooth, fluid motion
+5. **Particle recycling**: Infinite tunnel effect (particles reset when behind/ahead of camera)
+
+**Visual Effects**:
+- **Velocity-based colors**: Blue (slow) → Purple (medium) → Pink (fast)
+- **Bloom effect**: Static 0.4 intensity with additive blending
+- **Depth attenuation**: Size and opacity reduce with distance
+- **Lifetime pulsing**: Gentle sine wave brightness variation
+
+**Performance Optimizations**:
+- Adaptive particle counts based on device (mobile/desktop/DPI)
+- Responsive particle sizing (0.85-1.8 scale)
+- Flow field calculated for every 3rd particle only
+- `frustumCulled={false}` for consistent performance
+- Reduced motion support (`prefers-reduced-motion: reduce`)
+
+#### HeroParticleSystem.tsx - Dual-Layer Wrapper
+
+**White Star Particles** (Layer 1):
+- Fibonacci sphere distribution for even coverage
+- Extended depth tunnel (-450 units) for parallax
+- Scroll-driven zoom: Camera accelerates from 1x → 3x speed
+- Mouse parallax: Subtle 3-unit offset (disabled on touch devices)
+- White color (`#FFFFFF`) for star-like appearance
+- 35% opacity to maintain subtlety
+
+**Integration**:
+- `userScrolled` prop: Tracks when user has scrolled >50px (future use)
+- Fixed positioning with `pointer-events: none`
+- Separate Canvas instances for isolation and performance
+
+#### Shader System (src/shaders/gpgpu/index.ts)
+
+**Vertex Shader** (44 lines):
+- Size attenuation: `180.0 / max(vDepth, 75.0)` for depth-based sizing
+- Speed-based size boost: `0.8 + vSpeed * 0.4` (energetic particles larger)
+- Pulse effect: Sine wave modulation with randomSeed offset
+- Point size clamped: 0.5-5.0 pixels for consistency
+
+**Fragment Shader** (98 lines):
+- Circular particle shape with radial gradient
+- Velocity-based color mixing: 3-color gradient (blue/purple/pink)
+- Outer glow: `exp(-dist * 4.0) * 0.4` for luminosity
+- Alpha blending: Lifetime fade + depth fade for smooth appearance
+
+#### Critical Implementation Notes
+
+**No Phase Management**:
+- Previous versions had 3-phase intro (CHAOS → CONVERGE → SCROLL)
+- **Current**: Simplified to direct ring initialization
+- **Removed**: `IntroPhase` enum, phase state, convergence/chaos forces, helper functions
+- **Result**: ~150 lines removed, instant visual impact
+
+**Camera Movement**:
+- Continuous zoom throughout page (0 → 900 units)
+- Accelerating speed: `1 + scrollProgress * 2`
+- Smooth easing: 0.08 for Z-axis, 0.05 for X/Y parallax
+
+**Pattern Calculations** (camera-relative):
+- All pattern positions calculated relative to `camera.position.z`
+- Ensures patterns stay in view during zoom scroll
+- Ring initialization at Z=-150 (hero text depth)
+
+**Common Issues**:
+1. **White ball moving on load**: Fixed by initializing in ring formation (not tight cluster)
+2. **Runtime errors with `introPhase`**: Ensure all phase references removed (particle recycling, bloom intensity)
+3. **Performance on mobile**: Reduce particle count, disable mouse parallax on touch devices
 
 ## Key Navigation Routes
 - `/` - Hero page with 3D scene and conversation starters
