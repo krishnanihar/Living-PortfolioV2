@@ -32,6 +32,31 @@ function getGPGPUParticleCount(): number {
   return 25000;                              // High-end desktop
 }
 
+// Get responsive particle size based on screen width
+function getResponsiveParticleSize(): number {
+  if (typeof window === 'undefined') return 1.0;
+
+  const width = window.innerWidth;
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  // Scale particles inversely with screen width
+  // Smaller screens need LARGER particles for visibility
+  // Larger screens can use SMALLER particles for refinement
+
+  if (isMobile) {
+    // Mobile devices: 1.4-1.8x larger
+    return width < 400 ? 1.8 : 1.4;
+  }
+
+  // Desktop/laptop scaling
+  if (width < 768) return 1.5;       // Tablet (768px)
+  if (width < 1280) return 1.3;      // 13-14" laptop (1280px)
+  if (width < 1440) return 1.2;      // 15" laptop (1440px)
+  if (width < 1920) return 1.0;      // 24" desktop (1920px) - baseline
+  if (width < 2560) return 0.9;      // 27" desktop (2560px)
+  return 0.85;                        // 32" desktop+ (2560px+)
+}
+
 interface GPGPUParticlesProps {
   scrollProgress: number;
   mousePosition: { x: number; y: number };
@@ -129,10 +154,12 @@ function GPGPUParticles({ scrollProgress, mousePosition }: GPGPUParticlesProps) 
 
   // Create shader material
   const material = useMemo(() => {
+    const responsiveSize = getResponsiveParticleSize();
+
     return new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
-        uSize: { value: 1.0 },
+        uSize: { value: responsiveSize },
         uScrollProgress: { value: 0 },
         // Color palette for velocity-based coloring
         uColorSlow: { value: new THREE.Color('#3B82F6') },    // Blue
