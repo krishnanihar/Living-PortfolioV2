@@ -103,6 +103,22 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     return 1.0;
   };
 
+  // Helper to calculate viewport bounds at given Z depth
+  const getViewportBoundsAtDepth = (z: number, fov = 50) => {
+    const aspect = typeof window !== 'undefined'
+      ? window.innerWidth / window.innerHeight
+      : 1.777; // Default 16:9
+    const vFOV = (fov * Math.PI) / 180;
+    const height = 2 * Math.abs(z) * Math.tan(vFOV / 2);
+    const width = height * aspect;
+
+    // Return bounds with 45% coverage (safe margins)
+    return {
+      x: { min: -width * 0.45, max: width * 0.45 },
+      y: { min: -height * 0.45, max: height * 0.45 }
+    };
+  };
+
   // Generate initial particle positions and attributes
   const { geometry, initialPositions } = useMemo(() => {
     const positions = new Float32Array(particleCount * 3);
@@ -112,17 +128,19 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     const lifetimes = new Float32Array(particleCount);
     const initialPositions = new Float32Array(particleCount * 3);
 
-    // Initialize particles for center explosion (CHAOS phase)
+    // Initialize particles scattered across viewport (CHAOS phase)
+    const bounds = getViewportBoundsAtDepth(-150);
+
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
 
-      // Start at tight cluster near origin for explosion effect
+      // Scatter particles across full viewport for organic chaos
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(2 * Math.random() - 1);
 
-      // Tight initial cluster
-      positions[i3] = Math.random() * 4 - 2; // -2 to 2
-      positions[i3 + 1] = Math.random() * 4 - 2;
+      // Full viewport scatter (replaces tight cluster)
+      positions[i3] = bounds.x.min + Math.random() * (bounds.x.max - bounds.x.min);
+      positions[i3 + 1] = bounds.y.min + Math.random() * (bounds.y.max - bounds.y.min);
       positions[i3 + 2] = -150 + Math.random() * 10; // Near hero text depth
 
       // Store initial positions
