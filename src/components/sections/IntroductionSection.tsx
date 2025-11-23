@@ -9,9 +9,16 @@ export function IntroductionSection() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
   const [hoveredStat, setHoveredStat] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [animationStage, setAnimationStage] = useState(0);
 
   useEffect(() => {
     setMounted(true);
+
+    // Staggered animation stages
+    const stages = [1, 2, 3];
+    stages.forEach((stage, i) => {
+      setTimeout(() => setAnimationStage(stage), i * 150);
+    });
   }, []);
 
   const stats: Array<{ label: string; tooltip: string }> = [];
@@ -127,6 +134,22 @@ export function IntroductionSection() {
           zIndex: 1,
         }}
       >
+        {/* Background Radial Glow for Contrast */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '900px',
+            height: '700px',
+            background: 'radial-gradient(circle, rgba(10,10,10,0.6) 0%, transparent 70%)',
+            filter: 'blur(80px)',
+            zIndex: 1,
+            pointerEvents: 'none',
+          }}
+        />
+
         {/* Container */}
         <div
           style={{
@@ -134,61 +157,81 @@ export function IntroductionSection() {
             margin: '0 auto',
             width: '100%',
             position: 'relative',
-            zIndex: 1,
+            zIndex: 2,
           }}
         >
-          {/* Centered Content */}
+          {/* Glassmorphic Hero Card */}
           <div
             style={{
-              maxWidth: '900px',
+              maxWidth: '780px',
               margin: '0 auto',
+              padding: 'clamp(2.5rem, 4vw, 3.5rem) clamp(2rem, 4vw, 3rem)',
+              background: 'var(--glass-05)',
+              backdropFilter: 'blur(80px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(80px) saturate(180%)',
+              border: '1px solid var(--text-08)',
+              borderRadius: '32px',
+              boxShadow: `
+                0 0 1px rgba(255, 255, 255, 0.15) inset,
+                0 -1px 0 rgba(255, 255, 255, 0.08) inset,
+                0 20px 60px rgba(0, 0, 0, 0.5)
+              `,
+              position: 'relative',
+              zIndex: 2,
             }}
           >
+            {/* Centered Content */}
             <div>
-              {/* Name */}
+              {/* Name - Enhanced Typography */}
               <h1
                 style={{
-                  fontSize: 'clamp(3rem, 6vw, 4.5rem)',
+                  fontSize: 'clamp(4rem, 8vw, 6.5rem)',
                   fontWeight: '100',
-                  lineHeight: '1.1',
-                  letterSpacing: '-0.05em',
+                  lineHeight: '1.05',
+                  letterSpacing: '-0.06em',
                   color: 'var(--text-primary)',
-                  marginBottom: '2rem',
-                  opacity: mounted ? 1 : 0,
+                  marginBottom: '2.5rem',
+                  opacity: animationStage >= 1 ? 1 : 0,
+                  transform: animationStage >= 1 ? 'translateY(0)' : 'translateY(20px)',
+                  transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
               >
                 Krishna Nihar
               </h1>
 
-              {/* Impact Statements */}
+              {/* Impact Statements - Improved Contrast */}
               <div
                 style={{
                   marginBottom: '2rem',
-                  opacity: mounted ? 1 : 0,
+                  opacity: animationStage >= 2 ? 1 : 0,
+                  transform: animationStage >= 2 ? 'translateY(0)' : 'translateY(20px)',
+                  transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s',
                 }}
               >
                 <p
                   style={{
                     fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-                    fontWeight: '200',
-                    color: 'var(--text-secondary)',
+                    fontWeight: '300',
+                    color: 'var(--text-95)',
                     letterSpacing: '0.01em',
                     lineHeight: '1.7',
                     marginBottom: '0.75rem',
+                    textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
                   }}
                 >
-                  From <span style={{ color: 'var(--text-primary)', fontWeight: '300' }}>ego death simulators</span> to <span style={{ color: 'var(--text-primary)', fontWeight: '300' }}>enterprise systems</span> — building experiences that matter
+                  From <span style={{ color: 'var(--text-primary)', fontWeight: '400' }}>ego death simulators</span> to <span style={{ color: 'var(--text-primary)', fontWeight: '400' }}>enterprise systems</span> — building experiences that matter
                 </p>
                 <p
                   style={{
                     fontSize: 'clamp(0.9375rem, 1.75vw, 1.0625rem)',
-                    fontWeight: '200',
-                    color: 'var(--text-secondary)',
+                    fontWeight: '300',
+                    color: 'var(--text-90)',
                     letterSpacing: '0.01em',
                     lineHeight: '1.6',
+                    textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
                   }}
                 >
-                  Designing systems that <span style={{ color: 'var(--text-primary)', fontWeight: '300' }}>millions interact with daily</span> — from 30,000ft to healthcare
+                  Designing systems that <span style={{ color: 'var(--text-primary)', fontWeight: '400' }}>millions interact with daily</span> — from 30,000ft to healthcare
                 </p>
               </div>
 
@@ -277,13 +320,16 @@ export function IntroductionSection() {
                 ))}
               </div>
 
-              {/* CTA Buttons */}
+              {/* CTA Buttons - Staggered Animation */}
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   gap: 'clamp(0.75rem, 1.5vw, 1rem)',
                   flexWrap: 'wrap',
+                  opacity: animationStage >= 3 ? 1 : 0,
+                  transform: animationStage >= 3 ? 'translateY(0)' : 'translateY(15px)',
+                  transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s',
                 }}
               >
                 {/* Primary: Featured Work */}
@@ -318,7 +364,6 @@ export function IntroductionSection() {
                          inset 0 -1px 0 rgba(0, 0, 0, 0.3),
                          0 8px 24px rgba(0, 0, 0, 0.6),
                          0 0 20px rgba(124, 58, 237, 0.2)`,
-                    opacity: mounted ? 1 : 0,
                   }}
                 >
                   <HealthcareResearchIcon size={20} />
@@ -371,7 +416,6 @@ export function IntroductionSection() {
                       : `0px 10px 30px rgba(0, 0, 0, 0.5),
                          0px 0px 1px rgba(255, 255, 255, 0.25) inset,
                          0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
-                    opacity: mounted ? 1 : 0,
                   }}
                 >
                   <Mail size={16} />
@@ -412,7 +456,6 @@ export function IntroductionSection() {
                       : `0px 10px 30px rgba(0, 0, 0, 0.5),
                          0px 0px 1px rgba(255, 255, 255, 0.25) inset,
                          0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
-                    opacity: mounted ? 1 : 0,
                   }}
                 >
                   <Github size={16} />
