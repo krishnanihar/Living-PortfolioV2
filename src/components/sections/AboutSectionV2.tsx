@@ -1009,7 +1009,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             <div
               style={{
                 position: 'relative',
-                background: 'rgba(10, 10, 10, 0.75)',
+                background: 'rgba(10, 10, 10, 0.5)',
                 backdropFilter: 'blur(120px) saturate(200%) brightness(1.1)',
                 WebkitBackdropFilter: 'blur(120px) saturate(200%) brightness(1.1)',
                 borderRadius: '28px',
