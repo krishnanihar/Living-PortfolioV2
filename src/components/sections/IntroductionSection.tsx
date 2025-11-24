@@ -91,10 +91,10 @@ export function IntroductionSection() {
 
         @keyframes particleGlow {
           0%, 100% {
-            text-shadow: 0 0 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15);
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.1), 0 0 40px rgba(139, 92, 246, 0.05);
           }
           50% {
-            text-shadow: 0 0 40px rgba(236, 72, 153, 0.4), 0 0 80px rgba(236, 72, 153, 0.2);
+            text-shadow: 0 0 24px rgba(236, 72, 153, 0.12), 0 0 48px rgba(236, 72, 153, 0.06);
           }
         }
 
@@ -103,7 +103,7 @@ export function IntroductionSection() {
             transform: scale(1);
           }
           50% {
-            transform: scale(1.01);
+            transform: scale(1.005);
           }
         }
 
@@ -114,7 +114,7 @@ export function IntroductionSection() {
               0 4px 16px rgba(0, 0, 0, 0.10),
               inset 0 1px 2px rgba(255, 255, 255, 0.25),
               inset 0 -1px 2px rgba(0, 0, 0, 0.15),
-              0 0 30px rgba(139, 92, 246, 0.2);
+              0 0 20px rgba(139, 92, 246, 0.08);
           }
           50% {
             box-shadow:
@@ -122,7 +122,7 @@ export function IntroductionSection() {
               0 4px 16px rgba(0, 0, 0, 0.10),
               inset 0 1px 2px rgba(255, 255, 255, 0.25),
               inset 0 -1px 2px rgba(0, 0, 0, 0.15),
-              0 0 40px rgba(236, 72, 153, 0.3);
+              0 0 24px rgba(236, 72, 153, 0.12);
           }
         }
 
@@ -296,19 +296,32 @@ export function IntroductionSection() {
               lineHeight: '1.3',
               letterSpacing: '0.02em',
               marginBottom: '1.5rem',
-              background: `linear-gradient(120deg, ${PARTICLE_COLORS.blue}, ${PARTICLE_COLORS.purple}, ${PARTICLE_COLORS.pink}, ${PARTICLE_COLORS.purple}, ${PARTICLE_COLORS.blue})`,
-              backgroundSize: '200% 200%',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              animation: 'gradientFlow 10s ease-in-out infinite, particleGlow 6s ease-in-out infinite, breathe 8s ease-in-out infinite',
+              color: 'rgba(255, 255, 255, 0.95)',
+              position: 'relative',
+              animation: 'particleGlow 12s ease-in-out infinite, breathe 15s ease-in-out infinite',
               opacity: animationStage >= 1 ? 1 : 0,
               transform: animationStage >= 1 ? 'translateY(0)' : 'translateY(20px)',
               transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
               willChange: 'transform',
             }}
           >
-            {greeting || "Hi, I'm Nihar. Welcome."}
+            <span
+              style={{
+                position: 'relative',
+                background: `linear-gradient(120deg,
+                  rgba(59, 130, 246, 0.15),
+                  rgba(139, 92, 246, 0.15),
+                  rgba(236, 72, 153, 0.15),
+                  rgba(139, 92, 246, 0.15),
+                  rgba(59, 130, 246, 0.15))`,
+                backgroundSize: '200% 200%',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                animation: 'gradientFlow 20s ease-in-out infinite',
+              }}
+            >
+              {greeting || "Hi, I'm Nihar. Welcome."}
+            </span>
           </h1>
 
           {/* Subtitle */}
@@ -350,7 +363,7 @@ export function IntroductionSection() {
               transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
             }}
           >
-            {/* Contact Button - Pink/Purple Particle Gradient */}
+            {/* Contact Button - Liquid Glass with Subtle Pink Reflection */}
             <a
               href="mailto:krishnaniharsunkara@gmail.com"
               onMouseEnter={() => setHoveredButton('contact')}
@@ -363,9 +376,9 @@ export function IntroductionSection() {
                 padding: '13px 26px',
                 ...UNIFIED_GLASS,
                 background: hoveredButton === 'contact'
-                  ? `linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(139, 92, 246, 0.10))`
-                  : `linear-gradient(135deg, rgba(236, 72, 153, 0.12), rgba(139, 92, 246, 0.08))`,
-                borderColor: hoveredButton === 'contact' ? 'rgba(236, 72, 153, 0.25)' : 'rgba(236, 72, 153, 0.15)',
+                  ? `linear-gradient(135deg, rgba(236, 72, 153, 0.04), rgba(139, 92, 246, 0.03))`
+                  : `linear-gradient(135deg, rgba(236, 72, 153, 0.03), rgba(139, 92, 246, 0.02))`,
+                borderColor: hoveredButton === 'contact' ? 'rgba(236, 72, 153, 0.12)' : 'rgba(236, 72, 153, 0.08)',
                 borderRadius: '20px',
                 color: 'rgba(255, 255, 255, 0.95)',
                 textDecoration: 'none',
@@ -375,7 +388,7 @@ export function IntroductionSection() {
                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                 transform: hoveredButton === 'contact' ? 'translateY(-2px) scale(1.02)' : 'translateY(0) scale(1)',
                 overflow: 'hidden',
-                animation: hoveredButton === 'contact' ? 'buttonGlow 4s ease-in-out infinite' : 'none',
+                animation: hoveredButton === 'contact' ? 'buttonGlow 8s ease-in-out infinite' : 'none',
               }}
             >
               {/* Refraction layer - Diagonal light reflection */}
@@ -384,13 +397,13 @@ export function IntroductionSection() {
                   position: 'absolute',
                   inset: 0,
                   background: `linear-gradient(135deg,
-                    rgba(236, 72, 153, 0.2) 0%,
+                    rgba(236, 72, 153, 0.08) 0%,
                     transparent 40%,
                     transparent 60%,
-                    rgba(139, 92, 246, 0.15) 100%)`,
+                    rgba(139, 92, 246, 0.05) 100%)`,
                   mixBlendMode: 'overlay',
                   pointerEvents: 'none',
-                  opacity: hoveredButton === 'contact' ? 1 : 0.6,
+                  opacity: hoveredButton === 'contact' ? 1 : 0.5,
                   transition: 'opacity 0.3s ease',
                 }}
               />
@@ -400,7 +413,7 @@ export function IntroductionSection() {
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(90deg, transparent 0%, rgba(236, 72, 153, 0.2) 50%, transparent 100%)',
+                    background: 'linear-gradient(90deg, transparent 0%, rgba(236, 72, 153, 0.08) 50%, transparent 100%)',
                     pointerEvents: 'none',
                   }}
                 />
@@ -409,7 +422,7 @@ export function IntroductionSection() {
               <span style={{ position: 'relative', zIndex: 1 }}>Contact</span>
             </a>
 
-            {/* GitHub Button - Blue/Purple Particle Gradient */}
+            {/* GitHub Button - Liquid Glass with Subtle Blue Reflection */}
             <a
               href="https://github.com/krishn404"
               target="_blank"
@@ -424,9 +437,9 @@ export function IntroductionSection() {
                 padding: '13px 26px',
                 ...UNIFIED_GLASS,
                 background: hoveredButton === 'github'
-                  ? `linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.10))`
-                  : `linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(139, 92, 246, 0.08))`,
-                borderColor: hoveredButton === 'github' ? 'rgba(59, 130, 246, 0.25)' : 'rgba(59, 130, 246, 0.15)',
+                  ? `linear-gradient(135deg, rgba(59, 130, 246, 0.04), rgba(139, 92, 246, 0.03))`
+                  : `linear-gradient(135deg, rgba(59, 130, 246, 0.03), rgba(139, 92, 246, 0.02))`,
+                borderColor: hoveredButton === 'github' ? 'rgba(59, 130, 246, 0.12)' : 'rgba(59, 130, 246, 0.08)',
                 borderRadius: '20px',
                 color: 'rgba(255, 255, 255, 0.95)',
                 textDecoration: 'none',
@@ -436,7 +449,7 @@ export function IntroductionSection() {
                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                 transform: hoveredButton === 'github' ? 'translateY(-2px) scale(1.02)' : 'translateY(0) scale(1)',
                 overflow: 'hidden',
-                animation: hoveredButton === 'github' ? 'buttonGlow 4s ease-in-out infinite' : 'none',
+                animation: hoveredButton === 'github' ? 'buttonGlow 8s ease-in-out infinite' : 'none',
               }}
             >
               {/* Refraction layer - Diagonal light reflection */}
@@ -445,13 +458,13 @@ export function IntroductionSection() {
                   position: 'absolute',
                   inset: 0,
                   background: `linear-gradient(135deg,
-                    rgba(59, 130, 246, 0.2) 0%,
+                    rgba(59, 130, 246, 0.08) 0%,
                     transparent 40%,
                     transparent 60%,
-                    rgba(139, 92, 246, 0.15) 100%)`,
+                    rgba(139, 92, 246, 0.05) 100%)`,
                   mixBlendMode: 'overlay',
                   pointerEvents: 'none',
-                  opacity: hoveredButton === 'github' ? 1 : 0.6,
+                  opacity: hoveredButton === 'github' ? 1 : 0.5,
                   transition: 'opacity 0.3s ease',
                 }}
               />
@@ -461,7 +474,7 @@ export function IntroductionSection() {
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(90deg, transparent 0%, rgba(59, 130, 246, 0.2) 50%, transparent 100%)',
+                    background: 'linear-gradient(90deg, transparent 0%, rgba(59, 130, 246, 0.08) 50%, transparent 100%)',
                     pointerEvents: 'none',
                   }}
                 />
