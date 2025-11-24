@@ -979,22 +979,25 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               </h3>
             </div>
 
-          {/* Simple Profile Card with Rotating Conic Gradient Border */}
+          {/* Liquid Glass Card with Flowing Line Border */}
           <div
             style={{
               position: 'relative',
               maxWidth: '600px',
               margin: '3rem auto 0',
               borderRadius: '30px',
-              border: '2px solid transparent',
+              border: '3px solid transparent',
               background: `
-                linear-gradient(#0A0A0A, #0A0A0A) padding-box,
+                linear-gradient(rgba(10, 10, 10, 0.95), rgba(10, 10, 10, 0.95)) padding-box,
                 conic-gradient(
                   from var(--border-angle),
-                  #3B82F6,
-                  #8B5CF6,
-                  #EC4899,
-                  #3B82F6
+                  transparent 0%,
+                  transparent 10%,
+                  #3B82F6 15%,
+                  #8B5CF6 25%,
+                  #EC4899 35%,
+                  transparent 50%,
+                  transparent 100%
                 ) border-box
               `,
               animation: act2InView && mounted ? 'rotateBorder 8s linear infinite' : 'none',
@@ -1006,15 +1009,17 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             <div
               style={{
                 position: 'relative',
-                background: '#0A0A0A',
-                backdropFilter: 'blur(80px) saturate(160%) brightness(1.08)',
-                WebkitBackdropFilter: 'blur(80px) saturate(160%) brightness(1.08)',
-                borderRadius: '28px',
+                background: 'rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(120px) saturate(200%) brightness(1.1)',
+                WebkitBackdropFilter: 'blur(120px) saturate(200%) brightness(1.1)',
+                borderRadius: '27px',
                 padding: 'clamp(2.5rem, 5vw, 3rem)',
-                border: `1px solid var(--text-08)`,
+                border: `1px solid rgba(255, 255, 255, 0.12)`,
                 boxShadow: `
-                  inset 0 1px 0 var(--text-10),
-                  0 8px 32px rgba(0, 0, 0, 0.4)
+                  inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                  0 8px 32px rgba(0, 0, 0, 0.4),
+                  0 16px 64px rgba(0, 0, 0, 0.3),
+                  0 0 40px rgba(59, 130, 246, 0.08)
                 `,
               }}
             >
