@@ -384,32 +384,6 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                 NIHAR
               </span>
 
-              {/* Aurora Mesh - Only for active home */}
-              {isActive('/') && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: '-20px',
-                    borderRadius: '12px',
-                    background: `
-                      radial-gradient(ellipse at 20% 50%, var(--text-25), transparent 60%),
-                      radial-gradient(ellipse at 80% 50%, var(--text-20), transparent 60%),
-                      radial-gradient(ellipse at 50% 20%, var(--text-15), transparent 50%),
-                      linear-gradient(135deg, var(--aurora-gradient-2) 0%, transparent 50%, var(--aurora-gradient-2) 100%)
-                    `,
-                    backgroundSize: '250% 250%',
-                    animation: 'auroraDrift 4s ease-in-out infinite',
-                    filter: 'blur(20px)',
-                    pointerEvents: 'none',
-                    zIndex: -1,
-                    // GPU acceleration for smooth animation
-                    transform: 'translate3d(0, 0, 0)',
-                    willChange: 'transform, filter',
-                    backfaceVisibility: 'hidden',
-                  }}
-                />
-              )}
-
               {/* Simple Radial Glow - Only for inactive home on hover */}
               {!isActive('/') && (
                 <div
