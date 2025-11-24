@@ -836,39 +836,53 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
             <h2
               style={{
-                fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
-                fontWeight: '200',
-                lineHeight: '1.2',
-                letterSpacing: '-0.03em',
+                fontSize: 'clamp(1.75rem, 3.5vw, 3rem)',
+                fontWeight: '300',
+                lineHeight: '1.4',
+                letterSpacing: '-0.01em',
                 color: 'var(--text-95)',
-                marginBottom: '2rem',
+                marginBottom: '1.5rem',
                 opacity: act1InView && mounted ? 1 : 0,
                 animation: act1InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
               }}
             >
-              Most interfaces <span style={{ fontStyle: 'italic', opacity: 0.6 }}>forget</span>.
-              <br />
-              They demand you remember their patterns, their flows, their logic.
+              Most designers can't <span style={{ opacity: 0.7 }}>code</span>. Most developers can't <span style={{ opacity: 0.7 }}>design</span>.
             </h2>
 
             <p
               style={{
-                fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
+                fontSize: 'clamp(1.125rem, 2.25vw, 1.75rem)',
                 fontWeight: '300',
-                lineHeight: '1.4',
+                lineHeight: '1.6',
                 color: 'var(--text-85)',
-                marginBottom: '2rem',
+                marginBottom: '1.5rem',
                 opacity: act1InView && mounted ? 1 : 0,
                 animation: act1InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both' : 'none',
               }}
             >
-              I build the <span style={{ color: '#DA0E29', fontWeight: '400' }}>opposite</span>.
+              I design and code experiences that remember, learn, and scale—
+              <br />
+              serving <span style={{ color: '#DA0E29', fontWeight: '400' }}>millions</span> across aviation, healthcare, and beyond.
+            </p>
+
+            <p
+              style={{
+                fontSize: 'clamp(1.125rem, 2.25vw, 1.75rem)',
+                fontWeight: '300',
+                lineHeight: '1.6',
+                color: 'var(--text-85)',
+                marginBottom: '2rem',
+                opacity: act1InView && mounted ? 1 : 0,
+                animation: act1InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both' : 'none',
+              }}
+            >
+              Including this site. Designed and coded <span style={{ fontWeight: '400' }}>from the ground up</span>.
             </p>
 
             {/* Breathing Orb */}
             <div
               style={{
-                marginTop: '4rem',
+                marginTop: '3rem',
                 display: 'flex',
                 justifyContent: 'center',
                 opacity: act1InView && mounted ? 1 : 0,
@@ -877,8 +891,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             >
               <div
                 style={{
-                  width: '120px',
-                  height: '120px',
+                  width: '100px',
+                  height: '100px',
                   borderRadius: '50%',
                   background: 'radial-gradient(circle at 30% 30%, rgba(218, 14, 41, 0.4) 0%, rgba(147, 51, 234, 0.2) 50%, transparent 100%)',
                   filter: 'blur(40px)',
