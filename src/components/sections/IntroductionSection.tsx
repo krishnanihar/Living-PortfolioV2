@@ -4,12 +4,12 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ChevronDown, Mail, Github } from 'lucide-react';
 
-// Ultra-Liquid Glass Style - iOS 26 Inspired
+// Ultra-Liquid Glass Style - iOS 26 Inspired (More Translucent)
 const UNIFIED_GLASS = {
-  background: 'rgba(255, 255, 255, 0.05)',
+  background: 'rgba(255, 255, 255, 0.03)',
   backdropFilter: 'blur(100px) saturate(220%) brightness(1.08)',
   WebkitBackdropFilter: 'blur(100px) saturate(220%) brightness(1.08)',
-  border: '1px solid rgba(255, 255, 255, 0.12)',
+  border: '1px solid rgba(255, 255, 255, 0.10)',
   boxShadow: `
     0 12px 48px rgba(0, 0, 0, 0.15),
     0 4px 16px rgba(0, 0, 0, 0.10),
@@ -295,9 +295,9 @@ export function IntroductionSection() {
                 gap: '0.5rem',
                 padding: '14px 28px',
                 ...UNIFIED_GLASS,
-                background: hoveredButton === 'contact' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.05)',
-                borderColor: hoveredButton === 'contact' ? 'rgba(255, 255, 255, 0.18)' : 'rgba(255, 255, 255, 0.12)',
-                borderRadius: '14px',
+                background: hoveredButton === 'contact' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(255, 255, 255, 0.03)',
+                borderColor: hoveredButton === 'contact' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.10)',
+                borderRadius: '20px',
                 color: 'rgba(255, 255, 255, 0.95)',
                 textDecoration: 'none',
                 fontSize: '1rem',
@@ -353,9 +353,9 @@ export function IntroductionSection() {
                 gap: '0.5rem',
                 padding: '14px 28px',
                 ...UNIFIED_GLASS,
-                background: hoveredButton === 'github' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.05)',
-                borderColor: hoveredButton === 'github' ? 'rgba(255, 255, 255, 0.18)' : 'rgba(255, 255, 255, 0.12)',
-                borderRadius: '14px',
+                background: hoveredButton === 'github' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(255, 255, 255, 0.03)',
+                borderColor: hoveredButton === 'github' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.10)',
+                borderRadius: '20px',
                 color: 'rgba(255, 255, 255, 0.95)',
                 textDecoration: 'none',
                 fontSize: '1rem',
