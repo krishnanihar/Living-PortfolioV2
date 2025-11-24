@@ -1,5 +1,14 @@
 @import 'tailwindcss';
 
+/* === CSS CUSTOM PROPERTIES === */
+
+/* Animatable border angle for rotating gradients */
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
 /* === VANILLA JS DESIGN TOKEN SYSTEM === */
 
 /* Base Reset & Fundamentals */
@@ -659,6 +668,12 @@ button {
   0% { transform: translateX(-100%); opacity: 0; }
   50% { opacity: 1; }
   100% { transform: translateX(100%); opacity: 0; }
+}
+
+@keyframes rotateBorder {
+  to {
+    --border-angle: 360deg;
+  }
 }
 
 /* Work Section Scroll Reveal Animations */

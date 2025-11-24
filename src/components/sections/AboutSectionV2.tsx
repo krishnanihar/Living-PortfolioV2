@@ -385,15 +385,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           }
         }
 
-        @keyframes gradientBorder {
-          0%, 100% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-        }
-
         @keyframes buttonGlow {
           0%, 100% {
             box-shadow:
@@ -988,17 +979,25 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               </h3>
             </div>
 
-          {/* Simple Profile Card with Animated Gradient Border */}
+          {/* Simple Profile Card with Rotating Conic Gradient Border */}
           <div
             style={{
               position: 'relative',
               maxWidth: '600px',
               margin: '3rem auto 0',
-              padding: '2px',
               borderRadius: '30px',
-              background: 'linear-gradient(90deg, #3B82F6 0%, #8B5CF6 33%, #EC4899 66%, #3B82F6 100%)',
-              backgroundSize: '200% 100%',
-              animation: act2InView && mounted ? 'gradientBorder 8s linear infinite' : 'none',
+              border: '2px solid transparent',
+              background: `
+                linear-gradient(#0A0A0A, #0A0A0A) padding-box,
+                conic-gradient(
+                  from var(--border-angle),
+                  #3B82F6,
+                  #8B5CF6,
+                  #EC4899,
+                  #3B82F6
+                ) border-box
+              `,
+              animation: act2InView && mounted ? 'rotateBorder 8s linear infinite' : 'none',
               opacity: act2InView && mounted ? 1 : 0,
               transform: act2InView && mounted ? 'translateY(0)' : 'translateY(30px)',
               transition: 'opacity 0.8s ease-in-out, transform 0.8s ease-in-out',
