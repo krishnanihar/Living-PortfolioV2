@@ -43,9 +43,9 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
     offset: ['start start', 'end end']
   });
 
-  // Horizontal scroll transform - cards move left as you scroll down
-  // 4 cards * 380px + 3 gaps * 32px = 1616px total, minus viewport width (~1200px) = ~416px scroll
-  const horizontalTranslate = useTransform(scrollYProgress, [0, 1], [0, -1200]);
+  // Horizontal scroll transform - full viewport slides
+  // 4 projects = move 3 viewport widths (300vw) to show all 4
+  const horizontalTranslate = useTransform(scrollYProgress, [0, 1], ['0vw', '-300vw']);
 
   // SVG dynamic color helper (for project-specific colors that can't use CSS variables)
   const getThemedSvgColor = (r: number, g: number, b: number, alpha: number) =>
@@ -249,58 +249,112 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
     }
   ];
 
-  // Horizontal Scroll Card Component
-  interface HorizontalCardProps {
+  // Full-Screen Slide Component (Creative Example Style)
+  interface FullScreenSlideProps {
     project: typeof featuredProjects[0];
     index: number;
+    totalProjects: number;
   }
 
-  function HorizontalCard({ project, index }: HorizontalCardProps) {
+  function FullScreenSlide({ project, index, totalProjects }: FullScreenSlideProps) {
     const [isHovered, setIsHovered] = useState(false);
     const brandRgb = `${project.brandColor.r}, ${project.brandColor.g}, ${project.brandColor.b}`;
 
     return (
-      <Link
-        href={project.link}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+      <div
         style={{
-          display: 'block',
-          width: '380px',
-          minWidth: '380px',
-          textDecoration: 'none',
+          width: '100vw',
+          height: '100vh',
+          minWidth: '100vw',
           position: 'relative',
-          borderRadius: '20px',
-          border: '2px solid transparent',
-          background: `
-            linear-gradient(rgba(10, 10, 10, 0.6), rgba(10, 10, 10, 0.6)) padding-box,
-            conic-gradient(
-              from var(--border-angle),
-              transparent 0%,
-              transparent 10%,
-              rgba(${brandRgb}, 0.4) 15%,
-              rgba(${brandRgb}, 0.6) 25%,
-              rgba(${brandRgb}, 0.4) 35%,
-              transparent 50%,
-              transparent 100%
-            ) border-box
-          `,
-          animation: 'rotateBorder 8s linear infinite',
+          background: `linear-gradient(135deg, rgba(${brandRgb}, 0.12), rgba(${brandRgb}, 0.04), transparent)`,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
           overflow: 'hidden',
-          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-          transform: isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
-          boxShadow: isHovered
-            ? `0 20px 60px rgba(0, 0, 0, 0.5), 0 0 50px rgba(${brandRgb}, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)`
-            : `0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08)`,
         }}
       >
-        {/* Hero Image Area */}
+        {/* Large Project Title - Massive typography */}
+        <h2
+          style={{
+            fontSize: 'clamp(3rem, 12vw, 10rem)',
+            fontWeight: '200',
+            color: 'var(--text-95)',
+            textAlign: 'center',
+            lineHeight: '1',
+            zIndex: 2,
+            letterSpacing: '-0.02em',
+            marginBottom: '0.5rem',
+          }}
+        >
+          {project.title}
+        </h2>
+
+        {/* Category subtitle */}
+        <p
+          style={{
+            fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)',
+            fontWeight: '400',
+            textTransform: 'uppercase',
+            letterSpacing: '0.15em',
+            color: 'var(--text-50)',
+            marginTop: '0.5rem',
+            zIndex: 2,
+          }}
+        >
+          {project.category}
+        </p>
+
+        {/* CTA Button */}
+        <Link
+          href={project.link}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          style={{
+            marginTop: '2rem',
+            padding: '1rem 2.5rem',
+            background: isHovered ? `rgba(${brandRgb}, 0.25)` : `rgba(${brandRgb}, 0.15)`,
+            border: `1px solid rgba(${brandRgb}, 0.4)`,
+            borderRadius: '50px',
+            color: 'var(--text-95)',
+            textDecoration: 'none',
+            fontSize: '0.9375rem',
+            fontWeight: '500',
+            zIndex: 2,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+            transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
+            boxShadow: isHovered
+              ? `0 8px 32px rgba(${brandRgb}, 0.3)`
+              : `0 4px 16px rgba(${brandRgb}, 0.15)`,
+          }}
+        >
+          <span>View Case Study</span>
+          <ArrowRight
+            size={16}
+            style={{
+              transition: 'transform 0.3s ease',
+              transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
+            }}
+          />
+        </Link>
+
+        {/* Background Image - positioned at bottom */}
         <div
           style={{
-            position: 'relative',
-            height: '180px',
+            position: 'absolute',
+            bottom: 0,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: 'min(90%, 1200px)',
+            height: '45%',
+            zIndex: 1,
+            borderRadius: '24px 24px 0 0',
             overflow: 'hidden',
-            background: `linear-gradient(135deg, rgba(${brandRgb}, 0.35), rgba(${brandRgb}, 0.15))`,
+            opacity: 0.8,
           }}
         >
           <Image
@@ -309,115 +363,49 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             fill
             style={{
               objectFit: 'cover',
-              transition: 'transform 0.4s ease',
-              transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+              objectPosition: 'top center',
             }}
             quality={90}
             priority={index === 0}
           />
+          {/* Gradient overlay for text readability */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(to bottom, rgba(10,10,10,0.6) 0%, transparent 40%, transparent 100%)',
+            }}
+          />
         </div>
 
-        {/* Content Area */}
+        {/* Progress indicator */}
         <div
           style={{
-            padding: '1.25rem',
-            backdropFilter: 'blur(120px) saturate(200%) brightness(1.05)',
-            WebkitBackdropFilter: 'blur(120px) saturate(200%) brightness(1.05)',
+            position: 'absolute',
+            bottom: '2rem',
+            right: '2rem',
+            color: 'var(--text-40)',
+            fontSize: '0.875rem',
+            fontWeight: '400',
+            zIndex: 3,
           }}
         >
-          {/* Category & Year */}
-          <div
-            style={{
-              fontSize: '0.6875rem',
-              fontWeight: '400',
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              color: 'var(--text-60)',
-              marginBottom: '0.5rem',
-            }}
-          >
-            {project.category} • {project.year}
-          </div>
-
-          {/* Title */}
-          <h4
-            style={{
-              fontSize: '1.25rem',
-              fontWeight: '300',
-              color: 'var(--text-95)',
-              marginBottom: '0.5rem',
-              lineHeight: '1.2',
-            }}
-          >
-            {project.title}
-          </h4>
-
-          {/* Description - Truncated */}
-          <p
-            style={{
-              fontSize: '0.8125rem',
-              fontWeight: '300',
-              color: 'var(--text-70)',
-              lineHeight: '1.5',
-              marginBottom: '1rem',
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-            }}
-          >
-            {project.description}
-          </p>
-
-          {/* Tags - Limited */}
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '0.375rem',
-              marginBottom: '1rem',
-            }}
-          >
-            {project.tags.slice(0, 3).map((tag, idx) => (
-              <span
-                key={idx}
-                style={{
-                  padding: '0.375rem 0.75rem',
-                  background: 'var(--glass-08)',
-                  border: `1px solid rgba(${brandRgb}, 0.15)`,
-                  borderRadius: '6px',
-                  fontSize: '0.6875rem',
-                  fontWeight: '400',
-                  color: 'var(--text-60)',
-                }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          {/* CTA */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              fontSize: '0.8125rem',
-              fontWeight: '500',
-              color: `rgba(${brandRgb}, 0.9)`,
-            }}
-          >
-            <span>View Case Study</span>
-            <ArrowRight
-              size={14}
-              style={{
-                transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
-              }}
-            />
-          </div>
+          {String(index + 1).padStart(2, '0')} / {String(totalProjects).padStart(2, '0')}
         </div>
-      </Link>
+
+        {/* Brand color accent line */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '3px',
+            background: `linear-gradient(90deg, transparent, rgba(${brandRgb}, 0.6), transparent)`,
+            zIndex: 3,
+          }}
+        />
+      </div>
     );
   }
 
@@ -1617,12 +1605,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               My work
             </h3>
 
-            {/* Horizontal Scroll Cards Section */}
+            {/* Full-Screen Horizontal Scroll Section */}
             <div
               ref={stackingCardsRef}
               style={{
                 position: 'relative',
-                height: '300vh', // Scroll space for horizontal animation
+                height: '400vh', // 100vh per project (4 projects)
               }}
             >
               {/* Sticky container that stays fixed while scrolling */}
@@ -1631,49 +1619,27 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   position: 'sticky',
                   top: 0,
                   height: '100vh',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
+                  width: '100vw',
                   overflow: 'hidden',
                 }}
               >
-                {/* Horizontal scrolling cards */}
+                {/* Horizontal scrolling full-screen slides */}
                 <motion.div
                   style={{
                     display: 'flex',
-                    gap: '2rem',
-                    paddingLeft: 'calc(50vw - 190px)', // Start first card centered
-                    paddingRight: '50vw',
+                    height: '100%',
                     x: horizontalTranslate,
                   }}
                 >
                   {featuredProjects.map((project, index) => (
-                    <HorizontalCard
+                    <FullScreenSlide
                       key={project.id}
                       project={project}
                       index={index}
+                      totalProjects={featuredProjects.length}
                     />
                   ))}
                 </motion.div>
-
-                {/* Scroll indicator */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    bottom: '2rem',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    color: 'var(--text-40)',
-                    fontSize: '0.75rem',
-                    fontWeight: '400',
-                  }}
-                >
-                  <span>Scroll to explore</span>
-                  <ArrowRight size={14} />
-                </div>
               </div>
             </div>
 
