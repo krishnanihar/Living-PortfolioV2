@@ -846,7 +846,33 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 animation: act1InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
               }}
             >
-              Most designers can't <span style={{ opacity: 0.7 }}>code</span>. Most developers can't <span style={{ opacity: 0.7 }}>design</span>.
+              Most designers can't{' '}
+              <span
+                style={{
+                  background: 'linear-gradient(120deg, rgba(59,130,246,0.7), rgba(96,165,250,0.8), rgba(59,130,246,0.7), rgba(96,165,250,0.8))',
+                  backgroundSize: '200% auto',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  animation: 'gradientFlow 18s ease-in-out infinite',
+                }}
+              >
+                code
+              </span>
+              . Most developers can't{' '}
+              <span
+                style={{
+                  background: 'linear-gradient(120deg, rgba(236,72,153,0.7), rgba(139,92,246,0.8), rgba(236,72,153,0.7), rgba(139,92,246,0.8))',
+                  backgroundSize: '200% auto',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  animation: 'gradientFlow 18s ease-in-out infinite',
+                }}
+              >
+                design
+              </span>
+              .
             </h2>
 
             <p
@@ -867,16 +893,30 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
             <p
               style={{
-                fontSize: 'clamp(0.9375rem, 1.75vw, 1.125rem)',
-                fontWeight: '300',
+                fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+                fontWeight: '400',
                 lineHeight: '1.6',
-                color: 'var(--text-85)',
+                color: 'var(--text-95)',
                 marginBottom: '2rem',
                 opacity: act1InView && mounted ? 1 : 0,
                 animation: act1InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both' : 'none',
               }}
             >
-              Including this site. Designed and coded <span style={{ fontWeight: '400' }}>from the ground up</span>.
+              Including this site. Designed and coded{' '}
+              <span
+                style={{
+                  background: 'linear-gradient(120deg, rgba(59,130,246,0.3), rgba(236,72,153,0.3), rgba(139,92,246,0.3))',
+                  backgroundSize: '200% auto',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  fontWeight: '500',
+                  animation: 'gradientFlow 18s ease-in-out infinite',
+                }}
+              >
+                from the ground up
+              </span>
+              .
             </p>
 
             {/* Breathing Orb */}
