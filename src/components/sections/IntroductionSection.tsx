@@ -18,6 +18,13 @@ const UNIFIED_GLASS = {
   `,
 };
 
+// Particle Colors - From GPGPU System
+const PARTICLE_COLORS = {
+  blue: 'rgba(59, 130, 246, 0.95)',    // #3B82F6
+  purple: 'rgba(139, 92, 246, 0.95)',  // #8B5CF6
+  pink: 'rgba(236, 72, 153, 0.95)',    // #EC4899
+};
+
 export function IntroductionSection() {
   const [hoveredButton, setHoveredButton] = useState<'contact' | 'github' | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -73,6 +80,60 @@ export function IntroductionSection() {
           }
         }
 
+        @keyframes gradientFlow {
+          0%, 100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+        }
+
+        @keyframes particleGlow {
+          0%, 100% {
+            text-shadow: 0 0 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15);
+          }
+          50% {
+            text-shadow: 0 0 40px rgba(236, 72, 153, 0.4), 0 0 80px rgba(236, 72, 153, 0.2);
+          }
+        }
+
+        @keyframes breathe {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.01);
+          }
+        }
+
+        @keyframes buttonGlow {
+          0%, 100% {
+            box-shadow:
+              0 12px 48px rgba(0, 0, 0, 0.15),
+              0 4px 16px rgba(0, 0, 0, 0.10),
+              inset 0 1px 2px rgba(255, 255, 255, 0.25),
+              inset 0 -1px 2px rgba(0, 0, 0, 0.15),
+              0 0 30px rgba(139, 92, 246, 0.2);
+          }
+          50% {
+            box-shadow:
+              0 12px 48px rgba(0, 0, 0, 0.15),
+              0 4px 16px rgba(0, 0, 0, 0.10),
+              inset 0 1px 2px rgba(255, 255, 255, 0.25),
+              inset 0 -1px 2px rgba(0, 0, 0, 0.15),
+              0 0 40px rgba(236, 72, 153, 0.3);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .hero-greeting,
+          .hero-subtitle,
+          .hero-buttons a {
+            animation: none !important;
+          }
+        }
+
         /* Mobile - Small screens (<640px) */
         @media (max-width: 640px) {
           .hero-content {
@@ -80,11 +141,11 @@ export function IntroductionSection() {
           }
 
           .hero-greeting {
-            font-size: clamp(1.75rem, 6vw, 2.25rem) !important;
+            font-size: clamp(1.5rem, 5.5vw, 1.875rem) !important;
           }
 
           .hero-subtitle {
-            font-size: clamp(0.875rem, 2vw, 1rem) !important;
+            font-size: clamp(0.8125rem, 1.75vw, 0.9375rem) !important;
           }
 
           .hero-buttons {
@@ -92,14 +153,14 @@ export function IntroductionSection() {
             width: 100%;
             max-width: 320px;
             margin: 0 auto;
-            gap: 1rem !important;
+            gap: 0.875rem !important;
           }
 
           .hero-buttons a {
             width: 100% !important;
             justify-content: center !important;
-            padding: 12px 24px !important;
-            font-size: 0.9375rem !important;
+            padding: 11px 22px !important;
+            font-size: 0.875rem !important;
             min-height: 48px;
           }
         }
@@ -107,53 +168,73 @@ export function IntroductionSection() {
         /* Tablet (640px - 1024px) */
         @media (min-width: 641px) and (max-width: 1024px) {
           .hero-greeting {
-            font-size: clamp(2rem, 4.5vw, 3rem) !important;
+            font-size: clamp(1.75rem, 4vw, 2.5rem) !important;
           }
 
           .hero-subtitle {
-            font-size: clamp(1rem, 2vw, 1.15rem) !important;
+            font-size: clamp(0.9375rem, 1.75vw, 1.0625rem) !important;
           }
 
           .hero-buttons {
-            gap: 1.25rem !important;
+            gap: 1.125rem !important;
           }
 
           .hero-buttons a {
             max-width: 280px;
-            padding: 13px 26px !important;
-            font-size: 0.9375rem !important;
+            padding: 12px 24px !important;
+            font-size: 0.875rem !important;
           }
         }
 
         /* Small Laptop (1024px - 1440px) */
         @media (min-width: 1025px) and (max-width: 1440px) {
           .hero-greeting {
-            font-size: clamp(2.5rem, 4.5vw, 3.5rem) !important;
+            font-size: clamp(2.125rem, 4vw, 2.875rem) !important;
           }
 
           .hero-subtitle {
-            font-size: clamp(1rem, 2vw, 1.2rem) !important;
+            font-size: clamp(0.9375rem, 1.75vw, 1.0625rem) !important;
           }
 
           .hero-buttons {
-            gap: 1.5rem !important;
+            gap: 1.375rem !important;
           }
 
           .hero-buttons a {
             max-width: 300px;
-            padding: 14px 28px !important;
-            font-size: 1rem !important;
+            padding: 13px 26px !important;
+            font-size: 0.875rem !important;
           }
         }
 
         /* Desktop (1440px - 1920px) */
         @media (min-width: 1441px) and (max-width: 1920px) {
           .hero-greeting {
-            font-size: clamp(3rem, 4vw, 4rem) !important;
+            font-size: clamp(2.5rem, 3.5vw, 3.25rem) !important;
           }
 
           .hero-subtitle {
-            font-size: clamp(1.125rem, 2vw, 1.3rem) !important;
+            font-size: clamp(1rem, 1.75vw, 1.125rem) !important;
+          }
+
+          .hero-buttons {
+            gap: 1.75rem !important;
+          }
+
+          .hero-buttons a {
+            padding: 13px 28px !important;
+            font-size: 0.875rem !important;
+          }
+        }
+
+        /* Large Desktop (>1920px) */
+        @media (min-width: 1921px) {
+          .hero-greeting {
+            font-size: 3.5rem !important;
+          }
+
+          .hero-subtitle {
+            font-size: 1.125rem !important;
           }
 
           .hero-buttons {
@@ -161,28 +242,8 @@ export function IntroductionSection() {
           }
 
           .hero-buttons a {
-            padding: 15px 32px !important;
-            font-size: 1.0625rem !important;
-          }
-        }
-
-        /* Large Desktop (>1920px) */
-        @media (min-width: 1921px) {
-          .hero-greeting {
-            font-size: 4rem !important;
-          }
-
-          .hero-subtitle {
-            font-size: 1.375rem !important;
-          }
-
-          .hero-buttons {
-            gap: 2.5rem !important;
-          }
-
-          .hero-buttons a {
-            padding: 16px 36px !important;
-            font-size: 1.125rem !important;
+            padding: 14px 32px !important;
+            font-size: 0.875rem !important;
           }
         }
 
@@ -230,15 +291,21 @@ export function IntroductionSection() {
           <h1
             className="hero-greeting"
             style={{
-              fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+              fontSize: 'clamp(2rem, 4.5vw, 3.5rem)',
               fontWeight: '200',
               lineHeight: '1.3',
-              letterSpacing: '0.01em',
+              letterSpacing: '0.02em',
               marginBottom: '1.5rem',
-              color: 'rgba(255, 255, 255, 0.95)',
+              background: `linear-gradient(120deg, ${PARTICLE_COLORS.blue}, ${PARTICLE_COLORS.purple}, ${PARTICLE_COLORS.pink}, ${PARTICLE_COLORS.purple}, ${PARTICLE_COLORS.blue})`,
+              backgroundSize: '200% 200%',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              animation: 'gradientFlow 10s ease-in-out infinite, particleGlow 6s ease-in-out infinite, breathe 8s ease-in-out infinite',
               opacity: animationStage >= 1 ? 1 : 0,
               transform: animationStage >= 1 ? 'translateY(0)' : 'translateY(20px)',
               transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+              willChange: 'transform',
             }}
           >
             {greeting || "Hi, I'm Nihar. Welcome."}
@@ -248,7 +315,7 @@ export function IntroductionSection() {
           <div
             className="hero-subtitle"
             style={{
-              maxWidth: '700px',
+              maxWidth: '650px',
               margin: '0 auto',
               marginBottom: '2.5rem',
               opacity: animationStage >= 2 ? 1 : 0,
@@ -258,9 +325,9 @@ export function IntroductionSection() {
           >
             <p
               style={{
-                fontSize: 'clamp(1rem, 2vw, 1.3rem)',
+                fontSize: 'clamp(0.9375rem, 1.75vw, 1.125rem)',
                 fontWeight: '300',
-                color: 'rgba(255, 255, 255, 0.7)',
+                color: 'rgba(255, 255, 255, 0.65)',
                 letterSpacing: '0.01em',
                 lineHeight: '1.6',
               }}
@@ -283,7 +350,7 @@ export function IntroductionSection() {
               transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
             }}
           >
-            {/* Contact Button */}
+            {/* Contact Button - Pink/Purple Particle Gradient */}
             <a
               href="mailto:krishnaniharsunkara@gmail.com"
               onMouseEnter={() => setHoveredButton('contact')}
@@ -293,19 +360,22 @@ export function IntroductionSection() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                padding: '14px 28px',
+                padding: '13px 26px',
                 ...UNIFIED_GLASS,
-                background: hoveredButton === 'contact' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(255, 255, 255, 0.03)',
-                borderColor: hoveredButton === 'contact' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.10)',
+                background: hoveredButton === 'contact'
+                  ? `linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(139, 92, 246, 0.10))`
+                  : `linear-gradient(135deg, rgba(236, 72, 153, 0.12), rgba(139, 92, 246, 0.08))`,
+                borderColor: hoveredButton === 'contact' ? 'rgba(236, 72, 153, 0.25)' : 'rgba(236, 72, 153, 0.15)',
                 borderRadius: '20px',
                 color: 'rgba(255, 255, 255, 0.95)',
                 textDecoration: 'none',
-                fontSize: '1rem',
-                fontWeight: '400',
+                fontSize: '0.875rem',
+                fontWeight: '500',
                 cursor: 'pointer',
                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                 transform: hoveredButton === 'contact' ? 'translateY(-2px) scale(1.02)' : 'translateY(0) scale(1)',
                 overflow: 'hidden',
+                animation: hoveredButton === 'contact' ? 'buttonGlow 4s ease-in-out infinite' : 'none',
               }}
             >
               {/* Refraction layer - Diagonal light reflection */}
@@ -314,13 +384,13 @@ export function IntroductionSection() {
                   position: 'absolute',
                   inset: 0,
                   background: `linear-gradient(135deg,
-                    rgba(255, 255, 255, 0.15) 0%,
+                    rgba(236, 72, 153, 0.2) 0%,
                     transparent 40%,
                     transparent 60%,
-                    rgba(255, 255, 255, 0.08) 100%)`,
+                    rgba(139, 92, 246, 0.15) 100%)`,
                   mixBlendMode: 'overlay',
                   pointerEvents: 'none',
-                  opacity: hoveredButton === 'contact' ? 1 : 0.7,
+                  opacity: hoveredButton === 'contact' ? 1 : 0.6,
                   transition: 'opacity 0.3s ease',
                 }}
               />
@@ -330,16 +400,16 @@ export function IntroductionSection() {
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%)',
+                    background: 'linear-gradient(90deg, transparent 0%, rgba(236, 72, 153, 0.2) 50%, transparent 100%)',
                     pointerEvents: 'none',
                   }}
                 />
               )}
-              <Mail size={16} style={{ position: 'relative', zIndex: 1 }} />
+              <Mail size={15} style={{ position: 'relative', zIndex: 1 }} />
               <span style={{ position: 'relative', zIndex: 1 }}>Contact</span>
             </a>
 
-            {/* GitHub Button */}
+            {/* GitHub Button - Blue/Purple Particle Gradient */}
             <a
               href="https://github.com/krishn404"
               target="_blank"
@@ -351,19 +421,22 @@ export function IntroductionSection() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                padding: '14px 28px',
+                padding: '13px 26px',
                 ...UNIFIED_GLASS,
-                background: hoveredButton === 'github' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(255, 255, 255, 0.03)',
-                borderColor: hoveredButton === 'github' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.10)',
+                background: hoveredButton === 'github'
+                  ? `linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.10))`
+                  : `linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(139, 92, 246, 0.08))`,
+                borderColor: hoveredButton === 'github' ? 'rgba(59, 130, 246, 0.25)' : 'rgba(59, 130, 246, 0.15)',
                 borderRadius: '20px',
                 color: 'rgba(255, 255, 255, 0.95)',
                 textDecoration: 'none',
-                fontSize: '1rem',
-                fontWeight: '400',
+                fontSize: '0.875rem',
+                fontWeight: '500',
                 cursor: 'pointer',
                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                 transform: hoveredButton === 'github' ? 'translateY(-2px) scale(1.02)' : 'translateY(0) scale(1)',
                 overflow: 'hidden',
+                animation: hoveredButton === 'github' ? 'buttonGlow 4s ease-in-out infinite' : 'none',
               }}
             >
               {/* Refraction layer - Diagonal light reflection */}
@@ -372,13 +445,13 @@ export function IntroductionSection() {
                   position: 'absolute',
                   inset: 0,
                   background: `linear-gradient(135deg,
-                    rgba(255, 255, 255, 0.15) 0%,
+                    rgba(59, 130, 246, 0.2) 0%,
                     transparent 40%,
                     transparent 60%,
-                    rgba(255, 255, 255, 0.08) 100%)`,
+                    rgba(139, 92, 246, 0.15) 100%)`,
                   mixBlendMode: 'overlay',
                   pointerEvents: 'none',
-                  opacity: hoveredButton === 'github' ? 1 : 0.7,
+                  opacity: hoveredButton === 'github' ? 1 : 0.6,
                   transition: 'opacity 0.3s ease',
                 }}
               />
@@ -388,12 +461,12 @@ export function IntroductionSection() {
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%)',
+                    background: 'linear-gradient(90deg, transparent 0%, rgba(59, 130, 246, 0.2) 50%, transparent 100%)',
                     pointerEvents: 'none',
                   }}
                 />
               )}
-              <Github size={16} style={{ position: 'relative', zIndex: 1 }} />
+              <Github size={15} style={{ position: 'relative', zIndex: 1 }} />
               <span style={{ position: 'relative', zIndex: 1 }}>GitHub</span>
             </a>
           </div>
