@@ -836,9 +836,9 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
             <h2
               style={{
-                fontSize: 'clamp(1.75rem, 3.5vw, 3rem)',
+                fontSize: 'clamp(1.25rem, 2.5vw, 2rem)',
                 fontWeight: '300',
-                lineHeight: '1.4',
+                lineHeight: '1.5',
                 letterSpacing: '-0.01em',
                 color: 'var(--text-95)',
                 marginBottom: '1.5rem',
@@ -851,7 +851,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
             <p
               style={{
-                fontSize: 'clamp(1.125rem, 2.25vw, 1.75rem)',
+                fontSize: 'clamp(0.9375rem, 1.75vw, 1.125rem)',
                 fontWeight: '300',
                 lineHeight: '1.6',
                 color: 'var(--text-85)',
@@ -862,12 +862,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             >
               I design and code experiences that remember, learn, and scale—
               <br />
-              serving <span style={{ color: '#DA0E29', fontWeight: '400' }}>millions</span> across aviation, healthcare, and beyond.
+              serving <span style={{ fontWeight: '400' }}>millions</span> across aviation, healthcare, and beyond.
             </p>
 
             <p
               style={{
-                fontSize: 'clamp(1.125rem, 2.25vw, 1.75rem)',
+                fontSize: 'clamp(0.9375rem, 1.75vw, 1.125rem)',
                 fontWeight: '300',
                 lineHeight: '1.6',
                 color: 'var(--text-85)',
