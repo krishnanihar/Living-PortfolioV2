@@ -454,19 +454,15 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                       fontSize: '0.9375rem',
                       fontWeight: 500,
                       color: active ? 'var(--text-95)' : 'var(--text-70)',
-                      background: active ? 'var(--glass-04)' : 'transparent',
-                      borderRadius: '8px',
-                      transition: 'all 0.3s ease',
+                      transition: 'color 0.3s ease',
                     }}
                     onMouseEnter={(e) => {
                       if (!active) {
-                        (e.currentTarget as HTMLElement).style.background = 'var(--glass-03)';
                         (e.currentTarget as HTMLElement).style.color = 'var(--text-90)';
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!active) {
-                        (e.currentTarget as HTMLElement).style.background = 'transparent';
                         (e.currentTarget as HTMLElement).style.color = 'var(--text-70)';
                       }
                     }}
