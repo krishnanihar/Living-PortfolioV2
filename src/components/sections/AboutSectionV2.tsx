@@ -4,15 +4,11 @@ import React from 'react';
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Mail, Lightbulb, Trophy, Briefcase, Rocket, Users, CheckCircle2, ChevronLeft, ChevronRight, Sparkles, Layers, Map, User } from 'lucide-react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { ArrowRight, Mail, Lightbulb, Trophy, Briefcase, Rocket, Users, CheckCircle2, Sparkles, Layers, Map, User, Plane, Heart, Activity, Brain, Eye, Zap } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { ContactChat } from '../ContactChat';
 import { Chatbot } from '../Chatbot';
 import { useTheme } from '@/components/effects/ThemeProvider';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 
 interface AboutSectionV2Props {
   className?: string;
@@ -125,118 +121,71 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
     setCardTilt({ rotateX, rotateY });
   };
 
-  const projects = [
+  // Featured projects for stacking cards
+  const featuredProjects = [
     {
+      id: 'air-india',
       title: 'Air India',
-      category: 'Enterprise Design Systems',
-      description: 'Transforming 450+ daily operations across mobile app and IFE systems',
-      link: '/work/air-india' as const,
-      color: 'rgba(218, 14, 41, 0.15)',
-      borderColor: 'rgba(218, 14, 41, 0.3)',
-      orbColor: { r: 218, g: 14, b: 41 },
-      status: 'live' as const,
-      image: null, // Will use geometric pattern
-      tags: ['React', 'Design System', 'Mobile', 'IFE'],
-      metric: { icon: Users, label: '10K+ Active Users' },
-      year: '2023-2024',
+      category: 'Aviation Design System',
+      description: 'Designing experiences for millions of passengers at 30,000ft across mobile app and in-flight entertainment systems',
+      image: '/images/work/air-india-hero.jpg',
+      brandColor: { r: 218, g: 14, b: 41 },
+      year: '2024',
+      metrics: [
+        { icon: Plane, label: '50M+ passengers', value: '50M+' },
+        { icon: Users, label: 'System users', value: '10K+' }
+      ],
+      tags: ['Design System', 'React', 'Aviation', 'Mobile'],
+      link: '/work/air-india',
+      highlights: ['Enterprise-scale design system', '450+ daily operations']
     },
     {
+      id: 'psoriassist',
       title: 'PsoriAssist',
-      category: 'Healthcare AI',
-      description: '18-month research deep dive into AI-powered psoriasis management and patient care',
-      link: '/work/psoriassist' as const,
-      color: 'rgba(16, 185, 129, 0.15)',
-      borderColor: 'rgba(16, 185, 129, 0.3)',
-      orbColor: { r: 16, g: 185, b: 129 },
-      status: 'research' as const,
-      image: null,
-      tags: ['AI/ML', 'Healthcare', 'iOS', 'Research'],
-      metric: { icon: CheckCircle2, label: 'Hackathon Winner' },
-      year: '2022-2024',
-    },
-    {
-      title: 'Latent Space',
-      category: 'Consciousness Exploration',
-      description: 'Narrative-driven experiences exploring consciousness through interactive design',
-      link: '/work/latent-space' as const,
-      color: 'rgba(147, 51, 234, 0.15)',
-      borderColor: 'rgba(147, 51, 234, 0.3)',
-      orbColor: { r: 147, g: 51, b: 234 },
-      status: 'completed' as const,
-      image: null,
-      tags: ['Speculative Design', 'Narrative', 'WebGL'],
-      metric: { icon: ArrowRight, label: 'Immersive Experience' },
+      category: 'Healthcare AI Platform',
+      description: 'AI-powered psoriasis management platform combining computer vision with clinical insights for personalized patient care',
+      image: '/images/work/psoriassist-hero.jpg',
+      brandColor: { r: 16, g: 185, b: 129 },
       year: '2024',
+      metrics: [
+        { icon: Heart, label: 'Patient impact', value: 'Winner' },
+        { icon: Activity, label: 'Research depth', value: '18mo' }
+      ],
+      tags: ['AI/ML', 'Healthcare', 'iOS', 'Computer Vision'],
+      link: '/work/psoriassist',
+      highlights: ['Hackathon Winner', 'Clinical research integration']
     },
     {
-      title: 'Aviation Analytics',
-      category: 'Real-time Operations',
-      description: 'Real-time ops dashboard that reduced decision-making time from minutes to seconds',
-      link: '/work/air-india' as const,
-      color: 'rgba(59, 130, 246, 0.15)',
-      borderColor: 'rgba(59, 130, 246, 0.3)',
-      orbColor: { r: 59, g: 130, b: 246 },
-      status: 'live' as const,
-      image: null,
-      tags: ['Data Visualization', 'Real-time', 'Operations', 'React'],
-      metric: { icon: Users, label: '450+ Daily Users' },
-      year: '2024',
-    },
-    {
-      title: 'Pixel Radar',
-      category: 'Design Systems',
-      description: 'Figma plugin that audits design components against token systems',
-      link: '/work/air-india' as const,
-      color: 'rgba(59, 130, 246, 0.15)',
-      borderColor: 'rgba(59, 130, 246, 0.3)',
-      orbColor: { r: 59, g: 130, b: 246 },
-      status: 'live' as const,
-      image: null,
-      tags: ['Figma Plugin', 'Design Tokens', 'QA Automation', 'JavaScript'],
-      metric: { icon: CheckCircle2, label: '90% Review Time Reduction' },
-      year: '2024',
-    },
-    {
-      title: 'mythOS',
-      category: 'AI Art Curation',
-      description: 'AI art curator that sees patterns humans might miss through Gemini AI',
-      link: '/work/mythos' as const,
-      color: 'rgba(232, 121, 249, 0.15)',
-      borderColor: 'rgba(232, 121, 249, 0.3)',
-      orbColor: { r: 232, g: 121, b: 249 },
-      status: 'completed' as const,
-      image: '/projects/mythoscover1.png',
-      tags: ['Gemini AI', 'Natural Language', 'AI Curation', 'Art History'],
-      metric: { icon: ArrowRight, label: 'Generative Exhibitions' },
-      year: '2024',
-    },
-    {
+      id: 'metamorphic',
       title: 'Metamorphic Fractal Reflections',
       category: 'Immersive Installation',
-      description: 'Psychedelic journey installation exploring consciousness through ego dissolution',
-      link: '/work/metamorphic-fractal-reflections' as const,
-      color: 'rgba(232, 121, 249, 0.15)',
-      borderColor: 'rgba(232, 121, 249, 0.3)',
-      orbColor: { r: 232, g: 121, b: 249 },
-      status: 'live' as const,
-      image: null,
-      tags: ['TouchDesigner', 'Arduino', 'Psychedelic Design', 'Installation'],
-      metric: { icon: CheckCircle2, label: 'NID Exhibition 2023' },
+      description: 'Psychedelic journey installation exploring consciousness, ego dissolution, and the nature of reality through interactive design',
+      image: '/images/work/metamorphic-hero.jpg',
+      brandColor: { r: 139, g: 92, b: 246 },
       year: '2023',
+      metrics: [
+        { icon: Sparkles, label: 'Exhibition', value: 'NID' },
+        { icon: Eye, label: 'Experience', value: 'Live' }
+      ],
+      tags: ['TouchDesigner', 'Arduino', 'Psychedelic', 'Installation'],
+      link: '/work/metamorphic-fractal-reflections',
+      highlights: ['NID Exhibition 2023', 'Consciousness exploration']
     },
     {
-      title: 'Mobile UX Patterns',
-      category: 'Mobile Design System',
-      description: 'Comprehensive mobile design system with 40+ patterns for iOS/Android',
-      link: '/work/air-india' as const,
-      color: 'rgba(16, 185, 129, 0.15)',
-      borderColor: 'rgba(16, 185, 129, 0.3)',
-      orbColor: { r: 16, g: 185, b: 129 },
-      status: 'live' as const,
-      image: null,
-      tags: ['Mobile Design', 'Design System', 'iOS', 'Android'],
-      metric: { icon: CheckCircle2, label: '40+ Patterns' },
-      year: '2023',
+      id: 'latent-space',
+      title: 'Latent Space',
+      category: 'Speculative Design Fiction',
+      description: 'Narrative-driven experiences exploring consciousness technology through scroll-driven storytelling and speculative prototypes',
+      image: '/images/work/latent-space-hero.jpg',
+      brandColor: { r: 59, g: 130, b: 246 },
+      year: '2024',
+      metrics: [
+        { icon: Brain, label: 'Narrative', value: '3-Act' },
+        { icon: Zap, label: 'Tech', value: 'WebGL' }
+      ],
+      tags: ['Speculative Design', 'Narrative', 'WebGL', 'Ethics'],
+      link: '/work/latent-space',
+      highlights: ['Immersive storytelling', 'Design fiction prototypes']
     },
   ];
 
@@ -288,6 +237,286 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       organization: 'Air India DesignLAB'
     }
   ];
+
+  // Stacking Card Component
+  interface StackingCardProps {
+    project: typeof featuredProjects[0];
+    index: number;
+    totalCards: number;
+  }
+
+  function StackingCard({ project, index, totalCards }: StackingCardProps) {
+    const cardRef = useRef<HTMLDivElement>(null);
+    const [isHovered, setIsHovered] = useState(false);
+
+    // Scroll progress for this card
+    const { scrollYProgress } = useScroll({
+      target: cardRef,
+      offset: ["start start", "end center"]
+    });
+
+    // Scale transform (progressive scaling based on card position)
+    const targetScale = 1 - (totalCards - index) * 0.05;
+    const scale = useTransform(scrollYProgress, [0, 1], [1, targetScale]);
+
+    // Image parallax zoom
+    const imageScale = useTransform(scrollYProgress, [0, 1], [1.2, 1]);
+
+    // Project brand color with proper typing
+    const brandRgb = `${project.brandColor.r}, ${project.brandColor.g}, ${project.brandColor.b}`;
+
+    return (
+      <>
+        <style jsx>{`
+          @media (max-width: 768px) {
+            .stacking-card-hero {
+              height: 300px !important;
+            }
+            .stacking-card-metrics {
+              grid-template-columns: 1fr !important;
+            }
+            .stacking-card-content {
+              padding: 2rem !important;
+            }
+          }
+
+          @media (min-width: 769px) and (max-width: 1023px) {
+            .stacking-card-hero {
+              height: 400px !important;
+            }
+          }
+        `}</style>
+        <motion.div
+          ref={cardRef}
+          style={{
+            scale,
+            zIndex: totalCards - index,
+            top: `calc(-5vh + ${index * (typeof window !== 'undefined' && window.innerWidth < 768 ? 20 : 30)}px)`,
+            transformOrigin: 'top center',
+          }}
+          className="sticky"
+        >
+        <Link
+          href={project.link}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          style={{
+            display: 'block',
+            width: '100%',
+            maxWidth: '1000px',
+            margin: '0 auto',
+            textDecoration: 'none',
+            position: 'relative',
+            borderRadius: '32px',
+            border: '2px solid transparent',
+            background: `
+              linear-gradient(rgba(10, 10, 10, 0.4), rgba(10, 10, 10, 0.4)) padding-box,
+              conic-gradient(
+                from var(--border-angle),
+                transparent 0%,
+                transparent 10%,
+                rgba(${brandRgb}, 0.4) 15%,
+                rgba(${brandRgb}, 0.6) 25%,
+                rgba(${brandRgb}, 0.4) 35%,
+                transparent 50%,
+                transparent 100%
+              ) border-box
+            `,
+            animation: 'rotateBorder 8s linear infinite',
+            overflow: 'hidden',
+            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+            transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
+            boxShadow: isHovered
+              ? `0 16px 48px rgba(0, 0, 0, 0.4), 0 0 40px rgba(${brandRgb}, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1)`
+              : `0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08)`,
+          }}
+        >
+          {/* Hero Image Area */}
+          <div
+            className="stacking-card-hero"
+            style={{
+              position: 'relative',
+              height: '500px',
+              overflow: 'hidden',
+              background: `linear-gradient(135deg, rgba(${brandRgb}, 0.35), rgba(${brandRgb}, 0.15))`,
+            }}
+          >
+            <motion.div
+              style={{
+                scale: imageScale,
+                width: '100%',
+                height: '100%',
+                position: 'relative',
+              }}
+            >
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                style={{ objectFit: 'cover' }}
+                quality={90}
+                priority={index === 0}
+              />
+            </motion.div>
+          </div>
+
+          {/* Content Area */}
+          <div
+            className="stacking-card-content"
+            style={{
+              padding: 'clamp(2.5rem, 4vw, 4rem)',
+              backdropFilter: 'blur(120px) saturate(200%) brightness(1.05)',
+              WebkitBackdropFilter: 'blur(120px) saturate(200%) brightness(1.05)',
+            }}
+          >
+            {/* Category & Year */}
+            <div
+              style={{
+                fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                fontWeight: '400',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                color: 'var(--text-60)',
+                marginBottom: '0.75rem',
+              }}
+            >
+              {project.category} • {project.year}
+            </div>
+
+            {/* Title */}
+            <h3
+              style={{
+                fontSize: 'clamp(2rem, 3.5vw, 3rem)',
+                fontWeight: '300',
+                color: 'var(--text-95)',
+                marginBottom: '1rem',
+                lineHeight: '1.2',
+              }}
+            >
+              {project.title}
+            </h3>
+
+            {/* Description */}
+            <p
+              style={{
+                fontSize: 'clamp(1rem, 1.75vw, 1.125rem)',
+                fontWeight: '300',
+                color: 'var(--text-75)',
+                lineHeight: '1.6',
+                marginBottom: '2rem',
+              }}
+            >
+              {project.description}
+            </p>
+
+            {/* Metrics Grid */}
+            <div
+              className="stacking-card-metrics"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: '1rem',
+                marginBottom: '2rem',
+              }}
+            >
+              {project.metrics.map((metric, idx) => {
+                const MetricIcon = metric.icon;
+                return (
+                  <div
+                    key={idx}
+                    style={{
+                      padding: '1.25rem',
+                      background: 'var(--glass-10)',
+                      backdropFilter: 'blur(40px)',
+                      WebkitBackdropFilter: 'blur(40px)',
+                      border: `1px solid rgba(${brandRgb}, 0.2)`,
+                      borderRadius: '16px',
+                    }}
+                  >
+                    <MetricIcon
+                      size={20}
+                      style={{
+                        color: `rgba(${brandRgb}, 0.8)`,
+                        marginBottom: '0.5rem',
+                      }}
+                    />
+                    <div
+                      style={{
+                        fontSize: 'clamp(1.5rem, 2.5vw, 2rem)',
+                        fontWeight: '200',
+                        color: 'var(--text-95)',
+                        marginBottom: '0.25rem',
+                      }}
+                    >
+                      {metric.value}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: '0.8125rem',
+                        color: 'var(--text-60)',
+                      }}
+                    >
+                      {metric.label}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Tags */}
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '0.5rem',
+                marginBottom: '2.5rem',
+              }}
+            >
+              {project.tags.map((tag, idx) => (
+                <span
+                  key={idx}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    background: 'var(--glass-08)',
+                    border: `1px solid rgba(${brandRgb}, 0.15)`,
+                    borderRadius: '8px',
+                    fontSize: '0.8125rem',
+                    fontWeight: '400',
+                    color: 'var(--text-70)',
+                    transition: 'transform 0.2s ease',
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            {/* CTA Button */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                fontSize: '0.9375rem',
+                fontWeight: '500',
+                color: `rgba(${brandRgb}, 0.9)`,
+              }}
+            >
+              <span>View Case Study</span>
+              <ArrowRight
+                size={16}
+                style={{
+                  transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  transform: isHovered ? 'translateX(4px) rotate(-45deg)' : 'translateX(0) rotate(0deg)',
+                }}
+              />
+            </div>
+          </div>
+        </Link>
+      </motion.div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -1485,677 +1714,33 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               What this looks like in practice
             </h3>
 
-            {/* Swiper Carousel */}
-            <div style={{ maxWidth: '100vw', margin: '4rem auto 0', padding: '0', overflow: 'visible', position: 'relative' }} className="carousel-container">
-              {/* Subtle depth gradient */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  width: '600px',
-                  height: '600px',
-                  background: `radial-gradient(circle, var(--text-03) 0%, transparent 70%)`,
-                  zIndex: 0,
-                  pointerEvents: 'none',
-                }}
-              />
-
-              <Swiper
-                modules={[Navigation, Pagination]}
-                watchSlidesProgress={true}
-                centeredSlides={true}
-                slidesPerView={1.6}
-                spaceBetween={30}
-                loop={true}
-                navigation={{
-                  prevEl: '.custom-nav-prev',
-                  nextEl: '.custom-nav-next',
-                }}
-                pagination={{
-                  el: '.custom-pagination',
-                  clickable: true,
-                }}
-                breakpoints={{
-                  768: {
-                    spaceBetween: 20,
-                    slidesPerView: 1.3,
-                  },
-                  1024: {
-                    spaceBetween: 30,
-                    slidesPerView: 1.6,
-                  },
-                }}
-                style={{ paddingBottom: '0' }}
-              >
-                {projects.map((project, idx) => {
-                // Generate unique class name for each project
-                const projectClassName = `project-card project-card-${project.title.toLowerCase().replace(/\s+/g, '-')}`;
-                const MetricIcon = project.metric.icon;
-
-                return (
-                  <SwiperSlide key={idx}>
-                    {({ isActive }) => (
-                      <Link
-                        href={project.link}
-                        className={projectClassName}
-                      onMouseEnter={(e) => {
-                        setHoveredProject(idx);
-                        const card = e.currentTarget;
-                        card.addEventListener('mousemove', handleCardMouseMove);
-                      }}
-                      onMouseLeave={(e) => {
-                        setHoveredProject(null);
-                        setCardTilt({ rotateX: 0, rotateY: 0 });
-                        const card = e.currentTarget;
-                        card.removeEventListener('mousemove', handleCardMouseMove);
-                      }}
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        background: 'var(--glass-30)',
-                        backdropFilter: 'blur(140px) saturate(180%) brightness(0.95)',
-                        WebkitBackdropFilter: 'blur(140px) saturate(180%) brightness(0.95)',
-                        border: `1px solid var(--text-10)`,
-                        borderRadius: '20px',
-                        textDecoration: 'none',
-                        overflow: 'hidden',
-                        boxShadow: hoveredProject === idx
-                          ? `0px 16px 32px rgba(0, 0, 0, 0.25),
-                             inset 0 1px 0 var(--text-05),
-                             inset 0 -1px 0 rgba(0, 0, 0, 0.3)`
-                          : `0px 8px 20px rgba(0, 0, 0, 0.15),
-                             inset 0 1px 0 var(--text-02),
-                             inset 0 -1px 0 rgba(0, 0, 0, 0.25)`,
-                        transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                      }}
-                    >
-                    {/* Top: Image Area */}
-                    <div
-                      style={{
-                        position: 'relative',
-                        height: '380px',
-                        background: `
-                          radial-gradient(circle at 30% 30%, ${getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.12)} 0%, ${getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.05)} 50%, transparent 100%),
-                          ${getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.03)}
-                        `,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        overflow: 'hidden',
-                      }}
-                    >
-
-                      {/* Status Badge */}
-                      <div
-                        style={{
-                          position: 'absolute',
-                          top: '1rem',
-                          right: '1rem',
-                          padding: '0.375rem 0.75rem',
-                          background: project.status === 'live'
-                            ? 'rgba(52, 211, 153, 0.2)'
-                            : project.status === 'research'
-                            ? 'rgba(251, 191, 36, 0.2)'
-                            : 'var(--text-10)',
-                          backdropFilter: 'blur(20px)',
-                          WebkitBackdropFilter: 'blur(20px)',
-                          border: `1px solid ${
-                            project.status === 'live'
-                              ? 'rgba(52, 211, 153, 0.4)'
-                              : project.status === 'research'
-                              ? 'rgba(251, 191, 36, 0.4)'
-                              : 'var(--text-20)'
-                          }`,
-                          borderRadius: '8px',
-                          fontSize: '0.688rem',
-                          fontWeight: '500',
-                          color: project.status === 'live'
-                            ? 'rgba(52, 211, 153, 1)'
-                            : project.status === 'research'
-                            ? 'rgba(251, 191, 36, 1)'
-                            : 'var(--text-90)',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.05em',
-                          animation: project.status === 'live' ? 'statusPulse 2s ease-in-out infinite' : 'none',
-                          zIndex: 2,
-                        }}
-                      >
-                        {project.status === 'live' ? 'Live Now' : project.status === 'research' ? 'In Research' : 'Case Study'}
-                      </div>
-
-                      {/* Geometric pattern with animations */}
-                      <svg
-                        width="280"
-                        height="280"
-                        viewBox="0 0 200 200"
-                        style={{
-                          opacity: hoveredProject === idx ? 0.6 : 0.4,
-                          position: 'relative',
-                          zIndex: 1,
-                          transition: 'opacity 0.4s ease',
-                          animation: hoveredProject === idx ? 'svgGlow 2s ease-in-out infinite' : 'none',
-                        }}
-                      >
-                        {idx === 0 && (
-                          // Air India - circles pattern with pulse
-                          <>
-                            <circle cx="100" cy="100" r="60" fill="none" stroke={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.5)} strokeWidth="2">
-                              {hoveredProject === idx && (
-                                <animate attributeName="r" values="60; 65; 60" dur="2s" repeatCount="indefinite" />
-                              )}
-                            </circle>
-                            <circle cx="100" cy="100" r="40" fill="none" stroke={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.6)} strokeWidth="2">
-                              {hoveredProject === idx && (
-                                <animate attributeName="r" values="40; 43; 40" dur="2s" repeatCount="indefinite" />
-                              )}
-                            </circle>
-                            <circle cx="100" cy="100" r="20" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.6)}>
-                              {hoveredProject === idx && (
-                                <>
-                                  <animate attributeName="r" values="20; 23; 20" dur="2s" repeatCount="indefinite" />
-                                  <animate attributeName="opacity" values="0.6; 1; 0.6" dur="2s" repeatCount="indefinite" />
-                                </>
-                              )}
-                            </circle>
-                          </>
-                        )}
-                        {idx === 1 && (
-                          // PsoriAssist - medical cross
-                          <>
-                            <rect x="85" y="50" width="30" height="100" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.5)} rx="5" />
-                            <rect x="50" y="85" width="100" height="30" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.5)} rx="5" />
-                          </>
-                        )}
-                        {idx === 2 && (
-                          // Latent Space - hexagons with rotation
-                          <>
-                            <polygon points="100,40 130,55 130,85 100,100 70,85 70,55" fill="none" stroke={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.5)} strokeWidth="2">
-                              {hoveredProject === idx && (
-                                <>
-                                  <animateTransform attributeName="transform" type="rotate" from="0 100 70" to="360 100 70" dur="8s" repeatCount="indefinite" />
-                                  <animate attributeName="opacity" values="0.5; 0.9; 0.5" dur="3s" repeatCount="indefinite" />
-                                </>
-                              )}
-                            </polygon>
-                            <polygon points="100,70 120,80 120,100 100,110 80,100 80,80" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.5)}>
-                              {hoveredProject === idx && (
-                                <>
-                                  <animateTransform attributeName="transform" type="rotate" from="360 100 95" to="0 100 95" dur="6s" repeatCount="indefinite" />
-                                  <animate attributeName="opacity" values="0.5; 1; 0.5" dur="2.5s" repeatCount="indefinite" />
-                                </>
-                              )}
-                            </polygon>
-                          </>
-                        )}
-                        {idx === 3 && (
-                          // Aviation Analytics - bar chart with animated growth
-                          <>
-                            <rect x="40" y="120" width="20" height="50" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.5)} rx="3">
-                              {hoveredProject === idx && (
-                                <animate attributeName="height" values="50; 55; 50" dur="2s" repeatCount="indefinite" />
-                              )}
-                            </rect>
-                            <rect x="70" y="90" width="20" height="80" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.6)} rx="3">
-                              {hoveredProject === idx && (
-                                <animate attributeName="height" values="80; 88; 80" dur="2.2s" repeatCount="indefinite" />
-                              )}
-                            </rect>
-                            <rect x="100" y="60" width="20" height="110" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.7)} rx="3">
-                              {hoveredProject === idx && (
-                                <animate attributeName="height" values="110; 120; 110" dur="2.4s" repeatCount="indefinite" />
-                              )}
-                            </rect>
-                            <rect x="130" y="80" width="20" height="90" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.6)} rx="3">
-                              {hoveredProject === idx && (
-                                <animate attributeName="height" values="90; 98; 90" dur="2.1s" repeatCount="indefinite" />
-                              )}
-                            </rect>
-                            <rect x="160" y="100" width="20" height="70" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.5)} rx="3">
-                              {hoveredProject === idx && (
-                                <animate attributeName="height" values="70; 76; 70" dur="2.3s" repeatCount="indefinite" />
-                              )}
-                            </rect>
-                            <line x1="30" y1="175" x2="190" y2="175" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} strokeWidth="2">
-                              {hoveredProject === idx && (
-                                <animate attributeName="opacity" values="0.4; 0.8; 0.4" dur="2s" repeatCount="indefinite" />
-                              )}
-                            </line>
-                          </>
-                        )}
-                        {idx === 4 && (
-                          // Pixel Radar - grid/pixel pattern
-                          <>
-                            <rect x="60" y="60" width="25" height="25" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.5)} rx="2" />
-                            <rect x="90" y="60" width="25" height="25" fill="none" stroke={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.5)} strokeWidth="2" rx="2" />
-                            <rect x="120" y="60" width="25" height="25" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.6)} rx="2" />
-                            <rect x="60" y="90" width="25" height="25" fill="none" stroke={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.6)} strokeWidth="2" rx="2" />
-                            <rect x="90" y="90" width="25" height="25" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.7)} rx="2" />
-                            <rect x="120" y="90" width="25" height="25" fill="none" stroke={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.5)} strokeWidth="2" rx="2" />
-                            <rect x="60" y="120" width="25" height="25" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.6)} rx="2" />
-                            <rect x="90" y="120" width="25" height="25" fill="none" stroke={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.6)} strokeWidth="2" rx="2" />
-                            <rect x="120" y="120" width="25" height="25" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.5)} rx="2" />
-                          </>
-                        )}
-                        {idx === 5 && (
-                          // mythOS - gallery frames with floating animation
-                          <>
-                            <rect x="50" y="50" width="40" height="50" fill="none" stroke={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.5)} strokeWidth="3" rx="2">
-                              {hoveredProject === idx && (
-                                <>
-                                  <animate attributeName="y" values="50; 47; 50" dur="3s" repeatCount="indefinite" />
-                                  <animate attributeName="opacity" values="0.5; 0.9; 0.5" dur="3s" repeatCount="indefinite" />
-                                </>
-                              )}
-                            </rect>
-                            <rect x="110" y="50" width="40" height="50" fill="none" stroke={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.6)} strokeWidth="3" rx="2">
-                              {hoveredProject === idx && (
-                                <>
-                                  <animate attributeName="y" values="50; 47; 50" dur="3.2s" repeatCount="indefinite" />
-                                  <animate attributeName="opacity" values="0.6; 1; 0.6" dur="3.2s" repeatCount="indefinite" />
-                                </>
-                              )}
-                            </rect>
-                            <rect x="80" y="110" width="40" height="50" fill="none" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.7)`} strokeWidth="3" rx="2">
-                              {hoveredProject === idx && (
-                                <>
-                                  <animate attributeName="y" values="110; 107; 110" dur="3.4s" repeatCount="indefinite" />
-                                  <animate attributeName="opacity" values="0.7; 1; 0.7" dur="3.4s" repeatCount="indefinite" />
-                                </>
-                              )}
-                            </rect>
-                            <circle cx="70" cy="75" r="8" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.5)}>
-                              {hoveredProject === idx && (
-                                <>
-                                  <animate attributeName="r" values="8; 10; 8" dur="2s" repeatCount="indefinite" />
-                                  <animate attributeName="opacity" values="0.5; 1; 0.5" dur="2s" repeatCount="indefinite" />
-                                </>
-                              )}
-                            </circle>
-                            <circle cx="130" cy="75" r="8" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.6)}>
-                              {hoveredProject === idx && (
-                                <>
-                                  <animate attributeName="r" values="8; 10; 8" dur="2.2s" repeatCount="indefinite" />
-                                  <animate attributeName="opacity" values="0.6; 1; 0.6" dur="2.2s" repeatCount="indefinite" />
-                                </>
-                              )}
-                            </circle>
-                            <circle cx="100" cy="135" r="8" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.7)}>
-                              {hoveredProject === idx && (
-                                <>
-                                  <animate attributeName="r" values="8; 10; 8" dur="2.4s" repeatCount="indefinite" />
-                                  <animate attributeName="opacity" values="0.7; 1; 0.7" dur="2.4s" repeatCount="indefinite" />
-                                </>
-                              )}
-                            </circle>
-                          </>
-                        )}
-                        {idx === 6 && (
-                          // Metamorphic Fractal Reflections - kaleidoscope with rotation
-                          <>
-                            <path d="M100,50 L120,80 L140,70 L130,100 L160,110 L130,130 L140,160 L100,150 L60,160 L70,130 L40,110 L70,100 L60,70 L80,80 Z" fill="none" stroke={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.6)} strokeWidth="2">
-                              {hoveredProject === idx && (
-                                <>
-                                  <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="10s" repeatCount="indefinite" />
-                                  <animate attributeName="opacity" values="0.6; 1; 0.6" dur="3s" repeatCount="indefinite" />
-                                </>
-                              )}
-                            </path>
-                            <circle cx="100" cy="100" r="30" fill="none" stroke={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.5)} strokeWidth="2">
-                              {hoveredProject === idx && (
-                                <animate attributeName="r" values="30; 35; 30" dur="2.5s" repeatCount="indefinite" />
-                              )}
-                            </circle>
-                            <circle cx="100" cy="100" r="15" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.7)}>
-                              {hoveredProject === idx && (
-                                <>
-                                  <animate attributeName="r" values="15; 18; 15" dur="2s" repeatCount="indefinite" />
-                                  <animate attributeName="opacity" values="0.7; 1; 0.7" dur="2s" repeatCount="indefinite" />
-                                </>
-                              )}
-                            </circle>
-                            <line x1="100" y1="70" x2="100" y2="130" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} strokeWidth="2">
-                              {hoveredProject === idx && (
-                                <>
-                                  <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="180 100 100" dur="4s" repeatCount="indefinite" />
-                                  <animate attributeName="opacity" values="0.4; 0.8; 0.4" dur="2s" repeatCount="indefinite" />
-                                </>
-                              )}
-                            </line>
-                            <line x1="70" y1="100" x2="130" y2="100" stroke={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} strokeWidth="2">
-                              {hoveredProject === idx && (
-                                <>
-                                  <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="180 100 100" dur="4s" repeatCount="indefinite" />
-                                  <animate attributeName="opacity" values="0.4; 0.8; 0.4" dur="2s" repeatCount="indefinite" />
-                                </>
-                              )}
-                            </line>
-                          </>
-                        )}
-                        {idx === 7 && (
-                          // Mobile UX Patterns - mobile device outline
-                          <>
-                            <rect x="70" y="40" width="60" height="120" rx="8" fill="none" stroke={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.6)} strokeWidth="3" />
-                            <rect x="80" y="55" width="40" height="25" rx="4" fill={`rgba(${project.orbColor.r}, ${project.orbColor.g}, ${project.orbColor.b}, 0.4)`} />
-                            <rect x="80" y="85" width="40" height="8" rx="2" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.5)} />
-                            <rect x="80" y="98" width="40" height="8" rx="2" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.5)} />
-                            <rect x="80" y="111" width="40" height="8" rx="2" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.5)} />
-                            <rect x="85" y="47" width="12" height="4" rx="2" fill={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.6)} />
-                            <circle cx="100" cy="145" r="6" fill="none" stroke={getThemedSvgColor(project.orbColor.r, project.orbColor.g, project.orbColor.b, 0.6)} strokeWidth="2" />
-                          </>
-                        )}
-                      </svg>
-                    </div>
-
-                    {/* Bottom: Content Area */}
-                    <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                      {/* Category */}
-                      <div
-                        style={{
-                          fontSize: '0.75rem',
-                          fontWeight: '500',
-                          color: 'var(--text-60)',
-                          letterSpacing: '0.05em',
-                          textTransform: 'uppercase',
-                          marginBottom: '0.5rem',
-                        }}
-                      >
-                        {project.category}
-                      </div>
-
-                      {/* Title */}
-                      <h4
-                        style={{
-                          fontSize: '1.375rem',
-                          fontWeight: '400',
-                          color: 'var(--text-95)',
-                          marginBottom: '0.75rem',
-                          lineHeight: '1.3',
-                        }}
-                      >
-                        {project.title}
-                      </h4>
-
-                      {/* Description */}
-                      <p
-                        style={{
-                          fontSize: '0.875rem',
-                          fontWeight: '300',
-                          color: hoveredProject === idx ? 'var(--text-85)' : 'var(--text-70)',
-                          lineHeight: '1.6',
-                          marginBottom: '1rem',
-                          transition: 'color 0.3s ease',
-                        }}
-                      >
-                        {project.description}
-                      </p>
-
-                      {/* Key Highlights */}
-                      <div
-                        style={{
-                          marginBottom: '1.25rem',
-                          paddingLeft: '0.5rem',
-                        }}
-                      >
-                        <ul
-                          style={{
-                            listStyle: 'none',
-                            padding: 0,
-                            margin: 0,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '0.5rem',
-                          }}
-                        >
-                          {idx === 0 && (
-                            <>
-                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
-                                • Streamlined crew operations across 450+ flights daily
-                              </li>
-                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
-                                • Reduced decision-making time from minutes to seconds
-                              </li>
-                            </>
-                          )}
-                          {idx === 1 && (
-                            <>
-                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
-                                • 18 months of ethnographic research with dermatologists
-                              </li>
-                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
-                                • AI-powered PASI scoring with 95% accuracy
-                              </li>
-                            </>
-                          )}
-                          {idx === 2 && (
-                            <>
-                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
-                                • Scroll-driven narrative with three-act structure
-                              </li>
-                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
-                                • Speculative design prototypes exploring consciousness
-                              </li>
-                            </>
-                          )}
-                          {idx === 3 && (
-                            <>
-                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
-                                • Real-time data visualization for airline operations
-                              </li>
-                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
-                                • Processing 10,000+ data points per minute
-                              </li>
-                            </>
-                          )}
-                          {idx === 4 && (
-                            <>
-                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
-                                • Automated design token auditing system
-                              </li>
-                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
-                                • Reduced QA review time by 90%
-                              </li>
-                            </>
-                          )}
-                          {idx === 5 && (
-                            <>
-                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
-                                • AI-powered pattern recognition in art collections
-                              </li>
-                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
-                                • Generates thematic exhibitions from natural language
-                              </li>
-                            </>
-                          )}
-                          {idx === 6 && (
-                            <>
-                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
-                                • Interactive psychedelic experience installation
-                              </li>
-                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
-                                • Real-time audio-reactive visuals with TouchDesigner
-                              </li>
-                            </>
-                          )}
-                          {idx === 7 && (
-                            <>
-                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
-                                • 40+ production-ready mobile UI patterns
-                              </li>
-                              <li style={{ fontSize: '0.8125rem', color: 'var(--text-60)', lineHeight: '1.5' }}>
-                                • iOS and Android platform-specific components
-                              </li>
-                            </>
-                          )}
-                        </ul>
-                      </div>
-
-                      {/* Tags */}
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexWrap: 'wrap',
-                          gap: '0.5rem',
-                          marginBottom: '1.25rem',
-                        }}
-                      >
-                        {project.tags.slice(0, 4).map((tag, tagIdx) => (
-                          <div
-                            key={tagIdx}
-                            style={{
-                              padding: '0.25rem 0.625rem',
-                              background: 'var(--glass-04)',
-                              backdropFilter: 'blur(60px) saturate(130%)',
-                              WebkitBackdropFilter: 'blur(60px) saturate(130%)',
-                              border: `1px solid var(--text-08)`,
-                              borderRadius: '8px',
-                              fontSize: '0.688rem',
-                              fontWeight: '300',
-                              color: 'var(--text-75)',
-                              opacity: hoveredProject === idx ? 1 : 0.8,
-                              transform: hoveredProject === idx ? `translateY(-2px)` : 'translateY(0)',
-                              transition: `all 0.3s ease ${tagIdx * 0.05}s`,
-                            }}
-                          >
-                            {tag}
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Footer: Metric + Year + Arrow */}
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          paddingTop: '1rem',
-                          borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-                        }}
-                      >
-                        {/* Metric */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <MetricIcon size={14} style={{ color: 'var(--text-50)' }} />
-                          <span
-                            style={{
-                              fontSize: '0.75rem',
-                              fontWeight: '300',
-                              color: 'var(--text-60)',
-                            }}
-                          >
-                            {project.metric.label}
-                          </span>
-                        </div>
-
-                        {/* Year */}
-                        <span
-                          style={{
-                            fontSize: '0.75rem',
-                            fontWeight: '300',
-                            color: 'var(--text-40)',
-                          }}
-                        >
-                          {project.year}
-                        </span>
-
-                        {/* Arrow icon */}
-                        <div
-                          style={{
-                            width: '32px',
-                            height: '32px',
-                            borderRadius: '50%',
-                            background: 'var(--glass-03)',
-                            backdropFilter: 'blur(20px)',
-                            WebkitBackdropFilter: 'blur(20px)',
-                            border: `1px solid var(--text-06)`,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            transform: hoveredProject === idx ? 'rotate(45deg) translateY(-4px)' : 'rotate(0deg)',
-                            transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                          }}
-                        >
-                          <ArrowRight size={14} style={{ color: 'var(--text-70)' }} />
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                    )}
-                  </SwiperSlide>
-                );
-              })}
-              </Swiper>
-
-              {/* Custom Navigation Controls Below Carousel */}
-              <div
-                className="carousel-navigation"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '64px',
-                  marginTop: '32px',
-                  flexWrap: 'nowrap',
-                }}
-              >
-                {/* Previous Button */}
-                <button
-                  className="custom-nav-prev custom-nav-button"
-                  aria-label="Previous slide"
-                  style={{
-                    width: 'clamp(48px, 10vw, 56px)',
-                    height: 'clamp(48px, 10vw, 56px)',
-                    borderRadius: '50%',
-                    background: 'rgba(0, 0, 0, 0.7)',
-                    backdropFilter: 'blur(20px)',
-                    WebkitBackdropFilter: 'blur(20px)',
-                    border: `1px solid var(--text-10)`,
-                    boxShadow: `0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px var(--text-10)`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                    color: 'var(--text-90)',
-                  }}
-                >
-                  <ChevronLeft size={24} />
-                </button>
-
-                {/* Pagination Dots */}
-                <div className="custom-pagination swiper-pagination" />
-
-                {/* Next Button */}
-                <button
-                  className="custom-nav-next custom-nav-button"
-                  aria-label="Next slide"
-                  style={{
-                    width: 'clamp(48px, 10vw, 56px)',
-                    height: 'clamp(48px, 10vw, 56px)',
-                    borderRadius: '50%',
-                    background: 'rgba(0, 0, 0, 0.7)',
-                    backdropFilter: 'blur(20px)',
-                    WebkitBackdropFilter: 'blur(20px)',
-                    border: `1px solid var(--text-10)`,
-                    boxShadow: `0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px var(--text-10)`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                    color: 'var(--text-90)',
-                  }}
-                >
-                  <ChevronRight size={24} />
-                </button>
-              </div>
+            {/* Stacking Cards Section */}
+            <div
+              style={{
+                maxWidth: '1000px',
+                margin: '4rem auto 0',
+                padding: '0 clamp(1.5rem, 3vw, 2.5rem)',
+                position: 'relative',
+                height: '400vh', // Provides scroll space for stacking animation
+              }}
+            >
+              {/* Render stacking cards */}
+              {featuredProjects.map((project, index) => (
+                <StackingCard
+                  key={project.id}
+                  project={project}
+                  index={index}
+                  totalCards={featuredProjects.length}
+                />
+              ))}
 
               {/* View All Work Button */}
               <div
                 style={{
                   display: 'flex',
                   justifyContent: 'center',
-                  marginTop: '2rem',
+                  marginTop: '4rem',
+                  paddingBottom: '4rem',
                 }}
               >
                 <Link
@@ -2191,7 +1776,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     `;
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'var(--glass-60)';
+                    e.currentTarget.style.background = 'rgba(10, 10, 10, 0.6)';
                     e.currentTarget.style.transform = 'translateY(0)';
                     e.currentTarget.style.boxShadow = `
                       inset 0 1px 0 var(--text-02),
