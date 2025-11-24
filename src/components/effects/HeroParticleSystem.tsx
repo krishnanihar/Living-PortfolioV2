@@ -61,6 +61,9 @@ function HeroStarParticles({ scrollProgress, mousePosition }: HeroStarParticlesP
     geo.setAttribute('randomOffset', new THREE.BufferAttribute(randomOffsets, 1));
     geo.setAttribute('twinklePhase', new THREE.BufferAttribute(twinklePhases, 1));
 
+    // Set manual bounding sphere to prevent NaN computation errors
+    geo.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0, -225), 1000);
+
     return { geometry: geo };
   }, [particleCount]);
 
@@ -92,6 +95,12 @@ function HeroStarParticles({ scrollProgress, mousePosition }: HeroStarParticlesP
   useFrame((state) => {
     if (!pointsRef.current) return;
 
+    // Early return if camera position has NaN values
+    if (isNaN(state.camera.position.x) || isNaN(state.camera.position.y) || isNaN(state.camera.position.z)) {
+      state.camera.position.set(0, 0, 0);
+      return;
+    }
+
     const mat = pointsRef.current.material as THREE.ShaderMaterial;
     const positions = pointsRef.current.geometry.attributes.position.array as Float32Array;
 
@@ -116,6 +125,19 @@ function HeroStarParticles({ scrollProgress, mousePosition }: HeroStarParticlesP
     // Particle recycling for infinite tunnel effect
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
+
+      // Check ALL position components for NaN
+      if (isNaN(positions[i3]) || isNaN(positions[i3 + 1]) || isNaN(positions[i3 + 2])) {
+        // Reset entire particle to valid state
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(2 * Math.random() - 1);
+        const radius = 25 + Math.pow(Math.random(), 1.5) * 60;
+        positions[i3] = Math.sin(phi) * Math.cos(theta) * radius;
+        positions[i3 + 1] = Math.sin(phi) * Math.sin(theta) * radius;
+        positions[i3 + 2] = -Math.random() * 450;
+        continue;
+      }
+
       const particleZ = positions[i3 + 2];
 
       // If particle is behind camera, reset it ahead
@@ -150,9 +172,7 @@ function HeroStarParticles({ scrollProgress, mousePosition }: HeroStarParticlesP
 }
 
 interface HeroParticleSystemProps {
-  // Star particle props
   starOpacity?: number;
-
   className?: string;
 }
 
@@ -184,7 +204,7 @@ interface HeroParticleSystemProps {
  * ```
  */
 export default function HeroParticleSystem({
-  starOpacity = 0.35, // Subtle background layer
+  starOpacity = 0.35,
   className = '',
 }: HeroParticleSystemProps) {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -261,7 +281,6 @@ export default function HeroParticleSystem({
           pointerEvents: 'none',
           zIndex: 2,
           opacity: starOpacity,
-          contain: 'layout style paint',
           willChange: 'transform',
         }}
       >
@@ -301,9 +320,9 @@ export default function HeroParticleSystem({
           height: 100%;
           overflow: hidden;
           pointer-events: none;
+          z-index: 1;
         }
 
-        /* Layer z-index hierarchy */
         .hero-stars-layer {
           z-index: 2;
         }

@@ -142,6 +142,9 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     geom.setAttribute('randomSeed', new THREE.BufferAttribute(randomSeeds, 1));
     geom.setAttribute('lifetime', new THREE.BufferAttribute(lifetimes, 1));
 
+    // Set manual bounding sphere to prevent NaN computation errors
+    geom.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0, -150), 1000);
+
     return { geometry: geom, initialPositions };
   }, [particleCount]);
 
@@ -206,6 +209,12 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
   // Animation loop with scroll-reactive behavior
   useFrame(({ clock, camera }) => {
     if (!pointsRef.current) return;
+
+    // Early return if camera position has NaN values
+    if (isNaN(camera.position.x) || isNaN(camera.position.y) || isNaN(camera.position.z)) {
+      camera.position.set(0, 0, 0);
+      return;
+    }
 
     const time = clock.getElapsedTime();
     const positions = geometry.attributes.position.array as Float32Array;
@@ -336,6 +345,24 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     // Particle recycling for infinite tunnel effect
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
+
+      // Check ALL position components for NaN
+      const hasNaN = isNaN(positions[i3]) || isNaN(positions[i3 + 1]) || isNaN(positions[i3 + 2]) ||
+                     isNaN(velocities[i3]) || isNaN(velocities[i3 + 1]) || isNaN(velocities[i3 + 2]);
+
+      if (hasNaN) {
+        // Reset entire particle to valid state
+        const angle = (i / particleCount) * Math.PI * 2;
+        const radius = 55 + (Math.random() - 0.5) * 8;
+        positions[i3] = Math.cos(angle) * radius;
+        positions[i3 + 1] = Math.sin(angle) * radius;
+        positions[i3 + 2] = camera.position.z - 150 + (Math.random() - 0.5) * 15;
+        velocities[i3] = 0;
+        velocities[i3 + 1] = 0;
+        velocities[i3 + 2] = 0;
+        continue;
+      }
+
       const particleZ = positions[i3 + 2];
 
       if (particleZ > camera.position.z + 50) {

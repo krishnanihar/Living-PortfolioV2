@@ -4,8 +4,8 @@ import React from 'react';
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Mail, Lightbulb, Trophy, Briefcase, Rocket, Users, CheckCircle2, Sparkles, Layers, Map, User, Plane, Heart, Activity, Brain, Eye, Zap } from 'lucide-react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { ArrowRight, Sparkles, Map, User, Users, Plane, Heart, Activity, Brain, Eye, Zap } from 'lucide-react';
+import { motion, useMotionValue, animate } from 'framer-motion';
 import { ContactChat } from '../ContactChat';
 import { Chatbot } from '../Chatbot';
 import { useTheme } from '@/components/effects/ThemeProvider';
@@ -35,17 +35,16 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   const [activeTimeline, setActiveTimeline] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [hoveredButton, setHoveredButton] = useState<'about' | 'journey' | null>(null);
-  const stackingCardsRef = useRef<HTMLDivElement>(null);
+  const [viewportWidth, setViewportWidth] = useState(0);
 
-  // Shared scroll progress for horizontal scroll
-  const { scrollYProgress } = useScroll({
-    target: stackingCardsRef,
-    offset: ['start start', 'end end']
-  });
-
-  // Horizontal scroll transform - full viewport slides
-  // 4 projects = move 3 viewport widths (300vw) to show all 4
-  const horizontalTranslate = useTransform(scrollYProgress, [0, 1], ['0vw', '-300vw']);
+  // Horizontal lock state - self-contained horizontal scroll
+  const [isLocked, setIsLocked] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const localSlideX = useMotionValue(0);
+  const isAnimatingRef = useRef(false);
+  const horizontalSectionRef = useRef<HTMLDivElement>(null);
+  const placeholderRef = useRef<HTMLDivElement>(null);
+  const totalSlides = 4;
 
   // SVG dynamic color helper (for project-specific colors that can't use CSS variables)
   const getThemedSvgColor = (r: number, g: number, b: number, alpha: number) =>
@@ -58,9 +57,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   useEffect(() => {
     setMounted(true);
     setIsMobile(window.innerWidth < 768);
+    // Use clientWidth instead of innerWidth to exclude scrollbar width
+    setViewportWidth(document.documentElement.clientWidth);
 
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
+      setViewportWidth(document.documentElement.clientWidth);
     };
 
     window.addEventListener('resize', handleResize);
@@ -115,6 +117,98 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  // Intersection Observer - detect when horizontal section should lock
+  useEffect(() => {
+    const section = horizontalSectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const rect = entry.boundingClientRect;
+        // Lock when section top is at or above viewport top and section is mostly visible
+        if (rect.top <= 0 && rect.bottom > window.innerHeight * 0.5) {
+          if (!isLocked && currentSlide === 0) {
+            setIsLocked(true);
+          }
+        }
+      },
+      { threshold: [0, 0.1, 0.5, 0.9, 1], rootMargin: '0px' }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, [isLocked, currentSlide]);
+
+  // Wheel handler - only active when locked
+  useEffect(() => {
+    if (!isLocked) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      if (isAnimatingRef.current) {
+        e.preventDefault();
+        return;
+      }
+
+      const direction = e.deltaY > 0 ? 1 : -1;
+      const nextSlide = currentSlide + direction;
+
+      // Boundary: first slide + scroll up = unlock and allow native scroll
+      if (nextSlide < 0) {
+        setIsLocked(false);
+        setCurrentSlide(0);
+        return; // Let native scroll continue upward
+      }
+
+      // Boundary: last slide + scroll down = unlock and continue scrolling
+      if (nextSlide >= totalSlides) {
+        setIsLocked(false);
+        // Small scroll to push past the section
+        window.scrollBy({ top: 100, behavior: 'smooth' });
+        return;
+      }
+
+      // Navigate horizontally
+      e.preventDefault();
+      isAnimatingRef.current = true;
+      setCurrentSlide(nextSlide);
+
+      // Animate slide with spring
+      animate(localSlideX, -nextSlide * viewportWidth, {
+        type: 'spring',
+        stiffness: 180,
+        damping: 28,
+        mass: 0.8,
+        onComplete: () => {
+          setTimeout(() => {
+            isAnimatingRef.current = false;
+          }, 100); // Small cooldown
+        },
+      });
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    return () => window.removeEventListener('wheel', handleWheel);
+  }, [isLocked, currentSlide, viewportWidth, localSlideX, totalSlides]);
+
+  // Re-lock when scrolling back up to section (if was at last slide)
+  useEffect(() => {
+    if (isLocked) return;
+
+    const handleScroll = () => {
+      const section = horizontalSectionRef.current;
+      if (!section) return;
+
+      const rect = section.getBoundingClientRect();
+      // Re-lock if scrolling back and section is at top of viewport
+      if (rect.top >= -10 && rect.top <= 10 && currentSlide === totalSlides - 1) {
+        setIsLocked(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isLocked, currentSlide, totalSlides]);
 
   // 3D tilt effect for card hover
   const handleCardMouseMove = (e: MouseEvent) => {
@@ -258,103 +352,44 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
 
   function FullScreenSlide({ project, index, totalProjects }: FullScreenSlideProps) {
     const [isHovered, setIsHovered] = useState(false);
+    const [imageHovered, setImageHovered] = useState(false);
     const brandRgb = `${project.brandColor.r}, ${project.brandColor.g}, ${project.brandColor.b}`;
 
     return (
       <div
         style={{
-          width: '100vw',
+          width: `${viewportWidth}px`,
+          minWidth: `${viewportWidth}px`,
           height: '100vh',
-          minWidth: '100vw',
+          flexShrink: 0,
           position: 'relative',
-          background: `linear-gradient(135deg, rgba(${brandRgb}, 0.12), rgba(${brandRgb}, 0.04), transparent)`,
+          background: `linear-gradient(135deg, rgba(${brandRgb}, 0.03) 0%, rgba(10, 10, 10, 1) 40%, rgba(10, 10, 10, 1) 100%)`,
           display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
+          flexDirection: isMobile ? 'column' : 'row',
           alignItems: 'center',
+          justifyContent: 'center',
+          padding: isMobile ? '2rem 1.5rem' : '0 clamp(3rem, 5vw, 6rem)',
+          gap: isMobile ? '2rem' : 'clamp(2rem, 4vw, 4rem)',
           overflow: 'hidden',
         }}
       >
-        {/* Large Project Title - Massive typography */}
-        <h2
-          style={{
-            fontSize: 'clamp(3rem, 12vw, 10rem)',
-            fontWeight: '200',
-            color: 'var(--text-95)',
-            textAlign: 'center',
-            lineHeight: '1',
-            zIndex: 2,
-            letterSpacing: '-0.02em',
-            marginBottom: '0.5rem',
-          }}
-        >
-          {project.title}
-        </h2>
-
-        {/* Category subtitle */}
-        <p
-          style={{
-            fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)',
-            fontWeight: '400',
-            textTransform: 'uppercase',
-            letterSpacing: '0.15em',
-            color: 'var(--text-50)',
-            marginTop: '0.5rem',
-            zIndex: 2,
-          }}
-        >
-          {project.category}
-        </p>
-
-        {/* CTA Button */}
-        <Link
-          href={project.link}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          style={{
-            marginTop: '2rem',
-            padding: '1rem 2.5rem',
-            background: isHovered ? `rgba(${brandRgb}, 0.25)` : `rgba(${brandRgb}, 0.15)`,
-            border: `1px solid rgba(${brandRgb}, 0.4)`,
-            borderRadius: '50px',
-            color: 'var(--text-95)',
-            textDecoration: 'none',
-            fontSize: '0.9375rem',
-            fontWeight: '500',
-            zIndex: 2,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-            transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
-            boxShadow: isHovered
-              ? `0 8px 32px rgba(${brandRgb}, 0.3)`
-              : `0 4px 16px rgba(${brandRgb}, 0.15)`,
-          }}
-        >
-          <span>View Case Study</span>
-          <ArrowRight
-            size={16}
-            style={{
-              transition: 'transform 0.3s ease',
-              transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
-            }}
-          />
-        </Link>
-
-        {/* Background Image - positioned at bottom */}
+        {/* Left Side - Image Container */}
         <div
+          onMouseEnter={() => setImageHovered(true)}
+          onMouseLeave={() => setImageHovered(false)}
           style={{
-            position: 'absolute',
-            bottom: 0,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: 'min(90%, 1200px)',
-            height: '45%',
-            zIndex: 1,
-            borderRadius: '24px 24px 0 0',
+            position: 'relative',
+            width: isMobile ? '100%' : '52%',
+            height: isMobile ? '45vh' : '75vh',
+            borderRadius: '20px',
             overflow: 'hidden',
-            opacity: 0.8,
+            border: '1px solid var(--text-08)',
+            boxShadow: imageHovered
+              ? `0 40px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(${brandRgb}, 0.1)`
+              : `0 32px 64px rgba(0, 0, 0, 0.4)`,
+            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+            transform: imageHovered ? 'scale(1.01)' : 'scale(1)',
+            flexShrink: 0,
           }}
         >
           <Image
@@ -363,46 +398,227 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             fill
             style={{
               objectFit: 'cover',
-              objectPosition: 'top center',
+              objectPosition: 'center',
+              transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+              transform: imageHovered ? 'scale(1.05)' : 'scale(1)',
             }}
             quality={90}
             priority={index === 0}
           />
-          {/* Gradient overlay for text readability */}
+
+          {/* Subtle gradient overlay */}
           <div
             style={{
               position: 'absolute',
               inset: 0,
-              background: 'linear-gradient(to bottom, rgba(10,10,10,0.6) 0%, transparent 40%, transparent 100%)',
+              background: 'linear-gradient(180deg, transparent 60%, rgba(10, 10, 10, 0.4) 100%)',
+              pointerEvents: 'none',
             }}
           />
+
+          {/* Stats overlay card */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '1.25rem',
+              left: '1.25rem',
+              background: 'rgba(10, 10, 10, 0.7)',
+              backdropFilter: 'blur(40px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+              border: '1px solid var(--text-10)',
+              borderRadius: '14px',
+              padding: '0.875rem 1.25rem',
+              display: 'flex',
+              gap: '1.5rem',
+            }}
+          >
+            {project.metrics.slice(0, 2).map((metric, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <metric.icon size={14} style={{ color: `rgba(${brandRgb}, 0.9)` }} />
+                <span style={{ fontSize: '0.75rem', fontWeight: '500', color: 'var(--text-80)' }}>
+                  {metric.value}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Year badge */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '1.25rem',
+              right: '1.25rem',
+              background: 'rgba(10, 10, 10, 0.6)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              border: '1px solid var(--text-08)',
+              borderRadius: '8px',
+              padding: '0.375rem 0.75rem',
+              fontSize: '0.6875rem',
+              fontWeight: '500',
+              color: 'var(--text-60)',
+              letterSpacing: '0.05em',
+            }}
+          >
+            {project.year}
+          </div>
         </div>
 
-        {/* Progress indicator */}
+        {/* Right Side - Content */}
+        <div
+          style={{
+            width: isMobile ? '100%' : '40%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gap: '1.25rem',
+          }}
+        >
+          {/* Index + Category */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <span
+              style={{
+                fontSize: 'clamp(0.6875rem, 1vw, 0.75rem)',
+                fontWeight: '400',
+                color: 'var(--text-35)',
+                fontFamily: 'monospace',
+              }}
+            >
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <span style={{ color: 'var(--text-20)', fontSize: '0.75rem' }}>—</span>
+            <span
+              style={{
+                fontSize: 'clamp(0.6875rem, 1vw, 0.75rem)',
+                fontWeight: '500',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                color: 'var(--text-50)',
+              }}
+            >
+              {project.category}
+            </span>
+          </div>
+
+          {/* Project Title */}
+          <h2
+            style={{
+              fontSize: 'clamp(2rem, 4vw, 3.25rem)',
+              fontWeight: '200',
+              color: 'var(--text-95)',
+              lineHeight: '1.1',
+              letterSpacing: '-0.02em',
+              margin: 0,
+            }}
+          >
+            {project.title}
+          </h2>
+
+          {/* Description */}
+          <p
+            style={{
+              fontSize: 'clamp(0.875rem, 1.25vw, 1rem)',
+              fontWeight: '300',
+              lineHeight: '1.6',
+              color: 'var(--text-60)',
+              maxWidth: '420px',
+              margin: 0,
+            }}
+          >
+            {project.description}
+          </p>
+
+          {/* Tags */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.25rem' }}>
+            {project.tags.map((tag, i) => (
+              <span
+                key={i}
+                style={{
+                  fontSize: '0.6875rem',
+                  fontWeight: '400',
+                  color: 'var(--text-50)',
+                  background: 'var(--glass-04)',
+                  border: '1px solid var(--text-06)',
+                  borderRadius: '6px',
+                  padding: '0.375rem 0.625rem',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {/* CTA Button */}
+          <Link
+            href={project.link}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              width: 'fit-content',
+              marginTop: '0.75rem',
+              padding: '0.875rem 1.5rem',
+              background: isHovered
+                ? `linear-gradient(135deg, rgba(${brandRgb}, 0.12), rgba(${brandRgb}, 0.06))`
+                : `linear-gradient(135deg, rgba(${brandRgb}, 0.08), rgba(${brandRgb}, 0.04))`,
+              backdropFilter: 'blur(40px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+              border: `1px solid rgba(${brandRgb}, ${isHovered ? 0.25 : 0.15})`,
+              borderRadius: '12px',
+              color: 'var(--text-90)',
+              textDecoration: 'none',
+              fontSize: '0.8125rem',
+              fontWeight: '500',
+              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
+              boxShadow: isHovered
+                ? `inset 0 1px 0 var(--text-05), 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(${brandRgb}, 0.15)`
+                : `inset 0 1px 0 var(--text-03), 0 8px 24px rgba(0, 0, 0, 0.3)`,
+            }}
+          >
+            <span>View Case Study</span>
+            <ArrowRight
+              size={14}
+              style={{
+                transition: 'transform 0.3s ease',
+                transform: isHovered ? 'translateX(3px)' : 'translateX(0)',
+              }}
+            />
+          </Link>
+        </div>
+
+        {/* Progress indicator - bottom right */}
         <div
           style={{
             position: 'absolute',
             bottom: '2rem',
-            right: '2rem',
-            color: 'var(--text-40)',
-            fontSize: '0.875rem',
+            right: '2.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            color: 'var(--text-30)',
+            fontSize: '0.75rem',
             fontWeight: '400',
-            zIndex: 3,
+            fontFamily: 'monospace',
           }}
         >
-          {String(index + 1).padStart(2, '0')} / {String(totalProjects).padStart(2, '0')}
+          <span style={{ color: 'var(--text-50)' }}>{String(index + 1).padStart(2, '0')}</span>
+          <span>/</span>
+          <span>{String(totalProjects).padStart(2, '0')}</span>
         </div>
 
-        {/* Brand color accent line */}
+        {/* Subtle brand accent line at bottom */}
         <div
           style={{
             position: 'absolute',
             bottom: 0,
             left: 0,
             right: 0,
-            height: '3px',
-            background: `linear-gradient(90deg, transparent, rgba(${brandRgb}, 0.6), transparent)`,
-            zIndex: 3,
+            height: '2px',
+            background: `linear-gradient(90deg, transparent, rgba(${brandRgb}, 0.4), transparent)`,
           }}
         />
       </div>
@@ -1071,7 +1287,363 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           </div>
         </div>
 
-        {/* Act 2: About Me - Three Pillars */}
+        {/* Act 4: The Impact */}
+        <div
+          id="act-4-impact"
+          style={{
+            minHeight: 'auto',
+            display: 'flex',
+            alignItems: 'center',
+            padding: '2rem 1.5rem',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Animated SVG Background Mesh Gradient */}
+          <svg
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: 0,
+              opacity: 0.4,
+              pointerEvents: 'none',
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="meshGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style={{ stopColor: 'rgba(147, 51, 234, 0.15)', stopOpacity: 1 }}>
+                  <animate attributeName="stop-color" values="rgba(147, 51, 234, 0.15); rgba(218, 14, 41, 0.15); rgba(59, 130, 246, 0.15); rgba(147, 51, 234, 0.15)" dur="10s" repeatCount="indefinite" />
+                </stop>
+                <stop offset="100%" style={{ stopColor: 'rgba(218, 14, 41, 0.15)', stopOpacity: 1 }}>
+                  <animate attributeName="stop-color" values="rgba(218, 14, 41, 0.15); rgba(59, 130, 246, 0.15); rgba(147, 51, 234, 0.15); rgba(218, 14, 41, 0.15)" dur="10s" repeatCount="indefinite" />
+                </stop>
+              </linearGradient>
+
+              <radialGradient id="meshGrad2" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" style={{ stopColor: 'rgba(147, 51, 234, 0.2)', stopOpacity: 1 }}>
+                  <animate attributeName="stop-color" values="rgba(147, 51, 234, 0.2); rgba(16, 185, 129, 0.2); rgba(232, 121, 249, 0.2); rgba(147, 51, 234, 0.2)" dur="8s" repeatCount="indefinite" />
+                </stop>
+                <stop offset="100%" style={{ stopColor: 'transparent', stopOpacity: 0 }} />
+              </radialGradient>
+            </defs>
+
+            {/* Flowing mesh background */}
+            <path d="M0,100 Q250,80 500,100 T1000,100 L1000,300 Q750,280 500,300 T0,300 Z" fill="url(#meshGrad1)" opacity="0.3">
+              <animate attributeName="d" values="M0,100 Q250,80 500,100 T1000,100 L1000,300 Q750,280 500,300 T0,300 Z; M0,120 Q250,90 500,120 T1000,120 L1000,320 Q750,290 500,320 T0,320 Z; M0,100 Q250,80 500,100 T1000,100 L1000,300 Q750,280 500,300 T0,300 Z" dur="12s" repeatCount="indefinite" />
+            </path>
+
+            <circle cx="20%" cy="30%" r="150" fill="url(#meshGrad2)" opacity="0.4">
+              <animate attributeName="cx" values="20%; 25%; 20%" dur="15s" repeatCount="indefinite" />
+              <animate attributeName="cy" values="30%; 35%; 30%" dur="18s" repeatCount="indefinite" />
+            </circle>
+
+            <circle cx="80%" cy="70%" r="180" fill="url(#meshGrad2)" opacity="0.3">
+              <animate attributeName="cx" values="80%; 75%; 80%" dur="20s" repeatCount="indefinite" />
+              <animate attributeName="cy" values="70%; 65%; 70%" dur="16s" repeatCount="indefinite" />
+            </circle>
+          </svg>
+
+          {/* Floating Geometric Accents */}
+          <svg
+            style={{
+              position: 'absolute',
+              top: '10%',
+              left: '5%',
+              width: '80px',
+              height: '80px',
+              zIndex: 0,
+              opacity: 0.2,
+              pointerEvents: 'none',
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <polygon points="40,10 70,30 70,60 40,80 10,60 10,30" fill="none" stroke="rgba(147, 51, 234, 0.6)" strokeWidth="1.5">
+              <animateTransform attributeName="transform" type="rotate" from="0 40 40" to="360 40 40" dur="30s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.2; 0.5; 0.2" dur="6s" repeatCount="indefinite" />
+            </polygon>
+          </svg>
+
+          <svg
+            style={{
+              position: 'absolute',
+              top: '60%',
+              right: '8%',
+              width: '60px',
+              height: '60px',
+              zIndex: 0,
+              opacity: 0.25,
+              pointerEvents: 'none',
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="30" cy="30" r="25" fill="none" stroke="rgba(218, 14, 41, 0.5)" strokeWidth="1.5">
+              <animate attributeName="r" values="25; 28; 25" dur="5s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.25; 0.6; 0.25" dur="7s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="30" cy="30" r="15" fill="none" stroke="rgba(218, 14, 41, 0.4)" strokeWidth="1">
+              <animate attributeName="r" values="15; 18; 15" dur="4s" repeatCount="indefinite" />
+            </circle>
+          </svg>
+
+          <svg
+            style={{
+              position: 'absolute',
+              bottom: '15%',
+              left: '10%',
+              width: '50px',
+              height: '50px',
+              zIndex: 0,
+              opacity: 0.2,
+              pointerEvents: 'none',
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <line x1="5" y1="5" x2="45" y2="45" stroke="rgba(59, 130, 246, 0.5)" strokeWidth="1.5">
+              <animate attributeName="opacity" values="0.2; 0.5; 0.2" dur="8s" repeatCount="indefinite" />
+            </line>
+            <line x1="45" y1="5" x2="5" y2="45" stroke="rgba(59, 130, 246, 0.5)" strokeWidth="1.5">
+              <animate attributeName="opacity" values="0.5; 0.2; 0.5" dur="8s" repeatCount="indefinite" />
+            </line>
+          </svg>
+
+          <svg
+            style={{
+              position: 'absolute',
+              top: '20%',
+              right: '15%',
+              width: '40px',
+              height: '40px',
+              zIndex: 0,
+              opacity: 0.3,
+              pointerEvents: 'none',
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect x="5" y="5" width="30" height="30" fill="none" stroke="rgba(16, 185, 129, 0.5)" strokeWidth="1.5" rx="4">
+              <animateTransform attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="25s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.3; 0.6; 0.3" dur="5s" repeatCount="indefinite" />
+            </rect>
+          </svg>
+
+          {/* Decorative Line Art Framing */}
+          <svg
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '2%',
+              width: '30px',
+              height: '200px',
+              zIndex: 0,
+              opacity: 0.15,
+              pointerEvents: 'none',
+              transform: 'translateY(-50%)',
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <line x1="15" y1="0" x2="15" y2="80" stroke={'var(--text-30)'} strokeWidth="1" strokeDasharray="4 4">
+              <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
+            </line>
+            <circle cx="15" cy="100" r="4" fill={'var(--text-40)'}>
+              <animate attributeName="opacity" values="0.4; 1; 0.4" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <line x1="15" y1="120" x2="15" y2="200" stroke={'var(--text-30)'} strokeWidth="1" strokeDasharray="4 4">
+              <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
+            </line>
+          </svg>
+
+          <svg
+            style={{
+              position: 'absolute',
+              top: '50%',
+              right: '2%',
+              width: '30px',
+              height: '200px',
+              zIndex: 0,
+              opacity: 0.15,
+              pointerEvents: 'none',
+              transform: 'translateY(-50%)',
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <line x1="15" y1="0" x2="15" y2="80" stroke={'var(--text-30)'} strokeWidth="1" strokeDasharray="4 4">
+              <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
+            </line>
+            <circle cx="15" cy="100" r="4" fill={'var(--text-40)'}>
+              <animate attributeName="opacity" values="0.4; 1; 0.4" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <line x1="15" y1="120" x2="15" y2="200" stroke={'var(--text-30)'} strokeWidth="1" strokeDasharray="4 4">
+              <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
+            </line>
+          </svg>
+
+          <div style={{ maxWidth: '100%', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
+            <h3
+              style={{
+                fontSize: 'clamp(2rem, 4vw, 3rem)',
+                fontWeight: '300',
+                color: 'var(--text-95)',
+                marginBottom: '1.5rem',
+                textAlign: 'center',
+                opacity: act4InView && mounted ? 1 : 0,
+                animation: act4InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
+              }}
+            >
+              My work
+            </h3>
+          </div>
+        </div>
+
+        {/* Placeholder - maintains scroll height when section is fixed */}
+        {isLocked && (
+          <div
+            ref={placeholderRef}
+            style={{ height: '100vh', width: '100%' }}
+            aria-hidden="true"
+          />
+        )}
+
+        {/* Full-Screen Horizontal Scroll Section - Locks when in viewport */}
+        <div
+          ref={horizontalSectionRef}
+          style={{
+            position: isLocked ? 'fixed' : 'relative',
+            top: isLocked ? 0 : 'auto',
+            left: 0,
+            height: '100vh',
+            width: '100%',
+            overflow: 'hidden',
+            zIndex: isLocked ? 100 : 'auto',
+            background: 'transparent',
+          }}
+        >
+          {/* Horizontal scrolling full-screen slides */}
+          {viewportWidth > 0 && (
+            <motion.div
+              style={{
+                display: 'flex',
+                width: `${viewportWidth * featuredProjects.length}px`,
+                height: '100%',
+                x: localSlideX,
+                willChange: 'transform',
+              }}
+            >
+              {featuredProjects.map((project, index) => (
+                <FullScreenSlide
+                  key={project.id}
+                  project={project}
+                  index={index}
+                  totalProjects={featuredProjects.length}
+                />
+              ))}
+            </motion.div>
+          )}
+
+          {/* Slide progress indicator */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '2rem',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              display: 'flex',
+              gap: '0.5rem',
+              zIndex: 10,
+            }}
+          >
+            {featuredProjects.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  if (isAnimatingRef.current) return;
+                  isAnimatingRef.current = true;
+                  setCurrentSlide(index);
+                  animate(localSlideX, -index * viewportWidth, {
+                    type: 'spring',
+                    stiffness: 180,
+                    damping: 28,
+                    mass: 0.8,
+                    onComplete: () => {
+                      setTimeout(() => {
+                        isAnimatingRef.current = false;
+                      }, 100);
+                    },
+                  });
+                }}
+                style={{
+                  width: currentSlide === index ? '24px' : '8px',
+                  height: '8px',
+                  borderRadius: '4px',
+                  background: currentSlide === index ? 'var(--text-90)' : 'var(--text-30)',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                }}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* View All Work Button */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            padding: '2rem 0',
+          }}
+        >
+          <Link
+            href="/work"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.875rem 1.75rem',
+              background: 'rgba(10, 10, 10, 0.6)',
+              backdropFilter: 'blur(100px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(100px) saturate(180%)',
+              border: `1px solid var(--text-08)`,
+              borderRadius: '15px',
+              color: 'var(--text-95)',
+              textDecoration: 'none',
+              fontSize: '0.9375rem',
+              fontWeight: '400',
+              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              boxShadow: `
+                inset 0 1px 0 var(--text-02),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                0 8px 24px rgba(0, 0, 0, 0.6)
+              `,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'var(--glass-05)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = `
+                inset 0 1px 0 var(--text-02),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                0 12px 32px rgba(0, 0, 0, 0.7)
+              `;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(10, 10, 10, 0.6)';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = `
+                inset 0 1px 0 var(--text-02),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                0 8px 24px rgba(0, 0, 0, 0.6)
+              `;
+            }}
+          >
+            <span>View All Work</span>
+            <ArrowRight size={16} />
+          </Link>
+        </div>
+
+        {/* Act 2: About Me - Three Pillars (Moved below horizontal scroll) */}
         <div
           id="act-2-about"
           ref={timelineRef}
@@ -1079,26 +1651,11 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             minHeight: '100vh',
             display: 'flex',
             alignItems: 'center',
-            padding: '8rem 1.5rem',
+            padding: '4rem 1.5rem',
             position: 'relative',
           }}
         >
           <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', position: 'relative' }}>
-            {/* Section Header */}
-            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-              <h3
-                style={{
-                  fontSize: 'clamp(2rem, 4vw, 3rem)',
-                  fontWeight: '300',
-                  color: 'var(--text-95)',
-                  opacity: act2InView && mounted ? 1 : 0,
-                  animation: act2InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
-                }}
-              >
-                About Me
-              </h3>
-            </div>
-
           {/* Liquid Glass Card with Flowing Line Border */}
           <div
             style={{
@@ -1392,377 +1949,55 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   </div>
                 </Link>
               </div>
-            </div>
-          </div>
-          </div>
-        </div>
 
-        {/* Act 4: The Impact */}
-        <div
-          id="act-4-impact"
-          style={{
-            minHeight: '100vh',
-            display: 'flex',
-            alignItems: 'center',
-            padding: '6rem 1.5rem',
-            position: 'relative',
-            overflow: 'hidden',
-          }}
-        >
-          {/* Animated SVG Background Mesh Gradient */}
-          <svg
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              zIndex: 0,
-              opacity: 0.4,
-              pointerEvents: 'none',
-            }}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <defs>
-              <linearGradient id="meshGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: 'rgba(147, 51, 234, 0.15)', stopOpacity: 1 }}>
-                  <animate attributeName="stop-color" values="rgba(147, 51, 234, 0.15); rgba(218, 14, 41, 0.15); rgba(59, 130, 246, 0.15); rgba(147, 51, 234, 0.15)" dur="10s" repeatCount="indefinite" />
-                </stop>
-                <stop offset="100%" style={{ stopColor: 'rgba(218, 14, 41, 0.15)', stopOpacity: 1 }}>
-                  <animate attributeName="stop-color" values="rgba(218, 14, 41, 0.15); rgba(59, 130, 246, 0.15); rgba(147, 51, 234, 0.15); rgba(218, 14, 41, 0.15)" dur="10s" repeatCount="indefinite" />
-                </stop>
-              </linearGradient>
-
-              <radialGradient id="meshGrad2" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" style={{ stopColor: 'rgba(147, 51, 234, 0.2)', stopOpacity: 1 }}>
-                  <animate attributeName="stop-color" values="rgba(147, 51, 234, 0.2); rgba(16, 185, 129, 0.2); rgba(232, 121, 249, 0.2); rgba(147, 51, 234, 0.2)" dur="8s" repeatCount="indefinite" />
-                </stop>
-                <stop offset="100%" style={{ stopColor: 'transparent', stopOpacity: 0 }} />
-              </radialGradient>
-            </defs>
-
-            {/* Flowing mesh background */}
-            <path d="M0,100 Q250,80 500,100 T1000,100 L1000,300 Q750,280 500,300 T0,300 Z" fill="url(#meshGrad1)" opacity="0.3">
-              <animate attributeName="d" values="M0,100 Q250,80 500,100 T1000,100 L1000,300 Q750,280 500,300 T0,300 Z; M0,120 Q250,90 500,120 T1000,120 L1000,320 Q750,290 500,320 T0,320 Z; M0,100 Q250,80 500,100 T1000,100 L1000,300 Q750,280 500,300 T0,300 Z" dur="12s" repeatCount="indefinite" />
-            </path>
-
-            <circle cx="20%" cy="30%" r="150" fill="url(#meshGrad2)" opacity="0.4">
-              <animate attributeName="cx" values="20%; 25%; 20%" dur="15s" repeatCount="indefinite" />
-              <animate attributeName="cy" values="30%; 35%; 30%" dur="18s" repeatCount="indefinite" />
-            </circle>
-
-            <circle cx="80%" cy="70%" r="180" fill="url(#meshGrad2)" opacity="0.3">
-              <animate attributeName="cx" values="80%; 75%; 80%" dur="20s" repeatCount="indefinite" />
-              <animate attributeName="cy" values="70%; 65%; 70%" dur="16s" repeatCount="indefinite" />
-            </circle>
-          </svg>
-
-          {/* Floating Geometric Accents */}
-          <svg
-            style={{
-              position: 'absolute',
-              top: '10%',
-              left: '5%',
-              width: '80px',
-              height: '80px',
-              zIndex: 0,
-              opacity: 0.2,
-              pointerEvents: 'none',
-            }}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <polygon points="40,10 70,30 70,60 40,80 10,60 10,30" fill="none" stroke="rgba(147, 51, 234, 0.6)" strokeWidth="1.5">
-              <animateTransform attributeName="transform" type="rotate" from="0 40 40" to="360 40 40" dur="30s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.2; 0.5; 0.2" dur="6s" repeatCount="indefinite" />
-            </polygon>
-          </svg>
-
-          <svg
-            style={{
-              position: 'absolute',
-              top: '60%',
-              right: '8%',
-              width: '60px',
-              height: '60px',
-              zIndex: 0,
-              opacity: 0.25,
-              pointerEvents: 'none',
-            }}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle cx="30" cy="30" r="25" fill="none" stroke="rgba(218, 14, 41, 0.5)" strokeWidth="1.5">
-              <animate attributeName="r" values="25; 28; 25" dur="5s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.25; 0.6; 0.25" dur="7s" repeatCount="indefinite" />
-            </circle>
-            <circle cx="30" cy="30" r="15" fill="none" stroke="rgba(218, 14, 41, 0.4)" strokeWidth="1">
-              <animate attributeName="r" values="15; 18; 15" dur="4s" repeatCount="indefinite" />
-            </circle>
-          </svg>
-
-          <svg
-            style={{
-              position: 'absolute',
-              bottom: '15%',
-              left: '10%',
-              width: '50px',
-              height: '50px',
-              zIndex: 0,
-              opacity: 0.2,
-              pointerEvents: 'none',
-            }}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line x1="5" y1="5" x2="45" y2="45" stroke="rgba(59, 130, 246, 0.5)" strokeWidth="1.5">
-              <animate attributeName="opacity" values="0.2; 0.5; 0.2" dur="8s" repeatCount="indefinite" />
-            </line>
-            <line x1="45" y1="5" x2="5" y2="45" stroke="rgba(59, 130, 246, 0.5)" strokeWidth="1.5">
-              <animate attributeName="opacity" values="0.5; 0.2; 0.5" dur="8s" repeatCount="indefinite" />
-            </line>
-          </svg>
-
-          <svg
-            style={{
-              position: 'absolute',
-              top: '20%',
-              right: '15%',
-              width: '40px',
-              height: '40px',
-              zIndex: 0,
-              opacity: 0.3,
-              pointerEvents: 'none',
-            }}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect x="5" y="5" width="30" height="30" fill="none" stroke="rgba(16, 185, 129, 0.5)" strokeWidth="1.5" rx="4">
-              <animateTransform attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="25s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.3; 0.6; 0.3" dur="5s" repeatCount="indefinite" />
-            </rect>
-          </svg>
-
-          {/* Decorative Line Art Framing */}
-          <svg
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '2%',
-              width: '30px',
-              height: '200px',
-              zIndex: 0,
-              opacity: 0.15,
-              pointerEvents: 'none',
-              transform: 'translateY(-50%)',
-            }}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line x1="15" y1="0" x2="15" y2="80" stroke={'var(--text-30)'} strokeWidth="1" strokeDasharray="4 4">
-              <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
-            </line>
-            <circle cx="15" cy="100" r="4" fill={'var(--text-40)'}>
-              <animate attributeName="opacity" values="0.4; 1; 0.4" dur="3s" repeatCount="indefinite" />
-            </circle>
-            <line x1="15" y1="120" x2="15" y2="200" stroke={'var(--text-30)'} strokeWidth="1" strokeDasharray="4 4">
-              <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
-            </line>
-          </svg>
-
-          <svg
-            style={{
-              position: 'absolute',
-              top: '50%',
-              right: '2%',
-              width: '30px',
-              height: '200px',
-              zIndex: 0,
-              opacity: 0.15,
-              pointerEvents: 'none',
-              transform: 'translateY(-50%)',
-            }}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line x1="15" y1="0" x2="15" y2="80" stroke={'var(--text-30)'} strokeWidth="1" strokeDasharray="4 4">
-              <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
-            </line>
-            <circle cx="15" cy="100" r="4" fill={'var(--text-40)'}>
-              <animate attributeName="opacity" values="0.4; 1; 0.4" dur="3s" repeatCount="indefinite" />
-            </circle>
-            <line x1="15" y1="120" x2="15" y2="200" stroke={'var(--text-30)'} strokeWidth="1" strokeDasharray="4 4">
-              <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
-            </line>
-          </svg>
-
-          <div style={{ maxWidth: '100vw', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
-            <h3
-              style={{
-                fontSize: 'clamp(2rem, 4vw, 3rem)',
-                fontWeight: '300',
-                color: 'var(--text-95)',
-                marginBottom: '1.5rem',
-                textAlign: 'center',
-                opacity: act4InView && mounted ? 1 : 0,
-                animation: act4InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
-              }}
-            >
-              My work
-            </h3>
-
-            {/* Full-Screen Horizontal Scroll Section */}
-            <div
-              ref={stackingCardsRef}
-              style={{
-                position: 'relative',
-                height: '400vh', // 100vh per project (4 projects)
-              }}
-            >
-              {/* Sticky container that stays fixed while scrolling */}
+              {/* Divider */}
               <div
                 style={{
-                  position: 'sticky',
-                  top: 0,
-                  height: '100vh',
-                  width: '100vw',
-                  overflow: 'hidden',
-                }}
-              >
-                {/* Horizontal scrolling full-screen slides */}
-                <motion.div
-                  style={{
-                    display: 'flex',
-                    height: '100%',
-                    x: horizontalTranslate,
-                  }}
-                >
-                  {featuredProjects.map((project, index) => (
-                    <FullScreenSlide
-                      key={project.id}
-                      project={project}
-                      index={index}
-                      totalProjects={featuredProjects.length}
-                    />
-                  ))}
-                </motion.div>
-              </div>
-            </div>
-
-            {/* View All Work Button - Outside scroll container */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                padding: '4rem 0',
-              }}
-            >
-              <Link
-                href="/work"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.875rem 1.75rem',
-                  background: 'rgba(10, 10, 10, 0.6)',
-                  backdropFilter: 'blur(100px) saturate(180%)',
-                  WebkitBackdropFilter: 'blur(100px) saturate(180%)',
-                  border: `1px solid var(--text-08)`,
-                  borderRadius: '15px',
-                  color: 'var(--text-95)',
-                  textDecoration: 'none',
-                  fontSize: '0.9375rem',
-                  fontWeight: '400',
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  boxShadow: `
-                    inset 0 1px 0 var(--text-02),
-                    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-                    0 8px 24px rgba(0, 0, 0, 0.6)
-                  `,
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'var(--glass-05)';
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = `
-                    inset 0 1px 0 var(--text-02),
-                    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-                    0 12px 32px rgba(0, 0, 0, 0.7)
-                  `;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(10, 10, 10, 0.6)';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = `
-                    inset 0 1px 0 var(--text-02),
-                    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-                    0 8px 24px rgba(0, 0, 0, 0.6)
-                  `;
-                }}
-              >
-                <span>View All Work</span>
-                <ArrowRight size={16} />
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Closing: Interactive Chat Invitation */}
-        <div
-          style={{
-            padding: '6rem 1.5rem',
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-          }}
-        >
-          <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-            {/* Premium Glassmorphic Card */}
-            <div
-              style={{
-                background: 'rgba(8, 8, 8, 0.3)',
-                backdropFilter: 'blur(140px) saturate(180%)',
-                WebkitBackdropFilter: 'blur(140px) saturate(180%)',
-                border: `1px solid var(--text-18)`,
-                borderRadius: '24px',
-                padding: 'clamp(3rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem)',
-                boxShadow: `
-                  0px 20px 48px rgba(0, 0, 0, 0.7),
-                  0px 0px 1px var(--text-35) inset,
-                  0px -1px 0px var(--text-10) inset
-                `,
-                textAlign: 'center',
-                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-              }}
-            >
-              <h2
-                style={{
-                  fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-                  fontWeight: '300',
-                  color: 'var(--text-95)',
-                  marginBottom: '1rem',
-                  lineHeight: '1.2',
-                  letterSpacing: '-0.01em',
-                }}
-              >
-                Let's build something <span style={{ color: '#DA0E29', fontWeight: '400' }}>together</span>
-              </h2>
-
-              <p
-                style={{
-                  fontSize: 'clamp(0.938rem, 1.75vw, 1rem)',
-                  color: 'var(--text-70)',
-                  marginBottom: '2.5rem',
-                  fontWeight: '300',
-                  letterSpacing: '0.01em',
-                  lineHeight: '1.6',
-                  maxWidth: '600px',
-                  margin: '0 auto 2.5rem',
-                }}
-              >
-                Tell me about your project, and let's explore how we can collaborate
-              </p>
-
-              <ContactChat
-                onMessageSubmit={(message, intent) => {
-                  setInitialMessage(message);
-                  setChatOpen(true);
+                  width: '100%',
+                  height: '1px',
+                  background: 'linear-gradient(90deg, transparent, var(--text-15), transparent)',
+                  margin: '2rem 0',
                 }}
               />
+
+              {/* Let's build something together */}
+              <div style={{ textAlign: 'center' }}>
+                <h3
+                  style={{
+                    fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)',
+                    fontWeight: '300',
+                    color: 'var(--text-95)',
+                    marginBottom: '0.75rem',
+                    lineHeight: '1.2',
+                  }}
+                >
+                  Let's build something <span style={{ color: 'var(--text-95)', fontWeight: '400' }}>together</span>
+                </h3>
+
+                <p
+                  style={{
+                    fontSize: 'clamp(0.875rem, 1.5vw, 0.9375rem)',
+                    color: 'var(--text-60)',
+                    marginBottom: '1.5rem',
+                    fontWeight: '300',
+                    lineHeight: '1.5',
+                  }}
+                >
+                  Tell me about your project
+                </p>
+
+                <ContactChat
+                  onMessageSubmit={(message, intent) => {
+                    setInitialMessage(message);
+                    setChatOpen(true);
+                  }}
+                />
+              </div>
             </div>
           </div>
+          </div>
         </div>
+
       </section>
 
       {/* Chatbot Modal */}

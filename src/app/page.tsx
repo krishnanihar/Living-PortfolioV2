@@ -4,7 +4,6 @@ import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import { IntroductionSection } from '@/components/sections/IntroductionSection';
-import { SectionDivider } from '@/components/ui/SectionDivider';
 import { HomeNarrativeWrapper } from '@/components/sections/HomeNarrativeWrapper';
 
 // Dynamically import GPGPU Pattern Particles (interactive particle formations)
@@ -51,9 +50,12 @@ export default function HomePage() {
       {/* GPGPU Pattern Particles - Interactive particle formations with zoom scroll */}
       <HeroParticleSystem starOpacity={0.35} />
 
+      {/* Normal scrolling main content */}
       <main id="main-content">
+        {/* Hero Section */}
         <IntroductionSection />
 
+        {/* Rest of page content */}
         <AboutSectionV2 />
       </main>
 
