@@ -49,7 +49,7 @@ export default function HomePage() {
       <PortfolioNavigation />
 
       {/* GPGPU Pattern Particles - Interactive particle formations with zoom scroll */}
-      <HeroParticleSystem starOpacity={0} />
+      <HeroParticleSystem starOpacity={0.35} />
 
       <main id="main-content">
         <IntroductionSection />

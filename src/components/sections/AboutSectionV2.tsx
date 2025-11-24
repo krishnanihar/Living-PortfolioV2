@@ -10,7 +10,6 @@ import { Navigation, Pagination } from 'swiper/modules';
 import { ContactChat } from '../ContactChat';
 import { Chatbot } from '../Chatbot';
 import { useTheme } from '@/components/effects/ThemeProvider';
-import { ImageRipple } from '../effects/ImageRipple';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -1039,11 +1038,19 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     boxShadow: `0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 var(--text-10)`,
                   }}
                 >
-                  <ImageRipple
-                    imageSrc="/images/profile/mypic.png"
+                  <Image
+                    src="/images/profile/mypic.png"
                     alt="Nihar Sunkara - Product Designer"
                     width={180}
                     height={180}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      borderRadius: '50%'
+                    }}
+                    priority
+                    quality={95}
                   />
                 </div>
               </div>
