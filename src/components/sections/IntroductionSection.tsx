@@ -4,16 +4,17 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ChevronDown, Mail, Github } from 'lucide-react';
 
-// Unified Glass Button Style - Elegant & Minimal
+// Ultra-Liquid Glass Style - iOS 26 Inspired
 const UNIFIED_GLASS = {
-  background: 'rgba(255, 255, 255, 0.08)',
-  backdropFilter: 'blur(60px) saturate(180%) brightness(1.05)',
-  border: '1px solid rgba(255, 255, 255, 0.15)',
+  background: 'rgba(255, 255, 255, 0.05)',
+  backdropFilter: 'blur(100px) saturate(220%) brightness(1.08)',
+  WebkitBackdropFilter: 'blur(100px) saturate(220%) brightness(1.08)',
+  border: '1px solid rgba(255, 255, 255, 0.12)',
   boxShadow: `
-    0 8px 32px rgba(0, 0, 0, 0.12),
-    0 2px 8px rgba(0, 0, 0, 0.08),
-    inset 0 1px 1px rgba(255, 255, 255, 0.2),
-    inset 0 -1px 1px rgba(0, 0, 0, 0.1)
+    0 12px 48px rgba(0, 0, 0, 0.15),
+    0 4px 16px rgba(0, 0, 0, 0.10),
+    inset 0 1px 2px rgba(255, 255, 255, 0.25),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.15)
   `,
 };
 
@@ -72,9 +73,18 @@ export function IntroductionSection() {
           }
         }
 
-        @media (max-width: 768px) {
+        /* Mobile - Small screens (<640px) */
+        @media (max-width: 640px) {
           .hero-content {
             text-align: center !important;
+          }
+
+          .hero-greeting {
+            font-size: clamp(1.75rem, 6vw, 2.25rem) !important;
+          }
+
+          .hero-subtitle {
+            font-size: clamp(0.875rem, 2vw, 1rem) !important;
           }
 
           .hero-buttons {
@@ -82,15 +92,112 @@ export function IntroductionSection() {
             width: 100%;
             max-width: 320px;
             margin: 0 auto;
+            gap: 1rem !important;
           }
 
           .hero-buttons a {
             width: 100% !important;
             justify-content: center !important;
+            padding: 12px 24px !important;
+            font-size: 0.9375rem !important;
+            min-height: 48px;
+          }
+        }
+
+        /* Tablet (640px - 1024px) */
+        @media (min-width: 641px) and (max-width: 1024px) {
+          .hero-greeting {
+            font-size: clamp(2rem, 4.5vw, 3rem) !important;
+          }
+
+          .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.15rem) !important;
+          }
+
+          .hero-buttons {
+            gap: 1.25rem !important;
+          }
+
+          .hero-buttons a {
+            max-width: 280px;
+            padding: 13px 26px !important;
+            font-size: 0.9375rem !important;
+          }
+        }
+
+        /* Small Laptop (1024px - 1440px) */
+        @media (min-width: 1025px) and (max-width: 1440px) {
+          .hero-greeting {
+            font-size: clamp(2.5rem, 4.5vw, 3.5rem) !important;
+          }
+
+          .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.2rem) !important;
+          }
+
+          .hero-buttons {
+            gap: 1.5rem !important;
+          }
+
+          .hero-buttons a {
+            max-width: 300px;
+            padding: 14px 28px !important;
+            font-size: 1rem !important;
+          }
+        }
+
+        /* Desktop (1440px - 1920px) */
+        @media (min-width: 1441px) and (max-width: 1920px) {
+          .hero-greeting {
+            font-size: clamp(3rem, 4vw, 4rem) !important;
+          }
+
+          .hero-subtitle {
+            font-size: clamp(1.125rem, 2vw, 1.3rem) !important;
+          }
+
+          .hero-buttons {
+            gap: 2rem !important;
+          }
+
+          .hero-buttons a {
+            padding: 15px 32px !important;
+            font-size: 1.0625rem !important;
+          }
+        }
+
+        /* Large Desktop (>1920px) */
+        @media (min-width: 1921px) {
+          .hero-greeting {
+            font-size: 4rem !important;
+          }
+
+          .hero-subtitle {
+            font-size: 1.375rem !important;
+          }
+
+          .hero-buttons {
+            gap: 2.5rem !important;
+          }
+
+          .hero-buttons a {
+            padding: 16px 36px !important;
+            font-size: 1.125rem !important;
+          }
+        }
+
+        /* Short screens - Reduce spacing */
+        @media (max-height: 600px) {
+          #hero-section {
+            padding-top: 40px !important;
           }
 
           .hero-greeting {
-            font-size: clamp(2rem, 6vw, 2.5rem) !important;
+            margin-bottom: 1rem !important;
+          }
+
+          .hero-subtitle {
+            margin-bottom: 1.5rem !important;
           }
         }
       `}</style>
@@ -139,6 +246,7 @@ export function IntroductionSection() {
 
           {/* Subtitle */}
           <div
+            className="hero-subtitle"
             style={{
               maxWidth: '700px',
               margin: '0 auto',
@@ -187,8 +295,8 @@ export function IntroductionSection() {
                 gap: '0.5rem',
                 padding: '14px 28px',
                 ...UNIFIED_GLASS,
-                background: hoveredButton === 'contact' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.08)',
-                borderColor: hoveredButton === 'contact' ? 'rgba(255, 255, 255, 0.22)' : 'rgba(255, 255, 255, 0.15)',
+                background: hoveredButton === 'contact' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.05)',
+                borderColor: hoveredButton === 'contact' ? 'rgba(255, 255, 255, 0.18)' : 'rgba(255, 255, 255, 0.12)',
                 borderRadius: '14px',
                 color: 'rgba(255, 255, 255, 0.95)',
                 textDecoration: 'none',
@@ -200,13 +308,29 @@ export function IntroductionSection() {
                 overflow: 'hidden',
               }}
             >
+              {/* Refraction layer - Diagonal light reflection */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: `linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.15) 0%,
+                    transparent 40%,
+                    transparent 60%,
+                    rgba(255, 255, 255, 0.08) 100%)`,
+                  mixBlendMode: 'overlay',
+                  pointerEvents: 'none',
+                  opacity: hoveredButton === 'contact' ? 1 : 0.7,
+                  transition: 'opacity 0.3s ease',
+                }}
+              />
               {/* Subtle shimmer on hover */}
               {hoveredButton === 'contact' && (
                 <div
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%)',
+                    background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%)',
                     pointerEvents: 'none',
                   }}
                 />
@@ -229,8 +353,8 @@ export function IntroductionSection() {
                 gap: '0.5rem',
                 padding: '14px 28px',
                 ...UNIFIED_GLASS,
-                background: hoveredButton === 'github' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.08)',
-                borderColor: hoveredButton === 'github' ? 'rgba(255, 255, 255, 0.22)' : 'rgba(255, 255, 255, 0.15)',
+                background: hoveredButton === 'github' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.05)',
+                borderColor: hoveredButton === 'github' ? 'rgba(255, 255, 255, 0.18)' : 'rgba(255, 255, 255, 0.12)',
                 borderRadius: '14px',
                 color: 'rgba(255, 255, 255, 0.95)',
                 textDecoration: 'none',
@@ -242,13 +366,29 @@ export function IntroductionSection() {
                 overflow: 'hidden',
               }}
             >
+              {/* Refraction layer - Diagonal light reflection */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: `linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.15) 0%,
+                    transparent 40%,
+                    transparent 60%,
+                    rgba(255, 255, 255, 0.08) 100%)`,
+                  mixBlendMode: 'overlay',
+                  pointerEvents: 'none',
+                  opacity: hoveredButton === 'github' ? 1 : 0.7,
+                  transition: 'opacity 0.3s ease',
+                }}
+              />
               {/* Subtle shimmer on hover */}
               {hoveredButton === 'github' && (
                 <div
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%)',
+                    background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%)',
                     pointerEvents: 'none',
                   }}
                 />
