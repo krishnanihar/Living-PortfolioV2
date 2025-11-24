@@ -1009,7 +1009,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             <div
               style={{
                 position: 'relative',
-                background: 'rgba(10, 10, 10, 0.5)',
+                background: 'rgba(10, 10, 10, 0.35)',
                 backdropFilter: 'blur(120px) saturate(200%) brightness(1.1)',
                 WebkitBackdropFilter: 'blur(120px) saturate(200%) brightness(1.1)',
                 borderRadius: '28px',
@@ -1062,8 +1062,8 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               {/* Name */}
               <h2
                 style={{
-                  fontSize: 'clamp(1.75rem, 3vw, 2.25rem)',
-                  fontWeight: '500',
+                  fontSize: 'clamp(1.5rem, 2.5vw, 2rem)',
+                  fontWeight: '300',
                   marginBottom: '0.75rem',
                   color: 'var(--text-95)',
                   textAlign: 'center',
@@ -1075,7 +1075,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               {/* Current Role */}
               <p
                 style={{
-                  fontSize: 'clamp(1rem, 2vw, 1.125rem)',
+                  fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
                   fontWeight: '300',
                   color: 'var(--text-70)',
                   lineHeight: '1.6',
