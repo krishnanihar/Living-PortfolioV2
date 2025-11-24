@@ -1041,7 +1041,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 style={{
                   display: 'flex',
                   justifyContent: 'center',
-                  gap: '1rem',
+                  gap: '0.75rem',
                   marginBottom: '2.5rem',
                 }}
               >
@@ -1051,14 +1051,30 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   { file: 'infosys.svg', alt: 'Infosys' },
                   { file: 'air-india.svg', alt: 'Air India' }
                 ].map((logo) => (
-                  <Image
+                  <div
                     key={logo.file}
-                    src={`/logos/${logo.file}`}
-                    alt={logo.alt}
-                    width={56}
-                    height={56}
-                    style={{ objectFit: 'contain' }}
-                  />
+                    style={{
+                      width: '64px',
+                      height: '64px',
+                      padding: '8px',
+                      borderRadius: '12px',
+                      background: 'var(--glass-03)',
+                      backdropFilter: 'blur(20px) saturate(110%)',
+                      border: '1px solid var(--text-08)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                    }}
+                  >
+                    <Image
+                      src={`/logos/${logo.file}`}
+                      alt={logo.alt}
+                      width={56}
+                      height={56}
+                      style={{ objectFit: 'contain', width: '100%', height: 'auto' }}
+                    />
+                  </div>
                 ))}
               </div>
 
