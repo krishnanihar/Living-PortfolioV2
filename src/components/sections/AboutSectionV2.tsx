@@ -854,6 +854,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   backgroundClip: 'text',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
+                  fontWeight: '500',
                   animation: 'gradientFlow 18s ease-in-out infinite',
                 }}
               >
@@ -867,6 +868,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   backgroundClip: 'text',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
+                  fontWeight: '500',
                   animation: 'gradientFlow 18s ease-in-out infinite',
                 }}
               >
@@ -902,21 +904,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 animation: act1InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both' : 'none',
               }}
             >
-              Including this site. Designed and coded{' '}
-              <span
-                style={{
-                  background: 'linear-gradient(120deg, rgba(59,130,246,0.3), rgba(236,72,153,0.3), rgba(139,92,246,0.3))',
-                  backgroundSize: '200% auto',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  fontWeight: '500',
-                  animation: 'gradientFlow 18s ease-in-out infinite',
-                }}
-              >
-                from the ground up
-              </span>
-              .
+              Including this site. Designed and coded <span style={{ fontWeight: '500' }}>from the ground up</span>.
             </p>
 
             {/* Breathing Orb */}
