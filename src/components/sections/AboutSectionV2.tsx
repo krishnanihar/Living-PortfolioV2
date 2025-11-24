@@ -1008,12 +1008,16 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             <div
               style={{
                 position: 'relative',
-                background: `linear-gradient(135deg, var(--glass-18) 0%, var(--glass-12) 100())`,
-                backdropFilter: 'blur(140px) saturate(160%) brightness(1.08)',
-                WebkitBackdropFilter: 'blur(140px) saturate(160%) brightness(1.08)',
+                background: '#0A0A0A',
+                backdropFilter: 'blur(80px) saturate(160%) brightness(1.08)',
+                WebkitBackdropFilter: 'blur(80px) saturate(160%) brightness(1.08)',
                 borderRadius: '28px',
                 padding: 'clamp(2.5rem, 5vw, 3rem)',
                 border: `1px solid var(--text-08)`,
+                boxShadow: `
+                  inset 0 1px 0 var(--text-10),
+                  0 8px 32px rgba(0, 0, 0, 0.4)
+                `,
               }}
             >
               {/* Profile Image - Centered */}
