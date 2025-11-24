@@ -986,7 +986,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               maxWidth: '600px',
               margin: '3rem auto 0',
               borderRadius: '30px',
-              border: '3px solid transparent',
+              border: '2px solid transparent',
               background: `
                 linear-gradient(rgba(10, 10, 10, 0.95), rgba(10, 10, 10, 0.95)) padding-box,
                 conic-gradient(
@@ -1009,10 +1009,10 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             <div
               style={{
                 position: 'relative',
-                background: 'rgba(255, 255, 255, 0.08)',
+                background: 'rgba(10, 10, 10, 0.75)',
                 backdropFilter: 'blur(120px) saturate(200%) brightness(1.1)',
                 WebkitBackdropFilter: 'blur(120px) saturate(200%) brightness(1.1)',
-                borderRadius: '27px',
+                borderRadius: '28px',
                 padding: 'clamp(2.5rem, 5vw, 3rem)',
                 border: `1px solid rgba(255, 255, 255, 0.12)`,
                 boxShadow: `
