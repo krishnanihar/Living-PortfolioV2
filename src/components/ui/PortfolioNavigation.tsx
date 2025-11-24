@@ -249,7 +249,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
           position: 'absolute',
           inset: 0,
           background: scrolled
-            ? `radial-gradient(ellipse 200% 100% at top, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+            ? `radial-gradient(ellipse 200% 100% at top, var(--glass-08) 0%, transparent 50%),
                linear-gradient(135deg,
                  rgba(10, 10, 10, 0.5) 0%,
                  rgba(0, 0, 0, 0.4) 50%,
@@ -257,14 +257,14 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
             : 'transparent',
           backdropFilter: scrolled ? 'blur(80px) saturate(200%) brightness(0.90)' : 'blur(20px) saturate(120%)',
           WebkitBackdropFilter: scrolled ? 'blur(80px) saturate(200%) brightness(0.90)' : 'blur(20px) saturate(120%)',
-          borderBottom: scrolled ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid transparent',
+          borderBottom: scrolled ? '1px solid var(--text-12)' : '1px solid transparent',
           boxShadow: scrolled
-            ? `inset 0 1px 2px rgba(255, 255, 255, 0.1),
+            ? `inset 0 1px 2px var(--text-10),
                inset 0 -1px 2px rgba(0, 0, 0, 0.6),
-               inset 0 0 30px rgba(255, 255, 255, 0.01),
+               inset 0 0 30px var(--text-01),
                0 8px 32px rgba(0, 0, 0, 0.6),
                0 20px 60px rgba(0, 0, 0, 0.3),
-               0 0 0 1px rgba(255, 255, 255, 0.02)`
+               0 0 0 1px var(--text-02)`
             : 'none',
           pointerEvents: 'none',
           transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -278,7 +278,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
             <div style={{
               position: 'absolute',
               inset: 0,
-              background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 50%, transparent 100%)',
+              background: 'linear-gradient(90deg, transparent 0%, var(--glass-03) 50%, transparent 100%)',
               animation: 'shimmer 8s linear infinite',
               pointerEvents: 'none',
               transform: 'translate3d(0, 0, 0)',
@@ -292,10 +292,10 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
               position: 'absolute',
               inset: 0,
               background: `linear-gradient(135deg,
-                rgba(255, 255, 255, 0.05) 0%,
+                var(--glass-05) 0%,
                 transparent 20%,
                 transparent 80%,
-                rgba(255, 255, 255, 0.03) 100%)`,
+                var(--glass-03) 100%)`,
               pointerEvents: 'none',
               mixBlendMode: 'overlay',
               borderRadius: 'inherit',
@@ -321,13 +321,13 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
               inset: 0,
               borderRadius: scrolled ? `${NAV_BORDER_RADIUS}px` : '0',
               background: isActive('/')
-                ? 'radial-gradient(ellipse 600px 200px at 15% 50%, rgba(180, 210, 240, 0.18), rgba(120, 180, 240, 0.10) 40%, transparent 70%)'
+                ? 'radial-gradient(ellipse 600px 200px at 15% 50%, var(--text-18), var(--text-10) 40%, transparent 70%)'
                 : isActive('/work')
-                ? 'radial-gradient(ellipse 600px 200px at 70% 50%, rgba(180, 210, 240, 0.18), rgba(120, 180, 240, 0.10) 40%, transparent 70%)'
+                ? 'radial-gradient(ellipse 600px 200px at 70% 50%, var(--text-18), var(--text-10) 40%, transparent 70%)'
                 : isActive('/about')
-                ? 'radial-gradient(ellipse 600px 200px at 78% 50%, rgba(180, 210, 240, 0.18), rgba(120, 180, 240, 0.10) 40%, transparent 70%)'
+                ? 'radial-gradient(ellipse 600px 200px at 78% 50%, var(--text-18), var(--text-10) 40%, transparent 70%)'
                 : isActive('/journey')
-                ? 'radial-gradient(ellipse 600px 200px at 94% 50%, rgba(180, 210, 240, 0.18), rgba(120, 180, 240, 0.10) 40%, transparent 70%)'
+                ? 'radial-gradient(ellipse 600px 200px at 94% 50%, var(--text-18), var(--text-10) 40%, transparent 70%)'
                 : 'none',
               filter: 'blur(50px)',
               transition: 'background 0.6s ease',
@@ -392,10 +392,10 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                     inset: '-20px',
                     borderRadius: '12px',
                     background: `
-                      radial-gradient(ellipse at 20% 50%, rgba(180, 210, 240, 0.25), transparent 60%),
-                      radial-gradient(ellipse at 80% 50%, rgba(100, 180, 255, 0.20), transparent 60%),
-                      radial-gradient(ellipse at 50% 20%, rgba(150, 200, 255, 0.15), transparent 50%),
-                      linear-gradient(135deg, rgba(180, 210, 240, 0.08) 0%, transparent 50%, rgba(120, 190, 255, 0.08) 100%)
+                      radial-gradient(ellipse at 20% 50%, var(--text-25), transparent 60%),
+                      radial-gradient(ellipse at 80% 50%, var(--text-20), transparent 60%),
+                      radial-gradient(ellipse at 50% 20%, var(--text-15), transparent 50%),
+                      linear-gradient(135deg, var(--aurora-gradient-2) 0%, transparent 50%, var(--aurora-gradient-2) 100%)
                     `,
                     backgroundSize: '250% 250%',
                     animation: 'auroraDrift 4s ease-in-out infinite',
@@ -418,7 +418,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                     position: 'absolute',
                     inset: 0,
                     borderRadius: '12px',
-                    background: 'radial-gradient(ellipse 90% 60% at center, rgba(180, 210, 240, 0.28) 0%, rgba(180, 210, 240, 0.12) 40%, transparent 75%)',
+                    background: 'radial-gradient(ellipse 90% 60% at center, var(--text-30) 0%, var(--text-12) 40%, transparent 75%)',
                     filter: 'blur(12px)',
                     opacity: 0,
                     transition: 'opacity 0.3s ease',
@@ -444,6 +444,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                   key={item.name}
                   href={item.href}
                   style={{ textDecoration: 'none', position: 'relative', zIndex: 1 }}
+                  aria-current={active ? 'page' : undefined}
                 >
                   <div
                     className="nav-item"
@@ -452,8 +453,22 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                       padding: '0.75rem 1rem',
                       fontSize: '0.9375rem',
                       fontWeight: 500,
-                      color: active ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.70)',
-                      transition: 'color 0.3s ease',
+                      color: active ? 'var(--text-95)' : 'var(--text-70)',
+                      background: active ? 'var(--glass-04)' : 'transparent',
+                      borderRadius: '8px',
+                      transition: 'all 0.3s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!active) {
+                        (e.currentTarget as HTMLElement).style.background = 'var(--glass-03)';
+                        (e.currentTarget as HTMLElement).style.color = 'var(--text-90)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!active) {
+                        (e.currentTarget as HTMLElement).style.background = 'transparent';
+                        (e.currentTarget as HTMLElement).style.color = 'var(--text-70)';
+                      }
                     }}
                   >
                     {/* Nav item content */}
@@ -478,10 +493,10 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                           inset: '-20px',
                           borderRadius: '12px',
                           background: `
-                            radial-gradient(ellipse at 20% 50%, rgba(180, 210, 240, 0.25), transparent 60%),
-                            radial-gradient(ellipse at 80% 50%, rgba(100, 180, 255, 0.20), transparent 60%),
-                            radial-gradient(ellipse at 50% 20%, rgba(150, 200, 255, 0.15), transparent 50%),
-                            linear-gradient(135deg, rgba(180, 210, 240, 0.08) 0%, transparent 50%, rgba(120, 190, 255, 0.08) 100%)
+                            radial-gradient(ellipse at 20% 50%, var(--text-25), transparent 60%),
+                            radial-gradient(ellipse at 80% 50%, var(--text-20), transparent 60%),
+                            radial-gradient(ellipse at 50% 20%, var(--text-15), transparent 50%),
+                            linear-gradient(135deg, var(--aurora-gradient-2) 0%, transparent 50%, var(--aurora-gradient-2) 100%)
                           `,
                           backgroundSize: '250% 250%',
                           animation: 'auroraDrift 4s ease-in-out infinite',
@@ -504,7 +519,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
                           position: 'absolute',
                           inset: 0,
                           borderRadius: '12px',
-                          background: 'radial-gradient(ellipse 90% 60% at center, rgba(180, 210, 240, 0.28) 0%, rgba(180, 210, 240, 0.12) 40%, transparent 75%)',
+                          background: 'radial-gradient(ellipse 90% 60% at center, var(--text-30) 0%, var(--text-12) 40%, transparent 75%)',
                           filter: 'blur(12px)',
                           opacity: 0,
                           transition: 'opacity 0.3s ease',
@@ -527,6 +542,15 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
 
             <div
               onClick={toggleTheme}
+              role="button"
+              aria-label="Toggle theme"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  toggleTheme();
+                }
+              }}
               style={{
                 position: 'relative',
                 borderRadius: '50%',
@@ -556,7 +580,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
             </div>
 
             {/* Journey Button - HelpCircle icon represents "getting to know me" / learning journey */}
-            <Link href="/journey" style={{ textDecoration: 'none' }}>
+            <Link href="/journey" style={{ textDecoration: 'none' }} aria-label="View my journey">
               <div
                 style={{
                   position: 'relative',
