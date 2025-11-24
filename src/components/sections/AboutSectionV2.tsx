@@ -4,7 +4,7 @@ import React from 'react';
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Mail, Lightbulb, Trophy, Briefcase, Rocket, Users, CheckCircle2, ChevronLeft, ChevronRight, Sparkles, Layers, Map } from 'lucide-react';
+import { ArrowRight, Mail, Lightbulb, Trophy, Briefcase, Rocket, Users, CheckCircle2, ChevronLeft, ChevronRight, Sparkles, Layers, Map, User } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { ContactChat } from '../ContactChat';
@@ -945,39 +945,27 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
         >
           <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', position: 'relative' }}>
             {/* Section Header */}
-            <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
               <h3
                 style={{
                   fontSize: 'clamp(2rem, 4vw, 3rem)',
                   fontWeight: '300',
                   color: 'var(--text-95)',
-                  marginBottom: '1rem',
                   opacity: act2InView && mounted ? 1 : 0,
                   animation: act2InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
                 }}
               >
                 About Me
               </h3>
-              <p
-                style={{
-                  fontSize: 'clamp(1.125rem, 2vw, 1.375rem)',
-                  fontWeight: '300',
-                  color: 'var(--text-65)',
-                  maxWidth: '600px',
-                  margin: '0 auto',
-                  opacity: act2InView && mounted ? 1 : 0,
-                  animation: act2InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both' : 'none',
-                }}
-              >
-                Designer, builder, and systems thinker
-              </p>
             </div>
 
-          {/* Journey Card */}
+          {/* Simple Profile Card */}
             <div
               style={{
                 position: 'relative',
-                background: `linear-gradient(135deg, var(--glass-15) 0%, var(--glass-10) 100%)`,
+                maxWidth: '600px',
+                margin: '0 auto',
+                background: `linear-gradient(135deg, var(--glass-15) 0%, var(--glass-10) 100())`,
                 backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
                 borderRadius: '28px',
                 padding: 'clamp(2.5rem, 5vw, 3rem)',
@@ -988,453 +976,161 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 transition: 'opacity 0.8s ease-in-out, transform 0.8s ease-in-out',
               }}
             >
-              {/* Profile Picture + Intro */}
+              {/* Profile Image - Centered */}
               <div
                 style={{
-                  display: 'grid',
-                  gridTemplateColumns: isMobile ? '1fr' : 'auto 1fr',
-                  gap: '2rem',
-                  alignItems: 'center',
-                  marginBottom: '2.5rem',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginBottom: '2rem',
                 }}
               >
                 <div
                   style={{
-                    width: isMobile ? '110px' : '140px',
-                    height: isMobile ? '110px' : '140px',
+                    width: '180px',
+                    height: '180px',
                     borderRadius: '50%',
                     overflow: 'hidden',
                     border: `2px solid var(--text-08)`,
                     background: `linear-gradient(135deg, var(--glass-03), var(--glass-01))`,
-                    margin: isMobile ? '0 auto' : '0',
+                    boxShadow: `0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 var(--text-10)`,
                   }}
                 >
                   <Image
                     src="/images/profile/mypic.png"
-                    alt="Nihar - Product Designer at Air India DesignLAB"
-                    width={140}
-                    height={140}
+                    alt="Nihar Sunkara - Product Designer"
+                    width={180}
+                    height={180}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     priority
                   />
                 </div>
-                <div style={{ textAlign: isMobile ? 'center' : 'left' }}>
-                  <h2
-                    style={{
-                      fontSize: 'clamp(1.75rem, 3vw, 2.25rem)',
-                      fontWeight: '600',
-                      marginBottom: '0.75rem',
-                      background: `linear-gradient(135deg, var(--text-95), var(--text-70))`,
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
-                    }}
-                  >
-                    Hi, I'm Nihar
-                  </h2>
-                  <p
-                    style={{
-                      fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-                      color: 'var(--text-70)',
-                      lineHeight: '1.6',
-                    }}
-                  >
-                    Product Designer building living interfaces at{' '}
-                    <span style={{ color: 'var(--brand-red)', fontWeight: '500' }}>
-                      Air India DesignLAB
-                    </span>
-                    .
-                  </p>
-                </div>
               </div>
 
-              {/* Journey Timeline */}
-              <div
+              {/* Name */}
+              <h2
                 style={{
-                  paddingTop: '2rem',
-                  borderTop: `1px solid var(--text-06)`,
+                  fontSize: 'clamp(1.75rem, 3vw, 2.25rem)',
+                  fontWeight: '500',
+                  marginBottom: '0.75rem',
+                  color: 'var(--text-95)',
+                  textAlign: 'center',
                 }}
               >
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    gap: 'clamp(0.5rem, 1vw, 0.75rem)',
-                    paddingBottom: '1rem',
-                  }}
-                >
-                  {journeyMilestones.map((milestone, index) => (
-                    <React.Fragment key={milestone.id}>
-                      {/* Logo Container */}
-                      <div
-                        onClick={() =>
-                          setActiveTimeline(activeTimeline === milestone.id ? null : milestone.id)
-                        }
-                        style={{
-                          position: 'relative',
-                          cursor: 'pointer',
-                          transition: 'all 0.3s ease',
-                          transform:
-                            activeTimeline === milestone.id ? 'scale(1.1)' : 'scale(1)',
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: 'clamp(70px, 8vw, 85px)',
-                            height: 'clamp(70px, 8vw, 85px)',
-                            borderRadius: '50%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            background: milestone.logoFile
-                              ? 'var(--text-95)'
-                              : `linear-gradient(135deg, var(--glass-08), var(--glass-03))`,
-                            border: `1px solid var(--text-10)`,
-                            padding: milestone.logoFile ? '1rem' : '0',
-                            boxShadow:
-                              activeTimeline === milestone.id
-                                ? '0 8px 32px rgba(218, 14, 41, 0.3)'
-                                : `0 4px 16px rgba(0, 0, 0, 0.1)`,
-                            transition: 'all 0.3s ease',
-                          }}
-                        >
-                          {milestone.logoFile ? (
-                            <Image
-                              src={`/logos/${milestone.logoFile}`}
-                              alt={milestone.organization || milestone.label}
-                              width={64}
-                              height={64}
-                              style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'contain',
-                              }}
-                            />
-                          ) : (
-                            <Sparkles
-                              size={32}
-                              style={{ color: 'var(--text-50)' }}
-                            />
-                          )}
-                        </div>
-                        <div
-                          style={{
-                            position: 'absolute',
-                            bottom: '-1.75rem',
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            fontSize: '0.75rem',
-                            color: 'var(--text-50)',
-                            whiteSpace: 'nowrap',
-                            fontWeight: '500',
-                          }}
-                        >
-                          {milestone.year}
-                        </div>
-                      </div>
+                Nihar Sunkara
+              </h2>
 
-                      {/* Separator Line */}
-                      {index < journeyMilestones.length - 1 && (
-                        <div
-                          style={{
-                            width: 'clamp(20px, 3vw, 40px)',
-                            height: '1px',
-                            background:
-                              `linear-gradient(to right, var(--text-20), var(--text-05))`,
-                            alignSelf: 'flex-start',
-                            marginTop: 'clamp(40px, 4.5vw, 48px)',
-                          }}
-                        />
-                      )}
-                    </React.Fragment>
-                  ))}
-                </div>
+              {/* Current Role */}
+              <p
+                style={{
+                  fontSize: 'clamp(1rem, 2vw, 1.125rem)',
+                  fontWeight: '300',
+                  color: 'var(--text-70)',
+                  lineHeight: '1.6',
+                  textAlign: 'center',
+                  marginBottom: '1rem',
+                }}
+              >
+                Product Designer at{' '}
+                <span style={{ color: 'var(--brand-red)', fontWeight: '500' }}>
+                  Air India DesignLAB
+                </span>
+              </p>
 
-                {/* Timeline Detail */}
-                {activeTimeline && (
+              {/* Brief Credentials */}
+              <p
+                style={{
+                  fontSize: 'clamp(0.9375rem, 1.75vw, 1.0625rem)',
+                  fontWeight: '300',
+                  color: 'var(--text-65)',
+                  textAlign: 'center',
+                  marginBottom: '2.5rem',
+                }}
+              >
+                MDes from NID • ISB YLP • Previously Infosys
+              </p>
+
+              {/* CTA Buttons */}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  gap: '1rem',
+                  flexWrap: 'wrap',
+                }}
+              >
+                {/* Learn More Button */}
+                <Link href="/about">
                   <div
                     style={{
-                      marginTop: '2rem',
-                      padding: '1.5rem',
-                      background: 'var(--glass-03)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      padding: '0.875rem 1.75rem',
+                      background: 'var(--glass-04)',
+                      backdropFilter: 'blur(40px) saturate(150%)',
+                      border: `1px solid var(--text-10)`,
                       borderRadius: '16px',
-                      border: `1px solid var(--text-05)`,
-                      animation: 'fadeIn 0.3s ease',
+                      color: 'var(--text-95)',
+                      fontSize: '0.875rem',
+                      fontWeight: '500',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                      boxShadow: `0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 var(--text-10)`,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'var(--glass-08)';
+                      e.currentTarget.style.border = `1px solid var(--text-20)`;
+                      e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+                      e.currentTarget.style.boxShadow = `0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 var(--text-15)`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'var(--glass-04)';
+                      e.currentTarget.style.border = `1px solid var(--text-10)`;
+                      e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                      e.currentTarget.style.boxShadow = `0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 var(--text-10)`;
                     }}
                   >
-                    <h3
-                      style={{
-                        fontSize: '1.125rem',
-                        fontWeight: '600',
-                        marginBottom: '0.5rem',
-                        color: 'var(--text-90)',
-                      }}
-                    >
-                      {
-                        journeyMilestones.find((m) => m.id === activeTimeline)
-                          ?.label
-                      }
-                      {journeyMilestones.find((m) => m.id === activeTimeline)
-                        ?.organization && (
-                        <span
-                          style={{
-                            fontSize: '0.875rem',
-                            fontWeight: '400',
-                            color: 'var(--text-50)',
-                            marginLeft: '0.5rem',
-                          }}
-                        >
-                          •{' '}
-                          {
-                            journeyMilestones.find((m) => m.id === activeTimeline)
-                              ?.organization
-                          }
-                        </span>
-                      )}
-                    </h3>
-                    <p
-                      style={{
-                        fontSize: '0.9375rem',
-                        color: 'var(--text-60)',
-                        lineHeight: '1.6',
-                      }}
-                    >
-                      {
-                        journeyMilestones.find((m) => m.id === activeTimeline)
-                          ?.detail
-                      }
-                    </p>
+                    <User size={16} />
+                    Learn More
                   </div>
-                )}
+                </Link>
 
-                {/* Explore Full Journey Button */}
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    marginTop: '3.5rem',
-                  }}
-                >
-                  <Link href="/journey">
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.75rem',
-                        padding: '1.25rem 2.5rem',
-                        background: 'var(--glass-04)',
-                        backdropFilter: 'blur(40px) saturate(150%)',
-                        border: `1px solid var(--text-10)`,
-                        borderRadius: '16px',
-                        color: 'var(--text-95)',
-                        fontSize: '1.0625rem',
-                        fontWeight: '500',
-                        cursor: 'pointer',
-                        transition: 'all 0.3s ease',
-                        boxShadow: `0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 var(--text-10)`,
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'var(--glass-08)';
-                        e.currentTarget.style.border = `1px solid var(--text-20)`;
-                        e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
-                        e.currentTarget.style.boxShadow = `0 12px 48px rgba(0, 0, 0, 0.3), inset 0 1px 0 var(--text-15)`;
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'var(--glass-04)';
-                        e.currentTarget.style.border = `1px solid var(--text-10)`;
-                        e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                        e.currentTarget.style.boxShadow = `0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 var(--text-10)`;
-                      }}
-                    >
-                      <Map size={20} />
-                      Explore Full Journey
-                      <ArrowRight size={20} />
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Three Pillars Grid */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                gap: '2rem',
-                marginTop: '4rem',
-                marginBottom: '4rem',
-              }}
-            >
-              {/* Right Now Card */}
-              <div
-                ref={pillar1Ref}
-                style={{
-                  position: 'relative',
-                  background: 'var(--glass-15)',
-                  backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
-                  WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
-                  borderRadius: '28px',
-                  padding: '2.5rem',
-                  border: `1px solid var(--text-08)`,
-                  boxShadow: `0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px var(--text-02) inset`,
-                  opacity: pillar1InView && mounted ? 1 : 0,
-                  transform: pillar1InView && mounted ? 'translateY(0) scale(1)' : 'translateY(60px) scale(0.95)',
-                  transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
-                  cursor: 'default',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.02) translateY(-8px)';
-                  e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.4)';
-                  e.currentTarget.style.boxShadow = `0 12px 48px rgba(0, 0, 0, 0.5), 0px 0px 24px rgba(218, 14, 41, 0.1), 0px 0px 8px var(--text-02) inset`;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1) translateY(0)';
-                  e.currentTarget.style.borderColor = 'var(--text-08)';
-                  e.currentTarget.style.boxShadow = `0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px var(--text-02) inset`;
-                }}
-              >
-                <Briefcase size={36} style={{ color: 'rgba(218, 14, 41, 0.9)', marginBottom: '1.5rem' }} />
-                <h4
-                  style={{
-                    fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
-                    fontWeight: '500',
-                    marginBottom: '1rem',
-                    color: 'var(--text-95)',
-                    lineHeight: '1.3',
-                  }}
-                >
-                  Right Now
-                </h4>
-                <p
-                  style={{
-                    fontSize: 'clamp(1rem, 1.5vw, 1.0625rem)',
-                    color: 'var(--text-70)',
-                    lineHeight: '1.7',
-                    fontWeight: '300',
-                    marginBottom: '1.5rem',
-                  }}
-                >
-                  Building design systems at Air India. 450+ daily users. Aviation UX.
-                </p>
-                <div
-                  style={{
-                    display: 'inline-block',
-                    padding: '0.5rem 1rem',
-                    background: 'rgba(34, 197, 94, 0.15)',
-                    color: 'rgba(34, 197, 94, 1)',
-                    fontSize: '0.875rem',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(34, 197, 94, 0.3)',
-                    fontWeight: '500',
-                  }}
-                >
-                  Open to opportunities
-                </div>
-              </div>
-
-              {/* Belief Card */}
-              <div
-                ref={pillar2Ref}
-                style={{
-                  position: 'relative',
-                  background: 'var(--glass-15)',
-                  backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
-                  WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
-                  borderRadius: '28px',
-                  padding: '2.5rem',
-                  border: `1px solid var(--text-08)`,
-                  boxShadow: `0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px var(--text-02) inset`,
-                  opacity: pillar2InView && mounted ? 1 : 0,
-                  transform: pillar2InView && mounted ? 'translateY(0) scale(1)' : 'translateY(60px) scale(0.95)',
-                  transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
-                  cursor: 'default',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.02) translateY(-8px)';
-                  e.currentTarget.style.borderColor = 'rgba(147, 51, 234, 0.4)';
-                  e.currentTarget.style.boxShadow = `0 12px 48px rgba(0, 0, 0, 0.5), 0px 0px 24px rgba(147, 51, 234, 0.1), 0px 0px 8px var(--text-02) inset`;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1) translateY(0)';
-                  e.currentTarget.style.borderColor = 'var(--text-08)';
-                  e.currentTarget.style.boxShadow = `0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px var(--text-02) inset`;
-                }}
-              >
-                <Sparkles size={36} style={{ color: 'rgba(147, 51, 234, 0.9)', marginBottom: '1.5rem' }} />
-                <h4
-                  style={{
-                    fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
-                    fontWeight: '500',
-                    marginBottom: '1rem',
-                    color: 'var(--text-95)',
-                    lineHeight: '1.3',
-                  }}
-                >
-                  Belief
-                </h4>
-                <p
-                  style={{
-                    fontSize: 'clamp(1rem, 1.5vw, 1.0625rem)',
-                    color: 'var(--text-70)',
-                    lineHeight: '1.7',
-                    fontWeight: '300',
-                  }}
-                >
-                  Interfaces should breathe, remember, and evolve. Reduce time between thought and action.
-                </p>
-              </div>
-
-              {/* How I Work Card */}
-              <div
-                ref={pillar3Ref}
-                style={{
-                  position: 'relative',
-                  background: 'var(--glass-15)',
-                  backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
-                  WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
-                  borderRadius: '28px',
-                  padding: '2.5rem',
-                  border: `1px solid var(--text-08)`,
-                  boxShadow: `0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px var(--text-02) inset`,
-                  opacity: pillar3InView && mounted ? 1 : 0,
-                  transform: pillar3InView && mounted ? 'translateY(0) scale(1)' : 'translateY(60px) scale(0.95)',
-                  transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s',
-                  cursor: 'default',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.02) translateY(-8px)';
-                  e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.4)';
-                  e.currentTarget.style.boxShadow = `0 12px 48px rgba(0, 0, 0, 0.5), 0px 0px 24px rgba(59, 130, 246, 0.1), 0px 0px 8px var(--text-02) inset`;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1) translateY(0)';
-                  e.currentTarget.style.borderColor = 'var(--text-08)';
-                  e.currentTarget.style.boxShadow = `0 8px 32px rgba(0, 0, 0, 0.4), 0px 0px 8px var(--text-02) inset`;
-                }}
-              >
-                <Layers size={36} style={{ color: 'rgba(59, 130, 246, 0.9)', marginBottom: '1.5rem' }} />
-                <h4
-                  style={{
-                    fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
-                    fontWeight: '500',
-                    marginBottom: '1rem',
-                    color: 'var(--text-95)',
-                    lineHeight: '1.3',
-                  }}
-                >
-                  How I Work
-                </h4>
-                <p
-                  style={{
-                    fontSize: 'clamp(1rem, 1.5vw, 1.0625rem)',
-                    color: 'var(--text-70)',
-                    lineHeight: '1.7',
-                    fontWeight: '300',
-                  }}
-                >
-                  Systems thinking. Creative coding. Data-driven design. Prototyping first.
-                </p>
+                {/* Full Journey Button */}
+                <Link href="/journey">
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      padding: '0.875rem 1.75rem',
+                      background: 'var(--glass-04)',
+                      backdropFilter: 'blur(40px) saturate(150%)',
+                      border: `1px solid var(--text-10)`,
+                      borderRadius: '16px',
+                      color: 'var(--text-95)',
+                      fontSize: '0.875rem',
+                      fontWeight: '500',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                      boxShadow: `0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 var(--text-10)`,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'var(--glass-08)';
+                      e.currentTarget.style.border = `1px solid var(--text-20)`;
+                      e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+                      e.currentTarget.style.boxShadow = `0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 var(--text-15)`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'var(--glass-04)';
+                      e.currentTarget.style.border = `1px solid var(--text-10)`;
+                      e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                      e.currentTarget.style.boxShadow = `0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 var(--text-10)`;
+                    }}
+                  >
+                    <Map size={16} />
+                    Full Journey
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
