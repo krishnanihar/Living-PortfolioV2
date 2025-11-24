@@ -35,6 +35,17 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   const [activeTimeline, setActiveTimeline] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [hoveredButton, setHoveredButton] = useState<'about' | 'journey' | null>(null);
+  const stackingCardsRef = useRef<HTMLDivElement>(null);
+
+  // Shared scroll progress for horizontal scroll
+  const { scrollYProgress } = useScroll({
+    target: stackingCardsRef,
+    offset: ['start start', 'end end']
+  });
+
+  // Horizontal scroll transform - cards move left as you scroll down
+  // 4 cards * 380px + 3 gaps * 32px = 1616px total, minus viewport width (~1200px) = ~416px scroll
+  const horizontalTranslate = useTransform(scrollYProgress, [0, 1], [0, -1200]);
 
   // SVG dynamic color helper (for project-specific colors that can't use CSS variables)
   const getThemedSvgColor = (r: number, g: number, b: number, alpha: number) =>
@@ -238,283 +249,175 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
     }
   ];
 
-  // Stacking Card Component
-  interface StackingCardProps {
+  // Horizontal Scroll Card Component
+  interface HorizontalCardProps {
     project: typeof featuredProjects[0];
     index: number;
-    totalCards: number;
   }
 
-  function StackingCard({ project, index, totalCards }: StackingCardProps) {
-    const cardRef = useRef<HTMLDivElement>(null);
+  function HorizontalCard({ project, index }: HorizontalCardProps) {
     const [isHovered, setIsHovered] = useState(false);
-
-    // Scroll progress for this card
-    const { scrollYProgress } = useScroll({
-      target: cardRef,
-      offset: ["start start", "end center"]
-    });
-
-    // Scale transform (progressive scaling based on card position)
-    const targetScale = 1 - (totalCards - index) * 0.05;
-    const scale = useTransform(scrollYProgress, [0, 1], [1, targetScale]);
-
-    // Image parallax zoom
-    const imageScale = useTransform(scrollYProgress, [0, 1], [1.2, 1]);
-
-    // Project brand color with proper typing
     const brandRgb = `${project.brandColor.r}, ${project.brandColor.g}, ${project.brandColor.b}`;
 
     return (
-      <>
-        <style jsx>{`
-          @media (max-width: 768px) {
-            .stacking-card-hero {
-              height: 200px !important;
-            }
-            .stacking-card-metrics {
-              grid-template-columns: 1fr !important;
-            }
-            .stacking-card-content {
-              padding: 1.5rem !important;
-            }
-          }
-
-          @media (min-width: 769px) and (max-width: 1023px) {
-            .stacking-card-hero {
-              height: 240px !important;
-            }
-          }
-        `}</style>
-        <motion.div
-          ref={cardRef}
+      <Link
+        href={project.link}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        style={{
+          display: 'block',
+          width: '380px',
+          minWidth: '380px',
+          textDecoration: 'none',
+          position: 'relative',
+          borderRadius: '20px',
+          border: '2px solid transparent',
+          background: `
+            linear-gradient(rgba(10, 10, 10, 0.6), rgba(10, 10, 10, 0.6)) padding-box,
+            conic-gradient(
+              from var(--border-angle),
+              transparent 0%,
+              transparent 10%,
+              rgba(${brandRgb}, 0.4) 15%,
+              rgba(${brandRgb}, 0.6) 25%,
+              rgba(${brandRgb}, 0.4) 35%,
+              transparent 50%,
+              transparent 100%
+            ) border-box
+          `,
+          animation: 'rotateBorder 8s linear infinite',
+          overflow: 'hidden',
+          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+          transform: isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
+          boxShadow: isHovered
+            ? `0 20px 60px rgba(0, 0, 0, 0.5), 0 0 50px rgba(${brandRgb}, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)`
+            : `0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08)`,
+        }}
+      >
+        {/* Hero Image Area */}
+        <div
           style={{
-            scale,
-            zIndex: totalCards - index,
-            top: `calc(-5vh + ${index * (typeof window !== 'undefined' && window.innerWidth < 768 ? 20 : 30)}px)`,
-            transformOrigin: 'top center',
-          }}
-          className="sticky"
-        >
-        <Link
-          href={project.link}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          style={{
-            display: 'block',
-            width: '100%',
-            maxWidth: '1000px',
-            margin: '0 auto',
-            textDecoration: 'none',
             position: 'relative',
-            borderRadius: '20px',
-            border: '2px solid transparent',
-            background: `
-              linear-gradient(rgba(10, 10, 10, 0.4), rgba(10, 10, 10, 0.4)) padding-box,
-              conic-gradient(
-                from var(--border-angle),
-                transparent 0%,
-                transparent 10%,
-                rgba(${brandRgb}, 0.4) 15%,
-                rgba(${brandRgb}, 0.6) 25%,
-                rgba(${brandRgb}, 0.4) 35%,
-                transparent 50%,
-                transparent 100%
-              ) border-box
-            `,
-            animation: 'rotateBorder 8s linear infinite',
+            height: '180px',
             overflow: 'hidden',
-            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-            transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
-            boxShadow: isHovered
-              ? `0 16px 48px rgba(0, 0, 0, 0.4), 0 0 40px rgba(${brandRgb}, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1)`
-              : `0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08)`,
+            background: `linear-gradient(135deg, rgba(${brandRgb}, 0.35), rgba(${brandRgb}, 0.15))`,
           }}
         >
-          {/* Hero Image Area */}
-          <div
-            className="stacking-card-hero"
+          <Image
+            src={project.image}
+            alt={project.title}
+            fill
             style={{
-              position: 'relative',
-              height: '280px',
+              objectFit: 'cover',
+              transition: 'transform 0.4s ease',
+              transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+            }}
+            quality={90}
+            priority={index === 0}
+          />
+        </div>
+
+        {/* Content Area */}
+        <div
+          style={{
+            padding: '1.25rem',
+            backdropFilter: 'blur(120px) saturate(200%) brightness(1.05)',
+            WebkitBackdropFilter: 'blur(120px) saturate(200%) brightness(1.05)',
+          }}
+        >
+          {/* Category & Year */}
+          <div
+            style={{
+              fontSize: '0.6875rem',
+              fontWeight: '400',
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              color: 'var(--text-60)',
+              marginBottom: '0.5rem',
+            }}
+          >
+            {project.category} • {project.year}
+          </div>
+
+          {/* Title */}
+          <h4
+            style={{
+              fontSize: '1.25rem',
+              fontWeight: '300',
+              color: 'var(--text-95)',
+              marginBottom: '0.5rem',
+              lineHeight: '1.2',
+            }}
+          >
+            {project.title}
+          </h4>
+
+          {/* Description - Truncated */}
+          <p
+            style={{
+              fontSize: '0.8125rem',
+              fontWeight: '300',
+              color: 'var(--text-70)',
+              lineHeight: '1.5',
+              marginBottom: '1rem',
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
-              background: `linear-gradient(135deg, rgba(${brandRgb}, 0.35), rgba(${brandRgb}, 0.15))`,
             }}
           >
-            <motion.div
-              style={{
-                scale: imageScale,
-                width: '100%',
-                height: '100%',
-                position: 'relative',
-              }}
-            >
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                style={{ objectFit: 'cover' }}
-                quality={90}
-                priority={index === 0}
-              />
-            </motion.div>
-          </div>
+            {project.description}
+          </p>
 
-          {/* Content Area */}
+          {/* Tags - Limited */}
           <div
-            className="stacking-card-content"
             style={{
-              padding: 'clamp(1.5rem, 2.5vw, 2rem)',
-              backdropFilter: 'blur(120px) saturate(200%) brightness(1.05)',
-              WebkitBackdropFilter: 'blur(120px) saturate(200%) brightness(1.05)',
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '0.375rem',
+              marginBottom: '1rem',
             }}
           >
-            {/* Category & Year */}
-            <div
-              style={{
-                fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
-                fontWeight: '400',
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                color: 'var(--text-60)',
-                marginBottom: '0.75rem',
-              }}
-            >
-              {project.category} • {project.year}
-            </div>
-
-            {/* Title */}
-            <h3
-              style={{
-                fontSize: 'clamp(2rem, 3.5vw, 3rem)',
-                fontWeight: '300',
-                color: 'var(--text-95)',
-                marginBottom: '1rem',
-                lineHeight: '1.2',
-              }}
-            >
-              {project.title}
-            </h3>
-
-            {/* Description */}
-            <p
-              style={{
-                fontSize: 'clamp(1rem, 1.75vw, 1.125rem)',
-                fontWeight: '300',
-                color: 'var(--text-75)',
-                lineHeight: '1.6',
-                marginBottom: '2rem',
-              }}
-            >
-              {project.description}
-            </p>
-
-            {/* Metrics Grid */}
-            <div
-              className="stacking-card-metrics"
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '1rem',
-                marginBottom: '2rem',
-              }}
-            >
-              {project.metrics.map((metric, idx) => {
-                const MetricIcon = metric.icon;
-                return (
-                  <div
-                    key={idx}
-                    style={{
-                      padding: '1.25rem',
-                      background: 'var(--glass-10)',
-                      backdropFilter: 'blur(40px)',
-                      WebkitBackdropFilter: 'blur(40px)',
-                      border: `1px solid rgba(${brandRgb}, 0.2)`,
-                      borderRadius: '16px',
-                    }}
-                  >
-                    <MetricIcon
-                      size={20}
-                      style={{
-                        color: `rgba(${brandRgb}, 0.8)`,
-                        marginBottom: '0.5rem',
-                      }}
-                    />
-                    <div
-                      style={{
-                        fontSize: 'clamp(1.5rem, 2.5vw, 2rem)',
-                        fontWeight: '200',
-                        color: 'var(--text-95)',
-                        marginBottom: '0.25rem',
-                      }}
-                    >
-                      {metric.value}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: '0.8125rem',
-                        color: 'var(--text-60)',
-                      }}
-                    >
-                      {metric.label}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Tags */}
-            <div
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '0.5rem',
-                marginBottom: '2.5rem',
-              }}
-            >
-              {project.tags.map((tag, idx) => (
-                <span
-                  key={idx}
-                  style={{
-                    padding: '0.5rem 1rem',
-                    background: 'var(--glass-08)',
-                    border: `1px solid rgba(${brandRgb}, 0.15)`,
-                    borderRadius: '8px',
-                    fontSize: '0.8125rem',
-                    fontWeight: '400',
-                    color: 'var(--text-70)',
-                    transition: 'transform 0.2s ease',
-                  }}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            {/* CTA Button */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                fontSize: '0.9375rem',
-                fontWeight: '500',
-                color: `rgba(${brandRgb}, 0.9)`,
-              }}
-            >
-              <span>View Case Study</span>
-              <ArrowRight
-                size={16}
+            {project.tags.slice(0, 3).map((tag, idx) => (
+              <span
+                key={idx}
                 style={{
-                  transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  transform: isHovered ? 'translateX(4px) rotate(-45deg)' : 'translateX(0) rotate(0deg)',
+                  padding: '0.375rem 0.75rem',
+                  background: 'var(--glass-08)',
+                  border: `1px solid rgba(${brandRgb}, 0.15)`,
+                  borderRadius: '6px',
+                  fontSize: '0.6875rem',
+                  fontWeight: '400',
+                  color: 'var(--text-60)',
                 }}
-              />
-            </div>
+              >
+                {tag}
+              </span>
+            ))}
           </div>
-        </Link>
-      </motion.div>
-      </>
+
+          {/* CTA */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              fontSize: '0.8125rem',
+              fontWeight: '500',
+              color: `rgba(${brandRgb}, 0.9)`,
+            }}
+          >
+            <span>View Case Study</span>
+            <ArrowRight
+              size={14}
+              style={{
+                transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
+              }}
+            />
+          </div>
+        </div>
+      </Link>
     );
   }
 
@@ -1714,81 +1617,119 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               My work
             </h3>
 
-            {/* Stacking Cards Section */}
+            {/* Horizontal Scroll Cards Section */}
             <div
+              ref={stackingCardsRef}
               style={{
-                maxWidth: '1000px',
-                margin: '4rem auto 0',
-                padding: '0 clamp(1.5rem, 3vw, 2.5rem)',
                 position: 'relative',
-                height: '400vh', // Provides scroll space for stacking animation
+                height: '300vh', // Scroll space for horizontal animation
               }}
             >
-              {/* Render stacking cards */}
-              {featuredProjects.map((project, index) => (
-                <StackingCard
-                  key={project.id}
-                  project={project}
-                  index={index}
-                  totalCards={featuredProjects.length}
-                />
-              ))}
-
-              {/* View All Work Button */}
+              {/* Sticky container that stays fixed while scrolling */}
               <div
                 style={{
+                  position: 'sticky',
+                  top: 0,
+                  height: '100vh',
                   display: 'flex',
+                  flexDirection: 'column',
                   justifyContent: 'center',
-                  marginTop: '4rem',
-                  paddingBottom: '4rem',
+                  overflow: 'hidden',
                 }}
               >
-                <Link
-                  href="/work"
+                {/* Horizontal scrolling cards */}
+                <motion.div
                   style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    padding: '0.875rem 1.75rem',
-                    background: 'rgba(10, 10, 10, 0.6)',
-                    backdropFilter: 'blur(100px) saturate(180%)',
-                    WebkitBackdropFilter: 'blur(100px) saturate(180%)',
-                    border: `1px solid var(--text-08)`,
-                    borderRadius: '15px',
-                    color: 'var(--text-95)',
-                    textDecoration: 'none',
-                    fontSize: '0.9375rem',
-                    fontWeight: '400',
-                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                    boxShadow: `
-                      inset 0 1px 0 var(--text-02),
-                      inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-                      0 8px 24px rgba(0, 0, 0, 0.6)
-                    `,
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'var(--glass-05)';
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.boxShadow = `
-                      inset 0 1px 0 var(--text-02),
-                      inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-                      0 12px 32px rgba(0, 0, 0, 0.7)
-                    `;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(10, 10, 10, 0.6)';
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = `
-                      inset 0 1px 0 var(--text-02),
-                      inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-                      0 8px 24px rgba(0, 0, 0, 0.6)
-                    `;
+                    display: 'flex',
+                    gap: '2rem',
+                    paddingLeft: 'calc(50vw - 190px)', // Start first card centered
+                    paddingRight: '50vw',
+                    x: horizontalTranslate,
                   }}
                 >
-                  <span>View All Work</span>
-                  <ArrowRight size={16} />
-                </Link>
+                  {featuredProjects.map((project, index) => (
+                    <HorizontalCard
+                      key={project.id}
+                      project={project}
+                      index={index}
+                    />
+                  ))}
+                </motion.div>
+
+                {/* Scroll indicator */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '2rem',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    color: 'var(--text-40)',
+                    fontSize: '0.75rem',
+                    fontWeight: '400',
+                  }}
+                >
+                  <span>Scroll to explore</span>
+                  <ArrowRight size={14} />
+                </div>
               </div>
+            </div>
+
+            {/* View All Work Button - Outside scroll container */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                padding: '4rem 0',
+              }}
+            >
+              <Link
+                href="/work"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.875rem 1.75rem',
+                  background: 'rgba(10, 10, 10, 0.6)',
+                  backdropFilter: 'blur(100px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(100px) saturate(180%)',
+                  border: `1px solid var(--text-08)`,
+                  borderRadius: '15px',
+                  color: 'var(--text-95)',
+                  textDecoration: 'none',
+                  fontSize: '0.9375rem',
+                  fontWeight: '400',
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  boxShadow: `
+                    inset 0 1px 0 var(--text-02),
+                    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                    0 8px 24px rgba(0, 0, 0, 0.6)
+                  `,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'var(--glass-05)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = `
+                    inset 0 1px 0 var(--text-02),
+                    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                    0 12px 32px rgba(0, 0, 0, 0.7)
+                  `;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(10, 10, 10, 0.6)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = `
+                    inset 0 1px 0 var(--text-02),
+                    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                    0 8px 24px rgba(0, 0, 0, 0.6)
+                  `;
+                }}
+              >
+                <span>View All Work</span>
+                <ArrowRight size={16} />
+              </Link>
             </div>
           </div>
         </div>
