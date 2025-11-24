@@ -4,31 +4,18 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ChevronDown, Mail, Github } from 'lucide-react';
 
-// iOS Glass Button Styles
-const IOS_GLASS_PRIMARY = {
-  background: 'rgba(218, 14, 41, 0.15)',
-  backdropFilter: 'blur(40px) saturate(180%) brightness(1.08)',
-  border: '1px solid rgba(218, 14, 41, 0.3)',
-  boxShadow: `
-    0 8px 24px rgba(218, 14, 41, 0.25),
-    0 4px 12px rgba(218, 14, 41, 0.15),
-    inset 0 1px 1px rgba(255, 255, 255, 0.2)
-  `,
-};
-
-const IOS_GLASS_SECONDARY = {
+// Unified Glass Button Style - Elegant & Minimal
+const UNIFIED_GLASS = {
   background: 'rgba(255, 255, 255, 0.08)',
-  backdropFilter: 'blur(40px) saturate(150%)',
-  border: '1px solid rgba(255, 255, 255, 0.12)',
+  backdropFilter: 'blur(60px) saturate(180%) brightness(1.05)',
+  border: '1px solid rgba(255, 255, 255, 0.15)',
   boxShadow: `
-    0 8px 24px rgba(0, 0, 0, 0.12),
-    0 4px 12px rgba(0, 0, 0, 0.08),
-    inset 0 1px 1px rgba(255, 255, 255, 0.15)
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.1)
   `,
 };
-
-// Noise texture for iOS realism
-const NOISE_TEXTURE = `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E")`;
 
 export function IntroductionSection() {
   const [hoveredButton, setHoveredButton] = useState<'contact' | 'github' | null>(null);
@@ -40,9 +27,9 @@ export function IntroductionSection() {
   const getGreeting = (visitCount: number, currentHour: number) => {
     const timeGreeting = currentHour < 12 ? 'Good morning' : currentHour < 17 ? 'Good afternoon' : 'Good evening';
 
-    if (visitCount === 1) return "Hi, I'm Nihar — welcome!";
-    if (visitCount <= 5) return `${timeGreeting}! I'm Nihar, welcome back.`;
-    return `${timeGreeting} again! I'm Nihar.`;
+    if (visitCount === 1) return "Hi, I'm Nihar. Welcome.";
+    if (visitCount <= 5) return `${timeGreeting}. I'm Nihar, welcome back.`;
+    return `${timeGreeting} again. I'm Nihar.`;
   };
 
   useEffect(() => {
@@ -137,9 +124,9 @@ export function IntroductionSection() {
             className="hero-greeting"
             style={{
               fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-              fontWeight: '300',
-              lineHeight: '1.2',
-              letterSpacing: '-0.02em',
+              fontWeight: '200',
+              lineHeight: '1.3',
+              letterSpacing: '0.01em',
               marginBottom: '1.5rem',
               color: 'rgba(255, 255, 255, 0.95)',
               opacity: animationStage >= 1 ? 1 : 0,
@@ -147,7 +134,7 @@ export function IntroductionSection() {
               transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
-            {greeting || "Hi, I'm Nihar — welcome!"}
+            {greeting || "Hi, I'm Nihar. Welcome."}
           </h1>
 
           {/* Subtitle */}
@@ -174,49 +161,61 @@ export function IntroductionSection() {
             </p>
           </div>
 
-          {/* iOS Glass Button Pair */}
+          {/* Unified Glass Button Pair */}
           <div
             className="hero-buttons"
             style={{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              gap: 'clamp(1rem, 2vw, 1.5rem)',
+              gap: 'clamp(1.5rem, 2.5vw, 2rem)',
               flexWrap: 'wrap',
               opacity: animationStage >= 3 ? 1 : 0,
               transform: animationStage >= 3 ? 'translateY(0)' : 'translateY(15px)',
               transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
             }}
           >
-            {/* Contact Button - Primary */}
+            {/* Contact Button */}
             <a
               href="mailto:krishnaniharsunkara@gmail.com"
               onMouseEnter={() => setHoveredButton('contact')}
               onMouseLeave={() => setHoveredButton(null)}
               style={{
+                position: 'relative',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                padding: '12px 24px',
-                ...IOS_GLASS_PRIMARY,
-                borderRadius: '12px',
+                padding: '14px 28px',
+                ...UNIFIED_GLASS,
+                background: hoveredButton === 'contact' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.08)',
+                borderColor: hoveredButton === 'contact' ? 'rgba(255, 255, 255, 0.22)' : 'rgba(255, 255, 255, 0.15)',
+                borderRadius: '14px',
                 color: 'rgba(255, 255, 255, 0.95)',
                 textDecoration: 'none',
                 fontSize: '1rem',
-                fontWeight: '500',
+                fontWeight: '400',
                 cursor: 'pointer',
                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                transform: hoveredButton === 'contact' ? 'translateY(-2px)' : 'translateY(0)',
-                filter: hoveredButton === 'contact' ? 'brightness(1.15)' : 'brightness(1)',
-                backgroundImage: NOISE_TEXTURE,
-                backgroundBlendMode: 'overlay',
+                transform: hoveredButton === 'contact' ? 'translateY(-2px) scale(1.02)' : 'translateY(0) scale(1)',
+                overflow: 'hidden',
               }}
             >
-              <Mail size={18} />
-              <span>Get in Touch</span>
+              {/* Subtle shimmer on hover */}
+              {hoveredButton === 'contact' && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%)',
+                    pointerEvents: 'none',
+                  }}
+                />
+              )}
+              <Mail size={16} style={{ position: 'relative', zIndex: 1 }} />
+              <span style={{ position: 'relative', zIndex: 1 }}>Contact</span>
             </a>
 
-            {/* GitHub Button - Secondary */}
+            {/* GitHub Button */}
             <a
               href="https://github.com/krishn404"
               target="_blank"
@@ -224,26 +223,38 @@ export function IntroductionSection() {
               onMouseEnter={() => setHoveredButton('github')}
               onMouseLeave={() => setHoveredButton(null)}
               style={{
+                position: 'relative',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                padding: '12px 24px',
-                ...IOS_GLASS_SECONDARY,
-                borderRadius: '12px',
-                color: 'rgba(255, 255, 255, 0.9)',
+                padding: '14px 28px',
+                ...UNIFIED_GLASS,
+                background: hoveredButton === 'github' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.08)',
+                borderColor: hoveredButton === 'github' ? 'rgba(255, 255, 255, 0.22)' : 'rgba(255, 255, 255, 0.15)',
+                borderRadius: '14px',
+                color: 'rgba(255, 255, 255, 0.95)',
                 textDecoration: 'none',
                 fontSize: '1rem',
-                fontWeight: '500',
+                fontWeight: '400',
                 cursor: 'pointer',
                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                transform: hoveredButton === 'github' ? 'translateY(-2px)' : 'translateY(0)',
-                borderColor: hoveredButton === 'github' ? 'rgba(255, 255, 255, 0.18)' : 'rgba(255, 255, 255, 0.12)',
-                backgroundImage: NOISE_TEXTURE,
-                backgroundBlendMode: 'overlay',
+                transform: hoveredButton === 'github' ? 'translateY(-2px) scale(1.02)' : 'translateY(0) scale(1)',
+                overflow: 'hidden',
               }}
             >
-              <Github size={18} />
-              <span>GitHub</span>
+              {/* Subtle shimmer on hover */}
+              {hoveredButton === 'github' && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%)',
+                    pointerEvents: 'none',
+                  }}
+                />
+              )}
+              <Github size={16} style={{ position: 'relative', zIndex: 1 }} />
+              <span style={{ position: 'relative', zIndex: 1 }}>GitHub</span>
             </a>
           </div>
         </div>
