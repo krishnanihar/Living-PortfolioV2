@@ -1036,18 +1036,47 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 </span>
               </p>
 
-              {/* Brief Credentials */}
-              <p
+              {/* Organization Logos */}
+              <div
                 style={{
-                  fontSize: 'clamp(0.9375rem, 1.75vw, 1.0625rem)',
-                  fontWeight: '300',
-                  color: 'var(--text-65)',
-                  textAlign: 'center',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  gap: '0.75rem',
                   marginBottom: '2.5rem',
                 }}
               >
-                MDes from NID • ISB YLP • Previously Infosys
-              </p>
+                {[
+                  { file: 'nid.svg', alt: 'NID' },
+                  { file: 'ISB.svg', alt: 'ISB' },
+                  { file: 'infosys.svg', alt: 'Infosys' },
+                  { file: 'air-india.svg', alt: 'Air India' }
+                ].map((logo) => (
+                  <div
+                    key={logo.file}
+                    style={{
+                      width: '48px',
+                      height: '48px',
+                      padding: '8px',
+                      borderRadius: '12px',
+                      background: 'var(--glass-03)',
+                      backdropFilter: 'blur(20px) saturate(110%)',
+                      border: '1px solid var(--text-08)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                    }}
+                  >
+                    <Image
+                      src={`/logos/${logo.file}`}
+                      alt={logo.alt}
+                      width={32}
+                      height={32}
+                      style={{ objectFit: 'contain', width: '100%', height: 'auto' }}
+                    />
+                  </div>
+                ))}
+              </div>
 
               {/* CTA Buttons */}
               <div
