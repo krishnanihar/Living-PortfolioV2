@@ -29,15 +29,28 @@ export function IntroductionSection() {
   const [hoveredButton, setHoveredButton] = useState<'contact' | 'github' | null>(null);
   const [mounted, setMounted] = useState(false);
   const [animationStage, setAnimationStage] = useState(0);
-  const [greeting, setGreeting] = useState('');
+  const [greeting, setGreeting] = useState({ timeGreeting: '', nameGreeting: '' });
 
   // Smart greeting system with localStorage
   const getGreeting = (visitCount: number, currentHour: number) => {
     const timeGreeting = currentHour < 12 ? 'Good morning' : currentHour < 17 ? 'Good afternoon' : 'Good evening';
 
-    if (visitCount === 1) return "Hi, I'm Nihar. Welcome.";
-    if (visitCount <= 5) return `${timeGreeting}. I'm Nihar, welcome back.`;
-    return `${timeGreeting} again. I'm Nihar.`;
+    if (visitCount === 1) {
+      return {
+        timeGreeting: 'Hi',
+        nameGreeting: "I'm Nihar. Welcome."
+      };
+    }
+    if (visitCount <= 5) {
+      return {
+        timeGreeting: timeGreeting,
+        nameGreeting: "I'm Nihar, welcome back."
+      };
+    }
+    return {
+      timeGreeting: `${timeGreeting} again`,
+      nameGreeting: "I'm Nihar."
+    };
   };
 
   useEffect(() => {
@@ -287,7 +300,23 @@ export function IntroductionSection() {
             textAlign: 'center',
           }}
         >
-          {/* Personalized Greeting - Integrated with Name */}
+          {/* Time-Based Greeting - Small, Subtle */}
+          <div
+            style={{
+              fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
+              fontWeight: '300',
+              color: 'rgba(255, 255, 255, 0.6)',
+              letterSpacing: '0.02em',
+              marginBottom: '0.5rem',
+              opacity: animationStage >= 1 ? 1 : 0,
+              transform: animationStage >= 1 ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+            }}
+          >
+            {greeting.timeGreeting || 'Hi'}
+          </div>
+
+          {/* Name & Welcome - Main Heading */}
           <h1
             className="hero-greeting"
             style={{
@@ -320,7 +349,7 @@ export function IntroductionSection() {
                 animation: 'gradientFlow 20s ease-in-out infinite',
               }}
             >
-              {greeting || "Hi, I'm Nihar. Welcome."}
+              {greeting.nameGreeting || "I'm Nihar. Welcome."}
             </span>
           </h1>
 
