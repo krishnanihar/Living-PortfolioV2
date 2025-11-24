@@ -10,6 +10,7 @@ import { Navigation, Pagination } from 'swiper/modules';
 import { ContactChat } from '../ContactChat';
 import { Chatbot } from '../Chatbot';
 import { useTheme } from '@/components/effects/ThemeProvider';
+import { ImageRipple } from '../effects/ImageRipple';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -38,6 +39,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   const pillar3Ref = useRef<HTMLDivElement>(null);
   const [activeTimeline, setActiveTimeline] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [hoveredButton, setHoveredButton] = useState<'about' | 'journey' | null>(null);
 
   // SVG dynamic color helper (for project-specific colors that can't use CSS variables)
   const getThemedSvgColor = (r: number, g: number, b: number, alpha: number) =>
@@ -381,6 +383,34 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           }
           100% {
             transform: rotate(360deg);
+          }
+        }
+
+        @keyframes gradientBorder {
+          0%, 100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+        }
+
+        @keyframes buttonGlow {
+          0%, 100% {
+            box-shadow:
+              0 12px 48px rgba(0, 0, 0, 0.15),
+              0 4px 16px rgba(0, 0, 0, 0.10),
+              inset 0 1px 2px rgba(255, 255, 255, 0.25),
+              inset 0 -1px 2px rgba(0, 0, 0, 0.15),
+              0 0 20px rgba(139, 92, 246, 0.08);
+          }
+          50% {
+            box-shadow:
+              0 12px 48px rgba(0, 0, 0, 0.15),
+              0 4px 16px rgba(0, 0, 0, 0.10),
+              inset 0 1px 2px rgba(255, 255, 255, 0.25),
+              inset 0 -1px 2px rgba(0, 0, 0, 0.15),
+              0 0 24px rgba(236, 72, 153, 0.12);
           }
         }
 
@@ -959,21 +989,31 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
               </h3>
             </div>
 
-          {/* Simple Profile Card */}
+          {/* Simple Profile Card with Animated Gradient Border */}
+          <div
+            style={{
+              position: 'relative',
+              maxWidth: '600px',
+              margin: '3rem auto 0',
+              padding: '2px',
+              borderRadius: '30px',
+              background: 'linear-gradient(90deg, #3B82F6 0%, #8B5CF6 33%, #EC4899 66%, #3B82F6 100%)',
+              backgroundSize: '200% 100%',
+              animation: act2InView && mounted ? 'gradientBorder 8s linear infinite' : 'none',
+              opacity: act2InView && mounted ? 1 : 0,
+              transform: act2InView && mounted ? 'translateY(0)' : 'translateY(30px)',
+              transition: 'opacity 0.8s ease-in-out, transform 0.8s ease-in-out',
+            }}
+          >
             <div
               style={{
                 position: 'relative',
-                maxWidth: '600px',
-                margin: '0 auto',
-                background: `linear-gradient(135deg, var(--glass-15) 0%, var(--glass-10) 100())`,
-                backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+                background: `linear-gradient(135deg, var(--glass-18) 0%, var(--glass-12) 100())`,
+                backdropFilter: 'blur(140px) saturate(160%) brightness(1.08)',
+                WebkitBackdropFilter: 'blur(140px) saturate(160%) brightness(1.08)',
                 borderRadius: '28px',
                 padding: 'clamp(2.5rem, 5vw, 3rem)',
-                border: `1px solid var(--text-06)`,
-                marginTop: '3rem',
-                opacity: act2InView && mounted ? 1 : 0,
-                transform: act2InView && mounted ? 'translateY(0)' : 'translateY(30px)',
-                transition: 'opacity 0.8s ease-in-out, transform 0.8s ease-in-out',
+                border: `1px solid var(--text-08)`,
               }}
             >
               {/* Profile Image - Centered */}
@@ -995,13 +1035,11 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                     boxShadow: `0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 var(--text-10)`,
                   }}
                 >
-                  <Image
-                    src="/images/profile/mypic.png"
+                  <ImageRipple
+                    imageSrc="/images/profile/mypic.png"
                     alt="Nihar Sunkara - Product Designer"
                     width={180}
                     height={180}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    priority
                   />
                 </div>
               </div>
@@ -1078,7 +1116,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 ))}
               </div>
 
-              {/* CTA Buttons */}
+              {/* CTA Buttons - Hero Style */}
               <div
                 style={{
                   display: 'flex',
@@ -1087,81 +1125,140 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   flexWrap: 'wrap',
                 }}
               >
-                {/* Learn More Button */}
+                {/* Learn More Button - Pink Accent */}
                 <Link href="/about">
                   <div
+                    onMouseEnter={() => setHoveredButton('about')}
+                    onMouseLeave={() => setHoveredButton(null)}
                     style={{
-                      display: 'flex',
+                      position: 'relative',
+                      display: 'inline-flex',
                       alignItems: 'center',
                       gap: '0.5rem',
                       padding: '0.875rem 1.75rem',
-                      background: 'var(--glass-04)',
-                      backdropFilter: 'blur(40px) saturate(150%)',
-                      border: `1px solid var(--text-10)`,
-                      borderRadius: '16px',
-                      color: 'var(--text-95)',
+                      background: hoveredButton === 'about'
+                        ? `linear-gradient(135deg, rgba(236, 72, 153, 0.04), rgba(139, 92, 246, 0.03))`
+                        : `linear-gradient(135deg, rgba(236, 72, 153, 0.03), rgba(139, 92, 246, 0.02))`,
+                      backdropFilter: 'blur(100px) saturate(220%) brightness(1.08)',
+                      WebkitBackdropFilter: 'blur(100px) saturate(220%) brightness(1.08)',
+                      border: hoveredButton === 'about' ? '1px solid rgba(236, 72, 153, 0.12)' : '1px solid rgba(236, 72, 153, 0.08)',
+                      borderRadius: '20px',
+                      color: 'rgba(255, 255, 255, 0.95)',
                       fontSize: '0.875rem',
                       fontWeight: '500',
                       cursor: 'pointer',
                       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                      boxShadow: `0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 var(--text-10)`,
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'var(--glass-08)';
-                      e.currentTarget.style.border = `1px solid var(--text-20)`;
-                      e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-                      e.currentTarget.style.boxShadow = `0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 var(--text-15)`;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'var(--glass-04)';
-                      e.currentTarget.style.border = `1px solid var(--text-10)`;
-                      e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                      e.currentTarget.style.boxShadow = `0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 var(--text-10)`;
+                      transform: hoveredButton === 'about' ? 'translateY(-2px) scale(1.02)' : 'translateY(0) scale(1)',
+                      overflow: 'hidden',
+                      boxShadow: `
+                        0 12px 48px rgba(0, 0, 0, 0.15),
+                        0 4px 16px rgba(0, 0, 0, 0.10),
+                        inset 0 1px 2px rgba(255, 255, 255, 0.25),
+                        inset 0 -1px 2px rgba(0, 0, 0, 0.15)
+                      `,
+                      animation: hoveredButton === 'about' ? 'buttonGlow 8s ease-in-out infinite' : 'none',
                     }}
                   >
-                    <User size={16} />
-                    Learn More
+                    {/* Refraction layer */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: `linear-gradient(135deg,
+                          rgba(236, 72, 153, 0.08) 0%,
+                          transparent 40%,
+                          transparent 60%,
+                          rgba(139, 92, 246, 0.05) 100%)`,
+                        mixBlendMode: 'overlay',
+                        pointerEvents: 'none',
+                        opacity: hoveredButton === 'about' ? 1 : 0.5,
+                        transition: 'opacity 0.3s ease',
+                      }}
+                    />
+                    {/* Shimmer effect */}
+                    {hoveredButton === 'about' && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'linear-gradient(90deg, transparent 0%, rgba(236, 72, 153, 0.08) 50%, transparent 100%)',
+                          pointerEvents: 'none',
+                        }}
+                      />
+                    )}
+                    <User size={15} style={{ position: 'relative', zIndex: 1 }} />
+                    <span style={{ position: 'relative', zIndex: 1 }}>Learn More</span>
                   </div>
                 </Link>
 
-                {/* Full Journey Button */}
+                {/* Full Journey Button - Blue Accent */}
                 <Link href="/journey">
                   <div
+                    onMouseEnter={() => setHoveredButton('journey')}
+                    onMouseLeave={() => setHoveredButton(null)}
                     style={{
-                      display: 'flex',
+                      position: 'relative',
+                      display: 'inline-flex',
                       alignItems: 'center',
                       gap: '0.5rem',
                       padding: '0.875rem 1.75rem',
-                      background: 'var(--glass-04)',
-                      backdropFilter: 'blur(40px) saturate(150%)',
-                      border: `1px solid var(--text-10)`,
-                      borderRadius: '16px',
-                      color: 'var(--text-95)',
+                      background: hoveredButton === 'journey'
+                        ? `linear-gradient(135deg, rgba(59, 130, 246, 0.04), rgba(139, 92, 246, 0.03))`
+                        : `linear-gradient(135deg, rgba(59, 130, 246, 0.03), rgba(139, 92, 246, 0.02))`,
+                      backdropFilter: 'blur(100px) saturate(220%) brightness(1.08)',
+                      WebkitBackdropFilter: 'blur(100px) saturate(220%) brightness(1.08)',
+                      border: hoveredButton === 'journey' ? '1px solid rgba(59, 130, 246, 0.12)' : '1px solid rgba(59, 130, 246, 0.08)',
+                      borderRadius: '20px',
+                      color: 'rgba(255, 255, 255, 0.95)',
                       fontSize: '0.875rem',
                       fontWeight: '500',
                       cursor: 'pointer',
                       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                      boxShadow: `0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 var(--text-10)`,
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'var(--glass-08)';
-                      e.currentTarget.style.border = `1px solid var(--text-20)`;
-                      e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-                      e.currentTarget.style.boxShadow = `0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 var(--text-15)`;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'var(--glass-04)';
-                      e.currentTarget.style.border = `1px solid var(--text-10)`;
-                      e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                      e.currentTarget.style.boxShadow = `0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 var(--text-10)`;
+                      transform: hoveredButton === 'journey' ? 'translateY(-2px) scale(1.02)' : 'translateY(0) scale(1)',
+                      overflow: 'hidden',
+                      boxShadow: `
+                        0 12px 48px rgba(0, 0, 0, 0.15),
+                        0 4px 16px rgba(0, 0, 0, 0.10),
+                        inset 0 1px 2px rgba(255, 255, 255, 0.25),
+                        inset 0 -1px 2px rgba(0, 0, 0, 0.15)
+                      `,
+                      animation: hoveredButton === 'journey' ? 'buttonGlow 8s ease-in-out infinite' : 'none',
                     }}
                   >
-                    <Map size={16} />
-                    Full Journey
+                    {/* Refraction layer */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: `linear-gradient(135deg,
+                          rgba(59, 130, 246, 0.08) 0%,
+                          transparent 40%,
+                          transparent 60%,
+                          rgba(139, 92, 246, 0.05) 100%)`,
+                        mixBlendMode: 'overlay',
+                        pointerEvents: 'none',
+                        opacity: hoveredButton === 'journey' ? 1 : 0.5,
+                        transition: 'opacity 0.3s ease',
+                      }}
+                    />
+                    {/* Shimmer effect */}
+                    {hoveredButton === 'journey' && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'linear-gradient(90deg, transparent 0%, rgba(59, 130, 246, 0.08) 50%, transparent 100%)',
+                          pointerEvents: 'none',
+                        }}
+                      />
+                    )}
+                    <Map size={15} style={{ position: 'relative', zIndex: 1 }} />
+                    <span style={{ position: 'relative', zIndex: 1 }}>Full Journey</span>
                   </div>
                 </Link>
               </div>
             </div>
+          </div>
           </div>
         </div>
 

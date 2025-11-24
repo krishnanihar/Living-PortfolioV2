@@ -62,7 +62,9 @@
       "Bash(then echo \"Build directory exists\")",
       "Bash(fi)",
       "Bash(npm run lint:*)",
-      "Bash(netstat:*)"
+      "Bash(netstat:*)",
+      "Bash(cloc:*)",
+      "Bash(serving millions across aviation, healthcare, and beyond.\"\n\"Including this site. Designed and coded from the ground up.\"\n\n## Why This Works for Recruiters\n\n✅ **Solves pain point**: Rare design + code combination\n✅ **Quantifiable impact**: \"millions of users\"\n✅ **Concrete proof**: Site built from scratch\n✅ **Clear differentiation**: What sets candidate apart\n✅ **Industry relevance**: Aviation, healthcare mentioned\n\n## Typography Refinement (50% reduction)\n\n**Main heading**:\n- Before: clamp(2.5rem, 5vw, 4.5rem) → 40-72px\n- After: clamp(1.75rem, 3.5vw, 3rem) → 28-48px\n- Weight: 200 → 300 (more readable)\n\n**Body paragraphs**:\n- Before: clamp(1.5rem, 3vw, 2.5rem) → 24-40px\n- After: clamp(1.125rem, 2.25vw, 1.75rem) → 18-28px\n- Line height: 1.4 → 1.6 (better readability)\n\n## Visual Enhancements\n\n- \"can 't\" emphasized with 0.7 opacity (subtle fading)\n- \"millions\" highlighted in brand red (#DA0E29)\n- \"from the ground up\" bolded (weight 400)\n- Breathing orb reduced: 120px → 100px\n- Spacing tightened: 4rem → 3rem margin-top\n\n## Animation Timing\n\nMaintained staggered fadeInUp animations:\n- Heading: 0.2s delay\n- First paragraph: 0.4s delay\n- Second paragraph: 0.6s delay (new)\n- Breathing orb: 0.8s delay\n\n## Result\n\nPhilosophy section transforms from philosophical manifesto to\ncompelling recruiter pitch. Smaller, more readable text with\nstronger impact through concrete value proposition, quantifiable\nscale, and proof of full-stack capability.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": []
