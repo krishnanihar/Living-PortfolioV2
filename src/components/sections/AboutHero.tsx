@@ -174,7 +174,7 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
           }}
           whileTap={{ scale: 0.95 }}
         >
-          <span>Explore</span>
+          <span>About Me</span>
           <motion.div
             animate={{ y: [0, 3, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
