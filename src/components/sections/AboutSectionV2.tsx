@@ -40,6 +40,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   // Horizontal lock state - self-contained horizontal scroll
   const [isLocked, setIsLocked] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false); // Smooth transition state
   const localSlideX = useMotionValue(0);
   const isAnimatingRef = useRef(false);
   const horizontalSectionRef = useRef<HTMLDivElement>(null);
@@ -118,26 +119,37 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
     };
   }, []);
 
-  // Intersection Observer - detect when horizontal section should lock
+  // Pre-emptive scroll detection - lock BEFORE section reaches top to prevent jank
   useEffect(() => {
     const section = horizontalSectionRef.current;
     if (!section) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const rect = entry.boundingClientRect;
-        // Lock when section top is at or above viewport top and section is mostly visible
-        if (rect.top <= 0 && rect.bottom > window.innerHeight * 0.5) {
-          if (!isLocked && currentSlide === 0) {
-            setIsLocked(true);
-          }
-        }
-      },
-      { threshold: [0, 0.1, 0.5, 0.9, 1], rootMargin: '0px' }
-    );
+    const handleScroll = () => {
+      const rect = section.getBoundingClientRect();
 
-    observer.observe(section);
-    return () => observer.disconnect();
+      // Pre-emptive lock: engage when section is close to top (not past it)
+      // This prevents the snap-back effect by locking before the race condition
+      if (!isLocked && currentSlide === 0) {
+        if (rect.top <= 80 && rect.top > -20 && rect.bottom > window.innerHeight * 0.5) {
+          // Start visual transition
+          setIsTransitioning(true);
+
+          requestAnimationFrame(() => {
+            // Snap scroll to exact section position to eliminate any offset
+            const sectionTop = window.scrollY + rect.top;
+            window.scrollTo({ top: sectionTop, behavior: 'instant' });
+
+            setIsLocked(true);
+
+            // Clear transition after brief delay
+            setTimeout(() => setIsTransitioning(false), 150);
+          });
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [isLocked, currentSlide]);
 
   // Wheel handler - only active when locked
@@ -153,18 +165,28 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       const direction = e.deltaY > 0 ? 1 : -1;
       const nextSlide = currentSlide + direction;
 
-      // Boundary: first slide + scroll up = unlock and allow native scroll
+      // Boundary: first slide + scroll up = unlock with smooth transition
       if (nextSlide < 0) {
-        setIsLocked(false);
-        setCurrentSlide(0);
-        return; // Let native scroll continue upward
+        e.preventDefault();
+        setIsTransitioning(true);
+        setTimeout(() => {
+          setIsLocked(false);
+          setCurrentSlide(0);
+          setIsTransitioning(false);
+        }, 100);
+        return;
       }
 
-      // Boundary: last slide + scroll down = unlock and continue scrolling
+      // Boundary: last slide + scroll down = unlock with smooth transition
       if (nextSlide >= totalSlides) {
-        setIsLocked(false);
-        // Small scroll to push past the section
-        window.scrollBy({ top: 100, behavior: 'smooth' });
+        e.preventDefault();
+        setIsTransitioning(true);
+        setTimeout(() => {
+          setIsLocked(false);
+          // Small scroll to push past the section
+          window.scrollBy({ top: 50, behavior: 'smooth' });
+          setIsTransitioning(false);
+        }, 100);
         return;
       }
 
@@ -1518,6 +1540,10 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             overflow: 'hidden',
             zIndex: isLocked ? 100 : 'auto',
             background: 'transparent',
+            // Smooth transition during lock/unlock to mask any micro-jank
+            opacity: isTransitioning ? 0.98 : 1,
+            transform: isTransitioning ? 'scale(0.998)' : 'scale(1)',
+            transition: 'opacity 0.12s ease-out, transform 0.12s ease-out',
           }}
         >
           {/* Horizontal scrolling full-screen slides */}
