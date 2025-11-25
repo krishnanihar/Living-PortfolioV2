@@ -195,8 +195,8 @@ export function JourneyOverview() {
                           display: 'inline-flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          width: '3rem',
-                          height: '3rem',
+                          width: '4rem',
+                          height: '4rem',
                           borderRadius: '9999px',
                           transition: 'all 500ms ease',
                           background: isHovered ? act.color : 'rgba(255, 255, 255, 0.05)',
@@ -207,8 +207,8 @@ export function JourneyOverview() {
                           <Image
                             src={act.logo}
                             alt={act.title}
-                            width={24}
-                            height={24}
+                            width={36}
+                            height={36}
                             style={{
                               objectFit: 'contain',
                               filter: isHovered ? 'brightness(1.2)' : 'brightness(0.8)',
@@ -217,7 +217,7 @@ export function JourneyOverview() {
                           />
                         ) : Icon ? (
                           <Icon
-                            size={20}
+                            size={28}
                             style={{
                               color: isHovered ? '#ffffff' : 'rgba(255, 255, 255, 0.5)',
                             }}
