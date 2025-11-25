@@ -17,16 +17,16 @@ interface GraphNodeProps {
   onPointerOut: () => void;
 }
 
-// Base size for nodes (increased for visibility)
-const BASE_SIZE = 5;
+// Base size for nodes
+const BASE_SIZE = 0.8;
 
-// Size multipliers by node type (increased for visibility)
+// Size multipliers by node type
 const TYPE_SIZE_MULTIPLIER: Record<string, number> = {
-  core: 3.0,
-  domain: 1.8,
-  skill: 1.0,
-  project: 1.4,
-  influence: 0.8,
+  core: 1.5,
+  domain: 1.0,
+  skill: 0.6,
+  project: 0.8,
+  influence: 0.4,
 };
 
 export function GraphNode({
@@ -138,7 +138,6 @@ export function GraphNode({
             anchorY="bottom"
             outlineWidth={0.1}
             outlineColor="black"
-            font="/fonts/inter-medium.woff"
           >
             {node.label}
           </Text>
