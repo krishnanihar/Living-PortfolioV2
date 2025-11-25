@@ -2,12 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ChevronDown, Mail, Github, ArrowRight, X } from 'lucide-react';
+import { ChevronDown, Mail, Github, ArrowRight, X, Sun, Moon, Hand, Sparkles } from 'lucide-react';
 import type { FullPageSnapState } from '@/hooks/useFullPageSnap';
 import {
   initializeVisit,
   clearScrollMemory,
   type PersonalizationData,
+  type GreetingIcon,
 } from '@/lib/personalization';
 
 // Ultra-Liquid Glass Style - iOS 26 Inspired (More Translucent)
@@ -65,12 +66,34 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
   // Compose the greeting display
   const getGreetingDisplay = () => {
     if (!personalization) {
-      return { opener: 'Hi', message: "I'm Nihar. Welcome.", contextual: null };
+      return {
+        opener: 'Good afternoon.',
+        icon: 'hand' as GreetingIcon,
+        message: "I'm Nihar.",
+        secondary: 'Welcome.',
+      };
     }
     return personalization.greeting;
   };
 
   const greetingDisplay = getGreetingDisplay();
+
+  // Render the appropriate icon based on greeting context
+  const renderGreetingIcon = (icon: GreetingIcon) => {
+    const iconProps = { size: 14, style: { opacity: 0.7 } };
+    switch (icon) {
+      case 'hand':
+        return <Hand {...iconProps} />;
+      case 'sun':
+        return <Sun {...iconProps} />;
+      case 'moon':
+        return <Moon {...iconProps} />;
+      case 'sparkles':
+        return <Sparkles {...iconProps} />;
+      default:
+        return <Sun {...iconProps} />;
+    }
+  };
 
   const scrollToNext = () => {
     // Use snap controller if available, otherwise fall back to native scroll
@@ -303,9 +326,13 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
             textAlign: 'center',
           }}
         >
-          {/* Opener Greeting - Small, Subtle */}
+          {/* Opener Greeting - Small, Subtle with Icon */}
           <div
             style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem',
               fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
               fontWeight: '300',
               color: 'rgba(255, 255, 255, 0.6)',
@@ -316,10 +343,11 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
               transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
-            {greetingDisplay.opener}
+            {renderGreetingIcon(greetingDisplay.icon)}
+            <span>{greetingDisplay.opener}</span>
           </div>
 
-          {/* Main Greeting Message */}
+          {/* Main Greeting Message - Always "I'm Nihar." */}
           <h1
             className="hero-greeting"
             style={{
@@ -327,7 +355,7 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
               fontWeight: '200',
               lineHeight: '1.3',
               letterSpacing: '0.02em',
-              marginBottom: greetingDisplay.contextual ? '0.75rem' : '1.5rem',
+              marginBottom: greetingDisplay.secondary ? '0.75rem' : '1.5rem',
               color: 'rgba(255, 255, 255, 0.95)',
               position: 'relative',
               animation: 'particleGlow 12s ease-in-out infinite, breathe 15s ease-in-out infinite',
@@ -352,17 +380,17 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
                 animation: 'gradientFlow 20s ease-in-out infinite',
               }}
             >
-              {greetingDisplay.message || "I'm Nihar."}
+              {greetingDisplay.message}
             </span>
           </h1>
 
-          {/* Contextual Message (Session Gap or Day-of-Week) */}
-          {greetingDisplay.contextual && (
+          {/* Secondary Message (Welcome / Good to see you / etc.) */}
+          {greetingDisplay.secondary && (
             <div
               style={{
-                fontSize: 'clamp(0.8125rem, 1.25vw, 0.9375rem)',
+                fontSize: 'clamp(0.9375rem, 1.5vw, 1.125rem)',
                 fontWeight: '300',
-                color: 'rgba(255, 255, 255, 0.5)',
+                color: 'rgba(255, 255, 255, 0.6)',
                 letterSpacing: '0.01em',
                 marginBottom: '1.5rem',
                 opacity: animationStage >= 1 ? 1 : 0,
@@ -370,7 +398,7 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
                 transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
               }}
             >
-              {greetingDisplay.contextual}
+              {greetingDisplay.secondary}
             </div>
           )}
 

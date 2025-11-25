@@ -18,10 +18,13 @@ export interface VisitorData {
   caseStudiesViewed: string[]; // array of slugs
 }
 
+export type GreetingIcon = 'sun' | 'moon' | 'hand' | 'sparkles';
+
 export interface PersonalizedGreeting {
-  opener: string; // "Hey" / "Good morning" / etc.
-  message: string; // "Welcome" / "Back so soon?" / etc.
-  contextual: string | null; // Day-of-week or session gap message
+  opener: string; // "Good afternoon. Fresh start." (time + contextual)
+  icon: GreetingIcon; // Contextual Lucide icon
+  message: string; // Always "I'm Nihar."
+  secondary: string | null; // "Welcome." / "Good to see you again." / null
 }
 
 export interface ScrollMemory {
@@ -166,23 +169,20 @@ function getTimeGreeting(hour: number): string {
   return 'Good evening';
 }
 
-function getGreetingEvolution(visitCount: number): { opener: string; message: string } {
-  const timeGreeting = getTimeGreeting(new Date().getHours());
+function getGreetingIcon(visitCount: number, hour: number): GreetingIcon {
+  // First visit always gets Hand (wave)
+  if (visitCount <= 1) return 'hand';
 
-  if (visitCount <= 1) {
-    // First-time visitor - always use time greeting
-    return { opener: timeGreeting + '.', message: "I'm Nihar. Welcome." };
-  }
-  if (visitCount <= 3) {
-    return { opener: timeGreeting, message: 'Good to see you again.' };
-  }
-  if (visitCount <= 7) {
-    return { opener: 'Hey.', message: 'Welcome back.' };
-  }
-  if (visitCount <= 15) {
-    return { opener: 'Hey again.', message: '' };
-  }
-  return { opener: 'Hey.', message: '' };
+  // Returning visitors get time-based icon
+  if (hour < 17) return 'sun'; // Morning + Afternoon
+  return 'moon'; // Evening
+}
+
+function getGreetingSecondary(visitCount: number): string | null {
+  if (visitCount <= 1) return 'Welcome.';
+  if (visitCount <= 3) return 'Good to see you again.';
+  if (visitCount <= 7) return 'Welcome back.';
+  return null; // 8+ visits - no secondary message
 }
 
 function getSessionGapMessage(lastVisit: string | null): string | null {
@@ -222,29 +222,26 @@ function getDayOfWeekMessage(): string | null {
 
 export function getPersonalizedGreeting(visitorData: VisitorData): PersonalizedGreeting {
   const { visitCount, lastVisit } = visitorData;
-  const evolution = getGreetingEvolution(visitCount);
+  const hour = new Date().getHours();
+  const timeGreeting = getTimeGreeting(hour);
 
-  // Day message combines into opener for returning visitors (not first-time)
-  const dayMessage = visitCount > 1 ? getDayOfWeekMessage() : null;
-
-  // Build opener: time greeting + day message (if relevant day)
-  let opener = evolution.opener;
-  if (dayMessage) {
-    // Ensure opener ends with period before adding day message
-    opener = opener.endsWith('.') ? opener : opener + '.';
-    opener = opener + ' ' + dayMessage;
-  } else if (!opener.endsWith('.')) {
-    // Add period if no day message
-    opener = opener + '.';
-  }
-
-  // Session gap messages go into contextual (rare, meaningful moments)
+  // Get contextual messages (priority: session gap > day-of-week)
   const sessionGap = getSessionGapMessage(lastVisit);
+  const dayMessage = visitCount > 1 && !sessionGap ? getDayOfWeekMessage() : null;
+
+  // Build opener: time greeting + contextual message (if any)
+  let opener = timeGreeting + '.';
+  if (sessionGap) {
+    opener = timeGreeting + '. ' + sessionGap;
+  } else if (dayMessage) {
+    opener = timeGreeting + '. ' + dayMessage;
+  }
 
   return {
     opener,
-    message: evolution.message,
-    contextual: sessionGap,
+    icon: getGreetingIcon(visitCount, hour),
+    message: "I'm Nihar.",
+    secondary: getGreetingSecondary(visitCount),
   };
 }
 
