@@ -52,6 +52,9 @@ export function GraphNode({
   const meshRef = useRef<THREE.Mesh>(null);
   const glowRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
+  const innerCoreRef = useRef<THREE.Mesh>(null);
+  const fresnelRef = useRef<THREE.Mesh>(null);
+  const timeRef = useRef(0);
 
   // Calculate node size
   const nodeSize = useMemo(() => {
@@ -70,6 +73,9 @@ export function GraphNode({
   // Animate scale on hover, connection, and drag state
   useFrame((_, delta) => {
     if (!groupRef.current) return;
+
+    // Update time for animations
+    timeRef.current += delta;
 
     // Target scale based on state
     let targetScale = 1;
@@ -90,10 +96,30 @@ export function GraphNode({
     const newScale = THREE.MathUtils.lerp(currentScale, targetScale, delta * 8);
     groupRef.current.scale.setScalar(newScale);
 
-    // Pulsing effect for core node
-    if (node.type === 'core' && glowRef.current) {
-      const pulse = Math.sin(Date.now() * 0.003) * 0.1 + 1;
-      glowRef.current.scale.setScalar(pulse);
+    // Pulsing effect for core node and inner glow
+    if (glowRef.current) {
+      const pulse = Math.sin(timeRef.current * 2) * 0.1 + 1;
+      glowRef.current.scale.setScalar(node.type === 'core' ? pulse * 1.4 : 1.4);
+    }
+
+    // Animate inner core - pulsing energy effect
+    if (innerCoreRef.current) {
+      const corePulse = 0.5 + Math.sin(timeRef.current * 3) * 0.15;
+      innerCoreRef.current.scale.setScalar(corePulse);
+      // Also pulse opacity via material
+      const material = innerCoreRef.current.material as THREE.MeshBasicMaterial;
+      if (material) {
+        material.opacity = (isDimmed ? 0.3 : 0.7) + Math.sin(timeRef.current * 4) * 0.2;
+      }
+    }
+
+    // Animate fresnel rim glow
+    if (fresnelRef.current) {
+      const material = fresnelRef.current.material as THREE.MeshBasicMaterial;
+      if (material) {
+        const fresnelPulse = 0.15 + Math.sin(timeRef.current * 2.5) * 0.08;
+        material.opacity = isHovered || isSelected ? fresnelPulse * 2 : fresnelPulse;
+      }
     }
 
     // Update position from physics
@@ -138,28 +164,48 @@ export function GraphNode({
         />
       </mesh>
 
-      {/* Main sphere with glassmorphic effect */}
+      {/* Main sphere with enhanced glassmorphic effect */}
       <mesh ref={meshRef}>
         <sphereGeometry args={[nodeSize, 32, 32]} />
         <meshPhysicalMaterial
           color={nodeColor}
-          metalness={0.1}
-          roughness={0.2}
-          transmission={node.type === 'core' ? 0 : 0.6}
-          thickness={1.5}
+          metalness={0.15}
+          roughness={0.1}
+          transmission={node.type === 'core' ? 0 : 0.7}
+          thickness={2.0}
           transparent
           opacity={opacity}
-          envMapIntensity={1}
+          clearcoat={isHovered || isSelected ? 0.8 : 0.4}
+          clearcoatRoughness={0.1}
+          iridescence={isSelected ? 0.6 : isHovered ? 0.4 : 0.2}
+          iridescenceIOR={1.5}
+          iridescenceThicknessRange={[100, 400]}
+          sheen={0.4}
+          sheenRoughness={0.2}
+          sheenColor={nodeColor}
+          envMapIntensity={isHovered || isSelected ? 2.0 : 1.2}
         />
       </mesh>
 
-      {/* Inner core (for visual depth) */}
-      <mesh scale={0.6}>
+      {/* Fresnel rim glow - creates edge lighting effect */}
+      <mesh ref={fresnelRef} scale={1.08}>
+        <sphereGeometry args={[nodeSize, 32, 32]} />
+        <meshBasicMaterial
+          color={nodeColor}
+          transparent
+          opacity={0.15}
+          depthWrite={false}
+          side={THREE.BackSide}
+        />
+      </mesh>
+
+      {/* Inner core - pulsing energy effect */}
+      <mesh ref={innerCoreRef} scale={0.5}>
         <sphereGeometry args={[nodeSize, 16, 16]} />
         <meshBasicMaterial
           color={nodeColor}
           transparent
-          opacity={opacity * 0.8}
+          opacity={0.7}
         />
       </mesh>
 

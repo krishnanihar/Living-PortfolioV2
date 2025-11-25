@@ -277,13 +277,14 @@ export function KnowledgeGraph3D({
           />
         </Suspense>
 
-        {/* Post-processing effects - refined for subtle glow */}
+        {/* Post-processing effects - enhanced for wowzaaah glow */}
         <EffectComposer>
           <Bloom
-            intensity={0.35}
-            luminanceThreshold={0.3}
-            luminanceSmoothing={0.95}
+            intensity={0.5}
+            luminanceThreshold={0.2}
+            luminanceSmoothing={0.9}
             mipmapBlur
+            radius={0.8}
           />
         </EffectComposer>
       </Canvas>
