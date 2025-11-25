@@ -47,7 +47,7 @@ function calculateFocusDistance(
   fov: number
 ): number {
   if (connectedPositions.length === 0) {
-    return 55; // Default distance for single node
+    return 35; // Close distance for single node - makes it prominent
   }
 
   const box = new THREE.Box3();
@@ -56,11 +56,11 @@ function calculateFocusDistance(
 
   const size = box.getSize(new THREE.Vector3());
   const maxDim = Math.max(size.x, size.y, size.z);
-  const padding = 1.5; // 50% padding for comfortable viewing
+  const padding = 1.3; // 30% padding for tighter framing
 
   // Calculate distance to fit bounding box in view
   const distance = (maxDim * padding) / (2 * Math.tan((fov * Math.PI) / 360));
-  return Math.max(50, Math.min(distance, 95)); // Clamp between 50-95
+  return Math.max(35, Math.min(distance, 75)); // Clamp between 35-75 for closer zoom
 }
 
 function CameraFocus({ targetPosition, connectedPositions = [], onFocusComplete }: CameraFocusProps) {

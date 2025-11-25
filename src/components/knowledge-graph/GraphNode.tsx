@@ -10,6 +10,7 @@ interface GraphNodeProps {
   node: KnowledgeNode;
   position: THREE.Vector3;
   isHovered: boolean;
+  isSelected: boolean;
   isConnected: boolean;
   isDimmed: boolean;
   isDragging?: boolean;
@@ -36,6 +37,7 @@ export function GraphNode({
   node,
   position,
   isHovered,
+  isSelected,
   isConnected,
   isDimmed,
   isDragging = false,
@@ -65,6 +67,8 @@ export function GraphNode({
     let targetScale = 1;
     if (isDragging) {
       targetScale = 1.4; // Larger when dragging
+    } else if (isSelected) {
+      targetScale = 1.8; // Big like core node when selected
     } else if (isHovered) {
       targetScale = 1.3;
     } else if (isConnected) {
@@ -94,23 +98,23 @@ export function GraphNode({
   return (
     <group ref={groupRef} position={position}>
       {/* Outer halo - softer, larger glow */}
-      <mesh scale={2.0}>
+      <mesh scale={isSelected ? 2.5 : 2.0}>
         <sphereGeometry args={[nodeSize, 16, 16]} />
         <meshBasicMaterial
           color={nodeColor}
           transparent
-          opacity={isHovered ? 0.15 : 0.08}
+          opacity={isSelected ? 0.25 : isHovered ? 0.15 : 0.08}
           depthWrite={false}
         />
       </mesh>
 
       {/* Inner glow sphere - brighter, tighter */}
-      <mesh ref={glowRef} scale={1.4}>
+      <mesh ref={glowRef} scale={isSelected ? 1.6 : 1.4}>
         <sphereGeometry args={[nodeSize, 24, 24]} />
         <meshBasicMaterial
           color={nodeColor}
           transparent
-          opacity={isHovered ? 0.35 : isConnected ? 0.25 : 0.15}
+          opacity={isSelected ? 0.5 : isHovered ? 0.35 : isConnected ? 0.25 : 0.15}
           depthWrite={false}
         />
       </mesh>

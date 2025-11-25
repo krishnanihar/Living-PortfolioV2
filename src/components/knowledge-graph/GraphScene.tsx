@@ -192,6 +192,7 @@ export function GraphScene({ onNodeHover, onNodeClick, onNodeFocus, pausePhysics
       {knowledgeGraphData.nodes.map(node => {
         const position = getPosition(node.id);
         const isHovered = hoveredNodeId === node.id;
+        const isSelected = selectedNodeId === node.id;
         const isConnected = connectedNodeIds.has(node.id);
         const isDimmed = hoveredNodeId !== null && !isConnected;
         const isDragging = draggingNodeId === node.id;
@@ -202,6 +203,7 @@ export function GraphScene({ onNodeHover, onNodeClick, onNodeFocus, pausePhysics
             node={node}
             position={position}
             isHovered={isHovered}
+            isSelected={isSelected}
             isConnected={isConnected}
             isDimmed={isDimmed}
             isDragging={isDragging}
