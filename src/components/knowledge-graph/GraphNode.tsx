@@ -17,16 +17,17 @@ interface GraphNodeProps {
   onPointerOut: () => void;
 }
 
-// Base size for nodes
-const BASE_SIZE = 0.8;
+// Base size for nodes - reduced for denser graph
+const BASE_SIZE = 0.6;
 
-// Size multipliers by node type
+// Size multipliers by node type - smaller for density
 const TYPE_SIZE_MULTIPLIER: Record<string, number> = {
   core: 1.5,
-  domain: 1.0,
-  skill: 0.6,
-  project: 0.8,
-  influence: 0.4,
+  domain: 0.9,
+  skill: 0.5,
+  project: 0.7,
+  influence: 0.35,
+  tool: 0.4,
 };
 
 export function GraphNode({
@@ -86,13 +87,24 @@ export function GraphNode({
 
   return (
     <group ref={groupRef} position={position}>
-      {/* Outer glow sphere */}
-      <mesh ref={glowRef} scale={1.5}>
-        <sphereGeometry args={[nodeSize, 32, 32]} />
+      {/* Outer halo - softer, larger glow */}
+      <mesh scale={2.0}>
+        <sphereGeometry args={[nodeSize, 16, 16]} />
         <meshBasicMaterial
           color={nodeColor}
           transparent
-          opacity={isHovered ? 0.4 : isConnected ? 0.3 : 0.2}
+          opacity={isHovered ? 0.15 : 0.08}
+          depthWrite={false}
+        />
+      </mesh>
+
+      {/* Inner glow sphere - brighter, tighter */}
+      <mesh ref={glowRef} scale={1.4}>
+        <sphereGeometry args={[nodeSize, 24, 24]} />
+        <meshBasicMaterial
+          color={nodeColor}
+          transparent
+          opacity={isHovered ? 0.35 : isConnected ? 0.25 : 0.15}
           depthWrite={false}
         />
       </mesh>
@@ -127,17 +139,18 @@ export function GraphNode({
         />
       </mesh>
 
-      {/* Label - show for all nodes (always visible) */}
-      {(isHovered || node.type === 'core' || node.type === 'domain' || node.type === 'project' || node.type === 'skill') && (
+      {/* Label - show for important nodes and on hover */}
+      {(isHovered || node.type === 'core' || node.type === 'domain' || node.type === 'project' || node.type === 'skill' || node.type === 'tool') && (
         <Billboard follow lockX={false} lockY={false} lockZ={false}>
           <Text
-            position={[0, nodeSize + 0.5, 0]}
-            fontSize={node.type === 'core' ? 1 : node.type === 'domain' ? 0.7 : 0.5}
+            position={[0, nodeSize + 0.4, 0]}
+            fontSize={node.type === 'core' ? 0.8 : node.type === 'domain' ? 0.6 : 0.4}
             color="white"
             anchorX="center"
             anchorY="bottom"
-            outlineWidth={0.05}
+            outlineWidth={0.03}
             outlineColor="black"
+            letterSpacing={0.02}
           >
             {node.label}
           </Text>
@@ -148,8 +161,8 @@ export function GraphNode({
       {node.type === 'project' && isHovered && (
         <Billboard>
           <Text
-            position={[0, -nodeSize - 1, 0]}
-            fontSize={1}
+            position={[0, -nodeSize - 0.6, 0]}
+            fontSize={0.35}
             color="rgba(255,255,255,0.6)"
             anchorX="center"
             anchorY="top"

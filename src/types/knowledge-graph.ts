@@ -1,7 +1,7 @@
 // Knowledge Graph Type Definitions
 // For the 3D mind map hero section on the About page
 
-export type NodeType = 'core' | 'domain' | 'skill' | 'project' | 'influence';
+export type NodeType = 'core' | 'domain' | 'skill' | 'project' | 'influence' | 'tool';
 
 export interface KnowledgeNode {
   id: string;

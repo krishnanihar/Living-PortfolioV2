@@ -10,27 +10,28 @@ import {
   NodePhysicsState,
 } from '@/types/knowledge-graph';
 
-// Default physics configuration
+// Default physics configuration - tuned for denser graph
 const DEFAULT_PHYSICS_CONFIG: PhysicsConfig = {
-  repulsionStrength: 800,      // How strongly nodes push apart
-  attractionStrength: 0.03,    // How strongly edges pull together
-  centeringStrength: 0.01,     // Pull toward center
-  damping: 0.92,               // Velocity decay (friction)
-  maxVelocity: 8,              // Speed limit
-  minDistance: 15,             // Minimum distance between nodes
+  repulsionStrength: 400,      // Reduced - nodes closer together
+  attractionStrength: 0.06,    // Increased - edges pull stronger
+  centeringStrength: 0.02,     // Increased - tighter cluster
+  damping: 0.88,               // Reduced - more movement for settling
+  maxVelocity: 6,              // Reduced - calmer movement
+  minDistance: 8,              // Reduced - nodes can be closer
 };
 
-// Layer-based initial positions (radial layout) - tighter for better visibility
+// Layer-based initial positions (radial layout) - tighter for denser graph
 function getInitialPosition(node: KnowledgeNode, index: number, totalInLayer: number): THREE.Vector3 {
   const layerRadii: Record<string, number> = {
     core: 0,
-    domain: 15,
-    skill: 30,
-    project: 25,
-    influence: 40,
+    domain: 12,     // Reduced from 15
+    skill: 22,      // Reduced from 30
+    project: 18,    // Reduced from 25
+    tool: 25,       // New layer
+    influence: 28,  // Reduced from 40
   };
 
-  const radius = layerRadii[node.type] || 30;
+  const radius = layerRadii[node.type] || 22;
 
   if (node.type === 'core') {
     return new THREE.Vector3(0, 0, 0);

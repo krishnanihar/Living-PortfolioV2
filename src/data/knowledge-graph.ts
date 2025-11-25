@@ -175,6 +175,114 @@ const skillNodes: KnowledgeNode[] = [
     color: colors.neutral,
     connections: ['research', 'latent-space'],
   },
+  // Additional frontend skills
+  {
+    id: 'tailwind',
+    label: 'Tailwind CSS',
+    type: 'skill',
+    size: 0.65,
+    color: colors.neutral,
+    connections: ['frontend-dev', 'react'],
+  },
+  {
+    id: 'webgl',
+    label: 'WebGL',
+    type: 'skill',
+    size: 0.55,
+    color: colors.neutral,
+    connections: ['threejs', 'data-viz'],
+  },
+  {
+    id: 'glsl',
+    label: 'GLSL Shaders',
+    type: 'skill',
+    size: 0.5,
+    color: colors.neutral,
+    connections: ['webgl', 'threejs', 'latent-space'],
+  },
+  {
+    id: 'gsap',
+    label: 'GSAP',
+    type: 'skill',
+    size: 0.55,
+    color: colors.neutral,
+    connections: ['animation', 'frontend-dev'],
+  },
+  {
+    id: 'animation',
+    label: 'Animation Design',
+    type: 'skill',
+    size: 0.6,
+    color: colors.neutral,
+    connections: ['framer-motion', 'threejs'],
+  },
+  // Design skills
+  {
+    id: 'prototyping',
+    label: 'Prototyping',
+    type: 'skill',
+    size: 0.6,
+    color: colors.neutral,
+    connections: ['figma', 'product-design', 'psoriassist'],
+  },
+  {
+    id: 'visual-design',
+    label: 'Visual Design',
+    type: 'skill',
+    size: 0.55,
+    color: colors.neutral,
+    connections: ['product-design', 'figma'],
+  },
+  {
+    id: 'interaction-design',
+    label: 'Interaction Design',
+    type: 'skill',
+    size: 0.6,
+    color: colors.neutral,
+    connections: ['product-design', 'animation'],
+  },
+  {
+    id: 'micro-interactions',
+    label: 'Micro-interactions',
+    type: 'skill',
+    size: 0.5,
+    color: colors.neutral,
+    connections: ['interaction-design', 'framer-motion'],
+  },
+  {
+    id: 'accessibility',
+    label: 'Accessibility',
+    type: 'skill',
+    size: 0.55,
+    color: colors.neutral,
+    connections: ['product-design', 'frontend-dev'],
+  },
+  // AI/ML skills
+  {
+    id: 'ai-ml',
+    label: 'AI/ML',
+    type: 'skill',
+    size: 0.65,
+    color: colors.neutral,
+    connections: ['psoriassist', 'mythos', 'research'],
+  },
+  {
+    id: 'prompt-engineering',
+    label: 'Prompt Engineering',
+    type: 'skill',
+    size: 0.5,
+    color: colors.neutral,
+    connections: ['ai-ml', 'mythos'],
+  },
+  // Research skills
+  {
+    id: 'usability-testing',
+    label: 'Usability Testing',
+    type: 'skill',
+    size: 0.55,
+    color: colors.neutral,
+    connections: ['user-research', 'psoriassist'],
+  },
 ];
 
 // Project nodes - clickable to case studies
@@ -216,13 +324,113 @@ const projectNodes: KnowledgeNode[] = [
     size: 0.85,
     color: colors.neutralLight,
     url: '/work/mythos',
-    connections: ['product-design', 'react'],
+    connections: ['product-design', 'react', 'ai-ml'],
     description: 'Gaming platform with clean architecture',
+  },
+  // Additional projects
+  {
+    id: 'living-portfolio',
+    label: 'Living Portfolio',
+    type: 'project',
+    size: 0.9,
+    color: colors.neutralLight,
+    url: '/',
+    connections: ['frontend-dev', 'threejs', 'micro-interactions', 'tailwind'],
+    description: 'This portfolio - a breathing digital organism',
+  },
+  {
+    id: 'metamorphic',
+    label: 'Metamorphic Fractals',
+    type: 'project',
+    size: 0.8,
+    color: colors.neutralLight,
+    url: '/work/metamorphic-fractal-reflections',
+    connections: ['touchdesigner', 'blender', 'research'],
+    description: 'Immersive consciousness installation',
   },
 ];
 
-// Influence nodes - books and games
+// Tool nodes - specific software and platforms
+const toolNodes: KnowledgeNode[] = [
+  // Design tools
+  {
+    id: 'vscode',
+    label: 'VS Code',
+    type: 'tool',
+    size: 0.5,
+    color: colors.cyan,
+    connections: ['frontend-dev', 'typescript'],
+    description: 'Primary development environment',
+  },
+  {
+    id: 'git',
+    label: 'Git',
+    type: 'tool',
+    size: 0.5,
+    color: colors.cyan,
+    connections: ['frontend-dev'],
+    description: 'Version control',
+  },
+  {
+    id: 'github',
+    label: 'GitHub',
+    type: 'tool',
+    size: 0.45,
+    color: colors.cyan,
+    connections: ['git'],
+    description: 'Code collaboration',
+  },
+  {
+    id: 'vercel',
+    label: 'Vercel',
+    type: 'tool',
+    size: 0.45,
+    color: colors.cyan,
+    connections: ['nextjs'],
+    description: 'Deployment platform',
+  },
+  // Creative tools
+  {
+    id: 'touchdesigner',
+    label: 'TouchDesigner',
+    type: 'tool',
+    size: 0.5,
+    color: colors.cyan,
+    connections: ['data-viz', 'threejs'],
+    description: 'Real-time visual programming',
+  },
+  {
+    id: 'blender',
+    label: 'Blender',
+    type: 'tool',
+    size: 0.5,
+    color: colors.cyan,
+    connections: ['threejs'],
+    description: '3D modeling and animation',
+  },
+  {
+    id: 'cursor',
+    label: 'Cursor',
+    type: 'tool',
+    size: 0.45,
+    color: colors.cyan,
+    connections: ['vscode', 'ai-ml'],
+    description: 'AI-powered IDE',
+  },
+  {
+    id: 'notion',
+    label: 'Notion',
+    type: 'tool',
+    size: 0.4,
+    color: colors.cyan,
+    connections: ['research'],
+    description: 'Knowledge management',
+  },
+];
+
+// Influence nodes - books, games, and thinkers
 const influenceNodes: KnowledgeNode[] = [
+  // Books
   {
     id: 'geb',
     label: 'Gödel, Escher, Bach',
@@ -242,6 +450,34 @@ const influenceNodes: KnowledgeNode[] = [
     description: 'Foundational UX principles',
   },
   {
+    id: 'refactoring-ui',
+    label: 'Refactoring UI',
+    type: 'influence',
+    size: 0.45,
+    color: colors.orange,
+    connections: ['visual-design', 'tailwind'],
+    description: 'Design for developers',
+  },
+  {
+    id: 'speculative-everything',
+    label: 'Speculative Everything',
+    type: 'influence',
+    size: 0.45,
+    color: colors.orange,
+    connections: ['speculative-design', 'latent-space'],
+    description: 'Dunne & Raby critical design',
+  },
+  {
+    id: 'thinking-fast-slow',
+    label: 'Thinking Fast & Slow',
+    type: 'influence',
+    size: 0.4,
+    color: colors.orange,
+    connections: ['user-research', 'systems-thinking'],
+    description: 'Cognitive biases in design',
+  },
+  // Games
+  {
     id: 'baldurs-gate',
     label: "Baldur's Gate 3",
     type: 'influence',
@@ -249,6 +485,43 @@ const influenceNodes: KnowledgeNode[] = [
     color: colors.orange,
     connections: ['systems-thinking', 'research'],
     description: 'Narrative systems and player agency',
+  },
+  {
+    id: 'disco-elysium',
+    label: 'Disco Elysium',
+    type: 'influence',
+    size: 0.45,
+    color: colors.orange,
+    connections: ['systems-thinking'],
+    description: 'Narrative systems design',
+  },
+  {
+    id: 'control-game',
+    label: 'Control',
+    type: 'influence',
+    size: 0.4,
+    color: colors.orange,
+    connections: ['visual-design'],
+    description: 'Environmental storytelling',
+  },
+  // Thinkers
+  {
+    id: 'dieter-rams',
+    label: 'Dieter Rams',
+    type: 'influence',
+    size: 0.45,
+    color: colors.orange,
+    connections: ['product-design', 'design-systems'],
+    description: '10 Principles of Good Design',
+  },
+  {
+    id: 'bret-victor',
+    label: 'Bret Victor',
+    type: 'influence',
+    size: 0.5,
+    color: colors.orange,
+    connections: ['interaction-design', 'systems-thinking'],
+    description: 'Inventing on principle',
   },
 ];
 
@@ -258,6 +531,7 @@ const nodes: KnowledgeNode[] = [
   ...domainNodes,
   ...skillNodes,
   ...projectNodes,
+  ...toolNodes,
   ...influenceNodes,
 ];
 
@@ -285,8 +559,10 @@ function generateEdges(nodes: KnowledgeNode[]): KnowledgeEdge[] {
           strength = 0.8; // Medium-strong for domain connections
         } else if (node.type === 'project' || targetNode?.type === 'project') {
           strength = 0.6; // Medium for project connections
+        } else if (node.type === 'tool' || targetNode?.type === 'tool') {
+          strength = 0.4; // Subtle for tool connections
         } else if (node.type === 'influence' || targetNode?.type === 'influence') {
-          strength = 0.3; // Subtle for influence connections
+          strength = 0.3; // Very subtle for influence connections
         }
 
         edges.push({
@@ -308,7 +584,7 @@ export const knowledgeGraphData: KnowledgeGraphData = {
 };
 
 // Export individual arrays for flexibility
-export { nodes, domainNodes, skillNodes, projectNodes, influenceNodes };
+export { nodes, domainNodes, skillNodes, projectNodes, toolNodes, influenceNodes };
 
 // Helper to get node by ID
 export function getNodeById(id: string): KnowledgeNode | undefined {

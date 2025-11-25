@@ -156,12 +156,12 @@ export function KnowledgeGraph3D({
           <GraphScene onNodeHover={onNodeHover} onNodeClick={onNodeClick} />
         </Suspense>
 
-        {/* Post-processing effects */}
+        {/* Post-processing effects - refined for subtle glow */}
         <EffectComposer>
           <Bloom
-            intensity={0.5}
-            luminanceThreshold={0.2}
-            luminanceSmoothing={0.9}
+            intensity={0.35}
+            luminanceThreshold={0.3}
+            luminanceSmoothing={0.95}
             mipmapBlur
           />
         </EffectComposer>

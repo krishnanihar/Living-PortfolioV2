@@ -48,13 +48,14 @@ export function GraphEdge({
   });
 
   // Calculate opacity based on state and edge strength
-  const baseOpacity = edge.strength * 0.3;
+  // Thinner, more delicate appearance with lower base opacity
+  const baseOpacity = edge.strength * 0.2; // was 0.3
   let opacity = baseOpacity;
 
   if (isHighlighted) {
-    opacity = 0.6;
+    opacity = 0.5; // was 0.6
   } else if (isDimmed) {
-    opacity = baseOpacity * 0.2;
+    opacity = baseOpacity * 0.1; // was 0.2 - more aggressive dimming
   }
 
   // Color based on highlight state
@@ -62,23 +63,23 @@ export function GraphEdge({
 
   return (
     <group>
-      {/* Glow line (wider, more transparent) */}
+      {/* Glow line (subtle, for highlighted edges) */}
       {isHighlighted && (
         <Line
           points={points}
           color={color}
-          lineWidth={3}
+          lineWidth={1.5}
           transparent
-          opacity={0.3}
+          opacity={0.25}
           depthWrite={false}
         />
       )}
 
-      {/* Main line */}
+      {/* Main line - thinner for delicate appearance */}
       <Line
         points={points}
         color={color}
-        lineWidth={isHighlighted ? 2 : 1}
+        lineWidth={isHighlighted ? 1 : 0.5}
         transparent
         opacity={opacity}
       />
@@ -161,7 +162,7 @@ export function GraphEdges({
       <lineBasicMaterial
         vertexColors
         transparent
-        opacity={0.4}
+        opacity={0.25}
         depthWrite={false}
       />
     </lineSegments>
