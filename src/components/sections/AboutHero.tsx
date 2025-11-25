@@ -66,14 +66,11 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
     // Skip on mobile or if zoom is complete
     if (isMobile || zoomComplete) return;
 
-    // Only capture scroll when section is in view
-    const section = sectionRef.current;
-    if (!section) return;
+    // Only capture scroll when page is at the top (hero visible)
+    // or when we're in the middle of zooming
+    const isAtTop = window.scrollY < 100;
 
-    const rect = section.getBoundingClientRect();
-    const isInView = rect.top <= 0 && rect.bottom > window.innerHeight * 0.5;
-
-    if (!isInView && scrollProgress === 0) return;
+    if (!isAtTop && scrollProgress === 0) return;
 
     // If not zoomed out yet, prevent default scroll and control zoom
     if (scrollProgress < 1) {
