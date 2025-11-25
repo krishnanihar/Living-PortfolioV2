@@ -213,7 +213,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
     return () => window.removeEventListener('wheel', handleWheel);
   }, [isLocked, currentSlide, viewportWidth, localSlideX, totalSlides]);
 
-  // Re-lock when scrolling back up to section (if was at last slide)
+  // Re-lock when scrolling back UP to section (if was at last slide)
   useEffect(() => {
     if (isLocked) return;
 
@@ -222,9 +222,24 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       if (!section) return;
 
       const rect = section.getBoundingClientRect();
-      // Re-lock if scrolling back and section is at top of viewport
-      if (rect.top >= -10 && rect.top <= 10 && currentSlide === totalSlides - 1) {
-        setIsLocked(true);
+
+      // Re-lock: engage when scrolling UP and section top is near viewport top
+      // Wider detection window (130px) to catch at various scroll speeds
+      // Only re-lock if we were at the last slide (meaning user just exited forward)
+      if (rect.top >= -50 && rect.top <= 80 && currentSlide === totalSlides - 1) {
+        // Start visual transition
+        setIsTransitioning(true);
+
+        requestAnimationFrame(() => {
+          // Snap scroll to exact section position to eliminate offset
+          const sectionTop = window.scrollY + rect.top;
+          window.scrollTo({ top: sectionTop, behavior: 'instant' });
+
+          setIsLocked(true);
+
+          // Clear transition after brief delay
+          setTimeout(() => setIsTransitioning(false), 150);
+        });
       }
     };
 
