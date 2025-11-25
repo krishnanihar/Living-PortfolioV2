@@ -574,13 +574,14 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
               left: '50%',
               transform: 'translateX(-50%)',
               display: 'flex',
+              flexDirection: 'column',
               alignItems: 'center',
-              gap: '0.5rem',
-              padding: '10px 16px 10px 20px',
+              gap: '0.375rem',
+              padding: '12px 20px',
               ...UNIFIED_GLASS,
               background: 'rgba(139, 92, 246, 0.06)',
               borderColor: 'rgba(139, 92, 246, 0.15)',
-              borderRadius: '24px',
+              borderRadius: '20px',
               color: 'rgba(255, 255, 255, 0.85)',
               textDecoration: 'none',
               fontSize: '0.8125rem',
@@ -599,16 +600,12 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
               e.currentTarget.style.background = 'rgba(139, 92, 246, 0.06)';
             }}
           >
-            <span>Continue</span>
-            <ArrowRight size={14} style={{ opacity: 0.7 }} />
-            <span style={{ fontWeight: '500' }}>{personalization.scrollMemory.lastProjectName}</span>
-            {personalization.projectTrail.message && (
-              <>
-                <span style={{ opacity: 0.4, margin: '0 0.25rem' }}>·</span>
-                <span style={{ opacity: 0.6, fontSize: '0.75rem' }}>{personalization.projectTrail.message}</span>
-              </>
-            )}
-            <button
+            {/* Top row: Continue → Project Name [X] */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span>Continue</span>
+              <ArrowRight size={14} style={{ opacity: 0.7 }} />
+              <span style={{ fontWeight: '500' }}>{personalization.scrollMemory.lastProjectName}</span>
+              <button
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -638,6 +635,13 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
             >
               <X size={14} />
             </button>
+            </div>
+            {/* Bottom row: X projects explored */}
+            {personalization.projectTrail.viewed > 0 && (
+              <span style={{ opacity: 0.5, fontSize: '0.6875rem', letterSpacing: '0.02em' }}>
+                {personalization.projectTrail.viewed} of {personalization.projectTrail.total} projects explored
+              </span>
+            )}
           </Link>
         )}
 
