@@ -14,9 +14,10 @@ interface GraphSceneProps {
   onNodeHover?: (node: KnowledgeNode | null) => void;
   onNodeClick?: (node: KnowledgeNode) => void;
   onNodeFocus?: (node: KnowledgeNode, position: THREE.Vector3, connectedPositions: THREE.Vector3[]) => void;
+  pausePhysics?: boolean;
 }
 
-export function GraphScene({ onNodeHover, onNodeClick, onNodeFocus }: GraphSceneProps) {
+export function GraphScene({ onNodeHover, onNodeClick, onNodeFocus, pausePhysics = false }: GraphSceneProps) {
   const router = useRouter();
   const { camera, gl } = useThree();
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
@@ -27,11 +28,11 @@ export function GraphScene({ onNodeHover, onNodeClick, onNodeFocus }: GraphScene
   const dragPlane = useRef(new THREE.Plane(new THREE.Vector3(0, 0, 1), 0));
   const dragOffset = useRef(new THREE.Vector3());
 
-  // Initialize physics with drag support
+  // Initialize physics with drag support (pause when hovering or focused)
   const { positions, getPosition, setNodePosition, lockNode, unlockNode, reheatSimulation } = useGraphPhysics({
     nodes: knowledgeGraphData.nodes,
     edges: knowledgeGraphData.edges,
-    enabled: true,
+    enabled: !pausePhysics,
   });
 
   // Get connected node IDs for the hovered node

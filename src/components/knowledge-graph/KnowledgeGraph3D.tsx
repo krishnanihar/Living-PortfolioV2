@@ -245,8 +245,9 @@ export function KnowledgeGraph3D({
         {/* Environment for reflections */}
         <Environment preset="night" />
 
-        {/* Controls - closer zoom range for better interaction */}
+        {/* Controls - disable during camera focus animation to prevent fighting */}
         <OrbitControls
+          enabled={!focusedPosition}
           enablePan={true}
           enableZoom={true}
           enableRotate={true}
@@ -272,6 +273,7 @@ export function KnowledgeGraph3D({
             onNodeHover={handleNodeHoverChange}
             onNodeClick={onNodeClick}
             onNodeFocus={handleNodeFocus}
+            pausePhysics={isHovering || !!focusedPosition}
           />
         </Suspense>
 
