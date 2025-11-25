@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import { AirIndiaWork } from '@/components/sections/AirIndiaWork';
+import { CaseStudyTracker } from '@/components/CaseStudyTracker';
 
 export const metadata: Metadata = {
   title: 'Air India Case Study — Design Systems & Digital Transformation',
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
 export default function AirIndiaPage() {
   return (
     <>
+      <CaseStudyTracker slug="air-india" />
       <PortfolioNavigation />
       <AirIndiaWork />
     </>

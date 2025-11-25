@@ -2,6 +2,7 @@
 
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import { Hero } from '@/components/mythos/sections/Hero';
+import { CaseStudyTracker } from '@/components/CaseStudyTracker';
 import { ProblemSection } from '@/components/mythos/sections/ProblemSection';
 import { InnovationSection } from '@/components/mythos/sections/InnovationSection';
 import { GallerySection } from '@/components/mythos/sections/GallerySection';
@@ -11,6 +12,7 @@ import { CTASection } from '@/components/mythos/sections/CTASection';
 export default function MythosPage() {
   return (
     <>
+      <CaseStudyTracker slug="mythos" />
       <PortfolioNavigation />
       <div className="min-h-screen bg-[#0A0A0A] text-white">
         <Hero />

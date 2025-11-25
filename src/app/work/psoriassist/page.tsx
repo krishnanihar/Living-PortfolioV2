@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import { PsoriAssistWork } from '@/components/sections/PsoriAssistWork';
+import { CaseStudyTracker } from '@/components/CaseStudyTracker';
 
 export const metadata: Metadata = {
   title: 'PsoriAssist — AI-Powered Psoriasis Digital Therapeutic Case Study',
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
 export default function PsoriAssistPage() {
   return (
     <>
+      <CaseStudyTracker slug="psoriassist" />
       <PortfolioNavigation />
       <PsoriAssistWork />
     </>

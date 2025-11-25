@@ -2,8 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ChevronDown, Mail, Github } from 'lucide-react';
+import { ChevronDown, Mail, Github, ArrowRight, X } from 'lucide-react';
 import type { FullPageSnapState } from '@/hooks/useFullPageSnap';
+import {
+  initializeVisit,
+  clearScrollMemory,
+  type PersonalizationData,
+} from '@/lib/personalization';
 
 // Ultra-Liquid Glass Style - iOS 26 Inspired (More Translucent)
 const UNIFIED_GLASS = {
@@ -34,50 +39,38 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
   const [hoveredButton, setHoveredButton] = useState<'contact' | 'github' | null>(null);
   const [mounted, setMounted] = useState(false);
   const [animationStage, setAnimationStage] = useState(0);
-  const [greeting, setGreeting] = useState({ timeGreeting: '', nameGreeting: '' });
-
-  // Smart greeting system with localStorage
-  const getGreeting = (visitCount: number, currentHour: number) => {
-    const timeGreeting = currentHour < 12 ? 'Good morning' : currentHour < 17 ? 'Good afternoon' : 'Good evening';
-
-    if (visitCount === 1) {
-      return {
-        timeGreeting: 'Hi',
-        nameGreeting: "I'm Nihar. Welcome."
-      };
-    }
-    if (visitCount <= 5) {
-      return {
-        timeGreeting: timeGreeting,
-        nameGreeting: "I'm Nihar, welcome back."
-      };
-    }
-    return {
-      timeGreeting: `${timeGreeting} again`,
-      nameGreeting: "I'm Nihar."
-    };
-  };
+  const [personalization, setPersonalization] = useState<PersonalizationData | null>(null);
+  const [showScrollPill, setShowScrollPill] = useState(true);
 
   useEffect(() => {
     setMounted(true);
 
-    // Visitor tracking
-    const visitCount = parseInt(localStorage.getItem('portfolio_visit_count') || '0') + 1;
-    const currentHour = new Date().getHours();
-
-    localStorage.setItem('portfolio_visit_count', visitCount.toString());
-    localStorage.setItem('portfolio_last_visit', new Date().toISOString());
-    localStorage.setItem('portfolio_has_visited', 'true');
-
-    // Set personalized greeting
-    setGreeting(getGreeting(visitCount, currentHour));
+    // Initialize personalization system
+    const data = initializeVisit();
+    setPersonalization(data);
 
     // Staggered animation stages
-    const stages = [1, 2, 3];
+    const stages = [1, 2, 3, 4]; // Added stage 4 for project trail
     stages.forEach((stage, i) => {
       setTimeout(() => setAnimationStage(stage), i * 100);
     });
   }, []);
+
+  // Dismiss scroll memory pill and clear the memory
+  const dismissScrollPill = () => {
+    setShowScrollPill(false);
+    clearScrollMemory();
+  };
+
+  // Compose the greeting display
+  const getGreetingDisplay = () => {
+    if (!personalization) {
+      return { opener: 'Hi', message: "I'm Nihar. Welcome.", contextual: null };
+    }
+    return personalization.greeting;
+  };
+
+  const greetingDisplay = getGreetingDisplay();
 
   const scrollToNext = () => {
     // Use snap controller if available, otherwise fall back to native scroll
@@ -310,7 +303,7 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
             textAlign: 'center',
           }}
         >
-          {/* Time-Based Greeting - Small, Subtle */}
+          {/* Opener Greeting - Small, Subtle */}
           <div
             style={{
               fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
@@ -323,10 +316,10 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
               transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
-            {greeting.timeGreeting || 'Hi'}
+            {greetingDisplay.opener}
           </div>
 
-          {/* Name & Welcome - Main Heading */}
+          {/* Main Greeting Message */}
           <h1
             className="hero-greeting"
             style={{
@@ -334,7 +327,7 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
               fontWeight: '200',
               lineHeight: '1.3',
               letterSpacing: '0.02em',
-              marginBottom: '1.5rem',
+              marginBottom: greetingDisplay.contextual ? '0.75rem' : '1.5rem',
               color: 'rgba(255, 255, 255, 0.95)',
               position: 'relative',
               animation: 'particleGlow 12s ease-in-out infinite, breathe 15s ease-in-out infinite',
@@ -359,9 +352,27 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
                 animation: 'gradientFlow 20s ease-in-out infinite',
               }}
             >
-              {greeting.nameGreeting || "I'm Nihar. Welcome."}
+              {greetingDisplay.message || "I'm Nihar."}
             </span>
           </h1>
+
+          {/* Contextual Message (Session Gap or Day-of-Week) */}
+          {greetingDisplay.contextual && (
+            <div
+              style={{
+                fontSize: 'clamp(0.8125rem, 1.25vw, 0.9375rem)',
+                fontWeight: '300',
+                color: 'rgba(255, 255, 255, 0.5)',
+                letterSpacing: '0.01em',
+                marginBottom: '1.5rem',
+                opacity: animationStage >= 1 ? 1 : 0,
+                transform: animationStage >= 1 ? 'translateY(0)' : 'translateY(15px)',
+                transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
+              }}
+            >
+              {greetingDisplay.contextual}
+            </div>
+          )}
 
           {/* Subtitle */}
           <div
@@ -522,7 +533,96 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
               <span style={{ position: 'relative', zIndex: 1 }}>GitHub</span>
             </a>
           </div>
+
+          {/* Project Trail - Subtle progress indicator */}
+          {personalization?.projectTrail.message && (
+            <div
+              style={{
+                marginTop: '1.5rem',
+                fontSize: 'clamp(0.6875rem, 1vw, 0.75rem)',
+                fontWeight: '400',
+                color: 'rgba(255, 255, 255, 0.4)',
+                letterSpacing: '0.05em',
+                opacity: animationStage >= 4 ? 1 : 0,
+                transform: animationStage >= 4 ? 'translateY(0)' : 'translateY(10px)',
+                transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s',
+              }}
+            >
+              {personalization.projectTrail.message}
+            </div>
+          )}
         </div>
+
+        {/* Scroll Memory Pill - Floating CTA for returning visitors */}
+        {showScrollPill && personalization?.scrollMemory.hasHistory && personalization.scrollMemory.lastProjectName && (
+          <Link
+            href={`/work/${personalization.scrollMemory.lastProject}`}
+            style={{
+              position: 'absolute',
+              bottom: '7rem',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '10px 16px 10px 20px',
+              ...UNIFIED_GLASS,
+              background: 'rgba(139, 92, 246, 0.06)',
+              borderColor: 'rgba(139, 92, 246, 0.15)',
+              borderRadius: '24px',
+              color: 'rgba(255, 255, 255, 0.85)',
+              textDecoration: 'none',
+              fontSize: '0.8125rem',
+              fontWeight: '400',
+              cursor: 'pointer',
+              opacity: animationStage >= 4 ? 1 : 0,
+              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+              zIndex: 15,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateX(-50%) scale(1.02)';
+              e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateX(-50%) scale(1)';
+              e.currentTarget.style.background = 'rgba(139, 92, 246, 0.06)';
+            }}
+          >
+            <span>Continue</span>
+            <ArrowRight size={14} style={{ opacity: 0.7 }} />
+            <span style={{ fontWeight: '500' }}>{personalization.scrollMemory.lastProjectName}</span>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dismissScrollPill();
+              }}
+              style={{
+                marginLeft: '0.25rem',
+                padding: '2px',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                color: 'rgba(255, 255, 255, 0.4)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '50%',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'rgba(255, 255, 255, 0.4)';
+                e.currentTarget.style.background = 'transparent';
+              }}
+            >
+              <X size={14} />
+            </button>
+          </Link>
+        )}
 
         {/* Scroll Indicator */}
         <div

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import { MetamorphicFractalWork } from '@/components/sections/MetamorphicFractalWork';
+import { CaseStudyTracker } from '@/components/CaseStudyTracker';
 
 export const metadata: Metadata = {
   title: 'Metamorphic Fractal Reflections — Psychedelic Journey Case Study',
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
 export default function MetamorphicFractalReflectionsPage() {
   return (
     <>
+      <CaseStudyTracker slug="metamorphic-fractal-reflections" />
       <PortfolioNavigation />
       <MetamorphicFractalWork />
     </>

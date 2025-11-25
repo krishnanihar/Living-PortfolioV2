@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import LatentSpaceSpeculative from '@/components/sections/LatentSpaceSpeculative';
+import { CaseStudyTracker } from '@/components/CaseStudyTracker';
 
 export const metadata: Metadata = {
   title: 'Latent Space — Speculative Design on Dream Technology',
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
 export default function LatentSpacePage() {
   return (
     <>
+      <CaseStudyTracker slug="latent-space" />
       <PortfolioNavigation />
       <LatentSpaceSpeculative />
     </>

@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import { IntroductionSection } from '@/components/sections/IntroductionSection';
 import { HomeNarrativeWrapper } from '@/components/sections/HomeNarrativeWrapper';
+import { saveScrollDepth } from '@/lib/personalization';
 
 // Dynamically import GPGPU Pattern Particles (interactive particle formations)
 const HeroParticleSystem = dynamic(
@@ -42,6 +43,31 @@ const Chatbot = dynamic(
 
 export default function HomePage() {
   const [isChatOpen, setIsChatOpen] = useState(false);
+
+  // Track scroll depth for personalization
+  const handleBeforeUnload = useCallback(() => {
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollDepth = scrollHeight > 0 ? (window.scrollY / scrollHeight) * 100 : 0;
+    saveScrollDepth(scrollDepth);
+  }, []);
+
+  useEffect(() => {
+    // Save scroll depth when user leaves the page
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // Also save on visibility change (e.g., switching tabs)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        handleBeforeUnload();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [handleBeforeUnload]);
 
   return (
     <HomeNarrativeWrapper>
