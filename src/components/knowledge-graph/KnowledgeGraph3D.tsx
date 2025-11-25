@@ -31,51 +31,89 @@ function AutoRotate({ enabled, speed = 0.002 }: { enabled: boolean; speed?: numb
   return null;
 }
 
-// Camera focus controller - smooth animation to focus on node
+// Camera focus controller - smooth time-based animation to focus on node
 interface CameraFocusProps {
   targetPosition: THREE.Vector3 | null;
+  connectedPositions?: THREE.Vector3[];
   onFocusComplete?: () => void;
 }
 
-function CameraFocus({ targetPosition, onFocusComplete }: CameraFocusProps) {
+const FOCUS_DURATION = 400; // ms - snappy animation
+
+// Calculate camera distance to frame all nodes in view
+function calculateFocusDistance(
+  centerPos: THREE.Vector3,
+  connectedPositions: THREE.Vector3[],
+  fov: number
+): number {
+  if (connectedPositions.length === 0) {
+    return 55; // Default distance for single node
+  }
+
+  const box = new THREE.Box3();
+  box.expandByPoint(centerPos);
+  connectedPositions.forEach(p => box.expandByPoint(p));
+
+  const size = box.getSize(new THREE.Vector3());
+  const maxDim = Math.max(size.x, size.y, size.z);
+  const padding = 1.5; // 50% padding for comfortable viewing
+
+  // Calculate distance to fit bounding box in view
+  const distance = (maxDim * padding) / (2 * Math.tan((fov * Math.PI) / 360));
+  return Math.max(50, Math.min(distance, 95)); // Clamp between 50-95
+}
+
+function CameraFocus({ targetPosition, connectedPositions = [], onFocusComplete }: CameraFocusProps) {
   const { camera } = useThree();
+  const startTime = useRef<number | null>(null);
+  const startPosition = useRef(new THREE.Vector3());
+  const startLookAt = useRef(new THREE.Vector3(0, 0, 0));
   const targetLookAt = useRef(new THREE.Vector3(0, 0, 0));
   const currentLookAt = useRef(new THREE.Vector3(0, 0, 0));
-  const isAnimating = useRef(false);
-  const animationProgress = useRef(0);
+  const targetCameraPosition = useRef(new THREE.Vector3());
+  const lastTargetPosition = useRef<THREE.Vector3 | null>(null);
 
-  useFrame((_, delta) => {
+  useFrame(() => {
     if (!targetPosition) {
-      // Smoothly return to center when no target
-      currentLookAt.current.lerp(new THREE.Vector3(0, 0, 0), delta * 2);
+      // Smoothly return to center when no target (slower return)
+      currentLookAt.current.lerp(new THREE.Vector3(0, 0, 0), 0.02);
+      camera.lookAt(currentLookAt.current);
+      startTime.current = null;
+      lastTargetPosition.current = null;
       return;
     }
 
-    // Start animation to target
-    if (!isAnimating.current) {
-      isAnimating.current = true;
-      animationProgress.current = 0;
+    // Detect new target (start new animation)
+    if (!lastTargetPosition.current || !lastTargetPosition.current.equals(targetPosition)) {
+      startTime.current = Date.now();
+      startPosition.current.copy(camera.position);
+      startLookAt.current.copy(currentLookAt.current);
       targetLookAt.current.copy(targetPosition);
+      lastTargetPosition.current = targetPosition.clone();
+
+      // Calculate ideal camera position to frame node + connected nodes
+      const fov = (camera as THREE.PerspectiveCamera).fov || 50;
+      const focusDistance = calculateFocusDistance(targetPosition, connectedPositions, fov);
+
+      // Keep camera roughly in same direction but at new distance
+      const direction = new THREE.Vector3().subVectors(camera.position, targetPosition).normalize();
+      targetCameraPosition.current.copy(targetPosition).add(direction.multiplyScalar(focusDistance));
     }
 
-    // Animate camera look-at
-    animationProgress.current = Math.min(animationProgress.current + delta * 2, 1);
-    const t = 1 - Math.pow(1 - animationProgress.current, 3); // Ease out cubic
+    if (startTime.current === null) return;
 
-    currentLookAt.current.lerp(targetLookAt.current, t * 0.1);
+    // Time-based animation progress
+    const elapsed = Date.now() - startTime.current;
+    const t = Math.min(elapsed / FOCUS_DURATION, 1);
+    const eased = 1 - Math.pow(1 - t, 3); // Ease-out cubic
 
-    // Calculate camera position offset to orbit around target
-    const direction = new THREE.Vector3().subVectors(camera.position, currentLookAt.current).normalize();
-    const targetDistance = 50; // Zoom in a bit
-    const idealPosition = new THREE.Vector3()
-      .copy(currentLookAt.current)
-      .add(direction.multiplyScalar(targetDistance));
-
-    camera.position.lerp(idealPosition, t * 0.05);
+    // Interpolate camera position and look-at
+    camera.position.lerpVectors(startPosition.current, targetCameraPosition.current, eased);
+    currentLookAt.current.lerpVectors(startLookAt.current, targetLookAt.current, eased);
     camera.lookAt(currentLookAt.current);
 
-    if (animationProgress.current >= 1) {
-      isAnimating.current = false;
+    if (t >= 1) {
+      startTime.current = null;
       onFocusComplete?.();
     }
   });
@@ -107,8 +145,10 @@ export function KnowledgeGraph3D({
   className,
 }: KnowledgeGraph3DProps) {
   const [isInteracting, setIsInteracting] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [focusedPosition, setFocusedPosition] = useState<THREE.Vector3 | null>(null);
+  const [connectedPositions, setConnectedPositions] = useState<THREE.Vector3[]>([]);
   const interactionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Detect reduced motion preference
@@ -144,9 +184,16 @@ export function KnowledgeGraph3D({
     }, 3000);
   };
 
+  // Handle node hover state change
+  const handleNodeHoverChange = (node: KnowledgeNode | null) => {
+    setIsHovering(node !== null);
+    onNodeHover?.(node);
+  };
+
   // Handle node focus (camera moves to look at node)
-  const handleNodeFocus = (node: KnowledgeNode, position: THREE.Vector3) => {
+  const handleNodeFocus = (node: KnowledgeNode, position: THREE.Vector3, connected: THREE.Vector3[]) => {
     setFocusedPosition(position.clone());
+    setConnectedPositions(connected.map(p => p.clone()));
     setIsInteracting(true);
     onNodeClick?.(node);
   };
@@ -156,8 +203,8 @@ export function KnowledgeGraph3D({
     setFocusedPosition(null);
   };
 
-  // Should auto-rotate?
-  const shouldAutoRotate = autoRotate && !isInteracting && !prefersReducedMotion && !focusedPosition;
+  // Should auto-rotate? (pause on hover, interaction, or focus)
+  const shouldAutoRotate = autoRotate && !isInteracting && !isHovering && !prefersReducedMotion && !focusedPosition;
 
   return (
     <div
@@ -213,16 +260,16 @@ export function KnowledgeGraph3D({
           onEnd={handleInteractionEnd}
         />
 
-        {/* Auto rotation */}
-        <AutoRotate enabled={shouldAutoRotate} speed={0.15} />
+        {/* Auto rotation - slower speed for less jarring movement */}
+        <AutoRotate enabled={shouldAutoRotate} speed={0.08} />
 
         {/* Camera focus controller */}
-        <CameraFocus targetPosition={focusedPosition} />
+        <CameraFocus targetPosition={focusedPosition} connectedPositions={connectedPositions} />
 
         {/* Graph scene */}
         <Suspense fallback={<LoadingFallback />}>
           <GraphScene
-            onNodeHover={onNodeHover}
+            onNodeHover={handleNodeHoverChange}
             onNodeClick={onNodeClick}
             onNodeFocus={handleNodeFocus}
           />

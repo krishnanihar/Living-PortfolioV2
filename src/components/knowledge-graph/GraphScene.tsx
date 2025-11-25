@@ -13,7 +13,7 @@ import { KnowledgeNode } from '@/types/knowledge-graph';
 interface GraphSceneProps {
   onNodeHover?: (node: KnowledgeNode | null) => void;
   onNodeClick?: (node: KnowledgeNode) => void;
-  onNodeFocus?: (node: KnowledgeNode, position: THREE.Vector3) => void;
+  onNodeFocus?: (node: KnowledgeNode, position: THREE.Vector3, connectedPositions: THREE.Vector3[]) => void;
 }
 
 export function GraphScene({ onNodeHover, onNodeClick, onNodeFocus }: GraphSceneProps) {
@@ -77,9 +77,12 @@ export function GraphScene({ onNodeHover, onNodeClick, onNodeFocus }: GraphScene
       setSelectedNodeId(node.id);
       onNodeClick?.(node);
 
-      // Trigger camera focus on click
+      // Trigger camera focus on click with connected node positions
       const position = getPosition(node.id);
-      onNodeFocus?.(node, position);
+      const connectedPositions = node.connections
+        .map(id => getPosition(id))
+        .filter((p): p is THREE.Vector3 => p !== undefined);
+      onNodeFocus?.(node, position, connectedPositions);
 
       // Navigate to project page if it's a project node
       if (node.type === 'project' && node.url) {
