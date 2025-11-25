@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useMemo } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, ThreeEvent } from '@react-three/fiber';
 import { Text, Billboard } from '@react-three/drei';
 import * as THREE from 'three';
 import { KnowledgeNode } from '@/types/knowledge-graph';
@@ -12,9 +12,11 @@ interface GraphNodeProps {
   isHovered: boolean;
   isConnected: boolean;
   isDimmed: boolean;
+  isDragging?: boolean;
   onClick: () => void;
   onPointerOver: () => void;
   onPointerOut: () => void;
+  onPointerDown?: (event: ThreeEvent<PointerEvent>) => void;
 }
 
 // Base size for nodes - reduced for denser graph
@@ -36,9 +38,11 @@ export function GraphNode({
   isHovered,
   isConnected,
   isDimmed,
+  isDragging = false,
   onClick,
   onPointerOver,
   onPointerOut,
+  onPointerDown,
 }: GraphNodeProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const glowRef = useRef<THREE.Mesh>(null);
@@ -53,13 +57,15 @@ export function GraphNode({
   // Parse color
   const nodeColor = useMemo(() => new THREE.Color(node.color), [node.color]);
 
-  // Animate scale on hover and connection state
+  // Animate scale on hover, connection, and drag state
   useFrame((_, delta) => {
     if (!groupRef.current) return;
 
     // Target scale based on state
     let targetScale = 1;
-    if (isHovered) {
+    if (isDragging) {
+      targetScale = 1.4; // Larger when dragging
+    } else if (isHovered) {
       targetScale = 1.3;
     } else if (isConnected) {
       targetScale = 1.1;
@@ -115,6 +121,7 @@ export function GraphNode({
         onClick={onClick}
         onPointerOver={onPointerOver}
         onPointerOut={onPointerOut}
+        onPointerDown={onPointerDown}
       >
         <sphereGeometry args={[nodeSize, 32, 32]} />
         <meshPhysicalMaterial

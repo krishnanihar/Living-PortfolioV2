@@ -61,6 +61,11 @@ export interface UseGraphPhysicsReturn {
   getPosition: (nodeId: string) => THREE.Vector3;
   isStable: boolean;
   resetPositions: () => void;
+  // Drag support
+  setNodePosition: (nodeId: string, position: THREE.Vector3) => void;
+  lockNode: (nodeId: string) => void;
+  unlockNode: (nodeId: string) => void;
+  reheatSimulation: () => void;
 }
 
 export function useGraphPhysics({
@@ -78,6 +83,13 @@ export function useGraphPhysics({
   const physicsState = useRef<Map<string, NodePhysicsState>>(new Map());
   const isStableRef = useRef(false);
   const frameCount = useRef(0);
+
+  // Locked nodes (being dragged) - skip force calculations
+  const lockedNodes = useRef<Set<string>>(new Set());
+
+  // Reheat state for simulation boost after drag
+  const reheatRef = useRef(false);
+  const reheatFramesRef = useRef(0);
 
   // Initialize positions
   const positions = useMemo(() => {
@@ -147,6 +159,17 @@ export function useGraphPhysics({
     let totalVelocity = 0;
     const nodeArray = Array.from(physicsState.current.entries());
 
+    // Handle reheat (boost simulation after drag)
+    let currentDamping = config.damping;
+    if (reheatRef.current) {
+      reheatFramesRef.current++;
+      currentDamping = 0.75; // Lower damping = more energy
+      if (reheatFramesRef.current > 60) {
+        reheatRef.current = false;
+        reheatFramesRef.current = 0;
+      }
+    }
+
     // Calculate forces for each node
     nodeArray.forEach(([nodeId, state]) => {
       const node = nodes.find(n => n.id === nodeId);
@@ -155,6 +178,12 @@ export function useGraphPhysics({
       // Core node stays fixed at center
       if (node.type === 'core') {
         state.position = { x: 0, y: 0, z: 0 };
+        state.velocity = { x: 0, y: 0, z: 0 };
+        return;
+      }
+
+      // Skip force calculations for locked (dragging) nodes
+      if (lockedNodes.current.has(nodeId)) {
         state.velocity = { x: 0, y: 0, z: 0 };
         return;
       }
@@ -226,10 +255,10 @@ export function useGraphPhysics({
       state.velocity.y += fy * dt;
       state.velocity.z += fz * dt;
 
-      // Apply damping
-      state.velocity.x *= config.damping;
-      state.velocity.y *= config.damping;
-      state.velocity.z *= config.damping;
+      // Apply damping (uses currentDamping for reheat support)
+      state.velocity.x *= currentDamping;
+      state.velocity.y *= currentDamping;
+      state.velocity.z *= currentDamping;
 
       // Clamp velocity
       const speed = Math.sqrt(
@@ -301,10 +330,47 @@ export function useGraphPhysics({
     });
   }, [nodes, positions]);
 
+  // Set node position (for dragging)
+  const setNodePosition = useCallback(
+    (nodeId: string, position: THREE.Vector3) => {
+      const state = physicsState.current.get(nodeId);
+      if (state) {
+        state.position = { x: position.x, y: position.y, z: position.z };
+        state.velocity = { x: 0, y: 0, z: 0 };
+      }
+      const pos = positions.get(nodeId);
+      if (pos) {
+        pos.copy(position);
+      }
+    },
+    [positions]
+  );
+
+  // Lock node (start drag)
+  const lockNode = useCallback((nodeId: string) => {
+    lockedNodes.current.add(nodeId);
+  }, []);
+
+  // Unlock node (end drag)
+  const unlockNode = useCallback((nodeId: string) => {
+    lockedNodes.current.delete(nodeId);
+  }, []);
+
+  // Reheat simulation (boost energy after drag)
+  const reheatSimulation = useCallback(() => {
+    reheatRef.current = true;
+    reheatFramesRef.current = 0;
+    isStableRef.current = false;
+  }, []);
+
   return {
     positions,
     getPosition,
     isStable: isStableRef.current,
     resetPositions,
+    setNodePosition,
+    lockNode,
+    unlockNode,
+    reheatSimulation,
   };
 }
