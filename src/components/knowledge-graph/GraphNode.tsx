@@ -33,6 +33,9 @@ const TYPE_SIZE_MULTIPLIER: Record<string, number> = {
   tool: 0.4,
 };
 
+// Minimum hitbox radius for interaction (regardless of visual size)
+const MIN_HITBOX_RADIUS = 1.2;
+
 export function GraphNode({
   node,
   position,
@@ -55,6 +58,11 @@ export function GraphNode({
     const typeMultiplier = TYPE_SIZE_MULTIPLIER[node.type] || 1;
     return BASE_SIZE * node.size * typeMultiplier;
   }, [node.size, node.type]);
+
+  // Calculate hitbox size - use larger of visual size or minimum for easier interaction
+  const hitboxSize = useMemo(() => {
+    return Math.max(nodeSize, MIN_HITBOX_RADIUS);
+  }, [nodeSize]);
 
   // Parse color
   const nodeColor = useMemo(() => new THREE.Color(node.color), [node.color]);
@@ -97,6 +105,17 @@ export function GraphNode({
 
   return (
     <group ref={groupRef} position={position}>
+      {/* Invisible hitbox for easier interaction with small nodes */}
+      <mesh
+        onClick={onClick}
+        onPointerOver={onPointerOver}
+        onPointerOut={onPointerOut}
+        onPointerDown={onPointerDown}
+      >
+        <sphereGeometry args={[hitboxSize, 16, 16]} />
+        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+      </mesh>
+
       {/* Outer halo - softer, larger glow */}
       <mesh scale={isSelected ? 2.5 : 2.0}>
         <sphereGeometry args={[nodeSize, 16, 16]} />
@@ -120,13 +139,7 @@ export function GraphNode({
       </mesh>
 
       {/* Main sphere with glassmorphic effect */}
-      <mesh
-        ref={meshRef}
-        onClick={onClick}
-        onPointerOver={onPointerOver}
-        onPointerOut={onPointerOut}
-        onPointerDown={onPointerDown}
-      >
+      <mesh ref={meshRef}>
         <sphereGeometry args={[nodeSize, 32, 32]} />
         <meshPhysicalMaterial
           color={nodeColor}
