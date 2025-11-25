@@ -4,7 +4,6 @@ import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { shimmerVertexShader, shimmerFragmentShader } from '@/shaders/gladeye';
-import { useNarrativeContext } from '@/contexts/NarrativeContext';
 
 // Determine particle count based on device capabilities
 function getParticleCount(): number {
@@ -157,11 +156,44 @@ function GladeyeParticles({ scrollProgress, mousePosition }: GladeyeParticlesPro
   );
 }
 
+// Calculate opacity based on scroll position
+// Hero = 0-100vh (100% opacity), Portfolio Overview = 100vh-200vh (50% → 0%)
+function getScrollOpacity(scrollY: number, windowHeight: number): number {
+  const heroEnd = windowHeight;           // End of hero (100vh)
+  const overviewEnd = windowHeight * 2;   // End of portfolio overview (~200vh)
+
+  if (scrollY <= heroEnd * 0.5) {
+    return 1;  // Full opacity in first half of hero
+  } else if (scrollY <= heroEnd) {
+    // Fade from 100% to 50% during second half of hero
+    const progress = (scrollY - heroEnd * 0.5) / (heroEnd * 0.5);
+    return 1 - (progress * 0.5);
+  } else if (scrollY <= overviewEnd) {
+    // Fade from 50% to 0% during portfolio overview
+    const progress = (scrollY - heroEnd) / (overviewEnd - heroEnd);
+    return 0.5 - (progress * 0.5);
+  }
+  return 0;  // Hidden after portfolio overview
+}
+
 export function GladeyeParticleScroll() {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [scrollY, setScrollY] = useState(0);
+  const [windowHeight, setWindowHeight] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const rafRef = useRef<number | null>(null);
-  const { contentType } = useNarrativeContext();
+
+  // Initialize window height
+  useEffect(() => {
+    setWindowHeight(window.innerHeight);
+
+    const handleResize = () => {
+      setWindowHeight(window.innerHeight);
+    };
+
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Scroll handler with requestAnimationFrame for performance
   useEffect(() => {
@@ -171,15 +203,16 @@ export function GladeyeParticleScroll() {
       }
 
       rafRef.current = requestAnimationFrame(() => {
-        const windowHeight = window.innerHeight;
+        const wh = window.innerHeight;
         const documentHeight = document.body.scrollHeight;
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
         // Calculate scroll progress (0-1)
-        const maxScroll = documentHeight - windowHeight;
+        const maxScroll = documentHeight - wh;
         const progress = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
 
         setScrollProgress(progress);
+        setScrollY(scrollTop);
       });
     };
 
@@ -212,8 +245,8 @@ export function GladeyeParticleScroll() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Calculate opacity based on content type from context
-  const containerOpacity = contentType === 'transition' ? 1 : 0.3;
+  // Calculate opacity based on scroll position
+  const containerOpacity = getScrollOpacity(scrollY, windowHeight);
 
   return (
     <div
@@ -221,9 +254,9 @@ export function GladeyeParticleScroll() {
       style={{
         zIndex: 1,
         contain: 'layout style paint',
-        willChange: 'transform',
+        willChange: 'transform, opacity',
         opacity: containerOpacity,
-        transition: 'opacity 0.8s ease-in-out',
+        transition: 'opacity 0.15s ease-out',
       }}
     >
       <Canvas
