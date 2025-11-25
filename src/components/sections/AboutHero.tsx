@@ -145,51 +145,44 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
         </motion.div>
       )}
 
-      {/* Explore Button */}
-      <motion.button
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1, duration: 0.6 }}
-        onClick={handleScrollDown}
+      {/* Explore Button - Centered Container */}
+      <div
         style={{
           position: 'absolute',
           bottom: '3rem',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 20,
+          left: 0,
+          right: 0,
           display: 'flex',
-          alignItems: 'center',
-          gap: '0.75rem',
-          padding: '0.875rem 1.5rem',
-          background: 'var(--glass-08)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid var(--border-primary)',
-          borderRadius: '100px',
-          cursor: 'pointer',
-          color: 'var(--text-70)',
-          transition: 'all 0.3s ease',
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = 'var(--glass-15)';
-          e.currentTarget.style.color = 'var(--text-95)';
-          e.currentTarget.style.borderColor = 'var(--text-20)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = 'var(--glass-08)';
-          e.currentTarget.style.color = 'var(--text-70)';
-          e.currentTarget.style.borderColor = 'var(--border-primary)';
+          justifyContent: 'center',
+          zIndex: 20,
         }}
       >
-        <span style={{ fontSize: '0.875rem', fontWeight: 500, letterSpacing: '0.02em' }}>
-          Explore
-        </span>
-        <motion.div
-          animate={{ y: [0, 4, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1, duration: 0.6 }}
+          onClick={handleScrollDown}
+          className="btn-secondary"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+          }}
+          whileHover={{
+            scale: 1.05,
+            transition: { duration: 0.2 },
+          }}
+          whileTap={{ scale: 0.95 }}
         >
-          <ArrowDown size={18} />
-        </motion.div>
-      </motion.button>
+          <span>Explore</span>
+          <motion.div
+            animate={{ y: [0, 3, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <ArrowDown size={16} />
+          </motion.div>
+        </motion.button>
+      </div>
 
       {/* Bottom gradient fade */}
       <div
