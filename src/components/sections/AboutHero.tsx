@@ -91,7 +91,7 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
         style={{
           position: 'absolute',
           inset: 0,
-          zIndex: 1,
+          zIndex: 2,
         }}
       >
         {!isMobile ? (
