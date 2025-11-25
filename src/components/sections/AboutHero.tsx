@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
-import { ChevronDown, Sparkles } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { KnowledgeNode } from '@/types/knowledge-graph';
 
 // Dynamic import for 3D graph (no SSR)
@@ -36,21 +36,12 @@ const KnowledgeGraph3D = dynamic(
   }
 );
 
-// Get time-based greeting
-function getGreeting(): string {
-  const hour = new Date().getHours();
-  if (hour < 12) return 'Good morning';
-  if (hour < 18) return 'Good afternoon';
-  return 'Good evening';
-}
-
 interface AboutHeroProps {
   onScrollToContent?: () => void;
 }
 
 export function AboutHero({ onScrollToContent }: AboutHeroProps) {
   const [hoveredNode, setHoveredNode] = useState<KnowledgeNode | null>(null);
-  const [greeting] = useState(getGreeting);
   const [isMobile, setIsMobile] = useState(false);
 
   // Detect mobile
@@ -111,159 +102,48 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
         )}
       </div>
 
-      {/* Content Overlay */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 10,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '2rem',
-          pointerEvents: 'none',
-        }}
-      >
-        {/* Glassmorphic Card */}
+      {/* Hovered Node Info Overlay */}
+      {hoveredNode && (
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          exit={{ opacity: 0, y: 10 }}
           style={{
-            background: 'var(--glass-03)',
-            backdropFilter: 'blur(40px) saturate(120%)',
-            borderRadius: '28px',
+            position: 'absolute',
+            bottom: '120px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 10,
+            background: 'var(--glass-08)',
+            backdropFilter: 'blur(20px)',
+            borderRadius: '12px',
+            padding: '0.75rem 1.25rem',
             border: '1px solid var(--border-primary)',
-            padding: 'clamp(1.5rem, 4vw, 3rem)',
-            maxWidth: '600px',
-            width: '100%',
-            textAlign: 'center',
-            pointerEvents: 'auto',
+            pointerEvents: 'none',
           }}
         >
-          {/* Greeting */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
+          <p
             style={{
-              fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
-              color: 'var(--text-60)',
-              marginBottom: '0.5rem',
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-            }}
-          >
-            {greeting}
-          </motion.p>
-
-          {/* Name */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-            style={{
-              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-              fontWeight: 200,
-              color: 'var(--text-95)',
-              marginBottom: '1rem',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            I'm{' '}
-            <span
-              style={{
-                background: 'linear-gradient(135deg, #DA0E29 0%, #FF6B6B 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                fontWeight: 300,
-              }}
-            >
-              Nihar
-            </span>
-          </motion.h1>
-
-          {/* Tagline */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            style={{
-              fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-              color: 'var(--text-70)',
-              lineHeight: 1.6,
-              marginBottom: '1.5rem',
-            }}
-          >
-            Systems-thinking designer who ships in code.
-            <br />
-            <span style={{ color: 'var(--text-50)' }}>
-              Exploring the connections between design, development, and everything in between.
-            </span>
-          </motion.p>
-
-          {/* Graph hint */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.5rem',
               fontSize: '0.875rem',
-              color: 'var(--text-40)',
+              color: 'var(--text-90)',
+              fontWeight: 500,
             }}
           >
-            <Sparkles size={14} />
-            <span>Drag to explore my knowledge graph</span>
-          </motion.div>
-        </motion.div>
-
-        {/* Hovered Node Info */}
-        {hoveredNode && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            style={{
-              position: 'absolute',
-              bottom: '120px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              background: 'var(--glass-08)',
-              backdropFilter: 'blur(20px)',
-              borderRadius: '12px',
-              padding: '0.75rem 1.25rem',
-              border: '1px solid var(--border-primary)',
-              pointerEvents: 'none',
-            }}
-          >
+            {hoveredNode.label}
+          </p>
+          {hoveredNode.description && (
             <p
               style={{
-                fontSize: '0.875rem',
-                color: 'var(--text-90)',
-                fontWeight: 500,
+                fontSize: '0.75rem',
+                color: 'var(--text-50)',
+                marginTop: '0.25rem',
               }}
             >
-              {hoveredNode.label}
+              {hoveredNode.description}
             </p>
-            {hoveredNode.description && (
-              <p
-                style={{
-                  fontSize: '0.75rem',
-                  color: 'var(--text-50)',
-                  marginTop: '0.25rem',
-                }}
-              >
-                {hoveredNode.description}
-              </p>
-            )}
-          </motion.div>
-        )}
-      </div>
+          )}
+        </motion.div>
+      )}
 
       {/* Scroll Indicator */}
       <motion.button

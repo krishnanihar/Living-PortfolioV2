@@ -131,12 +131,12 @@ export function GraphNode({
       {(isHovered || node.type === 'core' || node.type === 'domain' || node.type === 'project' || node.type === 'skill') && (
         <Billboard follow lockX={false} lockY={false} lockZ={false}>
           <Text
-            position={[0, nodeSize + 1.5, 0]}
-            fontSize={node.type === 'core' ? 3 : node.type === 'domain' ? 2 : 1.5}
+            position={[0, nodeSize + 0.5, 0]}
+            fontSize={node.type === 'core' ? 1 : node.type === 'domain' ? 0.7 : 0.5}
             color="white"
             anchorX="center"
             anchorY="bottom"
-            outlineWidth={0.1}
+            outlineWidth={0.05}
             outlineColor="black"
           >
             {node.label}

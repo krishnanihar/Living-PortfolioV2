@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Line } from '@react-three/drei';
 import * as THREE from 'three';
@@ -21,6 +21,32 @@ export function GraphEdge({
   isHighlighted,
   isDimmed,
 }: GraphEdgeProps) {
+  // State to hold current points - triggers re-render when positions change
+  const [points, setPoints] = useState<[number, number, number][]>([
+    [sourcePosition.x, sourcePosition.y, sourcePosition.z],
+    [targetPosition.x, targetPosition.y, targetPosition.z],
+  ]);
+
+  // Update points each frame to follow physics-driven node positions
+  useFrame(() => {
+    const newPoints: [number, number, number][] = [
+      [sourcePosition.x, sourcePosition.y, sourcePosition.z],
+      [targetPosition.x, targetPosition.y, targetPosition.z],
+    ];
+
+    // Only update state if positions have actually changed
+    if (
+      points[0][0] !== newPoints[0][0] ||
+      points[0][1] !== newPoints[0][1] ||
+      points[0][2] !== newPoints[0][2] ||
+      points[1][0] !== newPoints[1][0] ||
+      points[1][1] !== newPoints[1][1] ||
+      points[1][2] !== newPoints[1][2]
+    ) {
+      setPoints(newPoints);
+    }
+  });
+
   // Calculate opacity based on state and edge strength
   const baseOpacity = edge.strength * 0.3;
   let opacity = baseOpacity;
@@ -33,15 +59,6 @@ export function GraphEdge({
 
   // Color based on highlight state
   const color = isHighlighted ? '#DA0E29' : '#ffffff';
-
-  // Points array for the line
-  const points = useMemo(
-    () => [
-      [sourcePosition.x, sourcePosition.y, sourcePosition.z] as [number, number, number],
-      [targetPosition.x, targetPosition.y, targetPosition.z] as [number, number, number],
-    ],
-    [sourcePosition, targetPosition]
-  );
 
   return (
     <group>
