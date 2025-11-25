@@ -562,23 +562,6 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
             </a>
           </div>
 
-          {/* Project Trail - Subtle progress indicator */}
-          {personalization?.projectTrail.message && (
-            <div
-              style={{
-                marginTop: '1.5rem',
-                fontSize: 'clamp(0.6875rem, 1vw, 0.75rem)',
-                fontWeight: '400',
-                color: 'rgba(255, 255, 255, 0.4)',
-                letterSpacing: '0.05em',
-                opacity: animationStage >= 4 ? 1 : 0,
-                transform: animationStage >= 4 ? 'translateY(0)' : 'translateY(10px)',
-                transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s',
-              }}
-            >
-              {personalization.projectTrail.message}
-            </div>
-          )}
         </div>
 
         {/* Scroll Memory Pill - Floating CTA for returning visitors */}
@@ -619,6 +602,12 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
             <span>Continue</span>
             <ArrowRight size={14} style={{ opacity: 0.7 }} />
             <span style={{ fontWeight: '500' }}>{personalization.scrollMemory.lastProjectName}</span>
+            {personalization.projectTrail.message && (
+              <>
+                <span style={{ opacity: 0.4, margin: '0 0.25rem' }}>·</span>
+                <span style={{ opacity: 0.6, fontSize: '0.75rem' }}>{personalization.projectTrail.message}</span>
+              </>
+            )}
             <button
               onClick={(e) => {
                 e.preventDefault();
