@@ -27,12 +27,12 @@ export function ActTransition({
   return (
     <section ref={sectionRef} style={{
       position: 'relative',
-      minHeight: '80vh',
+      minHeight: '40vh',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      paddingTop: 'clamp(6rem, 10vh, 10rem)',
-      paddingBottom: 'clamp(6rem, 10vh, 10rem)',
+      paddingTop: 'clamp(3rem, 5vh, 4rem)',
+      paddingBottom: 'clamp(3rem, 5vh, 4rem)',
       paddingLeft: '1.5rem',
       paddingRight: '1.5rem',
     }}>
@@ -56,7 +56,7 @@ export function ActTransition({
                 height: '1px',
                 background: `linear-gradient(to right, transparent, ${actColor} 20%, ${actColor} 80%, transparent)`,
                 opacity: 0.3,
-                marginBottom: '4rem',
+                marginBottom: '2rem',
                 marginLeft: 'auto',
                 marginRight: 'auto',
               }}
@@ -90,10 +90,10 @@ export function ActTransition({
           {/* Act title */}
           <h2
             style={{
-              fontSize: 'clamp(3.5rem, 7vw, 5rem)',
+              fontSize: 'clamp(2rem, 4vw, 2.5rem)',
               fontWeight: '100',
               letterSpacing: '0.05em',
-              marginBottom: '2.5rem',
+              marginBottom: '1.5rem',
               color: 'var(--text-95)',
               lineHeight: '1.1',
             }}
@@ -127,7 +127,7 @@ export function ActTransition({
                 height: '1px',
                 background: `linear-gradient(to right, transparent, ${actColor} 20%, ${actColor} 80%, transparent)`,
                 opacity: 0.3,
-                marginTop: '3rem',
+                marginTop: '1.5rem',
                 marginLeft: 'auto',
                 marginRight: 'auto',
               }}
