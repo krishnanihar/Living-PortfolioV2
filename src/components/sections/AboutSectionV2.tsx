@@ -135,14 +135,20 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           setIsTransitioning(true);
 
           requestAnimationFrame(() => {
+            // Block momentum wheel events during lock transition
+            isAnimatingRef.current = true;
+
             // Snap scroll to exact section position to eliminate any offset
             const sectionTop = window.scrollY + rect.top;
             window.scrollTo({ top: sectionTop, behavior: 'instant' });
 
             setIsLocked(true);
 
-            // Clear transition after brief delay
-            setTimeout(() => setIsTransitioning(false), 150);
+            // Clear transition and animation lock after brief delay
+            setTimeout(() => {
+              setIsTransitioning(false);
+              isAnimatingRef.current = false; // Now allow wheel navigation
+            }, 200); // 200ms cooldown for momentum to settle
           });
         }
       }
@@ -231,14 +237,20 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
         setIsTransitioning(true);
 
         requestAnimationFrame(() => {
+          // Block momentum wheel events during re-lock transition
+          isAnimatingRef.current = true;
+
           // Snap scroll to exact section position to eliminate offset
           const sectionTop = window.scrollY + rect.top;
           window.scrollTo({ top: sectionTop, behavior: 'instant' });
 
           setIsLocked(true);
 
-          // Clear transition after brief delay
-          setTimeout(() => setIsTransitioning(false), 150);
+          // Clear transition and animation lock after brief delay
+          setTimeout(() => {
+            setIsTransitioning(false);
+            isAnimatingRef.current = false; // Now allow wheel navigation
+          }, 200); // 200ms cooldown for momentum to settle
         });
       }
     };
