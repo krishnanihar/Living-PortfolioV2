@@ -131,10 +131,43 @@ function LoadingFallback() {
   );
 }
 
+// Scroll-controlled zoom - moves camera based on scroll progress
+interface ScrollZoomProps {
+  scrollProgress: number; // 0 = zoomed in, 1 = zoomed out
+  enabled: boolean;
+}
+
+function ScrollZoom({ scrollProgress, enabled }: ScrollZoomProps) {
+  const { camera } = useThree();
+  const targetRef = useRef(new THREE.Vector3(0, 0, 0));
+
+  // Camera positions: start close, end far
+  const START_POSITION = { x: 0, y: 15, z: 45 }; // Zoomed in
+  const END_POSITION = { x: 0, y: 25, z: 110 }; // Zoomed out - full view
+
+  useFrame(() => {
+    if (!enabled) return;
+
+    // Interpolate camera position based on scroll progress
+    const t = scrollProgress;
+    const eased = t; // Linear for direct scroll control
+
+    camera.position.x = START_POSITION.x + (END_POSITION.x - START_POSITION.x) * eased;
+    camera.position.y = START_POSITION.y + (END_POSITION.y - START_POSITION.y) * eased;
+    camera.position.z = START_POSITION.z + (END_POSITION.z - START_POSITION.z) * eased;
+
+    camera.lookAt(targetRef.current);
+  });
+
+  return null;
+}
+
 interface KnowledgeGraph3DProps {
   onNodeHover?: (node: KnowledgeNode | null) => void;
   onNodeClick?: (node: KnowledgeNode) => void;
   autoRotate?: boolean;
+  scrollProgress?: number; // 0-1, controls zoom level
+  onZoomComplete?: () => void;
   className?: string;
 }
 
@@ -142,8 +175,12 @@ export function KnowledgeGraph3D({
   onNodeHover,
   onNodeClick,
   autoRotate = true,
+  scrollProgress,
+  onZoomComplete,
   className,
 }: KnowledgeGraph3DProps) {
+  // Track if scroll zoom is active
+  const isScrollZoomActive = scrollProgress !== undefined;
   const [isInteracting, setIsInteracting] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [isReady, setIsReady] = useState(false);
@@ -203,8 +240,15 @@ export function KnowledgeGraph3D({
     setFocusedPosition(null);
   };
 
-  // Should auto-rotate? (pause on hover, interaction, or focus)
-  const shouldAutoRotate = autoRotate && !isInteracting && !isHovering && !prefersReducedMotion && !focusedPosition;
+  // Should auto-rotate? (pause on hover, interaction, focus, or scroll zoom)
+  const shouldAutoRotate = autoRotate && !isInteracting && !isHovering && !prefersReducedMotion && !focusedPosition && !isScrollZoomActive;
+
+  // Notify when zoom is complete
+  useEffect(() => {
+    if (scrollProgress !== undefined && scrollProgress >= 1 && onZoomComplete) {
+      onZoomComplete();
+    }
+  }, [scrollProgress, onZoomComplete]);
 
   return (
     <div
@@ -228,10 +272,10 @@ export function KnowledgeGraph3D({
         onPointerUp={handleInteractionEnd}
         onWheel={handleInteractionStart}
       >
-        {/* Camera - positioned closer for better visibility */}
+        {/* Camera - positioned based on scroll zoom state */}
         <PerspectiveCamera
           makeDefault
-          position={[0, 20, 70]}
+          position={isScrollZoomActive ? [0, 15, 45] : [0, 20, 70]}
           fov={50}
           near={0.1}
           far={1000}
@@ -245,9 +289,9 @@ export function KnowledgeGraph3D({
         {/* Environment for reflections */}
         <Environment preset="night" />
 
-        {/* Controls - disable during camera focus animation to prevent fighting */}
+        {/* Controls - disable during camera focus animation or scroll zoom */}
         <OrbitControls
-          enabled={!focusedPosition}
+          enabled={!focusedPosition && !isScrollZoomActive}
           enablePan={true}
           enableZoom={true}
           enableRotate={true}
@@ -260,6 +304,11 @@ export function KnowledgeGraph3D({
           onStart={handleInteractionStart}
           onEnd={handleInteractionEnd}
         />
+
+        {/* Scroll-controlled zoom */}
+        {isScrollZoomActive && (
+          <ScrollZoom scrollProgress={scrollProgress ?? 0} enabled={true} />
+        )}
 
         {/* Auto rotation - slower speed for less jarring movement */}
         <AutoRotate enabled={shouldAutoRotate} speed={0.08} />

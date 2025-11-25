@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
@@ -43,6 +43,13 @@ interface AboutHeroProps {
 export function AboutHero({ onScrollToContent }: AboutHeroProps) {
   const [hoveredNode, setHoveredNode] = useState<KnowledgeNode | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [zoomComplete, setZoomComplete] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const accumulatedScroll = useRef(0);
+
+  // How much scroll distance maps to full zoom (in pixels)
+  const SCROLL_DISTANCE = 600;
 
   // Detect mobile
   useEffect(() => {
@@ -52,6 +59,51 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Handle wheel events for scroll-controlled zoom
+  const handleWheel = useCallback((e: WheelEvent) => {
+    // Skip on mobile or if zoom is complete
+    if (isMobile || zoomComplete) return;
+
+    // Only capture scroll when section is in view
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const rect = section.getBoundingClientRect();
+    const isInView = rect.top <= 0 && rect.bottom > window.innerHeight * 0.5;
+
+    if (!isInView && scrollProgress === 0) return;
+
+    // If not zoomed out yet, prevent default scroll and control zoom
+    if (scrollProgress < 1) {
+      e.preventDefault();
+
+      // Accumulate scroll delta
+      accumulatedScroll.current += e.deltaY;
+
+      // Map accumulated scroll to progress (0-1)
+      const newProgress = Math.min(1, Math.max(0, accumulatedScroll.current / SCROLL_DISTANCE));
+      setScrollProgress(newProgress);
+
+      // Mark zoom complete when we reach the end
+      if (newProgress >= 1) {
+        setZoomComplete(true);
+      }
+    }
+  }, [isMobile, zoomComplete, scrollProgress]);
+
+  // Add wheel listener
+  useEffect(() => {
+    if (isMobile) return;
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    return () => window.removeEventListener('wheel', handleWheel);
+  }, [handleWheel, isMobile]);
+
+  // Handle zoom complete callback
+  const handleZoomComplete = useCallback(() => {
+    setZoomComplete(true);
   }, []);
 
   // Handle scroll to content
@@ -68,6 +120,7 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
 
   return (
     <section
+      ref={sectionRef}
       style={{
         position: 'relative',
         width: '100%',
@@ -88,7 +141,9 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
         {!isMobile ? (
           <KnowledgeGraph3D
             onNodeHover={setHoveredNode}
-            autoRotate={true}
+            autoRotate={zoomComplete}
+            scrollProgress={!zoomComplete ? scrollProgress : undefined}
+            onZoomComplete={handleZoomComplete}
           />
         ) : (
           // Mobile fallback - simple animated background
@@ -145,6 +200,34 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
         </motion.div>
       )}
 
+      {/* Zoom Progress Indicator */}
+      {!zoomComplete && !isMobile && scrollProgress > 0 && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '100px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 20,
+            width: '120px',
+            height: '4px',
+            background: 'var(--glass-10)',
+            borderRadius: '2px',
+            overflow: 'hidden',
+          }}
+        >
+          <div
+            style={{
+              width: `${scrollProgress * 100}%`,
+              height: '100%',
+              background: 'var(--brand-red)',
+              borderRadius: '2px',
+              transition: 'width 0.1s ease-out',
+            }}
+          />
+        </div>
+      )}
+
       {/* Scroll Indicator */}
       <motion.button
         initial={{ opacity: 0 }}
@@ -171,7 +254,7 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
         onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-40)')}
       >
         <span style={{ fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-          Scroll to explore
+          {zoomComplete ? 'Scroll to explore' : 'Scroll to zoom out'}
         </span>
         <motion.div
           animate={{ y: [0, 8, 0] }}
