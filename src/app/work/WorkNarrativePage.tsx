@@ -4,14 +4,13 @@ import React, { useEffect, useState, useRef, Suspense } from 'react';
 import { WorkPageLayout } from '@/components/narrative-work/WorkPageLayout';
 import { NarrativeWorkHero } from '@/components/narrative-work/NarrativeWorkHero';
 import { JourneyOverview } from '@/components/narrative-work/JourneyOverview';
-import { StatCardGrid, type StatCardData } from '@/components/narrative-work/StatCard';
 import { type ImpactCard } from '@/components/narrative-work/ImpactBentoGrid';
 import { ResearchShowcase } from '@/components/narrative-work/ResearchShowcase';
 import { ActTransition } from '@/components/narrative-work/ActTransition';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Target, Trophy, TrendingUp, CheckCircle, ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 
 /**
  * Complete narrative-driven work page
@@ -29,7 +28,6 @@ export function WorkNarrativePage() {
   const [inView, setInView] = useState(false);
   const [researchInView, setResearchInView] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [hoveredStat, setHoveredStat] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [ripplePosition, setRipplePosition] = useState<{ x: number; y: number } | null>(null);
   const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0);
@@ -106,36 +104,6 @@ export function WorkNarrativePage() {
     carousel.addEventListener('scroll', handleScroll);
     return () => carousel.removeEventListener('scroll', handleScroll);
   }, [isMobile]);
-
-  // Air India Stats
-  const airIndiaStats: StatCardData[] = [
-    {
-      value: '8',
-      label: 'Key Projects',
-      icon: Target,
-      color: '99, 102, 241',
-      target: 8,
-    },
-    {
-      value: '2',
-      label: 'Hackathon Wins',
-      icon: Trophy,
-      color: '251, 191, 36',
-      target: 2,
-    },
-    {
-      value: '↑',
-      label: 'Review Speed',
-      icon: TrendingUp,
-      color: '16, 185, 129',
-    },
-    {
-      value: '↑',
-      label: 'Consistency',
-      icon: CheckCircle,
-      color: '218, 14, 41',
-    },
-  ];
 
   // Impact Cards
   const impactCards: ImpactCard[] = [
@@ -234,156 +202,7 @@ export function WorkNarrativePage() {
         </div>
       )}
 
-      {/* SECTION 6: Air India Overview - Interactive Stats */}
-      <section style={{
-        maxWidth: '1400px',
-        margin: '0 auto',
-        padding: '0 1.5rem 4rem',
-        position: 'relative',
-        zIndex: 1,
-      }}>
-        {/* Header */}
-        <div style={{
-          textAlign: 'center',
-          marginBottom: '4rem',
-        }}>
-          <motion.p
-            style={{
-              fontSize: isMobile ? '0.75rem' : '0.875rem',
-              fontWeight: '300',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--text-tertiary)',
-              marginBottom: '1rem',
-            }}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            2023-Present
-          </motion.p>
-          <motion.h2
-            style={{
-              fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-              fontWeight: '400',
-              letterSpacing: '-0.02em',
-              color: 'var(--text-primary)',
-              marginBottom: '1rem',
-            }}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            Transforming India's Flag Carrier
-          </motion.h2>
-          <motion.p
-            style={{
-              fontSize: '1rem',
-              color: 'var(--text-tertiary)',
-            }}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            Systems and innovation across Air India's digital transformation
-          </motion.p>
-        </div>
-
-        {/* Interactive Stats Cards */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: '1.5rem',
-        }}>
-          {airIndiaStats.map((stat, index) => {
-            const Icon = stat.icon;
-            const isHovered = hoveredStat === index;
-
-            return (
-              <div
-                key={index}
-                onMouseEnter={() => setHoveredStat(index)}
-                onMouseLeave={() => setHoveredStat(null)}
-                style={{
-                  position: 'relative',
-                  padding: '2rem',
-                  borderRadius: '20px',
-                  background: isHovered
-                    ? `linear-gradient(135deg, rgba(${stat.color}, 0.08), var(--surface-primary))`
-                    : 'var(--surface-primary)',
-                  backdropFilter: 'blur(40px) saturate(120%)',
-                  WebkitBackdropFilter: 'blur(40px) saturate(120%)',
-                  border: `1px solid ${isHovered ? `rgba(${stat.color}, 0.3)` : 'var(--border-primary)'}`,
-                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                  transform: isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
-                  cursor: 'default',
-                  boxShadow: isHovered
-                    ? `0 20px 40px rgba(${stat.color}, 0.15)`
-                    : 'var(--shadow-sm)',
-                  overflow: 'hidden',
-                }}
-              >
-                {/* Shimmer Line */}
-                {isHovered && (
-                  <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: '2px',
-                    background: `linear-gradient(90deg, transparent, rgba(${stat.color}, 0.8), transparent)`,
-                  }} />
-                )}
-
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: '1rem',
-                  marginBottom: '1rem',
-                }}>
-                  <div style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '10px',
-                    background: `rgba(${stat.color}, 0.1)`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                    transform: isHovered ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
-                  }}>
-                    <Icon size={20} style={{ color: `rgb(${stat.color})` }} />
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{
-                      fontSize: '2.5rem',
-                      fontWeight: '600',
-                      color: 'var(--text-primary)',
-                      lineHeight: '1',
-                      marginBottom: '0.5rem',
-                    }}>
-                      {stat.value}
-                    </div>
-                    <div style={{
-                      fontSize: '0.875rem',
-                      color: 'var(--text-secondary)',
-                      fontWeight: '300',
-                      letterSpacing: '0.02em',
-                    }}>
-                      {stat.label}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* SECTION 6B: Six Areas of Impact - Bento Grid */}
+      {/* SECTION 6: Six Areas of Impact - Bento Grid */}
       <section style={{
         maxWidth: '1400px',
         margin: '0 auto',

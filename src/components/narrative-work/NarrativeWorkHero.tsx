@@ -70,10 +70,11 @@ export function NarrativeWorkHero() {
           {/* Main title */}
           <h1
             style={{
-              fontSize: 'clamp(2.5rem, 8vw, 5rem)',
-              fontWeight: '200',
-              lineHeight: '1.1',
-              marginBottom: '3rem',
+              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+              fontWeight: '100',
+              lineHeight: '1.15',
+              letterSpacing: '0.02em',
+              marginBottom: '2.5rem',
               background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.7) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
