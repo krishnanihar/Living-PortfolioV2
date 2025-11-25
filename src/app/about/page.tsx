@@ -13,11 +13,23 @@ const GladeyeParticleScroll = dynamic(
   }
 );
 
+// Dynamically import the 3D Knowledge Graph Hero
+const AboutHero = dynamic(
+  () => import('@/components/sections/AboutHero').then(mod => ({ default: mod.AboutHero })),
+  {
+    ssr: false,
+    loading: () => (
+      <div style={{ height: '100vh', background: 'var(--bg-primary)' }} />
+    )
+  }
+);
+
 export default function AboutPage() {
   return (
     <>
       <PortfolioNavigation />
       <GladeyeParticleScroll />
+      <AboutHero />
       <AboutSection />
     </>
   );
