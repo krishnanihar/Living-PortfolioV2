@@ -1774,7 +1774,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 >
                   <Image
                     src="/images/profile/mypic.png"
-                    alt="Nihar Sunkara - Product Designer"
+                    alt="Krishna Nihar Sunkara - Product Designer"
                     width={180}
                     height={180}
                     style={{
@@ -1799,7 +1799,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                   textAlign: 'center',
                 }}
               >
-                Nihar Sunkara
+                Krishna Nihar Sunkara
               </h2>
 
               {/* Current Role */}
