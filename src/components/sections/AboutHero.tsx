@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
 import { KnowledgeNode } from '@/types/knowledge-graph';
 
 // Dynamic import for 3D graph (no SSR)
@@ -44,20 +44,6 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
   const [hoveredNode, setHoveredNode] = useState<KnowledgeNode | null>(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Use refs for scroll tracking to avoid callback recreation
-  const scrollProgressRef = useRef(0);
-  const zoomCompleteRef = useRef(false);
-
-  // State for UI updates only
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [zoomComplete, setZoomComplete] = useState(false);
-
-  const sectionRef = useRef<HTMLElement>(null);
-  const accumulatedScroll = useRef(0);
-
-  // How much scroll distance maps to full zoom (in pixels)
-  const SCROLL_DISTANCE = 600;
-
   // Detect mobile
   useEffect(() => {
     const checkMobile = () => {
@@ -66,53 +52,6 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Handle wheel events for scroll-controlled zoom
-  // Using refs to avoid callback recreation on every scroll
-  const handleWheel = useCallback((e: WheelEvent) => {
-    // Skip on mobile or if zoom is complete
-    if (isMobile || zoomCompleteRef.current) return;
-
-    // Always capture scroll until zoom is complete
-    if (scrollProgressRef.current < 1) {
-      e.preventDefault();
-
-      // Accumulate scroll delta
-      accumulatedScroll.current += e.deltaY;
-
-      // Map accumulated scroll to progress (0-1)
-      const newProgress = Math.min(1, Math.max(0, accumulatedScroll.current / SCROLL_DISTANCE));
-      scrollProgressRef.current = newProgress;
-      setScrollProgress(newProgress); // Update state for UI
-
-      // Mark zoom complete when we reach the end
-      if (newProgress >= 1) {
-        zoomCompleteRef.current = true;
-        setZoomComplete(true);
-      }
-    }
-  }, [isMobile]); // Only isMobile as dependency - stable callback!
-
-  // Add wheel listener
-  useEffect(() => {
-    if (isMobile) return;
-
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    return () => window.removeEventListener('wheel', handleWheel);
-  }, [handleWheel, isMobile]);
-
-  // Reset scroll position on mount to ensure zoom works from start
-  useEffect(() => {
-    if (window.scrollY > 0 && scrollProgressRef.current === 0) {
-      window.scrollTo(0, 0);
-    }
-  }, []);
-
-  // Handle zoom complete callback
-  const handleZoomComplete = useCallback(() => {
-    zoomCompleteRef.current = true;
-    setZoomComplete(true);
   }, []);
 
   // Handle scroll to content
@@ -129,7 +68,6 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
 
   return (
     <section
-      ref={sectionRef}
       style={{
         position: 'relative',
         width: '100%',
@@ -150,9 +88,7 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
         {!isMobile ? (
           <KnowledgeGraph3D
             onNodeHover={setHoveredNode}
-            autoRotate={zoomComplete}
-            scrollProgress={!zoomComplete ? scrollProgress : undefined}
-            onZoomComplete={handleZoomComplete}
+            autoRotate={true}
           />
         ) : (
           // Mobile fallback - simple animated background
@@ -209,67 +145,49 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
         </motion.div>
       )}
 
-      {/* Zoom Progress Indicator */}
-      {!zoomComplete && !isMobile && scrollProgress > 0 && (
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '100px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 20,
-            width: '120px',
-            height: '4px',
-            background: 'var(--glass-10)',
-            borderRadius: '2px',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              width: `${scrollProgress * 100}%`,
-              height: '100%',
-              background: 'var(--brand-red)',
-              borderRadius: '2px',
-              transition: 'width 0.1s ease-out',
-            }}
-          />
-        </div>
-      )}
-
-      {/* Scroll Indicator */}
+      {/* Explore Button */}
       <motion.button
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 0.6 }}
         onClick={handleScrollDown}
         style={{
           position: 'absolute',
-          bottom: '2rem',
+          bottom: '3rem',
           left: '50%',
           transform: 'translateX(-50%)',
           zIndex: 20,
           display: 'flex',
-          flexDirection: 'column',
           alignItems: 'center',
-          gap: '0.5rem',
-          background: 'none',
-          border: 'none',
+          gap: '0.75rem',
+          padding: '0.875rem 1.5rem',
+          background: 'var(--glass-08)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid var(--border-primary)',
+          borderRadius: '100px',
           cursor: 'pointer',
-          color: 'var(--text-40)',
-          transition: 'color 0.2s',
+          color: 'var(--text-70)',
+          transition: 'all 0.3s ease',
         }}
-        onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-70)')}
-        onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-40)')}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = 'var(--glass-15)';
+          e.currentTarget.style.color = 'var(--text-95)';
+          e.currentTarget.style.borderColor = 'var(--text-20)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'var(--glass-08)';
+          e.currentTarget.style.color = 'var(--text-70)';
+          e.currentTarget.style.borderColor = 'var(--border-primary)';
+        }}
       >
-        <span style={{ fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-          {zoomComplete ? 'Scroll to explore' : 'Scroll to zoom out'}
+        <span style={{ fontSize: '0.875rem', fontWeight: 500, letterSpacing: '0.02em' }}>
+          Explore
         </span>
         <motion.div
-          animate={{ y: [0, 8, 0] }}
+          animate={{ y: [0, 4, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <ChevronDown size={24} />
+          <ArrowDown size={18} />
         </motion.div>
       </motion.button>
 
