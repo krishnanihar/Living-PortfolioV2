@@ -18,12 +18,12 @@ function AutoRotate({ enabled, speed = 0.002 }: { enabled: boolean; speed?: numb
     if (!enabled) return;
 
     angleRef.current += delta * speed;
-    const radius = 120;
-    const height = 30;
+    const radius = 70;
+    const height = 20;
 
     camera.position.x = Math.sin(angleRef.current) * radius;
     camera.position.z = Math.cos(angleRef.current) * radius;
-    camera.position.y = height + Math.sin(angleRef.current * 0.5) * 10;
+    camera.position.y = height + Math.sin(angleRef.current * 0.5) * 8;
 
     camera.lookAt(targetRef.current);
   });
@@ -116,10 +116,10 @@ export function KnowledgeGraph3D({
         onPointerUp={handleInteractionEnd}
         onWheel={handleInteractionStart}
       >
-        {/* Camera */}
+        {/* Camera - positioned closer for better visibility */}
         <PerspectiveCamera
           makeDefault
-          position={[0, 30, 120]}
+          position={[0, 20, 70]}
           fov={50}
           near={0.1}
           far={1000}
@@ -133,13 +133,13 @@ export function KnowledgeGraph3D({
         {/* Environment for reflections */}
         <Environment preset="night" />
 
-        {/* Controls */}
+        {/* Controls - closer zoom range for better interaction */}
         <OrbitControls
           enablePan={true}
           enableZoom={true}
           enableRotate={true}
-          minDistance={50}
-          maxDistance={250}
+          minDistance={30}
+          maxDistance={150}
           dampingFactor={0.05}
           enableDamping={true}
           rotateSpeed={0.5}

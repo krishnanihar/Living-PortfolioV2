@@ -20,17 +20,17 @@ const DEFAULT_PHYSICS_CONFIG: PhysicsConfig = {
   minDistance: 15,             // Minimum distance between nodes
 };
 
-// Layer-based initial positions (radial layout)
+// Layer-based initial positions (radial layout) - tighter for better visibility
 function getInitialPosition(node: KnowledgeNode, index: number, totalInLayer: number): THREE.Vector3 {
   const layerRadii: Record<string, number> = {
     core: 0,
-    domain: 25,
-    skill: 50,
-    project: 40,
-    influence: 65,
+    domain: 15,
+    skill: 30,
+    project: 25,
+    influence: 40,
   };
 
-  const radius = layerRadii[node.type] || 50;
+  const radius = layerRadii[node.type] || 30;
 
   if (node.type === 'core') {
     return new THREE.Vector3(0, 0, 0);
@@ -38,8 +38,8 @@ function getInitialPosition(node: KnowledgeNode, index: number, totalInLayer: nu
 
   // Distribute nodes in a sphere-like pattern
   const angle = (index / totalInLayer) * Math.PI * 2;
-  const heightVariation = (Math.random() - 0.5) * 20;
-  const radiusVariation = radius + (Math.random() - 0.5) * 10;
+  const heightVariation = (Math.random() - 0.5) * 12;
+  const radiusVariation = radius + (Math.random() - 0.5) * 6;
 
   return new THREE.Vector3(
     Math.cos(angle) * radiusVariation,

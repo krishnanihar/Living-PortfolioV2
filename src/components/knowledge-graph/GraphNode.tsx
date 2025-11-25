@@ -17,16 +17,16 @@ interface GraphNodeProps {
   onPointerOut: () => void;
 }
 
-// Base size for nodes
-const BASE_SIZE = 2;
+// Base size for nodes (increased for visibility)
+const BASE_SIZE = 5;
 
-// Size multipliers by node type
+// Size multipliers by node type (increased for visibility)
 const TYPE_SIZE_MULTIPLIER: Record<string, number> = {
-  core: 2.5,
-  domain: 1.4,
-  skill: 0.7,
-  project: 1.0,
-  influence: 0.5,
+  core: 3.0,
+  domain: 1.8,
+  skill: 1.0,
+  project: 1.4,
+  influence: 0.8,
 };
 
 export function GraphNode({
@@ -92,7 +92,7 @@ export function GraphNode({
         <meshBasicMaterial
           color={nodeColor}
           transparent
-          opacity={isHovered ? 0.25 : isConnected ? 0.15 : 0.08}
+          opacity={isHovered ? 0.4 : isConnected ? 0.3 : 0.2}
           depthWrite={false}
         />
       </mesh>
@@ -127,8 +127,8 @@ export function GraphNode({
         />
       </mesh>
 
-      {/* Label - only show on hover or for core/domain nodes */}
-      {(isHovered || node.type === 'core' || node.type === 'domain') && (
+      {/* Label - show for all nodes (always visible) */}
+      {(isHovered || node.type === 'core' || node.type === 'domain' || node.type === 'project' || node.type === 'skill') && (
         <Billboard follow lockX={false} lockY={false} lockZ={false}>
           <Text
             position={[0, nodeSize + 1.5, 0]}
