@@ -60,14 +60,11 @@ export const CASE_STUDIES = [
   { slug: 'mythos', name: 'Mythos' },
 ] as const;
 
+// Only show day messages on relevant days (Monday + Weekend)
 const DAY_MESSAGES: Record<number, string> = {
-  0: 'Sunday session',
-  1: 'Fresh start to the week',
-  2: "Let's make progress",
-  3: 'Midweek momentum',
-  4: 'Almost there',
-  5: 'Ending the week strong',
-  6: 'Weekend explorer',
+  0: 'Sunday mode.',
+  1: 'Fresh start to the week.',
+  6: 'Weekend mode.',
 };
 
 // ============================================
@@ -170,19 +167,22 @@ function getTimeGreeting(hour: number): string {
 }
 
 function getGreetingEvolution(visitCount: number): { opener: string; message: string } {
+  const timeGreeting = getTimeGreeting(new Date().getHours());
+
   if (visitCount <= 1) {
-    return { opener: 'Hi', message: "I'm Nihar. Welcome." };
+    // First-time visitor - always use time greeting
+    return { opener: timeGreeting + '.', message: "I'm Nihar. Welcome." };
   }
   if (visitCount <= 3) {
-    return { opener: getTimeGreeting(new Date().getHours()), message: 'Good to see you again.' };
+    return { opener: timeGreeting, message: 'Good to see you again.' };
   }
   if (visitCount <= 7) {
-    return { opener: 'Hey', message: 'Welcome back.' };
+    return { opener: 'Hey.', message: 'Welcome back.' };
   }
   if (visitCount <= 15) {
-    return { opener: 'Hey again', message: '' };
+    return { opener: 'Hey again.', message: '' };
   }
-  return { opener: 'Hey', message: '' };
+  return { opener: 'Hey.', message: '' };
 }
 
 function getSessionGapMessage(lastVisit: string | null): string | null {
@@ -215,23 +215,36 @@ function getSessionGapMessage(lastVisit: string | null): string | null {
   return 'Long time no see. Welcome back.';
 }
 
-function getDayOfWeekMessage(): string {
+function getDayOfWeekMessage(): string | null {
   const day = new Date().getDay();
-  return DAY_MESSAGES[day] || '';
+  return DAY_MESSAGES[day] || null;
 }
 
 export function getPersonalizedGreeting(visitorData: VisitorData): PersonalizedGreeting {
   const { visitCount, lastVisit } = visitorData;
   const evolution = getGreetingEvolution(visitCount);
 
-  // Priority: Session gap > Day-of-week
+  // Day message combines into opener for returning visitors (not first-time)
+  const dayMessage = visitCount > 1 ? getDayOfWeekMessage() : null;
+
+  // Build opener: time greeting + day message (if relevant day)
+  let opener = evolution.opener;
+  if (dayMessage) {
+    // Ensure opener ends with period before adding day message
+    opener = opener.endsWith('.') ? opener : opener + '.';
+    opener = opener + ' ' + dayMessage;
+  } else if (!opener.endsWith('.')) {
+    // Add period if no day message
+    opener = opener + '.';
+  }
+
+  // Session gap messages go into contextual (rare, meaningful moments)
   const sessionGap = getSessionGapMessage(lastVisit);
-  const contextual = sessionGap || (visitCount > 1 ? getDayOfWeekMessage() : null);
 
   return {
-    opener: evolution.opener,
+    opener,
     message: evolution.message,
-    contextual,
+    contextual: sessionGap,
   };
 }
 
