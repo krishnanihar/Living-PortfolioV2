@@ -305,8 +305,8 @@ export function KnowledgeGraph3D({
           onEnd={handleInteractionEnd}
         />
 
-        {/* Scroll-controlled zoom */}
-        {isScrollZoomActive && (
+        {/* Scroll-controlled zoom - disabled when a node is focused */}
+        {isScrollZoomActive && !focusedPosition && (
           <ScrollZoom scrollProgress={scrollProgress ?? 0} enabled={true} />
         )}
 

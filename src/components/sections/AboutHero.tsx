@@ -43,8 +43,15 @@ interface AboutHeroProps {
 export function AboutHero({ onScrollToContent }: AboutHeroProps) {
   const [hoveredNode, setHoveredNode] = useState<KnowledgeNode | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Use refs for scroll tracking to avoid callback recreation
+  const scrollProgressRef = useRef(0);
+  const zoomCompleteRef = useRef(false);
+
+  // State for UI updates only
   const [scrollProgress, setScrollProgress] = useState(0);
   const [zoomComplete, setZoomComplete] = useState(false);
+
   const sectionRef = useRef<HTMLElement>(null);
   const accumulatedScroll = useRef(0);
 
@@ -62,18 +69,13 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
   }, []);
 
   // Handle wheel events for scroll-controlled zoom
+  // Using refs to avoid callback recreation on every scroll
   const handleWheel = useCallback((e: WheelEvent) => {
     // Skip on mobile or if zoom is complete
-    if (isMobile || zoomComplete) return;
+    if (isMobile || zoomCompleteRef.current) return;
 
-    // Only capture scroll when page is at the top (hero visible)
-    // or when we're in the middle of zooming
-    const isAtTop = window.scrollY < 100;
-
-    if (!isAtTop && scrollProgress === 0) return;
-
-    // If not zoomed out yet, prevent default scroll and control zoom
-    if (scrollProgress < 1) {
+    // Always capture scroll until zoom is complete
+    if (scrollProgressRef.current < 1) {
       e.preventDefault();
 
       // Accumulate scroll delta
@@ -81,14 +83,16 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
 
       // Map accumulated scroll to progress (0-1)
       const newProgress = Math.min(1, Math.max(0, accumulatedScroll.current / SCROLL_DISTANCE));
-      setScrollProgress(newProgress);
+      scrollProgressRef.current = newProgress;
+      setScrollProgress(newProgress); // Update state for UI
 
       // Mark zoom complete when we reach the end
       if (newProgress >= 1) {
+        zoomCompleteRef.current = true;
         setZoomComplete(true);
       }
     }
-  }, [isMobile, zoomComplete, scrollProgress]);
+  }, [isMobile]); // Only isMobile as dependency - stable callback!
 
   // Add wheel listener
   useEffect(() => {
@@ -98,8 +102,16 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
     return () => window.removeEventListener('wheel', handleWheel);
   }, [handleWheel, isMobile]);
 
+  // Reset scroll position on mount to ensure zoom works from start
+  useEffect(() => {
+    if (window.scrollY > 0 && scrollProgressRef.current === 0) {
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
   // Handle zoom complete callback
   const handleZoomComplete = useCallback(() => {
+    zoomCompleteRef.current = true;
     setZoomComplete(true);
   }, []);
 
