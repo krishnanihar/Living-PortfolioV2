@@ -7,7 +7,7 @@ import { JourneyOverview } from '@/components/narrative-work/JourneyOverview';
 import { type ImpactCard } from '@/components/narrative-work/ImpactBentoGrid';
 import { ResearchShowcase } from '@/components/narrative-work/ResearchShowcase';
 import { ActTransition } from '@/components/narrative-work/ActTransition';
-import { motion, LayoutGroup } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, ChevronDown } from 'lucide-react';
@@ -246,29 +246,39 @@ export function WorkNarrativePage() {
         </div>
 
         {/* Desktop: Bento Grid */}
-        {!isMobile && (
-          <LayoutGroup>
+        {!isMobile && (() => {
+          // Grid template control - card stays in place, grid resizes around it
+          const getGridTemplate = () => {
+            if (!hoveredCard) {
+              return { cols: '1fr 1fr 1fr', rows: '1fr 1fr' };
+            }
+            const index = impactCards.findIndex(c => c.id === hoveredCard);
+            const col = index % 3;
+            const row = Math.floor(index / 3);
+            // Expand hovered column, shrink others
+            const cols = [0, 1, 2].map(c => c === col ? '2fr' : '0.5fr').join(' ');
+            // Expand hovered row, shrink others
+            const rows = [0, 1].map(r => r === row ? '2fr' : '0.5fr').join(' ');
+            return { cols, rows };
+          };
+          const { cols, rows } = getGridTemplate();
+
+          return (
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gridAutoRows: 'minmax(180px, auto)',
+              gridTemplateColumns: cols,
+              gridTemplateRows: rows,
               gap: '1.5rem',
+              transition: 'grid-template-columns 0.5s cubic-bezier(0.32, 0.72, 0, 1), grid-template-rows 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
             }}>
-              {impactCards.map((card, index) => {
+              {impactCards.map((card) => {
                 const isHovered = hoveredCard === card.id;
-                const col = index % 3; // 0, 1, 2
-                const row = Math.floor(index / 3); // 0 or 1
-                const isRightEdge = col === 2;
-                const isBottomRow = row === 1;
 
                 return (
                   <motion.div
                     key={card.id}
-                    layout
-                    layoutId={`card-${card.id}`}
-                    transition={{ layout: { duration: 0.6, ease: [0.32, 0.72, 0, 1] } }}
-                    onMouseEnter={() => setHoveredCard(card.id)}
-                    onMouseLeave={() => {
+                    onHoverStart={() => setHoveredCard(card.id)}
+                    onHoverEnd={() => {
                       setHoveredCard(null);
                       setRipplePosition(null);
                     }}
@@ -281,10 +291,8 @@ export function WorkNarrativePage() {
                     }}
                     style={{
                       position: 'relative',
-                      padding: isHovered ? '2.5rem' : '2rem',
-                      borderRadius: '20px',
-                      gridColumn: isHovered ? (isRightEdge ? '2 / span 2' : 'span 2') : 'span 1',
-                      gridRow: isHovered ? (isBottomRow ? '1 / span 2' : 'span 2') : 'span 1',
+                      padding: isHovered ? '2rem' : '1.5rem',
+                      borderRadius: 20,
                       background: isHovered
                         ? `linear-gradient(135deg, rgba(${card.color}, 0.08), var(--surface-primary))`
                         : 'var(--surface-primary)',
@@ -296,9 +304,7 @@ export function WorkNarrativePage() {
                         ? `0 30px 60px rgba(${card.color}, 0.2)`
                         : 'var(--shadow-sm)',
                       overflow: 'hidden',
-                      zIndex: isHovered ? 10 : 1,
-                      willChange: 'transform',
-                      contain: 'layout style',
+                      transition: 'background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease',
                     }}
                   >
                   {/* Border Shimmer Effect */}
@@ -477,11 +483,11 @@ export function WorkNarrativePage() {
               );
             })}
 
-            {/* CTA Card - View Full Case Study */}
-            <CTACard isMobile={false} inView={inView} />
-          </div>
-        </LayoutGroup>
-        )}
+              {/* CTA Card - View Full Case Study */}
+              <CTACard isMobile={false} inView={inView} />
+            </div>
+          );
+        })()}
 
         {/* Mobile: Horizontal Carousel */}
         {isMobile && (
