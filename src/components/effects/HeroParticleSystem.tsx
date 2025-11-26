@@ -204,7 +204,7 @@ interface HeroParticleSystemProps {
  * ```
  */
 export default function HeroParticleSystem({
-  starOpacity = 0.35,
+  starOpacity = 0.2, // Reduced so GPGPU particles dominate
   className = '',
 }: HeroParticleSystemProps) {
   const [scrollProgress, setScrollProgress] = useState(0);

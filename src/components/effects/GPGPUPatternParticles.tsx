@@ -33,22 +33,23 @@ function getGPGPUParticleCount(): number {
 }
 
 // Get responsive particle size based on screen width
+// Scaled up ~50% for bolder visual statement
 function getResponsiveParticleSize(): number {
-  if (typeof window === 'undefined') return 1.0;
+  if (typeof window === 'undefined') return 1.5;
 
   const width = window.innerWidth;
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   if (isMobile) {
-    return width < 400 ? 1.8 : 1.4;
+    return width < 400 ? 2.7 : 2.1;  // was 1.8, 1.4
   }
 
-  if (width < 768) return 1.5;       // Tablet
-  if (width < 1280) return 1.3;      // 13-14" laptop
-  if (width < 1440) return 1.2;      // 15" laptop
-  if (width < 1920) return 1.0;      // 24" desktop - baseline
-  if (width < 2560) return 0.9;      // 27" desktop
-  return 0.85;                        // 32" desktop+
+  if (width < 768) return 2.25;      // Tablet (was 1.5)
+  if (width < 1280) return 1.95;     // 13-14" laptop (was 1.3)
+  if (width < 1440) return 1.8;      // 15" laptop (was 1.2)
+  if (width < 1920) return 1.5;      // 24" desktop - baseline (was 1.0)
+  if (width < 2560) return 1.35;     // 27" desktop (was 0.9)
+  return 1.3;                         // 32" desktop+ (was 0.85)
 }
 
 interface GPGPUParticlesProps {
@@ -92,7 +93,7 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     return 1.0;
   };
 
-  // Generate initial particle positions and attributes
+  // Generate initial particle positions and attributes with single ring
   const { geometry, initialPositions } = useMemo(() => {
     const positions = new Float32Array(particleCount * 3);
     const velocities = new Float32Array(particleCount * 3);
@@ -101,19 +102,16 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     const lifetimes = new Float32Array(particleCount);
     const initialPositions = new Float32Array(particleCount * 3);
 
-    // Initialize particles directly in ring formation around hero
+    // Initialize particles in single ring (64-76 units radius)
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
-
-      // Ring formation calculation
       const angle = (i / particleCount) * Math.PI * 2;
-      const radiusVariation = 55 + (Math.random() - 0.5) * 8; // 51-59 radius
-      const depthVariation = (Math.random() - 0.5) * 15;
+      const radius = 64 + Math.random() * 12; // Single ring: 64-76 units
 
-      // Position in ring around hero text
-      positions[i3] = Math.cos(angle) * radiusVariation;
-      positions[i3 + 1] = Math.sin(angle) * radiusVariation;
-      positions[i3 + 2] = -150 + depthVariation; // Hero text depth
+      // Position in ring
+      positions[i3] = Math.cos(angle) * radius;
+      positions[i3 + 1] = Math.sin(angle) * radius;
+      positions[i3 + 2] = -120 + (Math.random() - 0.5) * 15;
 
       // Store initial positions
       initialPositions[i3] = positions[i3];
@@ -143,12 +141,12 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     geom.setAttribute('lifetime', new THREE.BufferAttribute(lifetimes, 1));
 
     // Set manual bounding sphere to prevent NaN computation errors
-    geom.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0, -150), 1000);
+    geom.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0, -120), 1000);
 
     return { geometry: geom, initialPositions };
   }, [particleCount]);
 
-  // Create shader material
+  // Create shader material with dual color palettes
   const material = useMemo(() => {
     const responsiveSize = getResponsiveParticleSize();
 
@@ -157,10 +155,14 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
         uTime: { value: 0 },
         uSize: { value: responsiveSize },
         uScrollProgress: { value: 0 },
-        // Color palette
-        uColorSlow: { value: new THREE.Color('#3B82F6') },    // Blue
-        uColorMedium: { value: new THREE.Color('#8B5CF6') }, // Purple
-        uColorFast: { value: new THREE.Color('#EC4899') },   // Pink
+        // Cool palette (new)
+        uColorSlowCool: { value: new THREE.Color('#1E40AF') },    // Deep Blue
+        uColorMediumCool: { value: new THREE.Color('#06B6D4') },  // Cyan
+        uColorFastCool: { value: new THREE.Color('#F0F9FF') },    // Near White
+        // Warm palette (original)
+        uColorSlowWarm: { value: new THREE.Color('#3B82F6') },    // Blue
+        uColorMediumWarm: { value: new THREE.Color('#8B5CF6') },  // Purple
+        uColorFastWarm: { value: new THREE.Color('#EC4899') },    // Pink
       },
       vertexShader: gpgpuVertexShader,
       fragmentShader: gpgpuFragmentShader,
@@ -168,10 +170,11 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
       blending: THREE.AdditiveBlending,
       depthTest: true,
       depthWrite: false,
+      toneMapped: false, // Allow HDR colors for better bloom
     });
   }, []);
 
-  // Pattern target position calculators (camera-relative)
+  // Pattern target position calculators (camera-relative, depth -120)
   const calculateSpherePosition = (index: number, cameraZ: number, radius: number = 60): THREE.Vector3 => {
     const goldenRatio = (1 + Math.sqrt(5)) / 2;
     const i = index / particleCount;
@@ -181,7 +184,7 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     return new THREE.Vector3(
       radius * Math.sin(phi) * Math.cos(theta),
       radius * Math.sin(phi) * Math.sin(theta),
-      radius * Math.cos(phi) + cameraZ - 150
+      radius * Math.cos(phi) + cameraZ - 120
     );
   };
 
@@ -192,7 +195,7 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     return new THREE.Vector3(
       (majorRadius + minorRadius * Math.cos(v)) * Math.cos(u),
       (majorRadius + minorRadius * Math.cos(v)) * Math.sin(u),
-      minorRadius * Math.sin(v) + cameraZ - 150
+      minorRadius * Math.sin(v) + cameraZ - 120
     );
   };
 
@@ -202,7 +205,7 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     return new THREE.Vector3(
       radius * Math.cos(t),
       radius * Math.sin(t),
-      t * pitch + cameraZ - 150
+      t * pitch + cameraZ - 120
     );
   };
 
@@ -351,12 +354,13 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
                      isNaN(velocities[i3]) || isNaN(velocities[i3 + 1]) || isNaN(velocities[i3 + 2]);
 
       if (hasNaN) {
-        // Reset entire particle to valid state
+        // Reset particle to valid state with single ring radius
         const angle = (i / particleCount) * Math.PI * 2;
-        const radius = 55 + (Math.random() - 0.5) * 8;
+        const radius = 64 + Math.random() * 12; // Single ring: 64-76
+
         positions[i3] = Math.cos(angle) * radius;
         positions[i3 + 1] = Math.sin(angle) * radius;
-        positions[i3 + 2] = camera.position.z - 150 + (Math.random() - 0.5) * 15;
+        positions[i3 + 2] = camera.position.z - 120 + (Math.random() - 0.5) * 15;
         velocities[i3] = 0;
         velocities[i3 + 1] = 0;
         velocities[i3 + 2] = 0;
@@ -381,8 +385,8 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     geometry.attributes.lifetime.needsUpdate = true;
   });
 
-  // Static bloom intensity
-  const bloomIntensity = 0.4;
+  // Enhanced bloom intensity for bolder glow
+  const bloomIntensity = 0.7;
 
   // Cleanup
   useEffect(() => {
@@ -396,11 +400,11 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     <>
       <points ref={pointsRef} geometry={geometry} material={material} frustumCulled={false} />
 
-      {/* Bloom effect - dynamic intensity */}
+      {/* Bloom effect - enhanced for bold glow */}
       <EffectComposer>
         <Bloom
           intensity={bloomIntensity}
-          luminanceThreshold={0.3}
+          luminanceThreshold={0.15}
           luminanceSmoothing={0.9}
           mipmapBlur
         />

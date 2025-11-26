@@ -2,7 +2,7 @@
 // Vertex and fragment shaders for GPU-accelerated pattern-forming particles
 
 export const gpgpuVertexShader = /* glsl */ `
-// GPGPU Pattern Particles - Vertex Shader
+// GPGPU Pattern Particles - Vertex Shader (Single Ring with Blended Colors)
 uniform float uTime;
 uniform float uSize;
 uniform float uScrollProgress;
@@ -31,12 +31,12 @@ void main() {
   // Size attenuation based on depth and speed
   // Near = large, far = small
   // Fast = larger (more energy)
-  float baseSize = uSize * (0.8 + vSpeed * 0.4);
-  float sizeAttenuation = 180.0 / max(vDepth, 75.0);
-  gl_PointSize = clamp(baseSize * sizeAttenuation, 0.5, 5.0);
+  float baseSize = uSize * (1.0 + vSpeed * 0.6);
+  float sizeAttenuation = 240.0 / max(vDepth, 60.0);
+  gl_PointSize = clamp(baseSize * sizeAttenuation, 1.0, 8.0);
 
   // Pulse effect
-  float pulse = 1.0 + sin(uTime * 2.0 + randomSeed * 6.28) * 0.1;
+  float pulse = 1.0 + sin(uTime * 2.5 + randomSeed * 6.28) * 0.15;
   gl_PointSize *= pulse;
 
   gl_Position = projectionMatrix * mvPosition;
@@ -44,11 +44,16 @@ void main() {
 `;
 
 export const gpgpuFragmentShader = /* glsl */ `
-// GPGPU Pattern Particles - Fragment Shader
+// GPGPU Pattern Particles - Fragment Shader (Single Ring with Blended Palettes)
 uniform float uTime;
-uniform vec3 uColorSlow;   // Blue
-uniform vec3 uColorMedium; // Purple
-uniform vec3 uColorFast;   // Pink
+// Cool palette
+uniform vec3 uColorSlowCool;    // Deep Blue
+uniform vec3 uColorMediumCool;  // Cyan
+uniform vec3 uColorFastCool;    // Near White
+// Warm palette
+uniform vec3 uColorSlowWarm;    // Blue
+uniform vec3 uColorMediumWarm;  // Purple
+uniform vec3 uColorFastWarm;    // Pink
 
 varying vec3 vVelocity;
 varying float vSpeed;
@@ -63,34 +68,44 @@ void main() {
   // Discard pixels outside circle
   if (dist > 0.5) discard;
 
-  // === COLOR CALCULATION ===
-
-  // Velocity-based gradient (blue → purple → pink)
-  vec3 color;
+  // === BLENDED COLOR CALCULATION ===
   float normalizedSpeed = clamp(vSpeed / 0.8, 0.0, 1.0);
+
+  // Cool palette gradient (Deep Blue → Cyan → White)
+  vec3 coolColor;
   if (normalizedSpeed < 0.5) {
-    // Blue → Purple
-    color = mix(uColorSlow, uColorMedium, normalizedSpeed * 2.0);
+    coolColor = mix(uColorSlowCool, uColorMediumCool, normalizedSpeed * 2.0);
   } else {
-    // Purple → Pink
-    color = mix(uColorMedium, uColorFast, (normalizedSpeed - 0.5) * 2.0);
+    coolColor = mix(uColorMediumCool, uColorFastCool, (normalizedSpeed - 0.5) * 2.0);
   }
+
+  // Warm palette gradient (Blue → Purple → Pink)
+  vec3 warmColor;
+  if (normalizedSpeed < 0.5) {
+    warmColor = mix(uColorSlowWarm, uColorMediumWarm, normalizedSpeed * 2.0);
+  } else {
+    warmColor = mix(uColorMediumWarm, uColorFastWarm, (normalizedSpeed - 0.5) * 2.0);
+  }
+
+  // Blend both palettes 50/50 for unique colors
+  // Result: Rich Blue (slow) → Teal-Purple (medium) → Pink-White (fast)
+  vec3 color = mix(coolColor, warmColor, 0.5);
 
   // Radial gradient (bright center → glow edge)
   float radialGradient = 1.0 - smoothstep(0.0, 0.5, dist);
-  radialGradient = pow(radialGradient, 2.0);
+  radialGradient = pow(radialGradient, 3.0); // Sharper falloff
 
-  // Outer glow
-  float glow = exp(-dist * 4.0) * 0.4;
+  // Glow effect
+  float glow = exp(-dist * 3.5) * 0.6;
 
   // Add glow to color for luminosity
   vec3 finalColor = color * (1.0 + glow);
 
   // Alpha with lifetime fade
-  float alpha = radialGradient * vLifetime * 0.8;
+  float alpha = radialGradient * vLifetime * 0.95;
 
-  // Depth-based fade (far particles dimmer)
-  alpha *= 1.0 - clamp((vDepth - 100.0) / 300.0, 0.0, 0.7);
+  // Softer depth-based fade
+  alpha *= 1.0 - clamp((vDepth - 80.0) / 400.0, 0.0, 0.5);
 
   gl_FragColor = vec4(finalColor, alpha);
 }
