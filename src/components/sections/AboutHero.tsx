@@ -111,37 +111,44 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
           style={{
             position: 'absolute',
             bottom: '120px',
-            left: '50%',
-            transform: 'translateX(-50%)',
+            left: 0,
+            right: 0,
+            display: 'flex',
+            justifyContent: 'center',
             zIndex: 10,
-            background: 'var(--glass-08)',
-            backdropFilter: 'blur(20px)',
-            borderRadius: '12px',
-            padding: '0.75rem 1.25rem',
-            border: '1px solid var(--border-primary)',
             pointerEvents: 'none',
           }}
         >
-          <p
+          <div
             style={{
-              fontSize: '0.875rem',
-              color: 'var(--text-90)',
-              fontWeight: 500,
+              background: 'var(--glass-08)',
+              backdropFilter: 'blur(20px)',
+              borderRadius: '12px',
+              padding: '0.75rem 1.25rem',
+              border: '1px solid var(--border-primary)',
             }}
           >
-            {hoveredNode.label}
-          </p>
-          {hoveredNode.description && (
             <p
               style={{
-                fontSize: '0.75rem',
-                color: 'var(--text-50)',
-                marginTop: '0.25rem',
+                fontSize: '0.875rem',
+                color: 'var(--text-90)',
+                fontWeight: 500,
               }}
             >
-              {hoveredNode.description}
+              {hoveredNode.label}
             </p>
-          )}
+            {hoveredNode.description && (
+              <p
+                style={{
+                  fontSize: '0.75rem',
+                  color: 'var(--text-50)',
+                  marginTop: '0.25rem',
+                }}
+              >
+                {hoveredNode.description}
+              </p>
+            )}
+          </div>
         </motion.div>
       )}
 
