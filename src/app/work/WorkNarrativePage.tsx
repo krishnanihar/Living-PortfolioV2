@@ -262,7 +262,7 @@ export function WorkNarrativePage() {
                     key={card.id}
                     layout
                     layoutId={`card-${card.id}`}
-                    transition={{ layout: { duration: 0.5, ease: [0.32, 0.72, 0, 1] } }}
+                    transition={{ layout: { duration: 0.6, ease: [0.32, 0.72, 0, 1] } }}
                     onMouseEnter={() => setHoveredCard(card.id)}
                     onMouseLeave={() => {
                       setHoveredCard(null);
@@ -293,6 +293,8 @@ export function WorkNarrativePage() {
                         : 'var(--shadow-sm)',
                       overflow: 'hidden',
                       zIndex: isHovered ? 10 : 1,
+                      willChange: 'transform',
+                      contain: 'layout style',
                     }}
                   >
                   {/* Border Shimmer Effect */}
