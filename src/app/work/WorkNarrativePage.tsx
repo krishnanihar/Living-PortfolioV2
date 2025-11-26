@@ -7,7 +7,7 @@ import { JourneyOverview } from '@/components/narrative-work/JourneyOverview';
 import { type ImpactCard } from '@/components/narrative-work/ImpactBentoGrid';
 import { ResearchShowcase } from '@/components/narrative-work/ResearchShowcase';
 import { ActTransition } from '@/components/narrative-work/ActTransition';
-import { motion } from 'framer-motion';
+import { motion, LayoutGroup } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, ChevronDown } from 'lucide-react';
@@ -235,51 +235,54 @@ export function WorkNarrativePage() {
 
         {/* Desktop: Bento Grid */}
         {!isMobile && (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '1.5rem',
-          }}>
-            {impactCards.map((card, index) => {
-              const isHovered = hoveredCard === card.id;
-              const isFeatured = card.id === 1;
+          <LayoutGroup>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '1.5rem',
+            }}>
+              {impactCards.map((card, index) => {
+                const isHovered = hoveredCard === card.id;
+                const isFeatured = card.id === 1;
+                // Non-featured cards expand to 2 columns on hover
+                const gridSpan = isFeatured ? 'span 2' : (isHovered ? 'span 2' : 'span 1');
 
-              return (
-                <div
-                  key={card.id}
-                  onMouseEnter={() => setHoveredCard(card.id)}
-                  onMouseLeave={() => {
-                    setHoveredCard(null);
-                    setRipplePosition(null);
-                  }}
-                  onClick={(e) => {
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    setRipplePosition({
-                      x: e.clientX - rect.left,
-                      y: e.clientY - rect.top,
-                    });
-                  }}
-                  style={{
-                    position: 'relative',
-                    padding: '2rem',
-                    borderRadius: '20px',
-                    gridColumn: isFeatured ? 'span 2' : 'span 1',
-                    background: isHovered
-                      ? `linear-gradient(135deg, rgba(${card.color}, 0.06), var(--surface-primary))`
-                      : 'var(--surface-primary)',
-                    backdropFilter: 'blur(40px)',
-                    WebkitBackdropFilter: 'blur(40px)',
-                    border: `1px solid transparent`,
-                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                    transform: isHovered ? 'translateY(-4px) scale(1.01)' : 'translateY(0) scale(1)',
-                    cursor: 'pointer',
-                    animation: inView ? `scrollRevealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.7 + index * 0.1}s both` : 'none',
-                    boxShadow: isHovered
-                      ? `0 20px 40px rgba(${card.color}, 0.15)`
-                      : 'var(--shadow-sm)',
-                    overflow: 'hidden',
-                  }}
-                >
+                return (
+                  <motion.div
+                    key={card.id}
+                    layout
+                    layoutId={`card-${card.id}`}
+                    transition={{ layout: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } }}
+                    onMouseEnter={() => setHoveredCard(card.id)}
+                    onMouseLeave={() => {
+                      setHoveredCard(null);
+                      setRipplePosition(null);
+                    }}
+                    onClick={(e) => {
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      setRipplePosition({
+                        x: e.clientX - rect.left,
+                        y: e.clientY - rect.top,
+                      });
+                    }}
+                    style={{
+                      position: 'relative',
+                      padding: '2rem',
+                      borderRadius: '20px',
+                      gridColumn: gridSpan,
+                      background: isHovered
+                        ? `linear-gradient(135deg, rgba(${card.color}, 0.06), var(--surface-primary))`
+                        : 'var(--surface-primary)',
+                      backdropFilter: 'blur(40px)',
+                      WebkitBackdropFilter: 'blur(40px)',
+                      border: `1px solid transparent`,
+                      cursor: 'pointer',
+                      boxShadow: isHovered
+                        ? `0 20px 40px rgba(${card.color}, 0.15)`
+                        : 'var(--shadow-sm)',
+                      overflow: 'hidden',
+                    }}
+                  >
                   {/* Border Shimmer Effect */}
                   {isHovered && (
                     <div style={{
@@ -347,13 +350,14 @@ export function WorkNarrativePage() {
                   }}>
                     {card.metric}
                   </div>
-                </div>
+                </motion.div>
               );
             })}
 
             {/* CTA Card - View Full Case Study */}
             <CTACard isMobile={false} inView={inView} />
           </div>
+        </LayoutGroup>
         )}
 
         {/* Mobile: Horizontal Carousel */}
