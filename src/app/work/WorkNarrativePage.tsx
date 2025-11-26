@@ -7,7 +7,7 @@ import { JourneyOverview } from '@/components/narrative-work/JourneyOverview';
 import { type ImpactCard } from '@/components/narrative-work/ImpactBentoGrid';
 import { ResearchShowcase } from '@/components/narrative-work/ResearchShowcase';
 import { ActTransition } from '@/components/narrative-work/ActTransition';
-import { motion, LayoutGroup } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, ChevronDown } from 'lucide-react';
@@ -235,54 +235,51 @@ export function WorkNarrativePage() {
 
         {/* Desktop: Bento Grid */}
         {!isMobile && (
-          <LayoutGroup>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gridAutoRows: 'minmax(180px, auto)',
-              gap: '1.5rem',
-            }}>
-              {impactCards.map((card, index) => {
-                const isHovered = hoveredCard === card.id;
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '1.5rem',
+          }}>
+            {impactCards.map((card, index) => {
+              const isHovered = hoveredCard === card.id;
 
-                return (
-                  <motion.div
-                    key={card.id}
-                    layout
-                    layoutId={`card-${card.id}`}
-                    transition={{ layout: { duration: 0.5, ease: [0.32, 0.72, 0, 1] } }}
-                    onMouseEnter={() => setHoveredCard(card.id)}
-                    onMouseLeave={() => {
-                      setHoveredCard(null);
-                      setRipplePosition(null);
-                    }}
-                    onClick={(e) => {
-                      const rect = e.currentTarget.getBoundingClientRect();
-                      setRipplePosition({
-                        x: e.clientX - rect.left,
-                        y: e.clientY - rect.top,
-                      });
-                    }}
-                    style={{
-                      position: 'relative',
-                      padding: isHovered ? '2.5rem' : '2rem',
-                      borderRadius: '20px',
-                      gridColumn: isHovered ? 'span 2' : 'span 1',
-                      gridRow: isHovered ? 'span 2' : 'span 1',
-                      background: isHovered
-                        ? `linear-gradient(135deg, rgba(${card.color}, 0.08), var(--surface-primary))`
-                        : 'var(--surface-primary)',
-                      backdropFilter: 'blur(40px)',
-                      WebkitBackdropFilter: 'blur(40px)',
-                      border: `1px solid transparent`,
-                      cursor: 'pointer',
-                      boxShadow: isHovered
-                        ? `0 30px 60px rgba(${card.color}, 0.2)`
-                        : 'var(--shadow-sm)',
-                      overflow: 'hidden',
-                      zIndex: isHovered ? 10 : 1,
-                    }}
-                  >
+              return (
+                <div
+                  key={card.id}
+                  onMouseEnter={() => setHoveredCard(card.id)}
+                  onMouseLeave={() => {
+                    setHoveredCard(null);
+                    setRipplePosition(null);
+                  }}
+                  onClick={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    setRipplePosition({
+                      x: e.clientX - rect.left,
+                      y: e.clientY - rect.top,
+                    });
+                  }}
+                  style={{
+                    position: 'relative',
+                    padding: '2rem',
+                    borderRadius: '20px',
+                    background: isHovered
+                      ? `linear-gradient(135deg, rgba(${card.color}, 0.08), var(--surface-primary))`
+                      : 'var(--surface-primary)',
+                    backdropFilter: 'blur(40px)',
+                    WebkitBackdropFilter: 'blur(40px)',
+                    border: `1px solid transparent`,
+                    cursor: 'pointer',
+                    boxShadow: isHovered
+                      ? `0 30px 60px rgba(${card.color}, 0.2)`
+                      : 'var(--shadow-sm)',
+                    overflow: 'visible',
+                    zIndex: isHovered ? 20 : 1,
+                    transform: isHovered ? 'scale(1.8)' : 'scale(1)',
+                    transformOrigin: 'center center',
+                    transition: 'all 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
+                    pointerEvents: hoveredCard && hoveredCard !== card.id ? 'none' : 'auto',
+                  }}
+                >
                   {/* Border Shimmer Effect */}
                   {isHovered && (
                     <div style={{
@@ -316,52 +313,47 @@ export function WorkNarrativePage() {
                   )}
 
                   <div style={{
-                    fontSize: isHovered ? '0.875rem' : '0.75rem',
+                    fontSize: '0.75rem',
                     fontWeight: '600',
                     color: `rgb(${card.color})`,
-                    marginBottom: isHovered ? '1.25rem' : '1rem',
+                    marginBottom: '1rem',
                     letterSpacing: '0.1em',
                     opacity: 0.8,
-                    transition: 'all 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
                   }}>
                     {card.label}
                   </div>
                   <h3 style={{
-                    fontSize: isHovered ? '1.75rem' : '1.25rem',
+                    fontSize: '1.25rem',
                     fontWeight: '500',
                     color: 'var(--text-primary)',
-                    marginBottom: isHovered ? '1rem' : '0.75rem',
+                    marginBottom: '0.75rem',
                     letterSpacing: '-0.01em',
-                    transition: 'all 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
                   }}>
                     {card.title}
                   </h3>
                   <p style={{
-                    fontSize: isHovered ? '1rem' : '0.875rem',
+                    fontSize: '0.875rem',
                     color: 'var(--text-tertiary)',
                     lineHeight: '1.7',
-                    marginBottom: isHovered ? '2rem' : '1.5rem',
-                    transition: 'all 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
+                    marginBottom: '1.5rem',
                   }}>
                     {card.description}
                   </p>
                   <div style={{
-                    fontSize: isHovered ? '0.938rem' : '0.813rem',
+                    fontSize: '0.813rem',
                     fontWeight: '500',
                     color: `rgb(${card.color})`,
                     letterSpacing: '0.02em',
-                    transition: 'all 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
                   }}>
                     {card.metric}
                   </div>
-                </motion.div>
+                </div>
               );
             })}
 
             {/* CTA Card - View Full Case Study */}
             <CTACard isMobile={false} inView={inView} />
           </div>
-        </LayoutGroup>
         )}
 
         {/* Mobile: Horizontal Carousel */}
