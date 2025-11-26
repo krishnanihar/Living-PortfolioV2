@@ -1089,15 +1089,14 @@ function ResearchSkeleton() {
 /**
  * CTA Card for Air India case study
  * 2-column wide card with Air India red accent
+ * Matches the styling structure of other impact cards
  */
 function CTACard({ isMobile, inView }: { isMobile: boolean; inView: boolean }) {
   const [isHovered, setIsHovered] = React.useState(false);
-  const cardRef = useRef<HTMLAnchorElement>(null);
   const airIndiaRed = '218, 14, 41';
 
   return (
     <Link
-      ref={cardRef}
       href="/work/air-india"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -1109,25 +1108,20 @@ function CTACard({ isMobile, inView }: { isMobile: boolean; inView: boolean }) {
         flex: isMobile ? '0 0 85%' : undefined,
         scrollSnapAlign: isMobile ? 'center' : undefined,
         background: isHovered
-          ? `linear-gradient(135deg, rgba(${airIndiaRed}, 0.08), var(--surface-primary))`
+          ? `linear-gradient(135deg, rgba(${airIndiaRed}, 0.06), var(--surface-primary))`
           : 'var(--surface-primary)',
         backdropFilter: 'blur(40px)',
         WebkitBackdropFilter: 'blur(40px)',
-        border: `1px solid ${isHovered ? `rgba(${airIndiaRed}, 0.4)` : 'var(--border-primary)'}`,
+        border: '1px solid transparent',
         transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
         transform: isHovered ? 'translateY(-4px) scale(1.01)' : 'translateY(0) scale(1)',
         cursor: 'pointer',
         animation: !isMobile && inView ? 'scrollRevealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.3s both' : 'none',
         boxShadow: isHovered
-          ? `0 20px 40px rgba(${airIndiaRed}, 0.2)`
+          ? `0 20px 40px rgba(${airIndiaRed}, 0.15)`
           : 'var(--shadow-sm)',
         overflow: 'hidden',
         textDecoration: 'none',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: isMobile ? 'auto' : '180px',
       }}
     >
       {/* Border Shimmer Effect */}
@@ -1147,66 +1141,55 @@ function CTACard({ isMobile, inView }: { isMobile: boolean; inView: boolean }) {
         }} />
       )}
 
-      {/* Air India Logo */}
+      {/* Label - matches "01", "02" pattern */}
       <div style={{
-        width: '48px',
-        height: '48px',
+        fontSize: '0.75rem',
+        fontWeight: '600',
+        color: `rgb(${airIndiaRed})`,
         marginBottom: '1rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: isHovered ? `rgba(${airIndiaRed}, 0.1)` : 'var(--glass-08)',
-        borderRadius: '12px',
-        transition: 'all 0.3s ease',
+        letterSpacing: '0.1em',
+        opacity: 0.8,
       }}>
-        <Image
-          src="/logos/air-india.svg"
-          alt="Air India"
-          width={32}
-          height={32}
-          style={{ objectFit: 'contain' }}
-        />
+        →
       </div>
 
       {/* Title */}
       <h3 style={{
         fontSize: isMobile ? '1.25rem' : '1.5rem',
         fontWeight: '500',
-        color: isHovered ? `rgb(${airIndiaRed})` : 'var(--text-primary)',
-        marginBottom: '0.5rem',
+        color: 'var(--text-primary)',
+        marginBottom: '0.75rem',
         letterSpacing: '-0.01em',
-        textAlign: 'center',
-        transition: 'color 0.3s ease',
       }}>
         View Full Case Study
       </h3>
 
-      {/* Subtitle */}
+      {/* Description */}
       <p style={{
         fontSize: '0.875rem',
         color: 'var(--text-tertiary)',
-        textAlign: 'center',
-        marginBottom: '1rem',
+        lineHeight: '1.6',
+        marginBottom: '1.5rem',
       }}>
         8 systems across Air India&apos;s digital transformation
       </p>
 
-      {/* Arrow indicator */}
+      {/* Metric/Action - matches other cards' metric position */}
       <motion.div
-        animate={{ x: isHovered ? 8 : 0 }}
+        animate={{ x: isHovered ? 4 : 0 }}
         transition={{ duration: 0.3 }}
         style={{
           display: 'flex',
           alignItems: 'center',
           gap: '0.5rem',
-          color: isHovered ? `rgb(${airIndiaRed})` : 'var(--text-60)',
-          fontSize: '0.875rem',
+          fontSize: '0.813rem',
           fontWeight: '500',
-          transition: 'color 0.3s ease',
+          color: `rgb(${airIndiaRed})`,
+          letterSpacing: '0.02em',
         }}
       >
-        <span>Explore</span>
-        <ArrowRight size={18} />
+        <span>Explore case study</span>
+        <ArrowRight size={14} />
       </motion.div>
     </Link>
   );
