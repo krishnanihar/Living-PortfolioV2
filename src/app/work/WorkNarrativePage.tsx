@@ -105,14 +105,16 @@ export function WorkNarrativePage() {
     return () => carousel.removeEventListener('scroll', handleScroll);
   }, [isMobile]);
 
-  // Impact Cards
-  const impactCards: ImpactCard[] = [
+  // Impact Cards with expanded content
+  const impactCards = [
     {
       id: 1,
       label: '01',
       title: 'Design Systems',
       description: 'Token architecture and Pixel Radar plugin for design consistency',
+      expandedDescription: 'Built a comprehensive design token system with semantic naming conventions. Created Pixel Radar, a Figma plugin that automatically audits designs against the token library.',
       metric: '↑ Review efficiency',
+      tags: ['Figma', 'Tokens', 'Plugin'],
       color: '99, 102, 241',
     },
     {
@@ -120,7 +122,9 @@ export function WorkNarrativePage() {
       label: '02',
       title: 'Data Visualization',
       description: 'Narrative dashboards with progressive disclosure',
+      expandedDescription: 'Designed analytics dashboards that tell stories through data. Implemented progressive disclosure patterns to reduce cognitive load while maintaining depth.',
       metric: '↓ Decision time',
+      tags: ['D3.js', 'Charts', 'Analytics'],
       color: '16, 185, 129',
     },
     {
@@ -128,7 +132,9 @@ export function WorkNarrativePage() {
       label: '03',
       title: 'Mobile Patterns',
       description: 'Unified UX library for iOS and Android',
+      expandedDescription: 'Created a cross-platform component library ensuring consistent experiences across iOS and Android while respecting platform conventions.',
       metric: '↓ Platform bugs',
+      tags: ['iOS', 'Android', 'React Native'],
       color: '139, 92, 246',
     },
     {
@@ -136,7 +142,9 @@ export function WorkNarrativePage() {
       label: '04',
       title: 'IFE Experience',
       description: 'In-flight entertainment with offline resilience',
+      expandedDescription: 'Redesigned the in-flight entertainment system with offline-first architecture. Content syncs when connected and works seamlessly at 35,000 feet.',
       metric: '↑ User satisfaction',
+      tags: ['Offline', 'Media', 'UX'],
       color: '236, 72, 153',
     },
     {
@@ -144,7 +152,9 @@ export function WorkNarrativePage() {
       label: '05',
       title: 'Team Culture',
       description: 'Liftoff program for skill progression',
+      expandedDescription: 'Launched Liftoff, a structured mentorship and skill development program. Designers progress through levels with clear milestones and peer learning.',
       metric: '↑ Team velocity',
+      tags: ['Mentorship', 'Growth', 'Culture'],
       color: '251, 146, 60',
     },
     {
@@ -152,7 +162,9 @@ export function WorkNarrativePage() {
       label: '06',
       title: 'Innovation',
       description: 'Hackathon wins now in production',
+      expandedDescription: 'Led hackathon projects that graduated to production. Rapid prototyping to validate ideas before committing engineering resources.',
       metric: '→ Rapid validation',
+      tags: ['Prototyping', 'Hackathon', 'MVP'],
       color: '14, 165, 233',
     },
   ];
@@ -315,44 +327,145 @@ export function WorkNarrativePage() {
                     }} />
                   )}
 
+                  {/* Card Content - Two Column Layout when expanded */}
                   <div style={{
-                    fontSize: isHovered ? '0.875rem' : '0.75rem',
-                    fontWeight: '600',
-                    color: `rgb(${card.color})`,
-                    marginBottom: isHovered ? '1.25rem' : '1rem',
-                    letterSpacing: '0.1em',
-                    opacity: 0.8,
-                    transition: 'all 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
+                    display: 'flex',
+                    gap: '1.5rem',
+                    height: '100%',
                   }}>
-                    {card.label}
-                  </div>
-                  <h3 style={{
-                    fontSize: isHovered ? '1.75rem' : '1.25rem',
-                    fontWeight: '500',
-                    color: 'var(--text-primary)',
-                    marginBottom: isHovered ? '1rem' : '0.75rem',
-                    letterSpacing: '-0.01em',
-                    transition: 'all 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
-                  }}>
-                    {card.title}
-                  </h3>
-                  <p style={{
-                    fontSize: isHovered ? '1rem' : '0.875rem',
-                    color: 'var(--text-tertiary)',
-                    lineHeight: '1.7',
-                    marginBottom: isHovered ? '2rem' : '1.5rem',
-                    transition: 'all 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
-                  }}>
-                    {card.description}
-                  </p>
-                  <div style={{
-                    fontSize: isHovered ? '0.938rem' : '0.813rem',
-                    fontWeight: '500',
-                    color: `rgb(${card.color})`,
-                    letterSpacing: '0.02em',
-                    transition: 'all 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
-                  }}>
-                    {card.metric}
+                    {/* Left Column - Text Content */}
+                    <div style={{
+                      flex: isHovered ? '1' : '1',
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}>
+                      <div style={{
+                        fontSize: '0.75rem',
+                        fontWeight: '600',
+                        color: `rgb(${card.color})`,
+                        marginBottom: '1rem',
+                        letterSpacing: '0.1em',
+                        opacity: 0.8,
+                      }}>
+                        {card.label}
+                      </div>
+                      <h3 style={{
+                        fontSize: '1.25rem',
+                        fontWeight: '500',
+                        color: 'var(--text-primary)',
+                        marginBottom: '0.75rem',
+                        letterSpacing: '-0.01em',
+                      }}>
+                        {card.title}
+                      </h3>
+                      <p style={{
+                        fontSize: '0.875rem',
+                        color: 'var(--text-tertiary)',
+                        lineHeight: '1.6',
+                        marginBottom: '1rem',
+                      }}>
+                        {isHovered ? card.expandedDescription : card.description}
+                      </p>
+
+                      {/* Tags - shown when expanded */}
+                      {isHovered && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3, delay: 0.1 }}
+                          style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            gap: '0.5rem',
+                            marginBottom: '1rem',
+                          }}
+                        >
+                          {card.tags.map((tag: string, i: number) => (
+                            <span
+                              key={i}
+                              style={{
+                                fontSize: '0.6875rem',
+                                padding: '0.25rem 0.5rem',
+                                borderRadius: '4px',
+                                background: `rgba(${card.color}, 0.15)`,
+                                color: `rgb(${card.color})`,
+                                fontWeight: '500',
+                              }}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </motion.div>
+                      )}
+
+                      <div style={{
+                        fontSize: '0.813rem',
+                        fontWeight: '500',
+                        color: `rgb(${card.color})`,
+                        letterSpacing: '0.02em',
+                        marginTop: 'auto',
+                      }}>
+                        {card.metric}
+                      </div>
+                    </div>
+
+                    {/* Right Column - Image Placeholder (shown when expanded) */}
+                    {isHovered && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
+                        style={{
+                          flex: '1',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '0.75rem',
+                        }}
+                      >
+                        {/* Main Image Placeholder */}
+                        <div style={{
+                          flex: '1',
+                          borderRadius: '12px',
+                          background: `linear-gradient(135deg, rgba(${card.color}, 0.1), rgba(${card.color}, 0.05))`,
+                          border: `1px dashed rgba(${card.color}, 0.3)`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          minHeight: '120px',
+                        }}>
+                          <div style={{
+                            textAlign: 'center',
+                            color: `rgba(${card.color}, 0.5)`,
+                          }}>
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                              <circle cx="8.5" cy="8.5" r="1.5"/>
+                              <polyline points="21 15 16 10 5 21"/>
+                            </svg>
+                            <p style={{ fontSize: '0.6875rem', marginTop: '0.5rem' }}>Preview</p>
+                          </div>
+                        </div>
+
+                        {/* Secondary Thumbnails */}
+                        <div style={{
+                          display: 'flex',
+                          gap: '0.5rem',
+                        }}>
+                          {[1, 2].map((i) => (
+                            <div
+                              key={i}
+                              style={{
+                                flex: '1',
+                                height: '48px',
+                                borderRadius: '8px',
+                                background: `rgba(${card.color}, 0.08)`,
+                                border: `1px dashed rgba(${card.color}, 0.2)`,
+                              }}
+                            />
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
                   </div>
                 </motion.div>
               );
