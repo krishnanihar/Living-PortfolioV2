@@ -239,20 +239,18 @@ export function WorkNarrativePage() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(3, 1fr)',
+              gridAutoRows: 'minmax(180px, auto)',
               gap: '1.5rem',
             }}>
               {impactCards.map((card, index) => {
                 const isHovered = hoveredCard === card.id;
-                const isFeatured = card.id === 1;
-                // Non-featured cards expand to 2 columns on hover
-                const gridSpan = isFeatured ? 'span 2' : (isHovered ? 'span 2' : 'span 1');
 
                 return (
                   <motion.div
                     key={card.id}
                     layout
                     layoutId={`card-${card.id}`}
-                    transition={{ layout: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } }}
+                    transition={{ layout: { duration: 0.5, ease: [0.32, 0.72, 0, 1] } }}
                     onMouseEnter={() => setHoveredCard(card.id)}
                     onMouseLeave={() => {
                       setHoveredCard(null);
@@ -267,20 +265,22 @@ export function WorkNarrativePage() {
                     }}
                     style={{
                       position: 'relative',
-                      padding: '2rem',
+                      padding: isHovered ? '2.5rem' : '2rem',
                       borderRadius: '20px',
-                      gridColumn: gridSpan,
+                      gridColumn: isHovered ? 'span 2' : 'span 1',
+                      gridRow: isHovered ? 'span 2' : 'span 1',
                       background: isHovered
-                        ? `linear-gradient(135deg, rgba(${card.color}, 0.06), var(--surface-primary))`
+                        ? `linear-gradient(135deg, rgba(${card.color}, 0.08), var(--surface-primary))`
                         : 'var(--surface-primary)',
                       backdropFilter: 'blur(40px)',
                       WebkitBackdropFilter: 'blur(40px)',
                       border: `1px solid transparent`,
                       cursor: 'pointer',
                       boxShadow: isHovered
-                        ? `0 20px 40px rgba(${card.color}, 0.15)`
+                        ? `0 30px 60px rgba(${card.color}, 0.2)`
                         : 'var(--shadow-sm)',
                       overflow: 'hidden',
+                      zIndex: isHovered ? 10 : 1,
                     }}
                   >
                   {/* Border Shimmer Effect */}
@@ -316,37 +316,41 @@ export function WorkNarrativePage() {
                   )}
 
                   <div style={{
-                    fontSize: '0.75rem',
+                    fontSize: isHovered ? '0.875rem' : '0.75rem',
                     fontWeight: '600',
                     color: `rgb(${card.color})`,
-                    marginBottom: '1rem',
+                    marginBottom: isHovered ? '1.25rem' : '1rem',
                     letterSpacing: '0.1em',
                     opacity: 0.8,
+                    transition: 'all 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
                   }}>
                     {card.label}
                   </div>
                   <h3 style={{
-                    fontSize: isFeatured ? '1.5rem' : '1.25rem',
+                    fontSize: isHovered ? '1.75rem' : '1.25rem',
                     fontWeight: '500',
                     color: 'var(--text-primary)',
-                    marginBottom: '0.75rem',
+                    marginBottom: isHovered ? '1rem' : '0.75rem',
                     letterSpacing: '-0.01em',
+                    transition: 'all 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
                   }}>
                     {card.title}
                   </h3>
                   <p style={{
-                    fontSize: '0.875rem',
+                    fontSize: isHovered ? '1rem' : '0.875rem',
                     color: 'var(--text-tertiary)',
-                    lineHeight: '1.6',
-                    marginBottom: '1.5rem',
+                    lineHeight: '1.7',
+                    marginBottom: isHovered ? '2rem' : '1.5rem',
+                    transition: 'all 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
                   }}>
                     {card.description}
                   </p>
                   <div style={{
-                    fontSize: '0.813rem',
+                    fontSize: isHovered ? '0.938rem' : '0.813rem',
                     fontWeight: '500',
                     color: `rgb(${card.color})`,
                     letterSpacing: '0.02em',
+                    transition: 'all 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
                   }}>
                     {card.metric}
                   </div>
