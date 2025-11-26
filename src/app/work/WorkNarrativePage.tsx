@@ -350,6 +350,9 @@ export function WorkNarrativePage() {
                 </div>
               );
             })}
+
+            {/* CTA Card - View Full Case Study */}
+            <CTACard isMobile={false} inView={inView} />
           </div>
         )}
 
@@ -432,6 +435,9 @@ export function WorkNarrativePage() {
                   </div>
                 );
               })}
+
+              {/* CTA Card - View Full Case Study */}
+              <CTACard isMobile={true} inView={true} />
             </div>
 
             {/* Carousel Progress Dots */}
@@ -1077,5 +1083,131 @@ function ResearchSkeleton() {
         }
       `}</style>
     </div>
+  );
+}
+
+/**
+ * CTA Card for Air India case study
+ * 2-column wide card with Air India red accent
+ */
+function CTACard({ isMobile, inView }: { isMobile: boolean; inView: boolean }) {
+  const [isHovered, setIsHovered] = React.useState(false);
+  const cardRef = useRef<HTMLAnchorElement>(null);
+  const airIndiaRed = '218, 14, 41';
+
+  return (
+    <Link
+      ref={cardRef}
+      href="/work/air-india"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        position: 'relative',
+        padding: '2rem',
+        borderRadius: '20px',
+        gridColumn: isMobile ? undefined : 'span 2',
+        flex: isMobile ? '0 0 85%' : undefined,
+        scrollSnapAlign: isMobile ? 'center' : undefined,
+        background: isHovered
+          ? `linear-gradient(135deg, rgba(${airIndiaRed}, 0.08), var(--surface-primary))`
+          : 'var(--surface-primary)',
+        backdropFilter: 'blur(40px)',
+        WebkitBackdropFilter: 'blur(40px)',
+        border: `1px solid ${isHovered ? `rgba(${airIndiaRed}, 0.4)` : 'var(--border-primary)'}`,
+        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+        transform: isHovered ? 'translateY(-4px) scale(1.01)' : 'translateY(0) scale(1)',
+        cursor: 'pointer',
+        animation: !isMobile && inView ? 'scrollRevealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.3s both' : 'none',
+        boxShadow: isHovered
+          ? `0 20px 40px rgba(${airIndiaRed}, 0.2)`
+          : 'var(--shadow-sm)',
+        overflow: 'hidden',
+        textDecoration: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: isMobile ? 'auto' : '180px',
+      }}
+    >
+      {/* Border Shimmer Effect */}
+      {isHovered && (
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          borderRadius: '20px',
+          padding: '1px',
+          background: `linear-gradient(90deg, transparent, rgba(${airIndiaRed}, 0.8), transparent)`,
+          backgroundSize: '200% 100%',
+          animation: 'borderShimmer 3s ease-in-out infinite',
+          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMaskComposite: 'xor',
+          maskComposite: 'exclude',
+          pointerEvents: 'none',
+        }} />
+      )}
+
+      {/* Air India Logo */}
+      <div style={{
+        width: '48px',
+        height: '48px',
+        marginBottom: '1rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: isHovered ? `rgba(${airIndiaRed}, 0.1)` : 'var(--glass-08)',
+        borderRadius: '12px',
+        transition: 'all 0.3s ease',
+      }}>
+        <Image
+          src="/logos/air-india.svg"
+          alt="Air India"
+          width={32}
+          height={32}
+          style={{ objectFit: 'contain' }}
+        />
+      </div>
+
+      {/* Title */}
+      <h3 style={{
+        fontSize: isMobile ? '1.25rem' : '1.5rem',
+        fontWeight: '500',
+        color: isHovered ? `rgb(${airIndiaRed})` : 'var(--text-primary)',
+        marginBottom: '0.5rem',
+        letterSpacing: '-0.01em',
+        textAlign: 'center',
+        transition: 'color 0.3s ease',
+      }}>
+        View Full Case Study
+      </h3>
+
+      {/* Subtitle */}
+      <p style={{
+        fontSize: '0.875rem',
+        color: 'var(--text-tertiary)',
+        textAlign: 'center',
+        marginBottom: '1rem',
+      }}>
+        8 systems across Air India&apos;s digital transformation
+      </p>
+
+      {/* Arrow indicator */}
+      <motion.div
+        animate={{ x: isHovered ? 8 : 0 }}
+        transition={{ duration: 0.3 }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          color: isHovered ? `rgb(${airIndiaRed})` : 'var(--text-60)',
+          fontSize: '0.875rem',
+          fontWeight: '500',
+          transition: 'color 0.3s ease',
+        }}
+      >
+        <span>Explore</span>
+        <ArrowRight size={18} />
+      </motion.div>
+    </Link>
   );
 }
