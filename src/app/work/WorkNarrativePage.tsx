@@ -257,7 +257,9 @@ export function WorkNarrativePage() {
               {impactCards.map((card, index) => {
                 const isHovered = hoveredCard === card.id;
                 const col = index % 3; // 0, 1, 2
+                const row = Math.floor(index / 3); // 0 or 1
                 const isRightEdge = col === 2;
+                const isBottomRow = row === 1;
 
                 return (
                   <motion.div
@@ -282,7 +284,7 @@ export function WorkNarrativePage() {
                       padding: isHovered ? '2.5rem' : '2rem',
                       borderRadius: '20px',
                       gridColumn: isHovered ? (isRightEdge ? '2 / span 2' : 'span 2') : 'span 1',
-                      gridRow: isHovered ? 'span 2' : 'span 1',
+                      gridRow: isHovered ? (isBottomRow ? '1 / span 2' : 'span 2') : 'span 1',
                       background: isHovered
                         ? `linear-gradient(135deg, rgba(${card.color}, 0.08), var(--surface-primary))`
                         : 'var(--surface-primary)',
