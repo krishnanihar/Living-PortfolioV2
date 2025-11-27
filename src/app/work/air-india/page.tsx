@@ -4,15 +4,15 @@ import { AirIndiaWork } from '@/components/sections/AirIndiaWork';
 import { CaseStudyTracker } from '@/components/CaseStudyTracker';
 
 export const metadata: Metadata = {
-  title: 'Air India Case Study — Design Systems & Digital Transformation',
-  description: 'Deep dive into Air India\'s digital transformation. Building systems that help teams ship better products, faster. 450+ daily users, design systems, and innovation.',
+  title: 'Air India Case Study — $200M Digital Transformation | Red Dot Award',
+  description: 'Built design infrastructure from zero during Air India\'s Tata transformation. Pixel Radar (450+ daily users), AI-native features, MCP handoff. Red Dot 2024, Gold Stevie, APEX Four Star recognition.',
   openGraph: {
-    title: 'Air India Case Study — Krishna Nihar Portfolio',
-    description: 'Systems and innovation across Air India\'s digital transformation. Design systems, data visualization, and hackathon wins in production.',
+    title: 'Air India Case Study — Design Infrastructure from Zero',
+    description: 'When Tata acquired Air India, zero design infrastructure existed. I built Pixel Radar (450+ users), design systems for 4 merging airlines, and AI-native features that won Red Dot 2024.',
   },
   twitter: {
-    title: 'Air India Case Study — Krishna Nihar Portfolio',
-    description: 'Systems and innovation across Air India\'s digital transformation. Design systems, data visualization, and hackathon wins in production.',
+    title: 'Air India Case Study — Design Infrastructure from Zero',
+    description: 'When Tata acquired Air India, zero design infrastructure existed. I built Pixel Radar (450+ users), design systems for 4 merging airlines, and AI-native features that won Red Dot 2024.',
   },
 };
 
