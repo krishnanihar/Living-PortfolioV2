@@ -1718,6 +1718,18 @@ select {
   }
 }
 
+/* Sparkle animation for particles */
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.5) translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) translateY(-10px);
+  }
+}
+
 /* === PROFILE AVATAR UTILITIES === */
 
 /* Premium glassmorphic avatar container */
