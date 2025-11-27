@@ -63,6 +63,7 @@ interface Project {
   recruiterFrame: string;
   icon: LucideIcon;
   color: string;
+  category: string;
 }
 
 interface OtherProject {
@@ -155,7 +156,8 @@ const projects: Project[] = [
     ],
     recruiterFrame: 'Builder mindset — shipped tool when none existed',
     icon: Target,
-    color: '218, 14, 41'
+    color: '218, 14, 41',
+    category: 'TOOL'
   },
   {
     id: 2,
@@ -172,7 +174,8 @@ const projects: Project[] = [
     ],
     recruiterFrame: 'Systems thinking from ambiguity',
     icon: Layers,
-    color: '99, 102, 241'
+    color: '99, 102, 241',
+    category: 'SYSTEM'
   },
   {
     id: 3,
@@ -189,7 +192,8 @@ const projects: Project[] = [
     ],
     recruiterFrame: 'AI-native thinking before playbooks',
     icon: Search,
-    color: '139, 92, 246'
+    color: '139, 92, 246',
+    category: 'AI'
   },
   {
     id: 4,
@@ -206,7 +210,8 @@ const projects: Project[] = [
     ],
     recruiterFrame: 'Understands AI infrastructure (Anthropic created MCP)',
     icon: GitBranch,
-    color: '16, 185, 129'
+    color: '16, 185, 129',
+    category: 'AI'
   },
   {
     id: 5,
@@ -223,7 +228,8 @@ const projects: Project[] = [
     ],
     recruiterFrame: 'Constraint-driven design excellence',
     icon: Monitor,
-    color: '251, 146, 60'
+    color: '251, 146, 60',
+    category: 'IFE'
   },
   {
     id: 6,
@@ -240,7 +246,8 @@ const projects: Project[] = [
     ],
     recruiterFrame: 'Data-driven design, research methodology',
     icon: BarChart3,
-    color: '236, 72, 153'
+    color: '236, 72, 153',
+    category: 'RESEARCH'
   },
   {
     id: 7,
@@ -257,7 +264,8 @@ const projects: Project[] = [
     ],
     recruiterFrame: 'Strategic thinking, research skills',
     icon: Compass,
-    color: '14, 165, 233'
+    color: '14, 165, 233',
+    category: 'RESEARCH'
   },
   {
     id: 8,
@@ -274,7 +282,8 @@ const projects: Project[] = [
     ],
     recruiterFrame: 'Leadership without authority',
     icon: Users,
-    color: '251, 191, 36'
+    color: '251, 191, 36',
+    category: 'CULTURE'
   },
   {
     id: 9,
@@ -291,7 +300,8 @@ const projects: Project[] = [
     ],
     recruiterFrame: 'External collaboration, AI application',
     icon: Zap,
-    color: '99, 102, 241'
+    color: '99, 102, 241',
+    category: 'HACKATHON'
   },
   {
     id: 10,
@@ -308,7 +318,8 @@ const projects: Project[] = [
     ],
     recruiterFrame: 'Speed, full-stack capability',
     icon: Rocket,
-    color: '218, 14, 41'
+    color: '218, 14, 41',
+    category: 'HACKATHON'
   }
 ];
 
@@ -776,24 +787,44 @@ export function AirIndiaWork() {
                   flexDirection: isMobile ? 'column' : (isEven ? 'row-reverse' : 'row'),
                   gap: isMobile ? '1.5rem' : '2.5rem',
                   padding: isMobile ? '1.5rem' : '2.5rem',
-                  borderRadius: '24px',
+                  borderRadius: '28px',
                   background: isHovered
-                    ? `linear-gradient(135deg, rgba(${project.color}, 0.06), var(--glass-04))`
+                    ? `linear-gradient(135deg, rgba(${project.color}, 0.08), var(--glass-04))`
                     : 'var(--glass-04)',
                   backdropFilter: 'blur(40px)',
                   WebkitBackdropFilter: 'blur(40px)',
-                  border: `1px solid ${isHovered ? `rgba(${project.color}, 0.25)` : 'var(--glass-08)'}`,
+                  border: `1px solid ${isHovered ? `rgba(${project.color}, 0.3)` : 'var(--glass-08)'}`,
                   transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                  transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
+                  transform: isHovered ? 'translateY(-6px)' : 'translateY(0)',
+                  boxShadow: isHovered ? `0 20px 60px -15px rgba(${project.color}, 0.15)` : 'none',
                   animation: inView ? `scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.6 + index * 0.1}s both` : 'none',
+                  overflow: 'hidden',
                 }}
               >
+                {/* Decorative Background Number */}
+                <span style={{
+                  position: 'absolute',
+                  top: isMobile ? '-0.5rem' : '-1rem',
+                  left: isMobile ? '1rem' : '1.5rem',
+                  fontSize: isMobile ? '4rem' : '6rem',
+                  fontWeight: '700',
+                  opacity: isHovered ? 0.08 : 0.04,
+                  color: `rgb(${project.color})`,
+                  pointerEvents: 'none',
+                  lineHeight: 1,
+                  transition: 'opacity 0.4s ease',
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  letterSpacing: '-0.05em',
+                }}>
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+
                 {/* Border Shimmer on Hover */}
                 {isHovered && (
                   <div style={{
                     position: 'absolute',
                     inset: 0,
-                    borderRadius: '24px',
+                    borderRadius: '28px',
                     padding: '1px',
                     background: `linear-gradient(90deg, transparent, rgba(${project.color}, 0.5), transparent)`,
                     backgroundSize: '200% 100%',
@@ -805,14 +836,14 @@ export function AirIndiaWork() {
                   }} />
                 )}
 
-                {/* Image Placeholder */}
+                {/* Enhanced Image Placeholder */}
                 <div style={{
                   flex: isMobile ? 'none' : '1',
                   aspectRatio: '16/10',
                   minHeight: isMobile ? '200px' : '280px',
-                  borderRadius: '16px',
-                  background: `linear-gradient(135deg, rgba(${project.color}, 0.08), var(--glass-06))`,
-                  border: `2px dashed rgba(${project.color}, 0.25)`,
+                  borderRadius: '20px',
+                  background: `linear-gradient(135deg, rgba(${project.color}, 0.06), var(--glass-06))`,
+                  border: `2px dashed rgba(${project.color}, 0.2)`,
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
@@ -820,25 +851,43 @@ export function AirIndiaWork() {
                   gap: '1rem',
                   transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                   transform: isHovered ? 'scale(1.02)' : 'scale(1)',
+                  position: 'relative',
+                  overflow: 'hidden',
                 }}>
+                  {/* Pattern Overlay */}
                   <div style={{
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '14px',
+                    position: 'absolute',
+                    inset: 0,
+                    backgroundImage: `radial-gradient(circle, rgba(${project.color}, 0.12) 1px, transparent 1px)`,
+                    backgroundSize: '24px 24px',
+                    opacity: isHovered ? 0.8 : 0.4,
+                    transition: 'opacity 0.4s ease',
+                  }} />
+
+                  {/* Glowing Icon Container */}
+                  <div style={{
+                    width: '64px',
+                    height: '64px',
+                    borderRadius: '16px',
                     background: `rgba(${project.color}, 0.15)`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                     transform: isHovered ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
+                    boxShadow: isHovered ? `0 0 40px rgba(${project.color}, 0.3)` : 'none',
+                    position: 'relative',
+                    zIndex: 1,
                   }}>
-                    <Icon size={28} style={{ color: `rgb(${project.color})` }} />
+                    <Icon size={30} style={{ color: `rgb(${project.color})` }} />
                   </div>
                   <span style={{
                     fontSize: '0.813rem',
                     color: 'var(--text-muted)',
                     textAlign: 'center',
                     padding: '0 1rem',
+                    position: 'relative',
+                    zIndex: 1,
                   }}>
                     Add {project.imagePlaceholder}
                   </span>
@@ -850,43 +899,54 @@ export function AirIndiaWork() {
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
+                  position: 'relative',
+                  zIndex: 1,
                 }}>
-                  {/* Label + Title */}
+                  {/* Category Badge */}
                   <div style={{
-                    display: 'flex',
+                    display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '0.75rem',
-                    marginBottom: '0.5rem',
+                    gap: '0.5rem',
+                    padding: '0.25rem 0.75rem',
+                    borderRadius: '100px',
+                    background: `rgba(${project.color}, 0.1)`,
+                    border: `1px solid rgba(${project.color}, 0.15)`,
+                    fontSize: '0.625rem',
+                    fontWeight: '600',
+                    letterSpacing: '0.15em',
+                    color: `rgb(${project.color})`,
+                    marginBottom: '1rem',
+                    alignSelf: 'flex-start',
+                    textTransform: 'uppercase',
                   }}>
-                    <span style={{
-                      fontSize: '0.75rem',
-                      fontWeight: '600',
-                      color: `rgb(${project.color})`,
-                      letterSpacing: '0.1em',
-                    }}>
-                      {project.label}
-                    </span>
-                    <span style={{
-                      width: '24px',
-                      height: '1px',
-                      background: `rgba(${project.color}, 0.3)`,
-                    }} />
+                    {project.category}
                   </div>
 
+                  {/* Title with Gradient Accent */}
                   <h3 style={{
-                    fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)',
+                    fontSize: 'clamp(1.375rem, 2.5vw, 1.625rem)',
                     fontWeight: '500',
                     color: 'var(--text-primary)',
-                    marginBottom: '0.25rem',
+                    marginBottom: '0.5rem',
                     letterSpacing: '-0.02em',
                   }}>
                     {project.title}
                   </h3>
 
+                  {/* Gradient Accent Line */}
+                  <span style={{
+                    display: 'block',
+                    width: '3rem',
+                    height: '2px',
+                    background: `linear-gradient(90deg, rgb(${project.color}), transparent)`,
+                    marginBottom: '0.75rem',
+                    borderRadius: '1px',
+                  }} />
+
                   <p style={{
                     fontSize: '0.875rem',
-                    color: `rgb(${project.color})`,
-                    marginBottom: '1rem',
+                    color: 'var(--text-tertiary)',
+                    marginBottom: '1.25rem',
                     fontWeight: '400',
                   }}>
                     {project.subtitle}
@@ -906,36 +966,52 @@ export function AirIndiaWork() {
                     ))}
                   </div>
 
-                  {/* Stats Row */}
+                  {/* Enhanced Stats Row in Glass Container */}
                   <div style={{
                     display: 'flex',
-                    gap: '1.5rem',
+                    alignItems: 'center',
+                    gap: isMobile ? '1rem' : '1.5rem',
                     marginBottom: '1.25rem',
-                    flexWrap: 'wrap',
+                    padding: '1rem 1.25rem',
+                    borderRadius: '14px',
+                    background: 'var(--glass-03)',
+                    border: '1px solid var(--glass-06)',
+                    flexWrap: isMobile ? 'wrap' : 'nowrap',
                   }}>
                     {project.stats.map((stat, statIndex) => (
-                      <div key={statIndex} style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'flex-start',
-                      }}>
-                        <span style={{
-                          fontSize: '1.25rem',
-                          fontWeight: '600',
-                          color: `rgb(${project.color})`,
-                          lineHeight: '1.2',
+                      <React.Fragment key={statIndex}>
+                        <div style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'flex-start',
+                          flex: isMobile ? '1 1 auto' : 'none',
+                          minWidth: isMobile ? 'calc(33% - 1rem)' : 'auto',
                         }}>
-                          {stat.value}
-                        </span>
-                        <span style={{
-                          fontSize: '0.75rem',
-                          color: 'var(--text-muted)',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.05em',
-                        }}>
-                          {stat.label}
-                        </span>
-                      </div>
+                          <span style={{
+                            fontSize: '1.375rem',
+                            fontWeight: '600',
+                            color: `rgb(${project.color})`,
+                            lineHeight: '1.2',
+                          }}>
+                            {stat.value}
+                          </span>
+                          <span style={{
+                            fontSize: '0.7rem',
+                            color: 'var(--text-muted)',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.05em',
+                          }}>
+                            {stat.label}
+                          </span>
+                        </div>
+                        {statIndex < project.stats.length - 1 && !isMobile && (
+                          <div style={{
+                            width: '1px',
+                            height: '32px',
+                            background: 'var(--glass-10)',
+                          }} />
+                        )}
+                      </React.Fragment>
                     ))}
                   </div>
 
@@ -944,8 +1020,8 @@ export function AirIndiaWork() {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.5rem',
-                    padding: '0.5rem 1rem',
-                    borderRadius: '8px',
+                    padding: '0.625rem 1rem',
+                    borderRadius: '10px',
                     background: `rgba(${project.color}, 0.08)`,
                     border: `1px solid rgba(${project.color}, 0.15)`,
                     alignSelf: 'flex-start',
