@@ -1730,6 +1730,50 @@ select {
   }
 }
 
+/* Glow pulse animation for hover effects */
+@keyframes glowPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 20px rgba(218, 14, 41, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 40px rgba(218, 14, 41, 0.6));
+  }
+}
+
+/* Chart bar grow animation */
+@keyframes chartGrow {
+  0% {
+    transform: scaleY(0);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+/* Expand reveal animation */
+@keyframes expandReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Card scale in animation */
+@keyframes cardScaleIn {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 /* === PROFILE AVATAR UTILITIES === */
 
 /* Premium glassmorphic avatar container */

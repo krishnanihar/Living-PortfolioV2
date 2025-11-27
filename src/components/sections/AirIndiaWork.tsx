@@ -8,6 +8,7 @@ import {
   TrendingUp,
   CheckCircle,
   ArrowLeft,
+  ArrowRight,
   Hexagon,
   Grid3X3,
   Heart,
@@ -58,6 +59,7 @@ interface Project {
   subtitle: string;
   description: string;
   longDescription: string;
+  expandedDescription?: string;
   imagePlaceholder: string;
   stats: ProjectStat[];
   recruiterFrame: string;
@@ -771,6 +773,9 @@ export function AirIndiaWork() {
           gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
           gridAutoRows: 'minmax(300px, auto)',
           gap: '1.25rem',
+          padding: isMobile ? '0' : '1.5rem',
+          margin: isMobile ? '0' : '-1.5rem',
+          position: 'relative',
         }}>
           {projects.map((project, index) => {
             const Icon = project.icon;
@@ -791,6 +796,30 @@ export function AirIndiaWork() {
             const isHero = index === 0 && !isMobile;
             const isWide = (index === 5 || index === 6) && !isMobile;
             const isFull = index === 9 && !isMobile;
+
+            // Smart transform origins for expansion direction
+            const getTransformOrigin = () => {
+              if (isMobile) return 'center center';
+              // Hero card (top-left) - expand from top-left
+              if (index === 0) return 'top left';
+              // Right-edge cards (col 3) - expand leftward
+              if ([2, 4, 8].includes(index)) return 'top right';
+              // Bottom-row cards - expand upward
+              if ([7, 8, 9].includes(index)) return 'bottom center';
+              // Wide cards spanning cols 2-3 - expand from center-right
+              if (cardSize.cols === 'span 2' && index > 0) return 'center right';
+              // Default - expand from center
+              return 'center center';
+            };
+
+            // Scale amount based on card type
+            const getScaleAmount = () => {
+              if (isMobile) return 1;
+              if (cardSize.rows === 'span 2') return 1.06; // Hero: smaller scale
+              if (cardSize.cols === 'span 2') return 1.08; // Wide: medium scale
+              if (cardSize.cols === 'span 3') return 1.04; // Full: subtle scale
+              return 1.12; // Standard: larger scale
+            };
 
             // Custom visual content per project type
             const renderCardVisual = () => {
@@ -1151,15 +1180,17 @@ export function AirIndiaWork() {
                   `,
                   backdropFilter: 'blur(40px)',
                   WebkitBackdropFilter: 'blur(40px)',
-                  border: `1px solid ${isHovered ? `rgba(${project.color}, 0.4)` : 'var(--glass-08)'}`,
-                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                  transform: isHovered ? 'translateY(-8px) scale(1.01)' : 'translateY(0) scale(1)',
+                  border: `1px solid ${isHovered ? `rgba(${project.color}, 0.5)` : 'var(--glass-08)'}`,
+                  transition: 'all 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
+                  transform: isHovered ? `scale(${getScaleAmount()})` : 'scale(1)',
+                  transformOrigin: getTransformOrigin(),
+                  zIndex: isHovered ? 20 : 1,
                   boxShadow: isHovered
-                    ? `0 30px 80px -20px rgba(${project.color}, 0.3), 0 0 0 1px rgba(${project.color}, 0.1)`
-                    : '0 4px 20px rgba(0,0,0,0.1)',
+                    ? `0 40px 100px -30px rgba(${project.color}, 0.4), 0 20px 50px -20px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(${project.color}, 0.2)`
+                    : '0 8px 32px -8px rgba(0,0,0,0.2)',
                   animation: inView ? `scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.4 + index * 0.08}s both` : 'none',
-                  overflow: 'hidden',
-                  cursor: 'default',
+                  overflow: 'visible',
+                  cursor: 'pointer',
                 }}
               >
                 {/* Animated Glow Orb */}
@@ -1308,18 +1339,68 @@ export function AirIndiaWork() {
                     gap: '0.5rem',
                     padding: '0.5rem 0.75rem',
                     borderRadius: '8px',
-                    background: 'var(--glass-04)',
-                    border: '1px solid var(--glass-08)',
+                    background: isHovered ? `rgba(${project.color}, 0.1)` : 'var(--glass-04)',
+                    border: `1px solid ${isHovered ? `rgba(${project.color}, 0.2)` : 'var(--glass-08)'}`,
+                    transition: 'all 0.3s ease',
                   }}>
                     <CheckCircle size={14} style={{ color: `rgb(${project.color})` }} />
                     <span style={{
                       fontSize: '0.8125rem',
-                      color: 'var(--text-tertiary)',
+                      color: isHovered ? 'var(--text-secondary)' : 'var(--text-tertiary)',
                       fontStyle: 'italic',
+                      transition: 'color 0.3s ease',
                     }}>
                       {project.recruiterFrame}
                     </span>
                   </div>
+
+                  {/* Expanded Content - Visible on Hover */}
+                  {!isMobile && (
+                    <div style={{
+                      opacity: isHovered ? 1 : 0,
+                      maxHeight: isHovered ? '200px' : '0px',
+                      transform: isHovered ? 'translateY(0)' : 'translateY(-10px)',
+                      transition: 'all 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0.1s',
+                      marginTop: isHovered ? '1rem' : '0',
+                      overflow: 'hidden',
+                      pointerEvents: isHovered ? 'auto' : 'none',
+                    }}>
+                      <p style={{
+                        fontSize: '0.8125rem',
+                        color: 'var(--text-60)',
+                        lineHeight: 1.7,
+                        marginBottom: '0.75rem',
+                      }}>
+                        {project.expandedDescription || project.subtitle}
+                      </p>
+                      <button style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        padding: '0.5rem 1rem',
+                        background: `linear-gradient(135deg, rgba(${project.color}, 0.15), rgba(${project.color}, 0.08))`,
+                        border: `1px solid rgba(${project.color}, 0.3)`,
+                        borderRadius: '8px',
+                        color: 'var(--text-90)',
+                        fontSize: '0.8125rem',
+                        fontWeight: '500',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = `linear-gradient(135deg, rgba(${project.color}, 0.25), rgba(${project.color}, 0.15))`;
+                        e.currentTarget.style.transform = 'translateX(4px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = `linear-gradient(135deg, rgba(${project.color}, 0.15), rgba(${project.color}, 0.08))`;
+                        e.currentTarget.style.transform = 'translateX(0)';
+                      }}
+                      >
+                        View Deep Dive
+                        <ArrowRight size={14} />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             );
