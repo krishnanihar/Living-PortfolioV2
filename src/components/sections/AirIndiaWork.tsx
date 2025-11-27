@@ -46,16 +46,23 @@ interface Award {
   color: string;
 }
 
+interface ProjectStat {
+  value: string;
+  label: string;
+}
+
 interface Project {
   id: number;
   label: string;
   title: string;
+  subtitle: string;
   description: string;
-  impact: string;
+  longDescription: string;
+  imagePlaceholder: string;
+  stats: ProjectStat[];
   recruiterFrame: string;
   icon: LucideIcon;
   color: string;
-  featured?: boolean;
 }
 
 interface OtherProject {
@@ -74,12 +81,6 @@ interface Differentiator {
   title: string;
   description: string;
   icon: LucideIcon;
-  color: string;
-}
-
-interface TargetCompany {
-  name: string;
-  skills: string[];
   color: string;
 }
 
@@ -143,19 +144,32 @@ const projects: Project[] = [
     id: 1,
     label: '01',
     title: 'Pixel Radar',
-    description: 'Figma plugin for automated design consistency checks. Built it myself when no tools existed.',
-    impact: '450+ daily users · 30% faster reviews',
+    subtitle: 'Figma plugin for automated design consistency',
+    description: 'Built it myself when no tools existed.',
+    longDescription: 'When there\'s no design system, every screen is an island. Designers were making isolated decisions. Engineers were interpreting specs differently. Reviews caught inconsistencies too late—if at all.\n\nSo I built Pixel Radar—a Figma plugin that automates consistency checks. What started as a personal workflow fix became infrastructure serving 450+ daily users, cutting design review time by 30%. It solved a problem the organization didn\'t have budget or bandwidth to address through official channels.',
+    imagePlaceholder: 'Pixel Radar Plugin Interface',
+    stats: [
+      { value: '450+', label: 'Daily Users' },
+      { value: '30%', label: 'Faster Reviews' },
+      { value: 'Active', label: 'Production Use' }
+    ],
     recruiterFrame: 'Builder mindset — shipped tool when none existed',
     icon: Target,
-    color: '218, 14, 41',
-    featured: true
+    color: '218, 14, 41'
   },
   {
     id: 2,
     label: '02',
     title: 'Design System & Tokenisation',
-    description: 'Reverse-engineered undocumented screens into systematic token framework for four merging airlines.',
-    impact: 'Foundation for 4-airline merger',
+    subtitle: 'Token architecture for four merging airlines',
+    description: 'Reverse-engineered undocumented screens into systematic framework.',
+    longDescription: 'I started by reverse-engineering what existed. Hundreds of screens, undocumented, built over years by people who\'d since left. I extracted the implicit logic—spacing patterns, typography decisions, color usage—and codified it into a systematic token framework.\n\nThis became the foundation that would let four merging airlines eventually speak the same design language. Variables, naming conventions, hierarchy—the infrastructure that makes consistency possible at scale.',
+    imagePlaceholder: 'Token Architecture Diagram',
+    stats: [
+      { value: '4', label: 'Airlines Unified' },
+      { value: '100s', label: 'Screens Analyzed' },
+      { value: 'Core', label: 'Infrastructure' }
+    ],
     recruiterFrame: 'Systems thinking from ambiguity',
     icon: Layers,
     color: '99, 102, 241'
@@ -164,8 +178,15 @@ const projects: Project[] = [
     id: 3,
     label: '03',
     title: 'Search with AI',
-    description: 'AI-native search experience using natural language understanding. Part of Red Dot winning trajectory.',
-    impact: 'Red Dot Award winning concept',
+    subtitle: 'AI-native search using natural language',
+    description: 'Part of Red Dot winning trajectory.',
+    longDescription: 'While the organization modernized basics, I was designing for what comes next. Search with AI—an AI-native search experience using natural language understanding—rethinks how passengers interact with an airline.\n\nThis was part of a broader push that led to Air India\'s generative AI booking feature winning the Red Dot Design Award 2024, now showcased in the Red Dot Design Museum in Singapore.',
+    imagePlaceholder: 'AI Search Interface Mockup',
+    stats: [
+      { value: 'Red Dot', label: '2024 Award' },
+      { value: 'NLU', label: 'Powered' },
+      { value: 'Singapore', label: 'Museum Display' }
+    ],
     recruiterFrame: 'AI-native thinking before playbooks',
     icon: Search,
     color: '139, 92, 246'
@@ -174,9 +195,16 @@ const projects: Project[] = [
     id: 4,
     label: '04',
     title: 'MCP Handoff',
-    description: 'Implemented Model Context Protocol for design-engineering handoff. Structured, reliable, modern.',
-    impact: 'Replaced fragmented Figma-Slack chaos',
-    recruiterFrame: 'Understands AI infrastructure',
+    subtitle: 'Model Context Protocol for design-dev workflow',
+    description: 'Structured, reliable, modern handoff.',
+    longDescription: 'Design systems only matter if engineering implements them accurately. Handoff at Air India was fragmented—Figma links in Slack threads, specs that didn\'t match builds, endless back-and-forth.\n\nI implemented a design-dev handoff workflow using Model Context Protocol—bridging design and engineering through AI-assisted tooling. The kind of workflow a transformed airline should have, not the duct-tape process we inherited.',
+    imagePlaceholder: 'MCP Workflow Diagram',
+    stats: [
+      { value: 'MCP', label: 'Protocol' },
+      { value: '0', label: 'Slack Chaos' },
+      { value: 'AI', label: 'Assisted' }
+    ],
+    recruiterFrame: 'Understands AI infrastructure (Anthropic created MCP)',
     icon: GitBranch,
     color: '16, 185, 129'
   },
@@ -184,8 +212,15 @@ const projects: Project[] = [
     id: 5,
     label: '05',
     title: 'IFE System Design',
-    description: 'In-flight entertainment for seat-back screens. Typography at distance, touch during turbulence, zero onboarding.',
-    impact: "Asia's Leading Airline IFE Award",
+    subtitle: 'In-flight entertainment at 35,000 feet',
+    description: 'Typography at distance, touch during turbulence, zero onboarding.',
+    longDescription: 'Designing for a screen you can\'t control, lighting you can\'t predict, and users who range from toddlers to elderly passengers with no onboarding. IFE is constraint-driven design at its most demanding.\n\nTypography legible at seat-back distance. Touch targets that work during turbulence. Content hierarchy for passengers browsing at 35,000 feet. This work contributed to Air India winning Asia\'s Leading Airline Inflight Entertainment at the World Travel Awards.',
+    imagePlaceholder: 'IFE Seat-back Interface',
+    stats: [
+      { value: 'WTA', label: '2024 Winner' },
+      { value: '3000+', label: 'Hours Content' },
+      { value: 'Asia #1', label: 'IFE Ranking' }
+    ],
     recruiterFrame: 'Constraint-driven design excellence',
     icon: Monitor,
     color: '251, 146, 60'
@@ -194,8 +229,15 @@ const projects: Project[] = [
     id: 6,
     label: '06',
     title: 'NPS Feedback System',
-    description: 'Audited and redesigned feedback collection flows. Turned feedback from checkbox into strategic input.',
-    impact: 'Improved response quality & actionability',
+    subtitle: 'Turning feedback into strategic input',
+    description: 'Audited and redesigned feedback collection flows.',
+    longDescription: 'Transformation requires knowing what\'s working. I audited existing feedback flows, identified friction through data, and rebuilt how Air India listens to its passengers.\n\nFeedback went from a checkbox exercise to a strategic input—improving response quality, actionability, and the speed at which insights reached decision-makers.',
+    imagePlaceholder: 'Feedback Flow Screens',
+    stats: [
+      { value: 'Data', label: 'Driven' },
+      { value: 'Quality', label: 'Improved' },
+      { value: 'Strategic', label: 'Input' }
+    ],
     recruiterFrame: 'Data-driven design, research methodology',
     icon: BarChart3,
     color: '236, 72, 153'
@@ -204,8 +246,15 @@ const projects: Project[] = [
     id: 7,
     label: '07',
     title: 'Competitor Analysis',
-    description: 'Research methodology analyzing 15+ airline and travel apps. Created the lens for world-class.',
-    impact: 'Ongoing reference for team decisions',
+    subtitle: 'Research framework for world-class benchmarking',
+    description: 'Analyzing 15+ airline and travel apps.',
+    longDescription: 'You can\'t build a world-class airline experience without understanding what world-class looks like. I created a comprehensive research methodology analyzing 15+ airline and travel apps.\n\nThe framework became an ongoing reference for team decisions—a shared lens for evaluating design choices against industry best practices and emerging patterns.',
+    imagePlaceholder: 'Competitor Research Framework',
+    stats: [
+      { value: '15+', label: 'Apps Analyzed' },
+      { value: 'Ongoing', label: 'Reference' },
+      { value: 'Team', label: 'Resource' }
+    ],
     recruiterFrame: 'Strategic thinking, research skills',
     icon: Compass,
     color: '14, 165, 233'
@@ -214,8 +263,15 @@ const projects: Project[] = [
     id: 8,
     label: '08',
     title: 'Liftoff Program',
-    description: 'Upskilling workshops, skill shares, critique rituals. Built collaborative culture without waiting for HR.',
-    impact: 'Built shared vocabulary & culture',
+    subtitle: 'Team upskilling and culture building',
+    description: 'Built collaborative culture without waiting for HR.',
+    longDescription: 'You can\'t transform products without transforming the people building them. Tata inherited employees from legacy Air India—talented individuals, but no shared culture, no common design vocabulary, no upskilling infrastructure.\n\nI initiated Liftoff—workshops, skill shares, critique rituals—building the collaborative culture a transformation of this scale demands. I didn\'t wait for HR. The team needed it, so I built it.',
+    imagePlaceholder: 'Workshop & Team Sessions',
+    stats: [
+      { value: 'Culture', label: 'Built' },
+      { value: 'Shared', label: 'Vocabulary' },
+      { value: 'Self', label: 'Initiated' }
+    ],
     recruiterFrame: 'Leadership without authority',
     icon: Users,
     color: '251, 191, 36'
@@ -224,8 +280,15 @@ const projects: Project[] = [
     id: 9,
     label: '09',
     title: 'Microsoft Hackathon',
-    description: 'AI-powered solution to improve customer experience. Partnered with Microsoft, built working concept.',
-    impact: 'Winner — AI customer experience',
+    subtitle: 'AI-powered customer experience solution',
+    description: 'Partnered with Microsoft, built working concept.',
+    longDescription: 'Partnered with Microsoft on an AI-powered solution to improve customer experience across Air India\'s touchpoints. Built and presented a working concept addressing real friction points passengers face.\n\nUsing AI to make the airline more responsive, more intuitive, more human. The solution won, demonstrating the potential of AI-native thinking applied to real operational challenges.',
+    imagePlaceholder: 'Hackathon Presentation',
+    stats: [
+      { value: 'Winner', label: 'Microsoft' },
+      { value: 'AI', label: 'Powered' },
+      { value: 'Working', label: 'Concept' }
+    ],
     recruiterFrame: 'External collaboration, AI application',
     icon: Zap,
     color: '99, 102, 241'
@@ -234,8 +297,15 @@ const projects: Project[] = [
     id: 10,
     label: '10',
     title: 'Internal Hackathon',
-    description: 'AI-powered time and resource tracking platform. Research, design, code, ship — in a single day.',
-    impact: 'Winner — Full platform in 24 hours',
+    subtitle: 'Full platform shipped in 24 hours',
+    description: 'Research, design, code, ship — in a single day.',
+    longDescription: 'Researched Firebase Studio, then designed and built an AI-powered internal platform for time tracking, resource allocation, and work management—in a single day.\n\nEnd-to-end: research, design, code, ship. Solved an operational pain point the organization hadn\'t prioritized. Two different hackathons, two wins. Same pattern: see a gap, build the solution, ship fast.',
+    imagePlaceholder: 'Platform Screenshots',
+    stats: [
+      { value: 'Winner', label: 'Internal' },
+      { value: '24hrs', label: 'Shipped' },
+      { value: 'E2E', label: 'Execution' }
+    ],
     recruiterFrame: 'Speed, full-stack capability',
     icon: Rocket,
     color: '218, 14, 41'
@@ -287,29 +357,6 @@ const differentiators: Differentiator[] = [
   }
 ];
 
-const targetCompanies: TargetCompany[] = [
-  {
-    name: 'GitLab',
-    skills: ['Systems thinking', 'Async work', 'Technical docs'],
-    color: '252, 109, 38'
-  },
-  {
-    name: 'Automattic',
-    skills: ['UI craft', 'Written comms', 'Consumer product'],
-    color: '0, 148, 194'
-  },
-  {
-    name: 'Anthropic',
-    skills: ['AI-native', 'Builder mindset', 'Ambiguity tolerance'],
-    color: '204, 149, 106'
-  },
-  {
-    name: 'Hugging Face',
-    skills: ['ML product', 'Open source', 'Remote skills'],
-    color: '255, 213, 0'
-  }
-];
-
 const otherProjects: OtherProject[] = [
   {
     id: 2,
@@ -348,17 +395,14 @@ const otherProjects: OtherProject[] = [
 // =============================================================================
 
 export function AirIndiaWork() {
-  const [inView, setInView] = useState(false);
+  const [inView, setInView] = useState(true);
   const [hoveredAward, setHoveredAward] = useState<string | null>(null);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [hoveredDiff, setHoveredDiff] = useState<number | null>(null);
-  const [hoveredCompany, setHoveredCompany] = useState<string | null>(null);
   const [hoveredOtherProject, setHoveredOtherProject] = useState<number | null>(null);
   const [hoveredCTA, setHoveredCTA] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const projectsCarouselRef = useRef<HTMLDivElement>(null);
 
   // Intersection Observer
   useEffect(() => {
@@ -387,22 +431,6 @@ export function AirIndiaWork() {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
-
-  // Projects carousel scroll detection
-  useEffect(() => {
-    const carousel = projectsCarouselRef.current;
-    if (!carousel || !isMobile) return;
-
-    const handleScroll = () => {
-      const scrollLeft = carousel.scrollLeft;
-      const cardWidth = carousel.offsetWidth * 0.85;
-      const index = Math.round(scrollLeft / cardWidth);
-      setCurrentProjectIndex(index);
-    };
-
-    carousel.addEventListener('scroll', handleScroll);
-    return () => carousel.removeEventListener('scroll', handleScroll);
-  }, [isMobile]);
 
   return (
     <div
@@ -576,105 +604,7 @@ export function AirIndiaWork() {
       </header>
 
       {/* =========================================================================
-          SECTION 2: AWARDS MARQUEE
-      ========================================================================= */}
-      <section style={{
-        padding: '2rem 0 4rem',
-        position: 'relative',
-        zIndex: 1,
-        overflow: 'hidden',
-      }}>
-        <div style={{
-          textAlign: 'center',
-          marginBottom: '2rem',
-          animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
-        }}>
-          <span style={{
-            fontSize: '0.75rem',
-            fontWeight: '500',
-            color: 'var(--text-muted)',
-            textTransform: 'uppercase',
-            letterSpacing: '0.15em',
-          }}>
-            Team Recognition
-          </span>
-        </div>
-
-        {/* Awards Grid */}
-        <div style={{
-          maxWidth: '1400px',
-          margin: '0 auto',
-          padding: '0 1.5rem',
-        }}>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(6, 1fr)',
-            gap: '1rem',
-          }}>
-            {awards.map((award, index) => {
-              const Icon = award.icon;
-              const isHovered = hoveredAward === award.id;
-
-              return (
-                <div
-                  key={award.id}
-                  onMouseEnter={() => setHoveredAward(award.id)}
-                  onMouseLeave={() => setHoveredAward(null)}
-                  style={{
-                    position: 'relative',
-                    padding: '1.25rem 1rem',
-                    borderRadius: '16px',
-                    background: isHovered
-                      ? `linear-gradient(135deg, rgba(${award.color}, 0.12), var(--glass-05))`
-                      : 'var(--glass-04)',
-                    backdropFilter: 'blur(20px)',
-                    WebkitBackdropFilter: 'blur(20px)',
-                    border: `1px solid ${isHovered ? `rgba(${award.color}, 0.3)` : 'var(--glass-08)'}`,
-                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                    transform: isHovered ? 'translateY(-4px) scale(1.02)' : 'translateY(0) scale(1)',
-                    cursor: 'default',
-                    animation: inView ? `scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.3 + index * 0.08}s both` : 'none',
-                    textAlign: 'center',
-                  }}
-                >
-                  <div style={{
-                    width: '36px',
-                    height: '36px',
-                    borderRadius: '10px',
-                    background: `rgba(${award.color}, 0.15)`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto 0.75rem',
-                    transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                    transform: isHovered ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
-                  }}>
-                    <Icon size={18} style={{ color: `rgb(${award.color})` }} />
-                  </div>
-                  <div style={{
-                    fontSize: '0.813rem',
-                    fontWeight: '500',
-                    color: 'var(--text-primary)',
-                    marginBottom: '0.25rem',
-                  }}>
-                    {award.name}
-                  </div>
-                  <div style={{
-                    fontSize: '0.688rem',
-                    color: 'var(--text-muted)',
-                    lineHeight: '1.4',
-                  }}>
-                    {award.detail}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 3: THE PROBLEM
+          SECTION 2: THE CHALLENGE
       ========================================================================= */}
       <section style={{
         maxWidth: '1000px',
@@ -793,10 +723,10 @@ export function AirIndiaWork() {
       </section>
 
       {/* =========================================================================
-          SECTION 4: KEY PROJECTS
+          SECTION 4: KEY PROJECTS - DETAILED CARDS
       ========================================================================= */}
       <section style={{
-        maxWidth: '1400px',
+        maxWidth: '1100px',
         margin: '0 auto',
         padding: '4rem 1.5rem',
         position: 'relative',
@@ -804,7 +734,7 @@ export function AirIndiaWork() {
       }}>
         <div style={{
           textAlign: 'center',
-          marginBottom: '3rem',
+          marginBottom: '4rem',
           animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both' : 'none',
         }}>
           <h2 style={{
@@ -824,256 +754,216 @@ export function AirIndiaWork() {
           </p>
         </div>
 
-        {/* Desktop: Grid Layout */}
-        {!isMobile && (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '1.25rem',
-          }}>
-            {projects.map((project, index) => {
-              const Icon = project.icon;
-              const isHovered = hoveredProject === project.id;
-              const isFeatured = project.featured;
+        {/* Detailed Project Cards */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '3rem',
+        }}>
+          {projects.map((project, index) => {
+            const Icon = project.icon;
+            const isHovered = hoveredProject === project.id;
+            const isEven = index % 2 === 1;
 
-              return (
-                <div
-                  key={project.id}
-                  onMouseEnter={() => setHoveredProject(project.id)}
-                  onMouseLeave={() => setHoveredProject(null)}
-                  style={{
-                    position: 'relative',
-                    padding: isFeatured ? '2rem' : '1.5rem',
-                    borderRadius: '20px',
-                    gridColumn: isFeatured ? 'span 2' : 'span 1',
-                    gridRow: isFeatured ? 'span 2' : 'span 1',
-                    background: isHovered
-                      ? `linear-gradient(135deg, rgba(${project.color}, 0.08), var(--glass-04))`
-                      : 'var(--glass-04)',
-                    backdropFilter: 'blur(40px)',
-                    WebkitBackdropFilter: 'blur(40px)',
-                    border: `1px solid ${isHovered ? `rgba(${project.color}, 0.3)` : 'var(--glass-08)'}`,
-                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                    transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
-                    cursor: 'default',
-                    animation: inView ? `scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.6 + index * 0.05}s both` : 'none',
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  {/* Border Shimmer */}
-                  {isHovered && (
-                    <div style={{
-                      position: 'absolute',
-                      inset: 0,
-                      borderRadius: '20px',
-                      padding: '1px',
-                      background: `linear-gradient(90deg, transparent, rgba(${project.color}, 0.6), transparent)`,
-                      backgroundSize: '200% 100%',
-                      animation: 'borderShimmer 3s ease-in-out infinite',
-                      WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                      WebkitMaskComposite: 'xor',
-                      maskComposite: 'exclude',
-                      pointerEvents: 'none',
-                    }} />
-                  )}
-
-                  {/* Header */}
+            return (
+              <div
+                key={project.id}
+                onMouseEnter={() => setHoveredProject(project.id)}
+                onMouseLeave={() => setHoveredProject(null)}
+                style={{
+                  position: 'relative',
+                  display: 'flex',
+                  flexDirection: isMobile ? 'column' : (isEven ? 'row-reverse' : 'row'),
+                  gap: isMobile ? '1.5rem' : '2.5rem',
+                  padding: isMobile ? '1.5rem' : '2.5rem',
+                  borderRadius: '24px',
+                  background: isHovered
+                    ? `linear-gradient(135deg, rgba(${project.color}, 0.06), var(--glass-04))`
+                    : 'var(--glass-04)',
+                  backdropFilter: 'blur(40px)',
+                  WebkitBackdropFilter: 'blur(40px)',
+                  border: `1px solid ${isHovered ? `rgba(${project.color}, 0.25)` : 'var(--glass-08)'}`,
+                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                  transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
+                  animation: inView ? `scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.6 + index * 0.1}s both` : 'none',
+                }}
+              >
+                {/* Border Shimmer on Hover */}
+                {isHovered && (
                   <div style={{
+                    position: 'absolute',
+                    inset: 0,
+                    borderRadius: '24px',
+                    padding: '1px',
+                    background: `linear-gradient(90deg, transparent, rgba(${project.color}, 0.5), transparent)`,
+                    backgroundSize: '200% 100%',
+                    animation: 'borderShimmer 3s ease-in-out infinite',
+                    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                    WebkitMaskComposite: 'xor',
+                    maskComposite: 'exclude',
+                    pointerEvents: 'none',
+                  }} />
+                )}
+
+                {/* Image Placeholder */}
+                <div style={{
+                  flex: isMobile ? 'none' : '1',
+                  aspectRatio: '16/10',
+                  minHeight: isMobile ? '200px' : '280px',
+                  borderRadius: '16px',
+                  background: `linear-gradient(135deg, rgba(${project.color}, 0.08), var(--glass-06))`,
+                  border: `2px dashed rgba(${project.color}, 0.25)`,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '1rem',
+                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                  transform: isHovered ? 'scale(1.02)' : 'scale(1)',
+                }}>
+                  <div style={{
+                    width: '56px',
+                    height: '56px',
+                    borderRadius: '14px',
+                    background: `rgba(${project.color}, 0.15)`,
                     display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '1rem',
-                    marginBottom: '1rem',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                    transform: isHovered ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
                   }}>
-                    <div style={{
-                      width: isFeatured ? '48px' : '40px',
-                      height: isFeatured ? '48px' : '40px',
-                      borderRadius: '12px',
-                      background: `rgba(${project.color}, 0.12)`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                      transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                      transform: isHovered ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
-                    }}>
-                      <Icon size={isFeatured ? 24 : 20} style={{ color: `rgb(${project.color})` }} />
-                    </div>
-                    <div>
-                      <div style={{
-                        fontSize: '0.688rem',
-                        fontWeight: '600',
-                        color: `rgb(${project.color})`,
-                        letterSpacing: '0.1em',
-                        marginBottom: '0.25rem',
-                        opacity: 0.8,
-                      }}>
-                        {project.label}
-                      </div>
-                      <h3 style={{
-                        fontSize: isFeatured ? '1.375rem' : '1.125rem',
-                        fontWeight: '500',
-                        color: 'var(--text-primary)',
-                        letterSpacing: '-0.01em',
-                      }}>
-                        {project.title}
-                      </h3>
-                    </div>
+                    <Icon size={28} style={{ color: `rgb(${project.color})` }} />
                   </div>
-
-                  {/* Description */}
-                  <p style={{
-                    fontSize: isFeatured ? '0.938rem' : '0.875rem',
-                    color: 'var(--text-tertiary)',
-                    lineHeight: '1.6',
-                    marginBottom: '1rem',
-                    flex: 1,
-                  }}>
-                    {project.description}
-                  </p>
-
-                  {/* Impact */}
-                  <div style={{
+                  <span style={{
                     fontSize: '0.813rem',
-                    fontWeight: '500',
-                    color: `rgb(${project.color})`,
+                    color: 'var(--text-muted)',
+                    textAlign: 'center',
+                    padding: '0 1rem',
+                  }}>
+                    Add {project.imagePlaceholder}
+                  </span>
+                </div>
+
+                {/* Content */}
+                <div style={{
+                  flex: isMobile ? 'none' : '1',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}>
+                  {/* Label + Title */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.75rem',
                     marginBottom: '0.5rem',
                   }}>
-                    {project.impact}
+                    <span style={{
+                      fontSize: '0.75rem',
+                      fontWeight: '600',
+                      color: `rgb(${project.color})`,
+                      letterSpacing: '0.1em',
+                    }}>
+                      {project.label}
+                    </span>
+                    <span style={{
+                      width: '24px',
+                      height: '1px',
+                      background: `rgba(${project.color}, 0.3)`,
+                    }} />
+                  </div>
+
+                  <h3 style={{
+                    fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)',
+                    fontWeight: '500',
+                    color: 'var(--text-primary)',
+                    marginBottom: '0.25rem',
+                    letterSpacing: '-0.02em',
+                  }}>
+                    {project.title}
+                  </h3>
+
+                  <p style={{
+                    fontSize: '0.875rem',
+                    color: `rgb(${project.color})`,
+                    marginBottom: '1rem',
+                    fontWeight: '400',
+                  }}>
+                    {project.subtitle}
+                  </p>
+
+                  {/* Long Description */}
+                  <div style={{
+                    fontSize: '0.938rem',
+                    color: 'var(--text-secondary)',
+                    lineHeight: '1.7',
+                    marginBottom: '1.5rem',
+                  }}>
+                    {project.longDescription.split('\n\n').map((paragraph, pIndex) => (
+                      <p key={pIndex} style={{ marginBottom: pIndex < project.longDescription.split('\n\n').length - 1 ? '1rem' : 0 }}>
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
+
+                  {/* Stats Row */}
+                  <div style={{
+                    display: 'flex',
+                    gap: '1.5rem',
+                    marginBottom: '1.25rem',
+                    flexWrap: 'wrap',
+                  }}>
+                    {project.stats.map((stat, statIndex) => (
+                      <div key={statIndex} style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                      }}>
+                        <span style={{
+                          fontSize: '1.25rem',
+                          fontWeight: '600',
+                          color: `rgb(${project.color})`,
+                          lineHeight: '1.2',
+                        }}>
+                          {stat.value}
+                        </span>
+                        <span style={{
+                          fontSize: '0.75rem',
+                          color: 'var(--text-muted)',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em',
+                        }}>
+                          {stat.label}
+                        </span>
+                      </div>
+                    ))}
                   </div>
 
                   {/* Recruiter Frame */}
                   <div style={{
-                    fontSize: '0.75rem',
-                    color: 'var(--text-muted)',
-                    fontStyle: 'italic',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '8px',
+                    background: `rgba(${project.color}, 0.08)`,
+                    border: `1px solid rgba(${project.color}, 0.15)`,
+                    alignSelf: 'flex-start',
                   }}>
-                    {project.recruiterFrame}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-
-        {/* Mobile: Horizontal Carousel */}
-        {isMobile && (
-          <>
-            <div
-              ref={projectsCarouselRef}
-              style={{
-                display: 'flex',
-                gap: '1rem',
-                overflowX: 'auto',
-                scrollSnapType: 'x mandatory',
-                scrollbarWidth: 'none',
-                msOverflowStyle: 'none',
-                WebkitOverflowScrolling: 'touch',
-                paddingBottom: '1rem',
-              }}
-            >
-              {projects.map((project) => {
-                const Icon = project.icon;
-
-                return (
-                  <div
-                    key={project.id}
-                    style={{
-                      flex: '0 0 85%',
-                      scrollSnapAlign: 'center',
-                      padding: '1.5rem',
-                      borderRadius: '20px',
-                      background: 'var(--glass-04)',
-                      border: '1px solid var(--glass-08)',
-                    }}
-                  >
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.75rem',
-                      marginBottom: '1rem',
-                    }}>
-                      <div style={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '10px',
-                        background: `rgba(${project.color}, 0.12)`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}>
-                        <Icon size={20} style={{ color: `rgb(${project.color})` }} />
-                      </div>
-                      <div>
-                        <div style={{
-                          fontSize: '0.688rem',
-                          fontWeight: '600',
-                          color: `rgb(${project.color})`,
-                          letterSpacing: '0.1em',
-                        }}>
-                          {project.label}
-                        </div>
-                        <h3 style={{
-                          fontSize: '1.125rem',
-                          fontWeight: '500',
-                          color: 'var(--text-primary)',
-                        }}>
-                          {project.title}
-                        </h3>
-                      </div>
-                    </div>
-                    <p style={{
-                      fontSize: '0.875rem',
-                      color: 'var(--text-tertiary)',
-                      lineHeight: '1.6',
-                      marginBottom: '1rem',
-                    }}>
-                      {project.description}
-                    </p>
-                    <div style={{
+                    <CheckCircle size={14} style={{ color: `rgb(${project.color})` }} />
+                    <span style={{
                       fontSize: '0.813rem',
-                      fontWeight: '500',
-                      color: `rgb(${project.color})`,
-                      marginBottom: '0.5rem',
-                    }}>
-                      {project.impact}
-                    </div>
-                    <div style={{
-                      fontSize: '0.75rem',
-                      color: 'var(--text-muted)',
+                      color: 'var(--text-secondary)',
                       fontStyle: 'italic',
                     }}>
                       {project.recruiterFrame}
-                    </div>
+                    </span>
                   </div>
-                );
-              })}
-            </div>
-
-            {/* Carousel Progress */}
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '0.5rem',
-              marginTop: '1rem',
-            }}>
-              {projects.map((_, index) => (
-                <div
-                  key={index}
-                  style={{
-                    width: currentProjectIndex === index ? '20px' : '6px',
-                    height: '6px',
-                    borderRadius: '3px',
-                    background: currentProjectIndex === index
-                      ? 'rgb(218, 14, 41)'
-                      : 'var(--glass-15)',
-                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  }}
-                />
-              ))}
-            </div>
-          </>
-        )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </section>
 
       {/* =========================================================================
@@ -1303,328 +1193,7 @@ export function AirIndiaWork() {
       </section>
 
       {/* =========================================================================
-          SECTION 7: SKILLS TRANSLATION
-      ========================================================================= */}
-      <section style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: '4rem 1.5rem 6rem',
-        position: 'relative',
-        zIndex: 1,
-      }}>
-        <div style={{
-          textAlign: 'center',
-          marginBottom: '3rem',
-          animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both' : 'none',
-        }}>
-          <h2 style={{
-            fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-            fontWeight: '400',
-            color: 'var(--text-primary)',
-            marginBottom: '0.75rem',
-            letterSpacing: '-0.02em',
-          }}>
-            Skills That Translate
-          </h2>
-          <p style={{
-            fontSize: '1rem',
-            color: 'var(--text-tertiary)',
-            maxWidth: '600px',
-            margin: '0 auto',
-          }}>
-            Designing for 140 legacy systems merging under pressure is the same muscle as designing for complex developer platforms.
-          </p>
-        </div>
-
-        {/* Company Cards */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)',
-          gap: '1rem',
-        }}>
-          {targetCompanies.map((company, index) => {
-            const isHovered = hoveredCompany === company.name;
-
-            return (
-              <div
-                key={company.name}
-                onMouseEnter={() => setHoveredCompany(company.name)}
-                onMouseLeave={() => setHoveredCompany(null)}
-                style={{
-                  padding: '1.5rem',
-                  borderRadius: '16px',
-                  background: isHovered
-                    ? `linear-gradient(135deg, rgba(${company.color}, 0.1), var(--glass-04))`
-                    : 'var(--glass-04)',
-                  border: `1px solid ${isHovered ? `rgba(${company.color}, 0.3)` : 'var(--glass-08)'}`,
-                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                  transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
-                  cursor: 'default',
-                  animation: inView ? `scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${1.0 + index * 0.1}s both` : 'none',
-                }}
-              >
-                <div style={{
-                  fontSize: '1rem',
-                  fontWeight: '600',
-                  color: `rgb(${company.color})`,
-                  marginBottom: '1rem',
-                }}>
-                  {company.name}
-                </div>
-                <div style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.5rem',
-                }}>
-                  {company.skills.map((skill, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        fontSize: '0.813rem',
-                        color: 'var(--text-secondary)',
-                      }}
-                    >
-                      <CheckCircle size={14} style={{ color: `rgb(${company.color})`, flexShrink: 0 }} />
-                      <span>{skill}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 8: FULL RECOGNITION
-      ========================================================================= */}
-      <section style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: '4rem 1.5rem 6rem',
-        position: 'relative',
-        zIndex: 1,
-      }}>
-        <div style={{
-          textAlign: 'center',
-          marginBottom: '3rem',
-          animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 1.1s both' : 'none',
-        }}>
-          <h2 style={{
-            fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-            fontWeight: '400',
-            color: 'var(--text-primary)',
-            marginBottom: '0.75rem',
-            letterSpacing: '-0.02em',
-          }}>
-            Recognition
-          </h2>
-          <p style={{
-            fontSize: '1rem',
-            color: 'var(--text-tertiary)',
-          }}>
-            Team achievements during the transformation
-          </p>
-        </div>
-
-        {/* Awards Detailed Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
-          gap: '1.25rem',
-        }}>
-          {/* Red Dot */}
-          <div style={{
-            padding: '2rem',
-            borderRadius: '20px',
-            background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.08), var(--glass-04))',
-            border: '1px solid rgba(218, 14, 41, 0.2)',
-          }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1rem',
-              marginBottom: '1rem',
-            }}>
-              <Award size={28} style={{ color: 'rgb(218, 14, 41)' }} />
-              <div>
-                <div style={{
-                  fontSize: '1.125rem',
-                  fontWeight: '600',
-                  color: 'var(--text-primary)',
-                }}>
-                  Red Dot Design Award 2024
-                </div>
-                <div style={{
-                  fontSize: '0.813rem',
-                  color: 'rgb(218, 14, 41)',
-                }}>
-                  Design Concepts Category
-                </div>
-              </div>
-            </div>
-            <p style={{
-              fontSize: '0.875rem',
-              color: 'var(--text-tertiary)',
-              lineHeight: '1.6',
-            }}>
-              AI-driven booking feature concept. Now displayed in the Red Dot Design Museum in Singapore.
-            </p>
-          </div>
-
-          {/* Stevie */}
-          <div style={{
-            padding: '2rem',
-            borderRadius: '20px',
-            background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.08), var(--glass-04))',
-            border: '1px solid rgba(251, 191, 36, 0.2)',
-          }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1rem',
-              marginBottom: '1rem',
-            }}>
-              <Trophy size={28} style={{ color: 'rgb(251, 191, 36)' }} />
-              <div>
-                <div style={{
-                  fontSize: '1.125rem',
-                  fontWeight: '600',
-                  color: 'var(--text-primary)',
-                }}>
-                  Gold Stevie Award 2024
-                </div>
-                <div style={{
-                  fontSize: '0.813rem',
-                  color: 'rgb(251, 191, 36)',
-                }}>
-                  Asia-Pacific Innovation
-                </div>
-              </div>
-            </div>
-            <p style={{
-              fontSize: '0.875rem',
-              color: 'var(--text-tertiary)',
-              lineHeight: '1.6',
-            }}>
-              First Indian airline to receive this honor. Mobile app innovation and functionality.
-            </p>
-          </div>
-
-          {/* World Travel */}
-          <div style={{
-            padding: '2rem',
-            borderRadius: '20px',
-            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.08), var(--glass-04))',
-            border: '1px solid rgba(16, 185, 129, 0.2)',
-          }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1rem',
-              marginBottom: '1rem',
-            }}>
-              <Plane size={28} style={{ color: 'rgb(16, 185, 129)' }} />
-              <div>
-                <div style={{
-                  fontSize: '1.125rem',
-                  fontWeight: '600',
-                  color: 'var(--text-primary)',
-                }}>
-                  World Travel Awards 2024
-                </div>
-                <div style={{
-                  fontSize: '0.813rem',
-                  color: 'rgb(16, 185, 129)',
-                }}>
-                  Asia&apos;s Leading IFE
-                </div>
-              </div>
-            </div>
-            <p style={{
-              fontSize: '0.875rem',
-              color: 'var(--text-tertiary)',
-              lineHeight: '1.6',
-            }}>
-              First Indian airline to win this title. Over 3,000 hours of entertainment content.
-            </p>
-          </div>
-
-          {/* APEX */}
-          <div style={{
-            padding: '2rem',
-            borderRadius: '20px',
-            background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.08), var(--glass-04))',
-            border: '1px solid rgba(99, 102, 241, 0.2)',
-          }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1rem',
-              marginBottom: '1rem',
-            }}>
-              <Star size={28} style={{ color: 'rgb(99, 102, 241)' }} />
-              <div>
-                <div style={{
-                  fontSize: '1.125rem',
-                  fontWeight: '600',
-                  color: 'var(--text-primary)',
-                }}>
-                  APEX Four Star 2025
-                </div>
-                <div style={{
-                  fontSize: '0.813rem',
-                  color: 'rgb(99, 102, 241)',
-                }}>
-                  Most Improved Airline
-                </div>
-              </div>
-            </div>
-            <p style={{
-              fontSize: '0.875rem',
-              color: 'var(--text-tertiary)',
-              lineHeight: '1.6',
-            }}>
-              Global airline recognition alongside British Airways, Lufthansa, and Thai Airways.
-            </p>
-          </div>
-        </div>
-
-        {/* App Store Rating */}
-        <div style={{
-          marginTop: '1.25rem',
-          padding: '1.5rem 2rem',
-          borderRadius: '16px',
-          background: 'var(--glass-04)',
-          border: '1px solid var(--glass-08)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '1rem',
-          flexWrap: 'wrap',
-        }}>
-          <Smartphone size={24} style={{ color: 'rgb(139, 92, 246)' }} />
-          <span style={{
-            fontSize: '1.5rem',
-            fontWeight: '600',
-            color: 'rgb(139, 92, 246)',
-          }}>
-            4.7★
-          </span>
-          <span style={{
-            fontSize: '1rem',
-            color: 'var(--text-secondary)',
-          }}>
-            App Store Rating — Highest of any Indian airline
-          </span>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 9: KEY DIFFERENTIATORS
+          SECTION 7: KEY DIFFERENTIATORS
       ========================================================================= */}
       <section style={{
         maxWidth: '1200px',
@@ -1714,7 +1283,105 @@ export function AirIndiaWork() {
       </section>
 
       {/* =========================================================================
-          SECTION 10: MORE PROJECTS
+          SECTION 8: TEAM RECOGNITION
+      ========================================================================= */}
+      <section style={{
+        padding: '4rem 0',
+        position: 'relative',
+        zIndex: 1,
+        overflow: 'hidden',
+      }}>
+        <div style={{
+          textAlign: 'center',
+          marginBottom: '2rem',
+          animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
+        }}>
+          <span style={{
+            fontSize: '0.75rem',
+            fontWeight: '500',
+            color: 'var(--text-muted)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.15em',
+          }}>
+            Team Recognition
+          </span>
+        </div>
+
+        {/* Awards Grid */}
+        <div style={{
+          maxWidth: '1400px',
+          margin: '0 auto',
+          padding: '0 1.5rem',
+        }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(6, 1fr)',
+            gap: '1rem',
+          }}>
+            {awards.map((award, index) => {
+              const Icon = award.icon;
+              const isHovered = hoveredAward === award.id;
+
+              return (
+                <div
+                  key={award.id}
+                  onMouseEnter={() => setHoveredAward(award.id)}
+                  onMouseLeave={() => setHoveredAward(null)}
+                  style={{
+                    position: 'relative',
+                    padding: '1.25rem 1rem',
+                    borderRadius: '16px',
+                    background: isHovered
+                      ? `linear-gradient(135deg, rgba(${award.color}, 0.12), var(--glass-05))`
+                      : 'var(--glass-04)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    border: `1px solid ${isHovered ? `rgba(${award.color}, 0.3)` : 'var(--glass-08)'}`,
+                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                    transform: isHovered ? 'translateY(-4px) scale(1.02)' : 'translateY(0) scale(1)',
+                    cursor: 'default',
+                    animation: inView ? `scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.3 + index * 0.08}s both` : 'none',
+                    textAlign: 'center',
+                  }}
+                >
+                  <div style={{
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: '10px',
+                    background: `rgba(${award.color}, 0.15)`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 0.75rem',
+                    transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                    transform: isHovered ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
+                  }}>
+                    <Icon size={18} style={{ color: `rgb(${award.color})` }} />
+                  </div>
+                  <div style={{
+                    fontSize: '0.813rem',
+                    fontWeight: '500',
+                    color: 'var(--text-primary)',
+                    marginBottom: '0.25rem',
+                  }}>
+                    {award.name}
+                  </div>
+                  <div style={{
+                    fontSize: '0.688rem',
+                    color: 'var(--text-muted)',
+                    lineHeight: '1.4',
+                  }}>
+                    {award.detail}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 9: MORE PROJECTS
       ========================================================================= */}
       <section style={{
         maxWidth: '1400px',
