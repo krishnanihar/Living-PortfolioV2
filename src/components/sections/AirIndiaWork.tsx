@@ -734,10 +734,10 @@ export function AirIndiaWork() {
       </section>
 
       {/* =========================================================================
-          SECTION 4: KEY PROJECTS - DETAILED CARDS
+          SECTION 4: KEY PROJECTS - PREMIUM BENTO GRID
       ========================================================================= */}
       <section style={{
-        maxWidth: '1100px',
+        maxWidth: '1400px',
         margin: '0 auto',
         padding: '4rem 1.5rem',
         position: 'relative',
@@ -745,36 +745,52 @@ export function AirIndiaWork() {
       }}>
         <div style={{
           textAlign: 'center',
-          marginBottom: '4rem',
+          marginBottom: '3rem',
           animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both' : 'none',
         }}>
           <h2 style={{
-            fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-            fontWeight: '400',
-            letterSpacing: '-0.02em',
+            fontSize: 'clamp(2rem, 5vw, 3rem)',
+            fontWeight: '500',
+            letterSpacing: '-0.03em',
             marginBottom: '0.75rem',
             color: 'var(--text-primary)',
           }}>
             What I Built
           </h2>
           <p style={{
-            fontSize: '1rem',
+            fontSize: '1.125rem',
             color: 'var(--text-tertiary)',
           }}>
             10 projects shipped during the transformation
           </p>
         </div>
 
-        {/* Detailed Project Cards */}
+        {/* Bento Grid */}
         <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '3rem',
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+          gridAutoRows: 'minmax(280px, auto)',
+          gap: '1.25rem',
         }}>
           {projects.map((project, index) => {
             const Icon = project.icon;
             const isHovered = hoveredProject === project.id;
-            const isEven = index % 2 === 1;
+
+            // Determine card size based on index
+            const getCardSize = () => {
+              if (isMobile) return { cols: 'span 1', rows: 'span 1', minHeight: '320px' };
+              switch(index) {
+                case 0: return { cols: 'span 2', rows: 'span 2', minHeight: '580px' }; // Pixel Radar - HERO
+                case 5: return { cols: 'span 2', rows: 'span 1', minHeight: '280px' }; // NPS - Wide
+                case 6: return { cols: 'span 2', rows: 'span 1', minHeight: '280px' }; // Competitor - Wide
+                case 9: return { cols: 'span 3', rows: 'span 1', minHeight: '260px' }; // Internal Hackathon - Full
+                default: return { cols: 'span 1', rows: 'span 1', minHeight: '280px' }; // Standard
+              }
+            };
+            const cardSize = getCardSize();
+            const isHero = index === 0 && !isMobile;
+            const isWide = (index === 5 || index === 6) && !isMobile;
+            const isFull = index === 9 && !isMobile;
 
             return (
               <div
@@ -782,53 +798,37 @@ export function AirIndiaWork() {
                 onMouseEnter={() => setHoveredProject(project.id)}
                 onMouseLeave={() => setHoveredProject(null)}
                 style={{
+                  gridColumn: cardSize.cols,
+                  gridRow: cardSize.rows,
+                  minHeight: cardSize.minHeight,
                   position: 'relative',
                   display: 'flex',
-                  flexDirection: isMobile ? 'column' : (isEven ? 'row-reverse' : 'row'),
-                  gap: isMobile ? '1.5rem' : '2.5rem',
-                  padding: isMobile ? '1.5rem' : '2.5rem',
-                  borderRadius: '28px',
-                  background: isHovered
-                    ? `linear-gradient(135deg, rgba(${project.color}, 0.08), var(--glass-04))`
-                    : 'var(--glass-04)',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  padding: isHero ? '2.5rem' : isFull ? '2rem 2.5rem' : '2rem',
+                  borderRadius: '24px',
+                  background: `radial-gradient(ellipse at ${isHero ? 'top left' : 'top right'}, rgba(${project.color}, ${isHovered ? 0.15 : 0.08}), transparent 70%), var(--glass-04)`,
                   backdropFilter: 'blur(40px)',
                   WebkitBackdropFilter: 'blur(40px)',
-                  border: `1px solid ${isHovered ? `rgba(${project.color}, 0.3)` : 'var(--glass-08)'}`,
+                  border: `1px solid ${isHovered ? `rgba(${project.color}, 0.4)` : 'var(--glass-08)'}`,
                   transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                  transform: isHovered ? 'translateY(-6px)' : 'translateY(0)',
-                  boxShadow: isHovered ? `0 20px 60px -15px rgba(${project.color}, 0.15)` : 'none',
-                  animation: inView ? `scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.6 + index * 0.1}s both` : 'none',
+                  transform: isHovered ? 'translateY(-8px) scale(1.01)' : 'translateY(0) scale(1)',
+                  boxShadow: isHovered ? `0 30px 80px -20px rgba(${project.color}, 0.25)` : 'none',
+                  animation: inView ? `scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.4 + index * 0.08}s both` : 'none',
                   overflow: 'hidden',
+                  cursor: 'default',
                 }}
               >
-                {/* Decorative Background Number */}
-                <span style={{
-                  position: 'absolute',
-                  top: isMobile ? '-0.5rem' : '-1rem',
-                  left: isMobile ? '1rem' : '1.5rem',
-                  fontSize: isMobile ? '4rem' : '6rem',
-                  fontWeight: '700',
-                  opacity: isHovered ? 0.08 : 0.04,
-                  color: `rgb(${project.color})`,
-                  pointerEvents: 'none',
-                  lineHeight: 1,
-                  transition: 'opacity 0.4s ease',
-                  fontFamily: 'system-ui, -apple-system, sans-serif',
-                  letterSpacing: '-0.05em',
-                }}>
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-
                 {/* Border Shimmer on Hover */}
                 {isHovered && (
                   <div style={{
                     position: 'absolute',
                     inset: 0,
-                    borderRadius: '28px',
+                    borderRadius: '24px',
                     padding: '1px',
-                    background: `linear-gradient(90deg, transparent, rgba(${project.color}, 0.5), transparent)`,
+                    background: `linear-gradient(90deg, transparent, rgba(${project.color}, 0.6), transparent)`,
                     backgroundSize: '200% 100%',
-                    animation: 'borderShimmer 3s ease-in-out infinite',
+                    animation: 'borderShimmer 2s ease-in-out infinite',
                     WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
                     WebkitMaskComposite: 'xor',
                     maskComposite: 'exclude',
@@ -836,147 +836,81 @@ export function AirIndiaWork() {
                   }} />
                 )}
 
-                {/* Enhanced Image Placeholder */}
+                {/* Top Section: Category + Icon */}
                 <div style={{
-                  flex: isMobile ? 'none' : '1',
-                  aspectRatio: '16/10',
-                  minHeight: isMobile ? '200px' : '280px',
-                  borderRadius: '20px',
-                  background: `linear-gradient(135deg, rgba(${project.color}, 0.06), var(--glass-06))`,
-                  border: `2px dashed rgba(${project.color}, 0.2)`,
                   display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '1rem',
-                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                  transform: isHovered ? 'scale(1.02)' : 'scale(1)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}>
-                  {/* Pattern Overlay */}
-                  <div style={{
-                    position: 'absolute',
-                    inset: 0,
-                    backgroundImage: `radial-gradient(circle, rgba(${project.color}, 0.12) 1px, transparent 1px)`,
-                    backgroundSize: '24px 24px',
-                    opacity: isHovered ? 0.8 : 0.4,
-                    transition: 'opacity 0.4s ease',
-                  }} />
-
-                  {/* Glowing Icon Container */}
-                  <div style={{
-                    width: '64px',
-                    height: '64px',
-                    borderRadius: '16px',
-                    background: `rgba(${project.color}, 0.15)`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                    transform: isHovered ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
-                    boxShadow: isHovered ? `0 0 40px rgba(${project.color}, 0.3)` : 'none',
-                    position: 'relative',
-                    zIndex: 1,
-                  }}>
-                    <Icon size={30} style={{ color: `rgb(${project.color})` }} />
-                  </div>
-                  <span style={{
-                    fontSize: '0.813rem',
-                    color: 'var(--text-muted)',
-                    textAlign: 'center',
-                    padding: '0 1rem',
-                    position: 'relative',
-                    zIndex: 1,
-                  }}>
-                    Add {project.imagePlaceholder}
-                  </span>
-                </div>
-
-                {/* Content */}
-                <div style={{
-                  flex: isMobile ? 'none' : '1',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  position: 'relative',
-                  zIndex: 1,
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                  marginBottom: isHero ? '2rem' : '1rem',
                 }}>
                   {/* Category Badge */}
                   <div style={{
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '0.5rem',
-                    padding: '0.25rem 0.75rem',
+                    padding: '0.375rem 0.875rem',
                     borderRadius: '100px',
-                    background: `rgba(${project.color}, 0.1)`,
-                    border: `1px solid rgba(${project.color}, 0.15)`,
+                    background: `rgba(${project.color}, 0.12)`,
+                    border: `1px solid rgba(${project.color}, 0.2)`,
                     fontSize: '0.625rem',
                     fontWeight: '600',
                     letterSpacing: '0.15em',
                     color: `rgb(${project.color})`,
-                    marginBottom: '1rem',
-                    alignSelf: 'flex-start',
                     textTransform: 'uppercase',
                   }}>
                     {project.category}
                   </div>
 
-                  {/* Title with Gradient Accent */}
+                  {/* Glowing Icon */}
+                  <div style={{
+                    width: isHero ? '72px' : '56px',
+                    height: isHero ? '72px' : '56px',
+                    borderRadius: '16px',
+                    background: `rgba(${project.color}, 0.12)`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                    transform: isHovered ? 'scale(1.15)' : 'scale(1)',
+                    boxShadow: isHovered
+                      ? `0 0 60px rgba(${project.color}, 0.4)`
+                      : `0 0 30px rgba(${project.color}, 0.15)`,
+                  }}>
+                    <Icon size={isHero ? 36 : 28} style={{ color: `rgb(${project.color})` }} />
+                  </div>
+                </div>
+
+                {/* Middle Section: Title + Subtitle */}
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: isHero ? 'center' : 'flex-start' }}>
                   <h3 style={{
-                    fontSize: 'clamp(1.375rem, 2.5vw, 1.625rem)',
-                    fontWeight: '500',
+                    fontSize: isHero ? 'clamp(2rem, 4vw, 2.75rem)' : isFull ? 'clamp(1.5rem, 2.5vw, 1.875rem)' : 'clamp(1.25rem, 2vw, 1.5rem)',
+                    fontWeight: '600',
                     color: 'var(--text-primary)',
                     marginBottom: '0.5rem',
                     letterSpacing: '-0.02em',
+                    lineHeight: 1.2,
                   }}>
                     {project.title}
                   </h3>
 
-                  {/* Gradient Accent Line */}
-                  <span style={{
-                    display: 'block',
-                    width: '3rem',
-                    height: '2px',
-                    background: `linear-gradient(90deg, rgb(${project.color}), transparent)`,
-                    marginBottom: '0.75rem',
-                    borderRadius: '1px',
-                  }} />
-
                   <p style={{
-                    fontSize: '0.875rem',
-                    color: 'var(--text-tertiary)',
-                    marginBottom: '1.25rem',
-                    fontWeight: '400',
+                    fontSize: isHero ? '1.125rem' : '0.875rem',
+                    color: 'var(--text-secondary)',
+                    lineHeight: 1.5,
+                    maxWidth: isWide || isFull ? '600px' : '100%',
                   }}>
                     {project.subtitle}
                   </p>
+                </div>
 
-                  {/* Long Description */}
-                  <div style={{
-                    fontSize: '0.938rem',
-                    color: 'var(--text-secondary)',
-                    lineHeight: '1.7',
-                    marginBottom: '1.5rem',
-                  }}>
-                    {project.longDescription.split('\n\n').map((paragraph, pIndex) => (
-                      <p key={pIndex} style={{ marginBottom: pIndex < project.longDescription.split('\n\n').length - 1 ? '1rem' : 0 }}>
-                        {paragraph}
-                      </p>
-                    ))}
-                  </div>
-
-                  {/* Enhanced Stats Row in Glass Container */}
+                {/* Bottom Section: Stats + Recruiter Hook */}
+                <div style={{ marginTop: 'auto' }}>
+                  {/* Stats Row */}
                   <div style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: isMobile ? '1rem' : '1.5rem',
-                    marginBottom: '1.25rem',
-                    padding: '1rem 1.25rem',
-                    borderRadius: '14px',
-                    background: 'var(--glass-03)',
-                    border: '1px solid var(--glass-06)',
-                    flexWrap: isMobile ? 'wrap' : 'nowrap',
+                    gap: isHero ? '2rem' : isFull ? '3rem' : '1.25rem',
+                    marginBottom: '1rem',
+                    flexWrap: 'wrap',
                   }}>
                     {project.stats.map((stat, statIndex) => (
                       <React.Fragment key={statIndex}>
@@ -984,22 +918,21 @@ export function AirIndiaWork() {
                           display: 'flex',
                           flexDirection: 'column',
                           alignItems: 'flex-start',
-                          flex: isMobile ? '1 1 auto' : 'none',
-                          minWidth: isMobile ? 'calc(33% - 1rem)' : 'auto',
                         }}>
                           <span style={{
-                            fontSize: '1.375rem',
-                            fontWeight: '600',
+                            fontSize: isHero ? '2rem' : isFull ? '1.75rem' : '1.5rem',
+                            fontWeight: '700',
                             color: `rgb(${project.color})`,
-                            lineHeight: '1.2',
+                            lineHeight: 1,
                           }}>
                             {stat.value}
                           </span>
                           <span style={{
-                            fontSize: '0.7rem',
+                            fontSize: '0.6875rem',
                             color: 'var(--text-muted)',
                             textTransform: 'uppercase',
-                            letterSpacing: '0.05em',
+                            letterSpacing: '0.08em',
+                            marginTop: '0.25rem',
                           }}>
                             {stat.label}
                           </span>
@@ -1007,29 +940,24 @@ export function AirIndiaWork() {
                         {statIndex < project.stats.length - 1 && !isMobile && (
                           <div style={{
                             width: '1px',
-                            height: '32px',
-                            background: 'var(--glass-10)',
+                            height: isHero ? '40px' : '32px',
+                            background: 'var(--glass-12)',
                           }} />
                         )}
                       </React.Fragment>
                     ))}
                   </div>
 
-                  {/* Recruiter Frame */}
+                  {/* Recruiter Hook */}
                   <div style={{
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.5rem',
-                    padding: '0.625rem 1rem',
-                    borderRadius: '10px',
-                    background: `rgba(${project.color}, 0.08)`,
-                    border: `1px solid rgba(${project.color}, 0.15)`,
-                    alignSelf: 'flex-start',
                   }}>
-                    <CheckCircle size={14} style={{ color: `rgb(${project.color})` }} />
+                    <CheckCircle size={14} style={{ color: `rgb(${project.color})`, opacity: 0.8 }} />
                     <span style={{
-                      fontSize: '0.813rem',
-                      color: 'var(--text-secondary)',
+                      fontSize: '0.8125rem',
+                      color: 'var(--text-tertiary)',
                       fontStyle: 'italic',
                     }}>
                       {project.recruiterFrame}
