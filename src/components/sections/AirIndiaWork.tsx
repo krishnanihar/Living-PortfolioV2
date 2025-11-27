@@ -31,6 +31,9 @@ import {
   Monitor,
   Smartphone,
   MessageSquare,
+  Camera,
+  Lightbulb,
+  Building2,
   type LucideIcon
 } from 'lucide-react';
 
@@ -52,6 +55,11 @@ interface ProjectStat {
   label: string;
 }
 
+interface CompanyRelevance {
+  company: string;
+  relevance: string;
+}
+
 interface Project {
   id: number;
   label: string;
@@ -63,6 +71,8 @@ interface Project {
   imagePlaceholder: string;
   stats: ProjectStat[];
   recruiterFrame: string;
+  recruiterInsight: string;
+  companyRelevance: CompanyRelevance[];
   icon: LucideIcon;
   color: string;
   category: string;
@@ -157,6 +167,12 @@ const projects: Project[] = [
       { value: 'Active', label: 'Production Use' }
     ],
     recruiterFrame: 'Builder mindset — shipped tool when none existed',
+    recruiterInsight: 'Builder mindset — shipped production tool when none existed. Shows initiative and technical depth beyond design.',
+    companyRelevance: [
+      { company: 'GitLab', relevance: 'Systems thinking, async tooling' },
+      { company: 'Anthropic', relevance: 'Builder mindset, ships opinionated products' },
+      { company: 'Automattic', relevance: 'Initiative, solved real problems' }
+    ],
     icon: Target,
     color: '218, 14, 41',
     category: 'TOOL'
@@ -175,6 +191,12 @@ const projects: Project[] = [
       { value: 'Core', label: 'Infrastructure' }
     ],
     recruiterFrame: 'Systems thinking from ambiguity',
+    recruiterInsight: 'Built systematic framework from chaos. Demonstrates ability to create order from ambiguity at enterprise scale.',
+    companyRelevance: [
+      { company: 'GitLab', relevance: 'Systematic documentation, scalable architecture' },
+      { company: 'Anthropic', relevance: 'Ambiguity tolerance, first-principles thinking' },
+      { company: 'Hugging Face', relevance: 'Technical depth, cross-team collaboration' }
+    ],
     icon: Layers,
     color: '99, 102, 241',
     category: 'SYSTEM'
@@ -193,6 +215,12 @@ const projects: Project[] = [
       { value: 'Singapore', label: 'Museum Display' }
     ],
     recruiterFrame: 'AI-native thinking before playbooks',
+    recruiterInsight: 'Designed for AI before industry patterns existed. Contributed to Red Dot Award-winning feature now in Singapore museum.',
+    companyRelevance: [
+      { company: 'Anthropic', relevance: 'AI-native product thinking, innovative interaction paradigms' },
+      { company: 'Hugging Face', relevance: 'ML/AI product experience, forward-looking design' },
+      { company: 'GitLab', relevance: 'Complex technical product design' }
+    ],
     icon: Search,
     color: '139, 92, 246',
     category: 'AI'
@@ -211,6 +239,12 @@ const projects: Project[] = [
       { value: 'AI', label: 'Assisted' }
     ],
     recruiterFrame: 'Understands AI infrastructure (Anthropic created MCP)',
+    recruiterInsight: 'Early adopter of emerging AI infrastructure. Understands and implements cutting-edge protocols (Anthropic created MCP).',
+    companyRelevance: [
+      { company: 'Anthropic', relevance: 'Directly relevant — implemented MCP you created' },
+      { company: 'GitLab', relevance: 'Design-engineering workflow optimization' },
+      { company: 'Automattic', relevance: 'Cross-functional collaboration, async tooling' }
+    ],
     icon: GitBranch,
     color: '16, 185, 129',
     category: 'AI'
@@ -229,6 +263,12 @@ const projects: Project[] = [
       { value: 'Asia #1', label: 'IFE Ranking' }
     ],
     recruiterFrame: 'Constraint-driven design excellence',
+    recruiterInsight: 'Unique constraint-driven design — typography at distance, touch during turbulence, zero onboarding. Won Asia\'s Leading IFE.',
+    companyRelevance: [
+      { company: 'Automattic', relevance: 'UI craft, accessibility across demographics' },
+      { company: 'GitLab', relevance: 'Complex interface design, user-centered methodology' },
+      { company: 'Anthropic', relevance: 'Designing for diverse user contexts' }
+    ],
     icon: Monitor,
     color: '251, 146, 60',
     category: 'IFE'
@@ -247,6 +287,12 @@ const projects: Project[] = [
       { value: 'Strategic', label: 'Input' }
     ],
     recruiterFrame: 'Data-driven design, research methodology',
+    recruiterInsight: 'Transformed feedback from checkbox to strategic input. Data-driven approach to improving user research quality.',
+    companyRelevance: [
+      { company: 'GitLab', relevance: 'User research methodology, data-driven decisions' },
+      { company: 'Automattic', relevance: 'Consumer feedback integration' },
+      { company: 'Hugging Face', relevance: 'Community feedback systems' }
+    ],
     icon: BarChart3,
     color: '236, 72, 153',
     category: 'RESEARCH'
@@ -265,6 +311,12 @@ const projects: Project[] = [
       { value: 'Team', label: 'Resource' }
     ],
     recruiterFrame: 'Strategic thinking, research skills',
+    recruiterInsight: 'Created lasting team resource through systematic research. Strategic benchmarking against 15+ competitors.',
+    companyRelevance: [
+      { company: 'GitLab', relevance: 'Strategic research, documentation excellence' },
+      { company: 'Hugging Face', relevance: 'Industry analysis, competitive positioning' },
+      { company: 'Automattic', relevance: 'Consumer product benchmarking' }
+    ],
     icon: Compass,
     color: '14, 165, 233',
     category: 'RESEARCH'
@@ -283,6 +335,12 @@ const projects: Project[] = [
       { value: 'Self', label: 'Initiated' }
     ],
     recruiterFrame: 'Leadership without authority',
+    recruiterInsight: 'Leadership without authority — built team programs independently. Created shared vocabulary and culture from scratch.',
+    companyRelevance: [
+      { company: 'Automattic', relevance: 'Remote team culture, written communication' },
+      { company: 'GitLab', relevance: 'Async collaboration, distributed team building' },
+      { company: 'Anthropic', relevance: 'Self-directed initiative, team enablement' }
+    ],
     icon: Users,
     color: '251, 191, 36',
     category: 'CULTURE'
@@ -301,6 +359,12 @@ const projects: Project[] = [
       { value: 'Working', label: 'Concept' }
     ],
     recruiterFrame: 'External collaboration, AI application',
+    recruiterInsight: 'External collaboration with Microsoft. Won with AI-powered solution addressing real customer friction points.',
+    companyRelevance: [
+      { company: 'Anthropic', relevance: 'AI application to real problems, competitive wins' },
+      { company: 'Hugging Face', relevance: 'ML/AI product thinking, external partnerships' },
+      { company: 'GitLab', relevance: 'Cross-company collaboration, technical depth' }
+    ],
     icon: Zap,
     color: '99, 102, 241',
     category: 'HACKATHON'
@@ -319,6 +383,12 @@ const projects: Project[] = [
       { value: 'E2E', label: 'Execution' }
     ],
     recruiterFrame: 'Speed, full-stack capability',
+    recruiterInsight: 'Full-stack execution — research, design, code, ship in 24 hours. Demonstrates speed and technical depth.',
+    companyRelevance: [
+      { company: 'Anthropic', relevance: 'End-to-end execution, builder mindset' },
+      { company: 'Hugging Face', relevance: 'Technical depth, rapid prototyping' },
+      { company: 'Automattic', relevance: 'Full-stack capability, self-direction' }
+    ],
     icon: Rocket,
     color: '218, 14, 41',
     category: 'HACKATHON'
@@ -411,11 +481,22 @@ export function AirIndiaWork() {
   const [inView, setInView] = useState(true);
   const [hoveredAward, setHoveredAward] = useState<string | null>(null);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set()); // Persistent expand state
   const [hoveredDiff, setHoveredDiff] = useState<number | null>(null);
   const [hoveredOtherProject, setHoveredOtherProject] = useState<number | null>(null);
   const [hoveredCTA, setHoveredCTA] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Handler for persistent card expansion
+  const handleCardMouseEnter = (id: number) => {
+    setExpandedCards(prev => new Set(prev).add(id));
+    setHoveredProject(id);
+  };
+
+  const handleCardMouseLeave = () => {
+    setHoveredProject(null); // Only affects hover glow, not expansion
+  };
 
   // Intersection Observer
   useEffect(() => {
@@ -780,6 +861,7 @@ export function AirIndiaWork() {
           {projects.map((project, index) => {
             const Icon = project.icon;
             const isHovered = hoveredProject === project.id;
+            const isExpanded = expandedCards.has(project.id);
 
             // Custom visual content per project type - ENHANCED 180x180px visuals
             const renderCardVisual = () => {
@@ -1121,34 +1203,33 @@ export function AirIndiaWork() {
             return (
               <div
                 key={project.id}
-                onMouseEnter={() => setHoveredProject(project.id)}
-                onMouseLeave={() => setHoveredProject(null)}
+                onMouseEnter={() => handleCardMouseEnter(project.id)}
+                onMouseLeave={handleCardMouseLeave}
                 style={{
                   width: '100%',
-                  minHeight: isMobile ? '280px' : (isHovered ? '320px' : '240px'),
+                  minHeight: isMobile ? '280px' : (isExpanded ? '520px' : '200px'),
                   position: 'relative',
                   display: 'flex',
-                  flexDirection: isMobile ? 'column' : 'row',
-                  justifyContent: 'space-between',
-                  alignItems: isMobile ? 'stretch' : 'flex-start',
-                  gap: isMobile ? '1.5rem' : '3rem',
-                  padding: isMobile ? '1.5rem' : '2.5rem 3rem',
-                  borderRadius: '24px',
+                  flexDirection: 'column',
+                  gap: '1.5rem',
+                  padding: isMobile ? '1.5rem' : (isExpanded ? '2.5rem 3rem' : '2rem 2.5rem'),
+                  borderRadius: isExpanded ? '28px' : '24px',
                   background: `
-                    radial-gradient(ellipse at 70% 30%, rgba(${project.color}, ${isHovered ? 0.18 : 0.08}), transparent 50%),
-                    radial-gradient(ellipse at 30% 70%, rgba(${project.color}, ${isHovered ? 0.08 : 0.03}), transparent 50%),
+                    radial-gradient(ellipse at 70% 30%, rgba(${project.color}, ${isExpanded ? 0.15 : 0.08}), transparent 50%),
+                    radial-gradient(ellipse at 30% 70%, rgba(${project.color}, ${isExpanded ? 0.08 : 0.03}), transparent 50%),
                     var(--glass-04)
                   `,
                   backdropFilter: 'blur(40px)',
                   WebkitBackdropFilter: 'blur(40px)',
-                  border: `1px solid ${isHovered ? `rgba(${project.color}, 0.5)` : 'var(--glass-08)'}`,
-                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                  transform: isHovered && !isMobile ? 'translate3d(0, -8px, 0) scale(1.02)' : 'translate3d(0, 0, 0) scale(1)',
-                  boxShadow: isHovered
-                    ? `0 50px 100px -30px rgba(${project.color}, 0.4), 0 25px 50px -20px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(${project.color}, 0.15)`
+                  border: `1px solid ${isExpanded ? `rgba(${project.color}, 0.4)` : 'var(--glass-08)'}`,
+                  transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                  transform: isHovered && !isMobile ? 'translate3d(0, -4px, 0)' : 'translate3d(0, 0, 0)',
+                  boxShadow: isExpanded
+                    ? `0 40px 80px -20px rgba(${project.color}, 0.35), 0 20px 40px -15px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(${project.color}, 0.12)`
                     : '0 8px 32px -8px rgba(0,0,0,0.2)',
+                  opacity: isExpanded ? 1 : 0.9,
                   animation: inView ? `scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.4 + index * 0.05}s both` : 'none',
-                  overflow: 'visible',
+                  overflow: 'hidden',
                   cursor: 'pointer',
                   zIndex: isHovered ? 20 : 1,
                 }}
@@ -1158,25 +1239,25 @@ export function AirIndiaWork() {
                   position: 'absolute',
                   top: '20%',
                   right: '10%',
-                  width: '120px',
-                  height: '120px',
+                  width: '150px',
+                  height: '150px',
                   borderRadius: '50%',
-                  background: `radial-gradient(circle, rgba(${project.color}, ${isHovered ? 0.2 : 0.08}), transparent 70%)`,
-                  filter: 'blur(40px)',
+                  background: `radial-gradient(circle, rgba(${project.color}, ${isExpanded ? 0.2 : 0.08}), transparent 70%)`,
+                  filter: 'blur(50px)',
                   transition: 'all 0.6s ease',
                   pointerEvents: 'none',
                 }} />
 
-                {/* Border Shimmer on Hover */}
-                {isHovered && (
+                {/* Border Shimmer when expanded */}
+                {isExpanded && (
                   <div style={{
                     position: 'absolute',
                     inset: 0,
-                    borderRadius: '20px',
+                    borderRadius: '28px',
                     padding: '1px',
-                    background: `linear-gradient(90deg, transparent, rgba(${project.color}, 0.5), transparent)`,
+                    background: `linear-gradient(90deg, transparent, rgba(${project.color}, 0.4), transparent)`,
                     backgroundSize: '200% 100%',
-                    animation: 'borderShimmer 2s ease-in-out infinite',
+                    animation: 'borderShimmer 3s ease-in-out infinite',
                     WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
                     WebkitMaskComposite: 'xor',
                     maskComposite: 'exclude',
@@ -1184,36 +1265,37 @@ export function AirIndiaWork() {
                   }} />
                 )}
 
-                {/* Left Content Section */}
+                {/* TOP ROW: Header with Category, Title, Subtitle, and Mini Visual */}
                 <div style={{
-                  flex: 1,
                   display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.75rem',
+                  flexDirection: isMobile ? 'column' : 'row',
+                  justifyContent: 'space-between',
+                  alignItems: isMobile ? 'flex-start' : 'flex-start',
+                  gap: isMobile ? '1rem' : '2rem',
                   position: 'relative',
                   zIndex: 2,
-                  minWidth: 0,
                 }}>
-                  {/* Category Badge */}
-                  <div style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    alignSelf: 'flex-start',
-                    padding: '0.375rem 0.75rem',
-                    borderRadius: '100px',
-                    background: `rgba(${project.color}, 0.12)`,
-                    border: `1px solid rgba(${project.color}, 0.2)`,
-                    fontSize: '0.625rem',
-                    fontWeight: '600',
-                    letterSpacing: '0.12em',
-                    color: `rgb(${project.color})`,
-                    textTransform: 'uppercase',
-                  }}>
-                    {project.category}
-                  </div>
+                  {/* Left: Category + Title + Subtitle */}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    {/* Category Badge */}
+                    <div style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '0.375rem 0.75rem',
+                      borderRadius: '100px',
+                      background: `rgba(${project.color}, 0.12)`,
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                      fontSize: '0.625rem',
+                      fontWeight: '600',
+                      letterSpacing: '0.12em',
+                      color: `rgb(${project.color})`,
+                      textTransform: 'uppercase',
+                      marginBottom: '0.75rem',
+                    }}>
+                      {project.category}
+                    </div>
 
-                  {/* Title + Subtitle */}
-                  <div>
+                    {/* Title */}
                     <h3 style={{
                       fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
                       fontWeight: '600',
@@ -1224,6 +1306,8 @@ export function AirIndiaWork() {
                     }}>
                       {project.title}
                     </h3>
+
+                    {/* Subtitle */}
                     <p style={{
                       fontSize: '0.875rem',
                       color: 'var(--text-secondary)',
@@ -1231,149 +1315,275 @@ export function AirIndiaWork() {
                     }}>
                       {project.subtitle}
                     </p>
-                  </div>
 
-                  {/* Stats Row */}
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '1.5rem',
-                    flexWrap: 'wrap',
-                  }}>
-                    {project.stats.map((stat, statIndex) => (
-                      <React.Fragment key={statIndex}>
-                        <div style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'flex-start',
-                        }}>
-                          <span style={{
-                            fontSize: '1.375rem',
-                            fontWeight: '700',
-                            color: `rgb(${project.color})`,
-                            lineHeight: 1,
-                            textShadow: isHovered ? `0 0 15px rgba(${project.color}, 0.4)` : 'none',
-                            transition: 'text-shadow 0.4s ease',
-                          }}>
-                            {stat.value}
-                          </span>
-                          <span style={{
-                            fontSize: '0.625rem',
-                            color: 'var(--text-muted)',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.08em',
-                            marginTop: '0.125rem',
-                          }}>
-                            {stat.label}
-                          </span>
-                        </div>
-                        {statIndex < project.stats.length - 1 && !isMobile && (
-                          <div style={{
-                            width: '1px',
-                            height: '28px',
-                            background: `linear-gradient(180deg, transparent, rgba(${project.color}, 0.25), transparent)`,
-                          }} />
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </div>
-
-                  {/* Recruiter Hook */}
-                  <div style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    alignSelf: 'flex-start',
-                    gap: '0.5rem',
-                    padding: '0.375rem 0.625rem',
-                    borderRadius: '6px',
-                    background: isHovered ? `rgba(${project.color}, 0.08)` : 'var(--glass-03)',
-                    border: `1px solid ${isHovered ? `rgba(${project.color}, 0.15)` : 'var(--glass-06)'}`,
-                    transition: 'all 0.3s ease',
-                  }}>
-                    <CheckCircle size={12} style={{ color: `rgb(${project.color})` }} />
-                    <span style={{
-                      fontSize: '0.75rem',
-                      color: isHovered ? 'var(--text-secondary)' : 'var(--text-tertiary)',
-                      fontStyle: 'italic',
-                      transition: 'color 0.3s ease',
-                    }}>
-                      {project.recruiterFrame}
-                    </span>
-                  </div>
-
-                  {/* Expanded Description Reveal - Appears on hover */}
-                  {!isMobile && (
+                    {/* Stats Row - Always visible */}
                     <div style={{
-                      opacity: isHovered ? 1 : 0,
-                      maxHeight: isHovered ? '120px' : '0',
-                      transform: isHovered ? 'translateY(0)' : 'translateY(-10px)',
-                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
-                      overflow: 'hidden',
-                      marginTop: isHovered ? '1rem' : '0',
-                      paddingTop: isHovered ? '1rem' : '0',
-                      borderTop: isHovered ? `1px solid rgba(${project.color}, 0.15)` : 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '1.25rem',
+                      flexWrap: 'wrap',
+                      marginTop: '1rem',
                     }}>
-                      <p style={{
-                        fontSize: '0.875rem',
-                        color: 'var(--text-60)',
-                        lineHeight: 1.7,
-                        marginBottom: '0.875rem',
-                      }}>
-                        {project.description}
-                      </p>
-                      <button style={{
+                      {project.stats.map((stat, statIndex) => (
+                        <React.Fragment key={statIndex}>
+                          <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'flex-start',
+                          }}>
+                            <span style={{
+                              fontSize: '1.25rem',
+                              fontWeight: '700',
+                              color: `rgb(${project.color})`,
+                              lineHeight: 1,
+                              textShadow: isExpanded ? `0 0 15px rgba(${project.color}, 0.4)` : 'none',
+                              transition: 'text-shadow 0.4s ease',
+                            }}>
+                              {stat.value}
+                            </span>
+                            <span style={{
+                              fontSize: '0.625rem',
+                              color: 'var(--text-muted)',
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.08em',
+                              marginTop: '0.125rem',
+                            }}>
+                              {stat.label}
+                            </span>
+                          </div>
+                          {statIndex < project.stats.length - 1 && !isMobile && (
+                            <div style={{
+                              width: '1px',
+                              height: '24px',
+                              background: `linear-gradient(180deg, transparent, rgba(${project.color}, 0.25), transparent)`,
+                            }} />
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </div>
+
+                    {/* Short Recruiter Hook - Collapsed state only */}
+                    {!isExpanded && (
+                      <div style={{
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '0.5rem',
-                        padding: '0.5rem 1rem',
-                        background: `linear-gradient(135deg, rgba(${project.color}, 0.2), rgba(${project.color}, 0.1))`,
-                        border: `1px solid rgba(${project.color}, 0.35)`,
-                        borderRadius: '8px',
-                        color: 'var(--text-90)',
-                        fontSize: '0.813rem',
-                        fontWeight: '500',
-                        cursor: 'pointer',
-                        transition: 'all 0.3s ease',
+                        padding: '0.375rem 0.625rem',
+                        borderRadius: '6px',
+                        background: 'var(--glass-03)',
+                        border: '1px solid var(--glass-06)',
+                        marginTop: '0.75rem',
                       }}>
-                        View Deep Dive
-                        <ArrowRight size={14} />
-                      </button>
-                    </div>
-                  )}
+                        <CheckCircle size={12} style={{ color: `rgb(${project.color})` }} />
+                        <span style={{
+                          fontSize: '0.75rem',
+                          color: 'var(--text-tertiary)',
+                          fontStyle: 'italic',
+                        }}>
+                          {project.recruiterFrame}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Right: Mini Visual (smaller in collapsed, fades when expanded) */}
+                  <div style={{
+                    flexShrink: 0,
+                    width: isMobile ? '100%' : '120px',
+                    height: isMobile ? '100px' : '120px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative',
+                    opacity: isExpanded ? 0.5 : 0.8,
+                    transform: isExpanded ? 'scale(0.85)' : 'scale(1)',
+                    filter: isHovered && !isExpanded ? `drop-shadow(0 0 30px rgba(${project.color}, 0.4))` : 'none',
+                    transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}>
+                    {renderCardVisual()}
+                  </div>
                 </div>
 
-                {/* Right Visual Section - Enhanced 180x180px container */}
+                {/* EXPANDED CONTENT - Only shown when expanded */}
                 <div style={{
-                  flexShrink: 0,
-                  width: isMobile ? '100%' : '180px',
-                  height: isMobile ? '140px' : '180px',
+                  opacity: isExpanded ? 1 : 0,
+                  maxHeight: isExpanded ? '800px' : '0',
+                  transform: isExpanded ? 'translateY(0)' : 'translateY(-20px)',
+                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
+                  overflow: 'hidden',
                   display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  position: 'relative',
-                  filter: isHovered ? `drop-shadow(0 0 40px rgba(${project.color}, 0.4))` : 'none',
-                  transform: isHovered ? 'scale(1.15)' : 'scale(1)',
-                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  flexDirection: 'column',
+                  gap: '1.5rem',
                 }}>
-                  {/* Particle sparkles on hover */}
-                  {isHovered && !isMobile && (
-                    <>
-                      {[...Array(6)].map((_, i) => (
-                        <div key={i} style={{
-                          position: 'absolute',
-                          width: '4px',
-                          height: '4px',
-                          borderRadius: '50%',
-                          background: `rgb(${project.color})`,
-                          boxShadow: `0 0 8px rgba(${project.color}, 0.8)`,
-                          top: `${20 + Math.random() * 60}%`,
-                          left: `${20 + Math.random() * 60}%`,
-                          animation: `sparkleFloat ${1.5 + Math.random()}s ease-in-out infinite ${Math.random() * 0.5}s`,
-                        }} />
-                      ))}
-                    </>
-                  )}
-                  {renderCardVisual()}
+                  {/* Image Placeholder */}
+                  <div style={{
+                    width: '100%',
+                    aspectRatio: '16 / 9',
+                    borderRadius: '16px',
+                    background: `linear-gradient(135deg, rgba(${project.color}, 0.08), var(--glass-06))`,
+                    border: `2px dashed rgba(${project.color}, 0.25)`,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.75rem',
+                    position: 'relative',
+                    overflow: 'hidden',
+                  }}>
+                    {/* Subtle gradient overlay */}
+                    <div style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: `radial-gradient(ellipse at center, rgba(${project.color}, 0.05), transparent 70%)`,
+                      pointerEvents: 'none',
+                    }} />
+                    <Camera size={32} style={{ color: `rgba(${project.color}, 0.5)` }} />
+                    <span style={{
+                      fontSize: '0.875rem',
+                      color: 'var(--text-40)',
+                      fontWeight: '500',
+                    }}>
+                      Add {project.title} Screenshot
+                    </span>
+                    <span style={{
+                      fontSize: '0.75rem',
+                      color: 'var(--text-25)',
+                    }}>
+                      16:9 aspect ratio recommended
+                    </span>
+                  </div>
+
+                  {/* Full Narrative Description */}
+                  <div style={{
+                    padding: '1.5rem',
+                    borderRadius: '16px',
+                    background: 'var(--glass-04)',
+                    border: '1px solid var(--glass-08)',
+                  }}>
+                    <p style={{
+                      fontSize: '0.938rem',
+                      color: 'var(--text-70)',
+                      lineHeight: 1.8,
+                      whiteSpace: 'pre-line',
+                    }}>
+                      {project.longDescription}
+                    </p>
+                  </div>
+
+                  {/* Bottom Row: Recruiter Insight + Company Relevance */}
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+                    gap: '1rem',
+                  }}>
+                    {/* Recruiter Insight Box */}
+                    <div style={{
+                      padding: '1.25rem',
+                      borderRadius: '14px',
+                      background: `linear-gradient(135deg, rgba(${project.color}, 0.08), var(--glass-04))`,
+                      border: `1px solid rgba(${project.color}, 0.15)`,
+                    }}>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        marginBottom: '0.75rem',
+                      }}>
+                        <Lightbulb size={16} style={{ color: `rgb(${project.color})` }} />
+                        <span style={{
+                          fontSize: '0.688rem',
+                          fontWeight: '600',
+                          color: `rgb(${project.color})`,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.1em',
+                        }}>
+                          Recruiter Insight
+                        </span>
+                      </div>
+                      <p style={{
+                        fontSize: '0.875rem',
+                        color: 'var(--text-60)',
+                        lineHeight: 1.6,
+                        fontStyle: 'italic',
+                      }}>
+                        &quot;{project.recruiterInsight}&quot;
+                      </p>
+                    </div>
+
+                    {/* Company Relevance Box */}
+                    <div style={{
+                      padding: '1.25rem',
+                      borderRadius: '14px',
+                      background: 'var(--glass-04)',
+                      border: '1px solid var(--glass-08)',
+                    }}>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        marginBottom: '0.75rem',
+                      }}>
+                        <Building2 size={16} style={{ color: 'var(--text-50)' }} />
+                        <span style={{
+                          fontSize: '0.688rem',
+                          fontWeight: '600',
+                          color: 'var(--text-50)',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.1em',
+                        }}>
+                          Why This Matters
+                        </span>
+                      </div>
+                      <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.5rem',
+                      }}>
+                        {project.companyRelevance.map((rel, relIndex) => (
+                          <div key={relIndex} style={{
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            gap: '0.5rem',
+                            fontSize: '0.813rem',
+                          }}>
+                            <span style={{
+                              fontWeight: '600',
+                              color: 'var(--text-70)',
+                              minWidth: '75px',
+                            }}>
+                              {rel.company}:
+                            </span>
+                            <span style={{
+                              color: 'var(--text-50)',
+                            }}>
+                              {rel.relevance}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* CTA Button */}
+                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <button style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      padding: '0.75rem 1.5rem',
+                      background: `linear-gradient(135deg, rgba(${project.color}, 0.2), rgba(${project.color}, 0.1))`,
+                      border: `1px solid rgba(${project.color}, 0.35)`,
+                      borderRadius: '10px',
+                      color: 'var(--text-90)',
+                      fontSize: '0.875rem',
+                      fontWeight: '500',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                    }}>
+                      View Full Case Study
+                      <ArrowRight size={16} />
+                    </button>
+                  </div>
                 </div>
               </div>
             );
