@@ -1740,6 +1740,30 @@ select {
   }
 }
 
+/* Sparkle float animation for particle effects */
+@keyframes sparkleFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-15px) scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Orbit pulse animation for design system nodes */
+@keyframes orbitPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.08);
+    box-shadow: 0 0 50px rgba(99, 102, 241, 0.6);
+  }
+}
+
 /* Chart bar grow animation */
 @keyframes chartGrow {
   0% {

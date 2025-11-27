@@ -781,57 +781,68 @@ export function AirIndiaWork() {
             const Icon = project.icon;
             const isHovered = hoveredProject === project.id;
 
-            // Custom visual content per project type - renders on the right side
+            // Custom visual content per project type - ENHANCED 180x180px visuals
             const renderCardVisual = () => {
-              // Pixel Radar (index 0) - Floating UI panels
+              // Pixel Radar (index 0) - Floating UI panels - ENLARGED
               if (index === 0) {
                 return (
                   <div style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '8px',
-                    opacity: isHovered ? 1 : 0.7,
+                    gap: '10px',
+                    width: '160px',
+                    opacity: isHovered ? 1 : 0.8,
                     transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                    transform: isHovered ? 'scale(1.05)' : 'scale(1)',
                   }}>
                     {/* Floating UI Panel - Stats */}
                     <div style={{
-                      padding: '12px 16px',
-                      borderRadius: '12px',
-                      background: 'linear-gradient(135deg, rgba(218,14,41,0.15), var(--glass-08))',
-                      border: '1px solid rgba(218,14,41,0.25)',
+                      padding: '16px 20px',
+                      borderRadius: '14px',
+                      background: 'linear-gradient(135deg, rgba(218,14,41,0.2), var(--glass-10))',
+                      border: '1px solid rgba(218,14,41,0.35)',
                       backdropFilter: 'blur(20px)',
+                      transform: isHovered ? 'translateX(-8px) rotate(-2deg)' : 'translateX(0)',
+                      transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                      boxShadow: isHovered ? '0 15px 30px rgba(218,14,41,0.2)' : 'none',
                     }}>
-                      <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Daily Active Users</div>
-                      <div style={{ fontSize: '1.5rem', fontWeight: '700', color: 'rgb(218,14,41)', lineHeight: 1 }}>450+</div>
+                      <div style={{ fontSize: '0.688rem', color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Daily Active Users</div>
+                      <div style={{ fontSize: '2rem', fontWeight: '700', color: 'rgb(218,14,41)', lineHeight: 1 }}>450+</div>
                     </div>
                     {/* Progress bar */}
                     <div style={{
-                      padding: '12px 16px',
-                      borderRadius: '12px',
-                      background: 'var(--glass-06)',
-                      border: '1px solid var(--glass-10)',
+                      padding: '16px 20px',
+                      borderRadius: '14px',
+                      background: 'var(--glass-08)',
+                      border: '1px solid var(--glass-15)',
+                      transform: isHovered ? 'translateX(8px) rotate(2deg)' : 'translateX(0)',
+                      transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
+                      boxShadow: isHovered ? '0 15px 30px rgba(0,0,0,0.2)' : 'none',
                     }}>
-                      <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', marginBottom: '6px' }}>Review Time</div>
-                      <div style={{ height: '6px', borderRadius: '3px', background: 'var(--glass-10)', overflow: 'hidden' }}>
-                        <div style={{ width: '70%', height: '100%', borderRadius: '3px', background: 'linear-gradient(90deg, rgb(218,14,41), rgb(251,146,60))' }} />
+                      <div style={{ fontSize: '0.688rem', color: 'var(--text-muted)', marginBottom: '8px' }}>Review Time</div>
+                      <div style={{ height: '8px', borderRadius: '4px', background: 'var(--glass-10)', overflow: 'hidden' }}>
+                        <div style={{
+                          width: isHovered ? '70%' : '0%',
+                          height: '100%',
+                          borderRadius: '4px',
+                          background: 'linear-gradient(90deg, rgb(218,14,41), rgb(251,146,60))',
+                          transition: 'width 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
+                        }} />
                       </div>
-                      <div style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-primary)', marginTop: '4px' }}>30% faster</div>
+                      <div style={{ fontSize: '1rem', fontWeight: '600', color: 'var(--text-primary)', marginTop: '6px' }}>30% faster</div>
                     </div>
                   </div>
                 );
               }
 
-              // Design System (index 1) - Token nodes
+              // Design System (index 1) - Token constellation - ENLARGED
               if (index === 1) {
                 return (
                   <div style={{
-                    width: '120px',
-                    height: '120px',
+                    width: '160px',
+                    height: '160px',
                     position: 'relative',
-                    opacity: isHovered ? 1 : 0.6,
+                    opacity: isHovered ? 1 : 0.7,
                     transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                    transform: isHovered ? 'scale(1.1)' : 'scale(1)',
                   }}>
                     {/* Central node */}
                     <div style={{
@@ -839,58 +850,87 @@ export function AirIndiaWork() {
                       top: '50%',
                       left: '50%',
                       transform: 'translate(-50%, -50%)',
-                      width: '36px',
-                      height: '36px',
-                      borderRadius: '10px',
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '14px',
                       background: `linear-gradient(135deg, rgb(${project.color}), rgba(${project.color}, 0.6))`,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      boxShadow: `0 0 30px rgba(${project.color}, 0.4)`,
+                      boxShadow: `0 0 40px rgba(${project.color}, 0.5)`,
+                      animation: isHovered ? 'orbitPulse 2s ease-in-out infinite' : 'none',
                     }}>
-                      <Layers size={18} style={{ color: 'white' }} />
+                      <Layers size={26} style={{ color: 'white' }} />
                     </div>
-                    {/* Orbiting nodes */}
-                    {[0, 90, 180, 270].map((angle, i) => (
+                    {/* SVG connection lines */}
+                    <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+                      {[0, 72, 144, 216, 288].map((angle, i) => {
+                        const rad = (angle * Math.PI) / 180;
+                        const x1 = 80 + Math.cos(rad) * 25;
+                        const y1 = 80 + Math.sin(rad) * 25;
+                        const x2 = 80 + Math.cos(rad) * 60;
+                        const y2 = 80 + Math.sin(rad) * 60;
+                        return (
+                          <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
+                            stroke={`rgba(${project.color}, ${isHovered ? 0.5 : 0.2})`}
+                            strokeWidth="1.5"
+                            strokeDasharray={isHovered ? "0" : "4 4"}
+                            style={{ transition: 'all 0.5s ease' }}
+                          />
+                        );
+                      })}
+                    </svg>
+                    {/* Orbiting nodes - 5 nodes in circle */}
+                    {[0, 72, 144, 216, 288].map((angle, i) => (
                       <div key={i} style={{
                         position: 'absolute',
                         top: '50%',
                         left: '50%',
-                        width: '20px',
-                        height: '20px',
-                        borderRadius: '6px',
-                        background: 'var(--glass-15)',
-                        border: `1px solid rgba(${project.color}, 0.3)`,
+                        width: '28px',
+                        height: '28px',
+                        borderRadius: '8px',
+                        background: 'var(--glass-20)',
+                        border: `1.5px solid rgba(${project.color}, ${isHovered ? 0.5 : 0.3})`,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        transform: `translate(-50%, -50%) rotate(${angle}deg) translateX(45px) rotate(-${angle}deg)`,
+                        transform: `translate(-50%, -50%) rotate(${angle}deg) translateX(60px) rotate(-${angle}deg)`,
+                        transition: 'all 0.5s ease',
+                        boxShadow: isHovered ? `0 0 15px rgba(${project.color}, 0.3)` : 'none',
                       }}>
-                        <div style={{ width: '6px', height: '6px', borderRadius: '2px', background: `rgb(${project.color})` }} />
+                        <div style={{ width: '10px', height: '10px', borderRadius: '3px', background: `rgb(${project.color})` }} />
                       </div>
                     ))}
                   </div>
                 );
               }
 
-              // AI projects (index 2, 3) - Neural network visual
+              // AI projects (index 2, 3) - Neural network visual - ENLARGED
               if (index === 2 || index === 3) {
                 return (
                   <div style={{
-                    width: '100px',
-                    height: '80px',
+                    width: '150px',
+                    height: '120px',
                     position: 'relative',
-                    opacity: isHovered ? 1 : 0.5,
+                    opacity: isHovered ? 1 : 0.6,
                     transition: 'all 0.5s ease',
-                    transform: isHovered ? 'scale(1.1)' : 'scale(1)',
                   }}>
+                    {/* Connection lines SVG */}
+                    <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: isHovered ? 0.6 : 0.2 }}>
+                      <line x1="25" y1="25" x2="75" y2="15" stroke={`rgb(${project.color})`} strokeWidth="1" />
+                      <line x1="75" y1="15" x2="125" y2="30" stroke={`rgb(${project.color})`} strokeWidth="1" />
+                      <line x1="35" y1="75" x2="90" y2="65" stroke={`rgb(${project.color})`} strokeWidth="1" />
+                      <line x1="90" y1="65" x2="120" y2="90" stroke={`rgb(${project.color})`} strokeWidth="1" />
+                      <line x1="75" y1="15" x2="90" y2="65" stroke={`rgb(${project.color})`} strokeWidth="1" />
+                      <line x1="25" y1="25" x2="35" y2="75" stroke={`rgb(${project.color})`} strokeWidth="1" />
+                    </svg>
                     {[
-                      { x: 15, y: 15, size: 10 },
-                      { x: 50, y: 8, size: 14 },
-                      { x: 85, y: 20, size: 8 },
-                      { x: 25, y: 50, size: 12 },
-                      { x: 60, y: 45, size: 16 },
-                      { x: 80, y: 60, size: 10 },
+                      { x: 20, y: 20, size: 16 },
+                      { x: 70, y: 10, size: 22 },
+                      { x: 120, y: 25, size: 14 },
+                      { x: 30, y: 70, size: 18 },
+                      { x: 85, y: 60, size: 26 },
+                      { x: 115, y: 85, size: 16 },
                     ].map((orb, i) => (
                       <div key={i} style={{
                         position: 'absolute',
@@ -900,132 +940,180 @@ export function AirIndiaWork() {
                         height: orb.size,
                         borderRadius: '50%',
                         background: `radial-gradient(circle, rgb(${project.color}), rgba(${project.color}, 0.3))`,
-                        boxShadow: `0 0 ${orb.size}px rgba(${project.color}, 0.5)`,
+                        boxShadow: `0 0 ${orb.size * 1.5}px rgba(${project.color}, ${isHovered ? 0.6 : 0.3})`,
+                        animation: isHovered ? `glowPulse ${2 + i * 0.3}s ease-in-out infinite ${i * 0.2}s` : 'none',
                       }} />
                     ))}
                   </div>
                 );
               }
 
-              // IFE (index 4) - Screen mockup
+              // IFE (index 4) - Screen mockup - ENLARGED
               if (index === 4) {
                 return (
                   <div style={{
-                    width: '90px',
-                    height: '60px',
-                    borderRadius: '8px',
-                    background: 'linear-gradient(180deg, var(--glass-15), var(--glass-08))',
-                    border: `1px solid rgba(${project.color}, 0.3)`,
-                    padding: '8px',
-                    opacity: isHovered ? 1 : 0.6,
+                    width: '130px',
+                    height: '90px',
+                    borderRadius: '12px',
+                    background: `linear-gradient(180deg, var(--glass-20), var(--glass-10))`,
+                    border: `2px solid rgba(${project.color}, ${isHovered ? 0.5 : 0.3})`,
+                    padding: '12px',
+                    opacity: isHovered ? 1 : 0.7,
                     transition: 'all 0.5s ease',
-                    transform: isHovered ? 'scale(1.05)' : 'scale(1)',
-                    boxShadow: `0 10px 30px rgba(${project.color}, 0.2)`,
+                    boxShadow: isHovered
+                      ? `0 20px 40px rgba(${project.color}, 0.3), inset 0 1px 0 rgba(255,255,255,0.1)`
+                      : `0 10px 30px rgba(${project.color}, 0.15)`,
                   }}>
-                    <div style={{ display: 'flex', gap: '3px', marginBottom: '5px' }}>
-                      {[1,2,3].map(i => <div key={i} style={{ width: '3px', height: '3px', borderRadius: '50%', background: `rgb(${project.color})` }} />)}
+                    <div style={{ display: 'flex', gap: '4px', marginBottom: '8px' }}>
+                      {[1,2,3].map(i => <div key={i} style={{ width: '5px', height: '5px', borderRadius: '50%', background: i === 1 ? '#ff5f57' : i === 2 ? '#febc2e' : '#28c840' }} />)}
                     </div>
-                    <div style={{ height: '5px', borderRadius: '3px', background: `rgba(${project.color}, 0.3)`, marginBottom: '3px', width: '70%' }} />
-                    <div style={{ height: '3px', borderRadius: '2px', background: 'var(--glass-15)', marginBottom: '2px', width: '90%' }} />
-                    <div style={{ height: '3px', borderRadius: '2px', background: 'var(--glass-10)', width: '60%' }} />
+                    <div style={{ height: '8px', borderRadius: '4px', background: `rgba(${project.color}, ${isHovered ? 0.5 : 0.3})`, marginBottom: '5px', width: '80%' }} />
+                    <div style={{ height: '5px', borderRadius: '3px', background: 'var(--glass-20)', marginBottom: '4px', width: '100%' }} />
+                    <div style={{ height: '5px', borderRadius: '3px', background: 'var(--glass-15)', width: '70%' }} />
+                    {/* Play button */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '12px',
+                      right: '12px',
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: '50%',
+                      background: `rgb(${project.color})`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: `0 0 15px rgba(${project.color}, 0.5)`,
+                    }}>
+                      <div style={{ width: 0, height: 0, borderTop: '5px solid transparent', borderBottom: '5px solid transparent', borderLeft: '8px solid white', marginLeft: '2px' }} />
+                    </div>
                   </div>
                 );
               }
 
-              // Research cards (index 5, 6) - Chart visual
+              // Research cards (index 5, 6) - Chart visual - ENLARGED
               if (index === 5 || index === 6) {
                 return (
                   <div style={{
                     display: 'flex',
                     alignItems: 'flex-end',
-                    gap: '6px',
-                    height: '70px',
-                    opacity: isHovered ? 1 : 0.5,
+                    gap: '10px',
+                    height: '110px',
+                    opacity: isHovered ? 1 : 0.6,
                     transition: 'all 0.5s ease',
-                    transform: isHovered ? 'scale(1.05)' : 'scale(1)',
                   }}>
-                    {[40, 65, 50, 80, 55, 70].map((h, i) => (
+                    {[45, 70, 55, 90, 60, 80].map((h, i) => (
                       <div key={i} style={{
-                        width: '12px',
-                        height: `${h}%`,
-                        borderRadius: '3px 3px 0 0',
+                        width: '18px',
+                        height: isHovered ? `${h}%` : `${h * 0.5}%`,
+                        borderRadius: '4px 4px 0 0',
                         background: `linear-gradient(180deg, rgb(${project.color}), rgba(${project.color}, 0.3))`,
-                        boxShadow: isHovered ? `0 0 10px rgba(${project.color}, 0.3)` : 'none',
+                        boxShadow: isHovered ? `0 0 15px rgba(${project.color}, 0.4)` : 'none',
+                        transition: `all 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${i * 0.05}s`,
                       }} />
                     ))}
                   </div>
                 );
               }
 
-              // Culture (index 7) - People nodes
+              // Culture (index 7) - People nodes - ENLARGED
               if (index === 7) {
                 return (
                   <div style={{
                     display: 'flex',
-                    opacity: isHovered ? 1 : 0.6,
+                    alignItems: 'center',
+                    opacity: isHovered ? 1 : 0.7,
                     transition: 'all 0.5s ease',
-                    transform: isHovered ? 'scale(1.05)' : 'scale(1)',
                   }}>
-                    {[0, 1, 2].map(i => (
+                    {[0, 1, 2, 3].map(i => (
                       <div key={i} style={{
-                        width: '28px',
-                        height: '28px',
+                        width: '44px',
+                        height: '44px',
                         borderRadius: '50%',
-                        background: `linear-gradient(135deg, rgba(${project.color}, ${0.8 - i * 0.2}), rgba(${project.color}, ${0.4 - i * 0.1}))`,
-                        border: '2px solid var(--glass-20)',
-                        marginLeft: i > 0 ? '-8px' : 0,
+                        background: `linear-gradient(135deg, rgba(${project.color}, ${0.9 - i * 0.15}), rgba(${project.color}, ${0.5 - i * 0.1}))`,
+                        border: '3px solid var(--glass-30)',
+                        marginLeft: i > 0 ? (isHovered ? '-10px' : '-16px') : 0,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        boxShadow: `0 0 15px rgba(${project.color}, 0.3)`,
+                        boxShadow: `0 0 20px rgba(${project.color}, 0.4)`,
+                        transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                        transform: isHovered ? `translateY(${i % 2 === 0 ? '-4px' : '4px'})` : 'translateY(0)',
                       }}>
-                        <Users size={12} style={{ color: 'white' }} />
+                        <Users size={18} style={{ color: 'white' }} />
                       </div>
                     ))}
                   </div>
                 );
               }
 
-              // Hackathons (index 8, 9) - Trophy/rocket visual
+              // Hackathons (index 8, 9) - Trophy/rocket visual - ENLARGED
               if (index === 8 || index === 9) {
                 return (
                   <div style={{
-                    opacity: isHovered ? 1 : 0.6,
+                    position: 'relative',
+                    opacity: isHovered ? 1 : 0.7,
                     transition: 'all 0.5s ease',
-                    transform: isHovered ? 'scale(1.1) rotate(5deg)' : 'scale(1)',
                   }}>
+                    {/* Glow ring behind */}
                     <div style={{
-                      width: '44px',
-                      height: '44px',
-                      borderRadius: '12px',
-                      background: `linear-gradient(135deg, rgb(${project.color}), rgba(${project.color}, 0.5))`,
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      width: '100px',
+                      height: '100px',
+                      borderRadius: '50%',
+                      background: `radial-gradient(circle, rgba(${project.color}, ${isHovered ? 0.3 : 0.1}), transparent 70%)`,
+                      transition: 'all 0.5s ease',
+                    }} />
+                    <div style={{
+                      width: '70px',
+                      height: '70px',
+                      borderRadius: '20px',
+                      background: `linear-gradient(135deg, rgb(${project.color}), rgba(${project.color}, 0.6))`,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      boxShadow: `0 0 30px rgba(${project.color}, 0.4)`,
+                      boxShadow: `0 0 40px rgba(${project.color}, 0.5)`,
+                      transform: isHovered ? 'rotate(5deg)' : 'rotate(0deg)',
+                      transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                     }}>
-                      {index === 8 ? <Zap size={22} style={{ color: 'white' }} /> : <Rocket size={22} style={{ color: 'white' }} />}
+                      {index === 8 ? <Zap size={36} style={{ color: 'white' }} /> : <Rocket size={36} style={{ color: 'white' }} />}
                     </div>
                   </div>
                 );
               }
 
-              // Default icon visual
+              // Default icon visual - ENLARGED
               return (
                 <div style={{
-                  width: '44px',
-                  height: '44px',
-                  borderRadius: '12px',
-                  background: `linear-gradient(135deg, rgb(${project.color}), rgba(${project.color}, 0.5))`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: `0 0 30px rgba(${project.color}, 0.4)`,
-                  opacity: isHovered ? 1 : 0.6,
+                  position: 'relative',
+                  opacity: isHovered ? 1 : 0.7,
                   transition: 'all 0.5s ease',
-                  transform: isHovered ? 'scale(1.1)' : 'scale(1)',
                 }}>
-                  <Icon size={22} style={{ color: 'white' }} />
+                  <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: '100px',
+                    height: '100px',
+                    borderRadius: '50%',
+                    background: `radial-gradient(circle, rgba(${project.color}, ${isHovered ? 0.25 : 0.1}), transparent 70%)`,
+                    transition: 'all 0.5s ease',
+                  }} />
+                  <div style={{
+                    width: '70px',
+                    height: '70px',
+                    borderRadius: '20px',
+                    background: `linear-gradient(135deg, rgb(${project.color}), rgba(${project.color}, 0.5))`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: `0 0 40px rgba(${project.color}, 0.5)`,
+                  }}>
+                    <Icon size={34} style={{ color: 'white' }} />
+                  </div>
                 </div>
               );
             };
@@ -1037,31 +1125,32 @@ export function AirIndiaWork() {
                 onMouseLeave={() => setHoveredProject(null)}
                 style={{
                   width: '100%',
-                  minHeight: isMobile ? '280px' : '180px',
+                  minHeight: isMobile ? '280px' : (isHovered ? '320px' : '240px'),
                   position: 'relative',
                   display: 'flex',
                   flexDirection: isMobile ? 'column' : 'row',
                   justifyContent: 'space-between',
-                  alignItems: isMobile ? 'stretch' : 'center',
-                  gap: isMobile ? '1.5rem' : '2rem',
-                  padding: isMobile ? '1.5rem' : '2rem 2.5rem',
-                  borderRadius: '20px',
+                  alignItems: isMobile ? 'stretch' : 'flex-start',
+                  gap: isMobile ? '1.5rem' : '3rem',
+                  padding: isMobile ? '1.5rem' : '2.5rem 3rem',
+                  borderRadius: '24px',
                   background: `
-                    radial-gradient(ellipse at 70% 30%, rgba(${project.color}, ${isHovered ? 0.15 : 0.08}), transparent 50%),
-                    radial-gradient(ellipse at 30% 70%, rgba(${project.color}, ${isHovered ? 0.06 : 0.03}), transparent 50%),
+                    radial-gradient(ellipse at 70% 30%, rgba(${project.color}, ${isHovered ? 0.18 : 0.08}), transparent 50%),
+                    radial-gradient(ellipse at 30% 70%, rgba(${project.color}, ${isHovered ? 0.08 : 0.03}), transparent 50%),
                     var(--glass-04)
                   `,
                   backdropFilter: 'blur(40px)',
                   WebkitBackdropFilter: 'blur(40px)',
-                  border: `1px solid ${isHovered ? `rgba(${project.color}, 0.4)` : 'var(--glass-08)'}`,
-                  transition: 'all 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
-                  transform: isHovered && !isMobile ? 'translateY(-4px)' : 'translateY(0)',
+                  border: `1px solid ${isHovered ? `rgba(${project.color}, 0.5)` : 'var(--glass-08)'}`,
+                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  transform: isHovered && !isMobile ? 'translate3d(0, -8px, 0) scale(1.02)' : 'translate3d(0, 0, 0) scale(1)',
                   boxShadow: isHovered
-                    ? `0 30px 60px -20px rgba(${project.color}, 0.3), 0 15px 30px -15px rgba(0, 0, 0, 0.4)`
+                    ? `0 50px 100px -30px rgba(${project.color}, 0.4), 0 25px 50px -20px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(${project.color}, 0.15)`
                     : '0 8px 32px -8px rgba(0,0,0,0.2)',
                   animation: inView ? `scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.4 + index * 0.05}s both` : 'none',
-                  overflow: 'hidden',
+                  overflow: 'visible',
                   cursor: 'pointer',
+                  zIndex: isHovered ? 20 : 1,
                 }}
               >
                 {/* Animated Glow Orb */}
@@ -1211,16 +1300,79 @@ export function AirIndiaWork() {
                       {project.recruiterFrame}
                     </span>
                   </div>
+
+                  {/* Expanded Description Reveal - Appears on hover */}
+                  {!isMobile && (
+                    <div style={{
+                      opacity: isHovered ? 1 : 0,
+                      maxHeight: isHovered ? '120px' : '0',
+                      transform: isHovered ? 'translateY(0)' : 'translateY(-10px)',
+                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
+                      overflow: 'hidden',
+                      marginTop: isHovered ? '1rem' : '0',
+                      paddingTop: isHovered ? '1rem' : '0',
+                      borderTop: isHovered ? `1px solid rgba(${project.color}, 0.15)` : 'none',
+                    }}>
+                      <p style={{
+                        fontSize: '0.875rem',
+                        color: 'var(--text-60)',
+                        lineHeight: 1.7,
+                        marginBottom: '0.875rem',
+                      }}>
+                        {project.description}
+                      </p>
+                      <button style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        padding: '0.5rem 1rem',
+                        background: `linear-gradient(135deg, rgba(${project.color}, 0.2), rgba(${project.color}, 0.1))`,
+                        border: `1px solid rgba(${project.color}, 0.35)`,
+                        borderRadius: '8px',
+                        color: 'var(--text-90)',
+                        fontSize: '0.813rem',
+                        fontWeight: '500',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                      }}>
+                        View Deep Dive
+                        <ArrowRight size={14} />
+                      </button>
+                    </div>
+                  )}
                 </div>
 
-                {/* Right Visual Section */}
+                {/* Right Visual Section - Enhanced 180x180px container */}
                 <div style={{
                   flexShrink: 0,
+                  width: isMobile ? '100%' : '180px',
+                  height: isMobile ? '140px' : '180px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: isMobile ? '0' : '0 1rem',
+                  position: 'relative',
+                  filter: isHovered ? `drop-shadow(0 0 40px rgba(${project.color}, 0.4))` : 'none',
+                  transform: isHovered ? 'scale(1.15)' : 'scale(1)',
+                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}>
+                  {/* Particle sparkles on hover */}
+                  {isHovered && !isMobile && (
+                    <>
+                      {[...Array(6)].map((_, i) => (
+                        <div key={i} style={{
+                          position: 'absolute',
+                          width: '4px',
+                          height: '4px',
+                          borderRadius: '50%',
+                          background: `rgb(${project.color})`,
+                          boxShadow: `0 0 8px rgba(${project.color}, 0.8)`,
+                          top: `${20 + Math.random() * 60}%`,
+                          left: `${20 + Math.random() * 60}%`,
+                          animation: `sparkleFloat ${1.5 + Math.random()}s ease-in-out infinite ${Math.random() * 0.5}s`,
+                        }} />
+                      ))}
+                    </>
+                  )}
                   {renderCardVisual()}
                 </div>
               </div>
