@@ -1451,6 +1451,7 @@ export function AirIndiaWork() {
                   {/* Animated Illustration or Placeholder */}
                   {index === 0 ? (
                     /* PIXEL RADAR - Side-by-Side Interactive Visualization */
+                    <>
                     <div style={{
                       width: '100%',
                       maxWidth: '900px',
@@ -2307,6 +2308,83 @@ export function AirIndiaWork() {
                         </div>
                       </div>
                     </div>
+
+                    {/* Author Section with Photo and Quote */}
+                    <div style={{
+                      display: 'flex',
+                      gap: '24px',
+                      marginTop: '20px',
+                      padding: '20px',
+                      background: '#1E1E1E',
+                      borderRadius: '8px',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      alignItems: 'flex-start',
+                      maxWidth: '900px',
+                      margin: '20px auto 0',
+                    }}>
+                      {/* Photo */}
+                      <div style={{
+                        width: '120px',
+                        height: '160px',
+                        borderRadius: '8px',
+                        overflow: 'hidden',
+                        flexShrink: 0,
+                        background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.1), rgba(13, 153, 255, 0.1))',
+                      }}>
+                        <img
+                          src="/images/pixel-radar-author.jpg"
+                          alt="Developer"
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                          }}
+                          onError={(e) => {
+                            // Fallback if image doesn't exist
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                      </div>
+
+                      {/* Text Content */}
+                      <div style={{ flex: 1 }}>
+                        {/* Quote */}
+                        <p style={{
+                          fontSize: '13px',
+                          fontStyle: 'italic',
+                          color: 'rgba(255, 255, 255, 0.8)',
+                          lineHeight: 1.7,
+                          marginBottom: '16px',
+                          borderLeft: '2px solid #DA0E29',
+                          paddingLeft: '12px',
+                          margin: '0 0 16px 0',
+                        }}>
+                          &quot;This journey from concept to soon-to-be-essential tool demonstrates what&apos;s possible when we apply technical innovation to design challenges, creating solutions that will benefit our entire team and ultimately enhance the Air India customer experience.&quot;
+                        </p>
+
+                        {/* Future Development */}
+                        <div>
+                          <span style={{
+                            fontSize: '10px',
+                            fontWeight: '600',
+                            color: '#0D99FF',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.1em',
+                            marginBottom: '6px',
+                            display: 'block',
+                          }}>Future Development</span>
+                          <p style={{
+                            fontSize: '11px',
+                            color: 'rgba(255, 255, 255, 0.5)',
+                            lineHeight: 1.6,
+                            margin: 0,
+                          }}>
+                            AI Pixel Radar roadmap includes AI integration to further enhance our QA process with automated heuristic evaluations and accessibility testing.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    </>
                   ) : (
                     /* Default Image Placeholder for other cards */
                     <div style={{
