@@ -1452,6 +1452,41 @@ export function AirIndiaWork() {
                   {index === 0 ? (
                     /* PIXEL RADAR - Side-by-Side Interactive Visualization */
                     <>
+                    {/* Interactive Prototype Helper */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      marginBottom: '12px',
+                      padding: '8px 16px',
+                      background: 'rgba(13, 153, 255, 0.1)',
+                      borderRadius: '20px',
+                      border: '1px solid rgba(13, 153, 255, 0.2)',
+                      width: 'fit-content',
+                      margin: '0 auto 12px',
+                    }}>
+                      <span style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        background: '#0D99FF',
+                        animation: 'statusPulse 1.5s ease infinite',
+                      }} />
+                      <span style={{
+                        fontSize: '11px',
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        fontWeight: '500',
+                      }}>
+                        Interactive Prototype
+                      </span>
+                      <span style={{
+                        fontSize: '10px',
+                        color: 'rgba(255, 255, 255, 0.4)',
+                      }}>
+                        — Click &quot;Run Analysis&quot; to see it in action
+                      </span>
+                    </div>
                     <div style={{
                       width: '100%',
                       maxWidth: '1100px',
