@@ -1449,21 +1449,14 @@ export function AirIndiaWork() {
                   </div>
 
                   {/* Full Narrative Description */}
-                  <div style={{
-                    padding: '1.5rem',
-                    borderRadius: '16px',
-                    background: 'var(--glass-04)',
-                    border: '1px solid var(--glass-08)',
+                  <p style={{
+                    fontSize: '0.938rem',
+                    color: 'var(--text-60)',
+                    lineHeight: 1.8,
+                    whiteSpace: 'pre-line',
                   }}>
-                    <p style={{
-                      fontSize: '0.938rem',
-                      color: 'var(--text-70)',
-                      lineHeight: 1.8,
-                      whiteSpace: 'pre-line',
-                    }}>
-                      {project.longDescription}
-                    </p>
-                  </div>
+                    {project.longDescription}
+                  </p>
 
                   {/* CTA Button */}
                   <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
