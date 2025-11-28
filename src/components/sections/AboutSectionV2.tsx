@@ -288,6 +288,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           opacity: isInView ? 1 : 0,
           transform: isInView ? 'translateY(0)' : 'translateY(40px)',
           transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
+          scrollSnapAlign: 'start',
         }}
       >
         {/* Left Side - Image Container */}
@@ -1098,12 +1099,13 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
         <div
           id="act-1-philosophy"
           style={{
-            minHeight: '100vh',
+            height: '100vh',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             padding: '6rem 1.5rem',
             position: 'relative',
+            scrollSnapAlign: 'start',
           }}
         >
           <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
@@ -1204,16 +1206,18 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           </div>
         </div>
 
-        {/* Act 4: The Impact */}
+        {/* Act 4: The Impact - "My work" header */}
         <div
           id="act-4-impact"
           style={{
-            minHeight: 'auto',
+            height: '100vh',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
             padding: '2rem 1.5rem',
             position: 'relative',
             overflow: 'hidden',
+            scrollSnapAlign: 'start',
           }}
         >
           {/* Animated SVG Background Mesh Gradient */}
@@ -1492,11 +1496,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           id="act-2-about"
           ref={timelineRef}
           style={{
-            minHeight: '100vh',
+            height: '100vh',
             display: 'flex',
             alignItems: 'center',
             padding: '4rem 1.5rem',
             position: 'relative',
+            scrollSnapAlign: 'start',
           }}
         >
           <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', position: 'relative' }}>

@@ -23,6 +23,7 @@ html {
   font-feature-settings: 'cv11', 'ss01';
   font-variation-settings: 'opsz' 32;
   scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
   line-height: 1.6;
   overflow-x: hidden;
 }
