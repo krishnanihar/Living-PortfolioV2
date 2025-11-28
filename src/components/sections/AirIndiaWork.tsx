@@ -484,6 +484,8 @@ export function AirIndiaWork() {
   const [pixelRadarStep, setPixelRadarStep] = useState(3); // 1, 2, or 3
   const [hoveredToken, setHoveredToken] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisPhase, setAnalysisPhase] = useState<'idle' | 'scan' | 'analyze' | 'complete'>('idle');
+  const [hoveredModule, setHoveredModule] = useState<string | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // Refs for card intersection observers
@@ -1448,264 +1450,637 @@ export function AirIndiaWork() {
                 }}>
                   {/* Animated Illustration or Placeholder */}
                   {index === 0 ? (
-                    /* PIXEL RADAR - Authentic Figma Plugin UI */
+                    /* PIXEL RADAR - Side-by-Side Interactive Visualization */
                     <div style={{
                       width: '100%',
-                      maxWidth: '420px',
+                      maxWidth: '900px',
                       margin: '0 auto',
-                      background: '#2C2C2C',
-                      borderRadius: '8px',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      overflow: 'hidden',
+                      display: 'grid',
+                      gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+                      gap: '16px',
                       fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                       fontSize: '11px',
                     }}>
-                      {/* Plugin Header */}
+                      {/* ======== LEFT PANEL: Figma Plugin UI ======== */}
                       <div style={{
-                        background: '#1E1E1E',
-                        padding: '8px 12px',
-                        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
+                        background: '#2C2C2C',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        overflow: 'hidden',
                       }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        {/* Plugin Header */}
+                        <div style={{
+                          background: '#1E1E1E',
+                          padding: '8px 12px',
+                          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{
+                              width: '16px',
+                              height: '16px',
+                              borderRadius: '4px',
+                              background: '#0D99FF',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}>
+                              <span style={{ fontSize: '10px', color: 'white', fontWeight: '700' }}>P</span>
+                            </div>
+                            <span style={{
+                              fontSize: '11px',
+                              fontWeight: '600',
+                              color: 'rgba(255, 255, 255, 0.9)',
+                            }}>Pixel Radar</span>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.2)' }} />
+                            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.2)' }} />
+                            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.2)' }} />
+                          </div>
+                        </div>
+
+                        {/* Plugin Content */}
+                        <div style={{ padding: '12px' }}>
+                          {/* Library Dropdown */}
+                          <div style={{
+                            background: '#383838',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            borderRadius: '6px',
+                            padding: '8px 10px',
+                            marginBottom: '12px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            cursor: 'pointer',
+                            transition: 'border-color 0.15s ease',
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
+                          onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'}
+                          >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>Library:</span>
+                              <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.9)' }}>Design System v2.0</span>
+                            </div>
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>▼</span>
+                          </div>
+
+                          {/* Token Analysis Section */}
+                          <div style={{
+                            background: '#1E1E1E',
+                            borderRadius: '6px',
+                            border: '1px solid rgba(255, 255, 255, 0.06)',
+                            marginBottom: '12px',
+                            overflow: 'hidden',
+                          }}>
+                            {/* Section Header */}
+                            <div style={{
+                              padding: '8px 10px',
+                              borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                            }}>
+                              <span style={{ fontSize: '10px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.66)' }}>Token Analysis</span>
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>3 tokens</span>
+                            </div>
+
+                            {/* Token Table Header */}
+                            <div style={{
+                              display: 'grid',
+                              gridTemplateColumns: '1fr 1fr 40px',
+                              padding: '6px 10px',
+                              borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+                              background: 'rgba(255, 255, 255, 0.02)',
+                            }}>
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', fontWeight: '500' }}>Library</span>
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', fontWeight: '500' }}>Local</span>
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', fontWeight: '500', textAlign: 'center' }}>Status</span>
+                            </div>
+
+                            {/* Token Rows */}
+                            {[
+                              { id: 'color', color: '#3B82F6', library: 'color/primary', local: 'color/primary', matched: true },
+                              { id: 'typo', color: '#8B5CF6', library: 'typography/h1', local: 'typography/heading-1', matched: false },
+                              { id: 'space', color: '#10B981', library: 'spacing/lg', local: 'spacing/lg', matched: true },
+                            ].map((token) => (
+                              <div
+                                key={token.id}
+                                onMouseEnter={() => setHoveredToken(token.id)}
+                                onMouseLeave={() => setHoveredToken(null)}
+                                style={{
+                                  display: 'grid',
+                                  gridTemplateColumns: '1fr 1fr 40px',
+                                  padding: '6px 10px',
+                                  borderBottom: '1px solid rgba(255, 255, 255, 0.03)',
+                                  background: hoveredToken === token.id ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
+                                  cursor: 'pointer',
+                                  transition: 'background 0.15s ease',
+                                }}
+                              >
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                  <div style={{
+                                    width: '8px',
+                                    height: '8px',
+                                    borderRadius: '2px',
+                                    background: token.color,
+                                  }} />
+                                  <span style={{
+                                    fontSize: '10px',
+                                    color: 'rgba(255, 255, 255, 0.66)',
+                                    fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                                  }}>{token.library}</span>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                  <div style={{
+                                    width: '8px',
+                                    height: '8px',
+                                    borderRadius: '2px',
+                                    background: token.color,
+                                  }} />
+                                  <span style={{
+                                    fontSize: '10px',
+                                    color: 'rgba(255, 255, 255, 0.66)',
+                                    fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                                  }}>{token.local}</span>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                  {token.matched ? (
+                                    <span style={{ fontSize: '12px', color: '#30D158' }}>✓</span>
+                                  ) : (
+                                    <span style={{ fontSize: '10px', color: '#FF9F0A', fontWeight: '600' }}>!</span>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Stats Bar */}
+                          <div style={{
+                            background: '#1E1E1E',
+                            borderRadius: '6px',
+                            padding: '10px 12px',
+                            marginBottom: '12px',
+                          }}>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              marginBottom: '8px',
+                            }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <div>
+                                  <span style={{ fontSize: '14px', fontWeight: '600', color: '#30D158' }}>
+                                    {analysisPhase === 'complete' ? '195' : '—'}
+                                  </span>
+                                  <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', marginLeft: '4px' }}>matched</span>
+                                </div>
+                                <div>
+                                  <span style={{ fontSize: '14px', fontWeight: '600', color: '#FF9F0A' }}>
+                                    {analysisPhase === 'complete' ? '79' : '—'}
+                                  </span>
+                                  <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', marginLeft: '4px' }}>suggested</span>
+                                </div>
+                              </div>
+                              <span style={{
+                                fontSize: '11px',
+                                fontWeight: '600',
+                                color: analysisPhase === 'complete' ? '#30D158' : 'rgba(255, 255, 255, 0.4)',
+                              }}>
+                                {analysisPhase === 'complete' ? '71%' : '—'}
+                              </span>
+                            </div>
+                            {/* Progress Bar */}
+                            <div style={{
+                              height: '4px',
+                              background: 'rgba(255, 255, 255, 0.1)',
+                              borderRadius: '2px',
+                              overflow: 'hidden',
+                            }}>
+                              <div style={{
+                                width: analysisPhase === 'complete' ? '71%' : '0%',
+                                height: '100%',
+                                background: '#30D158',
+                                borderRadius: '2px',
+                                transition: 'width 0.6s cubic-bezier(0.2, 0, 0, 1)',
+                              }} />
+                            </div>
+                          </div>
+
+                          {/* Run Analysis Button */}
+                          <button
+                            onClick={() => {
+                              if (isAnalyzing) return;
+                              setIsAnalyzing(true);
+                              setAnalysisPhase('scan');
+                              setPixelRadarStep(2);
+
+                              // Phase 2: Analyze (after 500ms)
+                              setTimeout(() => setAnalysisPhase('analyze'), 500);
+
+                              // Phase 3: Complete (after 1500ms)
+                              setTimeout(() => {
+                                setAnalysisPhase('complete');
+                                setPixelRadarStep(3);
+                                setIsAnalyzing(false);
+                              }, 1500);
+                            }}
+                            style={{
+                              width: '100%',
+                              background: isAnalyzing ? '#1E1E1E' : '#0D99FF',
+                              color: 'white',
+                              border: isAnalyzing ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+                              borderRadius: '6px',
+                              padding: '8px 16px',
+                              fontSize: '11px',
+                              fontWeight: '500',
+                              cursor: isAnalyzing ? 'not-allowed' : 'pointer',
+                              transition: 'all 0.15s ease',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '8px',
+                            }}
+                            onMouseEnter={(e) => !isAnalyzing && (e.currentTarget.style.background = '#1A8FE8')}
+                            onMouseLeave={(e) => !isAnalyzing && (e.currentTarget.style.background = '#0D99FF')}
+                          >
+                            {isAnalyzing ? (
+                              <>
+                                <div style={{
+                                  width: '12px',
+                                  height: '12px',
+                                  borderRadius: '50%',
+                                  border: '2px solid rgba(255, 255, 255, 0.2)',
+                                  borderTopColor: 'rgba(255, 255, 255, 0.9)',
+                                  animation: 'spin 0.8s linear infinite',
+                                }} />
+                                <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Analyzing...</span>
+                              </>
+                            ) : (
+                              <span>Run Analysis</span>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* ======== RIGHT PANEL: Backend Architecture ======== */}
+                      <div style={{
+                        background: '#2C2C2C',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        overflow: 'hidden',
+                        display: isMobile ? 'none' : 'block',
+                      }}>
+                        {/* Architecture Header */}
+                        <div style={{
+                          background: '#1E1E1E',
+                          padding: '8px 12px',
+                          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                        }}>
                           <div style={{
                             width: '16px',
                             height: '16px',
                             borderRadius: '4px',
-                            background: '#0D99FF',
+                            background: 'rgba(162, 89, 255, 0.2)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                           }}>
-                            <span style={{ fontSize: '10px', color: 'white', fontWeight: '700' }}>P</span>
+                            <span style={{ fontSize: '10px', color: '#A259FF' }}>⚡</span>
                           </div>
                           <span style={{
                             fontSize: '11px',
                             fontWeight: '600',
                             color: 'rgba(255, 255, 255, 0.9)',
-                          }}>Pixel Radar</span>
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.2)' }} />
-                          <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.2)' }} />
-                          <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.2)' }} />
-                        </div>
-                      </div>
-
-                      {/* Plugin Content */}
-                      <div style={{ padding: '12px' }}>
-                        {/* Library Dropdown */}
-                        <div style={{
-                          background: '#383838',
-                          border: '1px solid rgba(255, 255, 255, 0.1)',
-                          borderRadius: '6px',
-                          padding: '8px 10px',
-                          marginBottom: '12px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          cursor: 'pointer',
-                          transition: 'border-color 0.15s ease',
-                        }}
-                        onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
-                        onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'}
-                        >
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>Library:</span>
-                            <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.9)' }}>Design System v2.0</span>
-                          </div>
-                          <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>▼</span>
+                          }}>Backend Architecture</span>
                         </div>
 
-                        {/* Token Analysis Section */}
-                        <div style={{
-                          background: '#1E1E1E',
-                          borderRadius: '6px',
-                          border: '1px solid rgba(255, 255, 255, 0.06)',
-                          marginBottom: '12px',
-                          overflow: 'hidden',
-                        }}>
-                          {/* Section Header */}
-                          <div style={{
-                            padding: '8px 10px',
-                            borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                          }}>
-                            <span style={{ fontSize: '10px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.66)' }}>Token Analysis</span>
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>3 tokens</span>
-                          </div>
+                        {/* Architecture Content */}
+                        <div style={{ padding: '12px', position: 'relative', minHeight: '280px' }}>
+                          {/* SVG Connections Layer */}
+                          <svg
+                            style={{
+                              position: 'absolute',
+                              top: 0,
+                              left: 0,
+                              width: '100%',
+                              height: '100%',
+                              pointerEvents: 'none',
+                              zIndex: 0,
+                            }}
+                          >
+                            <defs>
+                              <marker
+                                id="arrowhead"
+                                markerWidth="8"
+                                markerHeight="6"
+                                refX="7"
+                                refY="3"
+                                orient="auto"
+                              >
+                                <polygon
+                                  points="0 0, 8 3, 0 6"
+                                  fill={analysisPhase !== 'idle' ? '#0D99FF' : 'rgba(255, 255, 255, 0.2)'}
+                                  style={{ transition: 'fill 0.3s ease' }}
+                                />
+                              </marker>
+                            </defs>
 
-                          {/* Token Table Header */}
+                            {/* Connection: Figma APIs → Token Scanner */}
+                            <path
+                              d="M 80 200 L 80 90"
+                              fill="none"
+                              stroke={analysisPhase !== 'idle' ? 'rgba(13, 153, 255, 0.5)' : 'rgba(255, 255, 255, 0.1)'}
+                              strokeWidth="2"
+                              strokeDasharray="6 4"
+                              markerEnd="url(#arrowhead)"
+                              style={{
+                                transition: 'stroke 0.3s ease',
+                                animation: analysisPhase === 'scan' ? 'flowLine 1.5s linear infinite' : 'none',
+                              }}
+                            />
+
+                            {/* Connection: Token Scanner → Analysis Engine */}
+                            <path
+                              d="M 140 60 L 220 60"
+                              fill="none"
+                              stroke={['scan', 'analyze', 'complete'].includes(analysisPhase) ? 'rgba(13, 153, 255, 0.5)' : 'rgba(255, 255, 255, 0.1)'}
+                              strokeWidth="2"
+                              strokeDasharray="6 4"
+                              markerEnd="url(#arrowhead)"
+                              style={{
+                                transition: 'stroke 0.3s ease',
+                                animation: analysisPhase === 'analyze' ? 'flowLine 1.5s linear infinite' : 'none',
+                              }}
+                            />
+
+                            {/* Connection: Analysis Engine → Results */}
+                            <path
+                              d="M 300 90 L 300 170"
+                              fill="none"
+                              stroke={['analyze', 'complete'].includes(analysisPhase) ? 'rgba(13, 153, 255, 0.5)' : 'rgba(255, 255, 255, 0.1)'}
+                              strokeWidth="2"
+                              strokeDasharray="6 4"
+                              markerEnd="url(#arrowhead)"
+                              style={{
+                                transition: 'stroke 0.3s ease',
+                                animation: analysisPhase === 'complete' ? 'flowLine 1.5s linear infinite' : 'none',
+                              }}
+                            />
+
+                            {/* Connection: Results → Figma APIs (feedback loop) */}
+                            <path
+                              d="M 220 210 L 140 210"
+                              fill="none"
+                              stroke={analysisPhase === 'complete' ? 'rgba(48, 209, 88, 0.4)' : 'rgba(255, 255, 255, 0.1)'}
+                              strokeWidth="2"
+                              strokeDasharray="6 4"
+                              markerEnd="url(#arrowhead)"
+                              style={{
+                                transition: 'stroke 0.3s ease',
+                                animation: analysisPhase === 'complete' ? 'flowLine 1.5s linear infinite reverse' : 'none',
+                              }}
+                            />
+                          </svg>
+
+                          {/* Module Grid */}
                           <div style={{
                             display: 'grid',
-                            gridTemplateColumns: '1fr 1fr 40px',
-                            padding: '6px 10px',
-                            borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
-                            background: 'rgba(255, 255, 255, 0.02)',
+                            gridTemplateColumns: '1fr 1fr',
+                            gap: '10px',
+                            position: 'relative',
+                            zIndex: 1,
                           }}>
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', fontWeight: '500' }}>Library</span>
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', fontWeight: '500' }}>Local</span>
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', fontWeight: '500', textAlign: 'center' }}>Status</span>
-                          </div>
-
-                          {/* Token Rows */}
-                          {[
-                            { id: 'color', color: '#3B82F6', library: 'color/primary', local: 'color/primary', matched: true },
-                            { id: 'typo', color: '#8B5CF6', library: 'typography/h1', local: 'typography/heading-1', matched: false },
-                            { id: 'space', color: '#10B981', library: 'spacing/lg', local: 'spacing/lg', matched: true },
-                          ].map((token) => (
+                            {/* Module 1: Token Scanner (Top Left) */}
                             <div
-                              key={token.id}
-                              onMouseEnter={() => setHoveredToken(token.id)}
-                              onMouseLeave={() => setHoveredToken(null)}
+                              onMouseEnter={() => setHoveredModule('scanner')}
+                              onMouseLeave={() => setHoveredModule(null)}
                               style={{
-                                display: 'grid',
-                                gridTemplateColumns: '1fr 1fr 40px',
-                                padding: '6px 10px',
-                                borderBottom: '1px solid rgba(255, 255, 255, 0.03)',
-                                background: hoveredToken === token.id ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
-                                cursor: 'pointer',
-                                transition: 'background 0.15s ease',
+                                background: '#1E1E1E',
+                                borderRadius: '6px',
+                                padding: '10px',
+                                border: `1px solid ${
+                                  analysisPhase === 'scan'
+                                    ? 'rgba(48, 209, 88, 0.5)'
+                                    : hoveredModule === 'scanner'
+                                      ? 'rgba(255, 255, 255, 0.2)'
+                                      : 'rgba(255, 255, 255, 0.1)'
+                                }`,
+                                transition: 'all 0.3s ease',
+                                boxShadow: analysisPhase === 'scan'
+                                  ? '0 0 12px rgba(48, 209, 88, 0.2)'
+                                  : 'none',
                               }}
                             >
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <div style={{
-                                  width: '8px',
-                                  height: '8px',
-                                  borderRadius: '2px',
-                                  background: token.color,
-                                }} />
+                              <div style={{
+                                fontSize: '10px',
+                                fontWeight: '600',
+                                color: '#30D158',
+                                marginBottom: '6px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                              }}>
                                 <span style={{
-                                  fontSize: '10px',
-                                  color: 'rgba(255, 255, 255, 0.66)',
-                                  fontFamily: 'SF Mono, Monaco, Consolas, monospace',
-                                }}>{token.library}</span>
-                              </div>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <div style={{
-                                  width: '8px',
-                                  height: '8px',
-                                  borderRadius: '2px',
-                                  background: token.color,
+                                  width: '6px',
+                                  height: '6px',
+                                  borderRadius: '50%',
+                                  background: analysisPhase === 'scan' ? '#30D158' : 'rgba(48, 209, 88, 0.3)',
+                                  animation: analysisPhase === 'scan' ? 'pulse 1s ease infinite' : 'none',
                                 }} />
-                                <span style={{
-                                  fontSize: '10px',
-                                  color: 'rgba(255, 255, 255, 0.66)',
-                                  fontFamily: 'SF Mono, Monaco, Consolas, monospace',
-                                }}>{token.local}</span>
+                                Token Scanner
                               </div>
-                              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                {token.matched ? (
-                                  <span style={{ fontSize: '12px', color: '#30D158' }}>✓</span>
+                              <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', lineHeight: 1.5 }}>
+                                • Variables<br />
+                                • Styles<br />
+                                • Libraries
+                              </div>
+                            </div>
+
+                            {/* Module 2: Analysis Engine (Top Right) */}
+                            <div
+                              onMouseEnter={() => setHoveredModule('engine')}
+                              onMouseLeave={() => setHoveredModule(null)}
+                              style={{
+                                background: '#1E1E1E',
+                                borderRadius: '6px',
+                                padding: '10px',
+                                border: `1px solid ${
+                                  analysisPhase === 'analyze'
+                                    ? 'rgba(13, 153, 255, 0.5)'
+                                    : hoveredModule === 'engine'
+                                      ? 'rgba(255, 255, 255, 0.2)'
+                                      : 'rgba(255, 255, 255, 0.1)'
+                                }`,
+                                transition: 'all 0.3s ease',
+                                boxShadow: analysisPhase === 'analyze'
+                                  ? '0 0 12px rgba(13, 153, 255, 0.2)'
+                                  : 'none',
+                              }}
+                            >
+                              <div style={{
+                                fontSize: '10px',
+                                fontWeight: '600',
+                                color: '#0D99FF',
+                                marginBottom: '6px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                              }}>
+                                <span style={{
+                                  width: '6px',
+                                  height: '6px',
+                                  borderRadius: '50%',
+                                  background: analysisPhase === 'analyze' ? '#0D99FF' : 'rgba(13, 153, 255, 0.3)',
+                                  animation: analysisPhase === 'analyze' ? 'pulse 1s ease infinite' : 'none',
+                                }} />
+                                Analysis Engine
+                              </div>
+                              <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', lineHeight: 1.5 }}>
+                                • Duplicate Detection<br />
+                                • Consistency Check<br />
+                                • Smart Suggestions
+                              </div>
+                            </div>
+
+                            {/* Module 3: Figma APIs (Bottom Left) */}
+                            <div
+                              onMouseEnter={() => setHoveredModule('apis')}
+                              onMouseLeave={() => setHoveredModule(null)}
+                              style={{
+                                background: 'rgba(218, 14, 41, 0.08)',
+                                borderRadius: '6px',
+                                padding: '10px',
+                                border: `1px solid ${
+                                  hoveredModule === 'apis'
+                                    ? 'rgba(218, 14, 41, 0.4)'
+                                    : 'rgba(218, 14, 41, 0.25)'
+                                }`,
+                                transition: 'all 0.3s ease',
+                              }}
+                            >
+                              <div style={{
+                                fontSize: '10px',
+                                fontWeight: '600',
+                                color: '#DA0E29',
+                                marginBottom: '6px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                              }}>
+                                <span style={{
+                                  width: '6px',
+                                  height: '6px',
+                                  borderRadius: '50%',
+                                  background: 'rgba(218, 14, 41, 0.5)',
+                                }} />
+                                Figma APIs
+                              </div>
+                              <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', lineHeight: 1.5 }}>
+                                • variables<br />
+                                • styles<br />
+                                • teamLibrary
+                              </div>
+                            </div>
+
+                            {/* Module 4: Results Processor (Bottom Right) */}
+                            <div
+                              onMouseEnter={() => setHoveredModule('results')}
+                              onMouseLeave={() => setHoveredModule(null)}
+                              style={{
+                                background: '#1E1E1E',
+                                borderRadius: '6px',
+                                padding: '10px',
+                                border: `1px solid ${
+                                  analysisPhase === 'complete'
+                                    ? 'rgba(48, 209, 88, 0.5)'
+                                    : hoveredModule === 'results'
+                                      ? 'rgba(255, 255, 255, 0.2)'
+                                      : 'rgba(255, 255, 255, 0.1)'
+                                }`,
+                                transition: 'all 0.3s ease',
+                                boxShadow: analysisPhase === 'complete'
+                                  ? '0 0 12px rgba(48, 209, 88, 0.2)'
+                                  : 'none',
+                              }}
+                            >
+                              <div style={{
+                                fontSize: '10px',
+                                fontWeight: '600',
+                                color: '#30D158',
+                                marginBottom: '6px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                              }}>
+                                <span style={{
+                                  width: '6px',
+                                  height: '6px',
+                                  borderRadius: '50%',
+                                  background: analysisPhase === 'complete' ? '#30D158' : 'rgba(48, 209, 88, 0.3)',
+                                  animation: analysisPhase === 'complete' ? 'pulse 1s ease infinite' : 'none',
+                                }} />
+                                Results
+                              </div>
+                              <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', lineHeight: 1.5 }}>
+                                {analysisPhase === 'complete' ? (
+                                  <>
+                                    <span style={{ color: '#30D158' }}>✓</span> Match tokens<br />
+                                    <span style={{ color: '#30D158' }}>✓</span> Fix duplicates
+                                  </>
                                 ) : (
-                                  <span style={{ fontSize: '10px', color: '#FF9F0A', fontWeight: '600' }}>!</span>
+                                  <>
+                                    • Match tokens<br />
+                                    • Fix duplicates
+                                  </>
                                 )}
                               </div>
                             </div>
-                          ))}
-                        </div>
+                          </div>
 
-                        {/* Stats Bar */}
-                        <div style={{
-                          background: '#1E1E1E',
-                          borderRadius: '6px',
-                          padding: '10px 12px',
-                          marginBottom: '12px',
-                        }}>
+                          {/* Status Indicator */}
                           <div style={{
+                            marginTop: '12px',
+                            padding: '8px 10px',
+                            background: '#1E1E1E',
+                            borderRadius: '6px',
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'space-between',
-                            marginBottom: '8px',
-                          }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                              <div>
-                                <span style={{ fontSize: '14px', fontWeight: '600', color: '#30D158' }}>
-                                  {pixelRadarStep >= 3 ? '195' : '—'}
-                                </span>
-                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', marginLeft: '4px' }}>matched</span>
-                              </div>
-                              <div>
-                                <span style={{ fontSize: '14px', fontWeight: '600', color: '#FF9F0A' }}>
-                                  {pixelRadarStep >= 3 ? '79' : '—'}
-                                </span>
-                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', marginLeft: '4px' }}>suggested</span>
-                              </div>
-                            </div>
-                            <span style={{
-                              fontSize: '11px',
-                              fontWeight: '600',
-                              color: pixelRadarStep >= 3 ? '#30D158' : 'rgba(255, 255, 255, 0.4)',
-                            }}>
-                              {pixelRadarStep >= 3 ? '71%' : '—'}
-                            </span>
-                          </div>
-                          {/* Progress Bar */}
-                          <div style={{
-                            height: '4px',
-                            background: 'rgba(255, 255, 255, 0.1)',
-                            borderRadius: '2px',
-                            overflow: 'hidden',
+                            gap: '8px',
                           }}>
                             <div style={{
-                              width: pixelRadarStep >= 3 ? '71%' : '0%',
-                              height: '100%',
-                              background: '#30D158',
-                              borderRadius: '2px',
-                              transition: 'width 0.6s cubic-bezier(0.2, 0, 0, 1)',
+                              width: '6px',
+                              height: '6px',
+                              borderRadius: '50%',
+                              background: analysisPhase === 'idle'
+                                ? 'rgba(255, 255, 255, 0.3)'
+                                : analysisPhase === 'complete'
+                                  ? '#30D158'
+                                  : '#0D99FF',
+                              animation: analysisPhase !== 'idle' && analysisPhase !== 'complete'
+                                ? 'pulse 1s ease infinite'
+                                : 'none',
                             }} />
+                            <span style={{
+                              fontSize: '10px',
+                              color: analysisPhase === 'idle'
+                                ? 'rgba(255, 255, 255, 0.4)'
+                                : analysisPhase === 'complete'
+                                  ? '#30D158'
+                                  : '#0D99FF',
+                            }}>
+                              {analysisPhase === 'idle' && 'Ready to analyze'}
+                              {analysisPhase === 'scan' && 'Scanning tokens...'}
+                              {analysisPhase === 'analyze' && 'Analyzing patterns...'}
+                              {analysisPhase === 'complete' && 'Analysis complete'}
+                            </span>
                           </div>
                         </div>
-
-                        {/* Run Analysis Button */}
-                        <button
-                          onClick={() => {
-                            setPixelRadarStep(2);
-                            setIsAnalyzing(true);
-                            setTimeout(() => {
-                              setPixelRadarStep(3);
-                              setIsAnalyzing(false);
-                            }, 1500);
-                          }}
-                          style={{
-                            width: '100%',
-                            background: isAnalyzing ? '#1E1E1E' : '#0D99FF',
-                            color: 'white',
-                            border: isAnalyzing ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
-                            borderRadius: '6px',
-                            padding: '8px 16px',
-                            fontSize: '11px',
-                            fontWeight: '500',
-                            cursor: 'pointer',
-                            transition: 'all 0.15s ease',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '8px',
-                          }}
-                          onMouseEnter={(e) => !isAnalyzing && (e.currentTarget.style.background = '#1A8FE8')}
-                          onMouseLeave={(e) => !isAnalyzing && (e.currentTarget.style.background = '#0D99FF')}
-                        >
-                          {isAnalyzing ? (
-                            <>
-                              <div style={{
-                                width: '12px',
-                                height: '12px',
-                                borderRadius: '50%',
-                                border: '2px solid rgba(255, 255, 255, 0.2)',
-                                borderTopColor: 'rgba(255, 255, 255, 0.9)',
-                                animation: 'spin 0.8s linear infinite',
-                              }} />
-                              <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Analyzing...</span>
-                            </>
-                          ) : (
-                            <span>Run Analysis</span>
-                          )}
-                        </button>
                       </div>
                     </div>
                   ) : (

@@ -612,6 +612,13 @@ button {
   100% { background-position: 200% 0; }
 }
 
+/* Data flow line animation for Pixel Radar backend architecture */
+@keyframes flowLine {
+  0% { stroke-dashoffset: 20; }
+  100% { stroke-dashoffset: 0; }
+}
+
+
 @keyframes shimmerTransform {
   0% {
     transform: translateX(-100%);
