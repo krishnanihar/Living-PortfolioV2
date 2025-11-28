@@ -1442,43 +1442,312 @@ export function AirIndiaWork() {
                   flexDirection: 'column',
                   gap: '1.5rem',
                 }}>
-                  {/* Image Placeholder */}
-                  <div style={{
-                    width: '100%',
-                    aspectRatio: '16 / 9',
-                    borderRadius: '16px',
-                    background: `linear-gradient(135deg, rgba(${project.color}, 0.08), var(--glass-06))`,
-                    border: `2px dashed rgba(${project.color}, 0.25)`,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.75rem',
-                    position: 'relative',
-                    overflow: 'hidden',
-                  }}>
-                    {/* Subtle gradient overlay */}
+                  {/* Animated Illustration or Placeholder */}
+                  {index === 0 ? (
+                    /* PIXEL RADAR - Animated Token Flow Illustration */
                     <div style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: `radial-gradient(ellipse at center, rgba(${project.color}, 0.05), transparent 70%)`,
-                      pointerEvents: 'none',
-                    }} />
-                    <Camera size={32} style={{ color: `rgba(${project.color}, 0.5)` }} />
-                    <span style={{
-                      fontSize: '0.875rem',
-                      color: 'var(--text-40)',
-                      fontWeight: '500',
+                      width: '100%',
+                      aspectRatio: '16 / 9',
+                      borderRadius: '16px',
+                      background: 'linear-gradient(135deg, rgba(15, 15, 20, 0.9), rgba(25, 25, 35, 0.8))',
+                      border: '1px solid rgba(218, 14, 41, 0.3)',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      padding: '1.5rem',
                     }}>
-                      Add {project.title} Screenshot
-                    </span>
-                    <span style={{
-                      fontSize: '0.75rem',
-                      color: 'var(--text-25)',
+                      {/* Background Grid Pattern */}
+                      <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        backgroundImage: `
+                          linear-gradient(rgba(218, 14, 41, 0.03) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(218, 14, 41, 0.03) 1px, transparent 1px)
+                        `,
+                        backgroundSize: '30px 30px',
+                        pointerEvents: 'none',
+                      }} />
+
+                      {/* Floating Glow Orbs */}
+                      <div style={{
+                        position: 'absolute',
+                        top: '20%',
+                        left: '15%',
+                        width: '100px',
+                        height: '100px',
+                        borderRadius: '50%',
+                        background: 'radial-gradient(circle, rgba(16, 185, 129, 0.15), transparent 70%)',
+                        filter: 'blur(30px)',
+                        animation: 'pulse 3s ease-in-out infinite',
+                      }} />
+                      <div style={{
+                        position: 'absolute',
+                        bottom: '20%',
+                        right: '15%',
+                        width: '120px',
+                        height: '120px',
+                        borderRadius: '50%',
+                        background: 'radial-gradient(circle, rgba(218, 14, 41, 0.15), transparent 70%)',
+                        filter: 'blur(30px)',
+                        animation: 'pulse 3s ease-in-out infinite 1s',
+                      }} />
+
+                      {/* Main Content - Three Column Layout */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                        maxWidth: '700px',
+                        gap: '1rem',
+                        position: 'relative',
+                        zIndex: 2,
+                      }}>
+                        {/* LEFT: Library Tokens Panel */}
+                        <div style={{
+                          flex: 1,
+                          padding: '1rem',
+                          borderRadius: '12px',
+                          background: 'rgba(16, 185, 129, 0.08)',
+                          border: '1px solid rgba(16, 185, 129, 0.3)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '0.5rem',
+                        }}>
+                          <span style={{
+                            fontSize: '0.625rem',
+                            fontWeight: '700',
+                            color: 'rgb(16, 185, 129)',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.1em',
+                            marginBottom: '0.25rem',
+                          }}>Library Tokens</span>
+                          {/* Token Cards */}
+                          {[
+                            { color: '#3B82F6', name: 'color/primary' },
+                            { color: '#8B5CF6', name: 'typography/h1' },
+                            { color: '#10B981', name: 'spacing/large' },
+                          ].map((token, i) => (
+                            <div key={i} style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '0.5rem',
+                              padding: '0.375rem 0.5rem',
+                              borderRadius: '6px',
+                              background: 'rgba(255, 255, 255, 0.05)',
+                              animation: `slideInLeft 0.4s ease-out ${i * 0.1}s both`,
+                            }}>
+                              <div style={{
+                                width: '8px',
+                                height: '8px',
+                                borderRadius: '50%',
+                                background: token.color,
+                                boxShadow: `0 0 8px ${token.color}`,
+                              }} />
+                              <span style={{
+                                fontSize: '0.625rem',
+                                color: 'var(--text-60)',
+                                fontFamily: 'monospace',
+                              }}>{token.name}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* CENTER: Comparison Engine */}
+                        <div style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          padding: '0.75rem',
+                        }}>
+                          {/* Animated Arrows */}
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.25rem',
+                          }}>
+                            <div style={{
+                              width: '24px',
+                              height: '2px',
+                              background: 'linear-gradient(90deg, rgba(16, 185, 129, 0.8), rgba(218, 14, 41, 0.8))',
+                              animation: 'flowRight 1.5s ease-in-out infinite',
+                            }} />
+                            <div style={{
+                              width: '0',
+                              height: '0',
+                              borderTop: '4px solid transparent',
+                              borderBottom: '4px solid transparent',
+                              borderLeft: '6px solid rgba(218, 14, 41, 0.8)',
+                            }} />
+                          </div>
+
+                          {/* VS Badge */}
+                          <div style={{
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.3), rgba(139, 92, 246, 0.3))',
+                            border: '2px solid rgba(218, 14, 41, 0.5)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '0.5rem',
+                            fontWeight: '700',
+                            color: 'var(--text-80)',
+                            animation: 'pulse 2s ease-in-out infinite',
+                          }}>VS</div>
+
+                          {/* Reverse Arrow */}
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.25rem',
+                          }}>
+                            <div style={{
+                              width: '0',
+                              height: '0',
+                              borderTop: '4px solid transparent',
+                              borderBottom: '4px solid transparent',
+                              borderRight: '6px solid rgba(16, 185, 129, 0.8)',
+                            }} />
+                            <div style={{
+                              width: '24px',
+                              height: '2px',
+                              background: 'linear-gradient(90deg, rgba(218, 14, 41, 0.8), rgba(16, 185, 129, 0.8))',
+                              animation: 'flowLeft 1.5s ease-in-out infinite',
+                            }} />
+                          </div>
+                        </div>
+
+                        {/* RIGHT: Local Tokens Panel */}
+                        <div style={{
+                          flex: 1,
+                          padding: '1rem',
+                          borderRadius: '12px',
+                          background: 'rgba(218, 14, 41, 0.08)',
+                          border: '1px solid rgba(218, 14, 41, 0.3)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '0.5rem',
+                        }}>
+                          <span style={{
+                            fontSize: '0.625rem',
+                            fontWeight: '700',
+                            color: 'rgb(218, 14, 41)',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.1em',
+                            marginBottom: '0.25rem',
+                          }}>Local Tokens</span>
+                          {/* Token Cards with Status */}
+                          {[
+                            { color: '#3B82F6', name: 'color/primary', matched: true },
+                            { color: '#8B5CF6', name: 'typography/heading-1', matched: false },
+                            { color: '#10B981', name: 'spacing/large', matched: true },
+                          ].map((token, i) => (
+                            <div key={i} style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '0.5rem',
+                              padding: '0.375rem 0.5rem',
+                              borderRadius: '6px',
+                              background: token.matched ? 'rgba(16, 185, 129, 0.1)' : 'rgba(251, 146, 60, 0.1)',
+                              border: token.matched ? '1px solid rgba(16, 185, 129, 0.3)' : '1px dashed rgba(251, 146, 60, 0.5)',
+                              animation: `slideInRight 0.4s ease-out ${i * 0.1}s both`,
+                            }}>
+                              <div style={{
+                                width: '8px',
+                                height: '8px',
+                                borderRadius: '50%',
+                                background: token.color,
+                                boxShadow: `0 0 8px ${token.color}`,
+                              }} />
+                              <span style={{
+                                fontSize: '0.625rem',
+                                color: 'var(--text-60)',
+                                fontFamily: 'monospace',
+                                flex: 1,
+                              }}>{token.name}</span>
+                              <span style={{
+                                fontSize: '0.625rem',
+                                color: token.matched ? 'rgb(16, 185, 129)' : 'rgb(251, 146, 60)',
+                              }}>{token.matched ? '✓' : '!'}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Bottom Stats Bar */}
+                      <div style={{
+                        position: 'absolute',
+                        bottom: '1rem',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1.5rem',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '100px',
+                        background: 'rgba(0, 0, 0, 0.4)',
+                        backdropFilter: 'blur(10px)',
+                        border: '1px solid var(--glass-10)',
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                          <span style={{ fontSize: '0.875rem', fontWeight: '700', color: 'rgb(16, 185, 129)' }}>195</span>
+                          <span style={{ fontSize: '0.625rem', color: 'var(--text-40)' }}>matched</span>
+                        </div>
+                        <div style={{ width: '1px', height: '16px', background: 'var(--glass-15)' }} />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                          <span style={{ fontSize: '0.875rem', fontWeight: '700', color: 'rgb(251, 146, 60)' }}>79</span>
+                          <span style={{ fontSize: '0.625rem', color: 'var(--text-40)' }}>suggested</span>
+                        </div>
+                        <div style={{ width: '1px', height: '16px', background: 'var(--glass-15)' }} />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                          <span style={{ fontSize: '0.875rem', fontWeight: '700', color: 'rgb(218, 14, 41)' }}>71%</span>
+                          <span style={{ fontSize: '0.625rem', color: 'var(--text-40)' }}>compliant</span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    /* Default Image Placeholder for other cards */
+                    <div style={{
+                      width: '100%',
+                      aspectRatio: '16 / 9',
+                      borderRadius: '16px',
+                      background: `linear-gradient(135deg, rgba(${project.color}, 0.08), var(--glass-06))`,
+                      border: `2px dashed rgba(${project.color}, 0.25)`,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.75rem',
+                      position: 'relative',
+                      overflow: 'hidden',
                     }}>
-                      16:9 aspect ratio recommended
-                    </span>
-                  </div>
+                      <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: `radial-gradient(ellipse at center, rgba(${project.color}, 0.05), transparent 70%)`,
+                        pointerEvents: 'none',
+                      }} />
+                      <Camera size={32} style={{ color: `rgba(${project.color}, 0.5)` }} />
+                      <span style={{
+                        fontSize: '0.875rem',
+                        color: 'var(--text-40)',
+                        fontWeight: '500',
+                      }}>
+                        Add {project.title} Screenshot
+                      </span>
+                      <span style={{
+                        fontSize: '0.75rem',
+                        color: 'var(--text-25)',
+                      }}>
+                        16:9 aspect ratio recommended
+                      </span>
+                    </div>
+                  )}
 
                   {/* Full Narrative Description */}
                   <p style={{
