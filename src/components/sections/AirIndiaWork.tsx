@@ -2350,7 +2350,7 @@ export function AirIndiaWork() {
                     </div>
                     </>
                   ) : index === 1 ? (
-                    /* DESIGN SYSTEM & TOKENISATION - Interactive Token Architecture Visualization */
+                    /* DESIGN SYSTEM & TOKENISATION - 6-Column Atomic Token Architecture */
                     <>
                     {/* Interactive Prototype Helper */}
                     <div style={{
@@ -2358,13 +2358,13 @@ export function AirIndiaWork() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       gap: '8px',
-                      marginBottom: '12px',
+                      marginBottom: '16px',
                       padding: '8px 16px',
                       background: 'rgba(99, 102, 241, 0.1)',
                       borderRadius: '20px',
                       border: '1px solid rgba(99, 102, 241, 0.2)',
                       width: 'fit-content',
-                      margin: '0 auto 12px',
+                      margin: '0 auto 16px',
                     }}>
                       <span style={{
                         width: '6px',
@@ -2378,669 +2378,342 @@ export function AirIndiaWork() {
                         color: 'rgba(255, 255, 255, 0.7)',
                         fontWeight: '500',
                       }}>
-                        Interactive Prototype
+                        Atomic Token Architecture
                       </span>
                       <span style={{
                         fontSize: '10px',
                         color: 'rgba(255, 255, 255, 0.4)',
                       }}>
-                        — Click &quot;Apply Token&quot; to see cascade flow
+                        — Click &quot;Apply Cascade&quot; to see token flow
                       </span>
                     </div>
+
+                    {/* 6-Column Atomic Token Grid */}
                     <div style={{
                       width: '100%',
-                      maxWidth: '1100px',
+                      maxWidth: '1200px',
                       margin: '0 auto',
                       display: 'grid',
-                      gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-                      gap: '24px',
+                      gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(6, 1fr)',
+                      gap: isMobile ? '12px' : '16px',
                       padding: '8px',
                       fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                       fontSize: '11px',
                     }}>
-                      {/* ======== LEFT PANEL: Token Library ======== */}
+                      {/* Column 1: Primitives */}
                       <div style={{
-                        background: '#2C2C2C',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        background: '#1A1A1A',
+                        borderRadius: '12px',
+                        border: `1px solid ${['global', 'alias', 'component', 'complete'].includes(tokenPhase) ? 'rgba(48, 209, 88, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
                         overflow: 'hidden',
+                        transition: 'all 0.4s ease',
+                        boxShadow: tokenPhase === 'global' ? '0 0 20px rgba(48, 209, 88, 0.2)' : 'none',
                       }}>
-                        {/* Panel Header */}
                         <div style={{
-                          background: '#1E1E1E',
-                          padding: '8px 12px',
-                          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
+                          background: 'rgba(48, 209, 88, 0.1)',
+                          padding: '10px 12px',
+                          borderBottom: '1px solid rgba(48, 209, 88, 0.2)',
                         }}>
+                          <div style={{ fontSize: '9px', color: '#30D158', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Primitives</div>
+                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Raw Values</div>
+                        </div>
+                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{
-                              width: '16px',
-                              height: '16px',
-                              borderRadius: '4px',
-                              background: '#6366F1',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                            }}>
-                              <span style={{ fontSize: '10px', color: 'white', fontWeight: '700' }}>T</span>
-                            </div>
-                            <span style={{
-                              fontSize: '11px',
-                              fontWeight: '600',
-                              color: 'rgba(255, 255, 255, 0.9)',
-                            }}>Token Library</span>
+                            <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: '#DA0E29' }} />
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)', fontFamily: 'SF Mono, Monaco, monospace' }}>red-500</span>
                           </div>
-                          <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>4 categories</span>
-                        </div>
-
-                        {/* Token Categories */}
-                        <div style={{ padding: '8px' }}>
-                          {/* Colors Category */}
-                          <div style={{
-                            background: '#1E1E1E',
-                            borderRadius: '6px',
-                            marginBottom: '6px',
-                            overflow: 'hidden',
-                          }}>
-                            <div
-                              onClick={() => setExpandedCategory(expandedCategory === 'Colors' ? null : 'Colors')}
-                              style={{
-                                padding: '8px 10px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                cursor: 'pointer',
-                                background: expandedCategory === 'Colors' ? 'rgba(99, 102, 241, 0.1)' : 'transparent',
-                                transition: 'background 0.15s ease',
-                              }}
-                            >
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>
-                                  {expandedCategory === 'Colors' ? '▼' : '▶'}
-                                </span>
-                                <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.9)', fontWeight: '500' }}>Colors</span>
-                              </div>
-                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>4 tokens</span>
-                            </div>
-                            {expandedCategory === 'Colors' && (
-                              <div style={{ padding: '4px 10px 8px 28px' }}>
-                                {[
-                                  { name: 'primary-500', value: '#DA0E29', color: '#DA0E29' },
-                                  { name: 'primary-400', value: '#E83A50', color: '#E83A50' },
-                                  { name: 'neutral-100', value: '#F5F5F5', color: '#F5F5F5' },
-                                  { name: 'neutral-900', value: '#1A1A1A', color: '#1A1A1A' },
-                                ].map((token) => (
-                                  <div key={token.name} style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '8px',
-                                    padding: '4px 0',
-                                  }}>
-                                    <div style={{
-                                      width: '12px',
-                                      height: '12px',
-                                      borderRadius: '3px',
-                                      background: token.color,
-                                      border: token.color === '#1A1A1A' ? '1px solid rgba(255,255,255,0.2)' : 'none',
-                                    }} />
-                                    <span style={{
-                                      fontSize: '10px',
-                                      color: 'rgba(255, 255, 255, 0.7)',
-                                      fontFamily: 'SF Mono, Monaco, Consolas, monospace',
-                                    }}>{token.name}</span>
-                                    <span style={{
-                                      fontSize: '9px',
-                                      color: 'rgba(255, 255, 255, 0.4)',
-                                      marginLeft: 'auto',
-                                    }}>{token.value}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: '#0D99FF' }} />
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)', fontFamily: 'SF Mono, Monaco, monospace' }}>blue-500</span>
                           </div>
-
-                          {/* Typography Category */}
-                          <div style={{
-                            background: '#1E1E1E',
-                            borderRadius: '6px',
-                            marginBottom: '6px',
-                          }}>
-                            <div
-                              onClick={() => setExpandedCategory(expandedCategory === 'Typography' ? null : 'Typography')}
-                              style={{
-                                padding: '8px 10px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                cursor: 'pointer',
-                                background: expandedCategory === 'Typography' ? 'rgba(99, 102, 241, 0.1)' : 'transparent',
-                                transition: 'background 0.15s ease',
-                              }}
-                            >
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>
-                                  {expandedCategory === 'Typography' ? '▼' : '▶'}
-                                </span>
-                                <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.9)', fontWeight: '500' }}>Typography</span>
-                              </div>
-                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>2 tokens</span>
-                            </div>
-                            {expandedCategory === 'Typography' && (
-                              <div style={{ padding: '4px 10px 8px 28px' }}>
-                                {[
-                                  { name: 'heading-xl', value: '32px/1.2' },
-                                  { name: 'body-md', value: '16px/1.5' },
-                                ].map((token) => (
-                                  <div key={token.name} style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '8px',
-                                    padding: '4px 0',
-                                  }}>
-                                    <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)' }}>Aa</span>
-                                    <span style={{
-                                      fontSize: '10px',
-                                      color: 'rgba(255, 255, 255, 0.7)',
-                                      fontFamily: 'SF Mono, Monaco, Consolas, monospace',
-                                    }}>{token.name}</span>
-                                    <span style={{
-                                      fontSize: '9px',
-                                      color: 'rgba(255, 255, 255, 0.4)',
-                                      marginLeft: 'auto',
-                                    }}>{token.value}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: '#30D158' }} />
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)', fontFamily: 'SF Mono, Monaco, monospace' }}>green-500</span>
                           </div>
-
-                          {/* Spacing Category */}
-                          <div style={{
-                            background: '#1E1E1E',
-                            borderRadius: '6px',
-                            marginBottom: '6px',
-                          }}>
-                            <div
-                              onClick={() => setExpandedCategory(expandedCategory === 'Spacing' ? null : 'Spacing')}
-                              style={{
-                                padding: '8px 10px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                cursor: 'pointer',
-                                background: expandedCategory === 'Spacing' ? 'rgba(99, 102, 241, 0.1)' : 'transparent',
-                                transition: 'background 0.15s ease',
-                              }}
-                            >
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>
-                                  {expandedCategory === 'Spacing' ? '▼' : '▶'}
-                                </span>
-                                <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.9)', fontWeight: '500' }}>Spacing</span>
-                              </div>
-                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>2 tokens</span>
-                            </div>
-                            {expandedCategory === 'Spacing' && (
-                              <div style={{ padding: '4px 10px 8px 28px' }}>
-                                {[
-                                  { name: 'space-4', value: '16px' },
-                                  { name: 'space-8', value: '32px' },
-                                ].map((token) => (
-                                  <div key={token.name} style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '8px',
-                                    padding: '4px 0',
-                                  }}>
-                                    <div style={{
-                                      width: '12px',
-                                      height: '4px',
-                                      background: 'rgba(99, 102, 241, 0.5)',
-                                      borderRadius: '1px',
-                                    }} />
-                                    <span style={{
-                                      fontSize: '10px',
-                                      color: 'rgba(255, 255, 255, 0.7)',
-                                      fontFamily: 'SF Mono, Monaco, Consolas, monospace',
-                                    }}>{token.name}</span>
-                                    <span style={{
-                                      fontSize: '9px',
-                                      color: 'rgba(255, 255, 255, 0.4)',
-                                      marginLeft: 'auto',
-                                    }}>{token.value}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: '#1E1E1E', border: '1px solid rgba(255,255,255,0.2)' }} />
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)', fontFamily: 'SF Mono, Monaco, monospace' }}>gray-900</span>
                           </div>
-
-                          {/* Border Radius Category */}
-                          <div style={{
-                            background: '#1E1E1E',
-                            borderRadius: '6px',
-                          }}>
-                            <div
-                              onClick={() => setExpandedCategory(expandedCategory === 'Border Radius' ? null : 'Border Radius')}
-                              style={{
-                                padding: '8px 10px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                cursor: 'pointer',
-                                background: expandedCategory === 'Border Radius' ? 'rgba(99, 102, 241, 0.1)' : 'transparent',
-                                transition: 'background 0.15s ease',
-                              }}
-                            >
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>
-                                  {expandedCategory === 'Border Radius' ? '▼' : '▶'}
-                                </span>
-                                <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.9)', fontWeight: '500' }}>Border Radius</span>
-                              </div>
-                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>2 tokens</span>
-                            </div>
-                            {expandedCategory === 'Border Radius' && (
-                              <div style={{ padding: '4px 10px 8px 28px' }}>
-                                {[
-                                  { name: 'radius-sm', value: '4px' },
-                                  { name: 'radius-lg', value: '12px' },
-                                ].map((token) => (
-                                  <div key={token.name} style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '8px',
-                                    padding: '4px 0',
-                                  }}>
-                                    <div style={{
-                                      width: '12px',
-                                      height: '12px',
-                                      border: '2px solid rgba(99, 102, 241, 0.5)',
-                                      borderRadius: token.name === 'radius-sm' ? '2px' : '4px',
-                                    }} />
-                                    <span style={{
-                                      fontSize: '10px',
-                                      color: 'rgba(255, 255, 255, 0.7)',
-                                      fontFamily: 'SF Mono, Monaco, Consolas, monospace',
-                                    }}>{token.name}</span>
-                                    <span style={{
-                                      fontSize: '9px',
-                                      color: 'rgba(255, 255, 255, 0.4)',
-                                      marginLeft: 'auto',
-                                    }}>{token.value}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Stats and Apply Button */}
-                        <div style={{ padding: '8px 12px 12px' }}>
-                          <div style={{
-                            background: '#1E1E1E',
-                            borderRadius: '6px',
-                            padding: '10px 12px',
-                            marginBottom: '10px',
-                          }}>
-                            <div style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'space-between',
-                              marginBottom: '8px',
-                            }}>
-                              <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.9)', fontWeight: '500' }}>
-                                4 Airlines Unified
-                              </span>
-                              <span style={{
-                                fontSize: '11px',
-                                fontWeight: '600',
-                                color: tokenPhase === 'complete' ? '#30D158' : 'rgba(255, 255, 255, 0.4)',
-                              }}>
-                                {tokenPhase === 'complete' ? '100%' : '—'}
-                              </span>
-                            </div>
-                            <div style={{
-                              height: '4px',
-                              background: 'rgba(255, 255, 255, 0.1)',
-                              borderRadius: '2px',
-                              overflow: 'hidden',
-                            }}>
-                              <div style={{
-                                width: tokenPhase === 'complete' ? '100%' : '0%',
-                                height: '100%',
-                                background: '#6366F1',
-                                borderRadius: '2px',
-                                transition: 'width 0.6s cubic-bezier(0.2, 0, 0, 1)',
-                              }} />
-                            </div>
-                          </div>
-
-                          {/* Apply Token Button */}
-                          <button
-                            onClick={() => {
-                              if (isApplyingToken) return;
-                              setIsApplyingToken(true);
-                              setTokenPhase('global');
-
-                              // Phase 2: Alias (after 400ms)
-                              setTimeout(() => setTokenPhase('alias'), 400);
-
-                              // Phase 3: Component (after 800ms)
-                              setTimeout(() => setTokenPhase('component'), 800);
-
-                              // Phase 4: Complete (after 1200ms)
-                              setTimeout(() => {
-                                setTokenPhase('complete');
-                                setIsApplyingToken(false);
-                              }, 1200);
-                            }}
-                            style={{
-                              width: '100%',
-                              background: isApplyingToken ? '#1E1E1E' : '#6366F1',
-                              color: 'white',
-                              border: isApplyingToken ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
-                              borderRadius: '6px',
-                              padding: '8px 16px',
-                              fontSize: '11px',
-                              fontWeight: '500',
-                              cursor: isApplyingToken ? 'not-allowed' : 'pointer',
-                              transition: 'all 0.15s ease',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              gap: '8px',
-                            }}
-                            onMouseEnter={(e) => !isApplyingToken && (e.currentTarget.style.background = '#5558E3')}
-                            onMouseLeave={(e) => !isApplyingToken && (e.currentTarget.style.background = '#6366F1')}
-                          >
-                            {isApplyingToken ? (
-                              <>
-                                <div style={{
-                                  width: '12px',
-                                  height: '12px',
-                                  borderRadius: '50%',
-                                  border: '2px solid rgba(255, 255, 255, 0.2)',
-                                  borderTopColor: 'rgba(255, 255, 255, 0.9)',
-                                  animation: 'spin 0.8s linear infinite',
-                                }} />
-                                <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Applying...</span>
-                              </>
-                            ) : (
-                              <span>Apply Token</span>
-                            )}
-                          </button>
                         </div>
                       </div>
 
-                      {/* ======== RIGHT PANEL: Token Cascade Flow ======== */}
+                      {/* Column 2: Colors (Semantic) */}
                       <div style={{
-                        background: '#2C2C2C',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        background: '#1A1A1A',
+                        borderRadius: '12px',
+                        border: `1px solid ${['alias', 'component', 'complete'].includes(tokenPhase) ? 'rgba(218, 14, 41, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
                         overflow: 'hidden',
-                        display: isMobile ? 'none' : 'block',
+                        transition: 'all 0.4s ease',
+                        transitionDelay: '0.1s',
+                        boxShadow: tokenPhase === 'alias' ? '0 0 20px rgba(218, 14, 41, 0.2)' : 'none',
                       }}>
-                        {/* Panel Header */}
                         <div style={{
-                          background: '#1E1E1E',
-                          padding: '8px 12px',
-                          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                          background: 'rgba(218, 14, 41, 0.1)',
+                          padding: '10px 12px',
+                          borderBottom: '1px solid rgba(218, 14, 41, 0.2)',
+                        }}>
+                          <div style={{ fontSize: '9px', color: '#DA0E29', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Colors</div>
+                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Semantic</div>
+                        </div>
+                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>brand.primary</span>
+                            <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#DA0E29' }} />
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>brand.accent</span>
+                            <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#0D99FF' }} />
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>feedback.success</span>
+                            <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#30D158' }} />
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>bg.surface</span>
+                            <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#1E1E1E', border: '1px solid rgba(255,255,255,0.2)' }} />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Column 3: Typography */}
+                      <div style={{
+                        background: '#1A1A1A',
+                        borderRadius: '12px',
+                        border: `1px solid ${['alias', 'component', 'complete'].includes(tokenPhase) ? 'rgba(162, 89, 255, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
+                        overflow: 'hidden',
+                        transition: 'all 0.4s ease',
+                        transitionDelay: '0.2s',
+                        boxShadow: tokenPhase === 'alias' ? '0 0 20px rgba(162, 89, 255, 0.2)' : 'none',
+                      }}>
+                        <div style={{
+                          background: 'rgba(162, 89, 255, 0.1)',
+                          padding: '10px 12px',
+                          borderBottom: '1px solid rgba(162, 89, 255, 0.2)',
+                        }}>
+                          <div style={{ fontSize: '9px', color: '#A259FF', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Typography</div>
+                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Font Tokens</div>
+                        </div>
+                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                          <div>
+                            <div style={{ fontSize: '14px', fontWeight: '700', color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.2 }}>Heading</div>
+                            <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', marginTop: '2px' }}>24/32 · Bold</div>
+                          </div>
+                          <div>
+                            <div style={{ fontSize: '11px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.8)' }}>Body Text</div>
+                            <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', marginTop: '2px' }}>14/20 · Regular</div>
+                          </div>
+                          <div>
+                            <div style={{ fontSize: '10px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.6)' }}>Caption</div>
+                            <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', marginTop: '2px' }}>12/16 · Medium</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Column 4: Spacing */}
+                      <div style={{
+                        background: '#1A1A1A',
+                        borderRadius: '12px',
+                        border: `1px solid ${['component', 'complete'].includes(tokenPhase) ? 'rgba(13, 153, 255, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
+                        overflow: 'hidden',
+                        transition: 'all 0.4s ease',
+                        transitionDelay: '0.3s',
+                        boxShadow: tokenPhase === 'component' ? '0 0 20px rgba(13, 153, 255, 0.2)' : 'none',
+                      }}>
+                        <div style={{
+                          background: 'rgba(13, 153, 255, 0.1)',
+                          padding: '10px 12px',
+                          borderBottom: '1px solid rgba(13, 153, 255, 0.2)',
+                        }}>
+                          <div style={{ fontSize: '9px', color: '#0D99FF', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Spacing</div>
+                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Scale System</div>
+                        </div>
+                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '4px', height: '12px', background: '#0D99FF', borderRadius: '2px' }} />
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'SF Mono, Monaco, monospace' }}>space-1</span>
+                            <span style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>4px</span>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '8px', height: '12px', background: '#0D99FF', borderRadius: '2px' }} />
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'SF Mono, Monaco, monospace' }}>space-2</span>
+                            <span style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>8px</span>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '16px', height: '12px', background: '#0D99FF', borderRadius: '2px' }} />
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'SF Mono, Monaco, monospace' }}>space-4</span>
+                            <span style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>16px</span>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '24px', height: '12px', background: '#0D99FF', borderRadius: '2px' }} />
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'SF Mono, Monaco, monospace' }}>space-6</span>
+                            <span style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>24px</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Column 5: Border & Radius */}
+                      <div style={{
+                        background: '#1A1A1A',
+                        borderRadius: '12px',
+                        border: `1px solid ${['component', 'complete'].includes(tokenPhase) ? 'rgba(255, 159, 10, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
+                        overflow: 'hidden',
+                        transition: 'all 0.4s ease',
+                        transitionDelay: '0.4s',
+                        boxShadow: tokenPhase === 'component' ? '0 0 20px rgba(255, 159, 10, 0.2)' : 'none',
+                      }}>
+                        <div style={{
+                          background: 'rgba(255, 159, 10, 0.1)',
+                          padding: '10px 12px',
+                          borderBottom: '1px solid rgba(255, 159, 10, 0.2)',
+                        }}>
+                          <div style={{ fontSize: '9px', color: '#FF9F0A', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Border</div>
+                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Radius & Stroke</div>
+                        </div>
+                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <div style={{ width: '20px', height: '20px', background: 'transparent', border: '2px solid #FF9F0A', borderRadius: '4px' }} />
+                            <div>
+                              <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)' }}>radius-sm</div>
+                              <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>4px</div>
+                            </div>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <div style={{ width: '20px', height: '20px', background: 'transparent', border: '2px solid #FF9F0A', borderRadius: '8px' }} />
+                            <div>
+                              <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)' }}>radius-md</div>
+                              <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>8px</div>
+                            </div>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <div style={{ width: '20px', height: '20px', background: 'transparent', border: '2px solid #FF9F0A', borderRadius: '12px' }} />
+                            <div>
+                              <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)' }}>radius-lg</div>
+                              <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>12px</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Column 6: Components */}
+                      <div style={{
+                        background: '#1A1A1A',
+                        borderRadius: '12px',
+                        border: `1px solid ${tokenPhase === 'complete' ? 'rgba(236, 72, 153, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
+                        overflow: 'hidden',
+                        transition: 'all 0.4s ease',
+                        transitionDelay: '0.5s',
+                        boxShadow: tokenPhase === 'complete' ? '0 0 20px rgba(236, 72, 153, 0.2)' : 'none',
+                      }}>
+                        <div style={{
+                          background: 'rgba(236, 72, 153, 0.1)',
+                          padding: '10px 12px',
+                          borderBottom: '1px solid rgba(236, 72, 153, 0.2)',
+                        }}>
+                          <div style={{ fontSize: '9px', color: '#EC4899', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Components</div>
+                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Applied Tokens</div>
+                        </div>
+                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                          {/* Mini Button Preview */}
+                          <div style={{
+                            background: tokenPhase === 'complete' ? '#DA0E29' : '#2C2C2C',
+                            padding: '6px 12px',
+                            borderRadius: '6px',
+                            textAlign: 'center',
+                            fontSize: '10px',
+                            fontWeight: '600',
+                            color: tokenPhase === 'complete' ? 'white' : 'rgba(255, 255, 255, 0.5)',
+                            transition: 'all 0.4s ease',
+                          }}>
+                            Button
+                          </div>
+                          {/* Mini Card Preview */}
+                          <div style={{
+                            background: tokenPhase === 'complete' ? '#1E1E1E' : '#2C2C2C',
+                            padding: '8px',
+                            borderRadius: tokenPhase === 'complete' ? '8px' : '4px',
+                            border: tokenPhase === 'complete' ? '1px solid rgba(218, 14, 41, 0.2)' : '1px solid rgba(255, 255, 255, 0.1)',
+                            transition: 'all 0.4s ease',
+                          }}>
+                            <div style={{ width: '100%', height: '4px', background: tokenPhase === 'complete' ? '#DA0E29' : 'rgba(255, 255, 255, 0.2)', borderRadius: '2px', marginBottom: '4px' }} />
+                            <div style={{ width: '70%', height: '3px', background: 'rgba(255, 255, 255, 0.15)', borderRadius: '2px' }} />
+                          </div>
+                          {/* Mini Input Preview */}
+                          <div style={{
+                            background: '#2C2C2C',
+                            padding: '6px 8px',
+                            borderRadius: tokenPhase === 'complete' ? '6px' : '4px',
+                            border: tokenPhase === 'complete' ? '1px solid rgba(13, 153, 255, 0.3)' : '1px solid rgba(255, 255, 255, 0.1)',
+                            fontSize: '9px',
+                            color: 'rgba(255, 255, 255, 0.4)',
+                            transition: 'all 0.4s ease',
+                          }}>
+                            Input field...
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Apply Cascade Button & Status */}
+                    <div style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '12px',
+                      marginTop: '20px',
+                    }}>
+                      <button
+                        onClick={() => {
+                          if (tokenPhase === 'idle' || tokenPhase === 'complete') {
+                            setTokenPhase('global');
+                            setTimeout(() => setTokenPhase('alias'), 600);
+                            setTimeout(() => setTokenPhase('component'), 1200);
+                            setTimeout(() => setTokenPhase('complete'), 1800);
+                          }
+                        }}
+                        style={{
+                          background: tokenPhase === 'complete' ? 'rgba(48, 209, 88, 0.2)' : 'rgba(99, 102, 241, 0.2)',
+                          border: `1px solid ${tokenPhase === 'complete' ? 'rgba(48, 209, 88, 0.4)' : 'rgba(99, 102, 241, 0.4)'}`,
+                          borderRadius: '8px',
+                          padding: '10px 24px',
+                          color: tokenPhase === 'complete' ? '#30D158' : '#818CF8',
+                          fontSize: '12px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
                           display: 'flex',
                           alignItems: 'center',
                           gap: '8px',
-                        }}>
-                          <div style={{
-                            width: '16px',
-                            height: '16px',
-                            borderRadius: '4px',
-                            background: 'rgba(162, 89, 255, 0.2)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}>
-                            <span style={{ fontSize: '10px', color: '#A259FF' }}>⚡</span>
-                          </div>
-                          <span style={{
-                            fontSize: '11px',
-                            fontWeight: '600',
-                            color: 'rgba(255, 255, 255, 0.9)',
-                          }}>Token Cascade Flow</span>
-                        </div>
+                        }}
+                      >
+                        <span style={{
+                          width: '6px',
+                          height: '6px',
+                          borderRadius: '50%',
+                          background: tokenPhase === 'complete' ? '#30D158' : '#6366F1',
+                          animation: tokenPhase !== 'idle' && tokenPhase !== 'complete' ? 'statusPulse 1s ease infinite' : 'none',
+                        }} />
+                        {tokenPhase === 'idle' && 'Apply Cascade'}
+                        {tokenPhase === 'global' && 'Reading primitives...'}
+                        {tokenPhase === 'alias' && 'Mapping semantics...'}
+                        {tokenPhase === 'component' && 'Applying to components...'}
+                        {tokenPhase === 'complete' && 'Cascade Complete ✓'}
+                      </button>
 
-                        {/* Cascade Visualization */}
-                        <div style={{ padding: '16px', position: 'relative', minHeight: '280px' }}>
-                          {/* SVG Connections */}
-                          <svg
-                            viewBox="0 0 100 100"
-                            preserveAspectRatio="none"
-                            style={{
-                              position: 'absolute',
-                              top: '16px',
-                              left: '16px',
-                              width: 'calc(100% - 32px)',
-                              height: 'calc(100% - 80px)',
-                              pointerEvents: 'none',
-                              zIndex: 0,
-                            }}
-                          >
-                            <defs>
-                              <filter id="tokenGlow" x="-50%" y="-50%" width="200%" height="200%">
-                                <feGaussianBlur stdDeviation="2" result="blur" />
-                                <feMerge>
-                                  <feMergeNode in="blur" />
-                                  <feMergeNode in="SourceGraphic" />
-                                </feMerge>
-                              </filter>
-                              <marker
-                                id="arrowhead-token"
-                                markerWidth="6"
-                                markerHeight="5"
-                                refX="5"
-                                refY="2.5"
-                                orient="auto"
-                              >
-                                <polygon
-                                  points="0 0, 6 2.5, 0 5"
-                                  fill={tokenPhase !== 'idle' ? '#6366F1' : 'rgba(255, 255, 255, 0.2)'}
-                                  style={{ transition: 'fill 0.3s ease' }}
-                                />
-                              </marker>
-                            </defs>
-
-                            {/* Global → Alias connection */}
-                            <path
-                              d="M 50 22 L 50 42"
-                              fill="none"
-                              stroke={['global', 'alias', 'component', 'complete'].includes(tokenPhase) ? 'rgba(48, 209, 88, 0.6)' : 'rgba(255, 255, 255, 0.1)'}
-                              strokeWidth="1"
-                              strokeDasharray="4 2"
-                              markerEnd="url(#arrowhead-token)"
-                              filter={tokenPhase === 'alias' ? 'url(#tokenGlow)' : 'none'}
-                              style={{
-                                transition: 'stroke 0.3s ease',
-                                animation: tokenPhase === 'alias' ? 'flowLine 1s linear infinite' : 'none',
-                              }}
-                            />
-
-                            {/* Alias → Component connection */}
-                            <path
-                              d="M 50 58 L 50 78"
-                              fill="none"
-                              stroke={['alias', 'component', 'complete'].includes(tokenPhase) ? 'rgba(13, 153, 255, 0.6)' : 'rgba(255, 255, 255, 0.1)'}
-                              strokeWidth="1"
-                              strokeDasharray="4 2"
-                              markerEnd="url(#arrowhead-token)"
-                              filter={tokenPhase === 'component' ? 'url(#tokenGlow)' : 'none'}
-                              style={{
-                                transition: 'stroke 0.3s ease',
-                                animation: tokenPhase === 'component' ? 'flowLine 1s linear infinite' : 'none',
-                              }}
-                            />
-
-                            {/* Data packets */}
-                            {tokenPhase === 'alias' && (
-                              <circle r="2" fill="#30D158" style={{
-                                offsetPath: "path('M 50 22 L 50 42')",
-                                animation: 'movePacket 0.6s ease-in-out infinite',
-                              }}>
-                                <animate attributeName="opacity" values="0;1;1;0" dur="0.6s" repeatCount="indefinite" />
-                              </circle>
-                            )}
-                            {tokenPhase === 'component' && (
-                              <circle r="2" fill="#0D99FF" style={{
-                                offsetPath: "path('M 50 58 L 50 78')",
-                                animation: 'movePacket 0.6s ease-in-out infinite',
-                              }}>
-                                <animate attributeName="opacity" values="0;1;1;0" dur="0.6s" repeatCount="indefinite" />
-                              </circle>
-                            )}
-                          </svg>
-
-                          {/* Tier Boxes */}
-                          <div style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: '24px',
-                            position: 'relative',
-                            zIndex: 1,
-                          }}>
-                            {/* GLOBAL Tier */}
-                            <div style={{
-                              background: '#1E1E1E',
-                              border: `1px solid ${['global', 'alias', 'component', 'complete'].includes(tokenPhase) ? 'rgba(48, 209, 88, 0.4)' : 'rgba(255, 255, 255, 0.1)'}`,
-                              borderRadius: '8px',
-                              padding: '12px 20px',
-                              minWidth: '140px',
-                              textAlign: 'center',
-                              transition: 'all 0.3s ease',
-                              boxShadow: tokenPhase === 'global'
-                                ? '0 0 8px rgba(48, 209, 88, 0.3), 0 0 16px rgba(48, 209, 88, 0.15)'
-                                : 'none',
-                            }}>
-                              <div style={{
-                                fontSize: '9px',
-                                color: '#30D158',
-                                fontWeight: '600',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.1em',
-                                marginBottom: '4px',
-                              }}>GLOBAL</div>
-                              <div style={{
-                                fontSize: '11px',
-                                color: 'rgba(255, 255, 255, 0.9)',
-                                fontFamily: 'SF Mono, Monaco, Consolas, monospace',
-                              }}>red-500</div>
-                              <div style={{
-                                fontSize: '9px',
-                                color: 'rgba(255, 255, 255, 0.4)',
-                                marginTop: '2px',
-                              }}>#DA0E29</div>
-                            </div>
-
-                            {/* ALIAS Tier */}
-                            <div style={{
-                              background: '#1E1E1E',
-                              border: `1px solid ${['alias', 'component', 'complete'].includes(tokenPhase) ? 'rgba(13, 153, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)'}`,
-                              borderRadius: '8px',
-                              padding: '12px 20px',
-                              minWidth: '140px',
-                              textAlign: 'center',
-                              transition: 'all 0.3s ease',
-                              boxShadow: tokenPhase === 'alias'
-                                ? '0 0 8px rgba(13, 153, 255, 0.3), 0 0 16px rgba(13, 153, 255, 0.15)'
-                                : 'none',
-                            }}>
-                              <div style={{
-                                fontSize: '9px',
-                                color: '#0D99FF',
-                                fontWeight: '600',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.1em',
-                                marginBottom: '4px',
-                              }}>ALIAS</div>
-                              <div style={{
-                                fontSize: '11px',
-                                color: 'rgba(255, 255, 255, 0.9)',
-                                fontFamily: 'SF Mono, Monaco, Consolas, monospace',
-                              }}>brand.primary</div>
-                              <div style={{
-                                fontSize: '9px',
-                                color: 'rgba(255, 255, 255, 0.4)',
-                                marginTop: '2px',
-                              }}>→ red-500</div>
-                            </div>
-
-                            {/* COMPONENT Tier */}
-                            <div style={{
-                              background: '#1E1E1E',
-                              border: `1px solid ${['component', 'complete'].includes(tokenPhase) ? 'rgba(162, 89, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)'}`,
-                              borderRadius: '8px',
-                              padding: '12px 20px',
-                              minWidth: '140px',
-                              textAlign: 'center',
-                              transition: 'all 0.3s ease',
-                              boxShadow: tokenPhase === 'component'
-                                ? '0 0 8px rgba(162, 89, 255, 0.3), 0 0 16px rgba(162, 89, 255, 0.15)'
-                                : 'none',
-                            }}>
-                              <div style={{
-                                fontSize: '9px',
-                                color: '#A259FF',
-                                fontWeight: '600',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.1em',
-                                marginBottom: '4px',
-                              }}>COMPONENT</div>
-                              <div style={{
-                                fontSize: '11px',
-                                color: 'rgba(255, 255, 255, 0.9)',
-                                fontFamily: 'SF Mono, Monaco, Consolas, monospace',
-                              }}>button.bg</div>
-                              <div style={{
-                                fontSize: '9px',
-                                color: 'rgba(255, 255, 255, 0.4)',
-                                marginTop: '2px',
-                              }}>→ brand.primary</div>
-                            </div>
-                          </div>
-
-                          {/* Status Indicator */}
-                          <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '8px',
-                            marginTop: '16px',
-                          }}>
-                            <div style={{
-                              width: '6px',
-                              height: '6px',
-                              borderRadius: '50%',
-                              background: tokenPhase === 'idle' ? 'rgba(255, 255, 255, 0.3)'
-                                : tokenPhase === 'complete' ? '#30D158'
-                                : '#6366F1',
-                              boxShadow: tokenPhase !== 'idle'
-                                ? `0 0 8px ${tokenPhase === 'complete' ? '#30D158' : '#6366F1'}`
-                                : 'none',
-                              animation: tokenPhase !== 'idle' && tokenPhase !== 'complete' ? 'statusPulse 1s ease infinite' : 'none',
-                              transition: 'all 0.3s ease',
-                            }} />
-                            <span style={{
-                              fontSize: '10px',
-                              color: tokenPhase === 'complete' ? '#30D158' : 'rgba(255, 255, 255, 0.5)',
-                              transition: 'color 0.3s ease',
-                            }}>
-                              {tokenPhase === 'idle' && 'Ready to apply'}
-                              {tokenPhase === 'global' && 'Reading primitives...'}
-                              {tokenPhase === 'alias' && 'Mapping semantics...'}
-                              {tokenPhase === 'component' && 'Applying to components...'}
-                              {tokenPhase === 'complete' && 'Token cascade complete'}
-                            </span>
-                          </div>
-                        </div>
+                      {/* Flow Indicator */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        fontSize: '10px',
+                        color: 'rgba(255, 255, 255, 0.4)',
+                      }}>
+                        <span style={{ color: ['global', 'alias', 'component', 'complete'].includes(tokenPhase) ? '#30D158' : 'inherit' }}>Primitives</span>
+                        <span>→</span>
+                        <span style={{ color: ['alias', 'component', 'complete'].includes(tokenPhase) ? '#DA0E29' : 'inherit' }}>Semantic</span>
+                        <span>→</span>
+                        <span style={{ color: ['component', 'complete'].includes(tokenPhase) ? '#A259FF' : 'inherit' }}>Applied</span>
+                        <span>→</span>
+                        <span style={{ color: tokenPhase === 'complete' ? '#EC4899' : 'inherit' }}>Components</span>
                       </div>
                     </div>
                     </>
@@ -3137,56 +2810,29 @@ export function AirIndiaWork() {
                       </div>
                     </div>
                   ) : index === 1 ? (
+                    /* Full-width narrative text for Design System */
                     <div style={{
                       width: '100%',
                       maxWidth: '1100px',
                       margin: '0 auto',
-                      display: 'grid',
-                      gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-                      gap: '24px',
                       padding: '8px',
-                      alignItems: 'start',
                     }}>
-                      {/* Design System Image */}
-                      <div style={{
-                        width: '100%',
-                        aspectRatio: '4 / 3',
-                        borderRadius: '12px',
-                        overflow: 'hidden',
-                        background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(162, 89, 255, 0.15))',
+                      <p style={{
+                        fontSize: '0.938rem',
+                        color: 'var(--text-60)',
+                        lineHeight: 1.8,
+                        margin: '0 0 1rem 0',
                       }}>
-                        <img
-                          src="/images/design-system-author.jpeg"
-                          alt="Design System Architecture"
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                          }}
-                          onError={(e) => {
-                            e.currentTarget.style.display = 'none';
-                          }}
-                        />
-                      </div>
-                      {/* Text */}
-                      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
-                        <p style={{
-                          fontSize: '0.938rem',
-                          color: 'var(--text-60)',
-                          lineHeight: 1.8,
-                          margin: '0 0 1rem 0',
-                        }}>
-                          I started by reverse-engineering what existed. Hundreds of screens, undocumented, built over years by people who&apos;d since left. I extracted the implicit logic—spacing patterns, typography decisions, color usage—and codified it into a systematic token framework.
-                        </p>
-                        <p style={{
-                          fontSize: '0.938rem',
-                          color: 'var(--text-60)',
-                          lineHeight: 1.8,
-                          margin: 0,
-                        }}>
-                          This became the foundation that would let four merging airlines eventually speak the same design language. Variables, naming conventions, hierarchy—the infrastructure that makes consistency possible at scale.
-                        </p>
-                      </div>
+                        I started by reverse-engineering what existed. Hundreds of screens, undocumented, built over years by people who&apos;d since left. I extracted the implicit logic—spacing patterns, typography decisions, color usage—and codified it into a systematic token framework.
+                      </p>
+                      <p style={{
+                        fontSize: '0.938rem',
+                        color: 'var(--text-60)',
+                        lineHeight: 1.8,
+                        margin: 0,
+                      }}>
+                        This became the foundation that would let four merging airlines eventually speak the same design language. Variables, naming conventions, hierarchy—the infrastructure that makes consistency possible at scale.
+                      </p>
                     </div>
                   ) : (
                     <p style={{
