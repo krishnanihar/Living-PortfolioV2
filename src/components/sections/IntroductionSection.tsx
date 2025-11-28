@@ -314,7 +314,6 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
           display: 'flex',
           alignItems: 'center',
           zIndex: 1,
-          scrollSnapAlign: 'start',
         }}
       >
         {/* Centered Content Container */}

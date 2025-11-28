@@ -76,17 +76,14 @@ export default function HomePage() {
       {/* GPGPU Pattern Particles - Interactive particle formations with zoom scroll */}
       <HeroParticleSystem starOpacity={0.35} />
 
-      {/* Scroll-snap container for smooth section snapping */}
-      <div className="scroll-snap-container">
-        {/* Normal scrolling main content */}
-        <main id="main-content">
-          {/* Hero Section */}
-          <IntroductionSection />
+      {/* Normal scrolling main content */}
+      <main id="main-content">
+        {/* Hero Section */}
+        <IntroductionSection />
 
-          {/* Rest of page content */}
-          <AboutSectionV2 />
-        </main>
-      </div>
+        {/* Rest of page content */}
+        <AboutSectionV2 />
+      </main>
 
       {/* Floating chat button */}
       <FloatingChatButton onClick={() => setIsChatOpen(true)} />

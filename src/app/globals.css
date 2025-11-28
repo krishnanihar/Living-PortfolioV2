@@ -22,9 +22,9 @@ html {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   font-feature-settings: 'cv11', 'ss01';
   font-variation-settings: 'opsz' 32;
+  scroll-behavior: smooth;
   line-height: 1.6;
-  height: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 body {
@@ -34,20 +34,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  height: 100%;
-  overflow: hidden;
-}
-
-/* Dedicated scroll-snap container for reliable snapping */
-.scroll-snap-container {
-  position: fixed;
-  inset: 0;
-  overflow-y: scroll;
   overflow-x: hidden;
-  scroll-snap-type: y proximity;
-  scroll-padding-top: 60px;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
 }
 
 button {

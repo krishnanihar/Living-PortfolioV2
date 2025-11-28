@@ -88,7 +88,7 @@ export default function RootLayout({
       <body
         className={`
           ${inter.className}
-          antialiased
+          min-h-screen antialiased overflow-x-hidden
         `}
         style={{
           backgroundColor: 'var(--bg-primary)',
