@@ -480,6 +480,10 @@ export function AirIndiaWork() {
   const [hoveredOtherProject, setHoveredOtherProject] = useState<number | null>(null);
   const [hoveredCTA, setHoveredCTA] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  // Pixel Radar interactive states
+  const [pixelRadarStep, setPixelRadarStep] = useState(3); // 1, 2, or 3
+  const [hoveredToken, setHoveredToken] = useState<string | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // Refs for card intersection observers
@@ -1444,19 +1448,15 @@ export function AirIndiaWork() {
                 }}>
                   {/* Animated Illustration or Placeholder */}
                   {index === 0 ? (
-                    /* PIXEL RADAR - Animated Token Flow Illustration */
+                    /* PIXEL RADAR - Interactive Token Flow Illustration */
                     <div style={{
                       width: '100%',
-                      aspectRatio: '16 / 9',
                       borderRadius: '16px',
-                      background: 'linear-gradient(135deg, rgba(15, 15, 20, 0.9), rgba(25, 25, 35, 0.8))',
+                      background: 'linear-gradient(135deg, rgba(15, 15, 20, 0.95), rgba(25, 25, 35, 0.9))',
                       border: '1px solid rgba(218, 14, 41, 0.3)',
                       position: 'relative',
                       overflow: 'hidden',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      padding: '1.5rem',
+                      padding: '1.25rem',
                     }}>
                       {/* Background Grid Pattern */}
                       <div style={{
@@ -1466,247 +1466,433 @@ export function AirIndiaWork() {
                           linear-gradient(rgba(218, 14, 41, 0.03) 1px, transparent 1px),
                           linear-gradient(90deg, rgba(218, 14, 41, 0.03) 1px, transparent 1px)
                         `,
-                        backgroundSize: '30px 30px',
+                        backgroundSize: '24px 24px',
                         pointerEvents: 'none',
                       }} />
 
                       {/* Floating Glow Orbs */}
                       <div style={{
                         position: 'absolute',
-                        top: '20%',
-                        left: '15%',
-                        width: '100px',
-                        height: '100px',
-                        borderRadius: '50%',
-                        background: 'radial-gradient(circle, rgba(16, 185, 129, 0.15), transparent 70%)',
-                        filter: 'blur(30px)',
-                        animation: 'pulse 3s ease-in-out infinite',
-                      }} />
-                      <div style={{
-                        position: 'absolute',
-                        bottom: '20%',
-                        right: '15%',
+                        top: '10%',
+                        left: '10%',
                         width: '120px',
                         height: '120px',
                         borderRadius: '50%',
-                        background: 'radial-gradient(circle, rgba(218, 14, 41, 0.15), transparent 70%)',
-                        filter: 'blur(30px)',
-                        animation: 'pulse 3s ease-in-out infinite 1s',
+                        background: 'radial-gradient(circle, rgba(16, 185, 129, 0.12), transparent 70%)',
+                        filter: 'blur(40px)',
+                        animation: 'pulse 4s ease-in-out infinite',
+                        pointerEvents: 'none',
+                      }} />
+                      <div style={{
+                        position: 'absolute',
+                        bottom: '15%',
+                        right: '10%',
+                        width: '140px',
+                        height: '140px',
+                        borderRadius: '50%',
+                        background: 'radial-gradient(circle, rgba(218, 14, 41, 0.12), transparent 70%)',
+                        filter: 'blur(40px)',
+                        animation: 'pulse 4s ease-in-out infinite 1.5s',
+                        pointerEvents: 'none',
                       }} />
 
-                      {/* Main Content - Three Column Layout */}
+                      {/* HEADER: Title */}
                       <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        width: '100%',
-                        maxWidth: '700px',
-                        gap: '1rem',
                         position: 'relative',
                         zIndex: 2,
+                        textAlign: 'center',
+                        marginBottom: '1rem',
                       }}>
-                        {/* LEFT: Library Tokens Panel */}
-                        <div style={{
-                          flex: 1,
-                          padding: '1rem',
-                          borderRadius: '12px',
-                          background: 'rgba(16, 185, 129, 0.08)',
-                          border: '1px solid rgba(16, 185, 129, 0.3)',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: '0.5rem',
-                        }}>
-                          <span style={{
+                        <h4 style={{
+                          fontSize: '0.875rem',
+                          fontWeight: '700',
+                          color: 'var(--text-90)',
+                          letterSpacing: '-0.01em',
+                          margin: 0,
+                        }}>Design System Consistency Checker Workflow</h4>
+                      </div>
+
+                      {/* 3-STEP WORKFLOW HEADER */}
+                      <div style={{
+                        position: 'relative',
+                        zIndex: 2,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        marginBottom: '1.25rem',
+                      }}>
+                        {/* Step 1: Select Library */}
+                        <div
+                          onClick={() => { setPixelRadarStep(1); setIsAnalyzing(false); }}
+                          style={{
+                            padding: '0.625rem 0.875rem',
+                            borderRadius: '10px',
+                            background: pixelRadarStep >= 1 ? 'rgba(55, 55, 65, 0.8)' : 'rgba(35, 35, 45, 0.6)',
+                            border: `1px solid ${pixelRadarStep >= 1 ? 'rgba(218, 14, 41, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            minWidth: '130px',
+                          }}
+                        >
+                          <div style={{ fontSize: '0.625rem', fontWeight: '600', color: 'rgb(218, 14, 41)', marginBottom: '0.25rem' }}>
+                            1. Select Library
+                          </div>
+                          <div style={{
+                            padding: '0.375rem 0.5rem',
+                            background: 'rgba(0, 0, 0, 0.3)',
+                            borderRadius: '6px',
                             fontSize: '0.625rem',
-                            fontWeight: '700',
-                            color: 'rgb(16, 185, 129)',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.1em',
-                            marginBottom: '0.25rem',
-                          }}>Library Tokens</span>
-                          {/* Token Cards */}
-                          {[
-                            { color: '#3B82F6', name: 'color/primary' },
-                            { color: '#8B5CF6', name: 'typography/h1' },
-                            { color: '#10B981', name: 'spacing/large' },
-                          ].map((token, i) => (
-                            <div key={i} style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '0.5rem',
-                              padding: '0.375rem 0.5rem',
-                              borderRadius: '6px',
-                              background: 'rgba(255, 255, 255, 0.05)',
-                              animation: `slideInLeft 0.4s ease-out ${i * 0.1}s both`,
-                            }}>
-                              <div style={{
-                                width: '8px',
-                                height: '8px',
-                                borderRadius: '50%',
-                                background: token.color,
-                                boxShadow: `0 0 8px ${token.color}`,
-                              }} />
-                              <span style={{
-                                fontSize: '0.625rem',
-                                color: 'var(--text-60)',
-                                fontFamily: 'monospace',
-                              }}>{token.name}</span>
-                            </div>
-                          ))}
+                            color: 'var(--text-60)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                          }}>
+                            <span>Design System v2.0</span>
+                            <span style={{ marginLeft: '0.5rem', opacity: 0.5 }}>▼</span>
+                          </div>
+                          <div style={{ fontSize: '0.5rem', color: 'var(--text-30)', marginTop: '0.25rem', textAlign: 'center' }}>
+                            Choose target library
+                          </div>
                         </div>
 
-                        {/* CENTER: Comparison Engine */}
+                        {/* Arrow 1 */}
                         <div style={{
                           display: 'flex',
-                          flexDirection: 'column',
                           alignItems: 'center',
-                          gap: '0.5rem',
-                          padding: '0.75rem',
-                        }}>
-                          {/* Animated Arrows */}
-                          <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.25rem',
-                          }}>
-                            <div style={{
-                              width: '24px',
-                              height: '2px',
-                              background: 'linear-gradient(90deg, rgba(16, 185, 129, 0.8), rgba(218, 14, 41, 0.8))',
-                              animation: 'flowRight 1.5s ease-in-out infinite',
-                            }} />
-                            <div style={{
-                              width: '0',
-                              height: '0',
-                              borderTop: '4px solid transparent',
-                              borderBottom: '4px solid transparent',
-                              borderLeft: '6px solid rgba(218, 14, 41, 0.8)',
-                            }} />
+                          color: 'rgb(218, 14, 41)',
+                          fontSize: '1rem',
+                          opacity: pixelRadarStep >= 2 ? 1 : 0.3,
+                          transition: 'opacity 0.3s ease',
+                        }}>→</div>
+
+                        {/* Step 2: Run Analysis */}
+                        <div
+                          onClick={() => {
+                            setPixelRadarStep(2);
+                            setIsAnalyzing(true);
+                            setTimeout(() => {
+                              setPixelRadarStep(3);
+                              setIsAnalyzing(false);
+                            }, 1500);
+                          }}
+                          style={{
+                            padding: '0.625rem 0.875rem',
+                            borderRadius: '10px',
+                            background: pixelRadarStep >= 2 ? 'rgba(55, 55, 65, 0.8)' : 'rgba(35, 35, 45, 0.6)',
+                            border: `1px solid ${pixelRadarStep >= 2 ? 'rgba(218, 14, 41, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            minWidth: '130px',
+                            textAlign: 'center',
+                          }}
+                        >
+                          <div style={{ fontSize: '0.625rem', fontWeight: '600', color: 'rgb(218, 14, 41)', marginBottom: '0.375rem' }}>
+                            2. Run Analysis
                           </div>
-
-                          {/* VS Badge */}
+                          {/* Spinner */}
                           <div style={{
-                            width: '32px',
-                            height: '32px',
+                            width: '24px',
+                            height: '24px',
+                            margin: '0 auto',
                             borderRadius: '50%',
-                            background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.3), rgba(139, 92, 246, 0.3))',
-                            border: '2px solid rgba(218, 14, 41, 0.5)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '0.5rem',
-                            fontWeight: '700',
-                            color: 'var(--text-80)',
-                            animation: 'pulse 2s ease-in-out infinite',
-                          }}>VS</div>
-
-                          {/* Reverse Arrow */}
-                          <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.25rem',
-                          }}>
-                            <div style={{
-                              width: '0',
-                              height: '0',
-                              borderTop: '4px solid transparent',
-                              borderBottom: '4px solid transparent',
-                              borderRight: '6px solid rgba(16, 185, 129, 0.8)',
-                            }} />
-                            <div style={{
-                              width: '24px',
-                              height: '2px',
-                              background: 'linear-gradient(90deg, rgba(218, 14, 41, 0.8), rgba(16, 185, 129, 0.8))',
-                              animation: 'flowLeft 1.5s ease-in-out infinite',
-                            }} />
+                            border: '2px solid rgba(218, 14, 41, 0.2)',
+                            borderTopColor: isAnalyzing ? 'rgb(218, 14, 41)' : 'rgba(218, 14, 41, 0.4)',
+                            animation: isAnalyzing ? 'spin 0.8s linear infinite' : 'none',
+                          }} />
+                          <div style={{ fontSize: '0.5rem', color: 'var(--text-30)', marginTop: '0.375rem' }}>
+                            {isAnalyzing ? 'Comparing tokens...' : 'Click to analyze'}
                           </div>
                         </div>
 
-                        {/* RIGHT: Local Tokens Panel */}
+                        {/* Arrow 2 */}
                         <div style={{
-                          flex: 1,
-                          padding: '1rem',
-                          borderRadius: '12px',
-                          background: 'rgba(218, 14, 41, 0.08)',
-                          border: '1px solid rgba(218, 14, 41, 0.3)',
                           display: 'flex',
-                          flexDirection: 'column',
-                          gap: '0.5rem',
-                        }}>
-                          <span style={{
-                            fontSize: '0.625rem',
-                            fontWeight: '700',
-                            color: 'rgb(218, 14, 41)',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.1em',
-                            marginBottom: '0.25rem',
-                          }}>Local Tokens</span>
-                          {/* Token Cards with Status */}
-                          {[
-                            { color: '#3B82F6', name: 'color/primary', matched: true },
-                            { color: '#8B5CF6', name: 'typography/heading-1', matched: false },
-                            { color: '#10B981', name: 'spacing/large', matched: true },
-                          ].map((token, i) => (
-                            <div key={i} style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '0.5rem',
-                              padding: '0.375rem 0.5rem',
-                              borderRadius: '6px',
-                              background: token.matched ? 'rgba(16, 185, 129, 0.1)' : 'rgba(251, 146, 60, 0.1)',
-                              border: token.matched ? '1px solid rgba(16, 185, 129, 0.3)' : '1px dashed rgba(251, 146, 60, 0.5)',
-                              animation: `slideInRight 0.4s ease-out ${i * 0.1}s both`,
-                            }}>
-                              <div style={{
-                                width: '8px',
-                                height: '8px',
-                                borderRadius: '50%',
-                                background: token.color,
-                                boxShadow: `0 0 8px ${token.color}`,
-                              }} />
-                              <span style={{
-                                fontSize: '0.625rem',
-                                color: 'var(--text-60)',
-                                fontFamily: 'monospace',
-                                flex: 1,
-                              }}>{token.name}</span>
-                              <span style={{
-                                fontSize: '0.625rem',
-                                color: token.matched ? 'rgb(16, 185, 129)' : 'rgb(251, 146, 60)',
-                              }}>{token.matched ? '✓' : '!'}</span>
-                            </div>
-                          ))}
+                          alignItems: 'center',
+                          color: 'rgb(218, 14, 41)',
+                          fontSize: '1rem',
+                          opacity: pixelRadarStep >= 3 ? 1 : 0.3,
+                          transition: 'opacity 0.3s ease',
+                        }}>→</div>
+
+                        {/* Step 3: View Results */}
+                        <div
+                          onClick={() => setPixelRadarStep(3)}
+                          style={{
+                            padding: '0.625rem 0.875rem',
+                            borderRadius: '10px',
+                            background: pixelRadarStep >= 3 ? 'rgba(55, 55, 65, 0.8)' : 'rgba(35, 35, 45, 0.6)',
+                            border: `1px solid ${pixelRadarStep >= 3 ? 'rgba(218, 14, 41, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            minWidth: '130px',
+                          }}
+                        >
+                          <div style={{ fontSize: '0.625rem', fontWeight: '600', color: 'rgb(218, 14, 41)', marginBottom: '0.25rem' }}>
+                            3. View Results
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.375rem', justifyContent: 'center' }}>
+                            <span style={{ fontSize: '1rem', fontWeight: '700', color: 'var(--text-90)' }}>
+                              {pixelRadarStep >= 3 ? '195' : '—'}
+                            </span>
+                            <span style={{ fontSize: '0.625rem', color: 'var(--text-40)' }}>matched</span>
+                            <span style={{ fontSize: '1rem', fontWeight: '700', color: 'rgb(251, 146, 60)' }}>
+                              {pixelRadarStep >= 3 ? '79' : '—'}
+                            </span>
+                            <span style={{ fontSize: '0.625rem', color: 'var(--text-40)' }}>suggested</span>
+                          </div>
+                          {/* Progress Bar */}
+                          <div style={{
+                            marginTop: '0.375rem',
+                            height: '4px',
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            borderRadius: '2px',
+                            overflow: 'hidden',
+                          }}>
+                            <div style={{
+                              width: pixelRadarStep >= 3 ? '71%' : '0%',
+                              height: '100%',
+                              background: 'linear-gradient(90deg, rgb(16, 185, 129), rgb(16, 185, 129))',
+                              borderRadius: '2px',
+                              transition: 'width 0.8s ease-out',
+                            }} />
+                          </div>
+                          <div style={{ fontSize: '0.625rem', fontWeight: '600', color: 'rgb(16, 185, 129)', marginTop: '0.25rem', textAlign: 'center' }}>
+                            {pixelRadarStep >= 3 ? '71% compliant' : '—'}
+                          </div>
                         </div>
                       </div>
 
-                      {/* Bottom Stats Bar */}
+                      {/* TOKEN COMPARISON SECTION */}
                       <div style={{
-                        position: 'absolute',
-                        bottom: '1rem',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
+                        position: 'relative',
+                        zIndex: 2,
+                        marginBottom: '0.75rem',
+                      }}>
+                        <h5 style={{
+                          fontSize: '0.75rem',
+                          fontWeight: '600',
+                          color: 'var(--text-80)',
+                          textAlign: 'center',
+                          marginBottom: '0.75rem',
+                        }}>Token Comparison Process</h5>
+
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'stretch',
+                          justifyContent: 'center',
+                          gap: '1rem',
+                        }}>
+                          {/* LEFT: Library Tokens Panel */}
+                          <div style={{
+                            flex: 1,
+                            maxWidth: '200px',
+                            padding: '0.75rem',
+                            borderRadius: '12px',
+                            background: 'rgba(16, 185, 129, 0.06)',
+                            border: '2px solid rgba(16, 185, 129, 0.4)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '0.5rem',
+                            animation: 'slideInLeft 0.5s ease-out both',
+                          }}>
+                            <span style={{
+                              fontSize: '0.6875rem',
+                              fontWeight: '700',
+                              color: 'rgb(16, 185, 129)',
+                              marginBottom: '0.25rem',
+                            }}>Library Tokens</span>
+                            {/* Token Cards */}
+                            {[
+                              { id: 'color', color: '#3B82F6', name: 'color/primary' },
+                              { id: 'typo', color: '#8B5CF6', name: 'typography/h1' },
+                              { id: 'space', color: '#10B981', name: 'spacing/large' },
+                            ].map((token, i) => (
+                              <div
+                                key={token.id}
+                                onMouseEnter={() => setHoveredToken(token.id)}
+                                onMouseLeave={() => setHoveredToken(null)}
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '0.5rem',
+                                  padding: '0.5rem 0.625rem',
+                                  borderRadius: '8px',
+                                  background: hoveredToken === token.id ? 'rgba(255, 255, 255, 0.12)' : 'rgba(55, 55, 65, 0.7)',
+                                  border: hoveredToken === token.id ? '1px solid rgba(16, 185, 129, 0.5)' : '1px solid transparent',
+                                  cursor: 'pointer',
+                                  transition: 'all 0.2s ease',
+                                  animation: `slideInLeft 0.4s ease-out ${i * 0.1 + 0.2}s both`,
+                                }}
+                              >
+                                <div style={{
+                                  width: '10px',
+                                  height: '10px',
+                                  borderRadius: '50%',
+                                  background: token.color,
+                                  boxShadow: hoveredToken === token.id ? `0 0 12px ${token.color}` : `0 0 6px ${token.color}`,
+                                  transition: 'box-shadow 0.2s ease',
+                                }} />
+                                <span style={{
+                                  fontSize: '0.6875rem',
+                                  color: 'var(--text-70)',
+                                  fontFamily: 'monospace',
+                                }}>{token.name}</span>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* CENTER: VS Badge with Arrows */}
+                          <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '0.5rem',
+                            padding: '0.5rem',
+                          }}>
+                            {/* VS Badge */}
+                            <div style={{
+                              width: '42px',
+                              height: '42px',
+                              borderRadius: '50%',
+                              background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.4), rgba(139, 92, 246, 0.3))',
+                              border: '2px solid rgba(218, 14, 41, 0.6)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '0.75rem',
+                              fontWeight: '800',
+                              color: 'var(--text-90)',
+                              animation: 'pulse 2s ease-in-out infinite',
+                              boxShadow: '0 0 20px rgba(218, 14, 41, 0.3)',
+                            }}>VS</div>
+                            {/* Animated Arrows */}
+                            <div style={{ display: 'flex', gap: '0.25rem', alignItems: 'center' }}>
+                              <div style={{
+                                width: '20px',
+                                height: '3px',
+                                background: hoveredToken ? 'rgb(16, 185, 129)' : 'linear-gradient(90deg, rgba(16, 185, 129, 0.8), rgba(251, 146, 60, 0.8))',
+                                animation: 'flowRight 1.2s ease-in-out infinite',
+                                borderRadius: '2px',
+                              }} />
+                              <span style={{ color: 'rgb(251, 146, 60)', fontSize: '0.875rem' }}>⇒</span>
+                            </div>
+                            <div style={{ display: 'flex', gap: '0.25rem', alignItems: 'center' }}>
+                              <span style={{ color: 'rgb(16, 185, 129)', fontSize: '0.875rem' }}>⇐</span>
+                              <div style={{
+                                width: '20px',
+                                height: '3px',
+                                background: hoveredToken ? 'rgb(16, 185, 129)' : 'linear-gradient(90deg, rgba(251, 146, 60, 0.8), rgba(16, 185, 129, 0.8))',
+                                animation: 'flowLeft 1.2s ease-in-out infinite',
+                                borderRadius: '2px',
+                              }} />
+                            </div>
+                          </div>
+
+                          {/* RIGHT: Local Tokens Panel */}
+                          <div style={{
+                            flex: 1,
+                            maxWidth: '200px',
+                            padding: '0.75rem',
+                            borderRadius: '12px',
+                            background: 'rgba(218, 14, 41, 0.06)',
+                            border: '2px solid rgba(218, 14, 41, 0.4)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '0.5rem',
+                            animation: 'slideInRight 0.5s ease-out both',
+                          }}>
+                            <span style={{
+                              fontSize: '0.6875rem',
+                              fontWeight: '700',
+                              color: 'rgb(218, 14, 41)',
+                              marginBottom: '0.25rem',
+                            }}>Local Tokens</span>
+                            {/* Token Cards with Status */}
+                            {[
+                              { id: 'color', color: '#3B82F6', name: 'color/primary', matched: true },
+                              { id: 'typo', color: '#8B5CF6', name: 'typography/heading-1', matched: false },
+                              { id: 'space', color: '#10B981', name: 'spacing/large', matched: true },
+                            ].map((token, i) => (
+                              <div
+                                key={token.id}
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '0.5rem',
+                                  padding: '0.5rem 0.625rem',
+                                  borderRadius: '8px',
+                                  background: hoveredToken === token.id
+                                    ? (token.matched ? 'rgba(16, 185, 129, 0.2)' : 'rgba(251, 146, 60, 0.2)')
+                                    : (token.matched ? 'rgba(16, 185, 129, 0.08)' : 'rgba(251, 146, 60, 0.08)'),
+                                  border: token.matched
+                                    ? `2px solid rgba(16, 185, 129, ${hoveredToken === token.id ? 0.8 : 0.5})`
+                                    : `2px dashed rgba(251, 146, 60, ${hoveredToken === token.id ? 0.8 : 0.5})`,
+                                  transition: 'all 0.2s ease',
+                                  animation: `slideInRight 0.4s ease-out ${i * 0.1 + 0.2}s both`,
+                                }}
+                              >
+                                <div style={{
+                                  width: '10px',
+                                  height: '10px',
+                                  borderRadius: '50%',
+                                  background: token.color,
+                                  boxShadow: hoveredToken === token.id ? `0 0 12px ${token.color}` : `0 0 6px ${token.color}`,
+                                }} />
+                                <span style={{
+                                  fontSize: '0.6875rem',
+                                  color: 'var(--text-70)',
+                                  fontFamily: 'monospace',
+                                  flex: 1,
+                                }}>{token.name}</span>
+                                <span style={{
+                                  fontSize: '0.75rem',
+                                  fontWeight: '700',
+                                  color: token.matched ? 'rgb(16, 185, 129)' : 'rgb(251, 146, 60)',
+                                }}>{token.matched ? '✓' : '!'}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* BOTTOM LEGEND */}
+                      <div style={{
+                        position: 'relative',
+                        zIndex: 2,
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '1.5rem',
-                        padding: '0.5rem 1rem',
-                        borderRadius: '100px',
-                        background: 'rgba(0, 0, 0, 0.4)',
-                        backdropFilter: 'blur(10px)',
-                        border: '1px solid var(--glass-10)',
+                        justifyContent: 'center',
+                        gap: '2rem',
+                        padding: '0.625rem 1rem',
+                        borderRadius: '10px',
+                        background: 'rgba(50, 50, 60, 0.6)',
+                        border: '1px solid rgba(255, 255, 255, 0.08)',
                       }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-                          <span style={{ fontSize: '0.875rem', fontWeight: '700', color: 'rgb(16, 185, 129)' }}>195</span>
-                          <span style={{ fontSize: '0.625rem', color: 'var(--text-40)' }}>matched</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <div style={{
+                            width: '10px',
+                            height: '10px',
+                            borderRadius: '50%',
+                            background: 'rgb(16, 185, 129)',
+                            boxShadow: '0 0 8px rgba(16, 185, 129, 0.5)',
+                          }} />
+                          <span style={{ fontSize: '0.6875rem', color: 'var(--text-60)' }}>
+                            Matched: Perfect alignment with library
+                          </span>
                         </div>
-                        <div style={{ width: '1px', height: '16px', background: 'var(--glass-15)' }} />
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-                          <span style={{ fontSize: '0.875rem', fontWeight: '700', color: 'rgb(251, 146, 60)' }}>79</span>
-                          <span style={{ fontSize: '0.625rem', color: 'var(--text-40)' }}>suggested</span>
-                        </div>
-                        <div style={{ width: '1px', height: '16px', background: 'var(--glass-15)' }} />
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-                          <span style={{ fontSize: '0.875rem', fontWeight: '700', color: 'rgb(218, 14, 41)' }}>71%</span>
-                          <span style={{ fontSize: '0.625rem', color: 'var(--text-40)' }}>compliant</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <div style={{
+                            width: '10px',
+                            height: '10px',
+                            borderRadius: '50%',
+                            background: 'rgb(251, 146, 60)',
+                            boxShadow: '0 0 8px rgba(251, 146, 60, 0.5)',
+                          }} />
+                          <span style={{ fontSize: '0.6875rem', color: 'var(--text-60)' }}>
+                            Suggested: Needs attention (naming/missing)
+                          </span>
                         </div>
                       </div>
                     </div>
