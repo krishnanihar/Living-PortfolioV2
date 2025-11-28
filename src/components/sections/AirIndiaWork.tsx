@@ -2378,16 +2378,24 @@ export function AirIndiaWork() {
                         />
                       </div>
                       {/* Text */}
-                      <p style={{
-                        fontSize: '0.938rem',
-                        color: 'var(--text-60)',
-                        lineHeight: 1.8,
-                        whiteSpace: 'pre-line',
-                        flex: 1,
-                        margin: 0,
-                      }}>
-                        {project.longDescription}
-                      </p>
+                      <div style={{ flex: 1 }}>
+                        <p style={{
+                          fontSize: '0.938rem',
+                          color: 'var(--text-60)',
+                          lineHeight: 1.8,
+                          margin: '0 0 1rem 0',
+                        }}>
+                          When there&apos;s no design system, every screen is an island. Designers were making isolated decisions. Engineers were interpreting specs differently. Reviews caught inconsistencies too late—if at all.
+                        </p>
+                        <p style={{
+                          fontSize: '0.938rem',
+                          color: 'var(--text-60)',
+                          lineHeight: 1.8,
+                          margin: 0,
+                        }}>
+                          So I built Pixel Radar—a Figma plugin that automates consistency checks. What started as a personal workflow fix became infrastructure serving 450+ daily users, cutting design review time by 30%. It solved a problem the organization didn&apos;t have budget or bandwidth to address through official channels.
+                        </p>
+                      </div>
                     </div>
                   ) : (
                     <p style={{
