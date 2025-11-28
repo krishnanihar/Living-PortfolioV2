@@ -1454,11 +1454,12 @@ export function AirIndiaWork() {
                     <>
                     <div style={{
                       width: '100%',
-                      maxWidth: '900px',
+                      maxWidth: '1100px',
                       margin: '0 auto',
                       display: 'grid',
                       gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-                      gap: '16px',
+                      gap: '24px',
+                      padding: '8px',
                       fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                       fontSize: '11px',
                     }}>
