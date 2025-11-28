@@ -5,7 +5,6 @@ import Link from 'next/link';
 import {
   Target,
   Trophy,
-  TrendingUp,
   CheckCircle,
   ArrowLeft,
   ArrowRight,
@@ -21,19 +20,15 @@ import {
   BarChart3,
   Compass,
   Rocket,
-  Clock,
   Award,
   Star,
   Plane,
   Sparkles,
   Bot,
-  Palette,
   Monitor,
   Smartphone,
   MessageSquare,
   Camera,
-  Lightbulb,
-  Building2,
   type LucideIcon
 } from 'lucide-react';
 
@@ -1468,100 +1463,6 @@ export function AirIndiaWork() {
                     }}>
                       {project.longDescription}
                     </p>
-                  </div>
-
-                  {/* Bottom Row: Recruiter Insight + Company Relevance */}
-                  <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-                    gap: '1rem',
-                  }}>
-                    {/* Recruiter Insight Box */}
-                    <div style={{
-                      padding: '1.25rem',
-                      borderRadius: '14px',
-                      background: `linear-gradient(135deg, rgba(${project.color}, 0.08), var(--glass-04))`,
-                      border: `1px solid rgba(${project.color}, 0.15)`,
-                    }}>
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        marginBottom: '0.75rem',
-                      }}>
-                        <Lightbulb size={16} style={{ color: `rgb(${project.color})` }} />
-                        <span style={{
-                          fontSize: '0.688rem',
-                          fontWeight: '600',
-                          color: `rgb(${project.color})`,
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.1em',
-                        }}>
-                          Recruiter Insight
-                        </span>
-                      </div>
-                      <p style={{
-                        fontSize: '0.875rem',
-                        color: 'var(--text-60)',
-                        lineHeight: 1.6,
-                        fontStyle: 'italic',
-                      }}>
-                        &quot;{project.recruiterInsight}&quot;
-                      </p>
-                    </div>
-
-                    {/* Company Relevance Box */}
-                    <div style={{
-                      padding: '1.25rem',
-                      borderRadius: '14px',
-                      background: 'var(--glass-04)',
-                      border: '1px solid var(--glass-08)',
-                    }}>
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        marginBottom: '0.75rem',
-                      }}>
-                        <Building2 size={16} style={{ color: 'var(--text-50)' }} />
-                        <span style={{
-                          fontSize: '0.688rem',
-                          fontWeight: '600',
-                          color: 'var(--text-50)',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.1em',
-                        }}>
-                          Why This Matters
-                        </span>
-                      </div>
-                      <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '0.5rem',
-                      }}>
-                        {project.companyRelevance.map((rel, relIndex) => (
-                          <div key={relIndex} style={{
-                            display: 'flex',
-                            alignItems: 'flex-start',
-                            gap: '0.5rem',
-                            fontSize: '0.813rem',
-                          }}>
-                            <span style={{
-                              fontWeight: '600',
-                              color: 'var(--text-70)',
-                              minWidth: '75px',
-                            }}>
-                              {rel.company}:
-                            </span>
-                            <span style={{
-                              color: 'var(--text-50)',
-                            }}>
-                              {rel.relevance}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
                   </div>
 
                   {/* CTA Button */}
