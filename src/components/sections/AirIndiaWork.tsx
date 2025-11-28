@@ -2365,7 +2365,7 @@ export function AirIndiaWork() {
                         background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(13, 153, 255, 0.15))',
                       }}>
                         <img
-                          src="/images/pixel-radar-author.jpg"
+                          src="/images/pixel-radar-author.jpeg"
                           alt="Developer"
                           style={{
                             width: '100%',
