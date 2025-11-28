@@ -2348,40 +2348,22 @@ export function AirIndiaWork() {
 
                       {/* Text Content */}
                       <div style={{ flex: 1 }}>
-                        {/* Quote */}
                         <p style={{
                           fontSize: '13px',
-                          fontStyle: 'italic',
                           color: 'rgba(255, 255, 255, 0.8)',
-                          lineHeight: 1.7,
-                          marginBottom: '16px',
-                          borderLeft: '2px solid #DA0E29',
-                          paddingLeft: '12px',
-                          margin: '0 0 16px 0',
+                          lineHeight: 1.8,
+                          margin: '0 0 12px 0',
                         }}>
-                          &quot;This journey from concept to soon-to-be-essential tool demonstrates what&apos;s possible when we apply technical innovation to design challenges, creating solutions that will benefit our entire team and ultimately enhance the Air India customer experience.&quot;
+                          When there&apos;s no design system, every screen is an island. Designers were making isolated decisions. Engineers were interpreting specs differently. Reviews caught inconsistencies too late—if at all.
                         </p>
-
-                        {/* Future Development */}
-                        <div>
-                          <span style={{
-                            fontSize: '10px',
-                            fontWeight: '600',
-                            color: '#0D99FF',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.1em',
-                            marginBottom: '6px',
-                            display: 'block',
-                          }}>Future Development</span>
-                          <p style={{
-                            fontSize: '11px',
-                            color: 'rgba(255, 255, 255, 0.5)',
-                            lineHeight: 1.6,
-                            margin: 0,
-                          }}>
-                            AI Pixel Radar roadmap includes AI integration to further enhance our QA process with automated heuristic evaluations and accessibility testing.
-                          </p>
-                        </div>
+                        <p style={{
+                          fontSize: '13px',
+                          color: 'rgba(255, 255, 255, 0.8)',
+                          lineHeight: 1.8,
+                          margin: 0,
+                        }}>
+                          So I built Pixel Radar—a Figma plugin that automates consistency checks. What started as a personal workflow fix became infrastructure serving 450+ daily users, cutting design review time by 30%. It solved a problem the organization didn&apos;t have budget or bandwidth to address through official channels.
+                        </p>
                       </div>
                     </div>
                     </>
