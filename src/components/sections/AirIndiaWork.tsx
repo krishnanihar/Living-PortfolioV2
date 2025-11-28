@@ -2308,64 +2308,6 @@ export function AirIndiaWork() {
                         </div>
                       </div>
                     </div>
-
-                    {/* Author Section with Photo and Quote */}
-                    <div style={{
-                      display: 'flex',
-                      gap: '24px',
-                      marginTop: '20px',
-                      padding: '20px',
-                      background: '#1E1E1E',
-                      borderRadius: '8px',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      alignItems: 'flex-start',
-                      maxWidth: '900px',
-                      margin: '20px auto 0',
-                    }}>
-                      {/* Photo */}
-                      <div style={{
-                        width: '120px',
-                        height: '160px',
-                        borderRadius: '8px',
-                        overflow: 'hidden',
-                        flexShrink: 0,
-                        background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.1), rgba(13, 153, 255, 0.1))',
-                      }}>
-                        <img
-                          src="/images/pixel-radar-author.jpg"
-                          alt="Developer"
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                          }}
-                          onError={(e) => {
-                            // Fallback if image doesn't exist
-                            e.currentTarget.style.display = 'none';
-                          }}
-                        />
-                      </div>
-
-                      {/* Text Content */}
-                      <div style={{ flex: 1 }}>
-                        <p style={{
-                          fontSize: '13px',
-                          color: 'rgba(255, 255, 255, 0.8)',
-                          lineHeight: 1.8,
-                          margin: '0 0 12px 0',
-                        }}>
-                          When there&apos;s no design system, every screen is an island. Designers were making isolated decisions. Engineers were interpreting specs differently. Reviews caught inconsistencies too late—if at all.
-                        </p>
-                        <p style={{
-                          fontSize: '13px',
-                          color: 'rgba(255, 255, 255, 0.8)',
-                          lineHeight: 1.8,
-                          margin: 0,
-                        }}>
-                          So I built Pixel Radar—a Figma plugin that automates consistency checks. What started as a personal workflow fix became infrastructure serving 450+ daily users, cutting design review time by 30%. It solved a problem the organization didn&apos;t have budget or bandwidth to address through official channels.
-                        </p>
-                      </div>
-                    </div>
                     </>
                   ) : (
                     /* Default Image Placeholder for other cards */
@@ -2406,15 +2348,57 @@ export function AirIndiaWork() {
                     </div>
                   )}
 
-                  {/* Full Narrative Description */}
-                  <p style={{
-                    fontSize: '0.938rem',
-                    color: 'var(--text-60)',
-                    lineHeight: 1.8,
-                    whiteSpace: 'pre-line',
-                  }}>
-                    {project.longDescription}
-                  </p>
+                  {/* Full Narrative Description - with image for Pixel Radar */}
+                  {index === 0 ? (
+                    <div style={{
+                      display: 'flex',
+                      gap: '1.5rem',
+                      alignItems: 'flex-start',
+                    }}>
+                      {/* Author Photo */}
+                      <div style={{
+                        width: '120px',
+                        height: '160px',
+                        borderRadius: '12px',
+                        overflow: 'hidden',
+                        flexShrink: 0,
+                        background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(13, 153, 255, 0.15))',
+                      }}>
+                        <img
+                          src="/images/pixel-radar-author.jpg"
+                          alt="Developer"
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                          }}
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                      </div>
+                      {/* Text */}
+                      <p style={{
+                        fontSize: '0.938rem',
+                        color: 'var(--text-60)',
+                        lineHeight: 1.8,
+                        whiteSpace: 'pre-line',
+                        flex: 1,
+                        margin: 0,
+                      }}>
+                        {project.longDescription}
+                      </p>
+                    </div>
+                  ) : (
+                    <p style={{
+                      fontSize: '0.938rem',
+                      color: 'var(--text-60)',
+                      lineHeight: 1.8,
+                      whiteSpace: 'pre-line',
+                    }}>
+                      {project.longDescription}
+                    </p>
+                  )}
                 </div>
               </div>
             );
