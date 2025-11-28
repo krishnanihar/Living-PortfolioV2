@@ -2352,17 +2352,21 @@ export function AirIndiaWork() {
                   {/* Full Narrative Description - with image for Pixel Radar */}
                   {index === 0 ? (
                     <div style={{
-                      display: 'flex',
-                      gap: '1.5rem',
-                      alignItems: 'flex-start',
+                      width: '100%',
+                      maxWidth: '1100px',
+                      margin: '0 auto',
+                      display: 'grid',
+                      gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+                      gap: '24px',
+                      padding: '8px',
+                      alignItems: 'start',
                     }}>
                       {/* Author Photo */}
                       <div style={{
-                        width: '120px',
-                        height: '160px',
+                        width: '100%',
+                        aspectRatio: '4 / 3',
                         borderRadius: '12px',
                         overflow: 'hidden',
-                        flexShrink: 0,
                         background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(13, 153, 255, 0.15))',
                       }}>
                         <img
@@ -2379,7 +2383,7 @@ export function AirIndiaWork() {
                         />
                       </div>
                       {/* Text */}
-                      <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
                         <p style={{
                           fontSize: '0.938rem',
                           color: 'var(--text-60)',
