@@ -848,7 +848,7 @@ export function AirIndiaWork() {
           display: 'flex',
           flexDirection: 'column',
           gap: '1.25rem',
-          maxWidth: '1200px',
+          maxWidth: '1400px',
           margin: '0 auto',
           padding: isMobile ? '0' : '0 1.5rem',
           position: 'relative',
