@@ -7,7 +7,6 @@ import {
   Trophy,
   CheckCircle,
   ArrowLeft,
-  ArrowRight,
   Hexagon,
   Grid3X3,
   Heart,
@@ -483,15 +482,45 @@ export function AirIndiaWork() {
   const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Handler for persistent card expansion
+  // Refs for card intersection observers
+  const cardRefs = useRef<Map<number, HTMLDivElement>>(new Map());
+
+  // Handler for hover effects only (no expansion)
   const handleCardMouseEnter = (id: number) => {
-    setExpandedCards(prev => new Set(prev).add(id));
     setHoveredProject(id);
   };
 
   const handleCardMouseLeave = () => {
-    setHoveredProject(null); // Only affects hover glow, not expansion
+    setHoveredProject(null);
   };
+
+  // Auto-expand cards when they reach center of viewport
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+
+    cardRefs.current.forEach((element, id) => {
+      if (!element) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setExpandedCards(prev => new Set(prev).add(id));
+          }
+        },
+        {
+          rootMargin: '-35% 0px -35% 0px', // Trigger when card is in center 30% of viewport
+          threshold: 0.1,
+        }
+      );
+
+      observer.observe(element);
+      observers.push(observer);
+    });
+
+    return () => {
+      observers.forEach(observer => observer.disconnect());
+    };
+  }, []);
 
   // Intersection Observer
   useEffect(() => {
@@ -1198,6 +1227,9 @@ export function AirIndiaWork() {
             return (
               <div
                 key={project.id}
+                ref={(el) => {
+                  if (el) cardRefs.current.set(project.id, el);
+                }}
                 onMouseEnter={() => handleCardMouseEnter(project.id)}
                 onMouseLeave={handleCardMouseLeave}
                 style={{
@@ -1457,27 +1489,6 @@ export function AirIndiaWork() {
                   }}>
                     {project.longDescription}
                   </p>
-
-                  {/* CTA Button */}
-                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <button style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      padding: '0.75rem 1.5rem',
-                      background: `linear-gradient(135deg, rgba(${project.color}, 0.2), rgba(${project.color}, 0.1))`,
-                      border: `1px solid rgba(${project.color}, 0.35)`,
-                      borderRadius: '10px',
-                      color: 'var(--text-90)',
-                      fontSize: '0.875rem',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                    }}>
-                      View Full Case Study
-                      <ArrowRight size={16} />
-                    </button>
-                  </div>
                 </div>
               </div>
             );
