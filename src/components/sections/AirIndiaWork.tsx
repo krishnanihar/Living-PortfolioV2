@@ -486,6 +486,10 @@ export function AirIndiaWork() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisPhase, setAnalysisPhase] = useState<'idle' | 'scan' | 'analyze' | 'complete'>('idle');
   const [hoveredModule, setHoveredModule] = useState<string | null>(null);
+  // Design System & Tokenisation interactive states
+  const [tokenPhase, setTokenPhase] = useState<'idle' | 'global' | 'alias' | 'component' | 'complete'>('idle');
+  const [expandedCategory, setExpandedCategory] = useState<string | null>('Colors');
+  const [isApplyingToken, setIsApplyingToken] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // Refs for card intersection observers
@@ -2345,6 +2349,701 @@ export function AirIndiaWork() {
                       </div>
                     </div>
                     </>
+                  ) : index === 1 ? (
+                    /* DESIGN SYSTEM & TOKENISATION - Interactive Token Architecture Visualization */
+                    <>
+                    {/* Interactive Prototype Helper */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      marginBottom: '12px',
+                      padding: '8px 16px',
+                      background: 'rgba(99, 102, 241, 0.1)',
+                      borderRadius: '20px',
+                      border: '1px solid rgba(99, 102, 241, 0.2)',
+                      width: 'fit-content',
+                      margin: '0 auto 12px',
+                    }}>
+                      <span style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        background: '#6366F1',
+                        animation: 'statusPulse 1.5s ease infinite',
+                      }} />
+                      <span style={{
+                        fontSize: '11px',
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        fontWeight: '500',
+                      }}>
+                        Interactive Prototype
+                      </span>
+                      <span style={{
+                        fontSize: '10px',
+                        color: 'rgba(255, 255, 255, 0.4)',
+                      }}>
+                        — Click &quot;Apply Token&quot; to see cascade flow
+                      </span>
+                    </div>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '1100px',
+                      margin: '0 auto',
+                      display: 'grid',
+                      gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+                      gap: '24px',
+                      padding: '8px',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                      fontSize: '11px',
+                    }}>
+                      {/* ======== LEFT PANEL: Token Library ======== */}
+                      <div style={{
+                        background: '#2C2C2C',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        overflow: 'hidden',
+                      }}>
+                        {/* Panel Header */}
+                        <div style={{
+                          background: '#1E1E1E',
+                          padding: '8px 12px',
+                          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{
+                              width: '16px',
+                              height: '16px',
+                              borderRadius: '4px',
+                              background: '#6366F1',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}>
+                              <span style={{ fontSize: '10px', color: 'white', fontWeight: '700' }}>T</span>
+                            </div>
+                            <span style={{
+                              fontSize: '11px',
+                              fontWeight: '600',
+                              color: 'rgba(255, 255, 255, 0.9)',
+                            }}>Token Library</span>
+                          </div>
+                          <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>4 categories</span>
+                        </div>
+
+                        {/* Token Categories */}
+                        <div style={{ padding: '8px' }}>
+                          {/* Colors Category */}
+                          <div style={{
+                            background: '#1E1E1E',
+                            borderRadius: '6px',
+                            marginBottom: '6px',
+                            overflow: 'hidden',
+                          }}>
+                            <div
+                              onClick={() => setExpandedCategory(expandedCategory === 'Colors' ? null : 'Colors')}
+                              style={{
+                                padding: '8px 10px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                cursor: 'pointer',
+                                background: expandedCategory === 'Colors' ? 'rgba(99, 102, 241, 0.1)' : 'transparent',
+                                transition: 'background 0.15s ease',
+                              }}
+                            >
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>
+                                  {expandedCategory === 'Colors' ? '▼' : '▶'}
+                                </span>
+                                <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.9)', fontWeight: '500' }}>Colors</span>
+                              </div>
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>4 tokens</span>
+                            </div>
+                            {expandedCategory === 'Colors' && (
+                              <div style={{ padding: '4px 10px 8px 28px' }}>
+                                {[
+                                  { name: 'primary-500', value: '#DA0E29', color: '#DA0E29' },
+                                  { name: 'primary-400', value: '#E83A50', color: '#E83A50' },
+                                  { name: 'neutral-100', value: '#F5F5F5', color: '#F5F5F5' },
+                                  { name: 'neutral-900', value: '#1A1A1A', color: '#1A1A1A' },
+                                ].map((token) => (
+                                  <div key={token.name} style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    padding: '4px 0',
+                                  }}>
+                                    <div style={{
+                                      width: '12px',
+                                      height: '12px',
+                                      borderRadius: '3px',
+                                      background: token.color,
+                                      border: token.color === '#1A1A1A' ? '1px solid rgba(255,255,255,0.2)' : 'none',
+                                    }} />
+                                    <span style={{
+                                      fontSize: '10px',
+                                      color: 'rgba(255, 255, 255, 0.7)',
+                                      fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                                    }}>{token.name}</span>
+                                    <span style={{
+                                      fontSize: '9px',
+                                      color: 'rgba(255, 255, 255, 0.4)',
+                                      marginLeft: 'auto',
+                                    }}>{token.value}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Typography Category */}
+                          <div style={{
+                            background: '#1E1E1E',
+                            borderRadius: '6px',
+                            marginBottom: '6px',
+                          }}>
+                            <div
+                              onClick={() => setExpandedCategory(expandedCategory === 'Typography' ? null : 'Typography')}
+                              style={{
+                                padding: '8px 10px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                cursor: 'pointer',
+                                background: expandedCategory === 'Typography' ? 'rgba(99, 102, 241, 0.1)' : 'transparent',
+                                transition: 'background 0.15s ease',
+                              }}
+                            >
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>
+                                  {expandedCategory === 'Typography' ? '▼' : '▶'}
+                                </span>
+                                <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.9)', fontWeight: '500' }}>Typography</span>
+                              </div>
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>2 tokens</span>
+                            </div>
+                            {expandedCategory === 'Typography' && (
+                              <div style={{ padding: '4px 10px 8px 28px' }}>
+                                {[
+                                  { name: 'heading-xl', value: '32px/1.2' },
+                                  { name: 'body-md', value: '16px/1.5' },
+                                ].map((token) => (
+                                  <div key={token.name} style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    padding: '4px 0',
+                                  }}>
+                                    <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)' }}>Aa</span>
+                                    <span style={{
+                                      fontSize: '10px',
+                                      color: 'rgba(255, 255, 255, 0.7)',
+                                      fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                                    }}>{token.name}</span>
+                                    <span style={{
+                                      fontSize: '9px',
+                                      color: 'rgba(255, 255, 255, 0.4)',
+                                      marginLeft: 'auto',
+                                    }}>{token.value}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Spacing Category */}
+                          <div style={{
+                            background: '#1E1E1E',
+                            borderRadius: '6px',
+                            marginBottom: '6px',
+                          }}>
+                            <div
+                              onClick={() => setExpandedCategory(expandedCategory === 'Spacing' ? null : 'Spacing')}
+                              style={{
+                                padding: '8px 10px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                cursor: 'pointer',
+                                background: expandedCategory === 'Spacing' ? 'rgba(99, 102, 241, 0.1)' : 'transparent',
+                                transition: 'background 0.15s ease',
+                              }}
+                            >
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>
+                                  {expandedCategory === 'Spacing' ? '▼' : '▶'}
+                                </span>
+                                <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.9)', fontWeight: '500' }}>Spacing</span>
+                              </div>
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>2 tokens</span>
+                            </div>
+                            {expandedCategory === 'Spacing' && (
+                              <div style={{ padding: '4px 10px 8px 28px' }}>
+                                {[
+                                  { name: 'space-4', value: '16px' },
+                                  { name: 'space-8', value: '32px' },
+                                ].map((token) => (
+                                  <div key={token.name} style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    padding: '4px 0',
+                                  }}>
+                                    <div style={{
+                                      width: '12px',
+                                      height: '4px',
+                                      background: 'rgba(99, 102, 241, 0.5)',
+                                      borderRadius: '1px',
+                                    }} />
+                                    <span style={{
+                                      fontSize: '10px',
+                                      color: 'rgba(255, 255, 255, 0.7)',
+                                      fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                                    }}>{token.name}</span>
+                                    <span style={{
+                                      fontSize: '9px',
+                                      color: 'rgba(255, 255, 255, 0.4)',
+                                      marginLeft: 'auto',
+                                    }}>{token.value}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Border Radius Category */}
+                          <div style={{
+                            background: '#1E1E1E',
+                            borderRadius: '6px',
+                          }}>
+                            <div
+                              onClick={() => setExpandedCategory(expandedCategory === 'Border Radius' ? null : 'Border Radius')}
+                              style={{
+                                padding: '8px 10px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                cursor: 'pointer',
+                                background: expandedCategory === 'Border Radius' ? 'rgba(99, 102, 241, 0.1)' : 'transparent',
+                                transition: 'background 0.15s ease',
+                              }}
+                            >
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>
+                                  {expandedCategory === 'Border Radius' ? '▼' : '▶'}
+                                </span>
+                                <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.9)', fontWeight: '500' }}>Border Radius</span>
+                              </div>
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>2 tokens</span>
+                            </div>
+                            {expandedCategory === 'Border Radius' && (
+                              <div style={{ padding: '4px 10px 8px 28px' }}>
+                                {[
+                                  { name: 'radius-sm', value: '4px' },
+                                  { name: 'radius-lg', value: '12px' },
+                                ].map((token) => (
+                                  <div key={token.name} style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    padding: '4px 0',
+                                  }}>
+                                    <div style={{
+                                      width: '12px',
+                                      height: '12px',
+                                      border: '2px solid rgba(99, 102, 241, 0.5)',
+                                      borderRadius: token.name === 'radius-sm' ? '2px' : '4px',
+                                    }} />
+                                    <span style={{
+                                      fontSize: '10px',
+                                      color: 'rgba(255, 255, 255, 0.7)',
+                                      fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                                    }}>{token.name}</span>
+                                    <span style={{
+                                      fontSize: '9px',
+                                      color: 'rgba(255, 255, 255, 0.4)',
+                                      marginLeft: 'auto',
+                                    }}>{token.value}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Stats and Apply Button */}
+                        <div style={{ padding: '8px 12px 12px' }}>
+                          <div style={{
+                            background: '#1E1E1E',
+                            borderRadius: '6px',
+                            padding: '10px 12px',
+                            marginBottom: '10px',
+                          }}>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              marginBottom: '8px',
+                            }}>
+                              <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.9)', fontWeight: '500' }}>
+                                4 Airlines Unified
+                              </span>
+                              <span style={{
+                                fontSize: '11px',
+                                fontWeight: '600',
+                                color: tokenPhase === 'complete' ? '#30D158' : 'rgba(255, 255, 255, 0.4)',
+                              }}>
+                                {tokenPhase === 'complete' ? '100%' : '—'}
+                              </span>
+                            </div>
+                            <div style={{
+                              height: '4px',
+                              background: 'rgba(255, 255, 255, 0.1)',
+                              borderRadius: '2px',
+                              overflow: 'hidden',
+                            }}>
+                              <div style={{
+                                width: tokenPhase === 'complete' ? '100%' : '0%',
+                                height: '100%',
+                                background: '#6366F1',
+                                borderRadius: '2px',
+                                transition: 'width 0.6s cubic-bezier(0.2, 0, 0, 1)',
+                              }} />
+                            </div>
+                          </div>
+
+                          {/* Apply Token Button */}
+                          <button
+                            onClick={() => {
+                              if (isApplyingToken) return;
+                              setIsApplyingToken(true);
+                              setTokenPhase('global');
+
+                              // Phase 2: Alias (after 400ms)
+                              setTimeout(() => setTokenPhase('alias'), 400);
+
+                              // Phase 3: Component (after 800ms)
+                              setTimeout(() => setTokenPhase('component'), 800);
+
+                              // Phase 4: Complete (after 1200ms)
+                              setTimeout(() => {
+                                setTokenPhase('complete');
+                                setIsApplyingToken(false);
+                              }, 1200);
+                            }}
+                            style={{
+                              width: '100%',
+                              background: isApplyingToken ? '#1E1E1E' : '#6366F1',
+                              color: 'white',
+                              border: isApplyingToken ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+                              borderRadius: '6px',
+                              padding: '8px 16px',
+                              fontSize: '11px',
+                              fontWeight: '500',
+                              cursor: isApplyingToken ? 'not-allowed' : 'pointer',
+                              transition: 'all 0.15s ease',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '8px',
+                            }}
+                            onMouseEnter={(e) => !isApplyingToken && (e.currentTarget.style.background = '#5558E3')}
+                            onMouseLeave={(e) => !isApplyingToken && (e.currentTarget.style.background = '#6366F1')}
+                          >
+                            {isApplyingToken ? (
+                              <>
+                                <div style={{
+                                  width: '12px',
+                                  height: '12px',
+                                  borderRadius: '50%',
+                                  border: '2px solid rgba(255, 255, 255, 0.2)',
+                                  borderTopColor: 'rgba(255, 255, 255, 0.9)',
+                                  animation: 'spin 0.8s linear infinite',
+                                }} />
+                                <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Applying...</span>
+                              </>
+                            ) : (
+                              <span>Apply Token</span>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* ======== RIGHT PANEL: Token Cascade Flow ======== */}
+                      <div style={{
+                        background: '#2C2C2C',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        overflow: 'hidden',
+                        display: isMobile ? 'none' : 'block',
+                      }}>
+                        {/* Panel Header */}
+                        <div style={{
+                          background: '#1E1E1E',
+                          padding: '8px 12px',
+                          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                        }}>
+                          <div style={{
+                            width: '16px',
+                            height: '16px',
+                            borderRadius: '4px',
+                            background: 'rgba(162, 89, 255, 0.2)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}>
+                            <span style={{ fontSize: '10px', color: '#A259FF' }}>⚡</span>
+                          </div>
+                          <span style={{
+                            fontSize: '11px',
+                            fontWeight: '600',
+                            color: 'rgba(255, 255, 255, 0.9)',
+                          }}>Token Cascade Flow</span>
+                        </div>
+
+                        {/* Cascade Visualization */}
+                        <div style={{ padding: '16px', position: 'relative', minHeight: '280px' }}>
+                          {/* SVG Connections */}
+                          <svg
+                            viewBox="0 0 100 100"
+                            preserveAspectRatio="none"
+                            style={{
+                              position: 'absolute',
+                              top: '16px',
+                              left: '16px',
+                              width: 'calc(100% - 32px)',
+                              height: 'calc(100% - 80px)',
+                              pointerEvents: 'none',
+                              zIndex: 0,
+                            }}
+                          >
+                            <defs>
+                              <filter id="tokenGlow" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="2" result="blur" />
+                                <feMerge>
+                                  <feMergeNode in="blur" />
+                                  <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                              </filter>
+                              <marker
+                                id="arrowhead-token"
+                                markerWidth="6"
+                                markerHeight="5"
+                                refX="5"
+                                refY="2.5"
+                                orient="auto"
+                              >
+                                <polygon
+                                  points="0 0, 6 2.5, 0 5"
+                                  fill={tokenPhase !== 'idle' ? '#6366F1' : 'rgba(255, 255, 255, 0.2)'}
+                                  style={{ transition: 'fill 0.3s ease' }}
+                                />
+                              </marker>
+                            </defs>
+
+                            {/* Global → Alias connection */}
+                            <path
+                              d="M 50 22 L 50 42"
+                              fill="none"
+                              stroke={['global', 'alias', 'component', 'complete'].includes(tokenPhase) ? 'rgba(48, 209, 88, 0.6)' : 'rgba(255, 255, 255, 0.1)'}
+                              strokeWidth="1"
+                              strokeDasharray="4 2"
+                              markerEnd="url(#arrowhead-token)"
+                              filter={tokenPhase === 'alias' ? 'url(#tokenGlow)' : 'none'}
+                              style={{
+                                transition: 'stroke 0.3s ease',
+                                animation: tokenPhase === 'alias' ? 'flowLine 1s linear infinite' : 'none',
+                              }}
+                            />
+
+                            {/* Alias → Component connection */}
+                            <path
+                              d="M 50 58 L 50 78"
+                              fill="none"
+                              stroke={['alias', 'component', 'complete'].includes(tokenPhase) ? 'rgba(13, 153, 255, 0.6)' : 'rgba(255, 255, 255, 0.1)'}
+                              strokeWidth="1"
+                              strokeDasharray="4 2"
+                              markerEnd="url(#arrowhead-token)"
+                              filter={tokenPhase === 'component' ? 'url(#tokenGlow)' : 'none'}
+                              style={{
+                                transition: 'stroke 0.3s ease',
+                                animation: tokenPhase === 'component' ? 'flowLine 1s linear infinite' : 'none',
+                              }}
+                            />
+
+                            {/* Data packets */}
+                            {tokenPhase === 'alias' && (
+                              <circle r="2" fill="#30D158" style={{
+                                offsetPath: "path('M 50 22 L 50 42')",
+                                animation: 'movePacket 0.6s ease-in-out infinite',
+                              }}>
+                                <animate attributeName="opacity" values="0;1;1;0" dur="0.6s" repeatCount="indefinite" />
+                              </circle>
+                            )}
+                            {tokenPhase === 'component' && (
+                              <circle r="2" fill="#0D99FF" style={{
+                                offsetPath: "path('M 50 58 L 50 78')",
+                                animation: 'movePacket 0.6s ease-in-out infinite',
+                              }}>
+                                <animate attributeName="opacity" values="0;1;1;0" dur="0.6s" repeatCount="indefinite" />
+                              </circle>
+                            )}
+                          </svg>
+
+                          {/* Tier Boxes */}
+                          <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            gap: '24px',
+                            position: 'relative',
+                            zIndex: 1,
+                          }}>
+                            {/* GLOBAL Tier */}
+                            <div style={{
+                              background: '#1E1E1E',
+                              border: `1px solid ${['global', 'alias', 'component', 'complete'].includes(tokenPhase) ? 'rgba(48, 209, 88, 0.4)' : 'rgba(255, 255, 255, 0.1)'}`,
+                              borderRadius: '8px',
+                              padding: '12px 20px',
+                              minWidth: '140px',
+                              textAlign: 'center',
+                              transition: 'all 0.3s ease',
+                              boxShadow: tokenPhase === 'global'
+                                ? '0 0 8px rgba(48, 209, 88, 0.3), 0 0 16px rgba(48, 209, 88, 0.15)'
+                                : 'none',
+                            }}>
+                              <div style={{
+                                fontSize: '9px',
+                                color: '#30D158',
+                                fontWeight: '600',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.1em',
+                                marginBottom: '4px',
+                              }}>GLOBAL</div>
+                              <div style={{
+                                fontSize: '11px',
+                                color: 'rgba(255, 255, 255, 0.9)',
+                                fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                              }}>red-500</div>
+                              <div style={{
+                                fontSize: '9px',
+                                color: 'rgba(255, 255, 255, 0.4)',
+                                marginTop: '2px',
+                              }}>#DA0E29</div>
+                            </div>
+
+                            {/* ALIAS Tier */}
+                            <div style={{
+                              background: '#1E1E1E',
+                              border: `1px solid ${['alias', 'component', 'complete'].includes(tokenPhase) ? 'rgba(13, 153, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)'}`,
+                              borderRadius: '8px',
+                              padding: '12px 20px',
+                              minWidth: '140px',
+                              textAlign: 'center',
+                              transition: 'all 0.3s ease',
+                              boxShadow: tokenPhase === 'alias'
+                                ? '0 0 8px rgba(13, 153, 255, 0.3), 0 0 16px rgba(13, 153, 255, 0.15)'
+                                : 'none',
+                            }}>
+                              <div style={{
+                                fontSize: '9px',
+                                color: '#0D99FF',
+                                fontWeight: '600',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.1em',
+                                marginBottom: '4px',
+                              }}>ALIAS</div>
+                              <div style={{
+                                fontSize: '11px',
+                                color: 'rgba(255, 255, 255, 0.9)',
+                                fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                              }}>brand.primary</div>
+                              <div style={{
+                                fontSize: '9px',
+                                color: 'rgba(255, 255, 255, 0.4)',
+                                marginTop: '2px',
+                              }}>→ red-500</div>
+                            </div>
+
+                            {/* COMPONENT Tier */}
+                            <div style={{
+                              background: '#1E1E1E',
+                              border: `1px solid ${['component', 'complete'].includes(tokenPhase) ? 'rgba(162, 89, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)'}`,
+                              borderRadius: '8px',
+                              padding: '12px 20px',
+                              minWidth: '140px',
+                              textAlign: 'center',
+                              transition: 'all 0.3s ease',
+                              boxShadow: tokenPhase === 'component'
+                                ? '0 0 8px rgba(162, 89, 255, 0.3), 0 0 16px rgba(162, 89, 255, 0.15)'
+                                : 'none',
+                            }}>
+                              <div style={{
+                                fontSize: '9px',
+                                color: '#A259FF',
+                                fontWeight: '600',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.1em',
+                                marginBottom: '4px',
+                              }}>COMPONENT</div>
+                              <div style={{
+                                fontSize: '11px',
+                                color: 'rgba(255, 255, 255, 0.9)',
+                                fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                              }}>button.bg</div>
+                              <div style={{
+                                fontSize: '9px',
+                                color: 'rgba(255, 255, 255, 0.4)',
+                                marginTop: '2px',
+                              }}>→ brand.primary</div>
+                            </div>
+                          </div>
+
+                          {/* Status Indicator */}
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '8px',
+                            marginTop: '16px',
+                          }}>
+                            <div style={{
+                              width: '6px',
+                              height: '6px',
+                              borderRadius: '50%',
+                              background: tokenPhase === 'idle' ? 'rgba(255, 255, 255, 0.3)'
+                                : tokenPhase === 'complete' ? '#30D158'
+                                : '#6366F1',
+                              boxShadow: tokenPhase !== 'idle'
+                                ? `0 0 8px ${tokenPhase === 'complete' ? '#30D158' : '#6366F1'}`
+                                : 'none',
+                              animation: tokenPhase !== 'idle' && tokenPhase !== 'complete' ? 'statusPulse 1s ease infinite' : 'none',
+                              transition: 'all 0.3s ease',
+                            }} />
+                            <span style={{
+                              fontSize: '10px',
+                              color: tokenPhase === 'complete' ? '#30D158' : 'rgba(255, 255, 255, 0.5)',
+                              transition: 'color 0.3s ease',
+                            }}>
+                              {tokenPhase === 'idle' && 'Ready to apply'}
+                              {tokenPhase === 'global' && 'Reading primitives...'}
+                              {tokenPhase === 'alias' && 'Mapping semantics...'}
+                              {tokenPhase === 'component' && 'Applying to components...'}
+                              {tokenPhase === 'complete' && 'Token cascade complete'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    </>
                   ) : (
                     /* Default Image Placeholder for other cards */
                     <div style={{
@@ -2384,7 +3083,7 @@ export function AirIndiaWork() {
                     </div>
                   )}
 
-                  {/* Full Narrative Description - with image for Pixel Radar */}
+                  {/* Full Narrative Description - with image for Pixel Radar and Design System */}
                   {index === 0 ? (
                     <div style={{
                       width: '100%',
@@ -2434,6 +3133,58 @@ export function AirIndiaWork() {
                           margin: 0,
                         }}>
                           So I built Pixel Radar—a Figma plugin that automates consistency checks. What started as a personal workflow fix became infrastructure serving 450+ daily users, cutting design review time by 30%. It solved a problem the organization didn&apos;t have budget or bandwidth to address through official channels.
+                        </p>
+                      </div>
+                    </div>
+                  ) : index === 1 ? (
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '1100px',
+                      margin: '0 auto',
+                      display: 'grid',
+                      gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+                      gap: '24px',
+                      padding: '8px',
+                      alignItems: 'start',
+                    }}>
+                      {/* Design System Image */}
+                      <div style={{
+                        width: '100%',
+                        aspectRatio: '4 / 3',
+                        borderRadius: '12px',
+                        overflow: 'hidden',
+                        background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(162, 89, 255, 0.15))',
+                      }}>
+                        <img
+                          src="/images/design-system-author.jpeg"
+                          alt="Design System Architecture"
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                          }}
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                      </div>
+                      {/* Text */}
+                      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
+                        <p style={{
+                          fontSize: '0.938rem',
+                          color: 'var(--text-60)',
+                          lineHeight: 1.8,
+                          margin: '0 0 1rem 0',
+                        }}>
+                          I started by reverse-engineering what existed. Hundreds of screens, undocumented, built over years by people who&apos;d since left. I extracted the implicit logic—spacing patterns, typography decisions, color usage—and codified it into a systematic token framework.
+                        </p>
+                        <p style={{
+                          fontSize: '0.938rem',
+                          color: 'var(--text-60)',
+                          lineHeight: 1.8,
+                          margin: 0,
+                        }}>
+                          This became the foundation that would let four merging airlines eventually speak the same design language. Variables, naming conventions, hierarchy—the infrastructure that makes consistency possible at scale.
                         </p>
                       </div>
                     </div>
