@@ -1725,7 +1725,7 @@ export function AirIndiaWork() {
                         </div>
                       </div>
 
-                      {/* ======== RIGHT PANEL: Backend Architecture ======== */}
+                      {/* ======== RIGHT PANEL: Backend Architecture (Enhanced V2) ======== */}
                       <div style={{
                         background: '#2C2C2C',
                         borderRadius: '8px',
@@ -1762,90 +1762,161 @@ export function AirIndiaWork() {
 
                         {/* Architecture Content */}
                         <div style={{ padding: '12px', position: 'relative', minHeight: '280px' }}>
-                          {/* SVG Connections Layer */}
+                          {/* SVG Connections Layer - Enhanced with viewBox */}
                           <svg
+                            viewBox="0 0 100 100"
+                            preserveAspectRatio="none"
                             style={{
                               position: 'absolute',
-                              top: 0,
-                              left: 0,
-                              width: '100%',
-                              height: '100%',
+                              top: '12px',
+                              left: '12px',
+                              width: 'calc(100% - 24px)',
+                              height: 'calc(100% - 60px)',
                               pointerEvents: 'none',
                               zIndex: 0,
                             }}
                           >
                             <defs>
+                              {/* Glow filter for active connections */}
+                              <filter id="connectionGlow" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="1.5" result="blur" />
+                                <feMerge>
+                                  <feMergeNode in="blur" />
+                                  <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                              </filter>
+
+                              {/* Animated arrowhead marker */}
                               <marker
-                                id="arrowhead"
-                                markerWidth="8"
-                                markerHeight="6"
-                                refX="7"
-                                refY="3"
+                                id="arrowhead-v2"
+                                markerWidth="6"
+                                markerHeight="5"
+                                refX="5"
+                                refY="2.5"
                                 orient="auto"
                               >
                                 <polygon
-                                  points="0 0, 8 3, 0 6"
+                                  points="0 0, 6 2.5, 0 5"
                                   fill={analysisPhase !== 'idle' ? '#0D99FF' : 'rgba(255, 255, 255, 0.2)'}
+                                  style={{
+                                    transition: 'fill 0.3s ease',
+                                    transformOrigin: 'center',
+                                    animation: analysisPhase !== 'idle' ? 'statusPulse 1s ease infinite' : 'none',
+                                  }}
+                                />
+                              </marker>
+
+                              {/* Green arrowhead for feedback loop */}
+                              <marker
+                                id="arrowhead-green"
+                                markerWidth="6"
+                                markerHeight="5"
+                                refX="5"
+                                refY="2.5"
+                                orient="auto"
+                              >
+                                <polygon
+                                  points="0 0, 6 2.5, 0 5"
+                                  fill={analysisPhase === 'complete' ? '#30D158' : 'rgba(255, 255, 255, 0.2)'}
                                   style={{ transition: 'fill 0.3s ease' }}
                                 />
                               </marker>
                             </defs>
 
-                            {/* Connection: Figma APIs → Token Scanner */}
+                            {/* Connection: Figma APIs (bottom-left) → Token Scanner (top-left) */}
                             <path
-                              d="M 80 200 L 80 90"
+                              d="M 25 72 L 25 28"
                               fill="none"
-                              stroke={analysisPhase !== 'idle' ? 'rgba(13, 153, 255, 0.5)' : 'rgba(255, 255, 255, 0.1)'}
-                              strokeWidth="2"
-                              strokeDasharray="6 4"
-                              markerEnd="url(#arrowhead)"
+                              stroke={analysisPhase !== 'idle' ? 'rgba(13, 153, 255, 0.6)' : 'rgba(255, 255, 255, 0.1)'}
+                              strokeWidth="0.8"
+                              strokeDasharray="3 2"
+                              markerEnd="url(#arrowhead-v2)"
+                              filter={analysisPhase === 'scan' ? 'url(#connectionGlow)' : 'none'}
                               style={{
-                                transition: 'stroke 0.3s ease',
-                                animation: analysisPhase === 'scan' ? 'flowLine 1.5s linear infinite' : 'none',
+                                transition: 'stroke 0.3s ease, filter 0.3s ease',
+                                animation: analysisPhase === 'scan' ? 'flowLine 1s linear infinite' : 'none',
                               }}
                             />
 
-                            {/* Connection: Token Scanner → Analysis Engine */}
+                            {/* Connection: Token Scanner (top-left) → Analysis Engine (top-right) */}
                             <path
-                              d="M 140 60 L 220 60"
+                              d="M 40 20 L 60 20"
                               fill="none"
-                              stroke={['scan', 'analyze', 'complete'].includes(analysisPhase) ? 'rgba(13, 153, 255, 0.5)' : 'rgba(255, 255, 255, 0.1)'}
-                              strokeWidth="2"
-                              strokeDasharray="6 4"
-                              markerEnd="url(#arrowhead)"
+                              stroke={['scan', 'analyze', 'complete'].includes(analysisPhase) ? 'rgba(13, 153, 255, 0.6)' : 'rgba(255, 255, 255, 0.1)'}
+                              strokeWidth="0.8"
+                              strokeDasharray="3 2"
+                              markerEnd="url(#arrowhead-v2)"
+                              filter={analysisPhase === 'analyze' ? 'url(#connectionGlow)' : 'none'}
                               style={{
-                                transition: 'stroke 0.3s ease',
-                                animation: analysisPhase === 'analyze' ? 'flowLine 1.5s linear infinite' : 'none',
+                                transition: 'stroke 0.3s ease, filter 0.3s ease',
+                                animation: analysisPhase === 'analyze' ? 'flowLine 1s linear infinite' : 'none',
                               }}
                             />
 
-                            {/* Connection: Analysis Engine → Results */}
+                            {/* Connection: Analysis Engine (top-right) → Results (bottom-right) */}
                             <path
-                              d="M 300 90 L 300 170"
+                              d="M 75 28 L 75 72"
                               fill="none"
-                              stroke={['analyze', 'complete'].includes(analysisPhase) ? 'rgba(13, 153, 255, 0.5)' : 'rgba(255, 255, 255, 0.1)'}
-                              strokeWidth="2"
-                              strokeDasharray="6 4"
-                              markerEnd="url(#arrowhead)"
+                              stroke={['analyze', 'complete'].includes(analysisPhase) ? 'rgba(13, 153, 255, 0.6)' : 'rgba(255, 255, 255, 0.1)'}
+                              strokeWidth="0.8"
+                              strokeDasharray="3 2"
+                              markerEnd="url(#arrowhead-v2)"
+                              filter={analysisPhase === 'complete' ? 'url(#connectionGlow)' : 'none'}
                               style={{
-                                transition: 'stroke 0.3s ease',
-                                animation: analysisPhase === 'complete' ? 'flowLine 1.5s linear infinite' : 'none',
+                                transition: 'stroke 0.3s ease, filter 0.3s ease',
+                                animation: analysisPhase === 'complete' ? 'flowLine 1s linear infinite' : 'none',
                               }}
                             />
 
-                            {/* Connection: Results → Figma APIs (feedback loop) */}
+                            {/* Connection: Results (bottom-right) → Figma APIs (bottom-left) - feedback */}
                             <path
-                              d="M 220 210 L 140 210"
+                              d="M 60 80 L 40 80"
                               fill="none"
-                              stroke={analysisPhase === 'complete' ? 'rgba(48, 209, 88, 0.4)' : 'rgba(255, 255, 255, 0.1)'}
-                              strokeWidth="2"
-                              strokeDasharray="6 4"
-                              markerEnd="url(#arrowhead)"
+                              stroke={analysisPhase === 'complete' ? 'rgba(48, 209, 88, 0.5)' : 'rgba(255, 255, 255, 0.1)'}
+                              strokeWidth="0.8"
+                              strokeDasharray="3 2"
+                              markerEnd="url(#arrowhead-green)"
+                              filter={analysisPhase === 'complete' ? 'url(#connectionGlow)' : 'none'}
                               style={{
-                                transition: 'stroke 0.3s ease',
-                                animation: analysisPhase === 'complete' ? 'flowLine 1.5s linear infinite reverse' : 'none',
+                                transition: 'stroke 0.3s ease, filter 0.3s ease',
+                                animation: analysisPhase === 'complete' ? 'flowLine 1s linear infinite reverse' : 'none',
                               }}
                             />
+
+                            {/* Data Packets - Moving dots along paths */}
+                            {analysisPhase === 'scan' && (
+                              <circle r="1.5" fill="#0D99FF" style={{
+                                offsetPath: "path('M 25 72 L 25 28')",
+                                animation: 'movePacket 1.2s ease-in-out infinite',
+                              }}>
+                                <animate attributeName="opacity" values="0;1;1;0" dur="1.2s" repeatCount="indefinite" />
+                              </circle>
+                            )}
+                            {analysisPhase === 'analyze' && (
+                              <circle r="1.5" fill="#0D99FF" style={{
+                                offsetPath: "path('M 40 20 L 60 20')",
+                                animation: 'movePacket 0.8s ease-in-out infinite',
+                              }}>
+                                <animate attributeName="opacity" values="0;1;1;0" dur="0.8s" repeatCount="indefinite" />
+                              </circle>
+                            )}
+                            {analysisPhase === 'complete' && (
+                              <>
+                                <circle r="1.5" fill="#0D99FF" style={{
+                                  offsetPath: "path('M 75 28 L 75 72')",
+                                  animation: 'movePacket 1s ease-in-out infinite',
+                                }}>
+                                  <animate attributeName="opacity" values="0;1;1;0" dur="1s" repeatCount="indefinite" />
+                                </circle>
+                                <circle r="1.5" fill="#30D158" style={{
+                                  offsetPath: "path('M 60 80 L 40 80')",
+                                  animation: 'movePacket 0.8s ease-in-out infinite',
+                                  animationDelay: '0.4s',
+                                }}>
+                                  <animate attributeName="opacity" values="0;1;1;0" dur="0.8s" repeatCount="indefinite" begin="0.4s" />
+                                </circle>
+                              </>
+                            )}
                           </svg>
 
                           {/* Module Grid */}
@@ -1866,15 +1937,18 @@ export function AirIndiaWork() {
                                 padding: '10px',
                                 border: `1px solid ${
                                   analysisPhase === 'scan'
-                                    ? 'rgba(48, 209, 88, 0.5)'
+                                    ? 'rgba(48, 209, 88, 0.6)'
                                     : hoveredModule === 'scanner'
-                                      ? 'rgba(255, 255, 255, 0.2)'
+                                      ? 'rgba(255, 255, 255, 0.25)'
                                       : 'rgba(255, 255, 255, 0.1)'
                                 }`,
                                 transition: 'all 0.3s ease',
                                 boxShadow: analysisPhase === 'scan'
-                                  ? '0 0 12px rgba(48, 209, 88, 0.2)'
-                                  : 'none',
+                                  ? '0 0 8px rgba(48, 209, 88, 0.3), 0 0 16px rgba(48, 209, 88, 0.15), 0 0 32px rgba(48, 209, 88, 0.08), inset 0 0 12px rgba(48, 209, 88, 0.05)'
+                                  : hoveredModule === 'scanner'
+                                    ? '0 0 8px rgba(255, 255, 255, 0.05)'
+                                    : 'none',
+                                position: 'relative',
                               }}
                             >
                               <div style={{
@@ -1891,7 +1965,8 @@ export function AirIndiaWork() {
                                   height: '6px',
                                   borderRadius: '50%',
                                   background: analysisPhase === 'scan' ? '#30D158' : 'rgba(48, 209, 88, 0.3)',
-                                  animation: analysisPhase === 'scan' ? 'pulse 1s ease infinite' : 'none',
+                                  boxShadow: analysisPhase === 'scan' ? '0 0 6px #30D158' : 'none',
+                                  animation: analysisPhase === 'scan' ? 'statusPulse 0.8s ease infinite' : 'none',
                                 }} />
                                 Token Scanner
                               </div>
@@ -1900,6 +1975,37 @@ export function AirIndiaWork() {
                                 • Styles<br />
                                 • Libraries
                               </div>
+                              {/* Tooltip */}
+                              {hoveredModule === 'scanner' && (
+                                <div style={{
+                                  position: 'absolute',
+                                  bottom: 'calc(100% + 8px)',
+                                  left: '50%',
+                                  transform: 'translateX(-50%)',
+                                  background: 'rgba(0, 0, 0, 0.95)',
+                                  padding: '6px 10px',
+                                  borderRadius: '4px',
+                                  fontSize: '9px',
+                                  color: 'rgba(255, 255, 255, 0.9)',
+                                  whiteSpace: 'nowrap',
+                                  animation: 'tooltipFade 0.2s ease',
+                                  zIndex: 10,
+                                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                                }}>
+                                  Scans Figma document for tokens
+                                  <div style={{
+                                    position: 'absolute',
+                                    bottom: '-5px',
+                                    left: '50%',
+                                    transform: 'translateX(-50%) rotate(45deg)',
+                                    width: '8px',
+                                    height: '8px',
+                                    background: 'rgba(0, 0, 0, 0.95)',
+                                    borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+                                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                                  }} />
+                                </div>
+                              )}
                             </div>
 
                             {/* Module 2: Analysis Engine (Top Right) */}
@@ -1912,15 +2018,18 @@ export function AirIndiaWork() {
                                 padding: '10px',
                                 border: `1px solid ${
                                   analysisPhase === 'analyze'
-                                    ? 'rgba(13, 153, 255, 0.5)'
+                                    ? 'rgba(13, 153, 255, 0.6)'
                                     : hoveredModule === 'engine'
-                                      ? 'rgba(255, 255, 255, 0.2)'
+                                      ? 'rgba(255, 255, 255, 0.25)'
                                       : 'rgba(255, 255, 255, 0.1)'
                                 }`,
                                 transition: 'all 0.3s ease',
                                 boxShadow: analysisPhase === 'analyze'
-                                  ? '0 0 12px rgba(13, 153, 255, 0.2)'
-                                  : 'none',
+                                  ? '0 0 8px rgba(13, 153, 255, 0.3), 0 0 16px rgba(13, 153, 255, 0.15), 0 0 32px rgba(13, 153, 255, 0.08), inset 0 0 12px rgba(13, 153, 255, 0.05)'
+                                  : hoveredModule === 'engine'
+                                    ? '0 0 8px rgba(255, 255, 255, 0.05)'
+                                    : 'none',
+                                position: 'relative',
                               }}
                             >
                               <div style={{
@@ -1937,7 +2046,8 @@ export function AirIndiaWork() {
                                   height: '6px',
                                   borderRadius: '50%',
                                   background: analysisPhase === 'analyze' ? '#0D99FF' : 'rgba(13, 153, 255, 0.3)',
-                                  animation: analysisPhase === 'analyze' ? 'pulse 1s ease infinite' : 'none',
+                                  boxShadow: analysisPhase === 'analyze' ? '0 0 6px #0D99FF' : 'none',
+                                  animation: analysisPhase === 'analyze' ? 'statusPulse 0.8s ease infinite' : 'none',
                                 }} />
                                 Analysis Engine
                               </div>
@@ -1946,6 +2056,37 @@ export function AirIndiaWork() {
                                 • Consistency Check<br />
                                 • Smart Suggestions
                               </div>
+                              {/* Tooltip */}
+                              {hoveredModule === 'engine' && (
+                                <div style={{
+                                  position: 'absolute',
+                                  bottom: 'calc(100% + 8px)',
+                                  left: '50%',
+                                  transform: 'translateX(-50%)',
+                                  background: 'rgba(0, 0, 0, 0.95)',
+                                  padding: '6px 10px',
+                                  borderRadius: '4px',
+                                  fontSize: '9px',
+                                  color: 'rgba(255, 255, 255, 0.9)',
+                                  whiteSpace: 'nowrap',
+                                  animation: 'tooltipFade 0.2s ease',
+                                  zIndex: 10,
+                                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                                }}>
+                                  Analyzes patterns & inconsistencies
+                                  <div style={{
+                                    position: 'absolute',
+                                    bottom: '-5px',
+                                    left: '50%',
+                                    transform: 'translateX(-50%) rotate(45deg)',
+                                    width: '8px',
+                                    height: '8px',
+                                    background: 'rgba(0, 0, 0, 0.95)',
+                                    borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+                                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                                  }} />
+                                </div>
+                              )}
                             </div>
 
                             {/* Module 3: Figma APIs (Bottom Left) */}
@@ -1958,10 +2099,14 @@ export function AirIndiaWork() {
                                 padding: '10px',
                                 border: `1px solid ${
                                   hoveredModule === 'apis'
-                                    ? 'rgba(218, 14, 41, 0.4)'
+                                    ? 'rgba(218, 14, 41, 0.5)'
                                     : 'rgba(218, 14, 41, 0.25)'
                                 }`,
                                 transition: 'all 0.3s ease',
+                                boxShadow: hoveredModule === 'apis'
+                                  ? '0 0 8px rgba(218, 14, 41, 0.15)'
+                                  : 'none',
+                                position: 'relative',
                               }}
                             >
                               <div style={{
@@ -1977,7 +2122,8 @@ export function AirIndiaWork() {
                                   width: '6px',
                                   height: '6px',
                                   borderRadius: '50%',
-                                  background: 'rgba(218, 14, 41, 0.5)',
+                                  background: 'rgba(218, 14, 41, 0.6)',
+                                  boxShadow: '0 0 4px rgba(218, 14, 41, 0.3)',
                                 }} />
                                 Figma APIs
                               </div>
@@ -1986,6 +2132,37 @@ export function AirIndiaWork() {
                                 • styles<br />
                                 • teamLibrary
                               </div>
+                              {/* Tooltip */}
+                              {hoveredModule === 'apis' && (
+                                <div style={{
+                                  position: 'absolute',
+                                  bottom: 'calc(100% + 8px)',
+                                  left: '50%',
+                                  transform: 'translateX(-50%)',
+                                  background: 'rgba(0, 0, 0, 0.95)',
+                                  padding: '6px 10px',
+                                  borderRadius: '4px',
+                                  fontSize: '9px',
+                                  color: 'rgba(255, 255, 255, 0.9)',
+                                  whiteSpace: 'nowrap',
+                                  animation: 'tooltipFade 0.2s ease',
+                                  zIndex: 10,
+                                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                                }}>
+                                  Official Figma Plugin API
+                                  <div style={{
+                                    position: 'absolute',
+                                    bottom: '-5px',
+                                    left: '50%',
+                                    transform: 'translateX(-50%) rotate(45deg)',
+                                    width: '8px',
+                                    height: '8px',
+                                    background: 'rgba(0, 0, 0, 0.95)',
+                                    borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+                                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                                  }} />
+                                </div>
+                              )}
                             </div>
 
                             {/* Module 4: Results Processor (Bottom Right) */}
@@ -1998,15 +2175,18 @@ export function AirIndiaWork() {
                                 padding: '10px',
                                 border: `1px solid ${
                                   analysisPhase === 'complete'
-                                    ? 'rgba(48, 209, 88, 0.5)'
+                                    ? 'rgba(48, 209, 88, 0.6)'
                                     : hoveredModule === 'results'
-                                      ? 'rgba(255, 255, 255, 0.2)'
+                                      ? 'rgba(255, 255, 255, 0.25)'
                                       : 'rgba(255, 255, 255, 0.1)'
                                 }`,
                                 transition: 'all 0.3s ease',
                                 boxShadow: analysisPhase === 'complete'
-                                  ? '0 0 12px rgba(48, 209, 88, 0.2)'
-                                  : 'none',
+                                  ? '0 0 8px rgba(48, 209, 88, 0.3), 0 0 16px rgba(48, 209, 88, 0.15), 0 0 32px rgba(48, 209, 88, 0.08), inset 0 0 12px rgba(48, 209, 88, 0.05)'
+                                  : hoveredModule === 'results'
+                                    ? '0 0 8px rgba(255, 255, 255, 0.05)'
+                                    : 'none',
+                                position: 'relative',
                               }}
                             >
                               <div style={{
@@ -2023,15 +2203,16 @@ export function AirIndiaWork() {
                                   height: '6px',
                                   borderRadius: '50%',
                                   background: analysisPhase === 'complete' ? '#30D158' : 'rgba(48, 209, 88, 0.3)',
-                                  animation: analysisPhase === 'complete' ? 'pulse 1s ease infinite' : 'none',
+                                  boxShadow: analysisPhase === 'complete' ? '0 0 6px #30D158' : 'none',
+                                  animation: analysisPhase === 'complete' ? 'statusPulse 0.8s ease infinite' : 'none',
                                 }} />
                                 Results
                               </div>
                               <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', lineHeight: 1.5 }}>
                                 {analysisPhase === 'complete' ? (
                                   <>
-                                    <span style={{ color: '#30D158' }}>✓</span> Match tokens<br />
-                                    <span style={{ color: '#30D158' }}>✓</span> Fix duplicates
+                                    <span style={{ color: '#30D158', animation: 'moduleReveal 0.3s ease forwards' }}>✓</span> Match tokens<br />
+                                    <span style={{ color: '#30D158', animation: 'moduleReveal 0.3s ease forwards 0.1s' }}>✓</span> Fix duplicates
                                   </>
                                 ) : (
                                   <>
@@ -2040,10 +2221,41 @@ export function AirIndiaWork() {
                                   </>
                                 )}
                               </div>
+                              {/* Tooltip */}
+                              {hoveredModule === 'results' && (
+                                <div style={{
+                                  position: 'absolute',
+                                  bottom: 'calc(100% + 8px)',
+                                  left: '50%',
+                                  transform: 'translateX(-50%)',
+                                  background: 'rgba(0, 0, 0, 0.95)',
+                                  padding: '6px 10px',
+                                  borderRadius: '4px',
+                                  fontSize: '9px',
+                                  color: 'rgba(255, 255, 255, 0.9)',
+                                  whiteSpace: 'nowrap',
+                                  animation: 'tooltipFade 0.2s ease',
+                                  zIndex: 10,
+                                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                                }}>
+                                  Outputs actionable fixes
+                                  <div style={{
+                                    position: 'absolute',
+                                    bottom: '-5px',
+                                    left: '50%',
+                                    transform: 'translateX(-50%) rotate(45deg)',
+                                    width: '8px',
+                                    height: '8px',
+                                    background: 'rgba(0, 0, 0, 0.95)',
+                                    borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+                                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                                  }} />
+                                </div>
+                              )}
                             </div>
                           </div>
 
-                          {/* Status Indicator */}
+                          {/* Enhanced Status Indicator */}
                           <div style={{
                             marginTop: '12px',
                             padding: '8px 10px',
@@ -2052,27 +2264,39 @@ export function AirIndiaWork() {
                             display: 'flex',
                             alignItems: 'center',
                             gap: '8px',
+                            border: analysisPhase === 'complete'
+                              ? '1px solid rgba(48, 209, 88, 0.2)'
+                              : '1px solid rgba(255, 255, 255, 0.05)',
+                            transition: 'border-color 0.3s ease',
                           }}>
                             <div style={{
-                              width: '6px',
-                              height: '6px',
+                              width: '8px',
+                              height: '8px',
                               borderRadius: '50%',
                               background: analysisPhase === 'idle'
                                 ? 'rgba(255, 255, 255, 0.3)'
                                 : analysisPhase === 'complete'
                                   ? '#30D158'
                                   : '#0D99FF',
+                              boxShadow: analysisPhase === 'idle'
+                                ? 'none'
+                                : analysisPhase === 'complete'
+                                  ? '0 0 8px rgba(48, 209, 88, 0.5)'
+                                  : '0 0 8px rgba(13, 153, 255, 0.5)',
                               animation: analysisPhase !== 'idle' && analysisPhase !== 'complete'
-                                ? 'pulse 1s ease infinite'
+                                ? 'statusPulse 0.8s ease infinite'
                                 : 'none',
+                              transition: 'background 0.3s ease, box-shadow 0.3s ease',
                             }} />
                             <span style={{
                               fontSize: '10px',
+                              fontWeight: analysisPhase === 'complete' ? '500' : '400',
                               color: analysisPhase === 'idle'
                                 ? 'rgba(255, 255, 255, 0.4)'
                                 : analysisPhase === 'complete'
                                   ? '#30D158'
                                   : '#0D99FF',
+                              transition: 'color 0.3s ease',
                             }}>
                               {analysisPhase === 'idle' && 'Ready to analyze'}
                               {analysisPhase === 'scan' && 'Scanning tokens...'}
