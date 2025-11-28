@@ -1451,11 +1451,11 @@ export function AirIndiaWork() {
                     /* PIXEL RADAR - Interactive Token Flow Illustration */
                     <div style={{
                       width: '100%',
-                      borderRadius: '24px',
+                      borderRadius: '20px',
                       background: 'linear-gradient(135deg, rgba(15, 15, 20, 0.95), rgba(25, 25, 35, 0.9))',
                       position: 'relative',
                       overflow: 'hidden',
-                      padding: '2.5rem 3rem',
+                      padding: '1.5rem 2rem',
                       // Feathered edges - blends into parent card
                       maskImage: 'radial-gradient(ellipse 85% 85% at center, black 70%, transparent 100%)',
                       WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at center, black 70%, transparent 100%)',
@@ -1472,28 +1472,28 @@ export function AirIndiaWork() {
                         pointerEvents: 'none',
                       }} />
 
-                      {/* Floating Glow Orbs - Larger & Softer */}
+                      {/* Floating Glow Orbs - Subtle */}
                       <div style={{
                         position: 'absolute',
-                        top: '5%',
-                        left: '5%',
-                        width: '200px',
-                        height: '200px',
+                        top: '10%',
+                        left: '10%',
+                        width: '120px',
+                        height: '120px',
                         borderRadius: '50%',
-                        background: 'radial-gradient(circle, rgba(16, 185, 129, 0.15), transparent 60%)',
-                        filter: 'blur(60px)',
+                        background: 'radial-gradient(circle, rgba(16, 185, 129, 0.12), transparent 60%)',
+                        filter: 'blur(40px)',
                         animation: 'pulse 5s ease-in-out infinite',
                         pointerEvents: 'none',
                       }} />
                       <div style={{
                         position: 'absolute',
                         bottom: '10%',
-                        right: '5%',
-                        width: '220px',
-                        height: '220px',
+                        right: '10%',
+                        width: '120px',
+                        height: '120px',
                         borderRadius: '50%',
-                        background: 'radial-gradient(circle, rgba(218, 14, 41, 0.15), transparent 60%)',
-                        filter: 'blur(60px)',
+                        background: 'radial-gradient(circle, rgba(218, 14, 41, 0.12), transparent 60%)',
+                        filter: 'blur(40px)',
                         animation: 'pulse 5s ease-in-out infinite 2s',
                         pointerEvents: 'none',
                       }} />
@@ -1503,10 +1503,10 @@ export function AirIndiaWork() {
                         position: 'relative',
                         zIndex: 2,
                         textAlign: 'center',
-                        marginBottom: '1.75rem',
+                        marginBottom: '1rem',
                       }}>
                         <h4 style={{
-                          fontSize: '1rem',
+                          fontSize: '0.875rem',
                           fontWeight: '700',
                           color: 'var(--text-90)',
                           letterSpacing: '-0.02em',
@@ -1521,21 +1521,20 @@ export function AirIndiaWork() {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: '1.5rem',
-                        marginBottom: '2rem',
+                        gap: '0.5rem',
+                        marginBottom: '1rem',
                       }}>
                         {/* Step 1: Select Library */}
                         <div
                           onClick={() => { setPixelRadarStep(1); setIsAnalyzing(false); }}
                           style={{
-                            padding: '1rem 1.25rem',
-                            borderRadius: '14px',
-                            background: pixelRadarStep >= 1 ? 'rgba(255, 255, 255, 0.04)' : 'rgba(255, 255, 255, 0.02)',
-                            boxShadow: pixelRadarStep >= 1 ? '0 0 40px rgba(218, 14, 41, 0.12)' : 'none',
-                            backdropFilter: 'blur(10px)',
+                            padding: '0.625rem 0.875rem',
+                            borderRadius: '10px',
+                            background: pixelRadarStep >= 1 ? 'rgba(55, 55, 65, 0.8)' : 'rgba(35, 35, 45, 0.6)',
+                            border: `1px solid ${pixelRadarStep >= 1 ? 'rgba(218, 14, 41, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
                             cursor: 'pointer',
                             transition: 'all 0.3s ease',
-                            minWidth: '160px',
+                            minWidth: '130px',
                           }}
                         >
                           <div style={{ fontSize: '0.625rem', fontWeight: '600', color: 'rgb(218, 14, 41)', marginBottom: '0.25rem' }}>
@@ -1580,14 +1579,13 @@ export function AirIndiaWork() {
                             }, 1500);
                           }}
                           style={{
-                            padding: '1rem 1.25rem',
-                            borderRadius: '14px',
-                            background: pixelRadarStep >= 2 ? 'rgba(255, 255, 255, 0.04)' : 'rgba(255, 255, 255, 0.02)',
-                            boxShadow: pixelRadarStep >= 2 ? '0 0 40px rgba(218, 14, 41, 0.12)' : 'none',
-                            backdropFilter: 'blur(10px)',
+                            padding: '0.625rem 0.875rem',
+                            borderRadius: '10px',
+                            background: pixelRadarStep >= 2 ? 'rgba(55, 55, 65, 0.8)' : 'rgba(35, 35, 45, 0.6)',
+                            border: `1px solid ${pixelRadarStep >= 2 ? 'rgba(218, 14, 41, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
                             cursor: 'pointer',
                             transition: 'all 0.3s ease',
-                            minWidth: '160px',
+                            minWidth: '130px',
                             textAlign: 'center',
                           }}
                         >
@@ -1623,14 +1621,13 @@ export function AirIndiaWork() {
                         <div
                           onClick={() => setPixelRadarStep(3)}
                           style={{
-                            padding: '1rem 1.25rem',
-                            borderRadius: '14px',
-                            background: pixelRadarStep >= 3 ? 'rgba(255, 255, 255, 0.04)' : 'rgba(255, 255, 255, 0.02)',
-                            boxShadow: pixelRadarStep >= 3 ? '0 0 40px rgba(218, 14, 41, 0.12)' : 'none',
-                            backdropFilter: 'blur(10px)',
+                            padding: '0.625rem 0.875rem',
+                            borderRadius: '10px',
+                            background: pixelRadarStep >= 3 ? 'rgba(55, 55, 65, 0.8)' : 'rgba(35, 35, 45, 0.6)',
+                            border: `1px solid ${pixelRadarStep >= 3 ? 'rgba(218, 14, 41, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
                             cursor: 'pointer',
                             transition: 'all 0.3s ease',
-                            minWidth: '160px',
+                            minWidth: '130px',
                           }}
                         >
                           <div style={{ fontSize: '0.625rem', fontWeight: '600', color: 'rgb(218, 14, 41)', marginBottom: '0.25rem' }}>
@@ -1672,34 +1669,33 @@ export function AirIndiaWork() {
                       <div style={{
                         position: 'relative',
                         zIndex: 2,
-                        marginBottom: '1.5rem',
+                        marginBottom: '0.75rem',
                       }}>
                         <h5 style={{
-                          fontSize: '0.875rem',
+                          fontSize: '0.75rem',
                           fontWeight: '600',
                           color: 'var(--text-80)',
                           textAlign: 'center',
-                          marginBottom: '1.25rem',
+                          marginBottom: '0.75rem',
                         }}>Token Comparison Process</h5>
 
                         <div style={{
                           display: 'flex',
                           alignItems: 'stretch',
                           justifyContent: 'center',
-                          gap: '2rem',
+                          gap: '1rem',
                         }}>
                           {/* LEFT: Library Tokens Panel */}
                           <div style={{
                             flex: 1,
-                            maxWidth: '220px',
-                            padding: '1.25rem',
-                            borderRadius: '16px',
-                            background: 'rgba(16, 185, 129, 0.03)',
-                            boxShadow: '0 0 50px rgba(16, 185, 129, 0.12)',
-                            backdropFilter: 'blur(12px)',
+                            maxWidth: '200px',
+                            padding: '0.75rem',
+                            borderRadius: '12px',
+                            background: 'rgba(16, 185, 129, 0.06)',
+                            border: '2px solid rgba(16, 185, 129, 0.4)',
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: '0.75rem',
+                            gap: '0.5rem',
                             animation: 'slideInLeft 0.5s ease-out both',
                           }}>
                             <span style={{
@@ -1721,23 +1717,21 @@ export function AirIndiaWork() {
                                 style={{
                                   display: 'flex',
                                   alignItems: 'center',
-                                  gap: '0.625rem',
-                                  padding: '0.75rem 1rem',
-                                  borderRadius: '10px',
-                                  background: hoveredToken === token.id ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.03)',
-                                  boxShadow: hoveredToken === token.id ? '0 0 20px rgba(16, 185, 129, 0.15)' : 'none',
+                                  gap: '0.5rem',
+                                  padding: '0.5rem 0.75rem',
+                                  borderRadius: '8px',
+                                  background: hoveredToken === token.id ? 'rgba(255, 255, 255, 0.12)' : 'rgba(55, 55, 65, 0.7)',
+                                  border: hoveredToken === token.id ? '1px solid rgba(16, 185, 129, 0.5)' : '1px solid transparent',
                                   cursor: 'pointer',
                                   transition: 'all 0.2s ease',
                                   animation: `slideInLeft 0.4s ease-out ${i * 0.1 + 0.2}s both`,
                                 }}
                               >
                                 <div style={{
-                                  width: '10px',
-                                  height: '10px',
+                                  width: '8px',
+                                  height: '8px',
                                   borderRadius: '50%',
                                   background: token.color,
-                                  boxShadow: hoveredToken === token.id ? `0 0 12px ${token.color}` : `0 0 6px ${token.color}`,
-                                  transition: 'box-shadow 0.2s ease',
                                 }} />
                                 <span style={{
                                   fontSize: '0.6875rem',
@@ -1799,15 +1793,14 @@ export function AirIndiaWork() {
                           {/* RIGHT: Local Tokens Panel */}
                           <div style={{
                             flex: 1,
-                            maxWidth: '220px',
-                            padding: '1.25rem',
-                            borderRadius: '16px',
-                            background: 'rgba(218, 14, 41, 0.03)',
-                            boxShadow: '0 0 50px rgba(218, 14, 41, 0.12)',
-                            backdropFilter: 'blur(12px)',
+                            maxWidth: '200px',
+                            padding: '0.75rem',
+                            borderRadius: '12px',
+                            background: 'rgba(218, 14, 41, 0.06)',
+                            border: '2px solid rgba(218, 14, 41, 0.4)',
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: '0.75rem',
+                            gap: '0.5rem',
                             animation: 'slideInRight 0.5s ease-out both',
                           }}>
                             <span style={{
@@ -1827,25 +1820,22 @@ export function AirIndiaWork() {
                                 style={{
                                   display: 'flex',
                                   alignItems: 'center',
-                                  gap: '0.625rem',
-                                  padding: '0.75rem 1rem',
-                                  borderRadius: '10px',
-                                  background: hoveredToken === token.id
-                                    ? (token.matched ? 'rgba(16, 185, 129, 0.12)' : 'rgba(251, 146, 60, 0.12)')
-                                    : (token.matched ? 'rgba(16, 185, 129, 0.04)' : 'rgba(251, 146, 60, 0.04)'),
-                                  boxShadow: token.matched
-                                    ? `0 0 ${hoveredToken === token.id ? '25px' : '15px'} rgba(16, 185, 129, ${hoveredToken === token.id ? 0.2 : 0.1})`
-                                    : `0 0 ${hoveredToken === token.id ? '25px' : '15px'} rgba(251, 146, 60, ${hoveredToken === token.id ? 0.2 : 0.1})`,
+                                  gap: '0.5rem',
+                                  padding: '0.5rem 0.75rem',
+                                  borderRadius: '8px',
+                                  background: hoveredToken === token.id ? 'rgba(255, 255, 255, 0.12)' : 'rgba(55, 55, 65, 0.7)',
+                                  border: token.matched
+                                    ? `2px solid rgba(16, 185, 129, ${hoveredToken === token.id ? 0.8 : 0.5})`
+                                    : `2px dashed rgba(251, 146, 60, ${hoveredToken === token.id ? 0.8 : 0.5})`,
                                   transition: 'all 0.2s ease',
                                   animation: `slideInRight 0.4s ease-out ${i * 0.1 + 0.2}s both`,
                                 }}
                               >
                                 <div style={{
-                                  width: '10px',
-                                  height: '10px',
+                                  width: '8px',
+                                  height: '8px',
                                   borderRadius: '50%',
                                   background: token.color,
-                                  boxShadow: hoveredToken === token.id ? `0 0 12px ${token.color}` : `0 0 6px ${token.color}`,
                                 }} />
                                 <span style={{
                                   fontSize: '0.6875rem',
@@ -1871,32 +1861,33 @@ export function AirIndiaWork() {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: '3rem',
-                        paddingTop: '1rem',
-                        marginTop: '0.5rem',
+                        gap: '1.5rem',
+                        padding: '0.625rem 1rem',
+                        borderRadius: '10px',
+                        background: 'rgba(50, 50, 60, 0.6)',
+                        border: '1px solid rgba(255, 255, 255, 0.08)',
+                        marginTop: '0.75rem',
                       }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
                           <div style={{
-                            width: '10px',
-                            height: '10px',
+                            width: '8px',
+                            height: '8px',
                             borderRadius: '50%',
                             background: 'rgb(16, 185, 129)',
-                            boxShadow: '0 0 8px rgba(16, 185, 129, 0.5)',
                           }} />
-                          <span style={{ fontSize: '0.6875rem', color: 'var(--text-60)' }}>
-                            Matched: Perfect alignment with library
+                          <span style={{ fontSize: '0.625rem', color: 'var(--text-60)' }}>
+                            Matched
                           </span>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
                           <div style={{
-                            width: '10px',
-                            height: '10px',
+                            width: '8px',
+                            height: '8px',
                             borderRadius: '50%',
                             background: 'rgb(251, 146, 60)',
-                            boxShadow: '0 0 8px rgba(251, 146, 60, 0.5)',
                           }} />
-                          <span style={{ fontSize: '0.6875rem', color: 'var(--text-60)' }}>
-                            Suggested: Needs attention (naming/missing)
+                          <span style={{ fontSize: '0.625rem', color: 'var(--text-60)' }}>
+                            Suggested
                           </span>
                         </div>
                       </div>

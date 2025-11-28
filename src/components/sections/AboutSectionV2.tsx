@@ -5,7 +5,7 @@ import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Sparkles, Map, User, Users, Plane, Heart, Activity, Brain, Eye, Zap } from 'lucide-react';
-import { motion, useMotionValue, animate } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ContactChat } from '../ContactChat';
 import { Chatbot } from '../Chatbot';
 import { useTheme } from '@/components/effects/ThemeProvider';
@@ -35,17 +35,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   const [activeTimeline, setActiveTimeline] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [hoveredButton, setHoveredButton] = useState<'about' | 'journey' | null>(null);
-  const [viewportWidth, setViewportWidth] = useState(0);
-
-  // Horizontal lock state - self-contained horizontal scroll
-  const [isLocked, setIsLocked] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false); // Smooth transition state
-  const localSlideX = useMotionValue(0);
-  const isAnimatingRef = useRef(false);
-  const horizontalSectionRef = useRef<HTMLDivElement>(null);
-  const placeholderRef = useRef<HTMLDivElement>(null);
-  const totalSlides = 4;
 
   // SVG dynamic color helper (for project-specific colors that can't use CSS variables)
   const getThemedSvgColor = (r: number, g: number, b: number, alpha: number) =>
@@ -58,12 +47,9 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   useEffect(() => {
     setMounted(true);
     setIsMobile(window.innerWidth < 768);
-    // Use clientWidth instead of innerWidth to exclude scrollbar width
-    setViewportWidth(document.documentElement.clientWidth);
 
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
-      setViewportWidth(document.documentElement.clientWidth);
     };
 
     window.addEventListener('resize', handleResize);
@@ -118,146 +104,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
-  // Pre-emptive scroll detection - lock BEFORE section reaches top to prevent jank
-  useEffect(() => {
-    const section = horizontalSectionRef.current;
-    if (!section) return;
-
-    const handleScroll = () => {
-      const rect = section.getBoundingClientRect();
-
-      // Pre-emptive lock: engage when section is close to top (not past it)
-      // This prevents the snap-back effect by locking before the race condition
-      if (!isLocked && currentSlide === 0) {
-        if (rect.top <= 80 && rect.top > -20 && rect.bottom > window.innerHeight * 0.5) {
-          // Start visual transition
-          setIsTransitioning(true);
-
-          requestAnimationFrame(() => {
-            // Block momentum wheel events during lock transition
-            isAnimatingRef.current = true;
-
-            // Snap scroll to exact section position to eliminate any offset
-            const sectionTop = window.scrollY + rect.top;
-            window.scrollTo({ top: sectionTop, behavior: 'instant' });
-
-            setIsLocked(true);
-
-            // Clear transition and animation lock after brief delay
-            setTimeout(() => {
-              setIsTransitioning(false);
-              isAnimatingRef.current = false; // Now allow wheel navigation
-            }, 200); // 200ms cooldown for momentum to settle
-          });
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isLocked, currentSlide]);
-
-  // Wheel handler - only active when locked
-  useEffect(() => {
-    if (!isLocked) return;
-
-    const handleWheel = (e: WheelEvent) => {
-      if (isAnimatingRef.current) {
-        e.preventDefault();
-        return;
-      }
-
-      const direction = e.deltaY > 0 ? 1 : -1;
-      const nextSlide = currentSlide + direction;
-
-      // Boundary: first slide + scroll up = unlock with smooth transition
-      if (nextSlide < 0) {
-        e.preventDefault();
-        setIsTransitioning(true);
-        setTimeout(() => {
-          setIsLocked(false);
-          setCurrentSlide(0);
-          setIsTransitioning(false);
-        }, 100);
-        return;
-      }
-
-      // Boundary: last slide + scroll down = unlock with smooth transition
-      if (nextSlide >= totalSlides) {
-        e.preventDefault();
-        setIsTransitioning(true);
-        setTimeout(() => {
-          setIsLocked(false);
-          // Small scroll to push past the section
-          window.scrollBy({ top: 50, behavior: 'smooth' });
-          setIsTransitioning(false);
-        }, 100);
-        return;
-      }
-
-      // Navigate horizontally
-      e.preventDefault();
-      isAnimatingRef.current = true;
-      setCurrentSlide(nextSlide);
-
-      // Animate slide with spring
-      animate(localSlideX, -nextSlide * viewportWidth, {
-        type: 'spring',
-        stiffness: 180,
-        damping: 28,
-        mass: 0.8,
-        onComplete: () => {
-          setTimeout(() => {
-            isAnimatingRef.current = false;
-          }, 100); // Small cooldown
-        },
-      });
-    };
-
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    return () => window.removeEventListener('wheel', handleWheel);
-  }, [isLocked, currentSlide, viewportWidth, localSlideX, totalSlides]);
-
-  // Re-lock when scrolling back UP to section (if was at last slide)
-  useEffect(() => {
-    if (isLocked) return;
-
-    const handleScroll = () => {
-      const section = horizontalSectionRef.current;
-      if (!section) return;
-
-      const rect = section.getBoundingClientRect();
-
-      // Re-lock: engage when scrolling UP and section top is near viewport top
-      // Wider detection window (130px) to catch at various scroll speeds
-      // Only re-lock if we were at the last slide (meaning user just exited forward)
-      if (rect.top >= -50 && rect.top <= 80 && currentSlide === totalSlides - 1) {
-        // Start visual transition
-        setIsTransitioning(true);
-
-        requestAnimationFrame(() => {
-          // Block momentum wheel events during re-lock transition
-          isAnimatingRef.current = true;
-
-          // Snap scroll to exact section position to eliminate offset
-          const sectionTop = window.scrollY + rect.top;
-          window.scrollTo({ top: sectionTop, behavior: 'instant' });
-
-          setIsLocked(true);
-
-          // Clear transition and animation lock after brief delay
-          setTimeout(() => {
-            setIsTransitioning(false);
-            isAnimatingRef.current = false; // Now allow wheel navigation
-          }, 200); // 200ms cooldown for momentum to settle
-        });
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isLocked, currentSlide, totalSlides]);
 
   // 3D tilt effect for card hover
   const handleCardMouseMove = (e: MouseEvent) => {
@@ -402,15 +248,34 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   function FullScreenSlide({ project, index, totalProjects }: FullScreenSlideProps) {
     const [isHovered, setIsHovered] = useState(false);
     const [imageHovered, setImageHovered] = useState(false);
+    const [isInView, setIsInView] = useState(false);
+    const slideRef = useRef<HTMLDivElement>(null);
     const brandRgb = `${project.brandColor.r}, ${project.brandColor.g}, ${project.brandColor.b}`;
+
+    // Fade-in animation on scroll
+    useEffect(() => {
+      const slide = slideRef.current;
+      if (!slide) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setIsInView(true);
+          }
+        },
+        { threshold: 0.2 }
+      );
+
+      observer.observe(slide);
+      return () => observer.disconnect();
+    }, []);
 
     return (
       <div
+        ref={slideRef}
         style={{
-          width: `${viewportWidth}px`,
-          minWidth: `${viewportWidth}px`,
+          width: '100%',
           height: '100vh',
-          flexShrink: 0,
           position: 'relative',
           background: `linear-gradient(135deg, rgba(${brandRgb}, 0.03) 0%, rgba(10, 10, 10, 1) 40%, rgba(10, 10, 10, 1) 100%)`,
           display: 'flex',
@@ -420,6 +285,9 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           padding: isMobile ? '2rem 1.5rem' : '0 clamp(3rem, 5vw, 6rem)',
           gap: isMobile ? '2rem' : 'clamp(2rem, 4vw, 4rem)',
           overflow: 'hidden',
+          opacity: isInView ? 1 : 0,
+          transform: isInView ? 'translateY(0)' : 'translateY(40px)',
+          transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
         }}
       >
         {/* Left Side - Image Container */}
@@ -1546,99 +1414,22 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           </div>
         </div>
 
-        {/* Placeholder - maintains scroll height when section is fixed */}
-        {isLocked && (
-          <div
-            ref={placeholderRef}
-            style={{ height: '100vh', width: '100%' }}
-            aria-hidden="true"
-          />
-        )}
-
-        {/* Full-Screen Horizontal Scroll Section - Locks when in viewport */}
+        {/* Vertical Scroll Section - Full-screen project slides */}
         <div
-          ref={horizontalSectionRef}
           style={{
-            position: isLocked ? 'fixed' : 'relative',
-            top: isLocked ? 0 : 'auto',
-            left: 0,
-            height: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
             width: '100%',
-            overflow: 'hidden',
-            zIndex: isLocked ? 100 : 'auto',
-            background: 'transparent',
-            // Smooth transition during lock/unlock to mask any micro-jank
-            opacity: isTransitioning ? 0.98 : 1,
-            transform: isTransitioning ? 'scale(0.998)' : 'scale(1)',
-            transition: 'opacity 0.12s ease-out, transform 0.12s ease-out',
           }}
         >
-          {/* Horizontal scrolling full-screen slides */}
-          {viewportWidth > 0 && (
-            <motion.div
-              style={{
-                display: 'flex',
-                width: `${viewportWidth * featuredProjects.length}px`,
-                height: '100%',
-                x: localSlideX,
-                willChange: 'transform',
-              }}
-            >
-              {featuredProjects.map((project, index) => (
-                <FullScreenSlide
-                  key={project.id}
-                  project={project}
-                  index={index}
-                  totalProjects={featuredProjects.length}
-                />
-              ))}
-            </motion.div>
-          )}
-
-          {/* Slide progress indicator */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '2rem',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              display: 'flex',
-              gap: '0.5rem',
-              zIndex: 10,
-            }}
-          >
-            {featuredProjects.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  if (isAnimatingRef.current) return;
-                  isAnimatingRef.current = true;
-                  setCurrentSlide(index);
-                  animate(localSlideX, -index * viewportWidth, {
-                    type: 'spring',
-                    stiffness: 180,
-                    damping: 28,
-                    mass: 0.8,
-                    onComplete: () => {
-                      setTimeout(() => {
-                        isAnimatingRef.current = false;
-                      }, 100);
-                    },
-                  });
-                }}
-                style={{
-                  width: currentSlide === index ? '24px' : '8px',
-                  height: '8px',
-                  borderRadius: '4px',
-                  background: currentSlide === index ? 'var(--text-90)' : 'var(--text-30)',
-                  border: 'none',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                }}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
+          {featuredProjects.map((project, index) => (
+            <FullScreenSlide
+              key={project.id}
+              project={project}
+              index={index}
+              totalProjects={featuredProjects.length}
+            />
+          ))}
         </div>
 
         {/* View All Work Button */}
