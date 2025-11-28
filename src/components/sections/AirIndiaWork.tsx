@@ -1452,10 +1452,13 @@ export function AirIndiaWork() {
                     <div style={{
                       width: '100%',
                       borderRadius: '24px',
-                      background: 'radial-gradient(ellipse at center, rgba(25, 25, 35, 0.5) 0%, transparent 75%)',
+                      background: 'linear-gradient(135deg, rgba(15, 15, 20, 0.95), rgba(25, 25, 35, 0.9))',
                       position: 'relative',
                       overflow: 'hidden',
                       padding: '2.5rem 3rem',
+                      // Feathered edges - blends into parent card
+                      maskImage: 'radial-gradient(ellipse 85% 85% at center, black 70%, transparent 100%)',
+                      WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at center, black 70%, transparent 100%)',
                     }}>
                       {/* Background Grid Pattern - More Subtle */}
                       <div style={{
