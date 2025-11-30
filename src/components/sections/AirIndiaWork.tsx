@@ -490,6 +490,33 @@ export function AirIndiaWork() {
   const [tokenPhase, setTokenPhase] = useState<'idle' | 'global' | 'alias' | 'component' | 'complete'>('idle');
   const [expandedCategory, setExpandedCategory] = useState<string | null>('Colors');
   const [isApplyingToken, setIsApplyingToken] = useState(false);
+
+  // Card 2: Search with AI - NLU Query Pipeline states
+  const [queryPhase, setQueryPhase] = useState<'idle' | 'typing' | 'tokenize' | 'entities' | 'intent' | 'results'>('idle');
+  const [displayedQuery, setDisplayedQuery] = useState('');
+
+  // Card 3: MCP Handoff states
+  const [mcpPhase, setMcpPhase] = useState<'idle' | 'design' | 'server' | 'agent' | 'output'>('idle');
+
+  // Card 4: IFE System states
+  const [activeIFETab, setActiveIFETab] = useState<string>('movies');
+
+  // Card 5: NPS Feedback states
+  const [npsPhase, setNpsPhase] = useState<'idle' | 'score' | 'gauge' | 'bars' | 'complete'>('idle');
+  const [npsScore, setNpsScore] = useState(0);
+
+  // Card 6: Competitor Analysis states
+  const [competitorHoveredRow, setCompetitorHoveredRow] = useState<number | null>(null);
+
+  // Card 7: Liftoff Program states
+  const [liftoffWeek, setLiftoffWeek] = useState(4);
+
+  // Card 8: Microsoft Hackathon states
+  const [hackathonFeedIndex, setHackathonFeedIndex] = useState(0);
+
+  // Card 9: Internal Hackathon states
+  const [sprintPhase, setSprintPhase] = useState<'idea' | 'design' | 'build' | 'test' | 'ship'>('build');
+
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // Refs for card intersection observers
@@ -1021,45 +1048,146 @@ export function AirIndiaWork() {
                 );
               }
 
-              // AI projects (index 2, 3) - Neural network visual - ENLARGED
-              if (index === 2 || index === 3) {
+              // Card 2: Search with AI - NLU Query Mini Pipeline
+              if (index === 2) {
                 return (
                   <div style={{
-                    width: '150px',
-                    height: '120px',
+                    width: '160px',
+                    height: '100px',
                     position: 'relative',
-                    opacity: isHovered ? 1 : 0.6,
+                    opacity: isHovered ? 1 : 0.7,
                     transition: 'all 0.5s ease',
                   }}>
-                    {/* Connection lines SVG */}
-                    <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: isHovered ? 0.6 : 0.2 }}>
-                      <line x1="25" y1="25" x2="75" y2="15" stroke={`rgb(${project.color})`} strokeWidth="1" />
-                      <line x1="75" y1="15" x2="125" y2="30" stroke={`rgb(${project.color})`} strokeWidth="1" />
-                      <line x1="35" y1="75" x2="90" y2="65" stroke={`rgb(${project.color})`} strokeWidth="1" />
-                      <line x1="90" y1="65" x2="120" y2="90" stroke={`rgb(${project.color})`} strokeWidth="1" />
-                      <line x1="75" y1="15" x2="90" y2="65" stroke={`rgb(${project.color})`} strokeWidth="1" />
-                      <line x1="25" y1="25" x2="35" y2="75" stroke={`rgb(${project.color})`} strokeWidth="1" />
+                    {/* Search bar */}
+                    <div style={{
+                      padding: '8px 12px',
+                      borderRadius: '20px',
+                      background: 'var(--glass-10)',
+                      border: `1px solid rgba(${project.color}, ${isHovered ? 0.4 : 0.2})`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      marginBottom: '10px',
+                      transform: isHovered ? 'scale(1.02)' : 'scale(1)',
+                      transition: 'all 0.3s ease',
+                    }}>
+                      <Search size={12} style={{ color: `rgb(${project.color})` }} />
+                      <span style={{
+                        fontSize: '9px',
+                        color: 'var(--text-50)',
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                      }}>flights to Delhi...</span>
+                    </div>
+                    {/* Pipeline stages */}
+                    <div style={{ display: 'flex', gap: '4px', justifyContent: 'center' }}>
+                      {['T', 'E', 'I', 'C', 'R'].map((label, i) => (
+                        <div key={i} style={{
+                          width: '24px',
+                          height: '24px',
+                          borderRadius: '6px',
+                          background: isHovered ? `rgba(${project.color}, ${0.3 - i * 0.04})` : 'var(--glass-08)',
+                          border: `1px solid rgba(${project.color}, ${isHovered ? 0.4 : 0.15})`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '8px',
+                          fontWeight: '600',
+                          color: isHovered ? `rgb(${project.color})` : 'var(--text-40)',
+                          transition: `all 0.3s ease ${i * 0.05}s`,
+                          transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
+                        }}>
+                          {label}
+                        </div>
+                      ))}
+                    </div>
+                    {/* Result indicator */}
+                    <div style={{
+                      marginTop: '8px',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      gap: '6px',
+                    }}>
+                      {[1, 2, 3].map((_, i) => (
+                        <div key={i} style={{
+                          width: '32px',
+                          height: '6px',
+                          borderRadius: '3px',
+                          background: isHovered ? `rgba(${project.color}, ${0.5 - i * 0.1})` : 'var(--glass-10)',
+                          transition: `all 0.4s ease ${0.2 + i * 0.1}s`,
+                        }} />
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+
+              // Card 3: MCP Handoff - Design-to-Code Mini Bridge
+              if (index === 3) {
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    position: 'relative',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    {/* Pipeline nodes */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                      {[
+                        { icon: '◇', label: 'FIG' },
+                        { icon: '⚡', label: 'MCP' },
+                        { icon: '◉', label: 'AI' },
+                        { icon: '<>', label: 'CODE' },
+                      ].map((node, i) => (
+                        <div key={i} style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '4px',
+                        }}>
+                          <div style={{
+                            width: '28px',
+                            height: '28px',
+                            borderRadius: '8px',
+                            background: isHovered ? `rgba(${project.color}, ${0.3 - i * 0.05})` : 'var(--glass-10)',
+                            border: `1px solid rgba(${project.color}, ${isHovered ? 0.5 : 0.2})`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '12px',
+                            transition: `all 0.3s ease ${i * 0.1}s`,
+                            transform: isHovered ? 'scale(1.1)' : 'scale(1)',
+                            boxShadow: isHovered ? `0 0 15px rgba(${project.color}, 0.3)` : 'none',
+                          }}>
+                            {node.icon}
+                          </div>
+                          <span style={{ fontSize: '7px', color: 'var(--text-40)', fontWeight: '500' }}>{node.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {/* Connection line with animation */}
+                    <svg style={{ position: 'absolute', top: '20px', left: '20px', width: '120px', height: '10px', overflow: 'visible' }}>
+                      <line x1="0" y1="5" x2="120" y2="5"
+                        stroke={`rgba(${project.color}, ${isHovered ? 0.4 : 0.15})`}
+                        strokeWidth="2"
+                        strokeDasharray={isHovered ? "4 2" : "2 2"}
+                        style={{ transition: 'all 0.3s ease' }}
+                      />
                     </svg>
-                    {[
-                      { x: 20, y: 20, size: 16 },
-                      { x: 70, y: 10, size: 22 },
-                      { x: 120, y: 25, size: 14 },
-                      { x: 30, y: 70, size: 18 },
-                      { x: 85, y: 60, size: 26 },
-                      { x: 115, y: 85, size: 16 },
-                    ].map((orb, i) => (
-                      <div key={i} style={{
-                        position: 'absolute',
-                        left: orb.x,
-                        top: orb.y,
-                        width: orb.size,
-                        height: orb.size,
-                        borderRadius: '50%',
-                        background: `radial-gradient(circle, rgb(${project.color}), rgba(${project.color}, 0.3))`,
-                        boxShadow: `0 0 ${orb.size * 1.5}px rgba(${project.color}, ${isHovered ? 0.6 : 0.3})`,
-                        animation: isHovered ? `glowPulse ${2 + i * 0.3}s ease-in-out infinite ${i * 0.2}s` : 'none',
-                      }} />
-                    ))}
+                    {/* Code output preview */}
+                    <div style={{
+                      padding: '6px 10px',
+                      borderRadius: '6px',
+                      background: 'var(--glass-08)',
+                      border: `1px solid rgba(${project.color}, 0.15)`,
+                      fontFamily: 'monospace',
+                      fontSize: '8px',
+                      color: isHovered ? `rgb(${project.color})` : 'var(--text-40)',
+                      transition: 'all 0.3s ease',
+                    }}>
+                      {`<Button variant="primary" />`}
+                    </div>
                   </div>
                 );
               }
@@ -2714,6 +2842,1158 @@ export function AirIndiaWork() {
                         <span style={{ color: ['component', 'complete'].includes(tokenPhase) ? '#A259FF' : 'inherit' }}>Applied</span>
                         <span>→</span>
                         <span style={{ color: tokenPhase === 'complete' ? '#EC4899' : 'inherit' }}>Components</span>
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 2 ? (
+                    /* Card 2: Search with AI - NLU Query Pipeline Visualization */
+                    <>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '1000px',
+                      margin: '0 auto',
+                      padding: '24px',
+                      borderRadius: '16px',
+                      background: 'var(--glass-06)',
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                    }}>
+                      {/* Query Input */}
+                      <div style={{
+                        padding: '16px 24px',
+                        borderRadius: '28px',
+                        background: 'var(--glass-08)',
+                        border: `1px solid rgba(${project.color}, 0.25)`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        marginBottom: '24px',
+                      }}>
+                        <Search size={20} style={{ color: `rgb(${project.color})` }} />
+                        <span style={{
+                          flex: 1,
+                          fontSize: '14px',
+                          color: 'var(--text-80)',
+                          fontFamily: 'inherit',
+                        }}>
+                          {queryPhase === 'idle' ? '"Show me flights to Delhi under ₹5000 next weekend"' :
+                           queryPhase === 'typing' ? displayedQuery + '|' :
+                           '"Show me flights to Delhi under ₹5000 next weekend"'}
+                        </span>
+                        <div style={{
+                          padding: '6px 12px',
+                          borderRadius: '14px',
+                          background: `rgba(${project.color}, 0.15)`,
+                          fontSize: '11px',
+                          fontWeight: '600',
+                          color: `rgb(${project.color})`,
+                        }}>
+                          Red Dot Award Winner
+                        </div>
+                      </div>
+
+                      {/* NLU Pipeline Stages */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(5, 1fr)',
+                        gap: '12px',
+                        marginBottom: '20px',
+                      }}>
+                        {[
+                          {
+                            title: 'TOKENIZE',
+                            items: ['"Show"', '"me"', '"flights"', '"to"', '"Delhi"'],
+                            color: '#6B7280',
+                            phase: 'tokenize'
+                          },
+                          {
+                            title: 'ENTITIES',
+                            items: ['📍 Delhi', '💰 ₹5000', '📅 weekend'],
+                            color: '#0D99FF',
+                            phase: 'entities'
+                          },
+                          {
+                            title: 'INTENT',
+                            items: ['SEARCH_FLIGHTS', '94.7% confidence'],
+                            color: '#A259FF',
+                            phase: 'intent'
+                          },
+                          {
+                            title: 'CONTEXT',
+                            items: ['Weekend travel', 'Budget: Low', 'Domestic'],
+                            color: '#30D158',
+                            phase: 'intent'
+                          },
+                          {
+                            title: 'RESULTS',
+                            items: ['✈ DEL ₹4,299', '✈ DEL ₹4,850', '✈ DEL ₹4,990'],
+                            color: project.color,
+                            phase: 'results'
+                          },
+                        ].map((stage, stageIdx) => (
+                          <div key={stage.title} style={{
+                            padding: '16px',
+                            borderRadius: '12px',
+                            background: 'var(--glass-04)',
+                            border: `1px solid ${
+                              queryPhase === stage.phase || queryPhase === 'results'
+                                ? `rgba(${stage.color === project.color ? project.color : stage.color.replace('#', '').match(/.{2}/g)?.map(x => parseInt(x, 16)).join(', ')}, 0.4)`
+                                : 'var(--glass-10)'
+                            }`,
+                            transition: 'all 0.4s ease',
+                            transform: queryPhase === stage.phase ? 'translateY(-4px)' : 'translateY(0)',
+                            boxShadow: queryPhase === stage.phase ? `0 8px 24px rgba(${stage.color === project.color ? project.color : '0,0,0'}, 0.2)` : 'none',
+                          }}>
+                            <div style={{
+                              fontSize: '10px',
+                              fontWeight: '700',
+                              color: stage.color === project.color ? `rgb(${project.color})` : stage.color,
+                              marginBottom: '12px',
+                              letterSpacing: '0.1em',
+                            }}>
+                              {stage.title}
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                              {stage.items.map((item, itemIdx) => (
+                                <div key={itemIdx} style={{
+                                  fontSize: '11px',
+                                  color: 'var(--text-70)',
+                                  padding: '4px 8px',
+                                  borderRadius: '6px',
+                                  background: 'var(--glass-06)',
+                                  opacity: queryPhase === 'idle' || ['tokenize', 'entities', 'intent', 'results'].indexOf(queryPhase) >= ['tokenize', 'entities', 'intent', 'results'].indexOf(stage.phase) ? 1 : 0.3,
+                                  transition: `all 0.3s ease ${itemIdx * 0.1}s`,
+                                }}>
+                                  {item}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Action Button & Status */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}>
+                        <button
+                          onClick={() => {
+                            if (queryPhase !== 'idle') return;
+                            const fullQuery = '"Show me flights to Delhi under ₹5000 next weekend"';
+                            setQueryPhase('typing');
+                            setDisplayedQuery('');
+
+                            // Typing animation
+                            let charIndex = 0;
+                            const typeInterval = setInterval(() => {
+                              if (charIndex < fullQuery.length) {
+                                setDisplayedQuery(fullQuery.slice(0, charIndex + 1));
+                                charIndex++;
+                              } else {
+                                clearInterval(typeInterval);
+                                // Progress through phases
+                                setTimeout(() => setQueryPhase('tokenize'), 300);
+                                setTimeout(() => setQueryPhase('entities'), 800);
+                                setTimeout(() => setQueryPhase('intent'), 1300);
+                                setTimeout(() => setQueryPhase('results'), 1800);
+                                setTimeout(() => setQueryPhase('idle'), 3500);
+                              }
+                            }, 30);
+                          }}
+                          style={{
+                            padding: '10px 20px',
+                            borderRadius: '10px',
+                            background: queryPhase === 'idle' ? `rgb(${project.color})` : 'var(--glass-15)',
+                            border: 'none',
+                            fontSize: '12px',
+                            fontWeight: '600',
+                            color: queryPhase === 'idle' ? 'white' : 'var(--text-60)',
+                            cursor: queryPhase === 'idle' ? 'pointer' : 'default',
+                            transition: 'all 0.3s ease',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                          }}
+                        >
+                          <span style={{
+                            width: '6px',
+                            height: '6px',
+                            borderRadius: '50%',
+                            background: queryPhase === 'idle' ? 'white' : `rgb(${project.color})`,
+                            animation: queryPhase !== 'idle' ? 'statusPulse 1s ease infinite' : 'none',
+                          }} />
+                          {queryPhase === 'idle' ? 'Run Query Pipeline' : 'Processing...'}
+                        </button>
+
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '16px',
+                          fontSize: '11px',
+                          color: 'var(--text-40)',
+                        }}>
+                          <span>Natural Language Understanding</span>
+                          <span>•</span>
+                          <span>Real-time Processing</span>
+                          <span>•</span>
+                          <span>Context-aware Results</span>
+                        </div>
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 3 ? (
+                    /* Card 3: MCP Handoff - Design-to-Code Bridge Visualization */
+                    <>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '1000px',
+                      margin: '0 auto',
+                      padding: '24px',
+                      borderRadius: '16px',
+                      background: 'var(--glass-06)',
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                    }}>
+                      {/* Pipeline Stages */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(4, 1fr)',
+                        gap: '16px',
+                        marginBottom: '24px',
+                        position: 'relative',
+                      }}>
+                        {/* Connection Lines SVG */}
+                        <svg style={{
+                          position: 'absolute',
+                          top: '50px',
+                          left: '12.5%',
+                          width: '75%',
+                          height: '4px',
+                          zIndex: 0,
+                        }}>
+                          <line x1="0" y1="2" x2="100%" y2="2"
+                            stroke={`rgba(${project.color}, 0.3)`}
+                            strokeWidth="2"
+                            strokeDasharray="8 4"
+                            style={{
+                              animation: mcpPhase !== 'idle' ? 'flowLine 1.5s linear infinite' : 'none',
+                            }}
+                          />
+                        </svg>
+
+                        {[
+                          {
+                            icon: '◇',
+                            title: 'FIGMA DESIGN',
+                            items: ['Frame', 'Button', 'Card', 'Input'],
+                            phase: 'design',
+                            color: '#A259FF'
+                          },
+                          {
+                            icon: '⚡',
+                            title: 'MCP SERVER',
+                            items: ['get_code()', 'get_variables()', 'get_metadata()'],
+                            phase: 'server',
+                            color: '#0D99FF'
+                          },
+                          {
+                            icon: '◉',
+                            title: 'AI AGENT',
+                            items: ['Claude', 'Cursor', 'Copilot'],
+                            phase: 'agent',
+                            color: '#30D158'
+                          },
+                          {
+                            icon: '<>',
+                            title: 'CODE OUTPUT',
+                            items: ['<Button />', 'variant="primary"', 'tokens applied'],
+                            phase: 'output',
+                            color: '#FF9F0A'
+                          },
+                        ].map((stage, idx) => (
+                          <div key={stage.title} style={{
+                            padding: '20px',
+                            borderRadius: '12px',
+                            background: 'var(--glass-04)',
+                            border: `1px solid ${mcpPhase === stage.phase ? stage.color : 'var(--glass-10)'}`,
+                            transition: 'all 0.4s ease',
+                            position: 'relative',
+                            zIndex: 1,
+                            transform: mcpPhase === stage.phase ? 'scale(1.02)' : 'scale(1)',
+                            boxShadow: mcpPhase === stage.phase ? `0 0 30px ${stage.color}30` : 'none',
+                          }}>
+                            <div style={{
+                              width: '40px',
+                              height: '40px',
+                              borderRadius: '10px',
+                              background: `${stage.color}20`,
+                              border: `1px solid ${stage.color}40`,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '18px',
+                              marginBottom: '12px',
+                            }}>
+                              {stage.icon}
+                            </div>
+                            <div style={{
+                              fontSize: '10px',
+                              fontWeight: '700',
+                              color: stage.color,
+                              marginBottom: '10px',
+                              letterSpacing: '0.1em',
+                            }}>
+                              {stage.title}
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                              {stage.items.map((item, itemIdx) => (
+                                <div key={itemIdx} style={{
+                                  fontSize: '11px',
+                                  color: 'var(--text-60)',
+                                  fontFamily: stage.title.includes('CODE') || stage.title.includes('SERVER') ? 'monospace' : 'inherit',
+                                }}>
+                                  {item}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Live Context Stream */}
+                      <div style={{
+                        padding: '16px',
+                        borderRadius: '10px',
+                        background: '#0D0D0D',
+                        border: '1px solid var(--glass-15)',
+                        marginBottom: '16px',
+                      }}>
+                        <div style={{
+                          fontSize: '9px',
+                          fontWeight: '600',
+                          color: '#30D158',
+                          marginBottom: '8px',
+                          letterSpacing: '0.15em',
+                        }}>
+                          LIVE CONTEXT STREAM
+                        </div>
+                        <div style={{
+                          fontFamily: 'SF Mono, Monaco, monospace',
+                          fontSize: '11px',
+                          color: '#30D158',
+                          opacity: mcpPhase !== 'idle' ? 1 : 0.5,
+                          transition: 'opacity 0.3s ease',
+                        }}>
+                          {`{ "component": "Button", "variant": "primary", "tokens": ["color.brand", "radius.md"] }`}
+                        </div>
+                      </div>
+
+                      {/* Action Button */}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <button
+                          onClick={() => {
+                            if (mcpPhase !== 'idle') return;
+                            setMcpPhase('design');
+                            setTimeout(() => setMcpPhase('server'), 600);
+                            setTimeout(() => setMcpPhase('agent'), 1200);
+                            setTimeout(() => setMcpPhase('output'), 1800);
+                            setTimeout(() => setMcpPhase('idle'), 3000);
+                          }}
+                          style={{
+                            padding: '10px 20px',
+                            borderRadius: '10px',
+                            background: mcpPhase === 'idle' ? `rgb(${project.color})` : 'var(--glass-15)',
+                            border: 'none',
+                            fontSize: '12px',
+                            fontWeight: '600',
+                            color: mcpPhase === 'idle' ? 'white' : 'var(--text-60)',
+                            cursor: mcpPhase === 'idle' ? 'pointer' : 'default',
+                            transition: 'all 0.3s ease',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                          }}
+                        >
+                          <span style={{
+                            width: '6px',
+                            height: '6px',
+                            borderRadius: '50%',
+                            background: mcpPhase === 'idle' ? 'white' : `rgb(${project.color})`,
+                            animation: mcpPhase !== 'idle' ? 'statusPulse 1s ease infinite' : 'none',
+                          }} />
+                          {mcpPhase === 'idle' ? 'Trigger Handoff' : 'Streaming Context...'}
+                        </button>
+
+                        <div style={{ fontSize: '11px', color: 'var(--text-40)' }}>
+                          Model Context Protocol • Anthropic Integration
+                        </div>
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 4 ? (
+                    /* Card 4: IFE System Design - Seatback Experience Visualization */
+                    <>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '900px',
+                      margin: '0 auto',
+                    }}>
+                      {/* Screen Mockup */}
+                      <div style={{
+                        padding: '20px',
+                        borderRadius: '20px',
+                        background: '#1A1A1A',
+                        border: '4px solid #2C2C2C',
+                        boxShadow: 'inset 0 0 40px rgba(0,0,0,0.5)',
+                        marginBottom: '16px',
+                      }}>
+                        <div style={{
+                          borderRadius: '12px',
+                          overflow: 'hidden',
+                          background: 'linear-gradient(180deg, #0A0A0A 0%, #1A1A1A 100%)',
+                        }}>
+                          {/* Navigation Tabs */}
+                          <div style={{
+                            display: 'flex',
+                            background: 'rgba(255,255,255,0.05)',
+                            padding: '10px',
+                            gap: '6px',
+                          }}>
+                            {['Movies', 'TV Shows', 'Music', 'Games', 'Flight Info'].map(tab => (
+                              <button
+                                key={tab}
+                                onClick={() => setActiveIFETab(tab.toLowerCase().replace(' ', ''))}
+                                style={{
+                                  background: activeIFETab === tab.toLowerCase().replace(' ', '') ? `rgb(${project.color})` : 'transparent',
+                                  color: 'white',
+                                  border: 'none',
+                                  padding: '8px 16px',
+                                  borderRadius: '6px',
+                                  fontSize: '12px',
+                                  fontWeight: '600',
+                                  cursor: 'pointer',
+                                  transition: 'all 0.2s ease',
+                                }}
+                              >
+                                {tab}
+                              </button>
+                            ))}
+                          </div>
+
+                          {/* Content Grid */}
+                          <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(4, 1fr)',
+                            gap: '12px',
+                            padding: '20px',
+                          }}>
+                            {['Featured', 'Action', 'Drama', 'Comedy'].map((genre, i) => (
+                              <div key={genre} style={{
+                                aspectRatio: '2/3',
+                                borderRadius: '8px',
+                                background: `linear-gradient(135deg, rgba(${project.color}, ${0.3 - i * 0.05}), rgba(${project.color}, 0.1))`,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '8px',
+                                border: '1px solid rgba(255,255,255,0.1)',
+                              }}>
+                                <span style={{ fontSize: '24px' }}>🎬</span>
+                                <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.7)' }}>{genre}</span>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Now Playing Bar */}
+                          <div style={{
+                            background: 'rgba(0,0,0,0.8)',
+                            padding: '14px 20px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '16px',
+                          }}>
+                            <div style={{
+                              width: '36px',
+                              height: '36px',
+                              borderRadius: '50%',
+                              background: `rgb(${project.color})`,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}>
+                              <div style={{ width: 0, height: 0, borderTop: '8px solid transparent', borderBottom: '8px solid transparent', borderLeft: '12px solid white', marginLeft: '3px' }} />
+                            </div>
+                            <div style={{ flex: 1 }}>
+                              <div style={{ fontSize: '13px', fontWeight: '600', color: 'white', marginBottom: '6px' }}>Now Playing: Pathaan</div>
+                              <div style={{ height: '4px', background: 'rgba(255,255,255,0.2)', borderRadius: '2px' }}>
+                                <div style={{ width: '45%', height: '100%', background: `rgb(${project.color})`, borderRadius: '2px' }} />
+                              </div>
+                            </div>
+                            <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.6)' }}>1:23:45</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Seat Info */}
+                      <div style={{ textAlign: 'center', marginBottom: '20px', fontSize: '12px', color: 'var(--text-40)' }}>
+                        SEAT 12A · Economy Class
+                      </div>
+
+                      {/* Design Constraint Badges */}
+                      <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                        {[
+                          { icon: '🎯', value: '44px', label: 'Touch Target' },
+                          { icon: '🔆', value: 'Auto', label: 'Brightness' },
+                          { icon: '♿', value: 'WCAG AA', label: 'Accessible' },
+                          { icon: '🌍', value: '12', label: 'Languages' },
+                        ].map((badge) => (
+                          <div key={badge.label} style={{
+                            padding: '12px 16px',
+                            borderRadius: '10px',
+                            background: 'var(--glass-06)',
+                            border: '1px solid var(--glass-15)',
+                            textAlign: 'center',
+                            minWidth: '90px',
+                          }}>
+                            <div style={{ fontSize: '18px', marginBottom: '4px' }}>{badge.icon}</div>
+                            <div style={{ fontSize: '13px', fontWeight: '700', color: `rgb(${project.color})` }}>{badge.value}</div>
+                            <div style={{ fontSize: '9px', color: 'var(--text-40)' }}>{badge.label}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 5 ? (
+                    /* Card 5: NPS Feedback System - Sentiment Dashboard Visualization */
+                    <>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '1000px',
+                      margin: '0 auto',
+                      padding: '24px',
+                      borderRadius: '16px',
+                      background: 'var(--glass-06)',
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                    }}>
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: isMobile ? '1fr' : '200px 1fr 1fr',
+                        gap: '24px',
+                        marginBottom: '24px',
+                      }}>
+                        {/* Score Card */}
+                        <div style={{
+                          padding: '24px',
+                          borderRadius: '16px',
+                          background: 'var(--glass-08)',
+                          border: '1px solid var(--glass-15)',
+                          textAlign: 'center',
+                        }}>
+                          <div style={{ fontSize: '11px', color: 'var(--text-40)', marginBottom: '8px', letterSpacing: '0.1em' }}>NPS SCORE</div>
+                          <div style={{
+                            fontSize: '48px',
+                            fontWeight: '700',
+                            color: '#30D158',
+                            lineHeight: 1,
+                          }}>
+                            +{npsPhase === 'complete' || npsPhase === 'idle' ? 67 : npsScore}
+                          </div>
+                          <div style={{ fontSize: '11px', color: 'var(--text-50)', marginTop: '8px' }}>Excellent</div>
+                        </div>
+
+                        {/* Gauge */}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <svg viewBox="0 0 200 120" style={{ width: '200px', height: '120px' }}>
+                            {/* Background arc */}
+                            <path
+                              d="M 20 100 A 80 80 0 0 1 180 100"
+                              fill="none"
+                              stroke="rgba(255,255,255,0.1)"
+                              strokeWidth="12"
+                              strokeLinecap="round"
+                            />
+                            {/* Red segment (Detractors) */}
+                            <path
+                              d="M 20 100 A 80 80 0 0 1 60 35"
+                              fill="none"
+                              stroke="#EF4444"
+                              strokeWidth="12"
+                              strokeLinecap="round"
+                            />
+                            {/* Yellow segment (Passives) */}
+                            <path
+                              d="M 60 35 A 80 80 0 0 1 140 35"
+                              fill="none"
+                              stroke="#F59E0B"
+                              strokeWidth="12"
+                            />
+                            {/* Green segment (Promoters) */}
+                            <path
+                              d="M 140 35 A 80 80 0 0 1 180 100"
+                              fill="none"
+                              stroke="#30D158"
+                              strokeWidth="12"
+                              strokeLinecap="round"
+                            />
+                            {/* Needle */}
+                            <line
+                              x1="100" y1="100"
+                              x2="100" y2="35"
+                              stroke="white"
+                              strokeWidth="3"
+                              strokeLinecap="round"
+                              style={{
+                                transformOrigin: '100px 100px',
+                                transform: `rotate(${(npsPhase === 'complete' || npsPhase === 'idle' ? 67 : npsScore) * 0.9 + 15}deg)`,
+                                transition: 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)',
+                              }}
+                            />
+                            <circle cx="100" cy="100" r="6" fill="white" />
+                          </svg>
+                        </div>
+
+                        {/* Distribution */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', justifyContent: 'center' }}>
+                          {[
+                            { label: 'Promoters (9-10)', percent: 72, color: '#30D158' },
+                            { label: 'Passives (7-8)', percent: 18, color: '#F59E0B' },
+                            { label: 'Detractors (0-6)', percent: 10, color: '#EF4444' },
+                          ].map((seg, i) => (
+                            <div key={seg.label}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                                <span style={{ fontSize: '11px', color: 'var(--text-60)' }}>{seg.label}</span>
+                                <span style={{ fontSize: '11px', color: seg.color, fontWeight: '600' }}>{seg.percent}%</span>
+                              </div>
+                              <div style={{ height: '8px', background: 'var(--glass-10)', borderRadius: '4px', overflow: 'hidden' }}>
+                                <div style={{
+                                  width: npsPhase === 'complete' || npsPhase === 'idle' ? `${seg.percent}%` : '0%',
+                                  height: '100%',
+                                  background: seg.color,
+                                  borderRadius: '4px',
+                                  transition: `width 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${i * 0.2}s`,
+                                }} />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Stat Cards */}
+                      <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '20px' }}>
+                        {[
+                          { icon: '📈', value: '+12%', label: 'YoY Growth' },
+                          { icon: '💬', value: '2.4K', label: 'Responses' },
+                          { icon: '⏱', value: '24hr', label: 'Avg Response' },
+                          { icon: '🎯', value: '78%', label: 'Action Rate' },
+                        ].map((stat) => (
+                          <div key={stat.label} style={{
+                            padding: '12px 20px',
+                            borderRadius: '10px',
+                            background: 'var(--glass-04)',
+                            border: '1px solid var(--glass-10)',
+                            textAlign: 'center',
+                          }}>
+                            <span style={{ fontSize: '14px' }}>{stat.icon}</span>
+                            <div style={{ fontSize: '16px', fontWeight: '700', color: `rgb(${project.color})` }}>{stat.value}</div>
+                            <div style={{ fontSize: '9px', color: 'var(--text-40)' }}>{stat.label}</div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Action Button */}
+                      <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <button
+                          onClick={() => {
+                            if (npsPhase !== 'idle') return;
+                            setNpsPhase('score');
+                            setNpsScore(0);
+                            const scoreInterval = setInterval(() => {
+                              setNpsScore(prev => {
+                                if (prev >= 67) {
+                                  clearInterval(scoreInterval);
+                                  setNpsPhase('gauge');
+                                  setTimeout(() => setNpsPhase('bars'), 500);
+                                  setTimeout(() => setNpsPhase('complete'), 1500);
+                                  setTimeout(() => setNpsPhase('idle'), 3000);
+                                  return 67;
+                                }
+                                return prev + 3;
+                              });
+                            }, 30);
+                          }}
+                          style={{
+                            padding: '10px 20px',
+                            borderRadius: '10px',
+                            background: npsPhase === 'idle' ? `rgb(${project.color})` : 'var(--glass-15)',
+                            border: 'none',
+                            fontSize: '12px',
+                            fontWeight: '600',
+                            color: npsPhase === 'idle' ? 'white' : 'var(--text-60)',
+                            cursor: npsPhase === 'idle' ? 'pointer' : 'default',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                          }}
+                        >
+                          <span style={{
+                            width: '6px',
+                            height: '6px',
+                            borderRadius: '50%',
+                            background: npsPhase === 'idle' ? 'white' : '#30D158',
+                            animation: npsPhase !== 'idle' && npsPhase !== 'complete' ? 'statusPulse 1s ease infinite' : 'none',
+                          }} />
+                          {npsPhase === 'idle' ? 'Refresh Dashboard' : npsPhase === 'complete' ? 'Data Updated ✓' : 'Loading...'}
+                        </button>
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 6 ? (
+                    /* Card 6: Competitor Analysis - Feature Matrix Visualization */
+                    <>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '1000px',
+                      margin: '0 auto',
+                      padding: '24px',
+                      borderRadius: '16px',
+                      background: 'var(--glass-06)',
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                    }}>
+                      {/* Matrix Header */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: '140px repeat(4, 1fr)',
+                        gap: '8px',
+                        marginBottom: '8px',
+                        paddingBottom: '12px',
+                        borderBottom: '1px solid var(--glass-10)',
+                      }}>
+                        <div style={{ fontSize: '10px', fontWeight: '600', color: 'var(--text-40)', letterSpacing: '0.1em' }}>FEATURE</div>
+                        {['Air India', 'Emirates', 'Singapore', 'Delta'].map(airline => (
+                          <div key={airline} style={{ fontSize: '10px', fontWeight: '600', color: 'var(--text-60)', textAlign: 'center' }}>
+                            {airline}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Matrix Rows */}
+                      {[
+                        { feature: 'Booking UX', scores: [4, 5, 5, 4] },
+                        { feature: 'Mobile App', scores: [5, 4, 5, 5] },
+                        { feature: 'IFE System', scores: [5, 5, 4, 4] },
+                        { feature: 'Check-in', scores: [4, 5, 4, 5] },
+                        { feature: 'Lounge Access', scores: [3, 5, 5, 4] },
+                      ].map((row, rowIdx) => (
+                        <div
+                          key={row.feature}
+                          onMouseEnter={() => setCompetitorHoveredRow(rowIdx)}
+                          onMouseLeave={() => setCompetitorHoveredRow(null)}
+                          style={{
+                            display: 'grid',
+                            gridTemplateColumns: '140px repeat(4, 1fr)',
+                            gap: '8px',
+                            padding: '12px 0',
+                            background: competitorHoveredRow === rowIdx ? 'var(--glass-06)' : 'transparent',
+                            borderRadius: '8px',
+                            transition: 'all 0.2s ease',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          <div style={{ fontSize: '12px', color: 'var(--text-70)', fontWeight: '500' }}>{row.feature}</div>
+                          {row.scores.map((score, scoreIdx) => (
+                            <div key={scoreIdx} style={{ display: 'flex', gap: '3px', justifyContent: 'center' }}>
+                              {[1, 2, 3, 4, 5].map(dot => (
+                                <div key={dot} style={{
+                                  width: '10px',
+                                  height: '10px',
+                                  borderRadius: '50%',
+                                  background: dot <= score
+                                    ? scoreIdx === 0 ? `rgb(${project.color})` : dot <= 3 ? '#F59E0B' : '#30D158'
+                                    : 'var(--glass-15)',
+                                  transition: 'all 0.2s ease',
+                                  transform: competitorHoveredRow === rowIdx ? 'scale(1.1)' : 'scale(1)',
+                                }} />
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+
+                      {/* Summary */}
+                      <div style={{
+                        marginTop: '20px',
+                        paddingTop: '16px',
+                        borderTop: '1px solid var(--glass-10)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        gap: '24px',
+                        fontSize: '11px',
+                        color: 'var(--text-40)',
+                      }}>
+                        <span>15+ apps analyzed</span>
+                        <span>•</span>
+                        <span>47 features benchmarked</span>
+                        <span>•</span>
+                        <span>6-month research period</span>
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 7 ? (
+                    /* Card 7: Liftoff Program - Learning Path Timeline Visualization */
+                    <>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '900px',
+                      margin: '0 auto',
+                      padding: '24px',
+                      borderRadius: '16px',
+                      background: 'var(--glass-06)',
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                    }}>
+                      {/* Timeline */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginBottom: '32px',
+                        position: 'relative',
+                      }}>
+                        {/* Connection Line */}
+                        <div style={{
+                          position: 'absolute',
+                          top: '50%',
+                          left: '5%',
+                          width: '90%',
+                          height: '2px',
+                          background: 'var(--glass-15)',
+                          transform: 'translateY(-50%)',
+                        }}>
+                          <div style={{
+                            width: `${(liftoffWeek / 6) * 100}%`,
+                            height: '100%',
+                            background: `rgb(${project.color})`,
+                            transition: 'width 0.5s ease',
+                          }} />
+                        </div>
+
+                        {[1, 2, 3, 4, 5, 6].map(week => (
+                          <div
+                            key={week}
+                            onClick={() => setLiftoffWeek(week)}
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              gap: '8px',
+                              cursor: 'pointer',
+                              position: 'relative',
+                              zIndex: 1,
+                            }}
+                          >
+                            <div style={{
+                              width: '24px',
+                              height: '24px',
+                              borderRadius: '50%',
+                              background: week <= liftoffWeek ? `rgb(${project.color})` : 'var(--glass-20)',
+                              border: week === liftoffWeek ? `3px solid white` : '2px solid var(--glass-30)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              transition: 'all 0.3s ease',
+                              boxShadow: week === liftoffWeek ? `0 0 20px rgba(${project.color}, 0.5)` : 'none',
+                            }}>
+                              {week < liftoffWeek && <CheckCircle size={12} color="white" />}
+                            </div>
+                            <span style={{
+                              fontSize: '10px',
+                              color: week === liftoffWeek ? `rgb(${project.color})` : 'var(--text-40)',
+                              fontWeight: week === liftoffWeek ? '600' : '400',
+                            }}>
+                              Week {week}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Current Module */}
+                      <div style={{
+                        padding: '20px',
+                        borderRadius: '12px',
+                        background: 'var(--glass-08)',
+                        border: `1px solid rgba(${project.color}, 0.3)`,
+                        marginBottom: '24px',
+                      }}>
+                        <div style={{ fontSize: '10px', color: 'var(--text-40)', marginBottom: '8px', letterSpacing: '0.1em' }}>CURRENT MODULE</div>
+                        <div style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-90)', marginBottom: '12px' }}>
+                          {['Onboarding', 'Design Principles', 'Component Systems', 'Design Systems', 'Advanced Patterns', 'Capstone'][liftoffWeek - 1]}
+                        </div>
+                        <div style={{ height: '8px', background: 'var(--glass-10)', borderRadius: '4px', overflow: 'hidden', marginBottom: '8px' }}>
+                          <div style={{
+                            width: '75%',
+                            height: '100%',
+                            background: `linear-gradient(90deg, rgb(${project.color}), rgba(${project.color}, 0.6))`,
+                            borderRadius: '4px',
+                          }} />
+                        </div>
+                        <div style={{ fontSize: '11px', color: 'var(--text-50)' }}>3 of 4 workshops completed</div>
+                      </div>
+
+                      {/* Stats */}
+                      <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+                        {[
+                          { value: '12', label: 'Mentees' },
+                          { value: '24', label: 'Sessions' },
+                          { value: '89%', label: 'Completion' },
+                        ].map(stat => (
+                          <div key={stat.label} style={{
+                            padding: '12px 24px',
+                            borderRadius: '10px',
+                            background: 'var(--glass-04)',
+                            textAlign: 'center',
+                          }}>
+                            <div style={{ fontSize: '20px', fontWeight: '700', color: `rgb(${project.color})` }}>{stat.value}</div>
+                            <div style={{ fontSize: '10px', color: 'var(--text-40)' }}>{stat.label}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 8 ? (
+                    /* Card 8: Microsoft Hackathon - Azure AI Sentiment Pipeline Visualization */
+                    <>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '900px',
+                      margin: '0 auto',
+                      padding: '24px',
+                      borderRadius: '16px',
+                      background: 'var(--glass-06)',
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                    }}>
+                      {/* Pipeline */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(3, 1fr)',
+                        gap: '16px',
+                        marginBottom: '24px',
+                      }}>
+                        {[
+                          { title: 'INPUT', content: '"Great product!"', icon: '📝' },
+                          { title: 'AZURE COGNITIVE', content: 'Sentiment Analysis', icon: '🧠' },
+                          { title: 'OUTPUT', content: '😊 0.92 Positive', icon: '✨' },
+                        ].map((stage, idx) => (
+                          <div key={stage.title} style={{
+                            padding: '20px',
+                            borderRadius: '12px',
+                            background: 'var(--glass-08)',
+                            border: '1px solid var(--glass-15)',
+                            textAlign: 'center',
+                          }}>
+                            <div style={{ fontSize: '24px', marginBottom: '8px' }}>{stage.icon}</div>
+                            <div style={{ fontSize: '10px', color: `rgb(${project.color})`, fontWeight: '600', letterSpacing: '0.1em', marginBottom: '8px' }}>
+                              {stage.title}
+                            </div>
+                            <div style={{ fontSize: '12px', color: 'var(--text-70)' }}>{stage.content}</div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Live Feed */}
+                      <div style={{
+                        padding: '16px',
+                        borderRadius: '10px',
+                        background: '#0D0D0D',
+                        border: '1px solid var(--glass-15)',
+                        marginBottom: '20px',
+                      }}>
+                        <div style={{ fontSize: '9px', fontWeight: '600', color: '#30D158', marginBottom: '12px', letterSpacing: '0.15em' }}>
+                          LIVE SENTIMENT FEED
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          {[
+                            { text: '"Love this product!"', emoji: '😊', score: 0.95 },
+                            { text: '"Could be better"', emoji: '😐', score: 0.45 },
+                            { text: '"Amazing work!"', emoji: '😊', score: 0.89 },
+                          ].map((item, idx) => (
+                            <div key={idx} style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              padding: '8px 12px',
+                              borderRadius: '6px',
+                              background: 'var(--glass-06)',
+                              opacity: idx <= hackathonFeedIndex ? 1 : 0.3,
+                              transition: 'opacity 0.3s ease',
+                            }}>
+                              <span style={{ fontSize: '11px', color: 'var(--text-60)' }}>{item.text}</span>
+                              <span style={{ fontSize: '12px' }}>{item.emoji} {item.score.toFixed(2)}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Award Badge */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '16px',
+                      }}>
+                        <div style={{
+                          padding: '10px 20px',
+                          borderRadius: '20px',
+                          background: `rgba(${project.color}, 0.15)`,
+                          border: `1px solid rgba(${project.color}, 0.3)`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                        }}>
+                          <Trophy size={16} style={{ color: `rgb(${project.color})` }} />
+                          <span style={{ fontSize: '12px', fontWeight: '600', color: `rgb(${project.color})` }}>1st Place</span>
+                        </div>
+                        <span style={{ fontSize: '11px', color: 'var(--text-40)' }}>48hr Build • Azure AI Services</span>
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 9 ? (
+                    /* Card 9: Internal Hackathon - Sprint Timeline Visualization */
+                    <>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '900px',
+                      margin: '0 auto',
+                      padding: '24px',
+                      borderRadius: '16px',
+                      background: 'var(--glass-06)',
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                    }}>
+                      {/* Sprint Timeline */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginBottom: '24px',
+                        position: 'relative',
+                      }}>
+                        {/* Connection Line */}
+                        <div style={{
+                          position: 'absolute',
+                          top: '20px',
+                          left: '10%',
+                          width: '80%',
+                          height: '3px',
+                          background: 'var(--glass-15)',
+                        }}>
+                          <div style={{
+                            width: `${(['idea', 'design', 'build', 'test', 'ship'].indexOf(sprintPhase) + 1) * 25}%`,
+                            height: '100%',
+                            background: `rgb(${project.color})`,
+                            transition: 'width 0.5s ease',
+                          }} />
+                        </div>
+
+                        {[
+                          { phase: 'idea', label: 'IDEA', time: '2hr' },
+                          { phase: 'design', label: 'DESIGN', time: '4hr' },
+                          { phase: 'build', label: 'BUILD', time: '12hr' },
+                          { phase: 'test', label: 'TEST', time: '4hr' },
+                          { phase: 'ship', label: 'SHIP', time: '2hr' },
+                        ].map((stage, idx) => {
+                          const phaseOrder = ['idea', 'design', 'build', 'test', 'ship'];
+                          const currentIdx = phaseOrder.indexOf(sprintPhase);
+                          const stageIdx = phaseOrder.indexOf(stage.phase);
+                          const isComplete = stageIdx < currentIdx;
+                          const isCurrent = stage.phase === sprintPhase;
+
+                          return (
+                            <div
+                              key={stage.phase}
+                              onClick={() => setSprintPhase(stage.phase as typeof sprintPhase)}
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                gap: '8px',
+                                cursor: 'pointer',
+                                position: 'relative',
+                                zIndex: 1,
+                              }}
+                            >
+                              <div style={{
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '50%',
+                                background: isComplete || isCurrent ? `rgb(${project.color})` : 'var(--glass-20)',
+                                border: isCurrent ? '3px solid white' : '2px solid var(--glass-30)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '14px',
+                                transition: 'all 0.3s ease',
+                                boxShadow: isCurrent ? `0 0 25px rgba(${project.color}, 0.6)` : 'none',
+                              }}>
+                                {isComplete ? '✓' : isCurrent ? '●' : '○'}
+                              </div>
+                              <span style={{
+                                fontSize: '10px',
+                                fontWeight: '700',
+                                color: isCurrent ? `rgb(${project.color})` : 'var(--text-50)',
+                                letterSpacing: '0.05em',
+                              }}>
+                                {stage.label}
+                              </span>
+                              <span style={{ fontSize: '9px', color: 'var(--text-30)' }}>{stage.time}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* Progress Bar */}
+                      <div style={{
+                        padding: '16px 20px',
+                        borderRadius: '12px',
+                        background: 'var(--glass-08)',
+                        border: '1px solid var(--glass-15)',
+                        marginBottom: '20px',
+                      }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                          <span style={{ fontSize: '11px', color: 'var(--text-50)' }}>Sprint Progress</span>
+                          <span style={{ fontSize: '11px', color: `rgb(${project.color})`, fontWeight: '600' }}>18:32:45 remaining</span>
+                        </div>
+                        <div style={{ height: '12px', background: 'var(--glass-10)', borderRadius: '6px', overflow: 'hidden' }}>
+                          <div style={{
+                            width: '75%',
+                            height: '100%',
+                            background: `linear-gradient(90deg, rgb(${project.color}), rgba(${project.color}, 0.6))`,
+                            borderRadius: '6px',
+                          }} />
+                        </div>
+                      </div>
+
+                      {/* Team & Tech */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '24px',
+                        flexWrap: 'wrap',
+                      }}>
+                        <div style={{
+                          padding: '10px 20px',
+                          borderRadius: '20px',
+                          background: `rgba(${project.color}, 0.15)`,
+                          border: `1px solid rgba(${project.color}, 0.3)`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                        }}>
+                          <Trophy size={16} style={{ color: `rgb(${project.color})` }} />
+                          <span style={{ fontSize: '12px', fontWeight: '600', color: `rgb(${project.color})` }}>Winner</span>
+                        </div>
+                        <span style={{ fontSize: '11px', color: 'var(--text-40)' }}>Team: 4 designers</span>
+                        <span style={{ fontSize: '11px', color: 'var(--text-40)' }}>Tech: React + Figma API</span>
+                        <span style={{ fontSize: '11px', color: '#30D158', fontWeight: '500' }}>Shipped to Production ✓</span>
                       </div>
                     </div>
                     </>
