@@ -1192,137 +1192,612 @@ export function AirIndiaWork() {
                 );
               }
 
-              // IFE (index 4) - Screen mockup - ENLARGED
+              // IFE (index 4) - Interactive Seatback Mini Screen
               if (index === 4) {
+                const ifeTabs = ['🎬', '📺', '🎵', '🎮', '✈️'];
                 return (
                   <div style={{
-                    width: '130px',
-                    height: '90px',
-                    borderRadius: '12px',
-                    background: `linear-gradient(180deg, var(--glass-20), var(--glass-10))`,
-                    border: `2px solid rgba(${project.color}, ${isHovered ? 0.5 : 0.3})`,
-                    padding: '12px',
-                    opacity: isHovered ? 1 : 0.7,
-                    transition: 'all 0.5s ease',
-                    boxShadow: isHovered
-                      ? `0 20px 40px rgba(${project.color}, 0.3), inset 0 1px 0 rgba(255,255,255,0.1)`
-                      : `0 10px 30px rgba(${project.color}, 0.15)`,
-                  }}>
-                    <div style={{ display: 'flex', gap: '4px', marginBottom: '8px' }}>
-                      {[1,2,3].map(i => <div key={i} style={{ width: '5px', height: '5px', borderRadius: '50%', background: i === 1 ? '#ff5f57' : i === 2 ? '#febc2e' : '#28c840' }} />)}
-                    </div>
-                    <div style={{ height: '8px', borderRadius: '4px', background: `rgba(${project.color}, ${isHovered ? 0.5 : 0.3})`, marginBottom: '5px', width: '80%' }} />
-                    <div style={{ height: '5px', borderRadius: '3px', background: 'var(--glass-20)', marginBottom: '4px', width: '100%' }} />
-                    <div style={{ height: '5px', borderRadius: '3px', background: 'var(--glass-15)', width: '70%' }} />
-                    {/* Play button */}
-                    <div style={{
-                      position: 'absolute',
-                      bottom: '12px',
-                      right: '12px',
-                      width: '24px',
-                      height: '24px',
-                      borderRadius: '50%',
-                      background: `rgb(${project.color})`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: `0 0 15px rgba(${project.color}, 0.5)`,
-                    }}>
-                      <div style={{ width: 0, height: 0, borderTop: '5px solid transparent', borderBottom: '5px solid transparent', borderLeft: '8px solid white', marginLeft: '2px' }} />
-                    </div>
-                  </div>
-                );
-              }
-
-              // Research cards (index 5, 6) - Chart visual - ENLARGED
-              if (index === 5 || index === 6) {
-                return (
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'flex-end',
-                    gap: '10px',
+                    width: '160px',
                     height: '110px',
-                    opacity: isHovered ? 1 : 0.6,
-                    transition: 'all 0.5s ease',
-                  }}>
-                    {[45, 70, 55, 90, 60, 80].map((h, i) => (
-                      <div key={i} style={{
-                        width: '18px',
-                        height: isHovered ? `${h}%` : `${h * 0.5}%`,
-                        borderRadius: '4px 4px 0 0',
-                        background: `linear-gradient(180deg, rgb(${project.color}), rgba(${project.color}, 0.3))`,
-                        boxShadow: isHovered ? `0 0 15px rgba(${project.color}, 0.4)` : 'none',
-                        transition: `all 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${i * 0.05}s`,
-                      }} />
-                    ))}
-                  </div>
-                );
-              }
-
-              // Culture (index 7) - People nodes - ENLARGED
-              if (index === 7) {
-                return (
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    opacity: isHovered ? 1 : 0.7,
-                    transition: 'all 0.5s ease',
-                  }}>
-                    {[0, 1, 2, 3].map(i => (
-                      <div key={i} style={{
-                        width: '44px',
-                        height: '44px',
-                        borderRadius: '50%',
-                        background: `linear-gradient(135deg, rgba(${project.color}, ${0.9 - i * 0.15}), rgba(${project.color}, ${0.5 - i * 0.1}))`,
-                        border: '3px solid var(--glass-30)',
-                        marginLeft: i > 0 ? (isHovered ? '-10px' : '-16px') : 0,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxShadow: `0 0 20px rgba(${project.color}, 0.4)`,
-                        transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                        transform: isHovered ? `translateY(${i % 2 === 0 ? '-4px' : '4px'})` : 'translateY(0)',
-                      }}>
-                        <Users size={18} style={{ color: 'white' }} />
-                      </div>
-                    ))}
-                  </div>
-                );
-              }
-
-              // Hackathons (index 8, 9) - Trophy/rocket visual - ENLARGED
-              if (index === 8 || index === 9) {
-                return (
-                  <div style={{
                     position: 'relative',
                     opacity: isHovered ? 1 : 0.7,
                     transition: 'all 0.5s ease',
                   }}>
-                    {/* Glow ring behind */}
+                    {/* Seatback screen frame */}
+                    <div style={{
+                      width: '100%',
+                      height: '100%',
+                      borderRadius: '10px',
+                      background: 'linear-gradient(180deg, #1a1a1a, #0d0d0d)',
+                      border: `2px solid rgba(${project.color}, ${isHovered ? 0.5 : 0.25})`,
+                      padding: '8px',
+                      boxShadow: isHovered
+                        ? `0 15px 40px rgba(${project.color}, 0.3), inset 0 1px 0 rgba(255,255,255,0.08)`
+                        : `0 8px 25px rgba(${project.color}, 0.15)`,
+                      transition: 'all 0.4s ease',
+                      overflow: 'hidden',
+                    }}>
+                      {/* Tab bar */}
+                      <div style={{
+                        display: 'flex',
+                        gap: '2px',
+                        marginBottom: '6px',
+                        background: 'rgba(255,255,255,0.05)',
+                        borderRadius: '4px',
+                        padding: '2px',
+                      }}>
+                        {ifeTabs.map((tab, i) => (
+                          <div key={i} style={{
+                            flex: 1,
+                            padding: '3px 0',
+                            fontSize: '8px',
+                            textAlign: 'center',
+                            borderRadius: '3px',
+                            background: i === 0 ? `rgba(${project.color}, ${isHovered ? 0.5 : 0.3})` : 'transparent',
+                            transition: `all 0.3s ease ${i * 0.05}s`,
+                            transform: isHovered && i === 0 ? 'scale(1.1)' : 'scale(1)',
+                          }}>
+                            {tab}
+                          </div>
+                        ))}
+                      </div>
+                      {/* Content grid - movie thumbnails */}
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '3px', marginBottom: '6px' }}>
+                        {[0.4, 0.35, 0.3, 0.25].map((opacity, i) => (
+                          <div key={i} style={{
+                            aspectRatio: '1',
+                            borderRadius: '3px',
+                            background: `rgba(${project.color}, ${isHovered ? opacity + 0.1 : opacity})`,
+                            transition: `all 0.3s ease ${i * 0.08}s`,
+                            transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+                          }} />
+                        ))}
+                      </div>
+                      {/* Now playing bar */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        padding: '4px 6px',
+                        background: 'rgba(255,255,255,0.05)',
+                        borderRadius: '4px',
+                      }}>
+                        <div style={{
+                          width: '12px',
+                          height: '12px',
+                          borderRadius: '50%',
+                          background: `rgb(${project.color})`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: isHovered ? `0 0 8px rgba(${project.color}, 0.6)` : 'none',
+                        }}>
+                          <div style={{ width: 0, height: 0, borderTop: '3px solid transparent', borderBottom: '3px solid transparent', borderLeft: '5px solid white', marginLeft: '1px' }} />
+                        </div>
+                        {/* Progress bar */}
+                        <div style={{ flex: 1, height: '3px', borderRadius: '2px', background: 'var(--glass-15)', overflow: 'hidden' }}>
+                          <div style={{
+                            width: isHovered ? '65%' : '30%',
+                            height: '100%',
+                            borderRadius: '2px',
+                            background: `rgb(${project.color})`,
+                            transition: 'width 0.8s ease',
+                          }} />
+                        </div>
+                        <span style={{ fontSize: '7px', color: 'var(--text-40)' }}>1:23</span>
+                      </div>
+                    </div>
+                    {/* Seat indicator */}
                     <div style={{
                       position: 'absolute',
-                      top: '50%',
+                      bottom: '-16px',
                       left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      width: '100px',
-                      height: '100px',
-                      borderRadius: '50%',
-                      background: `radial-gradient(circle, rgba(${project.color}, ${isHovered ? 0.3 : 0.1}), transparent 70%)`,
-                      transition: 'all 0.5s ease',
-                    }} />
+                      transform: 'translateX(-50%)',
+                      fontSize: '7px',
+                      color: 'var(--text-30)',
+                      letterSpacing: '0.5px',
+                    }}>
+                      SEAT 12A
+                    </div>
+                  </div>
+                );
+              }
+
+              // Card 5: NPS Feedback - Mini Gauge Dashboard
+              if (index === 5) {
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    position: 'relative',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                      {/* Score badge */}
+                      <div style={{
+                        width: '50px',
+                        height: '50px',
+                        borderRadius: '10px',
+                        background: `linear-gradient(135deg, rgba(${project.color}, 0.3), rgba(${project.color}, 0.1))`,
+                        border: `1px solid rgba(${project.color}, ${isHovered ? 0.5 : 0.25})`,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        transition: 'all 0.3s ease',
+                        boxShadow: isHovered ? `0 0 20px rgba(${project.color}, 0.3)` : 'none',
+                      }}>
+                        <span style={{ fontSize: '16px', fontWeight: '700', color: `rgb(${project.color})` }}>+67</span>
+                        <span style={{ fontSize: '6px', color: 'var(--text-40)', textTransform: 'uppercase' }}>NPS</span>
+                      </div>
+                      {/* Mini gauge */}
+                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                        {/* Semi-circle gauge */}
+                        <svg width="80" height="40" viewBox="0 0 80 40" style={{ overflow: 'visible' }}>
+                          {/* Background arc */}
+                          <path
+                            d="M 5 38 A 35 35 0 0 1 75 38"
+                            fill="none"
+                            stroke="var(--glass-15)"
+                            strokeWidth="6"
+                            strokeLinecap="round"
+                          />
+                          {/* Colored arc */}
+                          <path
+                            d="M 5 38 A 35 35 0 0 1 75 38"
+                            fill="none"
+                            stroke={`rgb(${project.color})`}
+                            strokeWidth="6"
+                            strokeLinecap="round"
+                            strokeDasharray="110"
+                            strokeDashoffset={isHovered ? '27' : '55'}
+                            style={{ transition: 'stroke-dashoffset 0.8s ease' }}
+                          />
+                          {/* Needle */}
+                          <line
+                            x1="40" y1="38" x2="40" y2="12"
+                            stroke={`rgb(${project.color})`}
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            style={{
+                              transformOrigin: '40px 38px',
+                              transform: `rotate(${isHovered ? 60 : 0}deg)`,
+                              transition: 'transform 0.8s ease',
+                            }}
+                          />
+                        </svg>
+                        {/* Scale labels */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '6px', color: 'var(--text-30)' }}>
+                          <span>-100</span>
+                          <span>+100</span>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Distribution bars */}
+                    <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                      {[
+                        { label: 'P', value: 72, color: '#30D158' },
+                        { label: 'N', value: 18, color: '#FF9F0A' },
+                        { label: 'D', value: 10, color: '#FF453A' },
+                      ].map((item, i) => (
+                        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <span style={{ fontSize: '6px', color: item.color, width: '8px' }}>{item.label}</span>
+                          <div style={{ flex: 1, height: '4px', borderRadius: '2px', background: 'var(--glass-10)', overflow: 'hidden' }}>
+                            <div style={{
+                              width: isHovered ? `${item.value}%` : '10%',
+                              height: '100%',
+                              borderRadius: '2px',
+                              background: item.color,
+                              transition: `width 0.6s ease ${i * 0.1}s`,
+                            }} />
+                          </div>
+                          <span style={{ fontSize: '6px', color: 'var(--text-30)', width: '16px', textAlign: 'right' }}>{item.value}%</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+
+              // Card 6: Competitor Analysis - Mini Feature Matrix
+              if (index === 6) {
+                const features = ['UX', 'App', 'IFE', 'Web'];
+                const airlines = [
+                  { name: 'AI', scores: [4, 5, 5, 4] },
+                  { name: 'EK', scores: [5, 4, 5, 5] },
+                  { name: 'SQ', scores: [5, 5, 4, 5] },
+                ];
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    {/* Matrix header */}
                     <div style={{
-                      width: '70px',
-                      height: '70px',
-                      borderRadius: '20px',
-                      background: `linear-gradient(135deg, rgb(${project.color}), rgba(${project.color}, 0.6))`,
+                      display: 'grid',
+                      gridTemplateColumns: '24px repeat(4, 1fr)',
+                      gap: '2px',
+                      marginBottom: '4px',
+                    }}>
+                      <div />
+                      {features.map((f, i) => (
+                        <div key={i} style={{
+                          fontSize: '7px',
+                          color: 'var(--text-40)',
+                          textAlign: 'center',
+                          fontWeight: '500',
+                        }}>{f}</div>
+                      ))}
+                    </div>
+                    {/* Matrix rows */}
+                    {airlines.map((airline, ai) => (
+                      <div key={ai} style={{
+                        display: 'grid',
+                        gridTemplateColumns: '24px repeat(4, 1fr)',
+                        gap: '2px',
+                        marginBottom: '3px',
+                        padding: '3px 0',
+                        background: ai === 0 ? `rgba(${project.color}, ${isHovered ? 0.15 : 0.08})` : 'transparent',
+                        borderRadius: '4px',
+                        transition: `all 0.3s ease ${ai * 0.1}s`,
+                      }}>
+                        <div style={{
+                          fontSize: '7px',
+                          fontWeight: '600',
+                          color: ai === 0 ? `rgb(${project.color})` : 'var(--text-50)',
+                        }}>{airline.name}</div>
+                        {airline.scores.map((score, si) => (
+                          <div key={si} style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            gap: '1px',
+                          }}>
+                            {[1, 2, 3, 4, 5].map((dot) => (
+                              <div key={dot} style={{
+                                width: '4px',
+                                height: '4px',
+                                borderRadius: '50%',
+                                background: dot <= score
+                                  ? (ai === 0 ? `rgb(${project.color})` : dot <= 3 ? '#FF9F0A' : '#30D158')
+                                  : 'var(--glass-15)',
+                                transition: `all 0.3s ease ${(ai * 4 + si) * 0.03}s`,
+                                transform: isHovered && dot <= score ? 'scale(1.2)' : 'scale(1)',
+                              }} />
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                    {/* Stats footer */}
+                    <div style={{
+                      marginTop: '6px',
+                      fontSize: '6px',
+                      color: 'var(--text-30)',
+                      textAlign: 'center',
+                    }}>
+                      15+ apps · 47 features
+                    </div>
+                  </div>
+                );
+              }
+
+              // Card 7: Liftoff Program - Learning Path Timeline
+              if (index === 7) {
+                const weeks = [1, 2, 3, 4, 5, 6];
+                const currentWeek = 4;
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    {/* Timeline */}
+                    <div style={{ position: 'relative', marginBottom: '10px' }}>
+                      {/* Connection line */}
+                      <div style={{
+                        position: 'absolute',
+                        top: '10px',
+                        left: '10px',
+                        right: '10px',
+                        height: '2px',
+                        background: 'var(--glass-15)',
+                      }}>
+                        <div style={{
+                          width: isHovered ? `${((currentWeek - 1) / (weeks.length - 1)) * 100}%` : '20%',
+                          height: '100%',
+                          background: `rgb(${project.color})`,
+                          transition: 'width 0.8s ease',
+                          boxShadow: `0 0 8px rgba(${project.color}, 0.5)`,
+                        }} />
+                      </div>
+                      {/* Week nodes */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        {weeks.map((week, i) => {
+                          const isCompleted = week <= currentWeek;
+                          const isCurrent = week === currentWeek;
+                          return (
+                            <div key={i} style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              gap: '4px',
+                            }}>
+                              <div style={{
+                                width: isCurrent ? '20px' : '16px',
+                                height: isCurrent ? '20px' : '16px',
+                                borderRadius: '50%',
+                                background: isCompleted
+                                  ? `rgb(${project.color})`
+                                  : 'var(--glass-15)',
+                                border: isCurrent ? `2px solid rgba(${project.color}, 0.5)` : 'none',
+                                transition: `all 0.4s ease ${i * 0.1}s`,
+                                boxShadow: isCurrent && isHovered ? `0 0 12px rgba(${project.color}, 0.6)` : 'none',
+                                transform: isHovered && isCompleted ? 'scale(1.15)' : 'scale(1)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}>
+                                {isCompleted && (
+                                  <span style={{ fontSize: '8px', color: 'white' }}>✓</span>
+                                )}
+                              </div>
+                              <span style={{
+                                fontSize: '6px',
+                                color: isCurrent ? `rgb(${project.color})` : 'var(--text-30)',
+                                fontWeight: isCurrent ? '600' : '400',
+                              }}>W{week}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    {/* Current module card */}
+                    <div style={{
+                      padding: '8px 10px',
+                      borderRadius: '8px',
+                      background: `rgba(${project.color}, ${isHovered ? 0.15 : 0.08})`,
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                      transition: 'all 0.3s ease',
+                    }}>
+                      <div style={{ fontSize: '7px', color: 'var(--text-40)', marginBottom: '4px' }}>CURRENT MODULE</div>
+                      <div style={{ fontSize: '9px', fontWeight: '600', color: `rgb(${project.color})`, marginBottom: '6px' }}>Design Systems</div>
+                      {/* Progress bar */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <div style={{ flex: 1, height: '4px', borderRadius: '2px', background: 'var(--glass-10)', overflow: 'hidden' }}>
+                          <div style={{
+                            width: isHovered ? '75%' : '30%',
+                            height: '100%',
+                            borderRadius: '2px',
+                            background: `rgb(${project.color})`,
+                            transition: 'width 0.6s ease',
+                          }} />
+                        </div>
+                        <span style={{ fontSize: '7px', color: 'var(--text-40)' }}>75%</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
+              // Card 8: Microsoft Hackathon - Azure AI Pipeline Mini
+              if (index === 8) {
+                const sentiments = [
+                  { text: 'Great!', emoji: '😊', score: 0.92 },
+                  { text: 'Okay', emoji: '😐', score: 0.45 },
+                  { text: 'Love it', emoji: '😊', score: 0.89 },
+                ];
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    {/* Pipeline nodes */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                      {[
+                        { label: 'INPUT', icon: '📝' },
+                        { label: 'AZURE', icon: '🧠' },
+                        { label: 'OUTPUT', icon: '📊' },
+                      ].map((node, i) => (
+                        <div key={i} style={{ position: 'relative' }}>
+                          <div style={{
+                            width: '36px',
+                            height: '36px',
+                            borderRadius: '10px',
+                            background: i === 1
+                              ? `linear-gradient(135deg, rgba(${project.color}, 0.4), rgba(${project.color}, 0.2))`
+                              : 'var(--glass-10)',
+                            border: `1px solid rgba(${project.color}, ${isHovered ? 0.4 : 0.2})`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '14px',
+                            transition: `all 0.3s ease ${i * 0.15}s`,
+                            transform: isHovered ? 'scale(1.1)' : 'scale(1)',
+                            boxShadow: isHovered && i === 1 ? `0 0 20px rgba(${project.color}, 0.4)` : 'none',
+                          }}>
+                            {node.icon}
+                          </div>
+                          <div style={{
+                            position: 'absolute',
+                            top: '100%',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            fontSize: '5px',
+                            color: 'var(--text-30)',
+                            marginTop: '2px',
+                            whiteSpace: 'nowrap',
+                          }}>{node.label}</div>
+                          {/* Connection arrow */}
+                          {i < 2 && (
+                            <div style={{
+                              position: 'absolute',
+                              top: '50%',
+                              left: '100%',
+                              transform: 'translateY(-50%)',
+                              width: '14px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}>
+                              <span style={{
+                                fontSize: '8px',
+                                color: `rgba(${project.color}, ${isHovered ? 0.8 : 0.4})`,
+                                transition: 'color 0.3s ease',
+                              }}>→</span>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    {/* Live feed */}
+                    <div style={{
+                      marginTop: '12px',
+                      padding: '6px 8px',
+                      borderRadius: '6px',
+                      background: 'var(--glass-08)',
+                      border: '1px solid var(--glass-10)',
+                    }}>
+                      {sentiments.slice(0, 2).map((item, i) => (
+                        <div key={i} style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '2px 0',
+                          fontSize: '7px',
+                          opacity: isHovered ? 1 : 0.6,
+                          transition: `opacity 0.3s ease ${i * 0.1}s`,
+                        }}>
+                          <span style={{ color: 'var(--text-40)' }}>&quot;{item.text}&quot;</span>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+                            <span>{item.emoji}</span>
+                            <span style={{ color: item.score > 0.7 ? '#30D158' : '#FF9F0A' }}>
+                              {item.score.toFixed(2)}
+                            </span>
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                    {/* Award badge */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '-8px',
+                      right: '0',
+                      fontSize: '7px',
+                      color: `rgb(${project.color})`,
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: `0 0 40px rgba(${project.color}, 0.5)`,
-                      transform: isHovered ? 'rotate(5deg)' : 'rotate(0deg)',
-                      transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                      gap: '3px',
                     }}>
-                      {index === 8 ? <Zap size={36} style={{ color: 'white' }} /> : <Rocket size={36} style={{ color: 'white' }} />}
+                      🏆 1st Place
+                    </div>
+                  </div>
+                );
+              }
+
+              // Card 9: Internal Hackathon - Sprint Timeline Mini
+              if (index === 9) {
+                const phases = [
+                  { name: 'IDEA', hours: 2, done: true },
+                  { name: 'DESIGN', hours: 4, done: true },
+                  { name: 'BUILD', hours: 12, done: true },
+                  { name: 'TEST', hours: 4, done: false },
+                  { name: 'SHIP', hours: 2, done: false },
+                ];
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    {/* 24-HOUR header */}
+                    <div style={{
+                      fontSize: '7px',
+                      fontWeight: '700',
+                      color: `rgb(${project.color})`,
+                      marginBottom: '6px',
+                      letterSpacing: '0.5px',
+                    }}>24-HOUR SPRINT</div>
+                    {/* Phase timeline */}
+                    <div style={{ display: 'flex', gap: '2px', marginBottom: '8px' }}>
+                      {phases.map((phase, i) => (
+                        <div key={i} style={{
+                          flex: phase.hours,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '3px',
+                        }}>
+                          <div style={{
+                            width: '100%',
+                            height: '16px',
+                            borderRadius: '3px',
+                            background: phase.done
+                              ? `rgba(${project.color}, ${isHovered ? 0.5 : 0.3})`
+                              : 'var(--glass-10)',
+                            border: `1px solid rgba(${project.color}, ${phase.done ? 0.4 : 0.1})`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transition: `all 0.3s ease ${i * 0.08}s`,
+                            transform: isHovered && phase.done ? 'scaleY(1.1)' : 'scaleY(1)',
+                          }}>
+                            {phase.done && (
+                              <span style={{ fontSize: '8px', color: 'white' }}>✓</span>
+                            )}
+                          </div>
+                          <span style={{
+                            fontSize: '5px',
+                            color: phase.done ? `rgb(${project.color})` : 'var(--text-30)',
+                            fontWeight: phase.done ? '600' : '400',
+                          }}>{phase.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {/* Timer bar */}
+                    <div style={{
+                      padding: '6px 8px',
+                      borderRadius: '6px',
+                      background: 'var(--glass-08)',
+                      border: '1px solid var(--glass-10)',
+                    }}>
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: '4px',
+                      }}>
+                        <span style={{ fontSize: '7px', color: 'var(--text-40)' }}>Progress</span>
+                        <span style={{ fontSize: '8px', fontWeight: '600', color: `rgb(${project.color})` }}>18:32</span>
+                      </div>
+                      <div style={{ height: '4px', borderRadius: '2px', background: 'var(--glass-10)', overflow: 'hidden' }}>
+                        <div style={{
+                          width: isHovered ? '75%' : '40%',
+                          height: '100%',
+                          borderRadius: '2px',
+                          background: `linear-gradient(90deg, rgb(${project.color}), rgba(${project.color}, 0.6))`,
+                          transition: 'width 0.6s ease',
+                        }} />
+                      </div>
+                    </div>
+                    {/* Award badge */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '-8px',
+                      right: '0',
+                      fontSize: '7px',
+                      color: `rgb(${project.color})`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '3px',
+                    }}>
+                      🏆 Winner
                     </div>
                   </div>
                 );
