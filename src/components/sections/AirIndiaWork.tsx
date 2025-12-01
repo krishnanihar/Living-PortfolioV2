@@ -997,26 +997,26 @@ export function AirIndiaWork() {
             ? 'clamp(8rem, 15vh, 12rem) 1.5rem clamp(4rem, 8vh, 6rem)'
             : 'clamp(8rem, 15vh, 12rem) clamp(2rem, 8vw, 6rem) clamp(4rem, 8vh, 6rem)',
         }}>
-          {/* Glassmorphic Content Card */}
+          {/* Glassmorphic Content Card - Compact */}
           <div style={{
-            maxWidth: isMobile ? '100%' : '680px',
-            padding: isMobile ? 'clamp(2rem, 5vw, 3rem)' : 'clamp(2.5rem, 5vw, 4rem)',
-            background: 'var(--glass-05)',
-            backdropFilter: 'blur(40px) saturate(180%)',
-            WebkitBackdropFilter: 'blur(40px) saturate(180%)',
-            border: '1px solid var(--glass-10)',
-            borderRadius: '32px',
-            boxShadow: '0 32px 64px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(218, 14, 41, 0.08) inset, 0 1px 0 rgba(255, 255, 255, 0.08) inset',
+            maxWidth: isMobile ? '100%' : '520px',
+            padding: isMobile ? '1.5rem' : '2rem 2.5rem',
+            background: 'var(--glass-04)',
+            backdropFilter: 'blur(32px) saturate(150%)',
+            WebkitBackdropFilter: 'blur(32px) saturate(150%)',
+            border: '1px solid var(--glass-08)',
+            borderRadius: '24px',
+            boxShadow: '0 24px 48px rgba(0, 0, 0, 0.3)',
             animation: inView ? 'heroContentReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both' : 'none',
           }}>
             {/* Eyebrow */}
             <div style={{
-              fontSize: '0.75rem',
+              fontSize: '0.6875rem',
               fontWeight: '500',
               color: 'var(--text-muted)',
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
-              marginBottom: '1rem',
+              marginBottom: '0.75rem',
               opacity: 0,
               animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards' : 'none',
             }}>
@@ -1028,14 +1028,14 @@ export function AirIndiaWork() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.5rem',
-              fontSize: '0.875rem',
+              fontSize: '0.75rem',
               fontWeight: '600',
               color: 'rgb(218, 14, 41)',
-              marginBottom: '1.5rem',
-              padding: '0.5rem 1rem',
+              marginBottom: '1rem',
+              padding: '0.375rem 0.875rem',
               background: 'rgba(218, 14, 41, 0.1)',
               border: '1px solid rgba(218, 14, 41, 0.2)',
-              borderRadius: '20px',
+              borderRadius: '16px',
               opacity: 0,
               animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards' : 'none',
             }}>
@@ -1044,11 +1044,11 @@ export function AirIndiaWork() {
 
             {/* Main Statement */}
             <h1 style={{
-              fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+              fontSize: 'clamp(1.75rem, 4vw, 2.75rem)',
               fontWeight: '200',
-              letterSpacing: '-0.04em',
-              lineHeight: '1.1',
-              marginBottom: '1.5rem',
+              letterSpacing: '-0.03em',
+              lineHeight: '1.15',
+              marginBottom: '1rem',
               color: 'var(--text-primary)',
               opacity: 0,
               animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.75s forwards' : 'none',
@@ -1068,11 +1068,11 @@ export function AirIndiaWork() {
 
             {/* Subtitle */}
             <p style={{
-              fontSize: 'clamp(1rem, 1.5vw, 1.25rem)',
+              fontSize: '0.9375rem',
               color: 'var(--text-secondary)',
-              lineHeight: '1.7',
+              lineHeight: '1.6',
               fontWeight: '300',
-              marginBottom: '2rem',
+              marginBottom: '1.25rem',
               opacity: 0,
               animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.9s forwards' : 'none',
             }}>
@@ -1083,28 +1083,28 @@ export function AirIndiaWork() {
             <div style={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: '0.75rem',
-              marginBottom: '1.5rem',
+              gap: '0.5rem',
+              marginBottom: '1rem',
               opacity: 0,
               animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 1.05s forwards' : 'none',
             }}>
               <div style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '12px',
-                background: 'var(--glass-08)',
-                border: '1px solid var(--glass-10)',
-                fontSize: '0.813rem',
+                padding: '0.375rem 0.75rem',
+                borderRadius: '10px',
+                background: 'var(--glass-06)',
+                border: '1px solid var(--glass-08)',
+                fontSize: '0.75rem',
                 fontWeight: '400',
                 color: 'var(--text-secondary)',
               }}>
                 Product Designer · 2022–24
               </div>
               <div style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '12px',
-                background: 'var(--glass-08)',
-                border: '1px solid var(--glass-10)',
-                fontSize: '0.813rem',
+                padding: '0.375rem 0.75rem',
+                borderRadius: '10px',
+                background: 'var(--glass-06)',
+                border: '1px solid var(--glass-08)',
+                fontSize: '0.75rem',
                 fontWeight: '400',
                 color: 'var(--text-secondary)',
               }}>
@@ -1116,23 +1116,23 @@ export function AirIndiaWork() {
             <div style={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: '1.5rem',
-              paddingTop: '1.5rem',
-              borderTop: '1px solid var(--glass-10)',
+              gap: '1.25rem',
+              paddingTop: '1rem',
+              borderTop: '1px solid var(--glass-08)',
               opacity: 0,
               animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 1.2s forwards' : 'none',
             }}>
               <div>
-                <div style={{ fontSize: '1.25rem', fontWeight: '600', color: 'var(--text-primary)' }}>140</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Systems Unified</div>
+                <div style={{ fontSize: '1.125rem', fontWeight: '600', color: 'var(--text-primary)' }}>140</div>
+                <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Systems</div>
               </div>
               <div>
-                <div style={{ fontSize: '1.25rem', fontWeight: '600', color: 'var(--text-primary)' }}>4</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Airlines Merged</div>
+                <div style={{ fontSize: '1.125rem', fontWeight: '600', color: 'var(--text-primary)' }}>4</div>
+                <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Airlines</div>
               </div>
               <div>
-                <div style={{ fontSize: '1.25rem', fontWeight: '600', color: 'var(--text-primary)' }}>450+</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Daily Users</div>
+                <div style={{ fontSize: '1.125rem', fontWeight: '600', color: 'var(--text-primary)' }}>450+</div>
+                <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Users</div>
               </div>
             </div>
           </div>
