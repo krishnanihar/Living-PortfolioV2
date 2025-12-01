@@ -521,6 +521,19 @@ export function AirIndiaWork() {
   const [hoveredCTA, setHoveredCTA] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
 
+  // Hero image effects
+  const heroRef = useRef<HTMLElement>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHeroHovered, setIsHeroHovered] = useState(false);
+
+  // Scroll parallax for hero image
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  const heroImageY = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const heroImageScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.05]);
+
   // Narrative act tracking
   const [currentAct, setCurrentAct] = useState<1 | 2 | 3>(1);
   const act1Ref = useRef<HTMLDivElement>(null);
@@ -659,6 +672,20 @@ export function AirIndiaWork() {
     handleScroll(); // Initial check
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Hero mouse parallax handler
+  const handleHeroMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (isMobile) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setMousePosition({ x: x * 20, y: y * 15 }); // 20px max X, 15px max Y shift
+  };
+
+  const handleHeroMouseLeave = () => {
+    setMousePosition({ x: 0, y: 0 });
+    setIsHeroHovered(false);
+  };
 
   // =============================================================================
   // NARRATIVE COMPONENTS
@@ -925,32 +952,54 @@ export function AirIndiaWork() {
       </div>
 
       {/* =========================================================================
-          SECTION 1: HERO - Split Composition
+          SECTION 1: HERO - Split Composition with Premium Effects
       ========================================================================= */}
-      <header style={{
-        minHeight: '90vh',
-        display: 'flex',
-        alignItems: 'center',
-        position: 'relative',
-        zIndex: 1,
-        overflow: 'hidden',
-      }}>
-        {/* Background Image Container */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          width: isMobile ? '100%' : '55%',
-          height: '100%',
-          zIndex: 0,
+      <header
+        ref={heroRef}
+        onMouseMove={handleHeroMouseMove}
+        onMouseEnter={() => setIsHeroHovered(true)}
+        onMouseLeave={handleHeroMouseLeave}
+        style={{
+          minHeight: '90vh',
+          display: 'flex',
+          alignItems: 'center',
+          position: 'relative',
+          zIndex: 1,
           overflow: 'hidden',
-        }}>
-          {/* Hero Image */}
-          <div style={{
+        }}
+      >
+        {/* Background Image Container */}
+        <motion.div
+          style={{
             position: 'absolute',
-            inset: 0,
-            animation: inView ? 'heroImageReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both' : 'none',
-          }}>
+            top: 0,
+            right: 0,
+            width: isMobile ? '100%' : '55%',
+            height: '100%',
+            zIndex: 0,
+            overflow: 'hidden',
+            y: heroImageY,
+            scale: heroImageScale,
+          }}
+        >
+          {/* Hero Image with Mouse Parallax */}
+          <motion.div
+            style={{
+              position: 'absolute',
+              inset: '-20px', // Extra space for parallax movement
+              animation: inView ? 'heroImageReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both' : 'none',
+            }}
+            animate={{
+              x: mousePosition.x,
+              y: mousePosition.y,
+            }}
+            transition={{
+              type: 'spring',
+              stiffness: 150,
+              damping: 15,
+              mass: 0.1,
+            }}
+          >
             <Image
               src="/images/air-india/hero.png"
               alt="Air India A350 aircraft flying through sunset clouds"
@@ -959,10 +1008,22 @@ export function AirIndiaWork() {
               style={{
                 objectFit: 'cover',
                 objectPosition: 'center',
-                animation: 'kenBurns 20s ease-in-out infinite',
+                animation: isHeroHovered ? 'none' : 'kenBurns 20s ease-in-out infinite',
+                filter: isHeroHovered ? 'brightness(1.08) saturate(1.1)' : 'brightness(1) saturate(1)',
+                transition: 'filter 0.4s ease-out',
               }}
             />
-          </div>
+          </motion.div>
+
+          {/* Film Grain Overlay - Cinematic texture */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            opacity: 0.04,
+            pointerEvents: 'none',
+            mixBlendMode: 'overlay',
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          }} />
 
           {/* Diagonal Gradient Overlay - Protects text zone */}
           <div style={{
@@ -984,7 +1045,7 @@ export function AirIndiaWork() {
             background: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, transparent 100%)',
             pointerEvents: 'none',
           }} />
-        </div>
+        </motion.div>
 
         {/* Content Container */}
         <div style={{
