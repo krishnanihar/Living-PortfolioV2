@@ -468,7 +468,7 @@ const otherProjects: OtherProject[] = [
 ];
 
 // =============================================================================
-// ACT CONFIGURATION - THREE-ACT NARRATIVE STRUCTURE
+// NARRATIVE CONFIGURATION
 // =============================================================================
 
 interface ActConfig {
@@ -659,7 +659,7 @@ export function AirIndiaWork() {
   }, []);
 
   // =============================================================================
-  // INLINE HELPER COMPONENTS
+  // NARRATIVE COMPONENTS
   // =============================================================================
 
   // Act Header Component
@@ -860,905 +860,6 @@ export function AirIndiaWork() {
     );
   };
 
-  // =============================================================================
-  // CARD VISUALIZATIONS - Interactive mini prototypes for each project
-  // =============================================================================
-  const renderCardVisual = (index: number, isHovered: boolean, project: Project) => {
-    const actColor = index < 2 ? actConfig[1].color : index < 6 ? actConfig[2].color : actConfig[3].color;
-
-    // Card 0: Pixel Radar - Floating UI Panels
-    if (index === 0) {
-      return (
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px',
-          width: '160px',
-          opacity: isHovered ? 1 : 0.8,
-          transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-        }}>
-          {/* Floating UI Panel - Stats */}
-          <div style={{
-            padding: '16px 20px',
-            borderRadius: '14px',
-            background: 'linear-gradient(135deg, rgba(218,14,41,0.2), var(--glass-10))',
-            border: '1px solid rgba(218,14,41,0.35)',
-            backdropFilter: 'blur(20px)',
-            transform: isHovered ? 'translateX(-8px) rotate(-2deg)' : 'translateX(0)',
-            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-            boxShadow: isHovered ? '0 15px 30px rgba(218,14,41,0.2)' : 'none',
-          }}>
-            <div style={{ fontSize: '0.688rem', color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Daily Active Users</div>
-            <div style={{ fontSize: '2rem', fontWeight: '700', color: 'rgb(218,14,41)', lineHeight: 1 }}>450+</div>
-          </div>
-          {/* Progress bar */}
-          <div style={{
-            padding: '16px 20px',
-            borderRadius: '14px',
-            background: 'var(--glass-08)',
-            border: '1px solid var(--glass-15)',
-            transform: isHovered ? 'translateX(8px) rotate(2deg)' : 'translateX(0)',
-            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
-            boxShadow: isHovered ? '0 15px 30px rgba(0,0,0,0.2)' : 'none',
-          }}>
-            <div style={{ fontSize: '0.688rem', color: 'var(--text-muted)', marginBottom: '8px' }}>Review Time</div>
-            <div style={{ height: '8px', borderRadius: '4px', background: 'var(--glass-10)', overflow: 'hidden' }}>
-              <div style={{
-                width: isHovered ? '70%' : '30%',
-                height: '100%',
-                borderRadius: '4px',
-                background: 'linear-gradient(90deg, rgb(218,14,41), rgb(251,146,60))',
-                transition: 'width 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
-              }} />
-            </div>
-            <div style={{ fontSize: '1rem', fontWeight: '600', color: 'var(--text-primary)', marginTop: '6px' }}>30% faster</div>
-          </div>
-        </div>
-      );
-    }
-
-    // Card 1: Design System - Token Constellation
-    if (index === 1) {
-      return (
-        <div style={{
-          width: '160px',
-          height: '160px',
-          position: 'relative',
-          opacity: isHovered ? 1 : 0.7,
-          transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-        }}>
-          {/* Central node */}
-          <div style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '56px',
-            height: '56px',
-            borderRadius: '14px',
-            background: `linear-gradient(135deg, rgb(${project.color}), rgba(${project.color}, 0.6))`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: `0 0 40px rgba(${project.color}, 0.5)`,
-            animation: isHovered ? 'orbitPulse 2s ease-in-out infinite' : 'none',
-          }}>
-            <Layers size={26} style={{ color: 'white' }} />
-          </div>
-          {/* SVG connection lines */}
-          <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-            {[0, 72, 144, 216, 288].map((angle, i) => {
-              const rad = (angle * Math.PI) / 180;
-              const x1 = 80 + Math.cos(rad) * 25;
-              const y1 = 80 + Math.sin(rad) * 25;
-              const x2 = 80 + Math.cos(rad) * 60;
-              const y2 = 80 + Math.sin(rad) * 60;
-              return (
-                <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
-                  stroke={`rgba(${project.color}, ${isHovered ? 0.5 : 0.2})`}
-                  strokeWidth="1.5"
-                  strokeDasharray={isHovered ? "0" : "4 4"}
-                  style={{ transition: 'all 0.5s ease' }}
-                />
-              );
-            })}
-          </svg>
-          {/* Orbiting nodes - 5 nodes in circle */}
-          {[0, 72, 144, 216, 288].map((angle, i) => (
-            <div key={i} style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              width: '28px',
-              height: '28px',
-              borderRadius: '8px',
-              background: 'var(--glass-20)',
-              border: `1.5px solid rgba(${project.color}, ${isHovered ? 0.5 : 0.3})`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transform: `translate(-50%, -50%) rotate(${angle}deg) translateX(60px) rotate(-${angle}deg)`,
-              transition: 'all 0.5s ease',
-              boxShadow: isHovered ? `0 0 15px rgba(${project.color}, 0.3)` : 'none',
-            }}>
-              <div style={{ width: '10px', height: '10px', borderRadius: '3px', background: `rgb(${project.color})` }} />
-            </div>
-          ))}
-        </div>
-      );
-    }
-
-    // Card 2: Search with AI - NLU Query Pipeline
-    if (index === 2) {
-      return (
-        <div style={{
-          width: '160px',
-          height: '100px',
-          position: 'relative',
-          opacity: isHovered ? 1 : 0.7,
-          transition: 'all 0.5s ease',
-        }}>
-          {/* Search bar */}
-          <div style={{
-            padding: '8px 12px',
-            borderRadius: '20px',
-            background: 'var(--glass-10)',
-            border: `1px solid rgba(${project.color}, ${isHovered ? 0.4 : 0.2})`,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            marginBottom: '10px',
-            transform: isHovered ? 'scale(1.02)' : 'scale(1)',
-            transition: 'all 0.3s ease',
-          }}>
-            <Search size={12} style={{ color: `rgb(${project.color})` }} />
-            <span style={{
-              fontSize: '9px',
-              color: 'var(--text-50)',
-              overflow: 'hidden',
-              whiteSpace: 'nowrap',
-            }}>flights to Delhi...</span>
-          </div>
-          {/* Pipeline stages */}
-          <div style={{ display: 'flex', gap: '4px', justifyContent: 'center' }}>
-            {['T', 'E', 'I', 'C', 'R'].map((label, i) => (
-              <div key={i} style={{
-                width: '24px',
-                height: '24px',
-                borderRadius: '6px',
-                background: isHovered ? `rgba(${project.color}, ${0.3 - i * 0.04})` : 'var(--glass-08)',
-                border: `1px solid rgba(${project.color}, ${isHovered ? 0.4 : 0.15})`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '8px',
-                fontWeight: '600',
-                color: isHovered ? `rgb(${project.color})` : 'var(--text-40)',
-                transition: `all 0.3s ease ${i * 0.05}s`,
-                transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
-              }}>
-                {label}
-              </div>
-            ))}
-          </div>
-          {/* Result indicator */}
-          <div style={{
-            marginTop: '8px',
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '6px',
-          }}>
-            {[1, 2, 3].map((_, i) => (
-              <div key={i} style={{
-                width: '32px',
-                height: '6px',
-                borderRadius: '3px',
-                background: isHovered ? `rgba(${project.color}, ${0.5 - i * 0.1})` : 'var(--glass-10)',
-                transition: `all 0.4s ease ${0.2 + i * 0.1}s`,
-              }} />
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    // Card 3: MCP Handoff - Design-to-Code Bridge
-    if (index === 3) {
-      return (
-        <div style={{
-          width: '160px',
-          height: '100px',
-          position: 'relative',
-          opacity: isHovered ? 1 : 0.7,
-          transition: 'all 0.5s ease',
-        }}>
-          {/* Pipeline nodes */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-            {[
-              { icon: '◇', label: 'FIG' },
-              { icon: '⚡', label: 'MCP' },
-              { icon: '◉', label: 'AI' },
-              { icon: '<>', label: 'CODE' },
-            ].map((node, i) => (
-              <div key={i} style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '4px',
-              }}>
-                <div style={{
-                  width: '28px',
-                  height: '28px',
-                  borderRadius: '8px',
-                  background: isHovered ? `rgba(${project.color}, ${0.3 - i * 0.05})` : 'var(--glass-10)',
-                  border: `1px solid rgba(${project.color}, ${isHovered ? 0.5 : 0.2})`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '12px',
-                  transition: `all 0.3s ease ${i * 0.1}s`,
-                  transform: isHovered ? 'scale(1.1)' : 'scale(1)',
-                  boxShadow: isHovered ? `0 0 15px rgba(${project.color}, 0.3)` : 'none',
-                }}>
-                  {node.icon}
-                </div>
-                <span style={{ fontSize: '7px', color: 'var(--text-40)', fontWeight: '500' }}>{node.label}</span>
-              </div>
-            ))}
-          </div>
-          {/* Connection line with animation */}
-          <svg style={{ position: 'absolute', top: '20px', left: '20px', width: '120px', height: '10px', overflow: 'visible' }}>
-            <line x1="0" y1="5" x2="120" y2="5"
-              stroke={`rgba(${project.color}, ${isHovered ? 0.4 : 0.15})`}
-              strokeWidth="2"
-              strokeDasharray={isHovered ? "4 2" : "2 2"}
-              style={{ transition: 'all 0.3s ease' }}
-            />
-          </svg>
-          {/* Code output preview */}
-          <div style={{
-            padding: '6px 10px',
-            borderRadius: '6px',
-            background: 'var(--glass-08)',
-            border: `1px solid rgba(${project.color}, 0.15)`,
-            fontFamily: 'monospace',
-            fontSize: '8px',
-            color: isHovered ? `rgb(${project.color})` : 'var(--text-40)',
-            transition: 'all 0.3s ease',
-          }}>
-            {`<Button variant="primary" />`}
-          </div>
-        </div>
-      );
-    }
-
-    // Card 4: IFE System - Interactive Seatback Screen
-    if (index === 4) {
-      const ifeTabs = ['🎬', '📺', '🎵', '🎮', '✈️'];
-      return (
-        <div style={{
-          width: '160px',
-          height: '110px',
-          position: 'relative',
-          opacity: isHovered ? 1 : 0.7,
-          transition: 'all 0.5s ease',
-        }}>
-          {/* Seatback screen frame */}
-          <div style={{
-            width: '100%',
-            height: '100%',
-            borderRadius: '10px',
-            background: 'linear-gradient(180deg, #1a1a1a, #0d0d0d)',
-            border: `2px solid rgba(${project.color}, ${isHovered ? 0.5 : 0.25})`,
-            padding: '8px',
-            boxShadow: isHovered
-              ? `0 15px 40px rgba(${project.color}, 0.3), inset 0 1px 0 rgba(255,255,255,0.08)`
-              : `0 8px 25px rgba(${project.color}, 0.15)`,
-            transition: 'all 0.4s ease',
-            overflow: 'hidden',
-          }}>
-            {/* Tab bar */}
-            <div style={{
-              display: 'flex',
-              gap: '2px',
-              marginBottom: '6px',
-              background: 'rgba(255,255,255,0.05)',
-              borderRadius: '4px',
-              padding: '2px',
-            }}>
-              {ifeTabs.map((tab, i) => (
-                <div key={i} style={{
-                  flex: 1,
-                  padding: '3px 0',
-                  fontSize: '8px',
-                  textAlign: 'center',
-                  borderRadius: '3px',
-                  background: i === 0 ? `rgba(${project.color}, ${isHovered ? 0.5 : 0.3})` : 'transparent',
-                  transition: `all 0.3s ease ${i * 0.05}s`,
-                  transform: isHovered && i === 0 ? 'scale(1.1)' : 'scale(1)',
-                }}>
-                  {tab}
-                </div>
-              ))}
-            </div>
-            {/* Content grid - movie thumbnails */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '3px', marginBottom: '6px' }}>
-              {[0.4, 0.35, 0.3, 0.25].map((opacity, i) => (
-                <div key={i} style={{
-                  aspectRatio: '1',
-                  borderRadius: '3px',
-                  background: `rgba(${project.color}, ${isHovered ? opacity + 0.1 : opacity})`,
-                  transition: `all 0.3s ease ${i * 0.08}s`,
-                  transform: isHovered ? 'scale(1.05)' : 'scale(1)',
-                }} />
-              ))}
-            </div>
-            {/* Now playing bar */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '4px 6px',
-              background: 'rgba(255,255,255,0.05)',
-              borderRadius: '4px',
-            }}>
-              <div style={{
-                width: '12px',
-                height: '12px',
-                borderRadius: '50%',
-                background: `rgb(${project.color})`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: isHovered ? `0 0 8px rgba(${project.color}, 0.6)` : 'none',
-              }}>
-                <div style={{ width: 0, height: 0, borderTop: '3px solid transparent', borderBottom: '3px solid transparent', borderLeft: '5px solid white', marginLeft: '1px' }} />
-              </div>
-              {/* Progress bar */}
-              <div style={{ flex: 1, height: '3px', borderRadius: '2px', background: 'var(--glass-15)', overflow: 'hidden' }}>
-                <div style={{
-                  width: isHovered ? '65%' : '30%',
-                  height: '100%',
-                  borderRadius: '2px',
-                  background: `rgb(${project.color})`,
-                  transition: 'width 0.8s ease',
-                }} />
-              </div>
-              <span style={{ fontSize: '7px', color: 'var(--text-40)' }}>1:23</span>
-            </div>
-          </div>
-          {/* Seat indicator */}
-          <div style={{
-            position: 'absolute',
-            bottom: '-16px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            fontSize: '7px',
-            color: 'var(--text-30)',
-            letterSpacing: '0.5px',
-          }}>
-            SEAT 12A
-          </div>
-        </div>
-      );
-    }
-
-    // Card 5: NPS Feedback - Gauge Dashboard
-    if (index === 5) {
-      return (
-        <div style={{
-          width: '160px',
-          height: '100px',
-          position: 'relative',
-          opacity: isHovered ? 1 : 0.7,
-          transition: 'all 0.5s ease',
-        }}>
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-            {/* Score badge */}
-            <div style={{
-              width: '50px',
-              height: '50px',
-              borderRadius: '10px',
-              background: `linear-gradient(135deg, rgba(${project.color}, 0.3), rgba(${project.color}, 0.1))`,
-              border: `1px solid rgba(${project.color}, ${isHovered ? 0.5 : 0.25})`,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transition: 'all 0.3s ease',
-              boxShadow: isHovered ? `0 0 20px rgba(${project.color}, 0.3)` : 'none',
-            }}>
-              <span style={{ fontSize: '16px', fontWeight: '700', color: `rgb(${project.color})` }}>+67</span>
-              <span style={{ fontSize: '6px', color: 'var(--text-40)', textTransform: 'uppercase' }}>NPS</span>
-            </div>
-            {/* Mini gauge */}
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              {/* Semi-circle gauge */}
-              <svg width="80" height="40" viewBox="0 0 80 40" style={{ overflow: 'visible' }}>
-                {/* Background arc */}
-                <path
-                  d="M 5 38 A 35 35 0 0 1 75 38"
-                  fill="none"
-                  stroke="var(--glass-15)"
-                  strokeWidth="6"
-                  strokeLinecap="round"
-                />
-                {/* Colored arc */}
-                <path
-                  d="M 5 38 A 35 35 0 0 1 75 38"
-                  fill="none"
-                  stroke={`rgb(${project.color})`}
-                  strokeWidth="6"
-                  strokeLinecap="round"
-                  strokeDasharray="110"
-                  strokeDashoffset={isHovered ? '27' : '55'}
-                  style={{ transition: 'stroke-dashoffset 0.8s ease' }}
-                />
-                {/* Needle */}
-                <line
-                  x1="40" y1="38" x2="40" y2="12"
-                  stroke={`rgb(${project.color})`}
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  style={{
-                    transformOrigin: '40px 38px',
-                    transform: `rotate(${isHovered ? 60 : 0}deg)`,
-                    transition: 'transform 0.8s ease',
-                  }}
-                />
-              </svg>
-              {/* Scale labels */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '6px', color: 'var(--text-30)' }}>
-                <span>-100</span>
-                <span>+100</span>
-              </div>
-            </div>
-          </div>
-          {/* Distribution bars */}
-          <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
-            {[
-              { label: 'P', value: 72, color: '#30D158' },
-              { label: 'N', value: 18, color: '#FF9F0A' },
-              { label: 'D', value: 10, color: '#FF453A' },
-            ].map((item, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <span style={{ fontSize: '6px', color: item.color, width: '8px' }}>{item.label}</span>
-                <div style={{ flex: 1, height: '4px', borderRadius: '2px', background: 'var(--glass-10)', overflow: 'hidden' }}>
-                  <div style={{
-                    width: isHovered ? `${item.value}%` : '10%',
-                    height: '100%',
-                    borderRadius: '2px',
-                    background: item.color,
-                    transition: `width 0.6s ease ${i * 0.1}s`,
-                  }} />
-                </div>
-                <span style={{ fontSize: '6px', color: 'var(--text-30)', width: '16px', textAlign: 'right' }}>{item.value}%</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    // Card 6: Competitor Analysis - Feature Matrix
-    if (index === 6) {
-      const features = ['UX', 'App', 'IFE', 'Web'];
-      const airlines = [
-        { name: 'AI', scores: [4, 5, 5, 4] },
-        { name: 'EK', scores: [5, 4, 5, 5] },
-        { name: 'SQ', scores: [5, 5, 4, 5] },
-      ];
-      return (
-        <div style={{
-          width: '160px',
-          height: '100px',
-          opacity: isHovered ? 1 : 0.7,
-          transition: 'all 0.5s ease',
-        }}>
-          {/* Matrix header */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '24px repeat(4, 1fr)',
-            gap: '2px',
-            marginBottom: '4px',
-          }}>
-            <div />
-            {features.map((f, i) => (
-              <div key={i} style={{
-                fontSize: '7px',
-                color: 'var(--text-40)',
-                textAlign: 'center',
-                fontWeight: '500',
-              }}>{f}</div>
-            ))}
-          </div>
-          {/* Matrix rows */}
-          {airlines.map((airline, ai) => (
-            <div key={ai} style={{
-              display: 'grid',
-              gridTemplateColumns: '24px repeat(4, 1fr)',
-              gap: '2px',
-              marginBottom: '3px',
-              padding: '3px 0',
-              background: ai === 0 ? `rgba(${project.color}, ${isHovered ? 0.15 : 0.08})` : 'transparent',
-              borderRadius: '4px',
-              transition: `all 0.3s ease ${ai * 0.1}s`,
-            }}>
-              <div style={{
-                fontSize: '7px',
-                fontWeight: '600',
-                color: ai === 0 ? `rgb(${project.color})` : 'var(--text-50)',
-              }}>{airline.name}</div>
-              {airline.scores.map((score, si) => (
-                <div key={si} style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  gap: '1px',
-                }}>
-                  {[1, 2, 3, 4, 5].map((dot) => (
-                    <div key={dot} style={{
-                      width: '4px',
-                      height: '4px',
-                      borderRadius: '50%',
-                      background: dot <= score
-                        ? (ai === 0 ? `rgb(${project.color})` : dot <= 3 ? '#FF9F0A' : '#30D158')
-                        : 'var(--glass-15)',
-                      transition: `all 0.3s ease ${(ai * 4 + si) * 0.03}s`,
-                      transform: isHovered && dot <= score ? 'scale(1.2)' : 'scale(1)',
-                    }} />
-                  ))}
-                </div>
-              ))}
-            </div>
-          ))}
-          {/* Stats footer */}
-          <div style={{
-            marginTop: '6px',
-            fontSize: '6px',
-            color: 'var(--text-30)',
-            textAlign: 'center',
-          }}>
-            15+ apps · 47 features
-          </div>
-        </div>
-      );
-    }
-
-    // Card 7: Liftoff Program - Learning Timeline
-    if (index === 7) {
-      const weeks = [1, 2, 3, 4, 5, 6];
-      const currentWeek = 4;
-      return (
-        <div style={{
-          width: '160px',
-          height: '100px',
-          opacity: isHovered ? 1 : 0.7,
-          transition: 'all 0.5s ease',
-        }}>
-          {/* Timeline */}
-          <div style={{ position: 'relative', marginBottom: '10px' }}>
-            {/* Connection line */}
-            <div style={{
-              position: 'absolute',
-              top: '10px',
-              left: '10px',
-              right: '10px',
-              height: '2px',
-              background: 'var(--glass-15)',
-            }}>
-              <div style={{
-                width: isHovered ? `${((currentWeek - 1) / (weeks.length - 1)) * 100}%` : '20%',
-                height: '100%',
-                background: `rgb(${project.color})`,
-                transition: 'width 0.8s ease',
-                boxShadow: `0 0 8px rgba(${project.color}, 0.5)`,
-              }} />
-            </div>
-            {/* Week nodes */}
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              {weeks.map((week, i) => {
-                const isCompleted = week <= currentWeek;
-                const isCurrent = week === currentWeek;
-                return (
-                  <div key={i} style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '4px',
-                  }}>
-                    <div style={{
-                      width: isCurrent ? '20px' : '16px',
-                      height: isCurrent ? '20px' : '16px',
-                      borderRadius: '50%',
-                      background: isCompleted
-                        ? `rgb(${project.color})`
-                        : 'var(--glass-15)',
-                      border: isCurrent ? `2px solid rgba(${project.color}, 0.5)` : 'none',
-                      transition: `all 0.4s ease ${i * 0.1}s`,
-                      boxShadow: isCurrent && isHovered ? `0 0 12px rgba(${project.color}, 0.6)` : 'none',
-                      transform: isHovered && isCompleted ? 'scale(1.15)' : 'scale(1)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                      {isCompleted && (
-                        <span style={{ fontSize: '8px', color: 'white' }}>✓</span>
-                      )}
-                    </div>
-                    <span style={{
-                      fontSize: '6px',
-                      color: isCurrent ? `rgb(${project.color})` : 'var(--text-30)',
-                      fontWeight: isCurrent ? '600' : '400',
-                    }}>W{week}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          {/* Current module card */}
-          <div style={{
-            padding: '8px 10px',
-            borderRadius: '8px',
-            background: `rgba(${project.color}, ${isHovered ? 0.15 : 0.08})`,
-            border: `1px solid rgba(${project.color}, 0.2)`,
-            transition: 'all 0.3s ease',
-          }}>
-            <div style={{ fontSize: '7px', color: 'var(--text-40)', marginBottom: '4px' }}>CURRENT MODULE</div>
-            <div style={{ fontSize: '9px', fontWeight: '600', color: `rgb(${project.color})`, marginBottom: '6px' }}>Design Systems</div>
-            {/* Progress bar */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <div style={{ flex: 1, height: '4px', borderRadius: '2px', background: 'var(--glass-10)', overflow: 'hidden' }}>
-                <div style={{
-                  width: isHovered ? '75%' : '30%',
-                  height: '100%',
-                  borderRadius: '2px',
-                  background: `rgb(${project.color})`,
-                  transition: 'width 0.6s ease',
-                }} />
-              </div>
-              <span style={{ fontSize: '7px', color: 'var(--text-40)' }}>75%</span>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    // Card 8: Microsoft Hackathon - Azure AI Pipeline
-    if (index === 8) {
-      const sentiments = [
-        { text: 'Great!', emoji: '😊', score: 0.92 },
-        { text: 'Okay', emoji: '😐', score: 0.45 },
-      ];
-      return (
-        <div style={{
-          width: '160px',
-          height: '100px',
-          opacity: isHovered ? 1 : 0.7,
-          transition: 'all 0.5s ease',
-        }}>
-          {/* Pipeline nodes */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-            {[
-              { label: 'INPUT', icon: '📝' },
-              { label: 'AZURE', icon: '🧠' },
-              { label: 'OUTPUT', icon: '📊' },
-            ].map((node, i) => (
-              <div key={i} style={{ position: 'relative' }}>
-                <div style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '10px',
-                  background: i === 1
-                    ? `linear-gradient(135deg, rgba(${project.color}, 0.4), rgba(${project.color}, 0.2))`
-                    : 'var(--glass-10)',
-                  border: `1px solid rgba(${project.color}, ${isHovered ? 0.4 : 0.2})`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '14px',
-                  transition: `all 0.3s ease ${i * 0.15}s`,
-                  transform: isHovered ? 'scale(1.1)' : 'scale(1)',
-                  boxShadow: isHovered && i === 1 ? `0 0 20px rgba(${project.color}, 0.4)` : 'none',
-                }}>
-                  {node.icon}
-                </div>
-                <div style={{
-                  position: 'absolute',
-                  top: '100%',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  fontSize: '5px',
-                  color: 'var(--text-30)',
-                  marginTop: '2px',
-                  whiteSpace: 'nowrap',
-                }}>{node.label}</div>
-                {/* Connection arrow */}
-                {i < 2 && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '100%',
-                    transform: 'translateY(-50%)',
-                    width: '14px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                    <span style={{
-                      fontSize: '8px',
-                      color: `rgba(${project.color}, ${isHovered ? 0.8 : 0.4})`,
-                      transition: 'color 0.3s ease',
-                    }}>→</span>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-          {/* Live feed */}
-          <div style={{
-            marginTop: '12px',
-            padding: '6px 8px',
-            borderRadius: '6px',
-            background: 'var(--glass-08)',
-            border: '1px solid var(--glass-10)',
-          }}>
-            {sentiments.map((item, i) => (
-              <div key={i} style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '2px 0',
-                fontSize: '7px',
-                opacity: isHovered ? 1 : 0.6,
-                transition: `opacity 0.3s ease ${i * 0.1}s`,
-              }}>
-                <span style={{ color: 'var(--text-40)' }}>&quot;{item.text}&quot;</span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-                  <span>{item.emoji}</span>
-                  <span style={{ color: item.score > 0.7 ? '#30D158' : '#FF9F0A' }}>
-                    {item.score.toFixed(2)}
-                  </span>
-                </span>
-              </div>
-            ))}
-          </div>
-          {/* Award badge */}
-          <div style={{
-            position: 'absolute',
-            bottom: '8px',
-            right: '8px',
-            fontSize: '7px',
-            color: `rgb(${project.color})`,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '3px',
-          }}>
-            🏆 1st Place
-          </div>
-        </div>
-      );
-    }
-
-    // Card 9: Internal Hackathon - Sprint Timeline
-    if (index === 9) {
-      const phases = [
-        { name: 'IDEA', hours: 2, done: true },
-        { name: 'DESIGN', hours: 4, done: true },
-        { name: 'BUILD', hours: 12, done: true },
-        { name: 'TEST', hours: 4, done: false },
-        { name: 'SHIP', hours: 2, done: false },
-      ];
-      return (
-        <div style={{
-          width: '160px',
-          height: '100px',
-          opacity: isHovered ? 1 : 0.7,
-          transition: 'all 0.5s ease',
-        }}>
-          {/* 24-HOUR header */}
-          <div style={{
-            fontSize: '7px',
-            fontWeight: '700',
-            color: `rgb(${project.color})`,
-            marginBottom: '6px',
-            letterSpacing: '0.5px',
-          }}>24-HOUR SPRINT</div>
-          {/* Phase timeline */}
-          <div style={{ display: 'flex', gap: '2px', marginBottom: '8px' }}>
-            {phases.map((phase, i) => (
-              <div key={i} style={{
-                flex: phase.hours,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '3px',
-              }}>
-                <div style={{
-                  width: '100%',
-                  height: '16px',
-                  borderRadius: '3px',
-                  background: phase.done
-                    ? `rgba(${project.color}, ${isHovered ? 0.5 : 0.3})`
-                    : 'var(--glass-10)',
-                  border: `1px solid rgba(${project.color}, ${phase.done ? 0.4 : 0.1})`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transition: `all 0.3s ease ${i * 0.08}s`,
-                  transform: isHovered && phase.done ? 'scaleY(1.1)' : 'scaleY(1)',
-                }}>
-                  {phase.done && (
-                    <span style={{ fontSize: '8px', color: 'white' }}>✓</span>
-                  )}
-                </div>
-                <span style={{
-                  fontSize: '5px',
-                  color: phase.done ? `rgb(${project.color})` : 'var(--text-30)',
-                  fontWeight: phase.done ? '600' : '400',
-                }}>{phase.name}</span>
-              </div>
-            ))}
-          </div>
-          {/* Timer bar */}
-          <div style={{
-            padding: '6px 8px',
-            borderRadius: '6px',
-            background: 'var(--glass-08)',
-            border: '1px solid var(--glass-10)',
-          }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '4px',
-            }}>
-              <span style={{ fontSize: '7px', color: 'var(--text-40)' }}>Progress</span>
-              <span style={{ fontSize: '8px', fontWeight: '600', color: `rgb(${project.color})` }}>18:32</span>
-            </div>
-            <div style={{ height: '4px', borderRadius: '2px', background: 'var(--glass-10)', overflow: 'hidden' }}>
-              <div style={{
-                width: isHovered ? '75%' : '40%',
-                height: '100%',
-                borderRadius: '2px',
-                background: `linear-gradient(90deg, rgb(${project.color}), rgba(${project.color}, 0.6))`,
-                transition: 'width 0.6s ease',
-              }} />
-            </div>
-          </div>
-          {/* Award badge */}
-          <div style={{
-            position: 'absolute',
-            bottom: '8px',
-            right: '8px',
-            fontSize: '7px',
-            color: `rgb(${project.color})`,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '3px',
-          }}>
-            🚀 Shipped
-          </div>
-        </div>
-      );
-    }
-
-    // Fallback - should never reach here
-    return (
-      <div style={{
-        width: '70px',
-        height: '70px',
-        borderRadius: '20px',
-        background: `linear-gradient(135deg, rgb(${actColor}), rgba(${actColor}, 0.5))`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        boxShadow: `0 0 40px rgba(${actColor}, 0.5)`,
-      }}>
-        <project.icon size={34} style={{ color: 'white' }} />
-      </div>
-    );
-  };
-
   return (
     <div
       ref={sectionRef}
@@ -1770,7 +871,7 @@ export function AirIndiaWork() {
         overflow: 'hidden',
       }}
     >
-      {/* Progress Indicator - Fixed sidebar */}
+      {/* Progress Indicator - Fixed left sidebar */}
       <ProgressIndicator />
 
       {/* Ambient Background Orbs */}
@@ -2053,7 +1154,7 @@ export function AirIndiaWork() {
       </section>
 
       {/* =========================================================================
-          SECTION 4: KEY PROJECTS - THREE-ACT NARRATIVE STRUCTURE
+          SECTION 4: KEY PROJECTS - PREMIUM VISUAL BENTO GRID
       ========================================================================= */}
       <section style={{
         maxWidth: '1400px',
@@ -2062,34 +1163,29 @@ export function AirIndiaWork() {
         position: 'relative',
         zIndex: 1,
       }}>
-        {/* Section Header with Narrative Intro */}
         <div style={{
           textAlign: 'center',
-          marginBottom: '2rem',
+          marginBottom: '3rem',
           animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both' : 'none',
         }}>
           <h2 style={{
             fontSize: 'clamp(2rem, 5vw, 3rem)',
             fontWeight: '500',
             letterSpacing: '-0.03em',
-            marginBottom: '1rem',
+            marginBottom: '0.75rem',
             color: 'var(--text-primary)',
           }}>
-            The Transformation
+            What I Built
           </h2>
           <p style={{
-            fontSize: '1.0625rem',
-            color: 'var(--text-secondary)',
-            maxWidth: '650px',
-            margin: '0 auto',
-            lineHeight: 1.7,
-            fontStyle: 'italic',
+            fontSize: '1.125rem',
+            color: 'var(--text-tertiary)',
           }}>
-            {narrativeTransitions.intro}
+            10 projects shipped during the transformation
           </p>
         </div>
 
-        {/* Three-Act Project Rendering */}
+        {/* Full-Width Stacked Cards */}
         <div style={{
           display: 'flex',
           flexDirection: 'column',
@@ -2102,15 +1198,924 @@ export function AirIndiaWork() {
           {projects.map((project, index) => {
             const Icon = project.icon;
             const isHovered = hoveredProject === project.id;
-            // All cards scroll-triggered (reverted to simpler uniform behavior)
             const isExpanded = expandedCards.has(project.id);
 
-            // Determine which act this project belongs to (for narrative headers only)
-            const actColor = index < 2 ? actConfig[1].color : index < 6 ? actConfig[2].color : actConfig[3].color;
+            // Custom visual content per project type - ENHANCED 180x180px visuals
+            const renderCardVisual = () => {
+              // Pixel Radar (index 0) - Floating UI panels - ENLARGED
+              if (index === 0) {
+                return (
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px',
+                    width: '160px',
+                    opacity: isHovered ? 1 : 0.8,
+                    transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}>
+                    {/* Floating UI Panel - Stats */}
+                    <div style={{
+                      padding: '16px 20px',
+                      borderRadius: '14px',
+                      background: 'linear-gradient(135deg, rgba(218,14,41,0.2), var(--glass-10))',
+                      border: '1px solid rgba(218,14,41,0.35)',
+                      backdropFilter: 'blur(20px)',
+                      transform: isHovered ? 'translateX(-8px) rotate(-2deg)' : 'translateX(0)',
+                      transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                      boxShadow: isHovered ? '0 15px 30px rgba(218,14,41,0.2)' : 'none',
+                    }}>
+                      <div style={{ fontSize: '0.688rem', color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Daily Active Users</div>
+                      <div style={{ fontSize: '2rem', fontWeight: '700', color: 'rgb(218,14,41)', lineHeight: 1 }}>450+</div>
+                    </div>
+                    {/* Progress bar */}
+                    <div style={{
+                      padding: '16px 20px',
+                      borderRadius: '14px',
+                      background: 'var(--glass-08)',
+                      border: '1px solid var(--glass-15)',
+                      transform: isHovered ? 'translateX(8px) rotate(2deg)' : 'translateX(0)',
+                      transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
+                      boxShadow: isHovered ? '0 15px 30px rgba(0,0,0,0.2)' : 'none',
+                    }}>
+                      <div style={{ fontSize: '0.688rem', color: 'var(--text-muted)', marginBottom: '8px' }}>Review Time</div>
+                      <div style={{ height: '8px', borderRadius: '4px', background: 'var(--glass-10)', overflow: 'hidden' }}>
+                        <div style={{
+                          width: isHovered ? '70%' : '0%',
+                          height: '100%',
+                          borderRadius: '4px',
+                          background: 'linear-gradient(90deg, rgb(218,14,41), rgb(251,146,60))',
+                          transition: 'width 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
+                        }} />
+                      </div>
+                      <div style={{ fontSize: '1rem', fontWeight: '600', color: 'var(--text-primary)', marginTop: '6px' }}>30% faster</div>
+                    </div>
+                  </div>
+                );
+              }
+
+              // Design System (index 1) - Token constellation - ENLARGED
+              if (index === 1) {
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '160px',
+                    position: 'relative',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}>
+                    {/* Central node */}
+                    <div style={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '14px',
+                      background: `linear-gradient(135deg, rgb(${project.color}), rgba(${project.color}, 0.6))`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: `0 0 40px rgba(${project.color}, 0.5)`,
+                      animation: isHovered ? 'orbitPulse 2s ease-in-out infinite' : 'none',
+                    }}>
+                      <Layers size={26} style={{ color: 'white' }} />
+                    </div>
+                    {/* SVG connection lines */}
+                    <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+                      {[0, 72, 144, 216, 288].map((angle, i) => {
+                        const rad = (angle * Math.PI) / 180;
+                        const x1 = 80 + Math.cos(rad) * 25;
+                        const y1 = 80 + Math.sin(rad) * 25;
+                        const x2 = 80 + Math.cos(rad) * 60;
+                        const y2 = 80 + Math.sin(rad) * 60;
+                        return (
+                          <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
+                            stroke={`rgba(${project.color}, ${isHovered ? 0.5 : 0.2})`}
+                            strokeWidth="1.5"
+                            strokeDasharray={isHovered ? "0" : "4 4"}
+                            style={{ transition: 'all 0.5s ease' }}
+                          />
+                        );
+                      })}
+                    </svg>
+                    {/* Orbiting nodes - 5 nodes in circle */}
+                    {[0, 72, 144, 216, 288].map((angle, i) => (
+                      <div key={i} style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        width: '28px',
+                        height: '28px',
+                        borderRadius: '8px',
+                        background: 'var(--glass-20)',
+                        border: `1.5px solid rgba(${project.color}, ${isHovered ? 0.5 : 0.3})`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        transform: `translate(-50%, -50%) rotate(${angle}deg) translateX(60px) rotate(-${angle}deg)`,
+                        transition: 'all 0.5s ease',
+                        boxShadow: isHovered ? `0 0 15px rgba(${project.color}, 0.3)` : 'none',
+                      }}>
+                        <div style={{ width: '10px', height: '10px', borderRadius: '3px', background: `rgb(${project.color})` }} />
+                      </div>
+                    ))}
+                  </div>
+                );
+              }
+
+              // Card 2: Search with AI - NLU Query Mini Pipeline
+              if (index === 2) {
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    position: 'relative',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    {/* Search bar */}
+                    <div style={{
+                      padding: '8px 12px',
+                      borderRadius: '20px',
+                      background: 'var(--glass-10)',
+                      border: `1px solid rgba(${project.color}, ${isHovered ? 0.4 : 0.2})`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      marginBottom: '10px',
+                      transform: isHovered ? 'scale(1.02)' : 'scale(1)',
+                      transition: 'all 0.3s ease',
+                    }}>
+                      <Search size={12} style={{ color: `rgb(${project.color})` }} />
+                      <span style={{
+                        fontSize: '9px',
+                        color: 'var(--text-50)',
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                      }}>flights to Delhi...</span>
+                    </div>
+                    {/* Pipeline stages */}
+                    <div style={{ display: 'flex', gap: '4px', justifyContent: 'center' }}>
+                      {['T', 'E', 'I', 'C', 'R'].map((label, i) => (
+                        <div key={i} style={{
+                          width: '24px',
+                          height: '24px',
+                          borderRadius: '6px',
+                          background: isHovered ? `rgba(${project.color}, ${0.3 - i * 0.04})` : 'var(--glass-08)',
+                          border: `1px solid rgba(${project.color}, ${isHovered ? 0.4 : 0.15})`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '8px',
+                          fontWeight: '600',
+                          color: isHovered ? `rgb(${project.color})` : 'var(--text-40)',
+                          transition: `all 0.3s ease ${i * 0.05}s`,
+                          transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
+                        }}>
+                          {label}
+                        </div>
+                      ))}
+                    </div>
+                    {/* Result indicator */}
+                    <div style={{
+                      marginTop: '8px',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      gap: '6px',
+                    }}>
+                      {[1, 2, 3].map((_, i) => (
+                        <div key={i} style={{
+                          width: '32px',
+                          height: '6px',
+                          borderRadius: '3px',
+                          background: isHovered ? `rgba(${project.color}, ${0.5 - i * 0.1})` : 'var(--glass-10)',
+                          transition: `all 0.4s ease ${0.2 + i * 0.1}s`,
+                        }} />
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+
+              // Card 3: MCP Handoff - Design-to-Code Mini Bridge
+              if (index === 3) {
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    position: 'relative',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    {/* Pipeline nodes */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                      {[
+                        { icon: '◇', label: 'FIG' },
+                        { icon: '⚡', label: 'MCP' },
+                        { icon: '◉', label: 'AI' },
+                        { icon: '<>', label: 'CODE' },
+                      ].map((node, i) => (
+                        <div key={i} style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '4px',
+                        }}>
+                          <div style={{
+                            width: '28px',
+                            height: '28px',
+                            borderRadius: '8px',
+                            background: isHovered ? `rgba(${project.color}, ${0.3 - i * 0.05})` : 'var(--glass-10)',
+                            border: `1px solid rgba(${project.color}, ${isHovered ? 0.5 : 0.2})`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '12px',
+                            transition: `all 0.3s ease ${i * 0.1}s`,
+                            transform: isHovered ? 'scale(1.1)' : 'scale(1)',
+                            boxShadow: isHovered ? `0 0 15px rgba(${project.color}, 0.3)` : 'none',
+                          }}>
+                            {node.icon}
+                          </div>
+                          <span style={{ fontSize: '7px', color: 'var(--text-40)', fontWeight: '500' }}>{node.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {/* Connection line with animation */}
+                    <svg style={{ position: 'absolute', top: '20px', left: '20px', width: '120px', height: '10px', overflow: 'visible' }}>
+                      <line x1="0" y1="5" x2="120" y2="5"
+                        stroke={`rgba(${project.color}, ${isHovered ? 0.4 : 0.15})`}
+                        strokeWidth="2"
+                        strokeDasharray={isHovered ? "4 2" : "2 2"}
+                        style={{ transition: 'all 0.3s ease' }}
+                      />
+                    </svg>
+                    {/* Code output preview */}
+                    <div style={{
+                      padding: '6px 10px',
+                      borderRadius: '6px',
+                      background: 'var(--glass-08)',
+                      border: `1px solid rgba(${project.color}, 0.15)`,
+                      fontFamily: 'monospace',
+                      fontSize: '8px',
+                      color: isHovered ? `rgb(${project.color})` : 'var(--text-40)',
+                      transition: 'all 0.3s ease',
+                    }}>
+                      {`<Button variant="primary" />`}
+                    </div>
+                  </div>
+                );
+              }
+
+              // IFE (index 4) - Interactive Seatback Mini Screen
+              if (index === 4) {
+                const ifeTabs = ['🎬', '📺', '🎵', '🎮', '✈️'];
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '110px',
+                    position: 'relative',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    {/* Seatback screen frame */}
+                    <div style={{
+                      width: '100%',
+                      height: '100%',
+                      borderRadius: '10px',
+                      background: 'linear-gradient(180deg, #1a1a1a, #0d0d0d)',
+                      border: `2px solid rgba(${project.color}, ${isHovered ? 0.5 : 0.25})`,
+                      padding: '8px',
+                      boxShadow: isHovered
+                        ? `0 15px 40px rgba(${project.color}, 0.3), inset 0 1px 0 rgba(255,255,255,0.08)`
+                        : `0 8px 25px rgba(${project.color}, 0.15)`,
+                      transition: 'all 0.4s ease',
+                      overflow: 'hidden',
+                    }}>
+                      {/* Tab bar */}
+                      <div style={{
+                        display: 'flex',
+                        gap: '2px',
+                        marginBottom: '6px',
+                        background: 'rgba(255,255,255,0.05)',
+                        borderRadius: '4px',
+                        padding: '2px',
+                      }}>
+                        {ifeTabs.map((tab, i) => (
+                          <div key={i} style={{
+                            flex: 1,
+                            padding: '3px 0',
+                            fontSize: '8px',
+                            textAlign: 'center',
+                            borderRadius: '3px',
+                            background: i === 0 ? `rgba(${project.color}, ${isHovered ? 0.5 : 0.3})` : 'transparent',
+                            transition: `all 0.3s ease ${i * 0.05}s`,
+                            transform: isHovered && i === 0 ? 'scale(1.1)' : 'scale(1)',
+                          }}>
+                            {tab}
+                          </div>
+                        ))}
+                      </div>
+                      {/* Content grid - movie thumbnails */}
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '3px', marginBottom: '6px' }}>
+                        {[0.4, 0.35, 0.3, 0.25].map((opacity, i) => (
+                          <div key={i} style={{
+                            aspectRatio: '1',
+                            borderRadius: '3px',
+                            background: `rgba(${project.color}, ${isHovered ? opacity + 0.1 : opacity})`,
+                            transition: `all 0.3s ease ${i * 0.08}s`,
+                            transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+                          }} />
+                        ))}
+                      </div>
+                      {/* Now playing bar */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        padding: '4px 6px',
+                        background: 'rgba(255,255,255,0.05)',
+                        borderRadius: '4px',
+                      }}>
+                        <div style={{
+                          width: '12px',
+                          height: '12px',
+                          borderRadius: '50%',
+                          background: `rgb(${project.color})`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: isHovered ? `0 0 8px rgba(${project.color}, 0.6)` : 'none',
+                        }}>
+                          <div style={{ width: 0, height: 0, borderTop: '3px solid transparent', borderBottom: '3px solid transparent', borderLeft: '5px solid white', marginLeft: '1px' }} />
+                        </div>
+                        {/* Progress bar */}
+                        <div style={{ flex: 1, height: '3px', borderRadius: '2px', background: 'var(--glass-15)', overflow: 'hidden' }}>
+                          <div style={{
+                            width: isHovered ? '65%' : '30%',
+                            height: '100%',
+                            borderRadius: '2px',
+                            background: `rgb(${project.color})`,
+                            transition: 'width 0.8s ease',
+                          }} />
+                        </div>
+                        <span style={{ fontSize: '7px', color: 'var(--text-40)' }}>1:23</span>
+                      </div>
+                    </div>
+                    {/* Seat indicator */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '-16px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      fontSize: '7px',
+                      color: 'var(--text-30)',
+                      letterSpacing: '0.5px',
+                    }}>
+                      SEAT 12A
+                    </div>
+                  </div>
+                );
+              }
+
+              // Card 5: NPS Feedback - Mini Gauge Dashboard
+              if (index === 5) {
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    position: 'relative',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                      {/* Score badge */}
+                      <div style={{
+                        width: '50px',
+                        height: '50px',
+                        borderRadius: '10px',
+                        background: `linear-gradient(135deg, rgba(${project.color}, 0.3), rgba(${project.color}, 0.1))`,
+                        border: `1px solid rgba(${project.color}, ${isHovered ? 0.5 : 0.25})`,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        transition: 'all 0.3s ease',
+                        boxShadow: isHovered ? `0 0 20px rgba(${project.color}, 0.3)` : 'none',
+                      }}>
+                        <span style={{ fontSize: '16px', fontWeight: '700', color: `rgb(${project.color})` }}>+67</span>
+                        <span style={{ fontSize: '6px', color: 'var(--text-40)', textTransform: 'uppercase' }}>NPS</span>
+                      </div>
+                      {/* Mini gauge */}
+                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                        {/* Semi-circle gauge */}
+                        <svg width="80" height="40" viewBox="0 0 80 40" style={{ overflow: 'visible' }}>
+                          {/* Background arc */}
+                          <path
+                            d="M 5 38 A 35 35 0 0 1 75 38"
+                            fill="none"
+                            stroke="var(--glass-15)"
+                            strokeWidth="6"
+                            strokeLinecap="round"
+                          />
+                          {/* Colored arc */}
+                          <path
+                            d="M 5 38 A 35 35 0 0 1 75 38"
+                            fill="none"
+                            stroke={`rgb(${project.color})`}
+                            strokeWidth="6"
+                            strokeLinecap="round"
+                            strokeDasharray="110"
+                            strokeDashoffset={isHovered ? '27' : '55'}
+                            style={{ transition: 'stroke-dashoffset 0.8s ease' }}
+                          />
+                          {/* Needle */}
+                          <line
+                            x1="40" y1="38" x2="40" y2="12"
+                            stroke={`rgb(${project.color})`}
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            style={{
+                              transformOrigin: '40px 38px',
+                              transform: `rotate(${isHovered ? 60 : 0}deg)`,
+                              transition: 'transform 0.8s ease',
+                            }}
+                          />
+                        </svg>
+                        {/* Scale labels */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '6px', color: 'var(--text-30)' }}>
+                          <span>-100</span>
+                          <span>+100</span>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Distribution bars */}
+                    <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                      {[
+                        { label: 'P', value: 72, color: '#30D158' },
+                        { label: 'N', value: 18, color: '#FF9F0A' },
+                        { label: 'D', value: 10, color: '#FF453A' },
+                      ].map((item, i) => (
+                        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <span style={{ fontSize: '6px', color: item.color, width: '8px' }}>{item.label}</span>
+                          <div style={{ flex: 1, height: '4px', borderRadius: '2px', background: 'var(--glass-10)', overflow: 'hidden' }}>
+                            <div style={{
+                              width: isHovered ? `${item.value}%` : '10%',
+                              height: '100%',
+                              borderRadius: '2px',
+                              background: item.color,
+                              transition: `width 0.6s ease ${i * 0.1}s`,
+                            }} />
+                          </div>
+                          <span style={{ fontSize: '6px', color: 'var(--text-30)', width: '16px', textAlign: 'right' }}>{item.value}%</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+
+              // Card 6: Competitor Analysis - Mini Feature Matrix
+              if (index === 6) {
+                const features = ['UX', 'App', 'IFE', 'Web'];
+                const airlines = [
+                  { name: 'AI', scores: [4, 5, 5, 4] },
+                  { name: 'EK', scores: [5, 4, 5, 5] },
+                  { name: 'SQ', scores: [5, 5, 4, 5] },
+                ];
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    {/* Matrix header */}
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: '24px repeat(4, 1fr)',
+                      gap: '2px',
+                      marginBottom: '4px',
+                    }}>
+                      <div />
+                      {features.map((f, i) => (
+                        <div key={i} style={{
+                          fontSize: '7px',
+                          color: 'var(--text-40)',
+                          textAlign: 'center',
+                          fontWeight: '500',
+                        }}>{f}</div>
+                      ))}
+                    </div>
+                    {/* Matrix rows */}
+                    {airlines.map((airline, ai) => (
+                      <div key={ai} style={{
+                        display: 'grid',
+                        gridTemplateColumns: '24px repeat(4, 1fr)',
+                        gap: '2px',
+                        marginBottom: '3px',
+                        padding: '3px 0',
+                        background: ai === 0 ? `rgba(${project.color}, ${isHovered ? 0.15 : 0.08})` : 'transparent',
+                        borderRadius: '4px',
+                        transition: `all 0.3s ease ${ai * 0.1}s`,
+                      }}>
+                        <div style={{
+                          fontSize: '7px',
+                          fontWeight: '600',
+                          color: ai === 0 ? `rgb(${project.color})` : 'var(--text-50)',
+                        }}>{airline.name}</div>
+                        {airline.scores.map((score, si) => (
+                          <div key={si} style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            gap: '1px',
+                          }}>
+                            {[1, 2, 3, 4, 5].map((dot) => (
+                              <div key={dot} style={{
+                                width: '4px',
+                                height: '4px',
+                                borderRadius: '50%',
+                                background: dot <= score
+                                  ? (ai === 0 ? `rgb(${project.color})` : dot <= 3 ? '#FF9F0A' : '#30D158')
+                                  : 'var(--glass-15)',
+                                transition: `all 0.3s ease ${(ai * 4 + si) * 0.03}s`,
+                                transform: isHovered && dot <= score ? 'scale(1.2)' : 'scale(1)',
+                              }} />
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                    {/* Stats footer */}
+                    <div style={{
+                      marginTop: '6px',
+                      fontSize: '6px',
+                      color: 'var(--text-30)',
+                      textAlign: 'center',
+                    }}>
+                      15+ apps · 47 features
+                    </div>
+                  </div>
+                );
+              }
+
+              // Card 7: Liftoff Program - Learning Path Timeline
+              if (index === 7) {
+                const weeks = [1, 2, 3, 4, 5, 6];
+                const currentWeek = 4;
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    {/* Timeline */}
+                    <div style={{ position: 'relative', marginBottom: '10px' }}>
+                      {/* Connection line */}
+                      <div style={{
+                        position: 'absolute',
+                        top: '10px',
+                        left: '10px',
+                        right: '10px',
+                        height: '2px',
+                        background: 'var(--glass-15)',
+                      }}>
+                        <div style={{
+                          width: isHovered ? `${((currentWeek - 1) / (weeks.length - 1)) * 100}%` : '20%',
+                          height: '100%',
+                          background: `rgb(${project.color})`,
+                          transition: 'width 0.8s ease',
+                          boxShadow: `0 0 8px rgba(${project.color}, 0.5)`,
+                        }} />
+                      </div>
+                      {/* Week nodes */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        {weeks.map((week, i) => {
+                          const isCompleted = week <= currentWeek;
+                          const isCurrent = week === currentWeek;
+                          return (
+                            <div key={i} style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              gap: '4px',
+                            }}>
+                              <div style={{
+                                width: isCurrent ? '20px' : '16px',
+                                height: isCurrent ? '20px' : '16px',
+                                borderRadius: '50%',
+                                background: isCompleted
+                                  ? `rgb(${project.color})`
+                                  : 'var(--glass-15)',
+                                border: isCurrent ? `2px solid rgba(${project.color}, 0.5)` : 'none',
+                                transition: `all 0.4s ease ${i * 0.1}s`,
+                                boxShadow: isCurrent && isHovered ? `0 0 12px rgba(${project.color}, 0.6)` : 'none',
+                                transform: isHovered && isCompleted ? 'scale(1.15)' : 'scale(1)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}>
+                                {isCompleted && (
+                                  <span style={{ fontSize: '8px', color: 'white' }}>✓</span>
+                                )}
+                              </div>
+                              <span style={{
+                                fontSize: '6px',
+                                color: isCurrent ? `rgb(${project.color})` : 'var(--text-30)',
+                                fontWeight: isCurrent ? '600' : '400',
+                              }}>W{week}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    {/* Current module card */}
+                    <div style={{
+                      padding: '8px 10px',
+                      borderRadius: '8px',
+                      background: `rgba(${project.color}, ${isHovered ? 0.15 : 0.08})`,
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                      transition: 'all 0.3s ease',
+                    }}>
+                      <div style={{ fontSize: '7px', color: 'var(--text-40)', marginBottom: '4px' }}>CURRENT MODULE</div>
+                      <div style={{ fontSize: '9px', fontWeight: '600', color: `rgb(${project.color})`, marginBottom: '6px' }}>Design Systems</div>
+                      {/* Progress bar */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <div style={{ flex: 1, height: '4px', borderRadius: '2px', background: 'var(--glass-10)', overflow: 'hidden' }}>
+                          <div style={{
+                            width: isHovered ? '75%' : '30%',
+                            height: '100%',
+                            borderRadius: '2px',
+                            background: `rgb(${project.color})`,
+                            transition: 'width 0.6s ease',
+                          }} />
+                        </div>
+                        <span style={{ fontSize: '7px', color: 'var(--text-40)' }}>75%</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
+              // Card 8: Microsoft Hackathon - Azure AI Pipeline Mini
+              if (index === 8) {
+                const sentiments = [
+                  { text: 'Great!', emoji: '😊', score: 0.92 },
+                  { text: 'Okay', emoji: '😐', score: 0.45 },
+                  { text: 'Love it', emoji: '😊', score: 0.89 },
+                ];
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    {/* Pipeline nodes */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                      {[
+                        { label: 'INPUT', icon: '📝' },
+                        { label: 'AZURE', icon: '🧠' },
+                        { label: 'OUTPUT', icon: '📊' },
+                      ].map((node, i) => (
+                        <div key={i} style={{ position: 'relative' }}>
+                          <div style={{
+                            width: '36px',
+                            height: '36px',
+                            borderRadius: '10px',
+                            background: i === 1
+                              ? `linear-gradient(135deg, rgba(${project.color}, 0.4), rgba(${project.color}, 0.2))`
+                              : 'var(--glass-10)',
+                            border: `1px solid rgba(${project.color}, ${isHovered ? 0.4 : 0.2})`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '14px',
+                            transition: `all 0.3s ease ${i * 0.15}s`,
+                            transform: isHovered ? 'scale(1.1)' : 'scale(1)',
+                            boxShadow: isHovered && i === 1 ? `0 0 20px rgba(${project.color}, 0.4)` : 'none',
+                          }}>
+                            {node.icon}
+                          </div>
+                          <div style={{
+                            position: 'absolute',
+                            top: '100%',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            fontSize: '5px',
+                            color: 'var(--text-30)',
+                            marginTop: '2px',
+                            whiteSpace: 'nowrap',
+                          }}>{node.label}</div>
+                          {/* Connection arrow */}
+                          {i < 2 && (
+                            <div style={{
+                              position: 'absolute',
+                              top: '50%',
+                              left: '100%',
+                              transform: 'translateY(-50%)',
+                              width: '14px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}>
+                              <span style={{
+                                fontSize: '8px',
+                                color: `rgba(${project.color}, ${isHovered ? 0.8 : 0.4})`,
+                                transition: 'color 0.3s ease',
+                              }}>→</span>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    {/* Live feed */}
+                    <div style={{
+                      marginTop: '12px',
+                      padding: '6px 8px',
+                      borderRadius: '6px',
+                      background: 'var(--glass-08)',
+                      border: '1px solid var(--glass-10)',
+                    }}>
+                      {sentiments.slice(0, 2).map((item, i) => (
+                        <div key={i} style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '2px 0',
+                          fontSize: '7px',
+                          opacity: isHovered ? 1 : 0.6,
+                          transition: `opacity 0.3s ease ${i * 0.1}s`,
+                        }}>
+                          <span style={{ color: 'var(--text-40)' }}>&quot;{item.text}&quot;</span>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+                            <span>{item.emoji}</span>
+                            <span style={{ color: item.score > 0.7 ? '#30D158' : '#FF9F0A' }}>
+                              {item.score.toFixed(2)}
+                            </span>
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                    {/* Award badge */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '-8px',
+                      right: '0',
+                      fontSize: '7px',
+                      color: `rgb(${project.color})`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '3px',
+                    }}>
+                      🏆 1st Place
+                    </div>
+                  </div>
+                );
+              }
+
+              // Card 9: Internal Hackathon - Sprint Timeline Mini
+              if (index === 9) {
+                const phases = [
+                  { name: 'IDEA', hours: 2, done: true },
+                  { name: 'DESIGN', hours: 4, done: true },
+                  { name: 'BUILD', hours: 12, done: true },
+                  { name: 'TEST', hours: 4, done: false },
+                  { name: 'SHIP', hours: 2, done: false },
+                ];
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    {/* 24-HOUR header */}
+                    <div style={{
+                      fontSize: '7px',
+                      fontWeight: '700',
+                      color: `rgb(${project.color})`,
+                      marginBottom: '6px',
+                      letterSpacing: '0.5px',
+                    }}>24-HOUR SPRINT</div>
+                    {/* Phase timeline */}
+                    <div style={{ display: 'flex', gap: '2px', marginBottom: '8px' }}>
+                      {phases.map((phase, i) => (
+                        <div key={i} style={{
+                          flex: phase.hours,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '3px',
+                        }}>
+                          <div style={{
+                            width: '100%',
+                            height: '16px',
+                            borderRadius: '3px',
+                            background: phase.done
+                              ? `rgba(${project.color}, ${isHovered ? 0.5 : 0.3})`
+                              : 'var(--glass-10)',
+                            border: `1px solid rgba(${project.color}, ${phase.done ? 0.4 : 0.1})`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transition: `all 0.3s ease ${i * 0.08}s`,
+                            transform: isHovered && phase.done ? 'scaleY(1.1)' : 'scaleY(1)',
+                          }}>
+                            {phase.done && (
+                              <span style={{ fontSize: '8px', color: 'white' }}>✓</span>
+                            )}
+                          </div>
+                          <span style={{
+                            fontSize: '5px',
+                            color: phase.done ? `rgb(${project.color})` : 'var(--text-30)',
+                            fontWeight: phase.done ? '600' : '400',
+                          }}>{phase.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {/* Timer bar */}
+                    <div style={{
+                      padding: '6px 8px',
+                      borderRadius: '6px',
+                      background: 'var(--glass-08)',
+                      border: '1px solid var(--glass-10)',
+                    }}>
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: '4px',
+                      }}>
+                        <span style={{ fontSize: '7px', color: 'var(--text-40)' }}>Progress</span>
+                        <span style={{ fontSize: '8px', fontWeight: '600', color: `rgb(${project.color})` }}>18:32</span>
+                      </div>
+                      <div style={{ height: '4px', borderRadius: '2px', background: 'var(--glass-10)', overflow: 'hidden' }}>
+                        <div style={{
+                          width: isHovered ? '75%' : '40%',
+                          height: '100%',
+                          borderRadius: '2px',
+                          background: `linear-gradient(90deg, rgb(${project.color}), rgba(${project.color}, 0.6))`,
+                          transition: 'width 0.6s ease',
+                        }} />
+                      </div>
+                    </div>
+                    {/* Award badge */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '-8px',
+                      right: '0',
+                      fontSize: '7px',
+                      color: `rgb(${project.color})`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '3px',
+                    }}>
+                      🏆 Winner
+                    </div>
+                  </div>
+                );
+              }
+
+              // Default icon visual - ENLARGED
+              return (
+                <div style={{
+                  position: 'relative',
+                  opacity: isHovered ? 1 : 0.7,
+                  transition: 'all 0.5s ease',
+                }}>
+                  <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: '100px',
+                    height: '100px',
+                    borderRadius: '50%',
+                    background: `radial-gradient(circle, rgba(${project.color}, ${isHovered ? 0.25 : 0.1}), transparent 70%)`,
+                    transition: 'all 0.5s ease',
+                  }} />
+                  <div style={{
+                    width: '70px',
+                    height: '70px',
+                    borderRadius: '20px',
+                    background: `linear-gradient(135deg, rgb(${project.color}), rgba(${project.color}, 0.5))`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: `0 0 40px rgba(${project.color}, 0.5)`,
+                  }}>
+                    <Icon size={34} style={{ color: 'white' }} />
+                  </div>
+                </div>
+              );
+            };
 
             return (
               <React.Fragment key={project.id}>
-                {/* Act I Header - before first project */}
+                {/* Act Headers */}
                 {index === 0 && (
                   <div ref={act1Ref}>
                     <ActHeader
@@ -2121,38 +2126,28 @@ export function AirIndiaWork() {
                     />
                   </div>
                 )}
-
-                {/* Act II Header - before project index 2 */}
                 {index === 2 && (
-                  <>
-                    <NarrativeConnector fromAct={1} toAct={2} text={narrativeTransitions.act1to2} />
-                    <div ref={act2Ref}>
-                      <ActHeader
-                        actNum={2}
-                        title={actConfig[2].name}
-                        quote={actConfig[2].quote}
-                        color={actConfig[2].color}
-                      />
-                    </div>
-                  </>
+                  <div ref={act2Ref}>
+                    <ActHeader
+                      actNum={2}
+                      title={actConfig[2].name}
+                      quote={actConfig[2].quote}
+                      color={actConfig[2].color}
+                    />
+                  </div>
                 )}
-
-                {/* Act III Header - before project index 6 */}
                 {index === 6 && (
-                  <>
-                    <NarrativeConnector fromAct={2} toAct={3} text={narrativeTransitions.act2to3} />
-                    <div ref={act3Ref}>
-                      <ActHeader
-                        actNum={3}
-                        title={actConfig[3].name}
-                        quote={actConfig[3].quote}
-                        color={actConfig[3].color}
-                      />
-                    </div>
-                  </>
+                  <div ref={act3Ref}>
+                    <ActHeader
+                      actNum={3}
+                      title={actConfig[3].name}
+                      quote={actConfig[3].quote}
+                      color={actConfig[3].color}
+                    />
+                  </div>
                 )}
 
-                {/* Project Card */}
+                {/* The Card */}
                 <div
                   ref={(el) => {
                     if (el) cardRefs.current.set(project.id, el);
@@ -2161,198 +2156,2773 @@ export function AirIndiaWork() {
                   onMouseLeave={handleCardMouseLeave}
                   style={{
                     width: '100%',
-                    minHeight: isMobile ? '280px' : (isExpanded ? '800px' : '200px'),
-                    position: 'relative',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '1.5rem',
-                    padding: isMobile ? '1.5rem' : (isExpanded ? '2.5rem 3rem' : '2rem 2.5rem'),
-                    borderRadius: '24px',
-                    background: 'var(--glass-04)',
-                    backdropFilter: 'blur(40px)',
-                    WebkitBackdropFilter: 'blur(40px)',
-                    border: '1px solid var(--glass-08)',
-                    transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                    transform: isHovered && !isMobile ? 'translate3d(0, -4px, 0)' : 'translate3d(0, 0, 0)',
-                    boxShadow: '0 8px 32px -8px rgba(0,0,0,0.2)',
-                    opacity: isExpanded ? 1 : 0.9,
-                    animation: inView ? `scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.4 + index * 0.05}s both` : 'none',
-                    overflow: 'hidden',
-                    cursor: 'pointer',
-                    zIndex: isHovered ? 20 : 1,
-                  }}
-                >
-                  {/* TOP ROW: Header with Category, Title, Subtitle, and Mini Visual */}
+                    minHeight: isMobile ? '280px' : (isExpanded ? '520px' : '200px'),
+                  position: 'relative',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1.5rem',
+                  padding: isMobile ? '1.5rem' : (isExpanded ? '2.5rem 3rem' : '2rem 2.5rem'),
+                  borderRadius: isExpanded ? '28px' : '24px',
+                  background: `
+                    radial-gradient(ellipse at 70% 30%, rgba(${project.color}, ${isExpanded ? 0.15 : 0.08}), transparent 50%),
+                    radial-gradient(ellipse at 30% 70%, rgba(${project.color}, ${isExpanded ? 0.08 : 0.03}), transparent 50%),
+                    var(--glass-04)
+                  `,
+                  backdropFilter: 'blur(40px)',
+                  WebkitBackdropFilter: 'blur(40px)',
+                  border: `1px solid ${isExpanded ? `rgba(${project.color}, 0.4)` : 'var(--glass-08)'}`,
+                  transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                  transform: isHovered && !isMobile ? 'translate3d(0, -4px, 0)' : 'translate3d(0, 0, 0)',
+                  boxShadow: isExpanded
+                    ? `0 40px 80px -20px rgba(${project.color}, 0.35), 0 20px 40px -15px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(${project.color}, 0.12)`
+                    : '0 8px 32px -8px rgba(0,0,0,0.2)',
+                  opacity: isExpanded ? 1 : 0.9,
+                  animation: inView ? `scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.4 + index * 0.05}s both` : 'none',
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  zIndex: isHovered ? 20 : 1,
+                }}
+              >
+                {/* Animated Glow Orb */}
+                <div style={{
+                  position: 'absolute',
+                  top: '20%',
+                  right: '10%',
+                  width: '150px',
+                  height: '150px',
+                  borderRadius: '50%',
+                  background: `radial-gradient(circle, rgba(${project.color}, ${isExpanded ? 0.2 : 0.08}), transparent 70%)`,
+                  filter: 'blur(50px)',
+                  transition: 'all 0.6s ease',
+                  pointerEvents: 'none',
+                }} />
+
+                {/* Border Shimmer when expanded */}
+                {isExpanded && (
                   <div style={{
-                    display: 'flex',
-                    flexDirection: isMobile ? 'column' : 'row',
-                    justifyContent: 'space-between',
-                    alignItems: isMobile ? 'flex-start' : 'flex-start',
-                    gap: isMobile ? '1rem' : '2rem',
-                    position: 'relative',
-                    zIndex: 2,
-                  }}>
-                    {/* Left: Category + Title + Subtitle */}
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      {/* Category Badge - with Act color */}
+                    position: 'absolute',
+                    inset: 0,
+                    borderRadius: '28px',
+                    padding: '1px',
+                    background: `linear-gradient(90deg, transparent, rgba(${project.color}, 0.4), transparent)`,
+                    backgroundSize: '200% 100%',
+                    animation: 'borderShimmer 3s ease-in-out infinite',
+                    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                    WebkitMaskComposite: 'xor',
+                    maskComposite: 'exclude',
+                    pointerEvents: 'none',
+                  }} />
+                )}
+
+                {/* TOP ROW: Header with Category, Title, Subtitle, and Mini Visual */}
+                <div style={{
+                  display: 'flex',
+                  flexDirection: isMobile ? 'column' : 'row',
+                  justifyContent: 'space-between',
+                  alignItems: isMobile ? 'flex-start' : 'flex-start',
+                  gap: isMobile ? '1rem' : '2rem',
+                  position: 'relative',
+                  zIndex: 2,
+                }}>
+                  {/* Left: Category + Title + Subtitle */}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    {/* Category Badge */}
+                    <div style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '0.375rem 0.75rem',
+                      borderRadius: '100px',
+                      background: `rgba(${project.color}, 0.12)`,
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                      fontSize: '0.625rem',
+                      fontWeight: '600',
+                      letterSpacing: '0.12em',
+                      color: `rgb(${project.color})`,
+                      textTransform: 'uppercase',
+                      marginBottom: '0.75rem',
+                    }}>
+                      {project.category}
+                    </div>
+
+                    {/* Title */}
+                    <h3 style={{
+                      fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
+                      fontWeight: '600',
+                      color: 'var(--text-primary)',
+                      marginBottom: '0.375rem',
+                      letterSpacing: '-0.02em',
+                      lineHeight: 1.2,
+                    }}>
+                      {project.title}
+                    </h3>
+
+                    {/* Subtitle */}
+                    <p style={{
+                      fontSize: '0.875rem',
+                      color: 'var(--text-secondary)',
+                      lineHeight: 1.5,
+                    }}>
+                      {project.subtitle}
+                    </p>
+
+                    {/* Stats Row - Always visible */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '1.25rem',
+                      flexWrap: 'wrap',
+                      marginTop: '1rem',
+                    }}>
+                      {project.stats.map((stat, statIndex) => (
+                        <React.Fragment key={statIndex}>
+                          <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'flex-start',
+                          }}>
+                            <span style={{
+                              fontSize: '1.25rem',
+                              fontWeight: '700',
+                              color: `rgb(${project.color})`,
+                              lineHeight: 1,
+                              textShadow: isExpanded ? `0 0 15px rgba(${project.color}, 0.4)` : 'none',
+                              transition: 'text-shadow 0.4s ease',
+                            }}>
+                              {stat.value}
+                            </span>
+                            <span style={{
+                              fontSize: '0.625rem',
+                              color: 'var(--text-muted)',
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.08em',
+                              marginTop: '0.125rem',
+                            }}>
+                              {stat.label}
+                            </span>
+                          </div>
+                          {statIndex < project.stats.length - 1 && !isMobile && (
+                            <div style={{
+                              width: '1px',
+                              height: '24px',
+                              background: `linear-gradient(180deg, transparent, rgba(${project.color}, 0.25), transparent)`,
+                            }} />
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </div>
+
+                    {/* Short Recruiter Hook - Collapsed state only */}
+                    {!isExpanded && (
                       <div style={{
                         display: 'inline-flex',
                         alignItems: 'center',
-                        padding: '0.375rem 0.75rem',
-                        borderRadius: '100px',
-                        background: `rgba(${actColor}, 0.12)`,
-                        border: `1px solid rgba(${actColor}, 0.2)`,
-                        fontSize: '0.625rem',
-                        fontWeight: '600',
-                        letterSpacing: '0.12em',
-                        color: `rgb(${actColor})`,
-                        textTransform: 'uppercase',
-                        marginBottom: '0.75rem',
+                        gap: '0.5rem',
+                        padding: '0.375rem 0.625rem',
+                        borderRadius: '6px',
+                        background: 'var(--glass-03)',
+                        border: '1px solid var(--glass-06)',
+                        marginTop: '0.75rem',
                       }}>
-                        {project.category}
-                      </div>
-
-                      {/* Title */}
-                      <h3 style={{
-                        fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
-                        fontWeight: '600',
-                        color: 'var(--text-primary)',
-                        marginBottom: '0.375rem',
-                        letterSpacing: '-0.02em',
-                        lineHeight: 1.2,
-                      }}>
-                        {project.title}
-                      </h3>
-
-                      {/* Subtitle */}
-                      <p style={{
-                        fontSize: '0.875rem',
-                        color: 'var(--text-secondary)',
-                        lineHeight: 1.5,
-                      }}>
-                        {project.subtitle}
-                      </p>
-
-                      {/* Stats Row */}
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1.25rem',
-                        flexWrap: 'wrap',
-                        marginTop: '1rem',
-                      }}>
-                        {project.stats.map((stat, statIndex) => (
-                          <React.Fragment key={statIndex}>
-                            <div style={{
-                              display: 'flex',
-                              flexDirection: 'column',
-                              alignItems: 'flex-start',
-                            }}>
-                              <span style={{
-                                fontSize: '1.25rem',
-                                fontWeight: '700',
-                                color: `rgb(${actColor})`,
-                                lineHeight: 1,
-                              }}>
-                                {stat.value}
-                              </span>
-                              <span style={{
-                                fontSize: '0.625rem',
-                                color: 'var(--text-muted)',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.08em',
-                                marginTop: '0.125rem',
-                              }}>
-                                {stat.label}
-                              </span>
-                            </div>
-                            {statIndex < project.stats.length - 1 && !isMobile && (
-                              <div style={{
-                                width: '1px',
-                                height: '24px',
-                                background: `linear-gradient(180deg, transparent, rgba(${actColor}, 0.25), transparent)`,
-                              }} />
-                            )}
-                          </React.Fragment>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Right: Interactive Visualization */}
-                    {!isMobile && (
-                      <div style={{
-                        width: '180px',
-                        minHeight: '160px',
-                        flexShrink: 0,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        position: 'relative',
-                        transition: 'all 0.5s ease',
-                        filter: isHovered ? `drop-shadow(0 0 20px rgba(${actColor}, 0.5))` : 'none',
-                      }}>
-                        {renderCardVisual(index, isHovered, project)}
+                        <CheckCircle size={12} style={{ color: `rgb(${project.color})` }} />
+                        <span style={{
+                          fontSize: '0.75rem',
+                          color: 'var(--text-tertiary)',
+                          fontStyle: 'italic',
+                        }}>
+                          {project.recruiterFrame}
+                        </span>
                       </div>
                     )}
                   </div>
 
-                  {/* EXPANDED CONTENT */}
-                  {isExpanded && (
-                    <div style={{
-                      marginTop: '1.5rem',
-                      padding: '1.5rem',
-                      background: 'var(--glass-04)',
-                      borderRadius: '16px',
-                      border: `1px solid rgba(${actColor}, 0.15)`,
-                    }}>
-                      <p style={{
-                        fontSize: '0.9375rem',
-                        color: 'var(--text-60)',
-                        lineHeight: 1.8,
-                        whiteSpace: 'pre-line',
-                      }}>
-                        {project.longDescription}
-                      </p>
+                  {/* Right: Mini Visual (smaller in collapsed, fades when expanded) */}
+                  <div style={{
+                    flexShrink: 0,
+                    width: isMobile ? '100%' : '120px',
+                    height: isMobile ? '100px' : '120px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative',
+                    opacity: isExpanded ? 0.5 : 0.8,
+                    transform: isExpanded ? 'scale(0.85)' : 'scale(1)',
+                    filter: isHovered && !isExpanded ? `drop-shadow(0 0 30px rgba(${project.color}, 0.4))` : 'none',
+                    transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}>
+                    {renderCardVisual()}
+                  </div>
+                </div>
 
-                      {/* Recruiter insight */}
+                {/* EXPANDED CONTENT - Only shown when expanded */}
+                <div style={{
+                  opacity: isExpanded ? 1 : 0,
+                  maxHeight: isExpanded ? '800px' : '0',
+                  transform: isExpanded ? 'translateY(0)' : 'translateY(-20px)',
+                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1.5rem',
+                }}>
+                  {/* Animated Illustration or Placeholder */}
+                  {index === 0 ? (
+                    /* PIXEL RADAR - Side-by-Side Interactive Visualization */
+                    <>
+                    {/* Interactive Prototype Helper */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      marginBottom: '12px',
+                      padding: '8px 16px',
+                      background: 'rgba(13, 153, 255, 0.1)',
+                      borderRadius: '20px',
+                      border: '1px solid rgba(13, 153, 255, 0.2)',
+                      width: 'fit-content',
+                      margin: '0 auto 12px',
+                    }}>
+                      <span style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        background: '#0D99FF',
+                        animation: 'statusPulse 1.5s ease infinite',
+                      }} />
+                      <span style={{
+                        fontSize: '11px',
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        fontWeight: '500',
+                      }}>
+                        Interactive Prototype
+                      </span>
+                      <span style={{
+                        fontSize: '10px',
+                        color: 'rgba(255, 255, 255, 0.4)',
+                      }}>
+                        — Click &quot;Run Analysis&quot; to see it in action
+                      </span>
+                    </div>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '1100px',
+                      margin: '0 auto',
+                      display: 'grid',
+                      gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+                      gap: '24px',
+                      padding: '8px',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                      fontSize: '11px',
+                    }}>
+                      {/* ======== LEFT PANEL: Figma Plugin UI ======== */}
                       <div style={{
-                        marginTop: '1.25rem',
-                        padding: '1rem',
-                        background: `rgba(${actColor}, 0.06)`,
+                        background: '#2C2C2C',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        overflow: 'hidden',
+                      }}>
+                        {/* Plugin Header */}
+                        <div style={{
+                          background: '#1E1E1E',
+                          padding: '8px 12px',
+                          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{
+                              width: '16px',
+                              height: '16px',
+                              borderRadius: '4px',
+                              background: '#0D99FF',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}>
+                              <span style={{ fontSize: '10px', color: 'white', fontWeight: '700' }}>P</span>
+                            </div>
+                            <span style={{
+                              fontSize: '11px',
+                              fontWeight: '600',
+                              color: 'rgba(255, 255, 255, 0.9)',
+                            }}>Pixel Radar</span>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.2)' }} />
+                            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.2)' }} />
+                            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.2)' }} />
+                          </div>
+                        </div>
+
+                        {/* Plugin Content */}
+                        <div style={{ padding: '12px' }}>
+                          {/* Library Dropdown */}
+                          <div style={{
+                            background: '#383838',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            borderRadius: '6px',
+                            padding: '8px 10px',
+                            marginBottom: '12px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            cursor: 'pointer',
+                            transition: 'border-color 0.15s ease',
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
+                          onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'}
+                          >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>Library:</span>
+                              <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.9)' }}>Design System v2.0</span>
+                            </div>
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>▼</span>
+                          </div>
+
+                          {/* Token Analysis Section */}
+                          <div style={{
+                            background: '#1E1E1E',
+                            borderRadius: '6px',
+                            border: '1px solid rgba(255, 255, 255, 0.06)',
+                            marginBottom: '12px',
+                            overflow: 'hidden',
+                          }}>
+                            {/* Section Header */}
+                            <div style={{
+                              padding: '8px 10px',
+                              borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                            }}>
+                              <span style={{ fontSize: '10px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.66)' }}>Token Analysis</span>
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>3 tokens</span>
+                            </div>
+
+                            {/* Token Table Header */}
+                            <div style={{
+                              display: 'grid',
+                              gridTemplateColumns: '1fr 1fr 40px',
+                              padding: '6px 10px',
+                              borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+                              background: 'rgba(255, 255, 255, 0.02)',
+                            }}>
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', fontWeight: '500' }}>Library</span>
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', fontWeight: '500' }}>Local</span>
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', fontWeight: '500', textAlign: 'center' }}>Status</span>
+                            </div>
+
+                            {/* Token Rows */}
+                            {[
+                              { id: 'color', color: '#3B82F6', library: 'color/primary', local: 'color/primary', matched: true },
+                              { id: 'typo', color: '#8B5CF6', library: 'typography/h1', local: 'typography/heading-1', matched: false },
+                              { id: 'space', color: '#10B981', library: 'spacing/lg', local: 'spacing/lg', matched: true },
+                            ].map((token) => (
+                              <div
+                                key={token.id}
+                                onMouseEnter={() => setHoveredToken(token.id)}
+                                onMouseLeave={() => setHoveredToken(null)}
+                                style={{
+                                  display: 'grid',
+                                  gridTemplateColumns: '1fr 1fr 40px',
+                                  padding: '6px 10px',
+                                  borderBottom: '1px solid rgba(255, 255, 255, 0.03)',
+                                  background: hoveredToken === token.id ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
+                                  cursor: 'pointer',
+                                  transition: 'background 0.15s ease',
+                                }}
+                              >
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                  <div style={{
+                                    width: '8px',
+                                    height: '8px',
+                                    borderRadius: '2px',
+                                    background: token.color,
+                                  }} />
+                                  <span style={{
+                                    fontSize: '10px',
+                                    color: 'rgba(255, 255, 255, 0.66)',
+                                    fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                                  }}>{token.library}</span>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                  <div style={{
+                                    width: '8px',
+                                    height: '8px',
+                                    borderRadius: '2px',
+                                    background: token.color,
+                                  }} />
+                                  <span style={{
+                                    fontSize: '10px',
+                                    color: 'rgba(255, 255, 255, 0.66)',
+                                    fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                                  }}>{token.local}</span>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                  {token.matched ? (
+                                    <span style={{ fontSize: '12px', color: '#30D158' }}>✓</span>
+                                  ) : (
+                                    <span style={{ fontSize: '10px', color: '#FF9F0A', fontWeight: '600' }}>!</span>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Stats Bar */}
+                          <div style={{
+                            background: '#1E1E1E',
+                            borderRadius: '6px',
+                            padding: '10px 12px',
+                            marginBottom: '12px',
+                          }}>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              marginBottom: '8px',
+                            }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <div>
+                                  <span style={{ fontSize: '14px', fontWeight: '600', color: '#30D158' }}>
+                                    {analysisPhase === 'complete' ? '195' : '—'}
+                                  </span>
+                                  <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', marginLeft: '4px' }}>matched</span>
+                                </div>
+                                <div>
+                                  <span style={{ fontSize: '14px', fontWeight: '600', color: '#FF9F0A' }}>
+                                    {analysisPhase === 'complete' ? '79' : '—'}
+                                  </span>
+                                  <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', marginLeft: '4px' }}>suggested</span>
+                                </div>
+                              </div>
+                              <span style={{
+                                fontSize: '11px',
+                                fontWeight: '600',
+                                color: analysisPhase === 'complete' ? '#30D158' : 'rgba(255, 255, 255, 0.4)',
+                              }}>
+                                {analysisPhase === 'complete' ? '71%' : '—'}
+                              </span>
+                            </div>
+                            {/* Progress Bar */}
+                            <div style={{
+                              height: '4px',
+                              background: 'rgba(255, 255, 255, 0.1)',
+                              borderRadius: '2px',
+                              overflow: 'hidden',
+                            }}>
+                              <div style={{
+                                width: analysisPhase === 'complete' ? '71%' : '0%',
+                                height: '100%',
+                                background: '#30D158',
+                                borderRadius: '2px',
+                                transition: 'width 0.6s cubic-bezier(0.2, 0, 0, 1)',
+                              }} />
+                            </div>
+                          </div>
+
+                          {/* Run Analysis Button */}
+                          <button
+                            onClick={() => {
+                              if (isAnalyzing) return;
+                              setIsAnalyzing(true);
+                              setAnalysisPhase('scan');
+                              setPixelRadarStep(2);
+
+                              // Phase 2: Analyze (after 500ms)
+                              setTimeout(() => setAnalysisPhase('analyze'), 500);
+
+                              // Phase 3: Complete (after 1500ms)
+                              setTimeout(() => {
+                                setAnalysisPhase('complete');
+                                setPixelRadarStep(3);
+                                setIsAnalyzing(false);
+                              }, 1500);
+                            }}
+                            style={{
+                              width: '100%',
+                              background: isAnalyzing ? '#1E1E1E' : '#0D99FF',
+                              color: 'white',
+                              border: isAnalyzing ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+                              borderRadius: '6px',
+                              padding: '8px 16px',
+                              fontSize: '11px',
+                              fontWeight: '500',
+                              cursor: isAnalyzing ? 'not-allowed' : 'pointer',
+                              transition: 'all 0.15s ease',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '8px',
+                            }}
+                            onMouseEnter={(e) => !isAnalyzing && (e.currentTarget.style.background = '#1A8FE8')}
+                            onMouseLeave={(e) => !isAnalyzing && (e.currentTarget.style.background = '#0D99FF')}
+                          >
+                            {isAnalyzing ? (
+                              <>
+                                <div style={{
+                                  width: '12px',
+                                  height: '12px',
+                                  borderRadius: '50%',
+                                  border: '2px solid rgba(255, 255, 255, 0.2)',
+                                  borderTopColor: 'rgba(255, 255, 255, 0.9)',
+                                  animation: 'spin 0.8s linear infinite',
+                                }} />
+                                <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Analyzing...</span>
+                              </>
+                            ) : (
+                              <span>Run Analysis</span>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* ======== RIGHT PANEL: Backend Architecture (Enhanced V2) ======== */}
+                      <div style={{
+                        background: '#2C2C2C',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        overflow: 'hidden',
+                        display: isMobile ? 'none' : 'block',
+                      }}>
+                        {/* Architecture Header */}
+                        <div style={{
+                          background: '#1E1E1E',
+                          padding: '8px 12px',
+                          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                        }}>
+                          <div style={{
+                            width: '16px',
+                            height: '16px',
+                            borderRadius: '4px',
+                            background: 'rgba(162, 89, 255, 0.2)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}>
+                            <span style={{ fontSize: '10px', color: '#A259FF' }}>⚡</span>
+                          </div>
+                          <span style={{
+                            fontSize: '11px',
+                            fontWeight: '600',
+                            color: 'rgba(255, 255, 255, 0.9)',
+                          }}>Backend Architecture</span>
+                        </div>
+
+                        {/* Architecture Content */}
+                        <div style={{ padding: '12px', position: 'relative', minHeight: '280px' }}>
+                          {/* SVG Connections Layer - Enhanced with viewBox */}
+                          <svg
+                            viewBox="0 0 100 100"
+                            preserveAspectRatio="none"
+                            style={{
+                              position: 'absolute',
+                              top: '12px',
+                              left: '12px',
+                              width: 'calc(100% - 24px)',
+                              height: 'calc(100% - 60px)',
+                              pointerEvents: 'none',
+                              zIndex: 0,
+                            }}
+                          >
+                            <defs>
+                              {/* Glow filter for active connections */}
+                              <filter id="connectionGlow" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="1.5" result="blur" />
+                                <feMerge>
+                                  <feMergeNode in="blur" />
+                                  <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                              </filter>
+
+                              {/* Animated arrowhead marker */}
+                              <marker
+                                id="arrowhead-v2"
+                                markerWidth="6"
+                                markerHeight="5"
+                                refX="5"
+                                refY="2.5"
+                                orient="auto"
+                              >
+                                <polygon
+                                  points="0 0, 6 2.5, 0 5"
+                                  fill={analysisPhase !== 'idle' ? '#0D99FF' : 'rgba(255, 255, 255, 0.2)'}
+                                  style={{
+                                    transition: 'fill 0.3s ease',
+                                    transformOrigin: 'center',
+                                    animation: analysisPhase !== 'idle' ? 'statusPulse 1s ease infinite' : 'none',
+                                  }}
+                                />
+                              </marker>
+
+                              {/* Green arrowhead for feedback loop */}
+                              <marker
+                                id="arrowhead-green"
+                                markerWidth="6"
+                                markerHeight="5"
+                                refX="5"
+                                refY="2.5"
+                                orient="auto"
+                              >
+                                <polygon
+                                  points="0 0, 6 2.5, 0 5"
+                                  fill={analysisPhase === 'complete' ? '#30D158' : 'rgba(255, 255, 255, 0.2)'}
+                                  style={{ transition: 'fill 0.3s ease' }}
+                                />
+                              </marker>
+                            </defs>
+
+                            {/* Connection: Figma APIs (bottom-left) → Token Scanner (top-left) */}
+                            <path
+                              d="M 25 72 L 25 28"
+                              fill="none"
+                              stroke={analysisPhase !== 'idle' ? 'rgba(13, 153, 255, 0.6)' : 'rgba(255, 255, 255, 0.1)'}
+                              strokeWidth="0.8"
+                              strokeDasharray="3 2"
+                              markerEnd="url(#arrowhead-v2)"
+                              filter={analysisPhase === 'scan' ? 'url(#connectionGlow)' : 'none'}
+                              style={{
+                                transition: 'stroke 0.3s ease, filter 0.3s ease',
+                                animation: analysisPhase === 'scan' ? 'flowLine 1s linear infinite' : 'none',
+                              }}
+                            />
+
+                            {/* Connection: Token Scanner (top-left) → Analysis Engine (top-right) */}
+                            <path
+                              d="M 40 20 L 60 20"
+                              fill="none"
+                              stroke={['scan', 'analyze', 'complete'].includes(analysisPhase) ? 'rgba(13, 153, 255, 0.6)' : 'rgba(255, 255, 255, 0.1)'}
+                              strokeWidth="0.8"
+                              strokeDasharray="3 2"
+                              markerEnd="url(#arrowhead-v2)"
+                              filter={analysisPhase === 'analyze' ? 'url(#connectionGlow)' : 'none'}
+                              style={{
+                                transition: 'stroke 0.3s ease, filter 0.3s ease',
+                                animation: analysisPhase === 'analyze' ? 'flowLine 1s linear infinite' : 'none',
+                              }}
+                            />
+
+                            {/* Connection: Analysis Engine (top-right) → Results (bottom-right) */}
+                            <path
+                              d="M 75 28 L 75 72"
+                              fill="none"
+                              stroke={['analyze', 'complete'].includes(analysisPhase) ? 'rgba(13, 153, 255, 0.6)' : 'rgba(255, 255, 255, 0.1)'}
+                              strokeWidth="0.8"
+                              strokeDasharray="3 2"
+                              markerEnd="url(#arrowhead-v2)"
+                              filter={analysisPhase === 'complete' ? 'url(#connectionGlow)' : 'none'}
+                              style={{
+                                transition: 'stroke 0.3s ease, filter 0.3s ease',
+                                animation: analysisPhase === 'complete' ? 'flowLine 1s linear infinite' : 'none',
+                              }}
+                            />
+
+                            {/* Connection: Results (bottom-right) → Figma APIs (bottom-left) - feedback */}
+                            <path
+                              d="M 60 80 L 40 80"
+                              fill="none"
+                              stroke={analysisPhase === 'complete' ? 'rgba(48, 209, 88, 0.5)' : 'rgba(255, 255, 255, 0.1)'}
+                              strokeWidth="0.8"
+                              strokeDasharray="3 2"
+                              markerEnd="url(#arrowhead-green)"
+                              filter={analysisPhase === 'complete' ? 'url(#connectionGlow)' : 'none'}
+                              style={{
+                                transition: 'stroke 0.3s ease, filter 0.3s ease',
+                                animation: analysisPhase === 'complete' ? 'flowLine 1s linear infinite reverse' : 'none',
+                              }}
+                            />
+
+                            {/* Data Packets - Moving dots along paths */}
+                            {analysisPhase === 'scan' && (
+                              <circle r="1.5" fill="#0D99FF" style={{
+                                offsetPath: "path('M 25 72 L 25 28')",
+                                animation: 'movePacket 1.2s ease-in-out infinite',
+                              }}>
+                                <animate attributeName="opacity" values="0;1;1;0" dur="1.2s" repeatCount="indefinite" />
+                              </circle>
+                            )}
+                            {analysisPhase === 'analyze' && (
+                              <circle r="1.5" fill="#0D99FF" style={{
+                                offsetPath: "path('M 40 20 L 60 20')",
+                                animation: 'movePacket 0.8s ease-in-out infinite',
+                              }}>
+                                <animate attributeName="opacity" values="0;1;1;0" dur="0.8s" repeatCount="indefinite" />
+                              </circle>
+                            )}
+                            {analysisPhase === 'complete' && (
+                              <>
+                                <circle r="1.5" fill="#0D99FF" style={{
+                                  offsetPath: "path('M 75 28 L 75 72')",
+                                  animation: 'movePacket 1s ease-in-out infinite',
+                                }}>
+                                  <animate attributeName="opacity" values="0;1;1;0" dur="1s" repeatCount="indefinite" />
+                                </circle>
+                                <circle r="1.5" fill="#30D158" style={{
+                                  offsetPath: "path('M 60 80 L 40 80')",
+                                  animation: 'movePacket 0.8s ease-in-out infinite',
+                                  animationDelay: '0.4s',
+                                }}>
+                                  <animate attributeName="opacity" values="0;1;1;0" dur="0.8s" repeatCount="indefinite" begin="0.4s" />
+                                </circle>
+                              </>
+                            )}
+                          </svg>
+
+                          {/* Module Grid */}
+                          <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 1fr',
+                            gap: '10px',
+                            position: 'relative',
+                            zIndex: 1,
+                          }}>
+                            {/* Module 1: Token Scanner (Top Left) */}
+                            <div
+                              onMouseEnter={() => setHoveredModule('scanner')}
+                              onMouseLeave={() => setHoveredModule(null)}
+                              style={{
+                                background: '#1E1E1E',
+                                borderRadius: '6px',
+                                padding: '10px',
+                                border: `1px solid ${
+                                  analysisPhase === 'scan'
+                                    ? 'rgba(48, 209, 88, 0.6)'
+                                    : hoveredModule === 'scanner'
+                                      ? 'rgba(255, 255, 255, 0.25)'
+                                      : 'rgba(255, 255, 255, 0.1)'
+                                }`,
+                                transition: 'all 0.3s ease',
+                                boxShadow: analysisPhase === 'scan'
+                                  ? '0 0 8px rgba(48, 209, 88, 0.3), 0 0 16px rgba(48, 209, 88, 0.15), 0 0 32px rgba(48, 209, 88, 0.08), inset 0 0 12px rgba(48, 209, 88, 0.05)'
+                                  : hoveredModule === 'scanner'
+                                    ? '0 0 8px rgba(255, 255, 255, 0.05)'
+                                    : 'none',
+                                position: 'relative',
+                              }}
+                            >
+                              <div style={{
+                                fontSize: '10px',
+                                fontWeight: '600',
+                                color: '#30D158',
+                                marginBottom: '6px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                              }}>
+                                <span style={{
+                                  width: '6px',
+                                  height: '6px',
+                                  borderRadius: '50%',
+                                  background: analysisPhase === 'scan' ? '#30D158' : 'rgba(48, 209, 88, 0.3)',
+                                  boxShadow: analysisPhase === 'scan' ? '0 0 6px #30D158' : 'none',
+                                  animation: analysisPhase === 'scan' ? 'statusPulse 0.8s ease infinite' : 'none',
+                                }} />
+                                Token Scanner
+                              </div>
+                              <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', lineHeight: 1.5 }}>
+                                • Variables<br />
+                                • Styles<br />
+                                • Libraries
+                              </div>
+                              {/* Tooltip */}
+                              {hoveredModule === 'scanner' && (
+                                <div style={{
+                                  position: 'absolute',
+                                  bottom: 'calc(100% + 8px)',
+                                  left: '50%',
+                                  transform: 'translateX(-50%)',
+                                  background: 'rgba(0, 0, 0, 0.95)',
+                                  padding: '6px 10px',
+                                  borderRadius: '4px',
+                                  fontSize: '9px',
+                                  color: 'rgba(255, 255, 255, 0.9)',
+                                  whiteSpace: 'nowrap',
+                                  animation: 'tooltipFade 0.2s ease',
+                                  zIndex: 10,
+                                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                                }}>
+                                  Scans Figma document for tokens
+                                  <div style={{
+                                    position: 'absolute',
+                                    bottom: '-5px',
+                                    left: '50%',
+                                    transform: 'translateX(-50%) rotate(45deg)',
+                                    width: '8px',
+                                    height: '8px',
+                                    background: 'rgba(0, 0, 0, 0.95)',
+                                    borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+                                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                                  }} />
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Module 2: Analysis Engine (Top Right) */}
+                            <div
+                              onMouseEnter={() => setHoveredModule('engine')}
+                              onMouseLeave={() => setHoveredModule(null)}
+                              style={{
+                                background: '#1E1E1E',
+                                borderRadius: '6px',
+                                padding: '10px',
+                                border: `1px solid ${
+                                  analysisPhase === 'analyze'
+                                    ? 'rgba(13, 153, 255, 0.6)'
+                                    : hoveredModule === 'engine'
+                                      ? 'rgba(255, 255, 255, 0.25)'
+                                      : 'rgba(255, 255, 255, 0.1)'
+                                }`,
+                                transition: 'all 0.3s ease',
+                                boxShadow: analysisPhase === 'analyze'
+                                  ? '0 0 8px rgba(13, 153, 255, 0.3), 0 0 16px rgba(13, 153, 255, 0.15), 0 0 32px rgba(13, 153, 255, 0.08), inset 0 0 12px rgba(13, 153, 255, 0.05)'
+                                  : hoveredModule === 'engine'
+                                    ? '0 0 8px rgba(255, 255, 255, 0.05)'
+                                    : 'none',
+                                position: 'relative',
+                              }}
+                            >
+                              <div style={{
+                                fontSize: '10px',
+                                fontWeight: '600',
+                                color: '#0D99FF',
+                                marginBottom: '6px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                              }}>
+                                <span style={{
+                                  width: '6px',
+                                  height: '6px',
+                                  borderRadius: '50%',
+                                  background: analysisPhase === 'analyze' ? '#0D99FF' : 'rgba(13, 153, 255, 0.3)',
+                                  boxShadow: analysisPhase === 'analyze' ? '0 0 6px #0D99FF' : 'none',
+                                  animation: analysisPhase === 'analyze' ? 'statusPulse 0.8s ease infinite' : 'none',
+                                }} />
+                                Analysis Engine
+                              </div>
+                              <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', lineHeight: 1.5 }}>
+                                • Duplicate Detection<br />
+                                • Consistency Check<br />
+                                • Smart Suggestions
+                              </div>
+                              {/* Tooltip */}
+                              {hoveredModule === 'engine' && (
+                                <div style={{
+                                  position: 'absolute',
+                                  bottom: 'calc(100% + 8px)',
+                                  left: '50%',
+                                  transform: 'translateX(-50%)',
+                                  background: 'rgba(0, 0, 0, 0.95)',
+                                  padding: '6px 10px',
+                                  borderRadius: '4px',
+                                  fontSize: '9px',
+                                  color: 'rgba(255, 255, 255, 0.9)',
+                                  whiteSpace: 'nowrap',
+                                  animation: 'tooltipFade 0.2s ease',
+                                  zIndex: 10,
+                                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                                }}>
+                                  Analyzes patterns & inconsistencies
+                                  <div style={{
+                                    position: 'absolute',
+                                    bottom: '-5px',
+                                    left: '50%',
+                                    transform: 'translateX(-50%) rotate(45deg)',
+                                    width: '8px',
+                                    height: '8px',
+                                    background: 'rgba(0, 0, 0, 0.95)',
+                                    borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+                                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                                  }} />
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Module 3: Figma APIs (Bottom Left) */}
+                            <div
+                              onMouseEnter={() => setHoveredModule('apis')}
+                              onMouseLeave={() => setHoveredModule(null)}
+                              style={{
+                                background: 'rgba(218, 14, 41, 0.08)',
+                                borderRadius: '6px',
+                                padding: '10px',
+                                border: `1px solid ${
+                                  hoveredModule === 'apis'
+                                    ? 'rgba(218, 14, 41, 0.5)'
+                                    : 'rgba(218, 14, 41, 0.25)'
+                                }`,
+                                transition: 'all 0.3s ease',
+                                boxShadow: hoveredModule === 'apis'
+                                  ? '0 0 8px rgba(218, 14, 41, 0.15)'
+                                  : 'none',
+                                position: 'relative',
+                              }}
+                            >
+                              <div style={{
+                                fontSize: '10px',
+                                fontWeight: '600',
+                                color: '#DA0E29',
+                                marginBottom: '6px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                              }}>
+                                <span style={{
+                                  width: '6px',
+                                  height: '6px',
+                                  borderRadius: '50%',
+                                  background: 'rgba(218, 14, 41, 0.6)',
+                                  boxShadow: '0 0 4px rgba(218, 14, 41, 0.3)',
+                                }} />
+                                Figma APIs
+                              </div>
+                              <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', lineHeight: 1.5 }}>
+                                • variables<br />
+                                • styles<br />
+                                • teamLibrary
+                              </div>
+                              {/* Tooltip */}
+                              {hoveredModule === 'apis' && (
+                                <div style={{
+                                  position: 'absolute',
+                                  bottom: 'calc(100% + 8px)',
+                                  left: '50%',
+                                  transform: 'translateX(-50%)',
+                                  background: 'rgba(0, 0, 0, 0.95)',
+                                  padding: '6px 10px',
+                                  borderRadius: '4px',
+                                  fontSize: '9px',
+                                  color: 'rgba(255, 255, 255, 0.9)',
+                                  whiteSpace: 'nowrap',
+                                  animation: 'tooltipFade 0.2s ease',
+                                  zIndex: 10,
+                                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                                }}>
+                                  Official Figma Plugin API
+                                  <div style={{
+                                    position: 'absolute',
+                                    bottom: '-5px',
+                                    left: '50%',
+                                    transform: 'translateX(-50%) rotate(45deg)',
+                                    width: '8px',
+                                    height: '8px',
+                                    background: 'rgba(0, 0, 0, 0.95)',
+                                    borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+                                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                                  }} />
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Module 4: Results Processor (Bottom Right) */}
+                            <div
+                              onMouseEnter={() => setHoveredModule('results')}
+                              onMouseLeave={() => setHoveredModule(null)}
+                              style={{
+                                background: '#1E1E1E',
+                                borderRadius: '6px',
+                                padding: '10px',
+                                border: `1px solid ${
+                                  analysisPhase === 'complete'
+                                    ? 'rgba(48, 209, 88, 0.6)'
+                                    : hoveredModule === 'results'
+                                      ? 'rgba(255, 255, 255, 0.25)'
+                                      : 'rgba(255, 255, 255, 0.1)'
+                                }`,
+                                transition: 'all 0.3s ease',
+                                boxShadow: analysisPhase === 'complete'
+                                  ? '0 0 8px rgba(48, 209, 88, 0.3), 0 0 16px rgba(48, 209, 88, 0.15), 0 0 32px rgba(48, 209, 88, 0.08), inset 0 0 12px rgba(48, 209, 88, 0.05)'
+                                  : hoveredModule === 'results'
+                                    ? '0 0 8px rgba(255, 255, 255, 0.05)'
+                                    : 'none',
+                                position: 'relative',
+                              }}
+                            >
+                              <div style={{
+                                fontSize: '10px',
+                                fontWeight: '600',
+                                color: '#30D158',
+                                marginBottom: '6px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                              }}>
+                                <span style={{
+                                  width: '6px',
+                                  height: '6px',
+                                  borderRadius: '50%',
+                                  background: analysisPhase === 'complete' ? '#30D158' : 'rgba(48, 209, 88, 0.3)',
+                                  boxShadow: analysisPhase === 'complete' ? '0 0 6px #30D158' : 'none',
+                                  animation: analysisPhase === 'complete' ? 'statusPulse 0.8s ease infinite' : 'none',
+                                }} />
+                                Results
+                              </div>
+                              <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', lineHeight: 1.5 }}>
+                                {analysisPhase === 'complete' ? (
+                                  <>
+                                    <span style={{ color: '#30D158', animation: 'moduleReveal 0.3s ease forwards' }}>✓</span> Match tokens<br />
+                                    <span style={{ color: '#30D158', animation: 'moduleReveal 0.3s ease forwards 0.1s' }}>✓</span> Fix duplicates
+                                  </>
+                                ) : (
+                                  <>
+                                    • Match tokens<br />
+                                    • Fix duplicates
+                                  </>
+                                )}
+                              </div>
+                              {/* Tooltip */}
+                              {hoveredModule === 'results' && (
+                                <div style={{
+                                  position: 'absolute',
+                                  bottom: 'calc(100% + 8px)',
+                                  left: '50%',
+                                  transform: 'translateX(-50%)',
+                                  background: 'rgba(0, 0, 0, 0.95)',
+                                  padding: '6px 10px',
+                                  borderRadius: '4px',
+                                  fontSize: '9px',
+                                  color: 'rgba(255, 255, 255, 0.9)',
+                                  whiteSpace: 'nowrap',
+                                  animation: 'tooltipFade 0.2s ease',
+                                  zIndex: 10,
+                                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                                }}>
+                                  Outputs actionable fixes
+                                  <div style={{
+                                    position: 'absolute',
+                                    bottom: '-5px',
+                                    left: '50%',
+                                    transform: 'translateX(-50%) rotate(45deg)',
+                                    width: '8px',
+                                    height: '8px',
+                                    background: 'rgba(0, 0, 0, 0.95)',
+                                    borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+                                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                                  }} />
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Enhanced Status Indicator */}
+                          <div style={{
+                            marginTop: '12px',
+                            padding: '8px 10px',
+                            background: '#1E1E1E',
+                            borderRadius: '6px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            border: analysisPhase === 'complete'
+                              ? '1px solid rgba(48, 209, 88, 0.2)'
+                              : '1px solid rgba(255, 255, 255, 0.05)',
+                            transition: 'border-color 0.3s ease',
+                          }}>
+                            <div style={{
+                              width: '8px',
+                              height: '8px',
+                              borderRadius: '50%',
+                              background: analysisPhase === 'idle'
+                                ? 'rgba(255, 255, 255, 0.3)'
+                                : analysisPhase === 'complete'
+                                  ? '#30D158'
+                                  : '#0D99FF',
+                              boxShadow: analysisPhase === 'idle'
+                                ? 'none'
+                                : analysisPhase === 'complete'
+                                  ? '0 0 8px rgba(48, 209, 88, 0.5)'
+                                  : '0 0 8px rgba(13, 153, 255, 0.5)',
+                              animation: analysisPhase !== 'idle' && analysisPhase !== 'complete'
+                                ? 'statusPulse 0.8s ease infinite'
+                                : 'none',
+                              transition: 'background 0.3s ease, box-shadow 0.3s ease',
+                            }} />
+                            <span style={{
+                              fontSize: '10px',
+                              fontWeight: analysisPhase === 'complete' ? '500' : '400',
+                              color: analysisPhase === 'idle'
+                                ? 'rgba(255, 255, 255, 0.4)'
+                                : analysisPhase === 'complete'
+                                  ? '#30D158'
+                                  : '#0D99FF',
+                              transition: 'color 0.3s ease',
+                            }}>
+                              {analysisPhase === 'idle' && 'Ready to analyze'}
+                              {analysisPhase === 'scan' && 'Scanning tokens...'}
+                              {analysisPhase === 'analyze' && 'Analyzing patterns...'}
+                              {analysisPhase === 'complete' && 'Analysis complete'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 1 ? (
+                    /* DESIGN SYSTEM & TOKENISATION - 6-Column Atomic Token Architecture */
+                    <>
+                    {/* Interactive Prototype Helper */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      marginBottom: '16px',
+                      padding: '8px 16px',
+                      background: 'rgba(99, 102, 241, 0.1)',
+                      borderRadius: '20px',
+                      border: '1px solid rgba(99, 102, 241, 0.2)',
+                      width: 'fit-content',
+                      margin: '0 auto 16px',
+                    }}>
+                      <span style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        background: '#6366F1',
+                        animation: 'statusPulse 1.5s ease infinite',
+                      }} />
+                      <span style={{
+                        fontSize: '11px',
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        fontWeight: '500',
+                      }}>
+                        Atomic Token Architecture
+                      </span>
+                      <span style={{
+                        fontSize: '10px',
+                        color: 'rgba(255, 255, 255, 0.4)',
+                      }}>
+                        — Click &quot;Apply Cascade&quot; to see token flow
+                      </span>
+                    </div>
+
+                    {/* 6-Column Atomic Token Grid */}
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '1200px',
+                      margin: '0 auto',
+                      display: 'grid',
+                      gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(6, 1fr)',
+                      gap: isMobile ? '12px' : '16px',
+                      padding: '8px',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                      fontSize: '11px',
+                    }}>
+                      {/* Column 1: Primitives */}
+                      <div style={{
+                        background: '#1A1A1A',
                         borderRadius: '12px',
-                        border: `1px solid rgba(${actColor}, 0.12)`,
+                        border: `1px solid ${['global', 'alias', 'component', 'complete'].includes(tokenPhase) ? 'rgba(48, 209, 88, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
+                        overflow: 'hidden',
+                        transition: 'all 0.4s ease',
+                        boxShadow: tokenPhase === 'global' ? '0 0 20px rgba(48, 209, 88, 0.2)' : 'none',
                       }}>
                         <div style={{
-                          fontSize: '0.6875rem',
-                          color: `rgb(${actColor})`,
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.1em',
-                          marginBottom: '0.5rem',
-                          fontWeight: '600',
+                          background: 'rgba(48, 209, 88, 0.1)',
+                          padding: '10px 12px',
+                          borderBottom: '1px solid rgba(48, 209, 88, 0.2)',
                         }}>
-                          Why This Matters
+                          <div style={{ fontSize: '9px', color: '#30D158', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Primitives</div>
+                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Raw Values</div>
                         </div>
+                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: '#DA0E29' }} />
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)', fontFamily: 'SF Mono, Monaco, monospace' }}>red-500</span>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: '#0D99FF' }} />
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)', fontFamily: 'SF Mono, Monaco, monospace' }}>blue-500</span>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: '#30D158' }} />
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)', fontFamily: 'SF Mono, Monaco, monospace' }}>green-500</span>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: '#1E1E1E', border: '1px solid rgba(255,255,255,0.2)' }} />
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)', fontFamily: 'SF Mono, Monaco, monospace' }}>gray-900</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Column 2: Colors (Semantic) */}
+                      <div style={{
+                        background: '#1A1A1A',
+                        borderRadius: '12px',
+                        border: `1px solid ${['alias', 'component', 'complete'].includes(tokenPhase) ? 'rgba(218, 14, 41, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
+                        overflow: 'hidden',
+                        transition: 'all 0.4s ease',
+                        transitionDelay: '0.1s',
+                        boxShadow: tokenPhase === 'alias' ? '0 0 20px rgba(218, 14, 41, 0.2)' : 'none',
+                      }}>
+                        <div style={{
+                          background: 'rgba(218, 14, 41, 0.1)',
+                          padding: '10px 12px',
+                          borderBottom: '1px solid rgba(218, 14, 41, 0.2)',
+                        }}>
+                          <div style={{ fontSize: '9px', color: '#DA0E29', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Colors</div>
+                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Semantic</div>
+                        </div>
+                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>brand.primary</span>
+                            <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#DA0E29' }} />
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>brand.accent</span>
+                            <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#0D99FF' }} />
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>feedback.success</span>
+                            <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#30D158' }} />
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>bg.surface</span>
+                            <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#1E1E1E', border: '1px solid rgba(255,255,255,0.2)' }} />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Column 3: Typography */}
+                      <div style={{
+                        background: '#1A1A1A',
+                        borderRadius: '12px',
+                        border: `1px solid ${['alias', 'component', 'complete'].includes(tokenPhase) ? 'rgba(162, 89, 255, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
+                        overflow: 'hidden',
+                        transition: 'all 0.4s ease',
+                        transitionDelay: '0.2s',
+                        boxShadow: tokenPhase === 'alias' ? '0 0 20px rgba(162, 89, 255, 0.2)' : 'none',
+                      }}>
+                        <div style={{
+                          background: 'rgba(162, 89, 255, 0.1)',
+                          padding: '10px 12px',
+                          borderBottom: '1px solid rgba(162, 89, 255, 0.2)',
+                        }}>
+                          <div style={{ fontSize: '9px', color: '#A259FF', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Typography</div>
+                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Font Tokens</div>
+                        </div>
+                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                          <div>
+                            <div style={{ fontSize: '14px', fontWeight: '700', color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.2 }}>Heading</div>
+                            <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', marginTop: '2px' }}>24/32 · Bold</div>
+                          </div>
+                          <div>
+                            <div style={{ fontSize: '11px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.8)' }}>Body Text</div>
+                            <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', marginTop: '2px' }}>14/20 · Regular</div>
+                          </div>
+                          <div>
+                            <div style={{ fontSize: '10px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.6)' }}>Caption</div>
+                            <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', marginTop: '2px' }}>12/16 · Medium</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Column 4: Spacing */}
+                      <div style={{
+                        background: '#1A1A1A',
+                        borderRadius: '12px',
+                        border: `1px solid ${['component', 'complete'].includes(tokenPhase) ? 'rgba(13, 153, 255, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
+                        overflow: 'hidden',
+                        transition: 'all 0.4s ease',
+                        transitionDelay: '0.3s',
+                        boxShadow: tokenPhase === 'component' ? '0 0 20px rgba(13, 153, 255, 0.2)' : 'none',
+                      }}>
+                        <div style={{
+                          background: 'rgba(13, 153, 255, 0.1)',
+                          padding: '10px 12px',
+                          borderBottom: '1px solid rgba(13, 153, 255, 0.2)',
+                        }}>
+                          <div style={{ fontSize: '9px', color: '#0D99FF', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Spacing</div>
+                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Scale System</div>
+                        </div>
+                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '4px', height: '12px', background: '#0D99FF', borderRadius: '2px' }} />
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'SF Mono, Monaco, monospace' }}>space-1</span>
+                            <span style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>4px</span>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '8px', height: '12px', background: '#0D99FF', borderRadius: '2px' }} />
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'SF Mono, Monaco, monospace' }}>space-2</span>
+                            <span style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>8px</span>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '16px', height: '12px', background: '#0D99FF', borderRadius: '2px' }} />
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'SF Mono, Monaco, monospace' }}>space-4</span>
+                            <span style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>16px</span>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '24px', height: '12px', background: '#0D99FF', borderRadius: '2px' }} />
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'SF Mono, Monaco, monospace' }}>space-6</span>
+                            <span style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>24px</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Column 5: Border & Radius */}
+                      <div style={{
+                        background: '#1A1A1A',
+                        borderRadius: '12px',
+                        border: `1px solid ${['component', 'complete'].includes(tokenPhase) ? 'rgba(255, 159, 10, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
+                        overflow: 'hidden',
+                        transition: 'all 0.4s ease',
+                        transitionDelay: '0.4s',
+                        boxShadow: tokenPhase === 'component' ? '0 0 20px rgba(255, 159, 10, 0.2)' : 'none',
+                      }}>
+                        <div style={{
+                          background: 'rgba(255, 159, 10, 0.1)',
+                          padding: '10px 12px',
+                          borderBottom: '1px solid rgba(255, 159, 10, 0.2)',
+                        }}>
+                          <div style={{ fontSize: '9px', color: '#FF9F0A', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Border</div>
+                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Radius & Stroke</div>
+                        </div>
+                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <div style={{ width: '20px', height: '20px', background: 'transparent', border: '2px solid #FF9F0A', borderRadius: '4px' }} />
+                            <div>
+                              <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)' }}>radius-sm</div>
+                              <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>4px</div>
+                            </div>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <div style={{ width: '20px', height: '20px', background: 'transparent', border: '2px solid #FF9F0A', borderRadius: '8px' }} />
+                            <div>
+                              <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)' }}>radius-md</div>
+                              <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>8px</div>
+                            </div>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <div style={{ width: '20px', height: '20px', background: 'transparent', border: '2px solid #FF9F0A', borderRadius: '12px' }} />
+                            <div>
+                              <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)' }}>radius-lg</div>
+                              <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>12px</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Column 6: Components */}
+                      <div style={{
+                        background: '#1A1A1A',
+                        borderRadius: '12px',
+                        border: `1px solid ${tokenPhase === 'complete' ? 'rgba(236, 72, 153, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
+                        overflow: 'hidden',
+                        transition: 'all 0.4s ease',
+                        transitionDelay: '0.5s',
+                        boxShadow: tokenPhase === 'complete' ? '0 0 20px rgba(236, 72, 153, 0.2)' : 'none',
+                      }}>
+                        <div style={{
+                          background: 'rgba(236, 72, 153, 0.1)',
+                          padding: '10px 12px',
+                          borderBottom: '1px solid rgba(236, 72, 153, 0.2)',
+                        }}>
+                          <div style={{ fontSize: '9px', color: '#EC4899', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Components</div>
+                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Applied Tokens</div>
+                        </div>
+                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                          {/* Mini Button Preview */}
+                          <div style={{
+                            background: tokenPhase === 'complete' ? '#DA0E29' : '#2C2C2C',
+                            padding: '6px 12px',
+                            borderRadius: '6px',
+                            textAlign: 'center',
+                            fontSize: '10px',
+                            fontWeight: '600',
+                            color: tokenPhase === 'complete' ? 'white' : 'rgba(255, 255, 255, 0.5)',
+                            transition: 'all 0.4s ease',
+                          }}>
+                            Button
+                          </div>
+                          {/* Mini Card Preview */}
+                          <div style={{
+                            background: tokenPhase === 'complete' ? '#1E1E1E' : '#2C2C2C',
+                            padding: '8px',
+                            borderRadius: tokenPhase === 'complete' ? '8px' : '4px',
+                            border: tokenPhase === 'complete' ? '1px solid rgba(218, 14, 41, 0.2)' : '1px solid rgba(255, 255, 255, 0.1)',
+                            transition: 'all 0.4s ease',
+                          }}>
+                            <div style={{ width: '100%', height: '4px', background: tokenPhase === 'complete' ? '#DA0E29' : 'rgba(255, 255, 255, 0.2)', borderRadius: '2px', marginBottom: '4px' }} />
+                            <div style={{ width: '70%', height: '3px', background: 'rgba(255, 255, 255, 0.15)', borderRadius: '2px' }} />
+                          </div>
+                          {/* Mini Input Preview */}
+                          <div style={{
+                            background: '#2C2C2C',
+                            padding: '6px 8px',
+                            borderRadius: tokenPhase === 'complete' ? '6px' : '4px',
+                            border: tokenPhase === 'complete' ? '1px solid rgba(13, 153, 255, 0.3)' : '1px solid rgba(255, 255, 255, 0.1)',
+                            fontSize: '9px',
+                            color: 'rgba(255, 255, 255, 0.4)',
+                            transition: 'all 0.4s ease',
+                          }}>
+                            Input field...
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Apply Cascade Button & Status */}
+                    <div style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '12px',
+                      marginTop: '20px',
+                    }}>
+                      <button
+                        onClick={() => {
+                          if (tokenPhase === 'idle' || tokenPhase === 'complete') {
+                            setTokenPhase('global');
+                            setTimeout(() => setTokenPhase('alias'), 600);
+                            setTimeout(() => setTokenPhase('component'), 1200);
+                            setTimeout(() => setTokenPhase('complete'), 1800);
+                          }
+                        }}
+                        style={{
+                          background: tokenPhase === 'complete' ? 'rgba(48, 209, 88, 0.2)' : 'rgba(99, 102, 241, 0.2)',
+                          border: `1px solid ${tokenPhase === 'complete' ? 'rgba(48, 209, 88, 0.4)' : 'rgba(99, 102, 241, 0.4)'}`,
+                          borderRadius: '8px',
+                          padding: '10px 24px',
+                          color: tokenPhase === 'complete' ? '#30D158' : '#818CF8',
+                          fontSize: '12px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                        }}
+                      >
+                        <span style={{
+                          width: '6px',
+                          height: '6px',
+                          borderRadius: '50%',
+                          background: tokenPhase === 'complete' ? '#30D158' : '#6366F1',
+                          animation: tokenPhase !== 'idle' && tokenPhase !== 'complete' ? 'statusPulse 1s ease infinite' : 'none',
+                        }} />
+                        {tokenPhase === 'idle' && 'Apply Cascade'}
+                        {tokenPhase === 'global' && 'Reading primitives...'}
+                        {tokenPhase === 'alias' && 'Mapping semantics...'}
+                        {tokenPhase === 'component' && 'Applying to components...'}
+                        {tokenPhase === 'complete' && 'Cascade Complete ✓'}
+                      </button>
+
+                      {/* Flow Indicator */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        fontSize: '10px',
+                        color: 'rgba(255, 255, 255, 0.4)',
+                      }}>
+                        <span style={{ color: ['global', 'alias', 'component', 'complete'].includes(tokenPhase) ? '#30D158' : 'inherit' }}>Primitives</span>
+                        <span>→</span>
+                        <span style={{ color: ['alias', 'component', 'complete'].includes(tokenPhase) ? '#DA0E29' : 'inherit' }}>Semantic</span>
+                        <span>→</span>
+                        <span style={{ color: ['component', 'complete'].includes(tokenPhase) ? '#A259FF' : 'inherit' }}>Applied</span>
+                        <span>→</span>
+                        <span style={{ color: tokenPhase === 'complete' ? '#EC4899' : 'inherit' }}>Components</span>
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 2 ? (
+                    /* Card 2: Search with AI - NLU Query Pipeline Visualization */
+                    <>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '1000px',
+                      margin: '0 auto',
+                      padding: '24px',
+                      borderRadius: '16px',
+                      background: 'var(--glass-06)',
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                    }}>
+                      {/* Query Input */}
+                      <div style={{
+                        padding: '16px 24px',
+                        borderRadius: '28px',
+                        background: 'var(--glass-08)',
+                        border: `1px solid rgba(${project.color}, 0.25)`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        marginBottom: '24px',
+                      }}>
+                        <Search size={20} style={{ color: `rgb(${project.color})` }} />
+                        <span style={{
+                          flex: 1,
+                          fontSize: '14px',
+                          color: 'var(--text-80)',
+                          fontFamily: 'inherit',
+                        }}>
+                          {queryPhase === 'idle' ? '"Show me flights to Delhi under ₹5000 next weekend"' :
+                           queryPhase === 'typing' ? displayedQuery + '|' :
+                           '"Show me flights to Delhi under ₹5000 next weekend"'}
+                        </span>
+                        <div style={{
+                          padding: '6px 12px',
+                          borderRadius: '14px',
+                          background: `rgba(${project.color}, 0.15)`,
+                          fontSize: '11px',
+                          fontWeight: '600',
+                          color: `rgb(${project.color})`,
+                        }}>
+                          Red Dot Award Winner
+                        </div>
+                      </div>
+
+                      {/* NLU Pipeline Stages */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(5, 1fr)',
+                        gap: '12px',
+                        marginBottom: '20px',
+                      }}>
+                        {[
+                          {
+                            title: 'TOKENIZE',
+                            items: ['"Show"', '"me"', '"flights"', '"to"', '"Delhi"'],
+                            color: '#6B7280',
+                            phase: 'tokenize'
+                          },
+                          {
+                            title: 'ENTITIES',
+                            items: ['📍 Delhi', '💰 ₹5000', '📅 weekend'],
+                            color: '#0D99FF',
+                            phase: 'entities'
+                          },
+                          {
+                            title: 'INTENT',
+                            items: ['SEARCH_FLIGHTS', '94.7% confidence'],
+                            color: '#A259FF',
+                            phase: 'intent'
+                          },
+                          {
+                            title: 'CONTEXT',
+                            items: ['Weekend travel', 'Budget: Low', 'Domestic'],
+                            color: '#30D158',
+                            phase: 'intent'
+                          },
+                          {
+                            title: 'RESULTS',
+                            items: ['✈ DEL ₹4,299', '✈ DEL ₹4,850', '✈ DEL ₹4,990'],
+                            color: project.color,
+                            phase: 'results'
+                          },
+                        ].map((stage, stageIdx) => (
+                          <div key={stage.title} style={{
+                            padding: '16px',
+                            borderRadius: '12px',
+                            background: 'var(--glass-04)',
+                            border: `1px solid ${
+                              queryPhase === stage.phase || queryPhase === 'results'
+                                ? `rgba(${stage.color === project.color ? project.color : stage.color.replace('#', '').match(/.{2}/g)?.map(x => parseInt(x, 16)).join(', ')}, 0.4)`
+                                : 'var(--glass-10)'
+                            }`,
+                            transition: 'all 0.4s ease',
+                            transform: queryPhase === stage.phase ? 'translateY(-4px)' : 'translateY(0)',
+                            boxShadow: queryPhase === stage.phase ? `0 8px 24px rgba(${stage.color === project.color ? project.color : '0,0,0'}, 0.2)` : 'none',
+                          }}>
+                            <div style={{
+                              fontSize: '10px',
+                              fontWeight: '700',
+                              color: stage.color === project.color ? `rgb(${project.color})` : stage.color,
+                              marginBottom: '12px',
+                              letterSpacing: '0.1em',
+                            }}>
+                              {stage.title}
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                              {stage.items.map((item, itemIdx) => (
+                                <div key={itemIdx} style={{
+                                  fontSize: '11px',
+                                  color: 'var(--text-70)',
+                                  padding: '4px 8px',
+                                  borderRadius: '6px',
+                                  background: 'var(--glass-06)',
+                                  opacity: queryPhase === 'idle' || ['tokenize', 'entities', 'intent', 'results'].indexOf(queryPhase) >= ['tokenize', 'entities', 'intent', 'results'].indexOf(stage.phase) ? 1 : 0.3,
+                                  transition: `all 0.3s ease ${itemIdx * 0.1}s`,
+                                }}>
+                                  {item}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Action Button & Status */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}>
+                        <button
+                          onClick={() => {
+                            if (queryPhase !== 'idle') return;
+                            const fullQuery = '"Show me flights to Delhi under ₹5000 next weekend"';
+                            setQueryPhase('typing');
+                            setDisplayedQuery('');
+
+                            // Typing animation
+                            let charIndex = 0;
+                            const typeInterval = setInterval(() => {
+                              if (charIndex < fullQuery.length) {
+                                setDisplayedQuery(fullQuery.slice(0, charIndex + 1));
+                                charIndex++;
+                              } else {
+                                clearInterval(typeInterval);
+                                // Progress through phases
+                                setTimeout(() => setQueryPhase('tokenize'), 300);
+                                setTimeout(() => setQueryPhase('entities'), 800);
+                                setTimeout(() => setQueryPhase('intent'), 1300);
+                                setTimeout(() => setQueryPhase('results'), 1800);
+                                setTimeout(() => setQueryPhase('idle'), 3500);
+                              }
+                            }, 30);
+                          }}
+                          style={{
+                            padding: '10px 20px',
+                            borderRadius: '10px',
+                            background: queryPhase === 'idle' ? `rgb(${project.color})` : 'var(--glass-15)',
+                            border: 'none',
+                            fontSize: '12px',
+                            fontWeight: '600',
+                            color: queryPhase === 'idle' ? 'white' : 'var(--text-60)',
+                            cursor: queryPhase === 'idle' ? 'pointer' : 'default',
+                            transition: 'all 0.3s ease',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                          }}
+                        >
+                          <span style={{
+                            width: '6px',
+                            height: '6px',
+                            borderRadius: '50%',
+                            background: queryPhase === 'idle' ? 'white' : `rgb(${project.color})`,
+                            animation: queryPhase !== 'idle' ? 'statusPulse 1s ease infinite' : 'none',
+                          }} />
+                          {queryPhase === 'idle' ? 'Run Query Pipeline' : 'Processing...'}
+                        </button>
+
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '16px',
+                          fontSize: '11px',
+                          color: 'var(--text-40)',
+                        }}>
+                          <span>Natural Language Understanding</span>
+                          <span>•</span>
+                          <span>Real-time Processing</span>
+                          <span>•</span>
+                          <span>Context-aware Results</span>
+                        </div>
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 3 ? (
+                    /* Card 3: MCP Handoff - Design-to-Code Bridge Visualization */
+                    <>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '1000px',
+                      margin: '0 auto',
+                      padding: '24px',
+                      borderRadius: '16px',
+                      background: 'var(--glass-06)',
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                    }}>
+                      {/* Pipeline Stages */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(4, 1fr)',
+                        gap: '16px',
+                        marginBottom: '24px',
+                        position: 'relative',
+                      }}>
+                        {/* Connection Lines SVG */}
+                        <svg style={{
+                          position: 'absolute',
+                          top: '50px',
+                          left: '12.5%',
+                          width: '75%',
+                          height: '4px',
+                          zIndex: 0,
+                        }}>
+                          <line x1="0" y1="2" x2="100%" y2="2"
+                            stroke={`rgba(${project.color}, 0.3)`}
+                            strokeWidth="2"
+                            strokeDasharray="8 4"
+                            style={{
+                              animation: mcpPhase !== 'idle' ? 'flowLine 1.5s linear infinite' : 'none',
+                            }}
+                          />
+                        </svg>
+
+                        {[
+                          {
+                            icon: '◇',
+                            title: 'FIGMA DESIGN',
+                            items: ['Frame', 'Button', 'Card', 'Input'],
+                            phase: 'design',
+                            color: '#A259FF'
+                          },
+                          {
+                            icon: '⚡',
+                            title: 'MCP SERVER',
+                            items: ['get_code()', 'get_variables()', 'get_metadata()'],
+                            phase: 'server',
+                            color: '#0D99FF'
+                          },
+                          {
+                            icon: '◉',
+                            title: 'AI AGENT',
+                            items: ['Claude', 'Cursor', 'Copilot'],
+                            phase: 'agent',
+                            color: '#30D158'
+                          },
+                          {
+                            icon: '<>',
+                            title: 'CODE OUTPUT',
+                            items: ['<Button />', 'variant="primary"', 'tokens applied'],
+                            phase: 'output',
+                            color: '#FF9F0A'
+                          },
+                        ].map((stage, idx) => (
+                          <div key={stage.title} style={{
+                            padding: '20px',
+                            borderRadius: '12px',
+                            background: 'var(--glass-04)',
+                            border: `1px solid ${mcpPhase === stage.phase ? stage.color : 'var(--glass-10)'}`,
+                            transition: 'all 0.4s ease',
+                            position: 'relative',
+                            zIndex: 1,
+                            transform: mcpPhase === stage.phase ? 'scale(1.02)' : 'scale(1)',
+                            boxShadow: mcpPhase === stage.phase ? `0 0 30px ${stage.color}30` : 'none',
+                          }}>
+                            <div style={{
+                              width: '40px',
+                              height: '40px',
+                              borderRadius: '10px',
+                              background: `${stage.color}20`,
+                              border: `1px solid ${stage.color}40`,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '18px',
+                              marginBottom: '12px',
+                            }}>
+                              {stage.icon}
+                            </div>
+                            <div style={{
+                              fontSize: '10px',
+                              fontWeight: '700',
+                              color: stage.color,
+                              marginBottom: '10px',
+                              letterSpacing: '0.1em',
+                            }}>
+                              {stage.title}
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                              {stage.items.map((item, itemIdx) => (
+                                <div key={itemIdx} style={{
+                                  fontSize: '11px',
+                                  color: 'var(--text-60)',
+                                  fontFamily: stage.title.includes('CODE') || stage.title.includes('SERVER') ? 'monospace' : 'inherit',
+                                }}>
+                                  {item}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Live Context Stream */}
+                      <div style={{
+                        padding: '16px',
+                        borderRadius: '10px',
+                        background: '#0D0D0D',
+                        border: '1px solid var(--glass-15)',
+                        marginBottom: '16px',
+                      }}>
+                        <div style={{
+                          fontSize: '9px',
+                          fontWeight: '600',
+                          color: '#30D158',
+                          marginBottom: '8px',
+                          letterSpacing: '0.15em',
+                        }}>
+                          LIVE CONTEXT STREAM
+                        </div>
+                        <div style={{
+                          fontFamily: 'SF Mono, Monaco, monospace',
+                          fontSize: '11px',
+                          color: '#30D158',
+                          opacity: mcpPhase !== 'idle' ? 1 : 0.5,
+                          transition: 'opacity 0.3s ease',
+                        }}>
+                          {`{ "component": "Button", "variant": "primary", "tokens": ["color.brand", "radius.md"] }`}
+                        </div>
+                      </div>
+
+                      {/* Action Button */}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <button
+                          onClick={() => {
+                            if (mcpPhase !== 'idle') return;
+                            setMcpPhase('design');
+                            setTimeout(() => setMcpPhase('server'), 600);
+                            setTimeout(() => setMcpPhase('agent'), 1200);
+                            setTimeout(() => setMcpPhase('output'), 1800);
+                            setTimeout(() => setMcpPhase('idle'), 3000);
+                          }}
+                          style={{
+                            padding: '10px 20px',
+                            borderRadius: '10px',
+                            background: mcpPhase === 'idle' ? `rgb(${project.color})` : 'var(--glass-15)',
+                            border: 'none',
+                            fontSize: '12px',
+                            fontWeight: '600',
+                            color: mcpPhase === 'idle' ? 'white' : 'var(--text-60)',
+                            cursor: mcpPhase === 'idle' ? 'pointer' : 'default',
+                            transition: 'all 0.3s ease',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                          }}
+                        >
+                          <span style={{
+                            width: '6px',
+                            height: '6px',
+                            borderRadius: '50%',
+                            background: mcpPhase === 'idle' ? 'white' : `rgb(${project.color})`,
+                            animation: mcpPhase !== 'idle' ? 'statusPulse 1s ease infinite' : 'none',
+                          }} />
+                          {mcpPhase === 'idle' ? 'Trigger Handoff' : 'Streaming Context...'}
+                        </button>
+
+                        <div style={{ fontSize: '11px', color: 'var(--text-40)' }}>
+                          Model Context Protocol • Anthropic Integration
+                        </div>
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 4 ? (
+                    /* Card 4: IFE System Design - Seatback Experience Visualization */
+                    <>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '900px',
+                      margin: '0 auto',
+                    }}>
+                      {/* Screen Mockup */}
+                      <div style={{
+                        padding: '20px',
+                        borderRadius: '20px',
+                        background: '#1A1A1A',
+                        border: '4px solid #2C2C2C',
+                        boxShadow: 'inset 0 0 40px rgba(0,0,0,0.5)',
+                        marginBottom: '16px',
+                      }}>
+                        <div style={{
+                          borderRadius: '12px',
+                          overflow: 'hidden',
+                          background: 'linear-gradient(180deg, #0A0A0A 0%, #1A1A1A 100%)',
+                        }}>
+                          {/* Navigation Tabs */}
+                          <div style={{
+                            display: 'flex',
+                            background: 'rgba(255,255,255,0.05)',
+                            padding: '10px',
+                            gap: '6px',
+                          }}>
+                            {['Movies', 'TV Shows', 'Music', 'Games', 'Flight Info'].map(tab => (
+                              <button
+                                key={tab}
+                                onClick={() => setActiveIFETab(tab.toLowerCase().replace(' ', ''))}
+                                style={{
+                                  background: activeIFETab === tab.toLowerCase().replace(' ', '') ? `rgb(${project.color})` : 'transparent',
+                                  color: 'white',
+                                  border: 'none',
+                                  padding: '8px 16px',
+                                  borderRadius: '6px',
+                                  fontSize: '12px',
+                                  fontWeight: '600',
+                                  cursor: 'pointer',
+                                  transition: 'all 0.2s ease',
+                                }}
+                              >
+                                {tab}
+                              </button>
+                            ))}
+                          </div>
+
+                          {/* Content Grid */}
+                          <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(4, 1fr)',
+                            gap: '12px',
+                            padding: '20px',
+                          }}>
+                            {['Featured', 'Action', 'Drama', 'Comedy'].map((genre, i) => (
+                              <div key={genre} style={{
+                                aspectRatio: '2/3',
+                                borderRadius: '8px',
+                                background: `linear-gradient(135deg, rgba(${project.color}, ${0.3 - i * 0.05}), rgba(${project.color}, 0.1))`,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '8px',
+                                border: '1px solid rgba(255,255,255,0.1)',
+                              }}>
+                                <span style={{ fontSize: '24px' }}>🎬</span>
+                                <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.7)' }}>{genre}</span>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Now Playing Bar */}
+                          <div style={{
+                            background: 'rgba(0,0,0,0.8)',
+                            padding: '14px 20px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '16px',
+                          }}>
+                            <div style={{
+                              width: '36px',
+                              height: '36px',
+                              borderRadius: '50%',
+                              background: `rgb(${project.color})`,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}>
+                              <div style={{ width: 0, height: 0, borderTop: '8px solid transparent', borderBottom: '8px solid transparent', borderLeft: '12px solid white', marginLeft: '3px' }} />
+                            </div>
+                            <div style={{ flex: 1 }}>
+                              <div style={{ fontSize: '13px', fontWeight: '600', color: 'white', marginBottom: '6px' }}>Now Playing: Pathaan</div>
+                              <div style={{ height: '4px', background: 'rgba(255,255,255,0.2)', borderRadius: '2px' }}>
+                                <div style={{ width: '45%', height: '100%', background: `rgb(${project.color})`, borderRadius: '2px' }} />
+                              </div>
+                            </div>
+                            <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.6)' }}>1:23:45</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Seat Info */}
+                      <div style={{ textAlign: 'center', marginBottom: '20px', fontSize: '12px', color: 'var(--text-40)' }}>
+                        SEAT 12A · Economy Class
+                      </div>
+
+                      {/* Design Constraint Badges */}
+                      <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                        {[
+                          { icon: '🎯', value: '44px', label: 'Touch Target' },
+                          { icon: '🔆', value: 'Auto', label: 'Brightness' },
+                          { icon: '♿', value: 'WCAG AA', label: 'Accessible' },
+                          { icon: '🌍', value: '12', label: 'Languages' },
+                        ].map((badge) => (
+                          <div key={badge.label} style={{
+                            padding: '12px 16px',
+                            borderRadius: '10px',
+                            background: 'var(--glass-06)',
+                            border: '1px solid var(--glass-15)',
+                            textAlign: 'center',
+                            minWidth: '90px',
+                          }}>
+                            <div style={{ fontSize: '18px', marginBottom: '4px' }}>{badge.icon}</div>
+                            <div style={{ fontSize: '13px', fontWeight: '700', color: `rgb(${project.color})` }}>{badge.value}</div>
+                            <div style={{ fontSize: '9px', color: 'var(--text-40)' }}>{badge.label}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 5 ? (
+                    /* Card 5: NPS Feedback System - Sentiment Dashboard Visualization */
+                    <>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '1000px',
+                      margin: '0 auto',
+                      padding: '24px',
+                      borderRadius: '16px',
+                      background: 'var(--glass-06)',
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                    }}>
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: isMobile ? '1fr' : '200px 1fr 1fr',
+                        gap: '24px',
+                        marginBottom: '24px',
+                      }}>
+                        {/* Score Card */}
+                        <div style={{
+                          padding: '24px',
+                          borderRadius: '16px',
+                          background: 'var(--glass-08)',
+                          border: '1px solid var(--glass-15)',
+                          textAlign: 'center',
+                        }}>
+                          <div style={{ fontSize: '11px', color: 'var(--text-40)', marginBottom: '8px', letterSpacing: '0.1em' }}>NPS SCORE</div>
+                          <div style={{
+                            fontSize: '48px',
+                            fontWeight: '700',
+                            color: '#30D158',
+                            lineHeight: 1,
+                          }}>
+                            +{npsPhase === 'complete' || npsPhase === 'idle' ? 67 : npsScore}
+                          </div>
+                          <div style={{ fontSize: '11px', color: 'var(--text-50)', marginTop: '8px' }}>Excellent</div>
+                        </div>
+
+                        {/* Gauge */}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <svg viewBox="0 0 200 120" style={{ width: '200px', height: '120px' }}>
+                            {/* Background arc */}
+                            <path
+                              d="M 20 100 A 80 80 0 0 1 180 100"
+                              fill="none"
+                              stroke="rgba(255,255,255,0.1)"
+                              strokeWidth="12"
+                              strokeLinecap="round"
+                            />
+                            {/* Red segment (Detractors) */}
+                            <path
+                              d="M 20 100 A 80 80 0 0 1 60 35"
+                              fill="none"
+                              stroke="#EF4444"
+                              strokeWidth="12"
+                              strokeLinecap="round"
+                            />
+                            {/* Yellow segment (Passives) */}
+                            <path
+                              d="M 60 35 A 80 80 0 0 1 140 35"
+                              fill="none"
+                              stroke="#F59E0B"
+                              strokeWidth="12"
+                            />
+                            {/* Green segment (Promoters) */}
+                            <path
+                              d="M 140 35 A 80 80 0 0 1 180 100"
+                              fill="none"
+                              stroke="#30D158"
+                              strokeWidth="12"
+                              strokeLinecap="round"
+                            />
+                            {/* Needle */}
+                            <line
+                              x1="100" y1="100"
+                              x2="100" y2="35"
+                              stroke="white"
+                              strokeWidth="3"
+                              strokeLinecap="round"
+                              style={{
+                                transformOrigin: '100px 100px',
+                                transform: `rotate(${(npsPhase === 'complete' || npsPhase === 'idle' ? 67 : npsScore) * 0.9 + 15}deg)`,
+                                transition: 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)',
+                              }}
+                            />
+                            <circle cx="100" cy="100" r="6" fill="white" />
+                          </svg>
+                        </div>
+
+                        {/* Distribution */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', justifyContent: 'center' }}>
+                          {[
+                            { label: 'Promoters (9-10)', percent: 72, color: '#30D158' },
+                            { label: 'Passives (7-8)', percent: 18, color: '#F59E0B' },
+                            { label: 'Detractors (0-6)', percent: 10, color: '#EF4444' },
+                          ].map((seg, i) => (
+                            <div key={seg.label}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                                <span style={{ fontSize: '11px', color: 'var(--text-60)' }}>{seg.label}</span>
+                                <span style={{ fontSize: '11px', color: seg.color, fontWeight: '600' }}>{seg.percent}%</span>
+                              </div>
+                              <div style={{ height: '8px', background: 'var(--glass-10)', borderRadius: '4px', overflow: 'hidden' }}>
+                                <div style={{
+                                  width: npsPhase === 'complete' || npsPhase === 'idle' ? `${seg.percent}%` : '0%',
+                                  height: '100%',
+                                  background: seg.color,
+                                  borderRadius: '4px',
+                                  transition: `width 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${i * 0.2}s`,
+                                }} />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Stat Cards */}
+                      <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '20px' }}>
+                        {[
+                          { icon: '📈', value: '+12%', label: 'YoY Growth' },
+                          { icon: '💬', value: '2.4K', label: 'Responses' },
+                          { icon: '⏱', value: '24hr', label: 'Avg Response' },
+                          { icon: '🎯', value: '78%', label: 'Action Rate' },
+                        ].map((stat) => (
+                          <div key={stat.label} style={{
+                            padding: '12px 20px',
+                            borderRadius: '10px',
+                            background: 'var(--glass-04)',
+                            border: '1px solid var(--glass-10)',
+                            textAlign: 'center',
+                          }}>
+                            <span style={{ fontSize: '14px' }}>{stat.icon}</span>
+                            <div style={{ fontSize: '16px', fontWeight: '700', color: `rgb(${project.color})` }}>{stat.value}</div>
+                            <div style={{ fontSize: '9px', color: 'var(--text-40)' }}>{stat.label}</div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Action Button */}
+                      <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <button
+                          onClick={() => {
+                            if (npsPhase !== 'idle') return;
+                            setNpsPhase('score');
+                            setNpsScore(0);
+                            const scoreInterval = setInterval(() => {
+                              setNpsScore(prev => {
+                                if (prev >= 67) {
+                                  clearInterval(scoreInterval);
+                                  setNpsPhase('gauge');
+                                  setTimeout(() => setNpsPhase('bars'), 500);
+                                  setTimeout(() => setNpsPhase('complete'), 1500);
+                                  setTimeout(() => setNpsPhase('idle'), 3000);
+                                  return 67;
+                                }
+                                return prev + 3;
+                              });
+                            }, 30);
+                          }}
+                          style={{
+                            padding: '10px 20px',
+                            borderRadius: '10px',
+                            background: npsPhase === 'idle' ? `rgb(${project.color})` : 'var(--glass-15)',
+                            border: 'none',
+                            fontSize: '12px',
+                            fontWeight: '600',
+                            color: npsPhase === 'idle' ? 'white' : 'var(--text-60)',
+                            cursor: npsPhase === 'idle' ? 'pointer' : 'default',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                          }}
+                        >
+                          <span style={{
+                            width: '6px',
+                            height: '6px',
+                            borderRadius: '50%',
+                            background: npsPhase === 'idle' ? 'white' : '#30D158',
+                            animation: npsPhase !== 'idle' && npsPhase !== 'complete' ? 'statusPulse 1s ease infinite' : 'none',
+                          }} />
+                          {npsPhase === 'idle' ? 'Refresh Dashboard' : npsPhase === 'complete' ? 'Data Updated ✓' : 'Loading...'}
+                        </button>
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 6 ? (
+                    /* Card 6: Competitor Analysis - Feature Matrix Visualization */
+                    <>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '1000px',
+                      margin: '0 auto',
+                      padding: '24px',
+                      borderRadius: '16px',
+                      background: 'var(--glass-06)',
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                    }}>
+                      {/* Matrix Header */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: '140px repeat(4, 1fr)',
+                        gap: '8px',
+                        marginBottom: '8px',
+                        paddingBottom: '12px',
+                        borderBottom: '1px solid var(--glass-10)',
+                      }}>
+                        <div style={{ fontSize: '10px', fontWeight: '600', color: 'var(--text-40)', letterSpacing: '0.1em' }}>FEATURE</div>
+                        {['Air India', 'Emirates', 'Singapore', 'Delta'].map(airline => (
+                          <div key={airline} style={{ fontSize: '10px', fontWeight: '600', color: 'var(--text-60)', textAlign: 'center' }}>
+                            {airline}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Matrix Rows */}
+                      {[
+                        { feature: 'Booking UX', scores: [4, 5, 5, 4] },
+                        { feature: 'Mobile App', scores: [5, 4, 5, 5] },
+                        { feature: 'IFE System', scores: [5, 5, 4, 4] },
+                        { feature: 'Check-in', scores: [4, 5, 4, 5] },
+                        { feature: 'Lounge Access', scores: [3, 5, 5, 4] },
+                      ].map((row, rowIdx) => (
+                        <div
+                          key={row.feature}
+                          onMouseEnter={() => setCompetitorHoveredRow(rowIdx)}
+                          onMouseLeave={() => setCompetitorHoveredRow(null)}
+                          style={{
+                            display: 'grid',
+                            gridTemplateColumns: '140px repeat(4, 1fr)',
+                            gap: '8px',
+                            padding: '12px 0',
+                            background: competitorHoveredRow === rowIdx ? 'var(--glass-06)' : 'transparent',
+                            borderRadius: '8px',
+                            transition: 'all 0.2s ease',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          <div style={{ fontSize: '12px', color: 'var(--text-70)', fontWeight: '500' }}>{row.feature}</div>
+                          {row.scores.map((score, scoreIdx) => (
+                            <div key={scoreIdx} style={{ display: 'flex', gap: '3px', justifyContent: 'center' }}>
+                              {[1, 2, 3, 4, 5].map(dot => (
+                                <div key={dot} style={{
+                                  width: '10px',
+                                  height: '10px',
+                                  borderRadius: '50%',
+                                  background: dot <= score
+                                    ? scoreIdx === 0 ? `rgb(${project.color})` : dot <= 3 ? '#F59E0B' : '#30D158'
+                                    : 'var(--glass-15)',
+                                  transition: 'all 0.2s ease',
+                                  transform: competitorHoveredRow === rowIdx ? 'scale(1.1)' : 'scale(1)',
+                                }} />
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+
+                      {/* Summary */}
+                      <div style={{
+                        marginTop: '20px',
+                        paddingTop: '16px',
+                        borderTop: '1px solid var(--glass-10)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        gap: '24px',
+                        fontSize: '11px',
+                        color: 'var(--text-40)',
+                      }}>
+                        <span>15+ apps analyzed</span>
+                        <span>•</span>
+                        <span>47 features benchmarked</span>
+                        <span>•</span>
+                        <span>6-month research period</span>
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 7 ? (
+                    /* Card 7: Liftoff Program - Learning Path Timeline Visualization */
+                    <>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '900px',
+                      margin: '0 auto',
+                      padding: '24px',
+                      borderRadius: '16px',
+                      background: 'var(--glass-06)',
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                    }}>
+                      {/* Timeline */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginBottom: '32px',
+                        position: 'relative',
+                      }}>
+                        {/* Connection Line */}
+                        <div style={{
+                          position: 'absolute',
+                          top: '50%',
+                          left: '5%',
+                          width: '90%',
+                          height: '2px',
+                          background: 'var(--glass-15)',
+                          transform: 'translateY(-50%)',
+                        }}>
+                          <div style={{
+                            width: `${(liftoffWeek / 6) * 100}%`,
+                            height: '100%',
+                            background: `rgb(${project.color})`,
+                            transition: 'width 0.5s ease',
+                          }} />
+                        </div>
+
+                        {[1, 2, 3, 4, 5, 6].map(week => (
+                          <div
+                            key={week}
+                            onClick={() => setLiftoffWeek(week)}
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              gap: '8px',
+                              cursor: 'pointer',
+                              position: 'relative',
+                              zIndex: 1,
+                            }}
+                          >
+                            <div style={{
+                              width: '24px',
+                              height: '24px',
+                              borderRadius: '50%',
+                              background: week <= liftoffWeek ? `rgb(${project.color})` : 'var(--glass-20)',
+                              border: week === liftoffWeek ? `3px solid white` : '2px solid var(--glass-30)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              transition: 'all 0.3s ease',
+                              boxShadow: week === liftoffWeek ? `0 0 20px rgba(${project.color}, 0.5)` : 'none',
+                            }}>
+                              {week < liftoffWeek && <CheckCircle size={12} color="white" />}
+                            </div>
+                            <span style={{
+                              fontSize: '10px',
+                              color: week === liftoffWeek ? `rgb(${project.color})` : 'var(--text-40)',
+                              fontWeight: week === liftoffWeek ? '600' : '400',
+                            }}>
+                              Week {week}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Current Module */}
+                      <div style={{
+                        padding: '20px',
+                        borderRadius: '12px',
+                        background: 'var(--glass-08)',
+                        border: `1px solid rgba(${project.color}, 0.3)`,
+                        marginBottom: '24px',
+                      }}>
+                        <div style={{ fontSize: '10px', color: 'var(--text-40)', marginBottom: '8px', letterSpacing: '0.1em' }}>CURRENT MODULE</div>
+                        <div style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-90)', marginBottom: '12px' }}>
+                          {['Onboarding', 'Design Principles', 'Component Systems', 'Design Systems', 'Advanced Patterns', 'Capstone'][liftoffWeek - 1]}
+                        </div>
+                        <div style={{ height: '8px', background: 'var(--glass-10)', borderRadius: '4px', overflow: 'hidden', marginBottom: '8px' }}>
+                          <div style={{
+                            width: '75%',
+                            height: '100%',
+                            background: `linear-gradient(90deg, rgb(${project.color}), rgba(${project.color}, 0.6))`,
+                            borderRadius: '4px',
+                          }} />
+                        </div>
+                        <div style={{ fontSize: '11px', color: 'var(--text-50)' }}>3 of 4 workshops completed</div>
+                      </div>
+
+                      {/* Stats */}
+                      <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+                        {[
+                          { value: '12', label: 'Mentees' },
+                          { value: '24', label: 'Sessions' },
+                          { value: '89%', label: 'Completion' },
+                        ].map(stat => (
+                          <div key={stat.label} style={{
+                            padding: '12px 24px',
+                            borderRadius: '10px',
+                            background: 'var(--glass-04)',
+                            textAlign: 'center',
+                          }}>
+                            <div style={{ fontSize: '20px', fontWeight: '700', color: `rgb(${project.color})` }}>{stat.value}</div>
+                            <div style={{ fontSize: '10px', color: 'var(--text-40)' }}>{stat.label}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 8 ? (
+                    /* Card 8: Microsoft Hackathon - Azure AI Sentiment Pipeline Visualization */
+                    <>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '900px',
+                      margin: '0 auto',
+                      padding: '24px',
+                      borderRadius: '16px',
+                      background: 'var(--glass-06)',
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                    }}>
+                      {/* Pipeline */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(3, 1fr)',
+                        gap: '16px',
+                        marginBottom: '24px',
+                      }}>
+                        {[
+                          { title: 'INPUT', content: '"Great product!"', icon: '📝' },
+                          { title: 'AZURE COGNITIVE', content: 'Sentiment Analysis', icon: '🧠' },
+                          { title: 'OUTPUT', content: '😊 0.92 Positive', icon: '✨' },
+                        ].map((stage, idx) => (
+                          <div key={stage.title} style={{
+                            padding: '20px',
+                            borderRadius: '12px',
+                            background: 'var(--glass-08)',
+                            border: '1px solid var(--glass-15)',
+                            textAlign: 'center',
+                          }}>
+                            <div style={{ fontSize: '24px', marginBottom: '8px' }}>{stage.icon}</div>
+                            <div style={{ fontSize: '10px', color: `rgb(${project.color})`, fontWeight: '600', letterSpacing: '0.1em', marginBottom: '8px' }}>
+                              {stage.title}
+                            </div>
+                            <div style={{ fontSize: '12px', color: 'var(--text-70)' }}>{stage.content}</div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Live Feed */}
+                      <div style={{
+                        padding: '16px',
+                        borderRadius: '10px',
+                        background: '#0D0D0D',
+                        border: '1px solid var(--glass-15)',
+                        marginBottom: '20px',
+                      }}>
+                        <div style={{ fontSize: '9px', fontWeight: '600', color: '#30D158', marginBottom: '12px', letterSpacing: '0.15em' }}>
+                          LIVE SENTIMENT FEED
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          {[
+                            { text: '"Love this product!"', emoji: '😊', score: 0.95 },
+                            { text: '"Could be better"', emoji: '😐', score: 0.45 },
+                            { text: '"Amazing work!"', emoji: '😊', score: 0.89 },
+                          ].map((item, idx) => (
+                            <div key={idx} style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              padding: '8px 12px',
+                              borderRadius: '6px',
+                              background: 'var(--glass-06)',
+                              opacity: idx <= hackathonFeedIndex ? 1 : 0.3,
+                              transition: 'opacity 0.3s ease',
+                            }}>
+                              <span style={{ fontSize: '11px', color: 'var(--text-60)' }}>{item.text}</span>
+                              <span style={{ fontSize: '12px' }}>{item.emoji} {item.score.toFixed(2)}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Award Badge */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '16px',
+                      }}>
+                        <div style={{
+                          padding: '10px 20px',
+                          borderRadius: '20px',
+                          background: `rgba(${project.color}, 0.15)`,
+                          border: `1px solid rgba(${project.color}, 0.3)`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                        }}>
+                          <Trophy size={16} style={{ color: `rgb(${project.color})` }} />
+                          <span style={{ fontSize: '12px', fontWeight: '600', color: `rgb(${project.color})` }}>1st Place</span>
+                        </div>
+                        <span style={{ fontSize: '11px', color: 'var(--text-40)' }}>48hr Build • Azure AI Services</span>
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 9 ? (
+                    /* Card 9: Internal Hackathon - Sprint Timeline Visualization */
+                    <>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '900px',
+                      margin: '0 auto',
+                      padding: '24px',
+                      borderRadius: '16px',
+                      background: 'var(--glass-06)',
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                    }}>
+                      {/* Sprint Timeline */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginBottom: '24px',
+                        position: 'relative',
+                      }}>
+                        {/* Connection Line */}
+                        <div style={{
+                          position: 'absolute',
+                          top: '20px',
+                          left: '10%',
+                          width: '80%',
+                          height: '3px',
+                          background: 'var(--glass-15)',
+                        }}>
+                          <div style={{
+                            width: `${(['idea', 'design', 'build', 'test', 'ship'].indexOf(sprintPhase) + 1) * 25}%`,
+                            height: '100%',
+                            background: `rgb(${project.color})`,
+                            transition: 'width 0.5s ease',
+                          }} />
+                        </div>
+
+                        {[
+                          { phase: 'idea', label: 'IDEA', time: '2hr' },
+                          { phase: 'design', label: 'DESIGN', time: '4hr' },
+                          { phase: 'build', label: 'BUILD', time: '12hr' },
+                          { phase: 'test', label: 'TEST', time: '4hr' },
+                          { phase: 'ship', label: 'SHIP', time: '2hr' },
+                        ].map((stage, idx) => {
+                          const phaseOrder = ['idea', 'design', 'build', 'test', 'ship'];
+                          const currentIdx = phaseOrder.indexOf(sprintPhase);
+                          const stageIdx = phaseOrder.indexOf(stage.phase);
+                          const isComplete = stageIdx < currentIdx;
+                          const isCurrent = stage.phase === sprintPhase;
+
+                          return (
+                            <div
+                              key={stage.phase}
+                              onClick={() => setSprintPhase(stage.phase as typeof sprintPhase)}
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                gap: '8px',
+                                cursor: 'pointer',
+                                position: 'relative',
+                                zIndex: 1,
+                              }}
+                            >
+                              <div style={{
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '50%',
+                                background: isComplete || isCurrent ? `rgb(${project.color})` : 'var(--glass-20)',
+                                border: isCurrent ? '3px solid white' : '2px solid var(--glass-30)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '14px',
+                                transition: 'all 0.3s ease',
+                                boxShadow: isCurrent ? `0 0 25px rgba(${project.color}, 0.6)` : 'none',
+                              }}>
+                                {isComplete ? '✓' : isCurrent ? '●' : '○'}
+                              </div>
+                              <span style={{
+                                fontSize: '10px',
+                                fontWeight: '700',
+                                color: isCurrent ? `rgb(${project.color})` : 'var(--text-50)',
+                                letterSpacing: '0.05em',
+                              }}>
+                                {stage.label}
+                              </span>
+                              <span style={{ fontSize: '9px', color: 'var(--text-30)' }}>{stage.time}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* Progress Bar */}
+                      <div style={{
+                        padding: '16px 20px',
+                        borderRadius: '12px',
+                        background: 'var(--glass-08)',
+                        border: '1px solid var(--glass-15)',
+                        marginBottom: '20px',
+                      }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                          <span style={{ fontSize: '11px', color: 'var(--text-50)' }}>Sprint Progress</span>
+                          <span style={{ fontSize: '11px', color: `rgb(${project.color})`, fontWeight: '600' }}>18:32:45 remaining</span>
+                        </div>
+                        <div style={{ height: '12px', background: 'var(--glass-10)', borderRadius: '6px', overflow: 'hidden' }}>
+                          <div style={{
+                            width: '75%',
+                            height: '100%',
+                            background: `linear-gradient(90deg, rgb(${project.color}), rgba(${project.color}, 0.6))`,
+                            borderRadius: '6px',
+                          }} />
+                        </div>
+                      </div>
+
+                      {/* Team & Tech */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '24px',
+                        flexWrap: 'wrap',
+                      }}>
+                        <div style={{
+                          padding: '10px 20px',
+                          borderRadius: '20px',
+                          background: `rgba(${project.color}, 0.15)`,
+                          border: `1px solid rgba(${project.color}, 0.3)`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                        }}>
+                          <Trophy size={16} style={{ color: `rgb(${project.color})` }} />
+                          <span style={{ fontSize: '12px', fontWeight: '600', color: `rgb(${project.color})` }}>Winner</span>
+                        </div>
+                        <span style={{ fontSize: '11px', color: 'var(--text-40)' }}>Team: 4 designers</span>
+                        <span style={{ fontSize: '11px', color: 'var(--text-40)' }}>Tech: React + Figma API</span>
+                        <span style={{ fontSize: '11px', color: '#30D158', fontWeight: '500' }}>Shipped to Production ✓</span>
+                      </div>
+                    </div>
+                    </>
+                  ) : (
+                    /* Default Image Placeholder for other cards */
+                    <div style={{
+                      width: '100%',
+                      aspectRatio: '16 / 9',
+                      borderRadius: '16px',
+                      background: `linear-gradient(135deg, rgba(${project.color}, 0.08), var(--glass-06))`,
+                      border: `2px dashed rgba(${project.color}, 0.25)`,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.75rem',
+                      position: 'relative',
+                      overflow: 'hidden',
+                    }}>
+                      <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: `radial-gradient(ellipse at center, rgba(${project.color}, 0.05), transparent 70%)`,
+                        pointerEvents: 'none',
+                      }} />
+                      <Camera size={32} style={{ color: `rgba(${project.color}, 0.5)` }} />
+                      <span style={{
+                        fontSize: '0.875rem',
+                        color: 'var(--text-40)',
+                        fontWeight: '500',
+                      }}>
+                        Add {project.title} Screenshot
+                      </span>
+                      <span style={{
+                        fontSize: '0.75rem',
+                        color: 'var(--text-25)',
+                      }}>
+                        16:9 aspect ratio recommended
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Full Narrative Description - with image for Pixel Radar and Design System */}
+                  {index === 0 ? (
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '1100px',
+                      margin: '0 auto',
+                      display: 'grid',
+                      gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+                      gap: '24px',
+                      padding: '8px',
+                      alignItems: 'start',
+                    }}>
+                      {/* Author Photo */}
+                      <div style={{
+                        width: '100%',
+                        aspectRatio: '4 / 3',
+                        borderRadius: '12px',
+                        overflow: 'hidden',
+                        background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(13, 153, 255, 0.15))',
+                      }}>
+                        <img
+                          src="/images/pixel-radar-author.jpeg"
+                          alt="Developer"
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                          }}
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                      </div>
+                      {/* Text */}
+                      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
                         <p style={{
-                          fontSize: '0.875rem',
-                          color: 'var(--text-secondary)',
-                          fontStyle: 'italic',
-                          lineHeight: 1.6,
+                          fontSize: '0.938rem',
+                          color: 'var(--text-60)',
+                          lineHeight: 1.8,
+                          margin: '0 0 1rem 0',
+                        }}>
+                          When there&apos;s no design system, every screen is an island. Designers were making isolated decisions. Engineers were interpreting specs differently. Reviews caught inconsistencies too late—if at all.
+                        </p>
+                        <p style={{
+                          fontSize: '0.938rem',
+                          color: 'var(--text-60)',
+                          lineHeight: 1.8,
                           margin: 0,
                         }}>
-                          {project.recruiterInsight}
+                          So I built Pixel Radar—a Figma plugin that automates consistency checks. What started as a personal workflow fix became infrastructure serving 450+ daily users, cutting design review time by 30%. It solved a problem the organization didn&apos;t have budget or bandwidth to address through official channels.
                         </p>
                       </div>
                     </div>
+                  ) : index === 1 ? (
+                    /* Full-width narrative text for Design System */
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '1100px',
+                      margin: '0 auto',
+                      padding: '8px',
+                    }}>
+                      <p style={{
+                        fontSize: '0.938rem',
+                        color: 'var(--text-60)',
+                        lineHeight: 1.8,
+                        margin: '0 0 1rem 0',
+                      }}>
+                        I started by reverse-engineering what existed. Hundreds of screens, undocumented, built over years by people who&apos;d since left. I extracted the implicit logic—spacing patterns, typography decisions, color usage—and codified it into a systematic token framework.
+                      </p>
+                      <p style={{
+                        fontSize: '0.938rem',
+                        color: 'var(--text-60)',
+                        lineHeight: 1.8,
+                        margin: 0,
+                      }}>
+                        This became the foundation that would let four merging airlines eventually speak the same design language. Variables, naming conventions, hierarchy—the infrastructure that makes consistency possible at scale.
+                      </p>
+                    </div>
+                  ) : (
+                    <p style={{
+                      fontSize: '0.938rem',
+                      color: 'var(--text-60)',
+                      lineHeight: 1.8,
+                      whiteSpace: 'pre-line',
+                    }}>
+                      {project.longDescription}
+                    </p>
                   )}
                 </div>
+              </div>
+
+                {/* Narrative Connectors */}
+                {index === 1 && (
+                  <NarrativeConnector fromAct={1} toAct={2} text={narrativeTransitions.act1to2} />
+                )}
+                {index === 5 && (
+                  <NarrativeConnector fromAct={2} toAct={3} text={narrativeTransitions.act2to3} />
+                )}
               </React.Fragment>
             );
           })}
         </div>
       </section>
-
-      {/* OLD SECTION 4 CARD RENDERING CODE REMOVED - Replaced with three-act narrative structure above */}
-      {/* Lines 1510-5200 of original code deleted - contained old projects.map() with 10 uniform cards */}
 
       {/* =========================================================================
           SECTION 5: DEEP DIVE - PIXEL RADAR
