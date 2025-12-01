@@ -2102,14 +2102,11 @@ export function AirIndiaWork() {
           {projects.map((project, index) => {
             const Icon = project.icon;
             const isHovered = hoveredProject === project.id;
-            // Act I cards always expanded, others based on scroll trigger
-            const isExpanded = index < 2 ? true : expandedCards.has(project.id);
+            // All cards scroll-triggered (reverted to simpler uniform behavior)
+            const isExpanded = expandedCards.has(project.id);
 
-            // Determine which act this project belongs to
-            const isActI = index < 2;
-            const isActII = index >= 2 && index < 6;
-            const isActIII = index >= 6;
-            const actColor = isActI ? actConfig[1].color : isActII ? actConfig[2].color : actConfig[3].color;
+            // Determine which act this project belongs to (for narrative headers only)
+            const actColor = index < 2 ? actConfig[1].color : index < 6 ? actConfig[2].color : actConfig[3].color;
 
             return (
               <React.Fragment key={project.id}>
@@ -2164,26 +2161,20 @@ export function AirIndiaWork() {
                   onMouseLeave={handleCardMouseLeave}
                   style={{
                     width: '100%',
-                    minHeight: isMobile ? '280px' : (isExpanded ? (isActI ? '580px' : '520px') : '200px'),
+                    minHeight: isMobile ? '280px' : (isExpanded ? '800px' : '200px'),
                     position: 'relative',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '1.5rem',
                     padding: isMobile ? '1.5rem' : (isExpanded ? '2.5rem 3rem' : '2rem 2.5rem'),
-                    borderRadius: isExpanded ? '28px' : '24px',
-                    background: `
-                      radial-gradient(ellipse at 70% 30%, rgba(${actColor}, ${isExpanded ? 0.18 : 0.08}), transparent 50%),
-                      radial-gradient(ellipse at 30% 70%, rgba(${actColor}, ${isExpanded ? 0.1 : 0.03}), transparent 50%),
-                      var(--glass-04)
-                    `,
+                    borderRadius: '24px',
+                    background: 'var(--glass-04)',
                     backdropFilter: 'blur(40px)',
                     WebkitBackdropFilter: 'blur(40px)',
-                    border: `1px solid ${isExpanded ? `rgba(${actColor}, 0.4)` : 'var(--glass-08)'}`,
+                    border: '1px solid var(--glass-08)',
                     transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                     transform: isHovered && !isMobile ? 'translate3d(0, -4px, 0)' : 'translate3d(0, 0, 0)',
-                    boxShadow: isExpanded
-                      ? `0 40px 80px -20px rgba(${actColor}, 0.35), 0 20px 40px -15px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(${actColor}, 0.12)`
-                      : '0 8px 32px -8px rgba(0,0,0,0.2)',
+                    boxShadow: '0 8px 32px -8px rgba(0,0,0,0.2)',
                     opacity: isExpanded ? 1 : 0.9,
                     animation: inView ? `scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.4 + index * 0.05}s both` : 'none',
                     overflow: 'hidden',
@@ -2191,37 +2182,6 @@ export function AirIndiaWork() {
                     zIndex: isHovered ? 20 : 1,
                   }}
                 >
-                  {/* Animated Glow Orb */}
-                  <div style={{
-                    position: 'absolute',
-                    top: '20%',
-                    right: '10%',
-                    width: '150px',
-                    height: '150px',
-                    borderRadius: '50%',
-                    background: `radial-gradient(circle, rgba(${actColor}, ${isExpanded ? 0.2 : 0.08}), transparent 70%)`,
-                    filter: 'blur(50px)',
-                    transition: 'all 0.6s ease',
-                    pointerEvents: 'none',
-                  }} />
-
-                  {/* Border Shimmer when expanded */}
-                  {isExpanded && (
-                    <div style={{
-                      position: 'absolute',
-                      inset: 0,
-                      borderRadius: '28px',
-                      padding: '1px',
-                      background: `linear-gradient(90deg, transparent, rgba(${actColor}, 0.4), transparent)`,
-                      backgroundSize: '200% 100%',
-                      animation: 'borderShimmer 3s ease-in-out infinite',
-                      WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                      WebkitMaskComposite: 'xor',
-                      maskComposite: 'exclude',
-                      pointerEvents: 'none',
-                    }} />
-                  )}
-
                   {/* TOP ROW: Header with Category, Title, Subtitle, and Mini Visual */}
                   <div style={{
                     display: 'flex',
@@ -2254,7 +2214,7 @@ export function AirIndiaWork() {
 
                       {/* Title */}
                       <h3 style={{
-                        fontSize: isActI ? 'clamp(1.5rem, 2.5vw, 1.875rem)' : 'clamp(1.25rem, 2vw, 1.5rem)',
+                        fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
                         fontWeight: '600',
                         color: 'var(--text-primary)',
                         marginBottom: '0.375rem',
@@ -2289,12 +2249,10 @@ export function AirIndiaWork() {
                               alignItems: 'flex-start',
                             }}>
                               <span style={{
-                                fontSize: isActI ? '1.5rem' : '1.25rem',
+                                fontSize: '1.25rem',
                                 fontWeight: '700',
                                 color: `rgb(${actColor})`,
                                 lineHeight: 1,
-                                textShadow: isExpanded ? `0 0 15px rgba(${actColor}, 0.4)` : 'none',
-                                transition: 'text-shadow 0.4s ease',
                               }}>
                                 {stat.value}
                               </span>
