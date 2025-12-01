@@ -3,6 +3,8 @@ import { Inter, Manrope } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/effects/ThemeProvider';
 import { FocusManager } from '@/components/effects/FocusManager';
+import { PersonalizationProvider } from '@/hooks/usePersonalization';
+import { BehaviorTracker } from '@/components/effects/BehaviorTracker';
 import dynamic from 'next/dynamic';
 
 // Lazy load MicroInteractionProvider for better initial load
@@ -97,14 +99,20 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <ThemeProvider defaultTheme="dark" attribute="data-theme">
-          {/* Micro-interactions system */}
-          <MicroInteractionProvider />
+          {/* Personalization system */}
+          <PersonalizationProvider>
+            {/* Behavioral tracking (invisible) */}
+            <BehaviorTracker />
 
-          {/* Enhanced focus management */}
-          <FocusManager />
+            {/* Micro-interactions system */}
+            <MicroInteractionProvider />
 
-          {/* Main content */}
-          {children}
+            {/* Enhanced focus management */}
+            <FocusManager />
+
+            {/* Main content */}
+            {children}
+          </PersonalizationProvider>
         </ThemeProvider>
       </body>
     </html>
