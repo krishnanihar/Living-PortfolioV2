@@ -753,6 +753,45 @@ button {
   }
 }
 
+/* Ken Burns effect for hero images */
+@keyframes kenBurns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.05) translate(-1%, 1%);
+  }
+  100% {
+    transform: scale(1) translate(0, 0);
+  }
+}
+
+/* Hero image reveal animation */
+@keyframes heroImageReveal {
+  from {
+    opacity: 0;
+    transform: translateX(60px) scale(1.08);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Hero content reveal animation */
+@keyframes heroContentReveal {
+  from {
+    opacity: 0;
+    transform: translateX(-40px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
 @keyframes cardParallax {
   0%, 100% {
     transform: translateY(0);

@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import {
   Target,
   Trophy,
@@ -923,114 +925,246 @@ export function AirIndiaWork() {
       </div>
 
       {/* =========================================================================
-          SECTION 1: HERO
+          SECTION 1: HERO - Split Composition
       ========================================================================= */}
       <header style={{
-        minHeight: '85vh',
+        minHeight: '90vh',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        padding: 'clamp(6rem, 12vh, 10rem) 1.5rem clamp(3rem, 8vh, 6rem)',
         position: 'relative',
         zIndex: 1,
+        overflow: 'hidden',
       }}>
+        {/* Background Image Container */}
         <div style={{
-          textAlign: 'center',
-          maxWidth: '900px',
-          margin: '0 auto',
-          animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
-          opacity: inView ? 1 : 0,
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          width: isMobile ? '100%' : '55%',
+          height: '100%',
+          zIndex: 0,
+          overflow: 'hidden',
         }}>
-          {/* Context Header */}
+          {/* Hero Image */}
           <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.75rem',
-            fontSize: '0.813rem',
-            color: 'var(--text-muted)',
-            marginBottom: '2rem',
-            padding: '0.625rem 1.25rem',
+            position: 'absolute',
+            inset: 0,
+            animation: inView ? 'heroImageReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both' : 'none',
+          }}>
+            <Image
+              src="/images/air-india/hero.png"
+              alt="Air India A350 aircraft flying through sunset clouds"
+              fill
+              priority
+              style={{
+                objectFit: 'cover',
+                objectPosition: 'center',
+                animation: 'kenBurns 20s ease-in-out infinite',
+              }}
+            />
+          </div>
+
+          {/* Diagonal Gradient Overlay - Protects text zone */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: isMobile
+              ? 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,1) 100%)'
+              : 'linear-gradient(105deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.95) 15%, rgba(0,0,0,0.6) 35%, rgba(0,0,0,0.2) 55%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.3) 100%)',
+            pointerEvents: 'none',
+          }} />
+
+          {/* Bottom Fade for Content Transition */}
+          <div style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '40%',
+            background: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, transparent 100%)',
+            pointerEvents: 'none',
+          }} />
+        </div>
+
+        {/* Content Container */}
+        <div style={{
+          position: 'relative',
+          zIndex: 10,
+          width: '100%',
+          maxWidth: '1400px',
+          margin: '0 auto',
+          padding: isMobile
+            ? 'clamp(8rem, 15vh, 12rem) 1.5rem clamp(4rem, 8vh, 6rem)'
+            : 'clamp(8rem, 15vh, 12rem) clamp(2rem, 8vw, 6rem) clamp(4rem, 8vh, 6rem)',
+        }}>
+          {/* Glassmorphic Content Card */}
+          <div style={{
+            maxWidth: isMobile ? '100%' : '680px',
+            padding: isMobile ? 'clamp(2rem, 5vw, 3rem)' : 'clamp(2.5rem, 5vw, 4rem)',
             background: 'var(--glass-05)',
+            backdropFilter: 'blur(40px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(40px) saturate(180%)',
             border: '1px solid var(--glass-10)',
-            borderRadius: '24px',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
+            borderRadius: '32px',
+            boxShadow: '0 32px 64px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(218, 14, 41, 0.08) inset, 0 1px 0 rgba(255, 255, 255, 0.08) inset',
+            animation: inView ? 'heroContentReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both' : 'none',
+          }}>
+            {/* Eyebrow */}
+            <div style={{
+              fontSize: '0.75rem',
+              fontWeight: '500',
+              color: 'var(--text-muted)',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              marginBottom: '1rem',
+              opacity: 0,
+              animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards' : 'none',
+            }}>
+              Case Study · Air India
+            </div>
+
+            {/* Anchor Stat Pill */}
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              fontSize: '0.875rem',
+              fontWeight: '600',
+              color: 'rgb(218, 14, 41)',
+              marginBottom: '1.5rem',
+              padding: '0.5rem 1rem',
+              background: 'rgba(218, 14, 41, 0.1)',
+              border: '1px solid rgba(218, 14, 41, 0.2)',
+              borderRadius: '20px',
+              opacity: 0,
+              animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards' : 'none',
+            }}>
+              $200M Transformation
+            </div>
+
+            {/* Main Statement */}
+            <h1 style={{
+              fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+              fontWeight: '200',
+              letterSpacing: '-0.04em',
+              lineHeight: '1.1',
+              marginBottom: '1.5rem',
+              color: 'var(--text-primary)',
+              opacity: 0,
+              animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.75s forwards' : 'none',
+            }}>
+              I build{' '}
+              <span style={{
+                fontWeight: '600',
+                background: 'linear-gradient(135deg, rgb(218, 14, 41), rgb(251, 146, 60))',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}>
+                design infrastructure
+              </span>{' '}
+              where none exists.
+            </h1>
+
+            {/* Subtitle */}
+            <p style={{
+              fontSize: 'clamp(1rem, 1.5vw, 1.25rem)',
+              color: 'var(--text-secondary)',
+              lineHeight: '1.7',
+              fontWeight: '300',
+              marginBottom: '2rem',
+              opacity: 0,
+              animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.9s forwards' : 'none',
+            }}>
+              Tata inherited 69 years of technical debt—140 systems, 4 merging airlines, zero design language. I joined to build what didn&apos;t exist.
+            </p>
+
+            {/* Metadata Row */}
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '0.75rem',
+              marginBottom: '1.5rem',
+              opacity: 0,
+              animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 1.05s forwards' : 'none',
+            }}>
+              <div style={{
+                padding: '0.5rem 1rem',
+                borderRadius: '12px',
+                background: 'var(--glass-08)',
+                border: '1px solid var(--glass-10)',
+                fontSize: '0.813rem',
+                fontWeight: '400',
+                color: 'var(--text-secondary)',
+              }}>
+                Product Designer · 2022–24
+              </div>
+              <div style={{
+                padding: '0.5rem 1rem',
+                borderRadius: '12px',
+                background: 'var(--glass-08)',
+                border: '1px solid var(--glass-10)',
+                fontSize: '0.813rem',
+                fontWeight: '400',
+                color: 'var(--text-secondary)',
+              }}>
+                Kochi → Global
+              </div>
+            </div>
+
+            {/* Proof Strip */}
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '1.5rem',
+              paddingTop: '1.5rem',
+              borderTop: '1px solid var(--glass-10)',
+              opacity: 0,
+              animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 1.2s forwards' : 'none',
+            }}>
+              <div>
+                <div style={{ fontSize: '1.25rem', fontWeight: '600', color: 'var(--text-primary)' }}>140</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Systems Unified</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '1.25rem', fontWeight: '600', color: 'var(--text-primary)' }}>4</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Airlines Merged</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '1.25rem', fontWeight: '600', color: 'var(--text-primary)' }}>450+</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Daily Users</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div style={{
+          position: 'absolute',
+          bottom: 'clamp(2rem, 4vh, 3rem)',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '0.5rem',
+          opacity: 0,
+          animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 3s forwards' : 'none',
+          zIndex: 10,
+        }}>
+          <span style={{
+            fontSize: '0.75rem',
+            color: 'var(--text-muted)',
             letterSpacing: '0.05em',
           }}>
-            <span style={{ color: 'rgb(218, 14, 41)', fontWeight: '600' }}>$200M transformation</span>
-            <span style={{ opacity: 0.4 }}>·</span>
-            <span>140 legacy systems</span>
-            <span style={{ opacity: 0.4 }}>·</span>
-            <span>Zero design infrastructure</span>
-          </div>
-
-          {/* Main Statement */}
-          <h1 style={{
-            fontSize: 'clamp(2.25rem, 5.5vw, 4rem)',
-            fontWeight: '200',
-            letterSpacing: '-0.04em',
-            lineHeight: '1.15',
-            marginBottom: '1.75rem',
-            color: 'var(--text-primary)',
-          }}>
-            I build{' '}
-            <span style={{
-              fontWeight: '600',
-              background: 'linear-gradient(135deg, rgb(218, 14, 41), rgb(251, 146, 60))',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              design infrastructure
-            </span>{' '}
-            where none exists.
-          </h1>
-
-          {/* Subtitle */}
-          <p style={{
-            fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
-            color: 'var(--text-secondary)',
-            maxWidth: '700px',
-            margin: '0 auto 2.5rem',
-            lineHeight: '1.8',
-            fontWeight: '300',
-          }}>
-            When Tata acquired Air India, they inherited decades of technical debt and no design system.
-            I joined to build what didn&apos;t exist—systems, tooling, AI features, team culture.
-          </p>
-
-          {/* Metadata Pills */}
+            See what I built
+          </span>
           <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            gap: '0.75rem',
-          }}>
-            <div style={{
-              padding: '0.5rem 1rem',
-              borderRadius: '12px',
-              background: 'var(--glass-05)',
-              border: '1px solid var(--glass-08)',
-              fontSize: '0.813rem',
-              fontWeight: '400',
-              color: 'var(--text-secondary)',
-              letterSpacing: '0.02em',
-            }}>
-              2022–2024 · Product & New Media Designer
-            </div>
-            <div style={{
-              padding: '0.5rem 1rem',
-              borderRadius: '12px',
-              background: 'var(--glass-05)',
-              border: '1px solid var(--glass-08)',
-              fontSize: '0.813rem',
-              fontWeight: '400',
-              color: 'var(--text-secondary)',
-              letterSpacing: '0.02em',
-            }}>
-              Kochi, India · Remote-ready
-            </div>
-          </div>
+            width: '1px',
+            height: '40px',
+            background: 'linear-gradient(to bottom, var(--text-muted), transparent)',
+            animation: 'scrollBounce 2s ease-in-out infinite',
+          }} />
         </div>
       </header>
 
