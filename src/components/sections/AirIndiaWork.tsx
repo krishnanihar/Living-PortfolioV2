@@ -784,111 +784,6 @@ export function AirIndiaWork() {
     );
   };
 
-  // Progress Indicator Component (Desktop only)
-  const ProgressIndicator = () => {
-    if (isMobile) return null;
-
-    const acts: Array<{ num: 'I' | 'II' | 'III'; label: string; color: string; actNum: 1 | 2 | 3 }> = [
-      { num: 'I', label: 'Building Foundations', color: actConfig[1].color, actNum: 1 },
-      { num: 'II', label: 'Shipping Innovation', color: actConfig[2].color, actNum: 2 },
-      { num: 'III', label: 'Scaling Impact', color: actConfig[3].color, actNum: 3 },
-    ];
-
-    const scrollToAct = (actNum: 1 | 2 | 3) => {
-      const ref = actNum === 1 ? act1Ref : actNum === 2 ? act2Ref : act3Ref;
-      ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    };
-
-    return (
-      <div style={{
-        position: 'fixed',
-        left: '1.5rem',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        zIndex: 40,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1.5rem',
-      }}>
-        {acts.map((act) => {
-          const isActive = currentAct === act.actNum;
-          const isPast = currentAct > act.actNum;
-
-          return (
-            <div
-              key={act.num}
-              onClick={() => scrollToAct(act.actNum)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.75rem',
-                cursor: 'pointer',
-              }}
-            >
-              {/* Vertical bar */}
-              <div style={{
-                width: '3px',
-                height: '48px',
-                borderRadius: '2px',
-                background: isActive
-                  ? `rgba(${act.color}, 0.8)`
-                  : isPast
-                    ? 'var(--text-30)'
-                    : 'var(--glass-08)',
-                transition: 'all 0.5s ease',
-                boxShadow: isActive ? `0 0 12px rgba(${act.color}, 0.4)` : 'none',
-                position: 'relative',
-              }}>
-                {/* Active dot */}
-                {isActive && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: '9px',
-                    height: '9px',
-                    borderRadius: '50%',
-                    background: '#ffffff',
-                    boxShadow: `0 0 10px rgba(${act.color}, 0.6)`,
-                  }} />
-                )}
-              </div>
-
-              {/* Label - only show on active */}
-              <div style={{
-                opacity: isActive ? 1 : 0,
-                transform: isActive ? 'translateX(0)' : 'translateX(-8px)',
-                transition: 'all 0.3s ease',
-                padding: '0.5rem 0.75rem',
-                background: 'rgba(10, 10, 10, 0.95)',
-                backdropFilter: 'blur(20px)',
-                borderRadius: '8px',
-                border: '1px solid var(--glass-10)',
-                pointerEvents: 'none',
-              }}>
-                <div style={{
-                  fontSize: '0.625rem',
-                  color: `rgba(${act.color}, 0.8)`,
-                  letterSpacing: '0.1em',
-                  fontWeight: '600',
-                }}>
-                  ACT {act.num}
-                </div>
-                <div style={{
-                  fontSize: '0.75rem',
-                  color: 'var(--text-secondary)',
-                }}>
-                  {act.label}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
   return (
     <div
       ref={sectionRef}
@@ -900,9 +795,6 @@ export function AirIndiaWork() {
         overflow: 'hidden',
       }}
     >
-      {/* Progress Indicator - Fixed left sidebar */}
-      <ProgressIndicator />
-
       {/* Ambient Background Orbs */}
       <div style={{
         position: 'fixed',
