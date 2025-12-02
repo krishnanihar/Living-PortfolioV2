@@ -2,6 +2,9 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, X, Loader, Sparkles } from 'lucide-react';
+import { usePersonalization } from '@/hooks/usePersonalization';
+import { PersonalizationPrompt } from '@/components/ui/PersonalizationPrompt';
+import type { VisitorIntent } from '@/lib/personalization/types';
 
 interface ChatMessage {
   id: string;
@@ -21,20 +24,46 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showIntentPrompt, setShowIntentPrompt] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Get personalization state
+  const { state } = usePersonalization();
+  const storedIntent = state.schema.visitor.intent;
+  const intentDeclined = state.schema.visitor.intentDeclined;
+
+  // Effective intent: prop takes priority, then stored, then 'general'
+  const effectiveIntent = intentContext || storedIntent || 'general';
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Focus input when chat opens
+  // Focus input when chat opens (and not showing intent prompt)
   useEffect(() => {
-    if (isOpen && inputRef.current) {
+    if (isOpen && inputRef.current && !showIntentPrompt) {
       inputRef.current.focus();
     }
-  }, [isOpen]);
+  }, [isOpen, showIntentPrompt]);
+
+  // Check if we should show intent prompt when chat opens
+  useEffect(() => {
+    if (isOpen && !storedIntent && !intentDeclined && !intentContext) {
+      // No intent set and no prop override - show prompt
+      setShowIntentPrompt(true);
+    } else if (isOpen) {
+      setShowIntentPrompt(false);
+    }
+  }, [isOpen, storedIntent, intentDeclined, intentContext]);
+
+  // Handle intent selection from prompt
+  const handleIntentComplete = (intent: NonNullable<VisitorIntent> | null) => {
+    setShowIntentPrompt(false);
+    // Reset messages so greeting uses new intent
+    setMessages([]);
+  };
 
   // Send initial message when chat opens
   useEffect(() => {
@@ -43,10 +72,10 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
     }
   }, [isOpen, initialMessage]);
 
-  // Add greeting when chat first opens
+  // Add greeting when chat first opens (after intent prompt is dismissed)
   useEffect(() => {
-    if (isOpen && messages.length === 0 && !initialMessage) {
-      const greeting = getGreeting(intentContext);
+    if (isOpen && messages.length === 0 && !initialMessage && !showIntentPrompt) {
+      const greeting = getGreeting(effectiveIntent);
       setMessages([{
         id: 'greeting',
         content: greeting,
@@ -54,7 +83,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
         timestamp: Date.now(),
       }]);
     }
-  }, [isOpen, intentContext]);
+  }, [isOpen, effectiveIntent, showIntentPrompt]);
 
   const getGreeting = (intent?: string): string => {
     switch (intent) {
@@ -94,7 +123,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
         },
         body: JSON.stringify({
           message: textToSend,
-          context: intentContext || 'general',
+          context: effectiveIntent,
         }),
       });
 
@@ -188,7 +217,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
           {/* Header */}
           <div style={{
             padding: '1.5rem',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+            borderBottom: showIntentPrompt ? 'none' : '1px solid rgba(255, 255, 255, 0.08)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -209,14 +238,14 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
                   color: 'var(--text-primary)',
                   letterSpacing: '0.01em',
                 }}>
-                  Portfolio Assistant
+                  {showIntentPrompt ? 'Welcome!' : 'Portfolio Assistant'}
                 </h3>
                 <p style={{
                   fontSize: '0.7rem',
                   color: 'var(--text-muted)',
                   fontWeight: '300',
                 }}>
-                  AI-powered by Gemini
+                  {showIntentPrompt ? 'Let me personalize your experience' : 'AI-powered by Gemini'}
                 </p>
               </div>
             </div>
@@ -250,6 +279,23 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
             </button>
           </div>
 
+          {/* Intent Prompt or Chat Content */}
+          {showIntentPrompt ? (
+            <div style={{
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '1.5rem',
+            }}>
+              <PersonalizationPrompt
+                variant="embedded"
+                forceShow={true}
+                onComplete={handleIntentComplete}
+              />
+            </div>
+          ) : (
+            <>
           {/* Messages */}
           <div style={{
             flex: 1,
@@ -429,6 +475,8 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
               Press Enter to send • ESC to close
             </div>
           </div>
+            </>
+          )}
         </div>
       </div>
     </>

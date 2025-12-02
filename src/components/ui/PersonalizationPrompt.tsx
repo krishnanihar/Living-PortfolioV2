@@ -69,19 +69,30 @@ const INTENT_OPTIONS: IntentOption[] = [
 interface PersonalizationPromptProps {
   variant?: 'embedded' | 'floating' | 'modal';
   onClose?: () => void;
+  /** Callback when intent is selected (for chatbot integration) */
+  onComplete?: (intent: NonNullable<VisitorIntent> | null) => void;
+  /** Force show regardless of shouldShowIntentPrompt (for chatbot integration) */
+  forceShow?: boolean;
 }
 
 export function PersonalizationPrompt({
   variant = 'embedded',
   onClose,
+  onComplete,
+  forceShow = false,
 }: PersonalizationPromptProps) {
   const { setIntent, declineIntent, state, shouldShowIntentPrompt } = usePersonalization();
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(forceShow);
   const [selectedIntent, setSelectedIntent] = useState<NonNullable<VisitorIntent> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Delay appearance for smoother UX
+  // Delay appearance for smoother UX (only when not force shown)
   useEffect(() => {
+    if (forceShow) {
+      setIsVisible(true);
+      return;
+    }
+
     if (shouldShowIntentPrompt) {
       const timer = setTimeout(() => {
         setIsVisible(true);
@@ -89,7 +100,7 @@ export function PersonalizationPrompt({
 
       return () => clearTimeout(timer);
     }
-  }, [shouldShowIntentPrompt, variant]);
+  }, [shouldShowIntentPrompt, variant, forceShow]);
 
   // Handle intent selection
   const handleSelectIntent = useCallback(
@@ -100,18 +111,20 @@ export function PersonalizationPrompt({
       setTimeout(() => {
         setIntent(intent);
         setIsVisible(false);
+        onComplete?.(intent);
         onClose?.();
       }, 300);
     },
-    [setIntent, onClose]
+    [setIntent, onClose, onComplete]
   );
 
   // Handle skip
   const handleSkip = useCallback(() => {
     declineIntent();
     setIsVisible(false);
+    onComplete?.(null);
     onClose?.();
-  }, [declineIntent, onClose]);
+  }, [declineIntent, onClose, onComplete]);
 
   // Handle escape key
   useEffect(() => {
@@ -125,8 +138,8 @@ export function PersonalizationPrompt({
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isVisible, handleSkip]);
 
-  // Don't render if shouldn't show or intent already set
-  if (!shouldShowIntentPrompt || state.schema.visitor.intent || state.schema.visitor.intentDeclined) {
+  // Don't render if shouldn't show or intent already set (unless forceShow)
+  if (!forceShow && (!shouldShowIntentPrompt || state.schema.visitor.intent || state.schema.visitor.intentDeclined)) {
     return null;
   }
 
