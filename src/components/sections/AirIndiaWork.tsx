@@ -4909,7 +4909,7 @@ export function AirIndiaWork() {
                   )}
 
                   {/* Full Narrative Description - with image for Pixel Radar and Design System */}
-                  {index === 0 ? (
+                  {index === 1 ? (
                     <div style={{
                       width: '100%',
                       maxWidth: '1100px',
@@ -4961,7 +4961,7 @@ export function AirIndiaWork() {
                         </p>
                       </div>
                     </div>
-                  ) : index === 1 ? (
+                  ) : index === 0 ? (
                     /* Full-width narrative text for Design System */
                     <div style={{
                       width: '100%',
@@ -5000,7 +5000,7 @@ export function AirIndiaWork() {
               </div>
 
                 {/* Narrative Connectors */}
-                {index === 1 && (
+                {index === 0 && (
                   <NarrativeConnector fromAct={1} toAct={2} text={narrativeTransitions.act1to2} />
                 )}
                 {index === 5 && (
