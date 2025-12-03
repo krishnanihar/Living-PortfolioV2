@@ -150,32 +150,8 @@ const awards: Award[] = [
 
 const projects: Project[] = [
   {
-    id: 1,
-    label: '01',
-    title: 'Pixel Radar',
-    subtitle: 'Figma plugin for automated design consistency',
-    description: 'Built it myself when no tools existed.',
-    longDescription: 'When there\'s no design system, every screen is an island. Designers were making isolated decisions. Engineers were interpreting specs differently. Reviews caught inconsistencies too late—if at all.\n\nSo I built Pixel Radar—a Figma plugin that automates consistency checks. What started as a personal workflow fix became infrastructure serving 450+ daily users, cutting design review time by 30%. It solved a problem the organization didn\'t have budget or bandwidth to address through official channels.',
-    imagePlaceholder: 'Pixel Radar Plugin Interface',
-    stats: [
-      { value: '450+', label: 'Daily Users' },
-      { value: '30%', label: 'Faster Reviews' },
-      { value: 'Active', label: 'Production Use' }
-    ],
-    recruiterFrame: 'Builder mindset — shipped tool when none existed',
-    recruiterInsight: 'Builder mindset — shipped production tool when none existed. Shows initiative and technical depth beyond design.',
-    companyRelevance: [
-      { company: 'GitLab', relevance: 'Systems thinking, async tooling' },
-      { company: 'Anthropic', relevance: 'Builder mindset, ships opinionated products' },
-      { company: 'Automattic', relevance: 'Initiative, solved real problems' }
-    ],
-    icon: Target,
-    color: '218, 14, 41',
-    category: 'TOOL'
-  },
-  {
     id: 2,
-    label: '02',
+    label: '01',
     title: 'Design System & Tokenisation',
     subtitle: 'Token architecture for four merging airlines',
     description: 'Reverse-engineered undocumented screens into systematic framework.',
@@ -196,6 +172,30 @@ const projects: Project[] = [
     icon: Layers,
     color: '99, 102, 241',
     category: 'SYSTEM'
+  },
+  {
+    id: 1,
+    label: '02',
+    title: 'Pixel Radar',
+    subtitle: 'Figma plugin for automated design consistency',
+    description: 'Built it myself when no tools existed.',
+    longDescription: 'When there\'s no design system, every screen is an island. Designers were making isolated decisions. Engineers were interpreting specs differently. Reviews caught inconsistencies too late—if at all.\n\nSo I built Pixel Radar—a Figma plugin that automates consistency checks. What started as a personal workflow fix became infrastructure serving 450+ daily users, cutting design review time by 30%. It solved a problem the organization didn\'t have budget or bandwidth to address through official channels.',
+    imagePlaceholder: 'Pixel Radar Plugin Interface',
+    stats: [
+      { value: '450+', label: 'Daily Users' },
+      { value: '30%', label: 'Faster Reviews' },
+      { value: 'Active', label: 'Production Use' }
+    ],
+    recruiterFrame: 'Builder mindset — shipped tool when none existed',
+    recruiterInsight: 'Builder mindset — shipped production tool when none existed. Shows initiative and technical depth beyond design.',
+    companyRelevance: [
+      { company: 'GitLab', relevance: 'Systems thinking, async tooling' },
+      { company: 'Anthropic', relevance: 'Builder mindset, ships opinionated products' },
+      { company: 'Automattic', relevance: 'Initiative, solved real problems' }
+    ],
+    icon: Target,
+    color: '218, 14, 41',
+    category: 'TOOL'
   },
   {
     id: 3,
@@ -1289,8 +1289,80 @@ export function AirIndiaWork() {
 
             // Custom visual content per project type - ENHANCED 180x180px visuals
             const renderCardVisual = () => {
-              // Pixel Radar (index 0) - Floating UI panels - ENLARGED
+              // Design System (index 0) - Figma-like UI panels
               if (index === 0) {
+                return (
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px',
+                    width: '160px',
+                    opacity: isHovered ? 1 : 0.8,
+                    transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}>
+                    {/* Figma-like Panel - Design Tokens */}
+                    <div style={{
+                      padding: '14px 16px',
+                      borderRadius: '12px',
+                      background: 'linear-gradient(135deg, rgba(99,102,241,0.15), var(--glass-08))',
+                      border: '1px solid rgba(99,102,241,0.3)',
+                      backdropFilter: 'blur(20px)',
+                      transform: isHovered ? 'translateX(-6px) rotate(-1.5deg)' : 'translateX(0)',
+                      transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                      boxShadow: isHovered ? '0 12px 24px rgba(99,102,241,0.2)' : 'none',
+                    }}>
+                      <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Design Tokens</div>
+                      {/* Color swatches row - Figma style */}
+                      <div style={{ display: 'flex', gap: '6px', marginBottom: '8px' }}>
+                        {['#DA0E29', '#6366F1', '#F59E0B', '#10B981', '#8B5CF6'].map((color, i) => (
+                          <div key={i} style={{
+                            width: '20px',
+                            height: '20px',
+                            borderRadius: '4px',
+                            background: color,
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            transform: isHovered ? `translateY(${i % 2 === 0 ? -2 : 2}px)` : 'translateY(0)',
+                            transition: `all 0.4s cubic-bezier(0.16, 1, 0.3, 1) ${i * 0.05}s`,
+                          }} />
+                        ))}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', fontWeight: '600', color: 'rgb(99,102,241)' }}>48 tokens</div>
+                    </div>
+                    {/* Figma-like Panel - Components */}
+                    <div style={{
+                      padding: '14px 16px',
+                      borderRadius: '12px',
+                      background: 'var(--glass-06)',
+                      border: '1px solid var(--glass-12)',
+                      transform: isHovered ? 'translateX(6px) rotate(1.5deg)' : 'translateX(0)',
+                      transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
+                      boxShadow: isHovered ? '0 12px 24px rgba(0,0,0,0.15)' : 'none',
+                    }}>
+                      <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Components</div>
+                      {/* Layer stack - Figma style */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                        {['Button', 'Input', 'Card'].map((name, i) => (
+                          <div key={i} style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            padding: '4px 8px',
+                            borderRadius: '6px',
+                            background: isHovered ? 'var(--glass-08)' : 'transparent',
+                            transition: `all 0.3s ease ${i * 0.05}s`,
+                          }}>
+                            <Layers size={10} style={{ color: 'rgb(99,102,241)' }} />
+                            <span style={{ fontSize: '0.688rem', color: 'var(--text-secondary)' }}>{name}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
+              // Pixel Radar (index 1) - Floating UI panels
+              if (index === 1) {
                 return (
                   <div style={{
                     display: 'flex',
@@ -1336,77 +1408,6 @@ export function AirIndiaWork() {
                       </div>
                       <div style={{ fontSize: '1rem', fontWeight: '600', color: 'var(--text-primary)', marginTop: '6px' }}>30% faster</div>
                     </div>
-                  </div>
-                );
-              }
-
-              // Design System (index 1) - Token constellation - ENLARGED
-              if (index === 1) {
-                return (
-                  <div style={{
-                    width: '160px',
-                    height: '160px',
-                    position: 'relative',
-                    opacity: isHovered ? 1 : 0.7,
-                    transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                  }}>
-                    {/* Central node */}
-                    <div style={{
-                      position: 'absolute',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      width: '56px',
-                      height: '56px',
-                      borderRadius: '14px',
-                      background: `linear-gradient(135deg, rgb(${project.color}), rgba(${project.color}, 0.6))`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: `0 0 40px rgba(${project.color}, 0.5)`,
-                      animation: isHovered ? 'orbitPulse 2s ease-in-out infinite' : 'none',
-                    }}>
-                      <Layers size={26} style={{ color: 'white' }} />
-                    </div>
-                    {/* SVG connection lines */}
-                    <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-                      {[0, 72, 144, 216, 288].map((angle, i) => {
-                        const rad = (angle * Math.PI) / 180;
-                        const x1 = 80 + Math.cos(rad) * 25;
-                        const y1 = 80 + Math.sin(rad) * 25;
-                        const x2 = 80 + Math.cos(rad) * 60;
-                        const y2 = 80 + Math.sin(rad) * 60;
-                        return (
-                          <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
-                            stroke={`rgba(${project.color}, ${isHovered ? 0.5 : 0.2})`}
-                            strokeWidth="1.5"
-                            strokeDasharray={isHovered ? "0" : "4 4"}
-                            style={{ transition: 'all 0.5s ease' }}
-                          />
-                        );
-                      })}
-                    </svg>
-                    {/* Orbiting nodes - 5 nodes in circle */}
-                    {[0, 72, 144, 216, 288].map((angle, i) => (
-                      <div key={i} style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        width: '28px',
-                        height: '28px',
-                        borderRadius: '8px',
-                        background: 'var(--glass-20)',
-                        border: `1.5px solid rgba(${project.color}, ${isHovered ? 0.5 : 0.3})`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        transform: `translate(-50%, -50%) rotate(${angle}deg) translateX(60px) rotate(-${angle}deg)`,
-                        transition: 'all 0.5s ease',
-                        boxShadow: isHovered ? `0 0 15px rgba(${project.color}, 0.3)` : 'none',
-                      }}>
-                        <div style={{ width: '10px', height: '10px', borderRadius: '3px', background: `rgb(${project.color})` }} />
-                      </div>
-                    ))}
                   </div>
                 );
               }
