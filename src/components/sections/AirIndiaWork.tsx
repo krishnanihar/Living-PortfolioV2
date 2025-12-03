@@ -2453,7 +2453,7 @@ export function AirIndiaWork() {
                   gap: '1.5rem',
                 }}>
                   {/* Animated Illustration or Placeholder */}
-                  {index === 0 ? (
+                  {index === 1 ? (
                     /* PIXEL RADAR - Side-by-Side Interactive Visualization */
                     <>
                     {/* Interactive Prototype Helper */}
@@ -3349,7 +3349,7 @@ export function AirIndiaWork() {
                       </div>
                     </div>
                     </>
-                  ) : index === 1 ? (
+                  ) : index === 0 ? (
                     /* DESIGN SYSTEM & TOKENISATION - 6-Column Atomic Token Architecture */
                     <>
                     {/* Interactive Prototype Helper */}
