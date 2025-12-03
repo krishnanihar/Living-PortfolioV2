@@ -1302,16 +1302,16 @@ export function AirIndiaWork() {
                   }}>
                     {/* Figma-like Panel - Design Tokens */}
                     <div style={{
-                      padding: '14px 16px',
-                      borderRadius: '12px',
-                      background: 'linear-gradient(135deg, rgba(99,102,241,0.15), var(--glass-08))',
-                      border: '1px solid rgba(99,102,241,0.3)',
+                      padding: '16px 20px',
+                      borderRadius: '14px',
+                      background: 'linear-gradient(135deg, rgba(99,102,241,0.2), var(--glass-10))',
+                      border: '1px solid rgba(99,102,241,0.35)',
                       backdropFilter: 'blur(20px)',
-                      transform: isHovered ? 'translateX(-6px) rotate(-1.5deg)' : 'translateX(0)',
+                      transform: isHovered ? 'translateX(-8px) rotate(-2deg)' : 'translateX(0)',
                       transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                      boxShadow: isHovered ? '0 12px 24px rgba(99,102,241,0.2)' : 'none',
+                      boxShadow: isHovered ? '0 15px 30px rgba(99,102,241,0.2)' : 'none',
                     }}>
-                      <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Design Tokens</div>
+                      <div style={{ fontSize: '0.688rem', color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Design Tokens</div>
                       {/* Color swatches row - Figma style */}
                       <div style={{ display: 'flex', gap: '6px', marginBottom: '8px' }}>
                         {['#DA0E29', '#6366F1', '#F59E0B', '#10B981', '#8B5CF6'].map((color, i) => (
@@ -1330,15 +1330,15 @@ export function AirIndiaWork() {
                     </div>
                     {/* Figma-like Panel - Components */}
                     <div style={{
-                      padding: '14px 16px',
-                      borderRadius: '12px',
-                      background: 'var(--glass-06)',
-                      border: '1px solid var(--glass-12)',
-                      transform: isHovered ? 'translateX(6px) rotate(1.5deg)' : 'translateX(0)',
+                      padding: '16px 20px',
+                      borderRadius: '14px',
+                      background: 'var(--glass-08)',
+                      border: '1px solid var(--glass-15)',
+                      transform: isHovered ? 'translateX(8px) rotate(2deg)' : 'translateX(0)',
                       transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
-                      boxShadow: isHovered ? '0 12px 24px rgba(0,0,0,0.15)' : 'none',
+                      boxShadow: isHovered ? '0 15px 30px rgba(0,0,0,0.2)' : 'none',
                     }}>
-                      <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Components</div>
+                      <div style={{ fontSize: '0.688rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Components</div>
                       {/* Layer stack - Figma style */}
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                         {['Button', 'Input', 'Card'].map((name, i) => (
