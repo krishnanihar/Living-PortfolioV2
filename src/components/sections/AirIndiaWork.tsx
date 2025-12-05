@@ -892,7 +892,7 @@ export function AirIndiaWork() {
             left: 0,
             right: 0,
             height: '80%',
-            background: 'linear-gradient(to top, #0A0A0A 0%, #0A0A0A 30%, rgba(10,10,10,0.95) 45%, rgba(10,10,10,0.7) 60%, rgba(10,10,10,0.3) 80%, transparent 100%)',
+            background: 'linear-gradient(to top, #000000 0%, #000000 30%, rgba(0,0,0,0.95) 45%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0.3) 80%, transparent 100%)',
             pointerEvents: 'none',
           }} />
         </motion.div>
