@@ -1397,59 +1397,138 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           />
         ))}
 
-        {/* View All Work Button */}
+        {/* Full-Screen View All Work Card */}
         <div
           style={{
+            minHeight: '100vh',
+            width: '100%',
+            background: 'linear-gradient(180deg, #0A0A0A 0%, #0D0D0D 50%, #0A0A0A 100%)',
             display: 'flex',
+            alignItems: 'center',
             justifyContent: 'center',
-            padding: '2rem 0',
+            position: 'relative',
+            overflow: 'hidden',
           }}
         >
-          <Link
-            href="/work"
+          {/* Subtle gradient orb */}
+          <div
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.875rem 1.75rem',
-              background: 'rgba(10, 10, 10, 0.6)',
-              backdropFilter: 'blur(100px) saturate(180%)',
-              WebkitBackdropFilter: 'blur(100px) saturate(180%)',
-              border: `1px solid var(--text-08)`,
-              borderRadius: '15px',
-              color: 'var(--text-95)',
-              textDecoration: 'none',
-              fontSize: '0.9375rem',
-              fontWeight: '400',
-              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-              boxShadow: `
-                inset 0 1px 0 var(--text-02),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-                0 8px 24px rgba(0, 0, 0, 0.6)
-              `,
+              position: 'absolute',
+              width: '600px',
+              height: '600px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(59, 130, 246, 0.04) 0%, transparent 70%)',
+              filter: 'blur(60px)',
+              pointerEvents: 'none',
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'var(--glass-05)';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = `
-                inset 0 1px 0 var(--text-02),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-                0 12px 32px rgba(0, 0, 0, 0.7)
-              `;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(10, 10, 10, 0.6)';
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = `
-                inset 0 1px 0 var(--text-02),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-                0 8px 24px rgba(0, 0, 0, 0.6)
-              `;
+          />
+
+          {/* Content */}
+          <div
+            style={{
+              textAlign: 'center',
+              maxWidth: '700px',
+              padding: '3rem 2rem',
+              position: 'relative',
+              zIndex: 1,
             }}
           >
-            <span>View All Work</span>
-            <ArrowRight size={16} />
-          </Link>
+            {/* Project count badge */}
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.5rem 1rem',
+                background: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid var(--text-08)',
+                borderRadius: '20px',
+                marginBottom: '2rem',
+              }}
+            >
+              <Sparkles size={14} style={{ color: 'var(--text-50)' }} />
+              <span style={{ fontSize: '0.8125rem', color: 'var(--text-60)', fontWeight: '400' }}>
+                12+ Projects
+              </span>
+            </div>
+
+            {/* Heading */}
+            <h2
+              style={{
+                fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+                fontWeight: '200',
+                color: 'var(--text-95)',
+                lineHeight: '1.1',
+                marginBottom: '1.5rem',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              Explore All Projects
+            </h2>
+
+            {/* Description */}
+            <p
+              style={{
+                fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
+                fontWeight: '300',
+                color: 'var(--text-60)',
+                lineHeight: '1.7',
+                marginBottom: '2.5rem',
+                maxWidth: '500px',
+                margin: '0 auto 2.5rem',
+              }}
+            >
+              From aviation systems serving millions to healthcare AI platforms—
+              discover the full range of work across design systems, mobile apps, and immersive experiences.
+            </p>
+
+            {/* CTA Button */}
+            <Link
+              href="/work"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                padding: '1.25rem 2.5rem',
+                background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.08))',
+                border: '1px solid rgba(59, 130, 246, 0.2)',
+                borderRadius: '16px',
+                color: 'var(--text-95)',
+                textDecoration: 'none',
+                fontSize: '1rem',
+                fontWeight: '500',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.12))';
+                e.currentTarget.style.transform = 'translateY(-3px)';
+                e.currentTarget.style.boxShadow = '0 12px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(59, 130, 246, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.35)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.08))';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3)';
+                e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.2)';
+              }}
+            >
+              <span>View All Work</span>
+              <ArrowRight size={18} />
+            </Link>
+          </div>
+
+          {/* Bottom accent line */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: '1px',
+              background: 'linear-gradient(90deg, transparent 10%, rgba(59, 130, 246, 0.2) 50%, transparent 90%)',
+            }}
+          />
         </div>
 
         {/* Act 2: About Me - Three Pillars (Moved below horizontal scroll) */}
