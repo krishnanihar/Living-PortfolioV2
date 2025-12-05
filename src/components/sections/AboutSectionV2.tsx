@@ -1086,7 +1086,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
             overflow: 'hidden',
           }}
         >
-          <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center', transform: 'translateY(30px)' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center', transform: 'translateY(100px)' }}>
             <h2
               style={{
                 fontSize: 'clamp(1.25rem, 2.5vw, 2rem)',
