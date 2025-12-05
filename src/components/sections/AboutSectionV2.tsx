@@ -4,8 +4,7 @@ import React from 'react';
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Sparkles, Map, User, Users, Plane, Heart, Activity, Brain, Eye, Zap } from 'lucide-react';
-import { motion, useMotionValue, animate } from 'framer-motion';
+import { ArrowRight, Sparkles, Map, User, Plane, Users, Heart, Activity, Brain, Eye } from 'lucide-react';
 import { ContactChat } from '../ContactChat';
 import { Chatbot } from '../Chatbot';
 import { useTheme } from '@/components/effects/ThemeProvider';
@@ -35,17 +34,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   const [activeTimeline, setActiveTimeline] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [hoveredButton, setHoveredButton] = useState<'about' | 'journey' | null>(null);
-  const [viewportWidth, setViewportWidth] = useState(0);
-
-  // Horizontal lock state - self-contained horizontal scroll
-  const [isLocked, setIsLocked] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false); // Smooth transition state
-  const localSlideX = useMotionValue(0);
-  const isAnimatingRef = useRef(false);
-  const horizontalSectionRef = useRef<HTMLDivElement>(null);
-  const placeholderRef = useRef<HTMLDivElement>(null);
-  const totalSlides = 4;
 
   // SVG dynamic color helper (for project-specific colors that can't use CSS variables)
   const getThemedSvgColor = (r: number, g: number, b: number, alpha: number) =>
@@ -58,12 +46,9 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   useEffect(() => {
     setMounted(true);
     setIsMobile(window.innerWidth < 768);
-    // Use clientWidth instead of innerWidth to exclude scrollbar width
-    setViewportWidth(document.documentElement.clientWidth);
 
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
-      setViewportWidth(document.documentElement.clientWidth);
     };
 
     window.addEventListener('resize', handleResize);
@@ -119,146 +104,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
     };
   }, []);
 
-  // Pre-emptive scroll detection - lock BEFORE section reaches top to prevent jank
-  useEffect(() => {
-    const section = horizontalSectionRef.current;
-    if (!section) return;
-
-    const handleScroll = () => {
-      const rect = section.getBoundingClientRect();
-
-      // Pre-emptive lock: engage when section is close to top (not past it)
-      // This prevents the snap-back effect by locking before the race condition
-      if (!isLocked && currentSlide === 0) {
-        if (rect.top <= 80 && rect.top > -20 && rect.bottom > window.innerHeight * 0.5) {
-          // Start visual transition
-          setIsTransitioning(true);
-
-          requestAnimationFrame(() => {
-            // Block momentum wheel events during lock transition
-            isAnimatingRef.current = true;
-
-            // Snap scroll to exact section position to eliminate any offset
-            const sectionTop = window.scrollY + rect.top;
-            window.scrollTo({ top: sectionTop, behavior: 'instant' });
-
-            setIsLocked(true);
-
-            // Clear transition and animation lock after brief delay
-            setTimeout(() => {
-              setIsTransitioning(false);
-              isAnimatingRef.current = false; // Now allow wheel navigation
-            }, 200); // 200ms cooldown for momentum to settle
-          });
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isLocked, currentSlide]);
-
-  // Wheel handler - only active when locked
-  useEffect(() => {
-    if (!isLocked) return;
-
-    const handleWheel = (e: WheelEvent) => {
-      if (isAnimatingRef.current) {
-        e.preventDefault();
-        return;
-      }
-
-      const direction = e.deltaY > 0 ? 1 : -1;
-      const nextSlide = currentSlide + direction;
-
-      // Boundary: first slide + scroll up = unlock with smooth transition
-      if (nextSlide < 0) {
-        e.preventDefault();
-        setIsTransitioning(true);
-        setTimeout(() => {
-          setIsLocked(false);
-          setCurrentSlide(0);
-          setIsTransitioning(false);
-        }, 100);
-        return;
-      }
-
-      // Boundary: last slide + scroll down = unlock with smooth transition
-      if (nextSlide >= totalSlides) {
-        e.preventDefault();
-        setIsTransitioning(true);
-        setTimeout(() => {
-          setIsLocked(false);
-          // Small scroll to push past the section
-          window.scrollBy({ top: 50, behavior: 'smooth' });
-          setIsTransitioning(false);
-        }, 100);
-        return;
-      }
-
-      // Navigate horizontally
-      e.preventDefault();
-      isAnimatingRef.current = true;
-      setCurrentSlide(nextSlide);
-
-      // Animate slide with spring
-      animate(localSlideX, -nextSlide * viewportWidth, {
-        type: 'spring',
-        stiffness: 180,
-        damping: 28,
-        mass: 0.8,
-        onComplete: () => {
-          setTimeout(() => {
-            isAnimatingRef.current = false;
-          }, 100); // Small cooldown
-        },
-      });
-    };
-
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    return () => window.removeEventListener('wheel', handleWheel);
-  }, [isLocked, currentSlide, viewportWidth, localSlideX, totalSlides]);
-
-  // Re-lock when scrolling back UP to section (if was at last slide)
-  useEffect(() => {
-    if (isLocked) return;
-
-    const handleScroll = () => {
-      const section = horizontalSectionRef.current;
-      if (!section) return;
-
-      const rect = section.getBoundingClientRect();
-
-      // Re-lock: engage when scrolling UP and section top is near viewport top
-      // Wider detection window (130px) to catch at various scroll speeds
-      // Only re-lock if we were at the last slide (meaning user just exited forward)
-      if (rect.top >= -50 && rect.top <= 80 && currentSlide === totalSlides - 1) {
-        // Start visual transition
-        setIsTransitioning(true);
-
-        requestAnimationFrame(() => {
-          // Block momentum wheel events during re-lock transition
-          isAnimatingRef.current = true;
-
-          // Snap scroll to exact section position to eliminate offset
-          const sectionTop = window.scrollY + rect.top;
-          window.scrollTo({ top: sectionTop, behavior: 'instant' });
-
-          setIsLocked(true);
-
-          // Clear transition and animation lock after brief delay
-          setTimeout(() => {
-            setIsTransitioning(false);
-            isAnimatingRef.current = false; // Now allow wheel navigation
-          }, 200); // 200ms cooldown for momentum to settle
-        });
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isLocked, currentSlide, totalSlides]);
-
   // 3D tilt effect for card hover
   const handleCardMouseMove = (e: MouseEvent) => {
     const card = e.currentTarget as HTMLElement;
@@ -275,7 +120,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
     setCardTilt({ rotateX, rotateY });
   };
 
-  // Featured projects for stacking cards
+  // Featured projects for full-screen cards
   const featuredProjects = [
     {
       id: 'air-india',
@@ -291,7 +136,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       ],
       tags: ['Design System', 'React', 'Aviation', 'Mobile'],
       link: '/work/air-india',
-      highlights: ['Enterprise-scale design system', '450+ daily operations']
     },
     {
       id: 'psoriassist',
@@ -307,7 +151,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       ],
       tags: ['AI/ML', 'Healthcare', 'iOS', 'Computer Vision'],
       link: '/work/psoriassist',
-      highlights: ['Hackathon Winner', 'Clinical research integration']
     },
     {
       id: 'metamorphic',
@@ -323,7 +166,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       ],
       tags: ['TouchDesigner', 'Arduino', 'Psychedelic', 'Installation'],
       link: '/work/metamorphic-fractal-reflections',
-      highlights: ['NID Exhibition 2023', 'Consciousness exploration']
     },
     {
       id: 'latent-space',
@@ -335,11 +177,10 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       year: '2024',
       metrics: [
         { icon: Brain, label: 'Narrative', value: '3-Act' },
-        { icon: Zap, label: 'Tech', value: 'WebGL' }
+        { icon: Sparkles, label: 'Tech', value: 'WebGL' }
       ],
       tags: ['Speculative Design', 'Narrative', 'WebGL', 'Ethics'],
       link: '/work/latent-space',
-      highlights: ['Immersive storytelling', 'Design fiction prototypes']
     },
   ];
 
@@ -392,284 +233,285 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
     }
   ];
 
-  // Full-Screen Slide Component (Creative Example Style)
-  interface FullScreenSlideProps {
+  // Full-Screen Project Card Component
+  interface ProjectCardProps {
     project: typeof featuredProjects[0];
     index: number;
-    totalProjects: number;
   }
 
-  function FullScreenSlide({ project, index, totalProjects }: FullScreenSlideProps) {
+  function FullScreenProjectCard({ project, index }: ProjectCardProps) {
     const [isHovered, setIsHovered] = useState(false);
     const [imageHovered, setImageHovered] = useState(false);
     const brandRgb = `${project.brandColor.r}, ${project.brandColor.g}, ${project.brandColor.b}`;
+    const isEven = index % 2 === 0;
 
     return (
       <div
         style={{
-          width: `${viewportWidth}px`,
-          minWidth: `${viewportWidth}px`,
-          height: '100vh',
-          flexShrink: 0,
-          position: 'relative',
-          background: `linear-gradient(135deg, rgba(${brandRgb}, 0.03) 0%, rgba(10, 10, 10, 1) 40%, rgba(10, 10, 10, 1) 100%)`,
+          minHeight: '100vh',
+          width: '100%',
+          background: `linear-gradient(${isEven ? '135deg' : '225deg'}, rgba(${brandRgb}, 0.04) 0%, #0A0A0A 30%, #0A0A0A 100%)`,
           display: 'flex',
-          flexDirection: isMobile ? 'column' : 'row',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: isMobile ? '2rem 1.5rem' : '0 clamp(3rem, 5vw, 6rem)',
-          gap: isMobile ? '2rem' : 'clamp(2rem, 4vw, 4rem)',
+          padding: isMobile ? '4rem 1.5rem' : '4rem clamp(2rem, 5vw, 6rem)',
+          position: 'relative',
           overflow: 'hidden',
         }}
       >
-        {/* Left Side - Image Container */}
+        {/* Subtle brand accent line at top */}
         <div
-          onMouseEnter={() => setImageHovered(true)}
-          onMouseLeave={() => setImageHovered(false)}
           style={{
-            position: 'relative',
-            width: isMobile ? '100%' : '52%',
-            height: isMobile ? '45vh' : '75vh',
-            borderRadius: '20px',
-            overflow: 'hidden',
-            border: '1px solid var(--text-08)',
-            boxShadow: imageHovered
-              ? `0 40px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(${brandRgb}, 0.1)`
-              : `0 32px 64px rgba(0, 0, 0, 0.4)`,
-            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-            transform: imageHovered ? 'scale(1.01)' : 'scale(1)',
-            flexShrink: 0,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '1px',
+            background: `linear-gradient(90deg, transparent 10%, rgba(${brandRgb}, 0.3) 50%, transparent 90%)`,
+          }}
+        />
+
+        {/* Content container */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : (isEven ? 'row' : 'row-reverse'),
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: isMobile ? '2.5rem' : 'clamp(3rem, 5vw, 5rem)',
+            maxWidth: '1400px',
+            width: '100%',
           }}
         >
-          <Image
-            src={project.image}
-            alt={project.title}
-            fill
+          {/* Image Container */}
+          <div
+            onMouseEnter={() => setImageHovered(true)}
+            onMouseLeave={() => setImageHovered(false)}
             style={{
-              objectFit: 'cover',
-              objectPosition: 'center',
-              transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-              transform: imageHovered ? 'scale(1.05)' : 'scale(1)',
+              position: 'relative',
+              width: isMobile ? '100%' : '55%',
+              height: isMobile ? '50vh' : '70vh',
+              borderRadius: '20px',
+              overflow: 'hidden',
+              border: `1px solid rgba(${brandRgb}, 0.15)`,
+              boxShadow: imageHovered
+                ? `0 40px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(${brandRgb}, 0.12)`
+                : `0 32px 64px rgba(0, 0, 0, 0.5)`,
+              transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+              transform: imageHovered ? 'scale(1.01)' : 'scale(1)',
+              flexShrink: 0,
             }}
-            quality={90}
-            priority={index === 0}
-          />
+          >
+            <Image
+              src={project.image}
+              alt={project.title}
+              fill
+              style={{
+                objectFit: 'cover',
+                objectPosition: 'center',
+                transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                transform: imageHovered ? 'scale(1.05)' : 'scale(1)',
+              }}
+              quality={90}
+              priority={index === 0}
+            />
 
-          {/* Subtle gradient overlay */}
+            {/* Gradient overlay */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'linear-gradient(180deg, transparent 50%, rgba(10, 10, 10, 0.5) 100%)',
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* Year badge */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '1.25rem',
+                right: '1.25rem',
+                background: 'rgba(10, 10, 10, 0.8)',
+                border: '1px solid var(--text-10)',
+                borderRadius: '8px',
+                padding: '0.5rem 0.875rem',
+                fontSize: '0.75rem',
+                fontWeight: '500',
+                color: 'var(--text-70)',
+                letterSpacing: '0.05em',
+              }}
+            >
+              {project.year}
+            </div>
+
+            {/* Metrics overlay */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '1.25rem',
+                left: '1.25rem',
+                background: 'rgba(10, 10, 10, 0.85)',
+                border: '1px solid var(--text-10)',
+                borderRadius: '14px',
+                padding: '0.875rem 1.25rem',
+                display: 'flex',
+                gap: '1.5rem',
+              }}
+            >
+              {project.metrics.map((metric, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <metric.icon size={14} style={{ color: `rgba(${brandRgb}, 0.9)` }} />
+                  <span style={{ fontSize: '0.75rem', fontWeight: '500', color: 'var(--text-80)' }}>
+                    {metric.value}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Content */}
           <div
             style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'linear-gradient(180deg, transparent 60%, rgba(10, 10, 10, 0.4) 100%)',
-              pointerEvents: 'none',
-            }}
-          />
-
-          {/* Stats overlay card */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '1.25rem',
-              left: '1.25rem',
-              background: 'rgba(10, 10, 10, 0.7)',
-              backdropFilter: 'blur(40px) saturate(180%)',
-              WebkitBackdropFilter: 'blur(40px) saturate(180%)',
-              border: '1px solid var(--text-10)',
-              borderRadius: '14px',
-              padding: '0.875rem 1.25rem',
+              width: isMobile ? '100%' : '40%',
               display: 'flex',
+              flexDirection: 'column',
               gap: '1.5rem',
             }}
           >
-            {project.metrics.slice(0, 2).map((metric, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <metric.icon size={14} style={{ color: `rgba(${brandRgb}, 0.9)` }} />
-                <span style={{ fontSize: '0.75rem', fontWeight: '500', color: 'var(--text-80)' }}>
-                  {metric.value}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          {/* Year badge */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '1.25rem',
-              right: '1.25rem',
-              background: 'rgba(10, 10, 10, 0.6)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid var(--text-08)',
-              borderRadius: '8px',
-              padding: '0.375rem 0.75rem',
-              fontSize: '0.6875rem',
-              fontWeight: '500',
-              color: 'var(--text-60)',
-              letterSpacing: '0.05em',
-            }}
-          >
-            {project.year}
-          </div>
-        </div>
-
-        {/* Right Side - Content */}
-        <div
-          style={{
-            width: isMobile ? '100%' : '40%',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            gap: '1.25rem',
-          }}
-        >
-          {/* Index + Category */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <span
-              style={{
-                fontSize: 'clamp(0.6875rem, 1vw, 0.75rem)',
-                fontWeight: '400',
-                color: 'var(--text-35)',
-                fontFamily: 'monospace',
-              }}
-            >
-              {String(index + 1).padStart(2, '0')}
-            </span>
-            <span style={{ color: 'var(--text-20)', fontSize: '0.75rem' }}>—</span>
-            <span
-              style={{
-                fontSize: 'clamp(0.6875rem, 1vw, 0.75rem)',
-                fontWeight: '500',
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                color: 'var(--text-50)',
-              }}
-            >
-              {project.category}
-            </span>
-          </div>
-
-          {/* Project Title */}
-          <h2
-            style={{
-              fontSize: 'clamp(2rem, 4vw, 3.25rem)',
-              fontWeight: '200',
-              color: 'var(--text-95)',
-              lineHeight: '1.1',
-              letterSpacing: '-0.02em',
-              margin: 0,
-            }}
-          >
-            {project.title}
-          </h2>
-
-          {/* Description */}
-          <p
-            style={{
-              fontSize: 'clamp(0.875rem, 1.25vw, 1rem)',
-              fontWeight: '300',
-              lineHeight: '1.6',
-              color: 'var(--text-60)',
-              maxWidth: '420px',
-              margin: 0,
-            }}
-          >
-            {project.description}
-          </p>
-
-          {/* Tags */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.25rem' }}>
-            {project.tags.map((tag, i) => (
+            {/* Index + Category */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <span
-                key={i}
                 style={{
-                  fontSize: '0.6875rem',
+                  fontSize: '0.75rem',
                   fontWeight: '400',
-                  color: 'var(--text-50)',
-                  background: 'var(--glass-04)',
-                  border: '1px solid var(--text-06)',
-                  borderRadius: '6px',
-                  padding: '0.375rem 0.625rem',
-                  transition: 'all 0.2s ease',
+                  color: 'var(--text-35)',
+                  fontFamily: 'monospace',
                 }}
               >
-                {tag}
+                {String(index + 1).padStart(2, '0')}
               </span>
-            ))}
-          </div>
+              <span style={{ color: 'var(--text-20)', fontSize: '0.75rem' }}>—</span>
+              <span
+                style={{
+                  fontSize: '0.75rem',
+                  fontWeight: '500',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  color: `rgba(${brandRgb}, 0.8)`,
+                }}
+              >
+                {project.category}
+              </span>
+            </div>
 
-          {/* CTA Button */}
-          <Link
-            href={project.link}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              width: 'fit-content',
-              marginTop: '0.75rem',
-              padding: '0.875rem 1.5rem',
-              background: isHovered
-                ? `linear-gradient(135deg, rgba(${brandRgb}, 0.12), rgba(${brandRgb}, 0.06))`
-                : `linear-gradient(135deg, rgba(${brandRgb}, 0.08), rgba(${brandRgb}, 0.04))`,
-              backdropFilter: 'blur(40px) saturate(180%)',
-              WebkitBackdropFilter: 'blur(40px) saturate(180%)',
-              border: `1px solid rgba(${brandRgb}, ${isHovered ? 0.25 : 0.15})`,
-              borderRadius: '12px',
-              color: 'var(--text-90)',
-              textDecoration: 'none',
-              fontSize: '0.8125rem',
-              fontWeight: '500',
-              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-              transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
-              boxShadow: isHovered
-                ? `inset 0 1px 0 var(--text-05), 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(${brandRgb}, 0.15)`
-                : `inset 0 1px 0 var(--text-03), 0 8px 24px rgba(0, 0, 0, 0.3)`,
-            }}
-          >
-            <span>View Case Study</span>
-            <ArrowRight
-              size={14}
+            {/* Title */}
+            <h2
               style={{
-                transition: 'transform 0.3s ease',
-                transform: isHovered ? 'translateX(3px)' : 'translateX(0)',
+                fontSize: 'clamp(2.25rem, 4.5vw, 3.5rem)',
+                fontWeight: '200',
+                color: 'var(--text-95)',
+                lineHeight: '1.1',
+                letterSpacing: '-0.02em',
+                margin: 0,
               }}
-            />
-          </Link>
+            >
+              {project.title}
+            </h2>
+
+            {/* Description */}
+            <p
+              style={{
+                fontSize: 'clamp(0.9375rem, 1.25vw, 1.0625rem)',
+                fontWeight: '300',
+                lineHeight: '1.7',
+                color: 'var(--text-60)',
+                maxWidth: '480px',
+                margin: 0,
+              }}
+            >
+              {project.description}
+            </p>
+
+            {/* Tags */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+              {project.tags.map((tag, i) => (
+                <span
+                  key={i}
+                  style={{
+                    fontSize: '0.6875rem',
+                    fontWeight: '400',
+                    color: 'var(--text-50)',
+                    background: 'rgba(255, 255, 255, 0.04)',
+                    border: '1px solid var(--text-08)',
+                    borderRadius: '6px',
+                    padding: '0.375rem 0.75rem',
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            {/* CTA Button */}
+            <Link
+              href={project.link}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.625rem',
+                width: 'fit-content',
+                marginTop: '0.5rem',
+                padding: '1rem 1.75rem',
+                background: isHovered
+                  ? `rgba(${brandRgb}, 0.15)`
+                  : `rgba(${brandRgb}, 0.08)`,
+                border: `1px solid rgba(${brandRgb}, ${isHovered ? 0.35 : 0.2})`,
+                borderRadius: '14px',
+                color: 'var(--text-95)',
+                textDecoration: 'none',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
+                boxShadow: isHovered
+                  ? `0 12px 32px rgba(0, 0, 0, 0.4), 0 0 24px rgba(${brandRgb}, 0.15)`
+                  : `0 8px 24px rgba(0, 0, 0, 0.3)`,
+              }}
+            >
+              <span>View Case Study</span>
+              <ArrowRight
+                size={16}
+                style={{
+                  transition: 'transform 0.3s ease',
+                  transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
+                }}
+              />
+            </Link>
+          </div>
         </div>
 
-        {/* Progress indicator - bottom right */}
+        {/* Progress indicator */}
         <div
           style={{
             position: 'absolute',
             bottom: '2rem',
-            right: '2.5rem',
+            left: '50%',
+            transform: 'translateX(-50%)',
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
             color: 'var(--text-30)',
             fontSize: '0.75rem',
-            fontWeight: '400',
             fontFamily: 'monospace',
           }}
         >
-          <span style={{ color: 'var(--text-50)' }}>{String(index + 1).padStart(2, '0')}</span>
+          <span style={{ color: `rgba(${brandRgb}, 0.7)` }}>{String(index + 1).padStart(2, '0')}</span>
           <span>/</span>
-          <span>{String(totalProjects).padStart(2, '0')}</span>
+          <span>{String(featuredProjects.length).padStart(2, '0')}</span>
         </div>
-
-        {/* Subtle brand accent line at bottom */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: '2px',
-            background: `linear-gradient(90deg, transparent, rgba(${brandRgb}, 0.4), transparent)`,
-          }}
-        />
       </div>
     );
   }
@@ -1546,100 +1388,14 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           </div>
         </div>
 
-        {/* Placeholder - maintains scroll height when section is fixed */}
-        {isLocked && (
-          <div
-            ref={placeholderRef}
-            style={{ height: '100vh', width: '100%' }}
-            aria-hidden="true"
+        {/* Full-Screen Vertical Project Cards */}
+        {featuredProjects.map((project, index) => (
+          <FullScreenProjectCard
+            key={project.id}
+            project={project}
+            index={index}
           />
-        )}
-
-        {/* Full-Screen Horizontal Scroll Section - Locks when in viewport */}
-        <div
-          ref={horizontalSectionRef}
-          style={{
-            position: isLocked ? 'fixed' : 'relative',
-            top: isLocked ? 0 : 'auto',
-            left: 0,
-            height: '100vh',
-            width: '100%',
-            overflow: 'hidden',
-            zIndex: isLocked ? 100 : 'auto',
-            background: 'transparent',
-            // Smooth transition during lock/unlock to mask any micro-jank
-            opacity: isTransitioning ? 0.98 : 1,
-            transform: isTransitioning ? 'scale(0.998)' : 'scale(1)',
-            transition: 'opacity 0.12s ease-out, transform 0.12s ease-out',
-          }}
-        >
-          {/* Horizontal scrolling full-screen slides */}
-          {viewportWidth > 0 && (
-            <motion.div
-              style={{
-                display: 'flex',
-                width: `${viewportWidth * featuredProjects.length}px`,
-                height: '100%',
-                x: localSlideX,
-                willChange: 'transform',
-              }}
-            >
-              {featuredProjects.map((project, index) => (
-                <FullScreenSlide
-                  key={project.id}
-                  project={project}
-                  index={index}
-                  totalProjects={featuredProjects.length}
-                />
-              ))}
-            </motion.div>
-          )}
-
-          {/* Slide progress indicator */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '2rem',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              display: 'flex',
-              gap: '0.5rem',
-              zIndex: 10,
-            }}
-          >
-            {featuredProjects.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  if (isAnimatingRef.current) return;
-                  isAnimatingRef.current = true;
-                  setCurrentSlide(index);
-                  animate(localSlideX, -index * viewportWidth, {
-                    type: 'spring',
-                    stiffness: 180,
-                    damping: 28,
-                    mass: 0.8,
-                    onComplete: () => {
-                      setTimeout(() => {
-                        isAnimatingRef.current = false;
-                      }, 100);
-                    },
-                  });
-                }}
-                style={{
-                  width: currentSlide === index ? '24px' : '8px',
-                  height: '8px',
-                  borderRadius: '4px',
-                  background: currentSlide === index ? 'var(--text-90)' : 'var(--text-30)',
-                  border: 'none',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                }}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-        </div>
+        ))}
 
         {/* View All Work Button */}
         <div
