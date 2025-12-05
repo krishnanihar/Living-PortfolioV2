@@ -1054,7 +1054,6 @@ export function AirIndiaWork() {
             }}
           >
             {[
-              { value: '140', label: 'Legacy Systems' },
               { value: '4', label: 'Airlines Merged' },
               { value: '450+', label: 'Daily Users' },
             ].map((stat, i) => (
@@ -1072,34 +1071,6 @@ export function AirIndiaWork() {
                   letterSpacing: '0.08em',
                   marginTop: '0.25rem',
                 }}>{stat.label}</div>
-              </div>
-            ))}
-          </motion.div>
-
-          {/* Award Badges */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.6, delay: 1.1 }}
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '0.5rem',
-              marginTop: '1.5rem',
-              flexWrap: 'wrap',
-            }}
-          >
-            {['Red Dot 2024', 'Gold Stevie', 'APEX ★★★★'].map((award, i) => (
-              <div key={i} style={{
-                padding: '0.375rem 0.75rem',
-                borderRadius: '8px',
-                background: 'rgba(255, 255, 255, 0.04)',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
-                fontSize: '0.6875rem',
-                fontWeight: '500',
-                color: 'var(--text-secondary)',
-              }}>
-                {award}
               </div>
             ))}
           </motion.div>
