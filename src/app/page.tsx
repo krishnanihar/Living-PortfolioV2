@@ -48,7 +48,7 @@ export default function HomePage() {
 
   // Full-page snap scrolling
   const snapState = useFullPageSnap();
-  const { currentIndex, verticalY, viewportHeight, totalSections, goToSection } = snapState;
+  const { currentIndex, verticalY, viewportHeight, totalSections } = snapState;
 
   // Calculate simulated scroll position for particle effects
   const simulatedScrollY = currentIndex * viewportHeight;
@@ -119,13 +119,6 @@ export default function HomePage() {
         <AboutSectionV2 />
       </motion.main>
 
-      {/* Section dots indicator */}
-      <SectionDotsIndicator
-        totalSections={totalSections}
-        currentIndex={currentIndex}
-        onDotClick={goToSection}
-      />
-
       {/* Floating chat button */}
       <FloatingChatButton onClick={() => setIsChatOpen(true)} />
 
@@ -136,63 +129,5 @@ export default function HomePage() {
         intentContext="general"
       />
     </HomeNarrativeWrapper>
-  );
-}
-
-// Section dots indicator component
-function SectionDotsIndicator({
-  totalSections,
-  currentIndex,
-  onDotClick
-}: {
-  totalSections: number;
-  currentIndex: number;
-  onDotClick: (index: number) => void;
-}) {
-  const sectionLabels = [
-    'Hero',
-    'Air India',
-    'PsoriAssist',
-    'Metamorphic',
-    'Latent Space',
-    'All Projects',
-    'About Me'
-  ];
-
-  return (
-    <nav
-      style={{
-        position: 'fixed',
-        right: '1.5rem',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        zIndex: 100,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '0.75rem',
-      }}
-      aria-label="Page sections"
-    >
-      {Array.from({ length: totalSections }).map((_, i) => (
-        <button
-          key={i}
-          onClick={() => onDotClick(i)}
-          aria-label={`Go to ${sectionLabels[i] || `Section ${i + 1}`}`}
-          aria-current={i === currentIndex ? 'true' : undefined}
-          style={{
-            width: i === currentIndex ? '24px' : '8px',
-            height: '8px',
-            borderRadius: '4px',
-            background: i === currentIndex
-              ? 'rgba(255, 255, 255, 0.9)'
-              : 'rgba(255, 255, 255, 0.3)',
-            border: 'none',
-            cursor: 'pointer',
-            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-            padding: 0,
-          }}
-        />
-      ))}
-    </nav>
   );
 }
