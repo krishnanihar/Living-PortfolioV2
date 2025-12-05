@@ -3020,7 +3020,7 @@ export function AirIndiaWork() {
                       </motion.p>
                     </motion.div>
 
-                    {/* Visual Column */}
+                    {/* Visual Column - Always show simple scaled visual */}
                     <motion.div
                       initial={{ opacity: 0, scale: 0.9, x: index % 2 === 0 ? 50 : -50 }}
                       whileInView={{ opacity: 1, scale: 1, x: 0 }}
@@ -3032,43 +3032,36 @@ export function AirIndiaWork() {
                         justifyContent: 'center',
                         order: isMobile ? 1 : (index % 2 === 0 ? 2 : 1),
                         position: 'relative',
-                        width: '100%',
                       }}
                     >
-                      {/* Render full demos for Design System and Pixel Radar */}
-                      {index === 0 ? (
-                        /* DESIGN SYSTEM - Figma Variables Panel */
-                        <div style={{
-                          width: '100%',
-                          maxWidth: isMobile ? '100%' : '900px',
-                          transform: isMobile ? 'scale(0.6)' : 'scale(0.85)',
-                          transformOrigin: 'center',
-                        }}>
-                          {renderDesignSystemDemo()}
-                        </div>
-                      ) : index === 1 ? (
-                        /* PIXEL RADAR - Plugin UI + Architecture */
-                        <div style={{
-                          width: '100%',
-                          maxWidth: isMobile ? '100%' : '1100px',
-                          transform: isMobile ? 'scale(0.55)' : 'scale(0.75)',
-                          transformOrigin: 'center',
-                        }}>
-                          {renderPixelRadarDemo()}
-                        </div>
-                      ) : (
-                        /* Other projects - Scaled simple visual */
-                        <div style={{
-                          transform: isMobile ? 'scale(0.7)' : 'scale(1.0)',
-                          transformOrigin: 'center',
-                          filter: isHovered ? `drop-shadow(0 0 60px rgba(${project.color}, 0.3))` : 'none',
-                          transition: 'filter 0.5s ease',
-                        }}>
-                          {renderCardVisual()}
-                        </div>
-                      )}
+                      <div style={{
+                        transform: isMobile ? 'scale(0.7)' : 'scale(1.0)',
+                        transformOrigin: 'center',
+                        filter: isHovered ? `drop-shadow(0 0 60px rgba(${project.color}, 0.3))` : 'none',
+                        transition: 'filter 0.5s ease',
+                      }}>
+                        {renderCardVisual()}
+                      </div>
                     </motion.div>
                   </div>
+
+                  {/* Full-width Figma Demo for Design System and Pixel Radar */}
+                  {(index === 0 || index === 1) && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.7, delay: 0.4 }}
+                      style={{
+                        width: '100%',
+                        maxWidth: index === 0 ? '900px' : '1100px',
+                        margin: '3rem auto 0',
+                        padding: '0 1rem',
+                      }}
+                    >
+                      {index === 0 ? renderDesignSystemDemo() : renderPixelRadarDemo()}
+                    </motion.div>
+                  )}
                 </section>
 
                 {/* LEGACY EXPANDED CONTENT - Keeping for detailed demos */}
