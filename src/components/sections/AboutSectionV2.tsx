@@ -450,7 +450,9 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                     href={project.link}
                     style={{
                       textDecoration: 'none',
-                      pointerEvents: 'auto',  // FIX: Enable clicks through Atropos
+                      pointerEvents: 'auto',
+                      position: 'relative',
+                      zIndex: 100,  // Above all Atropos layers
                     }}
                   >
                     <div
@@ -774,6 +776,17 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
   return (
     <>
       <style jsx>{`
+        /* Fix Atropos pointer events - allow clicks through to links */
+        :global(.atropos-inner) {
+          pointer-events: auto !important;
+        }
+        :global(.atropos-inner a),
+        :global(.atropos-inner button) {
+          pointer-events: auto !important;
+          position: relative;
+          z-index: 100;
+        }
+
         @keyframes fadeInUp {
           from {
             opacity: 0;
