@@ -1231,6 +1231,7 @@ export function AirIndiaWork() {
         padding: 'clamp(5rem, 10vh, 8rem) 2rem',
         position: 'relative',
         zIndex: 1,
+        overflow: 'visible',
       }}>
         <div style={{
           textAlign: 'center',
@@ -1258,6 +1259,7 @@ export function AirIndiaWork() {
         <div style={{
           width: '100%',
           position: 'relative',
+          overflow: 'visible',
         }}>
           {projects.map((project, index) => {
             const Icon = project.icon;
