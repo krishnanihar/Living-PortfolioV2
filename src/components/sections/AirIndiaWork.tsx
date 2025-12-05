@@ -1044,10 +1044,12 @@ export function AirIndiaWork() {
             Building{' '}
             <span style={{
               fontWeight: '600',
-              background: 'linear-gradient(135deg, rgb(218, 14, 41), rgb(251, 146, 60))',
+              background: 'linear-gradient(90deg, #DA0E29, #FF2D4A, #DA0E29, #B80B22)',
+              backgroundSize: '300% 100%',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
+              animation: 'gradientShift 4s ease-in-out infinite',
             }}>
               design infrastructure
             </span>
