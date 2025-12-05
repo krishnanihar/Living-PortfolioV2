@@ -2853,14 +2853,14 @@ export function AirIndiaWork() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'relative',
-                    padding: isMobile ? '4rem 1.5rem' : 'clamp(4rem, 8vh, 6rem) clamp(2rem, 4vw, 4rem)',
+                    padding: isMobile ? '6rem 1.5rem' : 'clamp(6rem, 10vh, 8rem) clamp(3rem, 5vw, 5rem)',
                   }}
                 >
                   {/* Background Gradient */}
                   <div style={{
                     position: 'absolute',
                     inset: 0,
-                    background: `radial-gradient(ellipse at ${index % 2 === 0 ? '70%' : '30%'} 50%, rgba(${project.color}, 0.06), transparent 60%)`,
+                    background: `radial-gradient(ellipse at ${index % 2 === 0 ? '70%' : '30%'} 50%, rgba(${project.color}, 0.08), rgba(${project.color}, 0.02) 50%, transparent 85%)`,
                     pointerEvents: 'none',
                   }} />
 
@@ -2870,11 +2870,11 @@ export function AirIndiaWork() {
                     top: '30%',
                     right: index % 2 === 0 ? '20%' : 'auto',
                     left: index % 2 === 0 ? 'auto' : '20%',
-                    width: '300px',
-                    height: '300px',
+                    width: '500px',
+                    height: '500px',
                     borderRadius: '50%',
-                    background: `radial-gradient(circle, rgba(${project.color}, 0.12), transparent 70%)`,
-                    filter: 'blur(80px)',
+                    background: `radial-gradient(circle, rgba(${project.color}, 0.10), rgba(${project.color}, 0.03) 40%, transparent 80%)`,
+                    filter: 'blur(120px)',
                     pointerEvents: 'none',
                   }} />
 
