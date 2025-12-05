@@ -550,6 +550,13 @@ export function AirIndiaWork() {
   const [expandedCategory, setExpandedCategory] = useState<string | null>('Colors');
   const [isApplyingToken, setIsApplyingToken] = useState(false);
 
+  // Figma Variables Panel states
+  const [figmaExpandedCollections, setFigmaExpandedCollections] = useState<Set<string>>(new Set(['Primitives']));
+  const [figmaSelectedCollection, setFigmaSelectedCollection] = useState<string>('Primitives');
+  const [figmaExpandedGroups, setFigmaExpandedGroups] = useState<Set<string>>(new Set(['Colors', 'Typography', 'Spacing']));
+  const [figmaHoveredRow, setFigmaHoveredRow] = useState<string | null>(null);
+  const [figmaHoveredSidebarItem, setFigmaHoveredSidebarItem] = useState<string | null>(null);
+
   // Card 2: Search with AI - NLU Query Pipeline states
   const [queryPhase, setQueryPhase] = useState<'idle' | 'typing' | 'tokenize' | 'entities' | 'intent' | 'results'>('idle');
   const [displayedQuery, setDisplayedQuery] = useState('');
@@ -3350,370 +3357,454 @@ export function AirIndiaWork() {
                     </div>
                     </>
                   ) : index === 0 ? (
-                    /* DESIGN SYSTEM & TOKENISATION - 6-Column Atomic Token Architecture */
+                    /* DESIGN SYSTEM & TOKENISATION - Pixel-Perfect Figma Variables Panel */
                     <>
-                    {/* Interactive Prototype Helper */}
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px',
-                      marginBottom: '16px',
-                      padding: '8px 16px',
-                      background: 'rgba(99, 102, 241, 0.1)',
-                      borderRadius: '20px',
-                      border: '1px solid rgba(99, 102, 241, 0.2)',
-                      width: 'fit-content',
-                      margin: '0 auto 16px',
-                    }}>
-                      <span style={{
-                        width: '6px',
-                        height: '6px',
-                        borderRadius: '50%',
-                        background: '#6366F1',
-                        animation: 'statusPulse 1.5s ease infinite',
-                      }} />
-                      <span style={{
-                        fontSize: '11px',
-                        color: 'rgba(255, 255, 255, 0.7)',
-                        fontWeight: '500',
-                      }}>
-                        Atomic Token Architecture
-                      </span>
-                      <span style={{
-                        fontSize: '10px',
-                        color: 'rgba(255, 255, 255, 0.4)',
-                      }}>
-                        — Click &quot;Apply Cascade&quot; to see token flow
-                      </span>
-                    </div>
-
-                    {/* 6-Column Atomic Token Grid */}
+                    {/* Figma Variables Panel Container */}
                     <div style={{
                       width: '100%',
-                      maxWidth: '1200px',
+                      maxWidth: '900px',
                       margin: '0 auto',
-                      display: 'grid',
-                      gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(6, 1fr)',
-                      gap: isMobile ? '12px' : '16px',
-                      padding: '8px',
+                      borderRadius: '8px',
+                      overflow: 'hidden',
+                      background: '#1E1E1E',
+                      boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
                       fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                      fontSize: '11px',
                     }}>
-                      {/* Column 1: Primitives */}
+                      {/* Window Title Bar */}
                       <div style={{
-                        background: '#1A1A1A',
-                        borderRadius: '12px',
-                        border: `1px solid ${['global', 'alias', 'component', 'complete'].includes(tokenPhase) ? 'rgba(48, 209, 88, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
-                        overflow: 'hidden',
-                        transition: 'all 0.4s ease',
-                        boxShadow: tokenPhase === 'global' ? '0 0 20px rgba(48, 209, 88, 0.2)' : 'none',
-                      }}>
-                        <div style={{
-                          background: 'rgba(48, 209, 88, 0.1)',
-                          padding: '10px 12px',
-                          borderBottom: '1px solid rgba(48, 209, 88, 0.2)',
-                        }}>
-                          <div style={{ fontSize: '9px', color: '#30D158', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Primitives</div>
-                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Raw Values</div>
-                        </div>
-                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: '#DA0E29' }} />
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)', fontFamily: 'SF Mono, Monaco, monospace' }}>red-500</span>
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: '#0D99FF' }} />
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)', fontFamily: 'SF Mono, Monaco, monospace' }}>blue-500</span>
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: '#30D158' }} />
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)', fontFamily: 'SF Mono, Monaco, monospace' }}>green-500</span>
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: '#1E1E1E', border: '1px solid rgba(255,255,255,0.2)' }} />
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)', fontFamily: 'SF Mono, Monaco, monospace' }}>gray-900</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Column 2: Colors (Semantic) */}
-                      <div style={{
-                        background: '#1A1A1A',
-                        borderRadius: '12px',
-                        border: `1px solid ${['alias', 'component', 'complete'].includes(tokenPhase) ? 'rgba(218, 14, 41, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
-                        overflow: 'hidden',
-                        transition: 'all 0.4s ease',
-                        transitionDelay: '0.1s',
-                        boxShadow: tokenPhase === 'alias' ? '0 0 20px rgba(218, 14, 41, 0.2)' : 'none',
-                      }}>
-                        <div style={{
-                          background: 'rgba(218, 14, 41, 0.1)',
-                          padding: '10px 12px',
-                          borderBottom: '1px solid rgba(218, 14, 41, 0.2)',
-                        }}>
-                          <div style={{ fontSize: '9px', color: '#DA0E29', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Colors</div>
-                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Semantic</div>
-                        </div>
-                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>brand.primary</span>
-                            <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#DA0E29' }} />
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>brand.accent</span>
-                            <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#0D99FF' }} />
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>feedback.success</span>
-                            <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#30D158' }} />
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>bg.surface</span>
-                            <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#1E1E1E', border: '1px solid rgba(255,255,255,0.2)' }} />
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Column 3: Typography */}
-                      <div style={{
-                        background: '#1A1A1A',
-                        borderRadius: '12px',
-                        border: `1px solid ${['alias', 'component', 'complete'].includes(tokenPhase) ? 'rgba(162, 89, 255, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
-                        overflow: 'hidden',
-                        transition: 'all 0.4s ease',
-                        transitionDelay: '0.2s',
-                        boxShadow: tokenPhase === 'alias' ? '0 0 20px rgba(162, 89, 255, 0.2)' : 'none',
-                      }}>
-                        <div style={{
-                          background: 'rgba(162, 89, 255, 0.1)',
-                          padding: '10px 12px',
-                          borderBottom: '1px solid rgba(162, 89, 255, 0.2)',
-                        }}>
-                          <div style={{ fontSize: '9px', color: '#A259FF', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Typography</div>
-                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Font Tokens</div>
-                        </div>
-                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                          <div>
-                            <div style={{ fontSize: '14px', fontWeight: '700', color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.2 }}>Heading</div>
-                            <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', marginTop: '2px' }}>24/32 · Bold</div>
-                          </div>
-                          <div>
-                            <div style={{ fontSize: '11px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.8)' }}>Body Text</div>
-                            <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', marginTop: '2px' }}>14/20 · Regular</div>
-                          </div>
-                          <div>
-                            <div style={{ fontSize: '10px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.6)' }}>Caption</div>
-                            <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', marginTop: '2px' }}>12/16 · Medium</div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Column 4: Spacing */}
-                      <div style={{
-                        background: '#1A1A1A',
-                        borderRadius: '12px',
-                        border: `1px solid ${['component', 'complete'].includes(tokenPhase) ? 'rgba(13, 153, 255, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
-                        overflow: 'hidden',
-                        transition: 'all 0.4s ease',
-                        transitionDelay: '0.3s',
-                        boxShadow: tokenPhase === 'component' ? '0 0 20px rgba(13, 153, 255, 0.2)' : 'none',
-                      }}>
-                        <div style={{
-                          background: 'rgba(13, 153, 255, 0.1)',
-                          padding: '10px 12px',
-                          borderBottom: '1px solid rgba(13, 153, 255, 0.2)',
-                        }}>
-                          <div style={{ fontSize: '9px', color: '#0D99FF', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Spacing</div>
-                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Scale System</div>
-                        </div>
-                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{ width: '4px', height: '12px', background: '#0D99FF', borderRadius: '2px' }} />
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'SF Mono, Monaco, monospace' }}>space-1</span>
-                            <span style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>4px</span>
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{ width: '8px', height: '12px', background: '#0D99FF', borderRadius: '2px' }} />
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'SF Mono, Monaco, monospace' }}>space-2</span>
-                            <span style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>8px</span>
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{ width: '16px', height: '12px', background: '#0D99FF', borderRadius: '2px' }} />
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'SF Mono, Monaco, monospace' }}>space-4</span>
-                            <span style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>16px</span>
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{ width: '24px', height: '12px', background: '#0D99FF', borderRadius: '2px' }} />
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'SF Mono, Monaco, monospace' }}>space-6</span>
-                            <span style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>24px</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Column 5: Border & Radius */}
-                      <div style={{
-                        background: '#1A1A1A',
-                        borderRadius: '12px',
-                        border: `1px solid ${['component', 'complete'].includes(tokenPhase) ? 'rgba(255, 159, 10, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
-                        overflow: 'hidden',
-                        transition: 'all 0.4s ease',
-                        transitionDelay: '0.4s',
-                        boxShadow: tokenPhase === 'component' ? '0 0 20px rgba(255, 159, 10, 0.2)' : 'none',
-                      }}>
-                        <div style={{
-                          background: 'rgba(255, 159, 10, 0.1)',
-                          padding: '10px 12px',
-                          borderBottom: '1px solid rgba(255, 159, 10, 0.2)',
-                        }}>
-                          <div style={{ fontSize: '9px', color: '#FF9F0A', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Border</div>
-                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Radius & Stroke</div>
-                        </div>
-                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <div style={{ width: '20px', height: '20px', background: 'transparent', border: '2px solid #FF9F0A', borderRadius: '4px' }} />
-                            <div>
-                              <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)' }}>radius-sm</div>
-                              <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>4px</div>
-                            </div>
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <div style={{ width: '20px', height: '20px', background: 'transparent', border: '2px solid #FF9F0A', borderRadius: '8px' }} />
-                            <div>
-                              <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)' }}>radius-md</div>
-                              <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>8px</div>
-                            </div>
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <div style={{ width: '20px', height: '20px', background: 'transparent', border: '2px solid #FF9F0A', borderRadius: '12px' }} />
-                            <div>
-                              <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)' }}>radius-lg</div>
-                              <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>12px</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Column 6: Components */}
-                      <div style={{
-                        background: '#1A1A1A',
-                        borderRadius: '12px',
-                        border: `1px solid ${tokenPhase === 'complete' ? 'rgba(236, 72, 153, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
-                        overflow: 'hidden',
-                        transition: 'all 0.4s ease',
-                        transitionDelay: '0.5s',
-                        boxShadow: tokenPhase === 'complete' ? '0 0 20px rgba(236, 72, 153, 0.2)' : 'none',
-                      }}>
-                        <div style={{
-                          background: 'rgba(236, 72, 153, 0.1)',
-                          padding: '10px 12px',
-                          borderBottom: '1px solid rgba(236, 72, 153, 0.2)',
-                        }}>
-                          <div style={{ fontSize: '9px', color: '#EC4899', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Components</div>
-                          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>Applied Tokens</div>
-                        </div>
-                        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                          {/* Mini Button Preview */}
-                          <div style={{
-                            background: tokenPhase === 'complete' ? '#DA0E29' : '#2C2C2C',
-                            padding: '6px 12px',
-                            borderRadius: '6px',
-                            textAlign: 'center',
-                            fontSize: '10px',
-                            fontWeight: '600',
-                            color: tokenPhase === 'complete' ? 'white' : 'rgba(255, 255, 255, 0.5)',
-                            transition: 'all 0.4s ease',
-                          }}>
-                            Button
-                          </div>
-                          {/* Mini Card Preview */}
-                          <div style={{
-                            background: tokenPhase === 'complete' ? '#1E1E1E' : '#2C2C2C',
-                            padding: '8px',
-                            borderRadius: tokenPhase === 'complete' ? '8px' : '4px',
-                            border: tokenPhase === 'complete' ? '1px solid rgba(218, 14, 41, 0.2)' : '1px solid rgba(255, 255, 255, 0.1)',
-                            transition: 'all 0.4s ease',
-                          }}>
-                            <div style={{ width: '100%', height: '4px', background: tokenPhase === 'complete' ? '#DA0E29' : 'rgba(255, 255, 255, 0.2)', borderRadius: '2px', marginBottom: '4px' }} />
-                            <div style={{ width: '70%', height: '3px', background: 'rgba(255, 255, 255, 0.15)', borderRadius: '2px' }} />
-                          </div>
-                          {/* Mini Input Preview */}
-                          <div style={{
-                            background: '#2C2C2C',
-                            padding: '6px 8px',
-                            borderRadius: tokenPhase === 'complete' ? '6px' : '4px',
-                            border: tokenPhase === 'complete' ? '1px solid rgba(13, 153, 255, 0.3)' : '1px solid rgba(255, 255, 255, 0.1)',
-                            fontSize: '9px',
-                            color: 'rgba(255, 255, 255, 0.4)',
-                            transition: 'all 0.4s ease',
-                          }}>
-                            Input field...
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Apply Cascade Button & Status */}
-                    <div style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      gap: '12px',
-                      marginTop: '20px',
-                    }}>
-                      <button
-                        onClick={() => {
-                          if (tokenPhase === 'idle' || tokenPhase === 'complete') {
-                            setTokenPhase('global');
-                            setTimeout(() => setTokenPhase('alias'), 600);
-                            setTimeout(() => setTokenPhase('component'), 1200);
-                            setTimeout(() => setTokenPhase('complete'), 1800);
-                          }
-                        }}
-                        style={{
-                          background: tokenPhase === 'complete' ? 'rgba(48, 209, 88, 0.2)' : 'rgba(99, 102, 241, 0.2)',
-                          border: `1px solid ${tokenPhase === 'complete' ? 'rgba(48, 209, 88, 0.4)' : 'rgba(99, 102, 241, 0.4)'}`,
-                          borderRadius: '8px',
-                          padding: '10px 24px',
-                          color: tokenPhase === 'complete' ? '#30D158' : '#818CF8',
-                          fontSize: '12px',
-                          fontWeight: '600',
-                          cursor: 'pointer',
-                          transition: 'all 0.3s ease',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '8px',
-                        }}
-                      >
-                        <span style={{
-                          width: '6px',
-                          height: '6px',
-                          borderRadius: '50%',
-                          background: tokenPhase === 'complete' ? '#30D158' : '#6366F1',
-                          animation: tokenPhase !== 'idle' && tokenPhase !== 'complete' ? 'statusPulse 1s ease infinite' : 'none',
-                        }} />
-                        {tokenPhase === 'idle' && 'Apply Cascade'}
-                        {tokenPhase === 'global' && 'Reading primitives...'}
-                        {tokenPhase === 'alias' && 'Mapping semantics...'}
-                        {tokenPhase === 'component' && 'Applying to components...'}
-                        {tokenPhase === 'complete' && 'Cascade Complete ✓'}
-                      </button>
-
-                      {/* Flow Indicator */}
-                      <div style={{
+                        height: '36px',
+                        background: '#2C2C2C',
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
                         display: 'flex',
                         alignItems: 'center',
+                        padding: '0 12px',
                         gap: '8px',
-                        fontSize: '10px',
-                        color: 'rgba(255, 255, 255, 0.4)',
                       }}>
-                        <span style={{ color: ['global', 'alias', 'component', 'complete'].includes(tokenPhase) ? '#30D158' : 'inherit' }}>Primitives</span>
-                        <span>→</span>
-                        <span style={{ color: ['alias', 'component', 'complete'].includes(tokenPhase) ? '#DA0E29' : 'inherit' }}>Semantic</span>
-                        <span>→</span>
-                        <span style={{ color: ['component', 'complete'].includes(tokenPhase) ? '#A259FF' : 'inherit' }}>Applied</span>
-                        <span>→</span>
-                        <span style={{ color: tokenPhase === 'complete' ? '#EC4899' : 'inherit' }}>Components</span>
+                        {/* Traffic Lights */}
+                        <div style={{ display: 'flex', gap: '6px' }}>
+                          <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#FF5F57' }} />
+                          <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#FEBC2E' }} />
+                          <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#28C840' }} />
+                        </div>
+                        {/* Title */}
+                        <span style={{
+                          flex: 1,
+                          textAlign: 'center',
+                          fontSize: '13px',
+                          fontWeight: '500',
+                          color: 'rgba(255, 255, 255, 0.9)',
+                          marginLeft: '-36px',
+                        }}>
+                          Local Variables
+                        </span>
+                      </div>
+
+                      {/* Main Content Area */}
+                      <div style={{
+                        display: 'flex',
+                        minHeight: isMobile ? '400px' : '360px',
+                      }}>
+                        {/* Sidebar */}
+                        {!isMobile && (
+                          <div style={{
+                            width: '180px',
+                            background: '#252525',
+                            borderRight: '1px solid rgba(255, 255, 255, 0.08)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                          }}>
+                            {/* Sidebar Header */}
+                            <div style={{
+                              padding: '8px 12px',
+                              fontSize: '11px',
+                              fontWeight: '500',
+                              color: 'rgba(255, 255, 255, 0.4)',
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.05em',
+                              borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                            }}>
+                              Collections
+                            </div>
+                            {/* Collections List */}
+                            <div style={{ flex: 1, padding: '4px 0' }}>
+                              {/* Primitives Collection */}
+                              <div
+                                onClick={() => {
+                                  setFigmaExpandedCollections(prev => {
+                                    const next = new Set(prev);
+                                    if (next.has('Primitives')) next.delete('Primitives');
+                                    else next.add('Primitives');
+                                    return next;
+                                  });
+                                  setFigmaSelectedCollection('Primitives');
+                                }}
+                                onMouseEnter={() => setFigmaHoveredSidebarItem('Primitives')}
+                                onMouseLeave={() => setFigmaHoveredSidebarItem(null)}
+                                style={{
+                                  padding: '6px 12px',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '6px',
+                                  cursor: 'pointer',
+                                  background: figmaSelectedCollection === 'Primitives' ? 'rgba(24, 160, 251, 0.15)' : figmaHoveredSidebarItem === 'Primitives' ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
+                                  borderLeft: figmaSelectedCollection === 'Primitives' ? '2px solid #0D99FF' : '2px solid transparent',
+                                  transition: 'all 0.15s ease',
+                                }}
+                              >
+                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', width: '12px' }}>
+                                  {figmaExpandedCollections.has('Primitives') ? '▾' : '▸'}
+                                </span>
+                                <span style={{ fontSize: '11px', color: figmaSelectedCollection === 'Primitives' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.8)', fontWeight: figmaSelectedCollection === 'Primitives' ? '500' : '400' }}>
+                                  Primitives
+                                </span>
+                              </div>
+                              {/* Nested items under Primitives */}
+                              {figmaExpandedCollections.has('Primitives') && (
+                                <div style={{ paddingLeft: '20px' }}>
+                                  {['Colors', 'Typography', 'Spacing'].map((item) => (
+                                    <div
+                                      key={item}
+                                      onMouseEnter={() => setFigmaHoveredSidebarItem(item)}
+                                      onMouseLeave={() => setFigmaHoveredSidebarItem(null)}
+                                      style={{
+                                        padding: '4px 12px',
+                                        fontSize: '11px',
+                                        color: 'rgba(255, 255, 255, 0.6)',
+                                        cursor: 'pointer',
+                                        background: figmaHoveredSidebarItem === item ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
+                                        transition: 'background 0.15s ease',
+                                      }}
+                                    >
+                                      {item}
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+
+                              {/* Semantic Collection */}
+                              <div
+                                onClick={() => {
+                                  setFigmaExpandedCollections(prev => {
+                                    const next = new Set(prev);
+                                    if (next.has('Semantic')) next.delete('Semantic');
+                                    else next.add('Semantic');
+                                    return next;
+                                  });
+                                  setFigmaSelectedCollection('Semantic');
+                                }}
+                                onMouseEnter={() => setFigmaHoveredSidebarItem('Semantic')}
+                                onMouseLeave={() => setFigmaHoveredSidebarItem(null)}
+                                style={{
+                                  padding: '6px 12px',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '6px',
+                                  cursor: 'pointer',
+                                  background: figmaSelectedCollection === 'Semantic' ? 'rgba(24, 160, 251, 0.15)' : figmaHoveredSidebarItem === 'Semantic' ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
+                                  borderLeft: figmaSelectedCollection === 'Semantic' ? '2px solid #0D99FF' : '2px solid transparent',
+                                  transition: 'all 0.15s ease',
+                                }}
+                              >
+                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', width: '12px' }}>
+                                  {figmaExpandedCollections.has('Semantic') ? '▾' : '▸'}
+                                </span>
+                                <span style={{ fontSize: '11px', color: figmaSelectedCollection === 'Semantic' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.8)', fontWeight: figmaSelectedCollection === 'Semantic' ? '500' : '400' }}>
+                                  Semantic
+                                </span>
+                              </div>
+                              {figmaExpandedCollections.has('Semantic') && (
+                                <div style={{ paddingLeft: '20px' }}>
+                                  {['Brand', 'Surface'].map((item) => (
+                                    <div
+                                      key={item}
+                                      onMouseEnter={() => setFigmaHoveredSidebarItem(item)}
+                                      onMouseLeave={() => setFigmaHoveredSidebarItem(null)}
+                                      style={{
+                                        padding: '4px 12px',
+                                        fontSize: '11px',
+                                        color: 'rgba(255, 255, 255, 0.6)',
+                                        cursor: 'pointer',
+                                        background: figmaHoveredSidebarItem === item ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
+                                        transition: 'background 0.15s ease',
+                                      }}
+                                    >
+                                      {item}
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+
+                              {/* Components Collection */}
+                              <div
+                                onClick={() => {
+                                  setFigmaExpandedCollections(prev => {
+                                    const next = new Set(prev);
+                                    if (next.has('Components')) next.delete('Components');
+                                    else next.add('Components');
+                                    return next;
+                                  });
+                                  setFigmaSelectedCollection('Components');
+                                }}
+                                onMouseEnter={() => setFigmaHoveredSidebarItem('Components')}
+                                onMouseLeave={() => setFigmaHoveredSidebarItem(null)}
+                                style={{
+                                  padding: '6px 12px',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '6px',
+                                  cursor: 'pointer',
+                                  background: figmaSelectedCollection === 'Components' ? 'rgba(24, 160, 251, 0.15)' : figmaHoveredSidebarItem === 'Components' ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
+                                  borderLeft: figmaSelectedCollection === 'Components' ? '2px solid #0D99FF' : '2px solid transparent',
+                                  transition: 'all 0.15s ease',
+                                }}
+                              >
+                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', width: '12px' }}>
+                                  {figmaExpandedCollections.has('Components') ? '▾' : '▸'}
+                                </span>
+                                <span style={{ fontSize: '11px', color: figmaSelectedCollection === 'Components' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.8)', fontWeight: figmaSelectedCollection === 'Components' ? '500' : '400' }}>
+                                  Components
+                                </span>
+                              </div>
+                              {figmaExpandedCollections.has('Components') && (
+                                <div style={{ paddingLeft: '20px' }}>
+                                  {['Button', 'Card'].map((item) => (
+                                    <div
+                                      key={item}
+                                      onMouseEnter={() => setFigmaHoveredSidebarItem(item)}
+                                      onMouseLeave={() => setFigmaHoveredSidebarItem(null)}
+                                      style={{
+                                        padding: '4px 12px',
+                                        fontSize: '11px',
+                                        color: 'rgba(255, 255, 255, 0.6)',
+                                        cursor: 'pointer',
+                                        background: figmaHoveredSidebarItem === item ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
+                                        transition: 'background 0.15s ease',
+                                      }}
+                                    >
+                                      {item}
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                            {/* Sidebar Footer */}
+                            <div style={{
+                              padding: '8px 12px',
+                              borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+                              fontSize: '11px',
+                              color: 'rgba(255, 255, 255, 0.4)',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                            }}>
+                              <span style={{ fontSize: '14px' }}>+</span> New collection
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Table Area */}
+                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: '#2C2C2C' }}>
+                          {/* Table Header */}
+                          <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 100px 100px',
+                            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                            background: '#2C2C2C',
+                            position: 'sticky',
+                            top: 0,
+                          }}>
+                            <div style={{ padding: '8px 16px', fontSize: '11px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.4)' }}>Name</div>
+                            <div style={{ padding: '8px 12px', fontSize: '11px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.4)', textAlign: 'center' }}>Light</div>
+                            <div style={{ padding: '8px 12px', fontSize: '11px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.4)', textAlign: 'center' }}>Dark</div>
+                          </div>
+
+                          {/* Table Body */}
+                          <div style={{ flex: 1, overflow: 'auto' }}>
+                            {/* Colors Group */}
+                            <div
+                              onClick={() => {
+                                setFigmaExpandedGroups(prev => {
+                                  const next = new Set(prev);
+                                  if (next.has('Colors')) next.delete('Colors');
+                                  else next.add('Colors');
+                                  return next;
+                                });
+                              }}
+                              style={{
+                                display: 'grid',
+                                gridTemplateColumns: '1fr 100px 100px',
+                                borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+                                cursor: 'pointer',
+                                background: 'rgba(255, 255, 255, 0.02)',
+                              }}
+                            >
+                              <div style={{ padding: '8px 16px', fontSize: '11px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.8)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>{figmaExpandedGroups.has('Colors') ? '▾' : '▸'}</span>
+                                Colors
+                              </div>
+                              <div style={{ padding: '8px 12px' }} />
+                              <div style={{ padding: '8px 12px' }} />
+                            </div>
+                            {figmaExpandedGroups.has('Colors') && (
+                              <>
+                                {[
+                                  { name: 'brand/primary', light: '#DA0E29', dark: '#DA0E29' },
+                                  { name: 'brand/accent', light: '#0D99FF', dark: '#0D99FF' },
+                                  { name: 'neutral/surface', light: '#FFFFFF', dark: '#1E1E1E' },
+                                  { name: 'neutral/border', light: '#E5E5E5', dark: '#383838' },
+                                ].map((token) => (
+                                  <div
+                                    key={token.name}
+                                    onMouseEnter={() => setFigmaHoveredRow(token.name)}
+                                    onMouseLeave={() => setFigmaHoveredRow(null)}
+                                    style={{
+                                      display: 'grid',
+                                      gridTemplateColumns: '1fr 100px 100px',
+                                      borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
+                                      background: figmaHoveredRow === token.name ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
+                                      transition: 'background 0.1s ease',
+                                    }}
+                                  >
+                                    <div style={{ padding: '6px 16px 6px 32px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)' }}>{token.name}</div>
+                                    <div style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                                      <div style={{ width: '14px', height: '14px', borderRadius: '3px', background: token.light, border: token.light === '#FFFFFF' ? '1px solid rgba(255, 255, 255, 0.2)' : 'none' }} />
+                                      <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'SF Mono, Monaco, monospace' }}>{token.light}</span>
+                                    </div>
+                                    <div style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                                      <div style={{ width: '14px', height: '14px', borderRadius: '3px', background: token.dark, border: token.dark === '#1E1E1E' ? '1px solid rgba(255, 255, 255, 0.2)' : 'none' }} />
+                                      <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'SF Mono, Monaco, monospace' }}>{token.dark}</span>
+                                    </div>
+                                  </div>
+                                ))}
+                              </>
+                            )}
+
+                            {/* Typography Group */}
+                            <div
+                              onClick={() => {
+                                setFigmaExpandedGroups(prev => {
+                                  const next = new Set(prev);
+                                  if (next.has('Typography')) next.delete('Typography');
+                                  else next.add('Typography');
+                                  return next;
+                                });
+                              }}
+                              style={{
+                                display: 'grid',
+                                gridTemplateColumns: '1fr 100px 100px',
+                                borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+                                cursor: 'pointer',
+                                background: 'rgba(255, 255, 255, 0.02)',
+                              }}
+                            >
+                              <div style={{ padding: '8px 16px', fontSize: '11px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.8)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>{figmaExpandedGroups.has('Typography') ? '▾' : '▸'}</span>
+                                Typography
+                              </div>
+                              <div style={{ padding: '8px 12px' }} />
+                              <div style={{ padding: '8px 12px' }} />
+                            </div>
+                            {figmaExpandedGroups.has('Typography') && (
+                              <>
+                                {[
+                                  { name: 'heading/lg', light: '32', dark: '32' },
+                                  { name: 'heading/md', light: '24', dark: '24' },
+                                  { name: 'body/md', light: '14', dark: '14' },
+                                ].map((token) => (
+                                  <div
+                                    key={token.name}
+                                    onMouseEnter={() => setFigmaHoveredRow(token.name)}
+                                    onMouseLeave={() => setFigmaHoveredRow(null)}
+                                    style={{
+                                      display: 'grid',
+                                      gridTemplateColumns: '1fr 100px 100px',
+                                      borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
+                                      background: figmaHoveredRow === token.name ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
+                                      transition: 'background 0.1s ease',
+                                    }}
+                                  >
+                                    <div style={{ padding: '6px 16px 6px 32px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)' }}>{token.name}</div>
+                                    <div style={{ padding: '6px 12px', textAlign: 'center', fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)' }}>{token.light}</div>
+                                    <div style={{ padding: '6px 12px', textAlign: 'center', fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)' }}>{token.dark}</div>
+                                  </div>
+                                ))}
+                              </>
+                            )}
+
+                            {/* Spacing Group */}
+                            <div
+                              onClick={() => {
+                                setFigmaExpandedGroups(prev => {
+                                  const next = new Set(prev);
+                                  if (next.has('Spacing')) next.delete('Spacing');
+                                  else next.add('Spacing');
+                                  return next;
+                                });
+                              }}
+                              style={{
+                                display: 'grid',
+                                gridTemplateColumns: '1fr 100px 100px',
+                                borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+                                cursor: 'pointer',
+                                background: 'rgba(255, 255, 255, 0.02)',
+                              }}
+                            >
+                              <div style={{ padding: '8px 16px', fontSize: '11px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.8)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>{figmaExpandedGroups.has('Spacing') ? '▾' : '▸'}</span>
+                                Spacing
+                              </div>
+                              <div style={{ padding: '8px 12px' }} />
+                              <div style={{ padding: '8px 12px' }} />
+                            </div>
+                            {figmaExpandedGroups.has('Spacing') && (
+                              <>
+                                {[
+                                  { name: 'space-xs', light: '4', dark: '4' },
+                                  { name: 'space-sm', light: '8', dark: '8' },
+                                  { name: 'space-md', light: '16', dark: '16' },
+                                  { name: 'space-lg', light: '24', dark: '24' },
+                                ].map((token) => (
+                                  <div
+                                    key={token.name}
+                                    onMouseEnter={() => setFigmaHoveredRow(token.name)}
+                                    onMouseLeave={() => setFigmaHoveredRow(null)}
+                                    style={{
+                                      display: 'grid',
+                                      gridTemplateColumns: '1fr 100px 100px',
+                                      borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
+                                      background: figmaHoveredRow === token.name ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
+                                      transition: 'background 0.1s ease',
+                                    }}
+                                  >
+                                    <div style={{ padding: '6px 16px 6px 32px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)' }}>{token.name}</div>
+                                    <div style={{ padding: '6px 12px', textAlign: 'center', fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)' }}>{token.light}px</div>
+                                    <div style={{ padding: '6px 12px', textAlign: 'center', fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)' }}>{token.dark}px</div>
+                                  </div>
+                                ))}
+                              </>
+                            )}
+                          </div>
+
+                          {/* Table Footer */}
+                          <div style={{
+                            padding: '8px 16px',
+                            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                          }}>
+                            <span style={{
+                              fontSize: '11px',
+                              color: 'rgba(255, 255, 255, 0.4)',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                            }}>
+                              <span style={{ fontSize: '14px' }}>+</span> Create variable
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     </>
