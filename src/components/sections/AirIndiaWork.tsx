@@ -2406,7 +2406,7 @@ export function AirIndiaWork() {
                     >
                       {/* Scaled Visual Container */}
                       <div style={{
-                        transform: isMobile ? 'scale(2.2)' : 'scale(3.2)',
+                        transform: isMobile ? 'scale(0.7)' : 'scale(1.0)',
                         transformOrigin: 'center',
                         filter: isHovered ? `drop-shadow(0 0 60px rgba(${project.color}, 0.3))` : 'none',
                         transition: 'filter 0.5s ease',
