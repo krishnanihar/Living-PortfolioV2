@@ -895,40 +895,6 @@ export function AirIndiaWork() {
             background: 'linear-gradient(to top, #0A0A0A 0%, #0A0A0A 15%, rgba(10,10,10,0.85) 35%, rgba(10,10,10,0.5) 55%, rgba(10,10,10,0.2) 75%, transparent 100%)',
             pointerEvents: 'none',
           }} />
-
-          {/* Top Fade for Nav */}
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: '20%',
-            background: 'linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, transparent 100%)',
-            pointerEvents: 'none',
-          }} />
-
-          {/* Subtle Light Rays */}
-          <motion.div
-            animate={{
-              opacity: [0.03, 0.06, 0.03],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-            style={{
-              position: 'absolute',
-              top: '20%',
-              left: '50%',
-              width: '200%',
-              height: '60%',
-              transform: 'translateX(-50%)',
-              background: 'conic-gradient(from 90deg at 50% 100%, transparent 0deg, rgba(218, 14, 41, 0.1) 30deg, transparent 60deg, rgba(251, 146, 60, 0.08) 90deg, transparent 120deg)',
-              filter: 'blur(60px)',
-              pointerEvents: 'none',
-            }}
-          />
         </motion.div>
 
         {/* Centered Content Card - Liquid Glass */}
