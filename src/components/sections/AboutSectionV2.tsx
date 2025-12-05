@@ -535,6 +535,19 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
           }
         }
 
+        @keyframes blurToSharp {
+          from {
+            opacity: 0;
+            filter: blur(12px);
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0);
+          }
+        }
+
         @keyframes breathe {
           0%, 100% {
             transform: scale(1);
@@ -1096,7 +1109,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                 color: 'var(--text-95)',
                 marginBottom: '1.5rem',
                 opacity: act1InView && mounted ? 1 : 0,
-                animation: act1InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
+                animation: act1InView && mounted ? 'blurToSharp 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
               }}
             >
               Most designers can't{' '}
@@ -1138,7 +1151,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                 color: 'var(--text-85)',
                 marginBottom: '1.5rem',
                 opacity: act1InView && mounted ? 1 : 0,
-                animation: act1InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both' : 'none',
+                animation: act1InView && mounted ? 'blurToSharp 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both' : 'none',
               }}
             >
               I design and code experiences that remember, learn, and scale—
@@ -1154,7 +1167,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                 color: 'var(--text-95)',
                 marginBottom: '2rem',
                 opacity: act1InView && mounted ? 1 : 0,
-                animation: act1InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both' : 'none',
+                animation: act1InView && mounted ? 'blurToSharp 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both' : 'none',
               }}
             >
               Including this site. Designed and coded <span style={{ fontWeight: '500' }}>from the ground up</span>.
@@ -1167,7 +1180,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                 display: 'flex',
                 justifyContent: 'center',
                 opacity: act1InView && mounted ? 1 : 0,
-                animation: act1InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both' : 'none',
+                animation: act1InView && mounted ? 'blurToSharp 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both' : 'none',
               }}
             >
               <div
