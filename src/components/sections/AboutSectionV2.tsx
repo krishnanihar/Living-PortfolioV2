@@ -443,124 +443,8 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                 )}
 
                 {/* Floating Glass Panel - Parallax FORWARD */}
-                {project.id === 'air-india' ? (
-                  /* Liquid Glass CTA Card - Air India */
-                  <div
-                    data-atropos-offset="12"
-                    style={{
-                      position: 'absolute',
-                      bottom: isMobile ? '18%' : '15%',
-                      right: isMobile ? '5%' : '8%',
-                      width: isMobile ? '85%' : 'clamp(280px, 26vw, 360px)',
-                      zIndex: 10,
-                      background: 'rgba(10, 10, 10, 0.55)',
-                      backdropFilter: 'blur(40px) saturate(200%)',
-                      WebkitBackdropFilter: 'blur(40px) saturate(200%)',
-                      borderRadius: '24px',
-                      border: `1px solid rgba(${brandRgb}, 0.25)`,
-                      padding: isMobile ? '1.75rem' : '2.25rem',
-                      overflow: 'hidden',
-                      boxShadow: `
-                        0 32px 64px rgba(0, 0, 0, 0.5),
-                        0 0 0 1px rgba(255, 255, 255, 0.05),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                        0 0 80px rgba(${brandRgb}, 0.08)
-                      `,
-                    }}
-                  >
-                    {/* Air India Logo */}
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        marginBottom: '1rem',
-                      }}
-                    >
-                      <Image
-                        src="/logos/air-india.svg"
-                        alt="Air India"
-                        width={150}
-                        height={54}
-                        style={{
-                          objectFit: 'contain',
-                          opacity: 0.92,
-                        }}
-                      />
-                    </div>
-
-                    {/* Category */}
-                    <p
-                      style={{
-                        fontSize: '0.7rem',
-                        fontWeight: '500',
-                        color: 'var(--text-50)',
-                        textAlign: 'center',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.15em',
-                        margin: '0 0 1.25rem 0',
-                      }}
-                    >
-                      Aviation Design System
-                    </p>
-
-                    {/* Subtle divider */}
-                    <div
-                      style={{
-                        width: '100%',
-                        height: '1px',
-                        background: `linear-gradient(90deg, transparent, rgba(${brandRgb}, 0.3), transparent)`,
-                        marginBottom: '1.25rem',
-                      }}
-                    />
-
-                    {/* CTA Button - Only this is wrapped in Link */}
-                    <Link
-                      href={project.link}
-                      data-atropos-offset="8"
-                      onMouseEnter={() => setIsButtonHovered(true)}
-                      onMouseLeave={() => setIsButtonHovered(false)}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        width: '100%',
-                        padding: '0.875rem 1rem',
-                        background: isButtonHovered
-                          ? `rgba(${brandRgb}, 0.15)`
-                          : 'transparent',
-                        border: `1px solid rgba(${brandRgb}, ${isButtonHovered ? 0.4 : 0.2})`,
-                        borderRadius: '12px',
-                        textDecoration: 'none',
-                        transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
-                        boxShadow: isButtonHovered
-                          ? `0 8px 24px rgba(0, 0, 0, 0.3), 0 0 16px rgba(${brandRgb}, 0.15)`
-                          : 'none',
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: '0.8125rem',
-                          fontWeight: '500',
-                          color: isButtonHovered ? 'var(--text-90)' : 'var(--text-60)',
-                          transition: 'color 0.3s ease',
-                        }}
-                      >
-                        View Case Study
-                      </span>
-                      <ArrowRight
-                        size={16}
-                        style={{
-                          color: `rgba(${brandRgb}, ${isButtonHovered ? 1 : 0.7})`,
-                          transform: isButtonHovered ? 'translateX(4px)' : 'translateX(0)',
-                          transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
-                        }}
-                      />
-                    </Link>
-                  </div>
-                ) : (
-                  /* Standard Card for other projects */
-                  <div
-                    data-atropos-offset="12"
+                <div
+                  data-atropos-offset="12"
                     style={{
                       position: 'absolute',
                       bottom: isMobile ? '18%' : '15%',
@@ -614,20 +498,38 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                       </span>
                     </div>
 
-                    {/* Title - Extra parallax forward */}
-                    <h2
-                      data-atropos-offset="5"
-                      style={{
-                        fontSize: isMobile ? '1.75rem' : 'clamp(1.875rem, 3vw, 2.5rem)',
-                        fontWeight: '300',
-                        color: 'var(--text-95)',
-                        lineHeight: '1.15',
-                        letterSpacing: '-0.02em',
-                        margin: '0 0 0.875rem 0',
-                      }}
-                    >
-                      {project.title}
-                    </h2>
+                    {/* Title or Logo */}
+                    {project.id === 'air-india' ? (
+                      <div
+                        data-atropos-offset="5"
+                        style={{ margin: '0 0 0.875rem 0' }}
+                      >
+                        <Image
+                          src="/logos/air-india.svg"
+                          alt="Air India"
+                          width={180}
+                          height={64}
+                          style={{
+                            objectFit: 'contain',
+                            opacity: 0.95,
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <h2
+                        data-atropos-offset="5"
+                        style={{
+                          fontSize: isMobile ? '1.75rem' : 'clamp(1.875rem, 3vw, 2.5rem)',
+                          fontWeight: '300',
+                          color: 'var(--text-95)',
+                          lineHeight: '1.15',
+                          letterSpacing: '-0.02em',
+                          margin: '0 0 0.875rem 0',
+                        }}
+                      >
+                        {project.title}
+                      </h2>
+                    )}
 
                     {/* Divider line */}
                     <div
@@ -716,7 +618,6 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                       />
                     </Link>
                   </div>
-                )}
 
               </div>
             </div>
