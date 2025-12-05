@@ -8,6 +8,8 @@ import { ArrowRight, Sparkles, Map, User, Plane, Users, Heart, Activity, Brain, 
 import { ContactChat } from '../ContactChat';
 import { Chatbot } from '../Chatbot';
 import { useTheme } from '@/components/effects/ThemeProvider';
+import Atropos from 'atropos';
+import 'atropos/css';
 
 interface AboutSectionV2Props {
   className?: string;
@@ -246,9 +248,32 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
 
   function FullScreenProjectCard({ project, index }: ProjectCardProps) {
     const [isHovered, setIsHovered] = useState(false);
-    const [imageHovered, setImageHovered] = useState(false);
+    const atroposRef = useRef<HTMLDivElement>(null);
+    const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
     const brandRgb = `${project.brandColor.r}, ${project.brandColor.g}, ${project.brandColor.b}`;
     const isEven = index % 2 === 0;
+
+    // Initialize Atropos 3D effect
+    useEffect(() => {
+      if (atroposRef.current && !isMobile) {
+        atroposInstance.current = Atropos({
+          el: atroposRef.current,
+          activeOffset: 50,
+          rotateXMax: 8,
+          rotateYMax: 8,
+          shadow: true,
+          shadowScale: 1.05,
+          highlight: true,
+          duration: 400,
+        });
+      }
+
+      return () => {
+        if (atroposInstance.current) {
+          atroposInstance.current.destroy();
+        }
+      };
+    }, []);
 
     return (
       <div
@@ -276,225 +301,246 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
           }}
         />
 
-        {/* Content container */}
+        {/* Atropos 3D Card Container */}
         <div
+          ref={atroposRef}
+          className="atropos"
           style={{
-            display: 'flex',
-            flexDirection: isMobile ? 'column' : (isEven ? 'row' : 'row-reverse'),
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: isMobile ? '2.5rem' : 'clamp(3rem, 5vw, 5rem)',
-            maxWidth: '1400px',
-            width: '100%',
+            width: isMobile ? '100%' : '85%',
+            maxWidth: '1200px',
           }}
         >
-          {/* Image Container */}
-          <div
-            onMouseEnter={() => setImageHovered(true)}
-            onMouseLeave={() => setImageHovered(false)}
-            style={{
-              position: 'relative',
-              width: isMobile ? '100%' : '55%',
-              height: isMobile ? '50vh' : '70vh',
-              borderRadius: '20px',
-              overflow: 'hidden',
-              border: `1px solid rgba(${brandRgb}, 0.15)`,
-              boxShadow: imageHovered
-                ? `0 40px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(${brandRgb}, 0.12)`
-                : `0 32px 64px rgba(0, 0, 0, 0.5)`,
-              transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-              transform: imageHovered ? 'scale(1.01)' : 'scale(1)',
-              flexShrink: 0,
-            }}
-          >
-            <Image
-              src={project.image}
-              alt={project.title}
-              fill
-              style={{
-                objectFit: 'cover',
-                objectPosition: 'center',
-                transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                transform: imageHovered ? 'scale(1.05)' : 'scale(1)',
-              }}
-              quality={90}
-              priority={index === 0}
-            />
-
-            {/* Gradient overlay */}
-            <div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(180deg, transparent 50%, rgba(10, 10, 10, 0.5) 100%)',
-                pointerEvents: 'none',
-              }}
-            />
-
-            {/* Year badge */}
-            <div
-              style={{
-                position: 'absolute',
-                top: '1.25rem',
-                right: '1.25rem',
-                background: 'rgba(10, 10, 10, 0.8)',
-                border: '1px solid var(--text-10)',
-                borderRadius: '8px',
-                padding: '0.5rem 0.875rem',
-                fontSize: '0.75rem',
-                fontWeight: '500',
-                color: 'var(--text-70)',
-                letterSpacing: '0.05em',
-              }}
-            >
-              {project.year}
-            </div>
-
-            {/* Metrics overlay */}
-            <div
-              style={{
-                position: 'absolute',
-                bottom: '1.25rem',
-                left: '1.25rem',
-                background: 'rgba(10, 10, 10, 0.85)',
-                border: '1px solid var(--text-10)',
-                borderRadius: '14px',
-                padding: '0.875rem 1.25rem',
-                display: 'flex',
-                gap: '1.5rem',
-              }}
-            >
-              {project.metrics.map((metric, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <metric.icon size={14} style={{ color: `rgba(${brandRgb}, 0.9)` }} />
-                  <span style={{ fontSize: '0.75rem', fontWeight: '500', color: 'var(--text-80)' }}>
-                    {metric.value}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Content */}
-          <div
-            style={{
-              width: isMobile ? '100%' : '40%',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1.5rem',
-            }}
-          >
-            {/* Index + Category */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <span
+          <div className="atropos-scale">
+            <div className="atropos-rotate">
+              <div
+                className="atropos-inner"
                 style={{
-                  fontSize: '0.75rem',
-                  fontWeight: '400',
-                  color: 'var(--text-35)',
-                  fontFamily: 'monospace',
+                  background: `linear-gradient(145deg, rgba(${brandRgb}, 0.06) 0%, rgba(20, 20, 20, 0.95) 50%, rgba(10, 10, 10, 0.98) 100%)`,
+                  borderRadius: '24px',
+                  border: `1px solid rgba(${brandRgb}, 0.15)`,
+                  padding: isMobile ? '2rem' : '3rem',
+                  display: 'flex',
+                  flexDirection: isMobile ? 'column' : (isEven ? 'row' : 'row-reverse'),
+                  alignItems: 'center',
+                  gap: isMobile ? '2rem' : '3rem',
+                  boxShadow: `0 40px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(${brandRgb}, 0.08)`,
                 }}
               >
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              <span style={{ color: 'var(--text-20)', fontSize: '0.75rem' }}>—</span>
-              <span
-                style={{
-                  fontSize: '0.75rem',
-                  fontWeight: '500',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
-                  color: `rgba(${brandRgb}, 0.8)`,
-                }}
-              >
-                {project.category}
-              </span>
-            </div>
-
-            {/* Title */}
-            <h2
-              style={{
-                fontSize: 'clamp(2.25rem, 4.5vw, 3.5rem)',
-                fontWeight: '200',
-                color: 'var(--text-95)',
-                lineHeight: '1.1',
-                letterSpacing: '-0.02em',
-                margin: 0,
-              }}
-            >
-              {project.title}
-            </h2>
-
-            {/* Description */}
-            <p
-              style={{
-                fontSize: 'clamp(0.9375rem, 1.25vw, 1.0625rem)',
-                fontWeight: '300',
-                lineHeight: '1.7',
-                color: 'var(--text-60)',
-                maxWidth: '480px',
-                margin: 0,
-              }}
-            >
-              {project.description}
-            </p>
-
-            {/* Tags */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-              {project.tags.map((tag, i) => (
-                <span
-                  key={i}
+                {/* Image Container - Parallax Layer */}
+                <div
+                  data-atropos-offset="-3"
                   style={{
-                    fontSize: '0.6875rem',
-                    fontWeight: '400',
-                    color: 'var(--text-50)',
-                    background: 'rgba(255, 255, 255, 0.04)',
-                    border: '1px solid var(--text-08)',
-                    borderRadius: '6px',
-                    padding: '0.375rem 0.75rem',
+                    position: 'relative',
+                    width: isMobile ? '100%' : '55%',
+                    height: isMobile ? '45vh' : '60vh',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    border: `1px solid rgba(${brandRgb}, 0.2)`,
+                    flexShrink: 0,
                   }}
                 >
-                  {tag}
-                </span>
-              ))}
-            </div>
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    style={{
+                      objectFit: 'cover',
+                      objectPosition: 'center',
+                    }}
+                    quality={90}
+                    priority={index === 0}
+                  />
 
-            {/* CTA Button */}
-            <Link
-              href={project.link}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.625rem',
-                width: 'fit-content',
-                marginTop: '0.5rem',
-                padding: '1rem 1.75rem',
-                background: isHovered
-                  ? `rgba(${brandRgb}, 0.15)`
-                  : `rgba(${brandRgb}, 0.08)`,
-                border: `1px solid rgba(${brandRgb}, ${isHovered ? 0.35 : 0.2})`,
-                borderRadius: '14px',
-                color: 'var(--text-95)',
-                textDecoration: 'none',
-                fontSize: '0.875rem',
-                fontWeight: '500',
-                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
-                boxShadow: isHovered
-                  ? `0 12px 32px rgba(0, 0, 0, 0.4), 0 0 24px rgba(${brandRgb}, 0.15)`
-                  : `0 8px 24px rgba(0, 0, 0, 0.3)`,
-              }}
-            >
-              <span>View Case Study</span>
-              <ArrowRight
-                size={16}
-                style={{
-                  transition: 'transform 0.3s ease',
-                  transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
-                }}
-              />
-            </Link>
+                  {/* Gradient overlay */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(180deg, transparent 40%, rgba(10, 10, 10, 0.6) 100%)',
+                      pointerEvents: 'none',
+                    }}
+                  />
+
+                  {/* Year badge - floats forward */}
+                  <div
+                    data-atropos-offset="5"
+                    style={{
+                      position: 'absolute',
+                      top: '1rem',
+                      right: '1rem',
+                      background: 'rgba(10, 10, 10, 0.85)',
+                      backdropFilter: 'blur(10px)',
+                      border: '1px solid var(--text-15)',
+                      borderRadius: '10px',
+                      padding: '0.5rem 1rem',
+                      fontSize: '0.8rem',
+                      fontWeight: '600',
+                      color: 'var(--text-80)',
+                      letterSpacing: '0.05em',
+                    }}
+                  >
+                    {project.year}
+                  </div>
+
+                  {/* Metrics overlay - floats forward */}
+                  <div
+                    data-atropos-offset="8"
+                    style={{
+                      position: 'absolute',
+                      bottom: '1rem',
+                      left: '1rem',
+                      background: 'rgba(10, 10, 10, 0.9)',
+                      backdropFilter: 'blur(12px)',
+                      border: '1px solid var(--text-12)',
+                      borderRadius: '14px',
+                      padding: '1rem 1.25rem',
+                      display: 'flex',
+                      gap: '1.5rem',
+                    }}
+                  >
+                    {project.metrics.map((metric, i) => (
+                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <metric.icon size={16} style={{ color: `rgba(${brandRgb}, 1)` }} />
+                        <span style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--text-90)' }}>
+                          {metric.value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Content - Parallax Layer */}
+                <div
+                  data-atropos-offset="5"
+                  style={{
+                    width: isMobile ? '100%' : '45%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1.25rem',
+                  }}
+                >
+                  {/* Index + Category */}
+                  <div
+                    data-atropos-offset="2"
+                    style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}
+                  >
+                    <span
+                      style={{
+                        fontSize: '0.8rem',
+                        fontWeight: '500',
+                        color: 'var(--text-40)',
+                        fontFamily: 'monospace',
+                      }}
+                    >
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span style={{ color: 'var(--text-25)', fontSize: '0.8rem' }}>—</span>
+                    <span
+                      style={{
+                        fontSize: '0.75rem',
+                        fontWeight: '600',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.12em',
+                        color: `rgba(${brandRgb}, 0.9)`,
+                      }}
+                    >
+                      {project.category}
+                    </span>
+                  </div>
+
+                  {/* Title - Pops out most */}
+                  <h2
+                    data-atropos-offset="10"
+                    style={{
+                      fontSize: 'clamp(2rem, 4vw, 3rem)',
+                      fontWeight: '300',
+                      color: 'var(--text-95)',
+                      lineHeight: '1.15',
+                      letterSpacing: '-0.02em',
+                      margin: 0,
+                    }}
+                  >
+                    {project.title}
+                  </h2>
+
+                  {/* Description */}
+                  <p
+                    data-atropos-offset="6"
+                    style={{
+                      fontSize: 'clamp(0.9375rem, 1.2vw, 1rem)',
+                      fontWeight: '300',
+                      lineHeight: '1.75',
+                      color: 'var(--text-65)',
+                      maxWidth: '420px',
+                      margin: 0,
+                    }}
+                  >
+                    {project.description}
+                  </p>
+
+                  {/* Tags */}
+                  <div
+                    data-atropos-offset="4"
+                    style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.25rem' }}
+                  >
+                    {project.tags.map((tag, i) => (
+                      <span
+                        key={i}
+                        style={{
+                          fontSize: '0.7rem',
+                          fontWeight: '500',
+                          color: 'var(--text-55)',
+                          background: `rgba(${brandRgb}, 0.08)`,
+                          border: `1px solid rgba(${brandRgb}, 0.15)`,
+                          borderRadius: '8px',
+                          padding: '0.4rem 0.8rem',
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* CTA Button - Pops out most */}
+                  <Link
+                    href={project.link}
+                    data-atropos-offset="12"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.75rem',
+                      width: 'fit-content',
+                      marginTop: '0.75rem',
+                      padding: '1rem 2rem',
+                      background: isHovered
+                        ? `rgba(${brandRgb}, 0.2)`
+                        : `rgba(${brandRgb}, 0.1)`,
+                      border: `1px solid rgba(${brandRgb}, ${isHovered ? 0.4 : 0.25})`,
+                      borderRadius: '16px',
+                      color: 'var(--text-95)',
+                      textDecoration: 'none',
+                      fontSize: '0.9rem',
+                      fontWeight: '600',
+                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                      boxShadow: isHovered
+                        ? `0 16px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(${brandRgb}, 0.2)`
+                        : `0 8px 24px rgba(0, 0, 0, 0.3)`,
+                    }}
+                  >
+                    <span>View Case Study</span>
+                    <ArrowRight
+                      size={18}
+                      style={{
+                        transition: 'transform 0.3s ease',
+                        transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
+                      }}
+                    />
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
