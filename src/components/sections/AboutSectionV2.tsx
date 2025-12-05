@@ -11,9 +11,10 @@ import { useTheme } from '@/components/effects/ThemeProvider';
 
 interface AboutSectionV2Props {
   className?: string;
+  snapIndex?: number;
 }
 
-export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) {
+export default function AboutSectionV2({ className = '', snapIndex }: AboutSectionV2Props) {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [act1InView, setAct1InView] = useState(false);
@@ -96,6 +97,17 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  // Trigger section visibility based on snap scroll index
+  // (IntersectionObserver doesn't work with CSS transforms used by snap scrolling)
+  useEffect(() => {
+    if (snapIndex === 1) {
+      setAct1InView(true);
+    }
+    if (snapIndex !== undefined && snapIndex >= 7) {
+      setAct2InView(true);
+    }
+  }, [snapIndex]);
 
   // 3D tilt effect for card hover
   const handleCardMouseMove = (e: MouseEvent) => {

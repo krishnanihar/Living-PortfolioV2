@@ -118,7 +118,7 @@ export default function HomePage() {
         <IntroductionSection snapController={snapState} />
 
         {/* Rest of page content */}
-        <AboutSectionV2 />
+        <AboutSectionV2 snapIndex={currentIndex} />
       </motion.main>
 
       {/* Floating chat button */}
