@@ -251,6 +251,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
     const atroposRef = useRef<HTMLDivElement>(null);
     const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
     const brandRgb = `${project.brandColor.r}, ${project.brandColor.g}, ${project.brandColor.b}`;
+    const isAirIndia = project.id === 'air-india';
 
     // Initialize Atropos 3D effect on the ENTIRE card (reduced for easier clicking)
     useEffect(() => {
@@ -480,7 +481,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                           fontWeight: '600',
                           textTransform: 'uppercase',
                           letterSpacing: '0.15em',
-                          color: `rgba(${brandRgb}, 0.9)`,
+                          color: isAirIndia ? 'var(--text-50)' : `rgba(${brandRgb}, 0.9)`,
                         }}
                       >
                         {project.category}
@@ -536,7 +537,9 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                       style={{
                         width: '48px',
                         height: '2px',
-                        background: `linear-gradient(90deg, rgba(${brandRgb}, 0.6), transparent)`,
+                        background: isAirIndia
+                          ? 'linear-gradient(90deg, var(--text-20), transparent)'
+                          : `linear-gradient(90deg, rgba(${brandRgb}, 0.6), transparent)`,
                         marginBottom: '1rem',
                         borderRadius: '1px',
                       }}
@@ -571,8 +574,8 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                             fontSize: '0.65rem',
                             fontWeight: '500',
                             color: 'var(--text-50)',
-                            background: `rgba(${brandRgb}, 0.08)`,
-                            border: `1px solid rgba(${brandRgb}, 0.12)`,
+                            background: isAirIndia ? 'var(--glass-05)' : `rgba(${brandRgb}, 0.08)`,
+                            border: isAirIndia ? '1px solid var(--text-10)' : `1px solid rgba(${brandRgb}, 0.12)`,
                             borderRadius: '6px',
                             padding: '0.35rem 0.65rem',
                           }}
@@ -594,9 +597,11 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                         gap: '0.625rem',
                         padding: '0.875rem 1.5rem',
                         background: isButtonHovered
-                          ? `rgba(${brandRgb}, 0.2)`
-                          : `rgba(${brandRgb}, 0.1)`,
-                        border: `1px solid rgba(${brandRgb}, ${isButtonHovered ? 0.4 : 0.25})`,
+                          ? (isAirIndia ? 'var(--glass-10)' : `rgba(${brandRgb}, 0.2)`)
+                          : (isAirIndia ? 'var(--glass-05)' : `rgba(${brandRgb}, 0.1)`),
+                        border: isAirIndia
+                          ? `1px solid var(--text-${isButtonHovered ? '25' : '15'})`
+                          : `1px solid rgba(${brandRgb}, ${isButtonHovered ? 0.4 : 0.25})`,
                         borderRadius: '14px',
                         color: 'var(--text-95)',
                         textDecoration: 'none',
@@ -604,15 +609,18 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                         fontWeight: '600',
                         transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
                         boxShadow: isButtonHovered
-                          ? `0 12px 32px rgba(0, 0, 0, 0.35), 0 0 24px rgba(${brandRgb}, 0.15)`
-                          : `0 6px 20px rgba(0, 0, 0, 0.25)`,
+                          ? (isAirIndia
+                              ? '0 12px 32px rgba(0, 0, 0, 0.35)'
+                              : `0 12px 32px rgba(0, 0, 0, 0.35), 0 0 24px rgba(${brandRgb}, 0.15)`)
+                          : '0 6px 20px rgba(0, 0, 0, 0.25)',
                       }}
                     >
                       <span>View Project</span>
                       <ArrowRight
                         size={16}
                         style={{
-                          transition: 'transform 0.3s ease',
+                          color: isAirIndia ? (isButtonHovered ? 'var(--text-90)' : 'var(--text-60)') : undefined,
+                          transition: 'all 0.3s ease',
                           transform: isButtonHovered ? 'translateX(4px)' : 'translateX(0)',
                         }}
                       />
