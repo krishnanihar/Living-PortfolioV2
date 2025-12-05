@@ -325,8 +325,9 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                       data-atropos-offset="-10"
                       style={{
                         position: 'absolute',
-                        inset: 0,
+                        inset: '-10%',
                         zIndex: 1,
+                        overflow: 'hidden',
                       }}
                     >
                       <Image
@@ -336,6 +337,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                         style={{
                           objectFit: 'cover',
                           objectPosition: 'center',
+                          transform: 'scale(1.2)',
                         }}
                         quality={95}
                         priority
@@ -347,8 +349,9 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                       data-atropos-offset="-5"
                       style={{
                         position: 'absolute',
-                        inset: 0,
+                        inset: '-10%',
                         zIndex: 2,
+                        overflow: 'hidden',
                       }}
                     >
                       <Image
@@ -358,6 +361,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                         style={{
                           objectFit: 'cover',
                           objectPosition: 'center',
+                          transform: 'scale(1.2)',
                         }}
                         quality={95}
                       />
@@ -368,8 +372,9 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                       data-atropos-offset="0"
                       style={{
                         position: 'absolute',
-                        inset: 0,
+                        inset: '-10%',
                         zIndex: 3,
+                        overflow: 'hidden',
                       }}
                     >
                       <Image
@@ -379,6 +384,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                         style={{
                           objectFit: 'cover',
                           objectPosition: 'center',
+                          transform: 'scale(1.2)',
                         }}
                         quality={95}
                       />
@@ -388,7 +394,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                     <div
                       style={{
                         position: 'absolute',
-                        inset: 0,
+                        inset: '-10%',
                         background: `linear-gradient(180deg,
                           transparent 0%,
                           transparent 70%,
