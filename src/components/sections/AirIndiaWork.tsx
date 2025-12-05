@@ -2856,12 +2856,13 @@ export function AirIndiaWork() {
                     justifyContent: 'center',
                     position: 'relative',
                     padding: isMobile ? '6rem 1.5rem' : 'clamp(6rem, 10vh, 8rem) clamp(3rem, 5vw, 5rem)',
+                    overflow: 'visible',
                   }}
                 >
                   {/* Background Gradient */}
                   <div style={{
                     position: 'absolute',
-                    inset: 0,
+                    inset: '-10%',
                     background: `radial-gradient(ellipse at ${index % 2 === 0 ? '70%' : '30%'} 50%, rgba(${project.color}, 0.08), rgba(${project.color}, 0.02) 50%, transparent 85%)`,
                     pointerEvents: 'none',
                   }} />
