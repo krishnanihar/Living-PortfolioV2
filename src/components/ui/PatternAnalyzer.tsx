@@ -187,7 +187,6 @@ export function PatternAnalyzer({ className = '' }: PatternAnalyzerProps) {
             lineHeight: '1.6',
             outline: 'none',
             resize: 'vertical',
-            fontFamily: 'Inter, sans-serif',
             transition: 'all 0.3s ease',
           }}
           onFocus={(e) => {

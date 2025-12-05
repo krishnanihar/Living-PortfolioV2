@@ -427,7 +427,6 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
                 outline: 'none',
                 color: 'var(--text-primary)',
                 fontSize: '0.875rem',
-                fontFamily: 'Inter, sans-serif',
                 fontWeight: '300',
                 letterSpacing: '0.01em',
               }}
