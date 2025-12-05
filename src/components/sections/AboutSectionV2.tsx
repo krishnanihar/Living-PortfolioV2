@@ -18,7 +18,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
   const [mounted, setMounted] = useState(false);
   const [act1InView, setAct1InView] = useState(false);
   const [act2InView, setAct2InView] = useState(false);
-  const [act4InView, setAct4InView] = useState(false);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [cardTilt, setCardTilt] = useState({ rotateX: 0, rotateY: 0 });
@@ -65,18 +64,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
       ([entry]) => entry.isIntersecting && setAct2InView(true),
       observerOptions
     );
-    const act4Observer = new IntersectionObserver(
-      ([entry]) => entry.isIntersecting && setAct4InView(true),
-      observerOptions
-    );
 
     const act1El = document.getElementById('act-1-philosophy');
     const act2El = document.getElementById('act-2-about');
-    const act4El = document.getElementById('act-4-impact');
 
     if (act1El) { act1Observer.observe(act1El); observers.push(act1Observer); }
     if (act2El) { act2Observer.observe(act2El); observers.push(act2Observer); }
-    if (act4El) { act4Observer.observe(act4El); observers.push(act4Observer); }
 
     // Pillar observers for staggered reveal
     const pillarObserverOptions = { threshold: 0.3, rootMargin: '0px' };
@@ -1176,216 +1169,6 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
                 }}
               />
             </div>
-          </div>
-        </div>
-
-        {/* Act 4: The Impact */}
-        <div
-          id="act-4-impact"
-          style={{
-            minHeight: 'auto',
-            display: 'flex',
-            alignItems: 'center',
-            padding: '2rem 1.5rem',
-            position: 'relative',
-            overflow: 'hidden',
-          }}
-        >
-          {/* Animated SVG Background Mesh Gradient */}
-          <svg
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              zIndex: 0,
-              opacity: 0.4,
-              pointerEvents: 'none',
-            }}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <defs>
-              <linearGradient id="meshGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: 'rgba(147, 51, 234, 0.15)', stopOpacity: 1 }}>
-                  <animate attributeName="stop-color" values="rgba(147, 51, 234, 0.15); rgba(218, 14, 41, 0.15); rgba(59, 130, 246, 0.15); rgba(147, 51, 234, 0.15)" dur="10s" repeatCount="indefinite" />
-                </stop>
-                <stop offset="100%" style={{ stopColor: 'rgba(218, 14, 41, 0.15)', stopOpacity: 1 }}>
-                  <animate attributeName="stop-color" values="rgba(218, 14, 41, 0.15); rgba(59, 130, 246, 0.15); rgba(147, 51, 234, 0.15); rgba(218, 14, 41, 0.15)" dur="10s" repeatCount="indefinite" />
-                </stop>
-              </linearGradient>
-
-              <radialGradient id="meshGrad2" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" style={{ stopColor: 'rgba(147, 51, 234, 0.2)', stopOpacity: 1 }}>
-                  <animate attributeName="stop-color" values="rgba(147, 51, 234, 0.2); rgba(16, 185, 129, 0.2); rgba(232, 121, 249, 0.2); rgba(147, 51, 234, 0.2)" dur="8s" repeatCount="indefinite" />
-                </stop>
-                <stop offset="100%" style={{ stopColor: 'transparent', stopOpacity: 0 }} />
-              </radialGradient>
-            </defs>
-
-            {/* Flowing mesh background */}
-            <path d="M0,100 Q250,80 500,100 T1000,100 L1000,300 Q750,280 500,300 T0,300 Z" fill="url(#meshGrad1)" opacity="0.3">
-              <animate attributeName="d" values="M0,100 Q250,80 500,100 T1000,100 L1000,300 Q750,280 500,300 T0,300 Z; M0,120 Q250,90 500,120 T1000,120 L1000,320 Q750,290 500,320 T0,320 Z; M0,100 Q250,80 500,100 T1000,100 L1000,300 Q750,280 500,300 T0,300 Z" dur="12s" repeatCount="indefinite" />
-            </path>
-
-            <circle cx="20%" cy="30%" r="150" fill="url(#meshGrad2)" opacity="0.4">
-              <animate attributeName="cx" values="20%; 25%; 20%" dur="15s" repeatCount="indefinite" />
-              <animate attributeName="cy" values="30%; 35%; 30%" dur="18s" repeatCount="indefinite" />
-            </circle>
-
-            <circle cx="80%" cy="70%" r="180" fill="url(#meshGrad2)" opacity="0.3">
-              <animate attributeName="cx" values="80%; 75%; 80%" dur="20s" repeatCount="indefinite" />
-              <animate attributeName="cy" values="70%; 65%; 70%" dur="16s" repeatCount="indefinite" />
-            </circle>
-          </svg>
-
-          {/* Floating Geometric Accents */}
-          <svg
-            style={{
-              position: 'absolute',
-              top: '10%',
-              left: '5%',
-              width: '80px',
-              height: '80px',
-              zIndex: 0,
-              opacity: 0.2,
-              pointerEvents: 'none',
-            }}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <polygon points="40,10 70,30 70,60 40,80 10,60 10,30" fill="none" stroke="rgba(147, 51, 234, 0.6)" strokeWidth="1.5">
-              <animateTransform attributeName="transform" type="rotate" from="0 40 40" to="360 40 40" dur="30s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.2; 0.5; 0.2" dur="6s" repeatCount="indefinite" />
-            </polygon>
-          </svg>
-
-          <svg
-            style={{
-              position: 'absolute',
-              top: '60%',
-              right: '8%',
-              width: '60px',
-              height: '60px',
-              zIndex: 0,
-              opacity: 0.25,
-              pointerEvents: 'none',
-            }}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle cx="30" cy="30" r="25" fill="none" stroke="rgba(218, 14, 41, 0.5)" strokeWidth="1.5">
-              <animate attributeName="r" values="25; 28; 25" dur="5s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.25; 0.6; 0.25" dur="7s" repeatCount="indefinite" />
-            </circle>
-            <circle cx="30" cy="30" r="15" fill="none" stroke="rgba(218, 14, 41, 0.4)" strokeWidth="1">
-              <animate attributeName="r" values="15; 18; 15" dur="4s" repeatCount="indefinite" />
-            </circle>
-          </svg>
-
-          <svg
-            style={{
-              position: 'absolute',
-              bottom: '15%',
-              left: '10%',
-              width: '50px',
-              height: '50px',
-              zIndex: 0,
-              opacity: 0.2,
-              pointerEvents: 'none',
-            }}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line x1="5" y1="5" x2="45" y2="45" stroke="rgba(59, 130, 246, 0.5)" strokeWidth="1.5">
-              <animate attributeName="opacity" values="0.2; 0.5; 0.2" dur="8s" repeatCount="indefinite" />
-            </line>
-            <line x1="45" y1="5" x2="5" y2="45" stroke="rgba(59, 130, 246, 0.5)" strokeWidth="1.5">
-              <animate attributeName="opacity" values="0.5; 0.2; 0.5" dur="8s" repeatCount="indefinite" />
-            </line>
-          </svg>
-
-          <svg
-            style={{
-              position: 'absolute',
-              top: '20%',
-              right: '15%',
-              width: '40px',
-              height: '40px',
-              zIndex: 0,
-              opacity: 0.3,
-              pointerEvents: 'none',
-            }}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect x="5" y="5" width="30" height="30" fill="none" stroke="rgba(16, 185, 129, 0.5)" strokeWidth="1.5" rx="4">
-              <animateTransform attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="25s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.3; 0.6; 0.3" dur="5s" repeatCount="indefinite" />
-            </rect>
-          </svg>
-
-          {/* Decorative Line Art Framing */}
-          <svg
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '2%',
-              width: '30px',
-              height: '200px',
-              zIndex: 0,
-              opacity: 0.15,
-              pointerEvents: 'none',
-              transform: 'translateY(-50%)',
-            }}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line x1="15" y1="0" x2="15" y2="80" stroke={'var(--text-30)'} strokeWidth="1" strokeDasharray="4 4">
-              <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
-            </line>
-            <circle cx="15" cy="100" r="4" fill={'var(--text-40)'}>
-              <animate attributeName="opacity" values="0.4; 1; 0.4" dur="3s" repeatCount="indefinite" />
-            </circle>
-            <line x1="15" y1="120" x2="15" y2="200" stroke={'var(--text-30)'} strokeWidth="1" strokeDasharray="4 4">
-              <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
-            </line>
-          </svg>
-
-          <svg
-            style={{
-              position: 'absolute',
-              top: '50%',
-              right: '2%',
-              width: '30px',
-              height: '200px',
-              zIndex: 0,
-              opacity: 0.15,
-              pointerEvents: 'none',
-              transform: 'translateY(-50%)',
-            }}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line x1="15" y1="0" x2="15" y2="80" stroke={'var(--text-30)'} strokeWidth="1" strokeDasharray="4 4">
-              <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
-            </line>
-            <circle cx="15" cy="100" r="4" fill={'var(--text-40)'}>
-              <animate attributeName="opacity" values="0.4; 1; 0.4" dur="3s" repeatCount="indefinite" />
-            </circle>
-            <line x1="15" y1="120" x2="15" y2="200" stroke={'var(--text-30)'} strokeWidth="1" strokeDasharray="4 4">
-              <animate attributeName="stroke-dashoffset" from="0" to="8" dur="2s" repeatCount="indefinite" />
-            </line>
-          </svg>
-
-          <div style={{ maxWidth: '100%', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
-            <h3
-              style={{
-                fontSize: 'clamp(2rem, 4vw, 3rem)',
-                fontWeight: '300',
-                color: 'var(--text-95)',
-                marginBottom: '1.5rem',
-                textAlign: 'center',
-                opacity: act4InView && mounted ? 1 : 0,
-                animation: act4InView && mounted ? 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
-              }}
-            >
-              My work
-            </h3>
           </div>
         </div>
 
