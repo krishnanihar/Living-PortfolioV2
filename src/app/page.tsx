@@ -110,6 +110,8 @@ export default function HomePage() {
           y: verticalY,
           height: `${totalSections * 100}vh`,
           willChange: 'transform',
+          position: 'relative',
+          zIndex: 10,
         }}
       >
         {/* Hero Section */}
