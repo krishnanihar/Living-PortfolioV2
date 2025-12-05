@@ -258,9 +258,9 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
       if (atroposRef.current && !isMobile) {
         atroposInstance.current = Atropos({
           el: atroposRef.current,
-          activeOffset: 80,
-          rotateXMax: 2,
-          rotateYMax: 2,
+          activeOffset: 60,
+          rotateXMax: 1,
+          rotateYMax: 1,
           shadow: false,
           highlight: false,
           duration: 600,
@@ -445,7 +445,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
 
                 {/* Floating Glass Panel - Parallax FORWARD */}
                 <div
-                  data-atropos-offset="12"
+                  data-atropos-offset="4"
                     style={{
                       position: 'absolute',
                       bottom: isMobile ? '18%' : '15%',
@@ -502,7 +502,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                     {/* Title or Logo */}
                     {project.id === 'air-india' ? (
                       <div
-                        data-atropos-offset="5"
+                        data-atropos-offset="2"
                         style={{ margin: '0 0 0.875rem 0' }}
                       >
                         <Image
@@ -518,7 +518,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                       </div>
                     ) : (
                       <h2
-                        data-atropos-offset="5"
+                        data-atropos-offset="2"
                         style={{
                           fontSize: isMobile ? '1.75rem' : 'clamp(1.875rem, 3vw, 2.5rem)',
                           fontWeight: '300',
@@ -589,7 +589,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                     <Link
                       href={project.link}
                       draggable="false"
-                      data-atropos-offset="8"
+                      data-atropos-offset="3"
                       onMouseEnter={() => setIsButtonHovered(true)}
                       onMouseLeave={() => setIsButtonHovered(false)}
                       style={{
