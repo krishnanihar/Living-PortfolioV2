@@ -2178,6 +2178,636 @@ export function AirIndiaWork() {
               );
             };
 
+            // Render Pixel Radar Demo - Full interactive Figma plugin UI
+            const renderPixelRadarDemo = () => (
+              <>
+                {/* Interactive Prototype Helper */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  marginBottom: '12px',
+                  padding: '8px 16px',
+                  background: 'rgba(13, 153, 255, 0.1)',
+                  borderRadius: '20px',
+                  border: '1px solid rgba(13, 153, 255, 0.2)',
+                  width: 'fit-content',
+                  margin: '0 auto 12px',
+                }}>
+                  <span style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    background: '#0D99FF',
+                    animation: 'statusPulse 1.5s ease infinite',
+                  }} />
+                  <span style={{
+                    fontSize: '11px',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    fontWeight: '500',
+                  }}>
+                    Interactive Prototype
+                  </span>
+                  <span style={{
+                    fontSize: '10px',
+                    color: 'rgba(255, 255, 255, 0.4)',
+                  }}>
+                    — Click &quot;Run Analysis&quot; to see it in action
+                  </span>
+                </div>
+                <div style={{
+                  width: '100%',
+                  maxWidth: '1100px',
+                  margin: '0 auto',
+                  display: 'grid',
+                  gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+                  gap: '24px',
+                  padding: '8px',
+                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  fontSize: '11px',
+                }}>
+                  {/* LEFT PANEL: Figma Plugin UI */}
+                  <div style={{
+                    background: '#2C2C2C',
+                    borderRadius: '8px',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    overflow: 'hidden',
+                  }}>
+                    {/* Plugin Header */}
+                    <div style={{
+                      background: '#1E1E1E',
+                      padding: '8px 12px',
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{
+                          width: '16px',
+                          height: '16px',
+                          borderRadius: '4px',
+                          background: '#0D99FF',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                          <span style={{ fontSize: '10px', color: 'white', fontWeight: '700' }}>P</span>
+                        </div>
+                        <span style={{
+                          fontSize: '11px',
+                          fontWeight: '600',
+                          color: 'rgba(255, 255, 255, 0.9)',
+                        }}>Pixel Radar</span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.2)' }} />
+                        <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.2)' }} />
+                        <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.2)' }} />
+                      </div>
+                    </div>
+
+                    {/* Plugin Content */}
+                    <div style={{ padding: '12px' }}>
+                      {/* Library Dropdown */}
+                      <div style={{
+                        background: '#383838',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        borderRadius: '6px',
+                        padding: '8px 10px',
+                        marginBottom: '12px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>Library:</span>
+                          <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.9)' }}>Design System v2.0</span>
+                        </div>
+                        <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>▼</span>
+                      </div>
+
+                      {/* Token Analysis Section */}
+                      <div style={{
+                        background: '#1E1E1E',
+                        borderRadius: '6px',
+                        border: '1px solid rgba(255, 255, 255, 0.06)',
+                        marginBottom: '12px',
+                        overflow: 'hidden',
+                      }}>
+                        <div style={{
+                          padding: '8px 10px',
+                          borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
+                          <span style={{ fontSize: '10px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.66)' }}>Token Analysis</span>
+                          <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>3 tokens</span>
+                        </div>
+                        <div style={{
+                          display: 'grid',
+                          gridTemplateColumns: '1fr 1fr 40px',
+                          padding: '6px 10px',
+                          borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+                          background: 'rgba(255, 255, 255, 0.02)',
+                        }}>
+                          <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', fontWeight: '500' }}>Library</span>
+                          <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', fontWeight: '500' }}>Local</span>
+                          <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', fontWeight: '500', textAlign: 'center' }}>Status</span>
+                        </div>
+                        {[
+                          { id: 'color', color: '#3B82F6', library: 'color/primary', local: 'color/primary', matched: true },
+                          { id: 'typo', color: '#8B5CF6', library: 'typography/h1', local: 'typography/heading-1', matched: false },
+                          { id: 'space', color: '#10B981', library: 'spacing/lg', local: 'spacing/lg', matched: true },
+                        ].map((token) => (
+                          <div
+                            key={token.id}
+                            onMouseEnter={() => setHoveredToken(token.id)}
+                            onMouseLeave={() => setHoveredToken(null)}
+                            style={{
+                              display: 'grid',
+                              gridTemplateColumns: '1fr 1fr 40px',
+                              padding: '6px 10px',
+                              borderBottom: '1px solid rgba(255, 255, 255, 0.03)',
+                              background: hoveredToken === token.id ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
+                              cursor: 'pointer',
+                              transition: 'background 0.15s ease',
+                            }}
+                          >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <div style={{ width: '8px', height: '8px', borderRadius: '2px', background: token.color }} />
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.66)', fontFamily: 'SF Mono, Monaco, Consolas, monospace' }}>{token.library}</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <div style={{ width: '8px', height: '8px', borderRadius: '2px', background: token.color }} />
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.66)', fontFamily: 'SF Mono, Monaco, Consolas, monospace' }}>{token.local}</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              {token.matched ? (
+                                <span style={{ fontSize: '12px', color: '#30D158' }}>✓</span>
+                              ) : (
+                                <span style={{ fontSize: '10px', color: '#FF9F0A', fontWeight: '600' }}>!</span>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Stats Bar */}
+                      <div style={{
+                        background: '#1E1E1E',
+                        borderRadius: '6px',
+                        padding: '10px 12px',
+                        marginBottom: '12px',
+                      }}>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginBottom: '8px',
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <div>
+                              <span style={{ fontSize: '14px', fontWeight: '600', color: '#30D158' }}>
+                                {analysisPhase === 'complete' ? '195' : '—'}
+                              </span>
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', marginLeft: '4px' }}>matched</span>
+                            </div>
+                            <div>
+                              <span style={{ fontSize: '14px', fontWeight: '600', color: '#FF9F0A' }}>
+                                {analysisPhase === 'complete' ? '79' : '—'}
+                              </span>
+                              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)', marginLeft: '4px' }}>suggested</span>
+                            </div>
+                          </div>
+                          <span style={{
+                            fontSize: '11px',
+                            fontWeight: '600',
+                            color: analysisPhase === 'complete' ? '#30D158' : 'rgba(255, 255, 255, 0.4)',
+                          }}>
+                            {analysisPhase === 'complete' ? '71%' : '—'}
+                          </span>
+                        </div>
+                        <div style={{ height: '4px', background: 'rgba(255, 255, 255, 0.1)', borderRadius: '2px', overflow: 'hidden' }}>
+                          <div style={{
+                            width: analysisPhase === 'complete' ? '71%' : '0%',
+                            height: '100%',
+                            background: '#30D158',
+                            borderRadius: '2px',
+                            transition: 'width 0.6s cubic-bezier(0.2, 0, 0, 1)',
+                          }} />
+                        </div>
+                      </div>
+
+                      {/* Run Analysis Button */}
+                      <button
+                        onClick={() => {
+                          if (isAnalyzing) return;
+                          setIsAnalyzing(true);
+                          setAnalysisPhase('scan');
+                          setPixelRadarStep(2);
+                          setTimeout(() => setAnalysisPhase('analyze'), 500);
+                          setTimeout(() => {
+                            setAnalysisPhase('complete');
+                            setPixelRadarStep(3);
+                            setIsAnalyzing(false);
+                          }, 1500);
+                        }}
+                        style={{
+                          width: '100%',
+                          background: isAnalyzing ? '#1E1E1E' : '#0D99FF',
+                          color: 'white',
+                          border: isAnalyzing ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+                          borderRadius: '6px',
+                          padding: '8px 16px',
+                          fontSize: '11px',
+                          fontWeight: '500',
+                          cursor: isAnalyzing ? 'not-allowed' : 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '8px',
+                        }}
+                      >
+                        {isAnalyzing ? (
+                          <>
+                            <div style={{
+                              width: '12px',
+                              height: '12px',
+                              borderRadius: '50%',
+                              border: '2px solid rgba(255, 255, 255, 0.2)',
+                              borderTopColor: 'rgba(255, 255, 255, 0.9)',
+                              animation: 'spin 0.8s linear infinite',
+                            }} />
+                            <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Analyzing...</span>
+                          </>
+                        ) : (
+                          <span>Run Analysis</span>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* RIGHT PANEL: Backend Architecture */}
+                  {!isMobile && (
+                    <div style={{
+                      background: '#2C2C2C',
+                      borderRadius: '8px',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      overflow: 'hidden',
+                    }}>
+                      <div style={{
+                        background: '#1E1E1E',
+                        padding: '8px 12px',
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                      }}>
+                        <div style={{
+                          width: '16px',
+                          height: '16px',
+                          borderRadius: '4px',
+                          background: 'rgba(162, 89, 255, 0.2)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                          <span style={{ fontSize: '10px', color: '#A259FF' }}>⚡</span>
+                        </div>
+                        <span style={{
+                          fontSize: '11px',
+                          fontWeight: '600',
+                          color: 'rgba(255, 255, 255, 0.9)',
+                        }}>Backend Architecture</span>
+                      </div>
+                      <div style={{ padding: '12px' }}>
+                        {/* Module Grid */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                          {/* Token Scanner */}
+                          <div style={{
+                            background: '#1E1E1E',
+                            borderRadius: '6px',
+                            padding: '10px',
+                            border: `1px solid ${analysisPhase === 'scan' ? 'rgba(48, 209, 88, 0.6)' : 'rgba(255, 255, 255, 0.1)'}`,
+                            boxShadow: analysisPhase === 'scan' ? '0 0 8px rgba(48, 209, 88, 0.3)' : 'none',
+                          }}>
+                            <div style={{ fontSize: '10px', fontWeight: '600', color: '#30D158', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: analysisPhase === 'scan' ? '#30D158' : 'rgba(48, 209, 88, 0.3)', animation: analysisPhase === 'scan' ? 'statusPulse 0.8s ease infinite' : 'none' }} />
+                              Token Scanner
+                            </div>
+                            <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', lineHeight: 1.5 }}>• Variables<br />• Styles<br />• Libraries</div>
+                          </div>
+                          {/* Analysis Engine */}
+                          <div style={{
+                            background: '#1E1E1E',
+                            borderRadius: '6px',
+                            padding: '10px',
+                            border: `1px solid ${analysisPhase === 'analyze' ? 'rgba(13, 153, 255, 0.6)' : 'rgba(255, 255, 255, 0.1)'}`,
+                            boxShadow: analysisPhase === 'analyze' ? '0 0 8px rgba(13, 153, 255, 0.3)' : 'none',
+                          }}>
+                            <div style={{ fontSize: '10px', fontWeight: '600', color: '#0D99FF', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: analysisPhase === 'analyze' ? '#0D99FF' : 'rgba(13, 153, 255, 0.3)', animation: analysisPhase === 'analyze' ? 'statusPulse 0.8s ease infinite' : 'none' }} />
+                              Analysis Engine
+                            </div>
+                            <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', lineHeight: 1.5 }}>• Duplicate Detection<br />• Consistency Check</div>
+                          </div>
+                          {/* Figma APIs */}
+                          <div style={{
+                            background: 'rgba(218, 14, 41, 0.08)',
+                            borderRadius: '6px',
+                            padding: '10px',
+                            border: '1px solid rgba(218, 14, 41, 0.25)',
+                          }}>
+                            <div style={{ fontSize: '10px', fontWeight: '600', color: '#DA0E29', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'rgba(218, 14, 41, 0.6)' }} />
+                              Figma APIs
+                            </div>
+                            <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', lineHeight: 1.5 }}>• variables<br />• styles<br />• teamLibrary</div>
+                          </div>
+                          {/* Results */}
+                          <div style={{
+                            background: '#1E1E1E',
+                            borderRadius: '6px',
+                            padding: '10px',
+                            border: `1px solid ${analysisPhase === 'complete' ? 'rgba(48, 209, 88, 0.6)' : 'rgba(255, 255, 255, 0.1)'}`,
+                            boxShadow: analysisPhase === 'complete' ? '0 0 8px rgba(48, 209, 88, 0.3)' : 'none',
+                          }}>
+                            <div style={{ fontSize: '10px', fontWeight: '600', color: '#30D158', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: analysisPhase === 'complete' ? '#30D158' : 'rgba(48, 209, 88, 0.3)', animation: analysisPhase === 'complete' ? 'statusPulse 0.8s ease infinite' : 'none' }} />
+                              Results
+                            </div>
+                            <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.4)', lineHeight: 1.5 }}>
+                              {analysisPhase === 'complete' ? <><span style={{ color: '#30D158' }}>✓</span> Match tokens<br /><span style={{ color: '#30D158' }}>✓</span> Fix duplicates</> : <>• Match tokens<br />• Fix duplicates</>}
+                            </div>
+                          </div>
+                        </div>
+                        {/* Status */}
+                        <div style={{
+                          marginTop: '12px',
+                          padding: '8px 10px',
+                          background: '#1E1E1E',
+                          borderRadius: '6px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          border: analysisPhase === 'complete' ? '1px solid rgba(48, 209, 88, 0.2)' : '1px solid rgba(255, 255, 255, 0.05)',
+                        }}>
+                          <div style={{
+                            width: '8px',
+                            height: '8px',
+                            borderRadius: '50%',
+                            background: analysisPhase === 'idle' ? 'rgba(255, 255, 255, 0.3)' : analysisPhase === 'complete' ? '#30D158' : '#0D99FF',
+                            animation: analysisPhase !== 'idle' && analysisPhase !== 'complete' ? 'statusPulse 0.8s ease infinite' : 'none',
+                          }} />
+                          <span style={{
+                            fontSize: '10px',
+                            color: analysisPhase === 'idle' ? 'rgba(255, 255, 255, 0.4)' : analysisPhase === 'complete' ? '#30D158' : '#0D99FF',
+                          }}>
+                            {analysisPhase === 'idle' && 'Ready to analyze'}
+                            {analysisPhase === 'scan' && 'Scanning tokens...'}
+                            {analysisPhase === 'analyze' && 'Analyzing patterns...'}
+                            {analysisPhase === 'complete' && 'Analysis complete'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </>
+            );
+
+            // Render Design System Demo - Figma Variables Panel
+            const renderDesignSystemDemo = () => (
+              <div style={{
+                width: '100%',
+                maxWidth: '900px',
+                margin: '0 auto',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                background: '#1E1E1E',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+              }}>
+                {/* Window Title Bar */}
+                <div style={{
+                  height: '36px',
+                  background: '#2C2C2C',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '0 12px',
+                  gap: '8px',
+                }}>
+                  {/* Traffic Lights */}
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#FF5F57' }} />
+                    <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#FEBC2E' }} />
+                    <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#28C840' }} />
+                  </div>
+                  <span style={{
+                    flex: 1,
+                    textAlign: 'center',
+                    fontSize: '13px',
+                    fontWeight: '500',
+                    color: 'rgba(255, 255, 255, 0.9)',
+                  }}>
+                    Local Variables
+                    {figmaCascadePhase === 'complete' && <span style={{ marginLeft: '8px', color: '#30D158' }}>✓</span>}
+                  </span>
+                  {/* Play Cascade Button */}
+                  <button
+                    onClick={() => {
+                      if (figmaCascadePhase === 'playing') return;
+                      setFigmaCascadePhase('playing');
+                      // Cascade animation sequence
+                      setTimeout(() => { setFigmaSelectedCollection('Primitives'); setFigmaExpandedCollections(new Set(['Primitives'])); }, 0);
+                      setTimeout(() => setFigmaHighlightedGroup('Colors'), 400);
+                      setTimeout(() => setFigmaPulsingRow('brand/primary'), 800);
+                      setTimeout(() => { setFigmaSelectedCollection('Semantic'); setFigmaExpandedCollections(new Set(['Semantic'])); }, 1400);
+                      setTimeout(() => setFigmaHighlightedGroup('Typography'), 1800);
+                      setTimeout(() => setFigmaPulsingRow('heading/lg'), 2200);
+                      setTimeout(() => { setFigmaSelectedCollection('Components'); setFigmaExpandedCollections(new Set(['Components'])); }, 2800);
+                      setTimeout(() => setFigmaHighlightedGroup('Spacing'), 3200);
+                      setTimeout(() => setFigmaPulsingRow('space-md'), 3600);
+                      setTimeout(() => {
+                        setFigmaCascadePhase('complete');
+                        setFigmaHighlightedGroup(null);
+                        setFigmaPulsingRow(null);
+                      }, 4200);
+                    }}
+                    style={{
+                      padding: '4px 10px',
+                      borderRadius: '4px',
+                      background: figmaCascadePhase === 'playing' ? 'rgba(48, 209, 88, 0.2)' : 'rgba(99, 102, 241, 0.2)',
+                      border: `1px solid ${figmaCascadePhase === 'playing' ? 'rgba(48, 209, 88, 0.3)' : 'rgba(99, 102, 241, 0.3)'}`,
+                      color: figmaCascadePhase === 'playing' ? '#30D158' : '#6366F1',
+                      fontSize: '10px',
+                      fontWeight: '500',
+                      cursor: figmaCascadePhase === 'playing' ? 'not-allowed' : 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                    }}
+                  >
+                    {figmaCascadePhase === 'playing' ? (
+                      <>
+                        <span style={{ display: 'inline-block', animation: 'spin 1s linear infinite' }}>⟳</span>
+                        Playing...
+                      </>
+                    ) : (
+                      <>▶ Play Cascade</>
+                    )}
+                  </button>
+                </div>
+
+                {/* Main Content */}
+                <div style={{ display: 'flex', minHeight: '280px' }}>
+                  {/* Sidebar */}
+                  {!isMobile && (
+                    <div style={{
+                      width: '180px',
+                      borderRight: '1px solid rgba(255, 255, 255, 0.08)',
+                      padding: '8px',
+                      background: '#252525',
+                    }}>
+                      {['Primitives', 'Semantic', 'Components'].map((collection) => (
+                        <div
+                          key={collection}
+                          onClick={() => {
+                            setFigmaSelectedCollection(collection);
+                            setFigmaExpandedCollections(prev => {
+                              const newSet = new Set(prev);
+                              if (newSet.has(collection)) newSet.delete(collection);
+                              else newSet.add(collection);
+                              return newSet;
+                            });
+                          }}
+                          onMouseEnter={() => setFigmaHoveredSidebarItem(collection)}
+                          onMouseLeave={() => setFigmaHoveredSidebarItem(null)}
+                          style={{
+                            padding: '6px 8px',
+                            borderRadius: '4px',
+                            background: figmaSelectedCollection === collection ? 'rgba(99, 102, 241, 0.15)' : figmaHoveredSidebarItem === collection ? 'rgba(255, 255, 255, 0.05)' : 'transparent',
+                            cursor: 'pointer',
+                            marginBottom: '2px',
+                          }}
+                        >
+                          <div style={{
+                            fontSize: '11px',
+                            fontWeight: figmaSelectedCollection === collection ? '600' : '400',
+                            color: figmaSelectedCollection === collection ? '#6366F1' : 'rgba(255, 255, 255, 0.7)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                          }}>
+                            <span style={{ fontSize: '8px' }}>{figmaExpandedCollections.has(collection) ? '▼' : '▶'}</span>
+                            {collection}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Table */}
+                  <div style={{ flex: 1, overflow: 'auto' }}>
+                    {/* Header */}
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: '1fr 80px 80px',
+                      padding: '8px 12px',
+                      background: '#252525',
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                      position: 'sticky',
+                      top: 0,
+                    }}>
+                      <span style={{ fontSize: '10px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.5)' }}>Name</span>
+                      <span style={{ fontSize: '10px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.5)', textAlign: 'center' }}>Light</span>
+                      <span style={{ fontSize: '10px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.5)', textAlign: 'center' }}>Dark</span>
+                    </div>
+                    {/* Token Groups */}
+                    {[
+                      { name: 'Colors', tokens: [
+                        { name: 'brand/primary', light: '#DA0E29', dark: '#FF4D6A' },
+                        { name: 'brand/accent', light: '#6366F1', dark: '#818CF8' },
+                        { name: 'neutral/surface', light: '#FFFFFF', dark: '#1E1E1E' },
+                      ]},
+                      { name: 'Typography', tokens: [
+                        { name: 'heading/lg', light: '32px', dark: '32px' },
+                        { name: 'heading/md', light: '24px', dark: '24px' },
+                        { name: 'body/md', light: '16px', dark: '16px' },
+                      ]},
+                      { name: 'Spacing', tokens: [
+                        { name: 'space-xs', light: '4px', dark: '4px' },
+                        { name: 'space-sm', light: '8px', dark: '8px' },
+                        { name: 'space-md', light: '16px', dark: '16px' },
+                      ]},
+                    ].map((group) => (
+                      <div key={group.name}>
+                        <div
+                          onClick={() => setFigmaExpandedGroups(prev => {
+                            const newSet = new Set(prev);
+                            if (newSet.has(group.name)) newSet.delete(group.name);
+                            else newSet.add(group.name);
+                            return newSet;
+                          })}
+                          style={{
+                            padding: '6px 12px',
+                            background: figmaHighlightedGroup === group.name ? 'rgba(99, 102, 241, 0.1)' : '#252525',
+                            borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            transition: 'background 0.3s ease',
+                          }}
+                        >
+                          <span style={{ fontSize: '8px', color: 'rgba(255, 255, 255, 0.4)' }}>{figmaExpandedGroups.has(group.name) ? '▼' : '▶'}</span>
+                          <span style={{ fontSize: '10px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.7)' }}>{group.name}</span>
+                          <span style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>{group.tokens.length}</span>
+                        </div>
+                        {figmaExpandedGroups.has(group.name) && group.tokens.map((token) => (
+                          <div
+                            key={token.name}
+                            onMouseEnter={() => setFigmaHoveredRow(token.name)}
+                            onMouseLeave={() => setFigmaHoveredRow(null)}
+                            style={{
+                              display: 'grid',
+                              gridTemplateColumns: '1fr 80px 80px',
+                              padding: '6px 12px 6px 28px',
+                              background: figmaPulsingRow === token.name ? 'rgba(99, 102, 241, 0.15)' : figmaHoveredRow === token.name ? 'rgba(255, 255, 255, 0.03)' : 'transparent',
+                              borderBottom: '1px solid rgba(255, 255, 255, 0.03)',
+                              cursor: 'pointer',
+                              transition: 'background 0.15s ease',
+                              animation: figmaPulsingRow === token.name ? 'rowPulse 0.5s ease' : 'none',
+                            }}
+                          >
+                            <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.8)', fontFamily: 'SF Mono, Monaco, Consolas, monospace' }}>{token.name}</span>
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '4px' }}>
+                              {token.light.startsWith('#') ? (
+                                <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: token.light, border: '1px solid rgba(255,255,255,0.1)' }} />
+                              ) : (
+                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.6)' }}>{token.light}</span>
+                              )}
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '4px' }}>
+                              {token.dark.startsWith('#') ? (
+                                <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: token.dark, border: '1px solid rgba(255,255,255,0.1)' }} />
+                              ) : (
+                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.6)' }}>{token.dark}</span>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+
             return (
               <React.Fragment key={project.id}>
                 {/* Act Headers */}
@@ -2402,17 +3032,41 @@ export function AirIndiaWork() {
                         justifyContent: 'center',
                         order: isMobile ? 1 : (index % 2 === 0 ? 2 : 1),
                         position: 'relative',
+                        width: '100%',
                       }}
                     >
-                      {/* Scaled Visual Container */}
-                      <div style={{
-                        transform: isMobile ? 'scale(0.7)' : 'scale(1.0)',
-                        transformOrigin: 'center',
-                        filter: isHovered ? `drop-shadow(0 0 60px rgba(${project.color}, 0.3))` : 'none',
-                        transition: 'filter 0.5s ease',
-                      }}>
-                        {renderCardVisual()}
-                      </div>
+                      {/* Render full demos for Design System and Pixel Radar */}
+                      {index === 0 ? (
+                        /* DESIGN SYSTEM - Figma Variables Panel */
+                        <div style={{
+                          width: '100%',
+                          maxWidth: isMobile ? '100%' : '900px',
+                          transform: isMobile ? 'scale(0.6)' : 'scale(0.85)',
+                          transformOrigin: 'center',
+                        }}>
+                          {renderDesignSystemDemo()}
+                        </div>
+                      ) : index === 1 ? (
+                        /* PIXEL RADAR - Plugin UI + Architecture */
+                        <div style={{
+                          width: '100%',
+                          maxWidth: isMobile ? '100%' : '1100px',
+                          transform: isMobile ? 'scale(0.55)' : 'scale(0.75)',
+                          transformOrigin: 'center',
+                        }}>
+                          {renderPixelRadarDemo()}
+                        </div>
+                      ) : (
+                        /* Other projects - Scaled simple visual */
+                        <div style={{
+                          transform: isMobile ? 'scale(0.7)' : 'scale(1.0)',
+                          transformOrigin: 'center',
+                          filter: isHovered ? `drop-shadow(0 0 60px rgba(${project.color}, 0.3))` : 'none',
+                          transition: 'filter 0.5s ease',
+                        }}>
+                          {renderCardVisual()}
+                        </div>
+                      )}
                     </motion.div>
                   </div>
                 </section>
