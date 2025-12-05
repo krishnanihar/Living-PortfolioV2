@@ -248,6 +248,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
 
   function FullScreenProjectCard({ project, index }: ProjectCardProps) {
     const [isButtonHovered, setIsButtonHovered] = useState(false);
+    const [isCardHovered, setIsCardHovered] = useState(false);
     const atroposRef = useRef<HTMLDivElement>(null);
     const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
     const brandRgb = `${project.brandColor.r}, ${project.brandColor.g}, ${project.brandColor.b}`;
@@ -443,163 +444,291 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                 )}
 
                 {/* Floating Glass Panel - Parallax FORWARD */}
-                <div
-                  data-atropos-offset="12"
-                  style={{
-                    position: 'absolute',
-                    bottom: isMobile ? '18%' : '15%',
-                    right: isMobile ? '5%' : '8%',
-                    width: isMobile ? '90%' : 'clamp(340px, 32vw, 420px)',
-                    zIndex: 10,
-                    background: 'rgba(10, 10, 10, 0.65)',
-                    backdropFilter: 'blur(40px) saturate(180%)',
-                    WebkitBackdropFilter: 'blur(40px) saturate(180%)',
-                    borderRadius: '24px',
-                    border: `1px solid rgba(${brandRgb}, 0.2)`,
-                    padding: isMobile ? '1.75rem' : '2.25rem',
-                    boxShadow: `
-                      0 32px 64px rgba(0, 0, 0, 0.5),
-                      0 0 0 1px rgba(255, 255, 255, 0.05),
-                      inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                      0 0 80px rgba(${brandRgb}, 0.08)
-                    `,
-                  }}
-                >
-                  {/* Category Tag */}
-                  <div
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      marginBottom: '1rem',
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: '0.7rem',
-                        fontWeight: '600',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.15em',
-                        color: `rgba(${brandRgb}, 0.9)`,
-                      }}
-                    >
-                      {project.category}
-                    </span>
-                    <span style={{ color: 'var(--text-25)', fontSize: '0.65rem' }}>•</span>
-                    <span
-                      style={{
-                        fontSize: '0.7rem',
-                        fontWeight: '500',
-                        color: 'var(--text-50)',
-                        letterSpacing: '0.05em',
-                      }}
-                    >
-                      {project.year}
-                    </span>
-                  </div>
-
-                  {/* Title - Extra parallax forward */}
-                  <h2
-                    data-atropos-offset="5"
-                    style={{
-                      fontSize: isMobile ? '1.75rem' : 'clamp(1.875rem, 3vw, 2.5rem)',
-                      fontWeight: '300',
-                      color: 'var(--text-95)',
-                      lineHeight: '1.15',
-                      letterSpacing: '-0.02em',
-                      margin: '0 0 0.875rem 0',
-                    }}
-                  >
-                    {project.title}
-                  </h2>
-
-                  {/* Divider line */}
-                  <div
-                    style={{
-                      width: '48px',
-                      height: '2px',
-                      background: `linear-gradient(90deg, rgba(${brandRgb}, 0.6), transparent)`,
-                      marginBottom: '1rem',
-                      borderRadius: '1px',
-                    }}
-                  />
-
-                  {/* Description */}
-                  <p
-                    style={{
-                      fontSize: isMobile ? '0.875rem' : '0.9375rem',
-                      fontWeight: '300',
-                      lineHeight: '1.7',
-                      color: 'var(--text-60)',
-                      margin: '0 0 1.25rem 0',
-                    }}
-                  >
-                    {project.description}
-                  </p>
-
-                  {/* Tags */}
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                      gap: '0.4rem',
-                      marginBottom: '1.5rem',
-                    }}
-                  >
-                    {project.tags.slice(0, 3).map((tag, i) => (
-                      <span
-                        key={i}
-                        style={{
-                          fontSize: '0.65rem',
-                          fontWeight: '500',
-                          color: 'var(--text-50)',
-                          background: `rgba(${brandRgb}, 0.08)`,
-                          border: `1px solid rgba(${brandRgb}, 0.12)`,
-                          borderRadius: '6px',
-                          padding: '0.35rem 0.65rem',
-                        }}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* CTA Button - Pops out MOST */}
+                {project.id === 'air-india' ? (
+                  /* Liquid Glass CTA Card - Air India */
                   <Link
                     href={project.link}
-                    data-atropos-offset="8"
-                    onMouseEnter={() => setIsButtonHovered(true)}
-                    onMouseLeave={() => setIsButtonHovered(false)}
                     style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.625rem',
-                      padding: '0.875rem 1.5rem',
-                      background: isButtonHovered
-                        ? `rgba(${brandRgb}, 0.2)`
-                        : `rgba(${brandRgb}, 0.1)`,
-                      border: `1px solid rgba(${brandRgb}, ${isButtonHovered ? 0.4 : 0.25})`,
-                      borderRadius: '14px',
-                      color: 'var(--text-95)',
                       textDecoration: 'none',
-                      fontSize: '0.875rem',
-                      fontWeight: '600',
-                      transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
-                      boxShadow: isButtonHovered
-                        ? `0 12px 32px rgba(0, 0, 0, 0.35), 0 0 24px rgba(${brandRgb}, 0.15)`
-                        : `0 6px 20px rgba(0, 0, 0, 0.25)`,
+                      pointerEvents: 'auto',  // FIX: Enable clicks through Atropos
                     }}
                   >
-                    <span>View Project</span>
-                    <ArrowRight
-                      size={16}
+                    <div
+                      data-atropos-offset="12"
+                      onMouseEnter={() => setIsCardHovered(true)}
+                      onMouseLeave={() => setIsCardHovered(false)}
                       style={{
-                        transition: 'transform 0.3s ease',
-                        transform: isButtonHovered ? 'translateX(4px)' : 'translateX(0)',
+                        position: 'absolute',
+                        bottom: isMobile ? '18%' : '15%',
+                        right: isMobile ? '5%' : '8%',
+                        width: isMobile ? '85%' : 'clamp(280px, 26vw, 360px)',
+                        zIndex: 10,
+                        background: 'rgba(10, 10, 10, 0.55)',
+                        backdropFilter: 'blur(40px) saturate(200%)',
+                        WebkitBackdropFilter: 'blur(40px) saturate(200%)',
+                        borderRadius: '24px',
+                        border: `1px solid rgba(${brandRgb}, ${isCardHovered ? 0.5 : 0.25})`,
+                        padding: isMobile ? '1.75rem' : '2.25rem',
+                        cursor: 'pointer',
+                        overflow: 'hidden',
+                        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                        transform: isCardHovered ? 'scale(1.02)' : 'scale(1)',
+                        boxShadow: isCardHovered
+                          ? `0 32px 64px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 80px rgba(${brandRgb}, 0.2)`
+                          : `0 32px 64px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 40px rgba(${brandRgb}, 0.08)`,
+                      }}
+                    >
+                      {/* Shimmer light sweep on hover */}
+                      <div
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.08) 50%, transparent 60%)',
+                          transform: isCardHovered ? 'translateX(100%)' : 'translateX(-100%)',
+                          transition: 'transform 0.6s ease-out',
+                          pointerEvents: 'none',
+                        }}
+                      />
+
+                      {/* Air India Logo */}
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          marginBottom: '1rem',
+                          position: 'relative',
+                        }}
+                      >
+                        <Image
+                          src="/logos/air-india.svg"
+                          alt="Air India"
+                          width={150}
+                          height={54}
+                          style={{
+                            objectFit: 'contain',
+                            opacity: isCardHovered ? 1 : 0.92,
+                            transition: 'opacity 0.3s ease',
+                          }}
+                        />
+                      </div>
+
+                      {/* Category */}
+                      <p
+                        style={{
+                          fontSize: '0.7rem',
+                          fontWeight: '500',
+                          color: 'var(--text-50)',
+                          textAlign: 'center',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.15em',
+                          margin: '0 0 1.25rem 0',
+                          position: 'relative',
+                        }}
+                      >
+                        Aviation Design System
+                      </p>
+
+                      {/* Subtle divider */}
+                      <div
+                        style={{
+                          width: '100%',
+                          height: '1px',
+                          background: `linear-gradient(90deg, transparent, rgba(${brandRgb}, 0.3), transparent)`,
+                          marginBottom: '1.25rem',
+                          position: 'relative',
+                        }}
+                      />
+
+                      {/* CTA Row */}
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          position: 'relative',
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: '0.8125rem',
+                            fontWeight: '500',
+                            color: isCardHovered ? 'var(--text-90)' : 'var(--text-60)',
+                            transition: 'color 0.3s ease',
+                          }}
+                        >
+                          View Case Study
+                        </span>
+                        <ArrowRight
+                          size={16}
+                          style={{
+                            color: `rgba(${brandRgb}, ${isCardHovered ? 1 : 0.7})`,
+                            transform: isCardHovered ? 'translateX(4px)' : 'translateX(0)',
+                            transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </Link>
+                ) : (
+                  /* Standard Card for other projects */
+                  <div
+                    data-atropos-offset="12"
+                    style={{
+                      position: 'absolute',
+                      bottom: isMobile ? '18%' : '15%',
+                      right: isMobile ? '5%' : '8%',
+                      width: isMobile ? '90%' : 'clamp(340px, 32vw, 420px)',
+                      zIndex: 10,
+                      background: 'rgba(10, 10, 10, 0.65)',
+                      backdropFilter: 'blur(40px) saturate(180%)',
+                      WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+                      borderRadius: '24px',
+                      border: `1px solid rgba(${brandRgb}, 0.2)`,
+                      padding: isMobile ? '1.75rem' : '2.25rem',
+                      boxShadow: `
+                        0 32px 64px rgba(0, 0, 0, 0.5),
+                        0 0 0 1px rgba(255, 255, 255, 0.05),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                        0 0 80px rgba(${brandRgb}, 0.08)
+                      `,
+                    }}
+                  >
+                    {/* Category Tag */}
+                    <div
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        marginBottom: '1rem',
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: '0.7rem',
+                          fontWeight: '600',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.15em',
+                          color: `rgba(${brandRgb}, 0.9)`,
+                        }}
+                      >
+                        {project.category}
+                      </span>
+                      <span style={{ color: 'var(--text-25)', fontSize: '0.65rem' }}>•</span>
+                      <span
+                        style={{
+                          fontSize: '0.7rem',
+                          fontWeight: '500',
+                          color: 'var(--text-50)',
+                          letterSpacing: '0.05em',
+                        }}
+                      >
+                        {project.year}
+                      </span>
+                    </div>
+
+                    {/* Title - Extra parallax forward */}
+                    <h2
+                      data-atropos-offset="5"
+                      style={{
+                        fontSize: isMobile ? '1.75rem' : 'clamp(1.875rem, 3vw, 2.5rem)',
+                        fontWeight: '300',
+                        color: 'var(--text-95)',
+                        lineHeight: '1.15',
+                        letterSpacing: '-0.02em',
+                        margin: '0 0 0.875rem 0',
+                      }}
+                    >
+                      {project.title}
+                    </h2>
+
+                    {/* Divider line */}
+                    <div
+                      style={{
+                        width: '48px',
+                        height: '2px',
+                        background: `linear-gradient(90deg, rgba(${brandRgb}, 0.6), transparent)`,
+                        marginBottom: '1rem',
+                        borderRadius: '1px',
                       }}
                     />
-                  </Link>
-                </div>
+
+                    {/* Description */}
+                    <p
+                      style={{
+                        fontSize: isMobile ? '0.875rem' : '0.9375rem',
+                        fontWeight: '300',
+                        lineHeight: '1.7',
+                        color: 'var(--text-60)',
+                        margin: '0 0 1.25rem 0',
+                      }}
+                    >
+                      {project.description}
+                    </p>
+
+                    {/* Tags */}
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: '0.4rem',
+                        marginBottom: '1.5rem',
+                      }}
+                    >
+                      {project.tags.slice(0, 3).map((tag, i) => (
+                        <span
+                          key={i}
+                          style={{
+                            fontSize: '0.65rem',
+                            fontWeight: '500',
+                            color: 'var(--text-50)',
+                            background: `rgba(${brandRgb}, 0.08)`,
+                            border: `1px solid rgba(${brandRgb}, 0.12)`,
+                            borderRadius: '6px',
+                            padding: '0.35rem 0.65rem',
+                          }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* CTA Button - Pops out MOST */}
+                    <Link
+                      href={project.link}
+                      data-atropos-offset="8"
+                      onMouseEnter={() => setIsButtonHovered(true)}
+                      onMouseLeave={() => setIsButtonHovered(false)}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.625rem',
+                        padding: '0.875rem 1.5rem',
+                        background: isButtonHovered
+                          ? `rgba(${brandRgb}, 0.2)`
+                          : `rgba(${brandRgb}, 0.1)`,
+                        border: `1px solid rgba(${brandRgb}, ${isButtonHovered ? 0.4 : 0.25})`,
+                        borderRadius: '14px',
+                        color: 'var(--text-95)',
+                        textDecoration: 'none',
+                        fontSize: '0.875rem',
+                        fontWeight: '600',
+                        transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+                        boxShadow: isButtonHovered
+                          ? `0 12px 32px rgba(0, 0, 0, 0.35), 0 0 24px rgba(${brandRgb}, 0.15)`
+                          : `0 6px 20px rgba(0, 0, 0, 0.25)`,
+                      }}
+                    >
+                      <span>View Project</span>
+                      <ArrowRight
+                        size={16}
+                        style={{
+                          transition: 'transform 0.3s ease',
+                          transform: isButtonHovered ? 'translateX(4px)' : 'translateX(0)',
+                        }}
+                      />
+                    </Link>
+                  </div>
+                )}
 
               </div>
             </div>
