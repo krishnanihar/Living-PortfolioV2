@@ -901,14 +901,14 @@ export function AirIndiaWork() {
             pointerEvents: 'none',
           }} />
 
-          {/* Bottom Fade */}
+          {/* Bottom Fade - Enhanced for seamless blend */}
           <div style={{
             position: 'absolute',
             bottom: 0,
             left: 0,
             right: 0,
-            height: '50%',
-            background: 'linear-gradient(to top, rgba(10,10,10,1) 0%, rgba(10,10,10,0.8) 30%, transparent 100%)',
+            height: '60%',
+            background: 'linear-gradient(to top, rgba(10,10,10,1) 0%, rgba(10,10,10,0.95) 20%, rgba(10,10,10,0.7) 40%, rgba(10,10,10,0.3) 60%, transparent 100%)',
             pointerEvents: 'none',
           }} />
 
@@ -922,6 +922,60 @@ export function AirIndiaWork() {
             background: 'linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, transparent 100%)',
             pointerEvents: 'none',
           }} />
+
+          {/* Floating Particles */}
+          <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
+            {[...Array(20)].map((_, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: [0, 0.6, 0],
+                  y: [0, -100 - Math.random() * 200],
+                  x: Math.sin(i) * 50,
+                }}
+                transition={{
+                  duration: 4 + Math.random() * 4,
+                  repeat: Infinity,
+                  delay: Math.random() * 5,
+                  ease: 'easeOut',
+                }}
+                style={{
+                  position: 'absolute',
+                  bottom: '10%',
+                  left: `${5 + (i * 4.5)}%`,
+                  width: '2px',
+                  height: '2px',
+                  borderRadius: '50%',
+                  background: 'rgba(255, 255, 255, 0.8)',
+                  boxShadow: '0 0 6px 2px rgba(255, 255, 255, 0.3)',
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Subtle Light Rays */}
+          <motion.div
+            animate={{
+              opacity: [0.03, 0.06, 0.03],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+            style={{
+              position: 'absolute',
+              top: '20%',
+              left: '50%',
+              width: '200%',
+              height: '60%',
+              transform: 'translateX(-50%)',
+              background: 'conic-gradient(from 90deg at 50% 100%, transparent 0deg, rgba(218, 14, 41, 0.1) 30deg, transparent 60deg, rgba(251, 146, 60, 0.08) 90deg, transparent 120deg)',
+              filter: 'blur(60px)',
+              pointerEvents: 'none',
+            }}
+          />
         </motion.div>
 
         {/* Centered Content Card */}
@@ -1147,34 +1201,6 @@ export function AirIndiaWork() {
           </motion.div>
         </motion.div>
 
-        {/* Scroll Indicator */}
-        <div style={{
-          position: 'absolute',
-          bottom: 'clamp(2rem, 4vh, 3rem)',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '0.5rem',
-          opacity: 0,
-          animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 3s forwards' : 'none',
-          zIndex: 10,
-        }}>
-          <span style={{
-            fontSize: '0.75rem',
-            color: 'var(--text-muted)',
-            letterSpacing: '0.05em',
-          }}>
-            See what I built
-          </span>
-          <div style={{
-            width: '1px',
-            height: '40px',
-            background: 'linear-gradient(to bottom, var(--text-muted), transparent)',
-            animation: 'scrollBounce 2s ease-in-out infinite',
-          }} />
-        </div>
       </header>
 
       {/* =========================================================================
