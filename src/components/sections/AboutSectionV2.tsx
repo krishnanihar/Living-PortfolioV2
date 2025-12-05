@@ -1081,7 +1081,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '60px 1.5rem 6rem 1.5rem',
+            padding: '6rem 1.5rem',
             position: 'relative',
             overflow: 'hidden',
           }}
