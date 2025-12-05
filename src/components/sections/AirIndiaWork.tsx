@@ -2859,38 +2859,36 @@ export function AirIndiaWork() {
                     overflow: 'visible',
                   }}
                 >
-                  {/* Background Gradient - Fixed position, only visible when hovered */}
-                  {isHovered && (
-                    <div style={{
-                      position: 'fixed',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      background: `radial-gradient(ellipse at ${index % 2 === 0 ? '70%' : '30%'} 50%, rgba(${project.color}, 0.12), rgba(${project.color}, 0.04) 40%, transparent 70%)`,
-                      pointerEvents: 'none',
-                      zIndex: 0,
-                      transition: 'opacity 0.5s ease',
-                    }} />
-                  )}
+                  {/* Background Gradient - Always rendered, opacity controlled */}
+                  <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: `radial-gradient(ellipse at ${index % 2 === 0 ? '70%' : '30%'} 50%, rgba(${project.color}, 0.12), rgba(${project.color}, 0.04) 40%, transparent 70%)`,
+                    pointerEvents: 'none',
+                    zIndex: 0,
+                    opacity: isHovered ? 1 : 0,
+                    transition: 'opacity 0.8s ease-in-out',
+                  }} />
 
-                  {/* Animated Glow Orb - Fixed position, only visible when hovered */}
-                  {isHovered && (
-                    <div style={{
-                      position: 'fixed',
-                      top: '25%',
-                      right: index % 2 === 0 ? '15%' : 'auto',
-                      left: index % 2 === 0 ? 'auto' : '15%',
-                      width: '600px',
-                      height: '600px',
-                      borderRadius: '50%',
-                      background: `radial-gradient(circle, rgba(${project.color}, 0.15), rgba(${project.color}, 0.05) 40%, transparent 70%)`,
-                      filter: 'blur(100px)',
-                      pointerEvents: 'none',
-                      zIndex: 0,
-                      transition: 'opacity 0.5s ease',
-                    }} />
-                  )}
+                  {/* Animated Glow Orb - Always rendered, opacity controlled */}
+                  <div style={{
+                    position: 'fixed',
+                    top: '25%',
+                    right: index % 2 === 0 ? '15%' : 'auto',
+                    left: index % 2 === 0 ? 'auto' : '15%',
+                    width: '600px',
+                    height: '600px',
+                    borderRadius: '50%',
+                    background: `radial-gradient(circle, rgba(${project.color}, 0.15), rgba(${project.color}, 0.05) 40%, transparent 70%)`,
+                    filter: 'blur(100px)',
+                    pointerEvents: 'none',
+                    zIndex: 0,
+                    opacity: isHovered ? 1 : 0,
+                    transition: 'opacity 0.8s ease-in-out',
+                  }} />
 
                   {/* Split-Screen Grid */}
                   <div style={{
