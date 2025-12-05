@@ -885,23 +885,7 @@ export function AirIndiaWork() {
             />
           </motion.div>
 
-          {/* Cinematic Vignette */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.7) 100%)',
-            pointerEvents: 'none',
-          }} />
-
-          {/* Center Spotlight */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%)',
-            pointerEvents: 'none',
-          }} />
-
-          {/* Bottom Fade - Enhanced for seamless blend */}
+          {/* Bottom Fade - Only gradient for OLED blend */}
           <div style={{
             position: 'absolute',
             bottom: 0,
@@ -922,37 +906,6 @@ export function AirIndiaWork() {
             background: 'linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, transparent 100%)',
             pointerEvents: 'none',
           }} />
-
-          {/* Floating Particles */}
-          <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
-            {[...Array(20)].map((_, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: [0, 0.6, 0],
-                  y: [0, -100 - Math.random() * 200],
-                  x: Math.sin(i) * 50,
-                }}
-                transition={{
-                  duration: 4 + Math.random() * 4,
-                  repeat: Infinity,
-                  delay: Math.random() * 5,
-                  ease: 'easeOut',
-                }}
-                style={{
-                  position: 'absolute',
-                  bottom: '10%',
-                  left: `${5 + (i * 4.5)}%`,
-                  width: '2px',
-                  height: '2px',
-                  borderRadius: '50%',
-                  background: 'rgba(255, 255, 255, 0.8)',
-                  boxShadow: '0 0 6px 2px rgba(255, 255, 255, 0.3)',
-                }}
-              />
-            ))}
-          </div>
 
           {/* Subtle Light Rays */}
           <motion.div
@@ -989,71 +942,47 @@ export function AirIndiaWork() {
             width: '90%',
             maxWidth: '580px',
             padding: isMobile ? '2rem' : '2.5rem 3rem',
-            // Liquid glass layered background
+            // Dark mode glassmorphism
             background: `
-              linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.08) 100%),
-              linear-gradient(to bottom, rgba(255, 255, 255, 0.08), transparent 50%),
-              rgba(15, 15, 18, 0.6)
+              linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 50%, rgba(255, 255, 255, 0.02) 100%),
+              rgba(10, 10, 12, 0.85)
             `,
-            backdropFilter: 'blur(50px) saturate(200%) brightness(1.1)',
-            WebkitBackdropFilter: 'blur(50px) saturate(200%) brightness(1.1)',
+            backdropFilter: 'blur(40px) saturate(150%)',
+            WebkitBackdropFilter: 'blur(40px) saturate(150%)',
             borderRadius: '32px',
-            // Multi-layer shadows: outer depth + inner glow
+            border: '1px solid rgba(255, 255, 255, 0.04)',
+            // Dark mode shadows
             boxShadow: `
-              0 40px 80px rgba(0, 0, 0, 0.5),
-              0 20px 40px rgba(0, 0, 0, 0.3),
-              inset 0 1px 1px rgba(255, 255, 255, 0.15),
-              inset 0 -1px 1px rgba(0, 0, 0, 0.2),
-              inset 0 0 40px rgba(255, 255, 255, 0.03)
+              0 40px 80px rgba(0, 0, 0, 0.6),
+              0 20px 40px rgba(0, 0, 0, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.05),
+              inset 0 0 20px rgba(0, 0, 0, 0.3)
             `,
             textAlign: 'center',
             overflow: 'hidden',
           }}
         >
-          {/* Gradient Border Overlay */}
+          {/* Gradient Border Overlay - Subtle for dark mode */}
           <div style={{
             position: 'absolute',
             inset: 0,
             borderRadius: '32px',
             padding: '1px',
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.1) 100%)',
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.04) 100%)',
             WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
             WebkitMaskComposite: 'xor',
             maskComposite: 'exclude',
             pointerEvents: 'none',
           }} />
 
-          {/* Animated Shine Effect */}
-          <motion.div
-            animate={{
-              x: ['-100%', '200%'],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              repeatDelay: 5,
-              ease: 'easeInOut',
-            }}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '50%',
-              height: '100%',
-              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)',
-              transform: 'skewX(-20deg)',
-              pointerEvents: 'none',
-            }}
-          />
-
-          {/* Top Highlight */}
+          {/* Top Highlight - Subtle for dark mode */}
           <div style={{
             position: 'absolute',
             top: 0,
             left: '10%',
             right: '10%',
             height: '1px',
-            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)',
             pointerEvents: 'none',
           }} />
           {/* Eyebrow */}
