@@ -6,17 +6,17 @@ import { useMotionValue, animate } from 'framer-motion';
 // Configuration - 7 sections: Hero, Air India, PsoriAssist, Metamorphic, Latent Space, Explore All, About Me
 const TOTAL_SECTIONS = 7;
 
-// Spring config for smooth, premium animations
+// Spring config for smooth, snappy animations
 const springConfig = {
   type: 'spring' as const,
-  stiffness: 180,
-  damping: 28,
-  restDelta: 0.5,
-  mass: 0.8,
+  stiffness: 400,   // Higher = faster response
+  damping: 35,      // Prevents oscillation
+  restDelta: 0.01,  // Tighter finish
+  mass: 0.5,        // Lighter = quicker
 };
 
 // Cooldown period after animation to prevent momentum-triggered scrolls (ms)
-const SCROLL_COOLDOWN = 600;
+const SCROLL_COOLDOWN = 400; // Reduced for snappier feel
 
 export interface FullPageSnapState {
   currentIndex: number;
