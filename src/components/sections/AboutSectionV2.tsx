@@ -248,7 +248,6 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
 
   function FullScreenProjectCard({ project, index }: ProjectCardProps) {
     const [isButtonHovered, setIsButtonHovered] = useState(false);
-    const [isCardHovered, setIsCardHovered] = useState(false);
     const atroposRef = useRef<HTMLDivElement>(null);
     const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
     const brandRgb = `${project.brandColor.r}, ${project.brandColor.g}, ${project.brandColor.b}`;
@@ -446,132 +445,118 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                 {/* Floating Glass Panel - Parallax FORWARD */}
                 {project.id === 'air-india' ? (
                   /* Liquid Glass CTA Card - Air India */
-                  <Link
-                    href={project.link}
+                  <div
                     data-atropos-offset="12"
-                    onMouseEnter={() => setIsCardHovered(true)}
-                    onMouseLeave={() => setIsCardHovered(false)}
                     style={{
-                      textDecoration: 'none',
-                      pointerEvents: 'auto',
                       position: 'absolute',
                       bottom: isMobile ? '18%' : '15%',
                       right: isMobile ? '5%' : '8%',
                       width: isMobile ? '85%' : 'clamp(280px, 26vw, 360px)',
-                      zIndex: 100,
-                      display: 'block',
+                      zIndex: 10,
+                      background: 'rgba(10, 10, 10, 0.55)',
+                      backdropFilter: 'blur(40px) saturate(200%)',
+                      WebkitBackdropFilter: 'blur(40px) saturate(200%)',
+                      borderRadius: '24px',
+                      border: `1px solid rgba(${brandRgb}, 0.25)`,
+                      padding: isMobile ? '1.75rem' : '2.25rem',
+                      overflow: 'hidden',
+                      boxShadow: `
+                        0 32px 64px rgba(0, 0, 0, 0.5),
+                        0 0 0 1px rgba(255, 255, 255, 0.05),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                        0 0 80px rgba(${brandRgb}, 0.08)
+                      `,
                     }}
                   >
+                    {/* Air India Logo */}
                     <div
                       style={{
-                        position: 'relative',
-                        width: '100%',
-                        background: 'rgba(10, 10, 10, 0.55)',
-                        backdropFilter: 'blur(40px) saturate(200%)',
-                        WebkitBackdropFilter: 'blur(40px) saturate(200%)',
-                        borderRadius: '24px',
-                        border: `1px solid rgba(${brandRgb}, ${isCardHovered ? 0.5 : 0.25})`,
-                        padding: isMobile ? '1.75rem' : '2.25rem',
-                        cursor: 'pointer',
-                        overflow: 'hidden',
-                        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                        transform: isCardHovered ? 'scale(1.02)' : 'scale(1)',
-                        boxShadow: isCardHovered
-                          ? `0 32px 64px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 80px rgba(${brandRgb}, 0.2)`
-                          : `0 32px 64px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 40px rgba(${brandRgb}, 0.08)`,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginBottom: '1rem',
                       }}
                     >
-                      {/* Shimmer light sweep on hover */}
-                      <div
+                      <Image
+                        src="/logos/air-india.svg"
+                        alt="Air India"
+                        width={150}
+                        height={54}
                         style={{
-                          position: 'absolute',
-                          inset: 0,
-                          background: 'linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.08) 50%, transparent 60%)',
-                          transform: isCardHovered ? 'translateX(100%)' : 'translateX(-100%)',
-                          transition: 'transform 0.6s ease-out',
-                          pointerEvents: 'none',
+                          objectFit: 'contain',
+                          opacity: 0.92,
                         }}
                       />
-
-                      {/* Air India Logo */}
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          marginBottom: '1rem',
-                          position: 'relative',
-                        }}
-                      >
-                        <Image
-                          src="/logos/air-india.svg"
-                          alt="Air India"
-                          width={150}
-                          height={54}
-                          style={{
-                            objectFit: 'contain',
-                            opacity: isCardHovered ? 1 : 0.92,
-                            transition: 'opacity 0.3s ease',
-                          }}
-                        />
-                      </div>
-
-                      {/* Category */}
-                      <p
-                        style={{
-                          fontSize: '0.7rem',
-                          fontWeight: '500',
-                          color: 'var(--text-50)',
-                          textAlign: 'center',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.15em',
-                          margin: '0 0 1.25rem 0',
-                          position: 'relative',
-                        }}
-                      >
-                        Aviation Design System
-                      </p>
-
-                      {/* Subtle divider */}
-                      <div
-                        style={{
-                          width: '100%',
-                          height: '1px',
-                          background: `linear-gradient(90deg, transparent, rgba(${brandRgb}, 0.3), transparent)`,
-                          marginBottom: '1.25rem',
-                          position: 'relative',
-                        }}
-                      />
-
-                      {/* CTA Row */}
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          position: 'relative',
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontSize: '0.8125rem',
-                            fontWeight: '500',
-                            color: isCardHovered ? 'var(--text-90)' : 'var(--text-60)',
-                            transition: 'color 0.3s ease',
-                          }}
-                        >
-                          View Case Study
-                        </span>
-                        <ArrowRight
-                          size={16}
-                          style={{
-                            color: `rgba(${brandRgb}, ${isCardHovered ? 1 : 0.7})`,
-                            transform: isCardHovered ? 'translateX(4px)' : 'translateX(0)',
-                            transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
-                          }}
-                        />
-                      </div>
                     </div>
-                  </Link>
+
+                    {/* Category */}
+                    <p
+                      style={{
+                        fontSize: '0.7rem',
+                        fontWeight: '500',
+                        color: 'var(--text-50)',
+                        textAlign: 'center',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.15em',
+                        margin: '0 0 1.25rem 0',
+                      }}
+                    >
+                      Aviation Design System
+                    </p>
+
+                    {/* Subtle divider */}
+                    <div
+                      style={{
+                        width: '100%',
+                        height: '1px',
+                        background: `linear-gradient(90deg, transparent, rgba(${brandRgb}, 0.3), transparent)`,
+                        marginBottom: '1.25rem',
+                      }}
+                    />
+
+                    {/* CTA Button - Only this is wrapped in Link */}
+                    <Link
+                      href={project.link}
+                      data-atropos-offset="8"
+                      onMouseEnter={() => setIsButtonHovered(true)}
+                      onMouseLeave={() => setIsButtonHovered(false)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                        padding: '0.875rem 1rem',
+                        background: isButtonHovered
+                          ? `rgba(${brandRgb}, 0.15)`
+                          : 'transparent',
+                        border: `1px solid rgba(${brandRgb}, ${isButtonHovered ? 0.4 : 0.2})`,
+                        borderRadius: '12px',
+                        textDecoration: 'none',
+                        transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+                        boxShadow: isButtonHovered
+                          ? `0 8px 24px rgba(0, 0, 0, 0.3), 0 0 16px rgba(${brandRgb}, 0.15)`
+                          : 'none',
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: '0.8125rem',
+                          fontWeight: '500',
+                          color: isButtonHovered ? 'var(--text-90)' : 'var(--text-60)',
+                          transition: 'color 0.3s ease',
+                        }}
+                      >
+                        View Case Study
+                      </span>
+                      <ArrowRight
+                        size={16}
+                        style={{
+                          color: `rgba(${brandRgb}, ${isButtonHovered ? 1 : 0.7})`,
+                          transform: isButtonHovered ? 'translateX(4px)' : 'translateX(0)',
+                          transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+                        }}
+                      />
+                    </Link>
+                  </div>
                 ) : (
                   /* Standard Card for other projects */
                   <div
