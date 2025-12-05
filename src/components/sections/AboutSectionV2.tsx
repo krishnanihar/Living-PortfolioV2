@@ -1402,133 +1402,141 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           style={{
             minHeight: '100vh',
             width: '100%',
-            background: 'linear-gradient(180deg, #0A0A0A 0%, #0D0D0D 50%, #0A0A0A 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            padding: '4rem 1.5rem',
             position: 'relative',
-            overflow: 'hidden',
           }}
         >
-          {/* Subtle gradient orb */}
+          {/* Liquid Glass Card with Flowing Line Border */}
           <div
             style={{
-              position: 'absolute',
-              width: '600px',
-              height: '600px',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(59, 130, 246, 0.04) 0%, transparent 70%)',
-              filter: 'blur(60px)',
-              pointerEvents: 'none',
-            }}
-          />
-
-          {/* Content */}
-          <div
-            style={{
-              textAlign: 'center',
-              maxWidth: '700px',
-              padding: '3rem 2rem',
               position: 'relative',
-              zIndex: 1,
+              maxWidth: '600px',
+              width: '100%',
+              borderRadius: '30px',
+              border: '2px solid transparent',
+              background: `
+                linear-gradient(rgba(10, 10, 10, 0.95), rgba(10, 10, 10, 0.95)) padding-box,
+                conic-gradient(
+                  from var(--border-angle),
+                  transparent 0%,
+                  transparent 10%,
+                  #3B82F6 15%,
+                  #8B5CF6 25%,
+                  #EC4899 35%,
+                  transparent 50%,
+                  transparent 100%
+                ) border-box
+              `,
+              animation: mounted ? 'rotateBorder 8s linear infinite' : 'none',
             }}
           >
-            {/* Project count badge */}
+            {/* Inner Glassmorphic Content */}
             <div
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.5rem 1rem',
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid var(--text-08)',
-                borderRadius: '20px',
-                marginBottom: '2rem',
+                position: 'relative',
+                background: 'rgba(10, 10, 10, 0.35)',
+                backdropFilter: 'blur(120px) saturate(200%) brightness(1.1)',
+                WebkitBackdropFilter: 'blur(120px) saturate(200%) brightness(1.1)',
+                borderRadius: '28px',
+                padding: 'clamp(2.5rem, 5vw, 3.5rem)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                boxShadow: `
+                  inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                  0 8px 32px rgba(0, 0, 0, 0.4),
+                  0 16px 64px rgba(0, 0, 0, 0.3),
+                  0 0 40px rgba(59, 130, 246, 0.08)
+                `,
+                textAlign: 'center',
               }}
             >
-              <Sparkles size={14} style={{ color: 'var(--text-50)' }} />
-              <span style={{ fontSize: '0.8125rem', color: 'var(--text-60)', fontWeight: '400' }}>
-                12+ Projects
-              </span>
+              {/* Project count badge */}
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.5rem 1rem',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid var(--text-08)',
+                  borderRadius: '20px',
+                  marginBottom: '2rem',
+                }}
+              >
+                <Sparkles size={14} style={{ color: 'var(--text-50)' }} />
+                <span style={{ fontSize: '0.8125rem', color: 'var(--text-60)', fontWeight: '400' }}>
+                  12+ Projects
+                </span>
+              </div>
+
+              {/* Heading */}
+              <h2
+                style={{
+                  fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
+                  fontWeight: '300',
+                  color: 'var(--text-95)',
+                  lineHeight: '1.2',
+                  marginBottom: '1.25rem',
+                  letterSpacing: '-0.01em',
+                }}
+              >
+                Explore All Projects
+              </h2>
+
+              {/* Description */}
+              <p
+                style={{
+                  fontSize: 'clamp(0.9375rem, 1.25vw, 1rem)',
+                  fontWeight: '300',
+                  color: 'var(--text-60)',
+                  lineHeight: '1.7',
+                  marginBottom: '2rem',
+                  maxWidth: '420px',
+                  margin: '0 auto 2rem',
+                }}
+              >
+                From aviation systems serving millions to healthcare AI platforms—
+                discover the full range of work.
+              </p>
+
+              {/* CTA Button */}
+              <Link
+                href="/work"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.625rem',
+                  padding: '1rem 2rem',
+                  background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.08))',
+                  border: '1px solid rgba(59, 130, 246, 0.2)',
+                  borderRadius: '14px',
+                  color: 'var(--text-95)',
+                  textDecoration: 'none',
+                  fontSize: '0.9375rem',
+                  fontWeight: '500',
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.12))';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(0, 0, 0, 0.4), 0 0 24px rgba(59, 130, 246, 0.1)';
+                  e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.35)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.08))';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.3)';
+                  e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.2)';
+                }}
+              >
+                <span>View All Work</span>
+                <ArrowRight size={16} />
+              </Link>
             </div>
-
-            {/* Heading */}
-            <h2
-              style={{
-                fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-                fontWeight: '200',
-                color: 'var(--text-95)',
-                lineHeight: '1.1',
-                marginBottom: '1.5rem',
-                letterSpacing: '-0.02em',
-              }}
-            >
-              Explore All Projects
-            </h2>
-
-            {/* Description */}
-            <p
-              style={{
-                fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
-                fontWeight: '300',
-                color: 'var(--text-60)',
-                lineHeight: '1.7',
-                marginBottom: '2.5rem',
-                maxWidth: '500px',
-                margin: '0 auto 2.5rem',
-              }}
-            >
-              From aviation systems serving millions to healthcare AI platforms—
-              discover the full range of work across design systems, mobile apps, and immersive experiences.
-            </p>
-
-            {/* CTA Button */}
-            <Link
-              href="/work"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.75rem',
-                padding: '1.25rem 2.5rem',
-                background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.08))',
-                border: '1px solid rgba(59, 130, 246, 0.2)',
-                borderRadius: '16px',
-                color: 'var(--text-95)',
-                textDecoration: 'none',
-                fontSize: '1rem',
-                fontWeight: '500',
-                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.12))';
-                e.currentTarget.style.transform = 'translateY(-3px)';
-                e.currentTarget.style.boxShadow = '0 12px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(59, 130, 246, 0.1)';
-                e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.35)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.08))';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3)';
-                e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.2)';
-              }}
-            >
-              <span>View All Work</span>
-              <ArrowRight size={18} />
-            </Link>
           </div>
-
-          {/* Bottom accent line */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: '1px',
-              background: 'linear-gradient(90deg, transparent 10%, rgba(59, 130, 246, 0.2) 50%, transparent 90%)',
-            }}
-          />
         </div>
 
         {/* Act 2: About Me - Three Pillars (Moved below horizontal scroll) */}
