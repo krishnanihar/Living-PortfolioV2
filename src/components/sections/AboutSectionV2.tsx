@@ -446,7 +446,6 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                 {/* Floating Glass Panel - Parallax FORWARD */}
                 <div
                   data-atropos-offset="4"
-                  className={isAirIndia ? 'air-india-card-animated' : ''}
                   style={{
                       position: 'absolute',
                       bottom: isMobile ? '18%' : '15%',
@@ -685,33 +684,6 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
           pointer-events: all !important;
           position: relative;
           z-index: 10;
-        }
-
-        /* Air India card animated border */
-        :global(.air-india-card-animated) {
-          position: relative;
-          isolation: isolate;
-        }
-        :global(.air-india-card-animated::before) {
-          content: '';
-          position: absolute;
-          inset: 0;
-          border-radius: 24px;
-          padding: 1.5px;
-          background: conic-gradient(
-            from 0deg,
-            rgba(218, 14, 41, 0.3) 0deg,
-            rgba(255, 82, 82, 0.5) 90deg,
-            rgba(218, 14, 41, 0.3) 180deg,
-            rgba(255, 82, 82, 0.5) 270deg,
-            rgba(218, 14, 41, 0.3) 360deg
-          );
-          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-          -webkit-mask-composite: xor;
-          mask-composite: exclude;
-          z-index: -1;
-          animation: borderRotate 6s linear infinite;
-          pointer-events: none;
         }
 
         @keyframes fadeInUp {
