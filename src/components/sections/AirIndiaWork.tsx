@@ -826,7 +826,7 @@ export function AirIndiaWork() {
       </div>
 
       {/* =========================================================================
-          SECTION 1: HERO - Split Composition with Premium Effects
+          SECTION 1: HERO - Full-Screen Cinematic with Centered Card
       ========================================================================= */}
       <header
         ref={heroRef}
@@ -834,44 +834,41 @@ export function AirIndiaWork() {
         onMouseEnter={() => setIsHeroHovered(true)}
         onMouseLeave={handleHeroMouseLeave}
         style={{
-          minHeight: '90vh',
+          height: '100vh',
+          width: '100%',
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'center',
           position: 'relative',
           zIndex: 1,
           overflow: 'hidden',
         }}
       >
-        {/* Background Image Container */}
+        {/* Full-Screen Background Image */}
         <motion.div
           style={{
             position: 'absolute',
-            top: 0,
-            right: 0,
-            width: isMobile ? '100%' : '65%',
-            height: '100%',
+            inset: 0,
             zIndex: 0,
-            overflow: 'hidden',
             y: heroImageY,
             scale: heroImageScale,
           }}
         >
-          {/* Hero Image with Mouse Parallax */}
+          {/* Hero Image with Subtle Parallax */}
           <motion.div
             style={{
               position: 'absolute',
-              inset: '-20px', // Extra space for parallax movement
-              animation: inView ? 'heroImageReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both' : 'none',
+              inset: '-30px',
+              animation: inView ? 'heroImageReveal 1s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both' : 'none',
             }}
             animate={{
-              x: mousePosition.x,
-              y: mousePosition.y,
+              x: mousePosition.x * 0.5,
+              y: mousePosition.y * 0.5,
             }}
             transition={{
               type: 'spring',
-              stiffness: 150,
-              damping: 15,
-              mass: 0.1,
+              stiffness: 100,
+              damping: 20,
             }}
           >
             <Image
@@ -881,197 +878,274 @@ export function AirIndiaWork() {
               priority
               style={{
                 objectFit: 'cover',
-                objectPosition: 'center',
-                animation: isHeroHovered ? 'none' : 'kenBurns 20s ease-in-out infinite',
-                filter: isHeroHovered ? 'brightness(1.08) saturate(1.1)' : 'brightness(1) saturate(1)',
-                transition: 'filter 0.4s ease-out',
+                objectPosition: 'center 40%',
+                filter: isHeroHovered ? 'brightness(1.05) saturate(1.1)' : 'brightness(0.95) saturate(1.05)',
+                transition: 'filter 0.6s ease-out',
               }}
             />
           </motion.div>
 
-          {/* Film Grain Overlay - Cinematic texture */}
+          {/* Cinematic Vignette */}
           <div style={{
             position: 'absolute',
             inset: 0,
-            opacity: 0.04,
+            background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.7) 100%)',
             pointerEvents: 'none',
-            mixBlendMode: 'overlay',
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
           }} />
 
-          {/* Diagonal Gradient Overlay - Protects text zone */}
+          {/* Center Spotlight */}
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: isMobile
-              ? 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,1) 100%)'
-              : 'linear-gradient(105deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.95) 15%, rgba(0,0,0,0.6) 35%, rgba(0,0,0,0.2) 55%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.3) 100%)',
+            background: 'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%)',
             pointerEvents: 'none',
           }} />
 
-          {/* Bottom Fade for Content Transition */}
+          {/* Bottom Fade */}
           <div style={{
             position: 'absolute',
             bottom: 0,
             left: 0,
             right: 0,
-            height: '40%',
-            background: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, transparent 100%)',
+            height: '50%',
+            background: 'linear-gradient(to top, rgba(10,10,10,1) 0%, rgba(10,10,10,0.8) 30%, transparent 100%)',
+            pointerEvents: 'none',
+          }} />
+
+          {/* Top Fade for Nav */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '20%',
+            background: 'linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, transparent 100%)',
             pointerEvents: 'none',
           }} />
         </motion.div>
 
-        {/* Content Container */}
-        <div style={{
-          position: 'relative',
-          zIndex: 10,
-          width: '100%',
-          maxWidth: 'min(1400px, 92vw)',
-          margin: '0 auto',
-          padding: isMobile
-            ? 'clamp(8rem, 15vh, 12rem) 1.5rem clamp(4rem, 8vh, 6rem)'
-            : 'clamp(8rem, 15vh, 12rem) clamp(2rem, 8vw, 6rem) clamp(4rem, 8vh, 6rem)',
-        }}>
-          {/* Glassmorphic Content Card - Compact */}
-          <div style={{
-            maxWidth: isMobile ? '100%' : '520px',
-            padding: isMobile ? '1.5rem' : '2rem 2.5rem',
-            background: 'var(--glass-04)',
-            backdropFilter: 'blur(32px) saturate(150%)',
-            WebkitBackdropFilter: 'blur(32px) saturate(150%)',
-            border: '1px solid var(--glass-08)',
-            borderRadius: '24px',
-            boxShadow: '0 24px 48px rgba(0, 0, 0, 0.3)',
-            animation: inView ? 'heroContentReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both' : 'none',
-          }}>
-            {/* Eyebrow */}
-            <div style={{
+        {/* Centered Content Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 40, scale: 0.95 }}
+          animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            position: 'relative',
+            zIndex: 10,
+            width: '90%',
+            maxWidth: '580px',
+            padding: isMobile ? '2rem' : '2.5rem 3rem',
+            background: 'rgba(20, 20, 22, 0.75)',
+            backdropFilter: 'blur(40px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderRadius: '28px',
+            boxShadow: '0 32px 64px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.03) inset',
+            textAlign: 'center',
+          }}
+        >
+          {/* Eyebrow */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            style={{
               fontSize: '0.6875rem',
               fontWeight: '500',
               color: 'var(--text-muted)',
-              letterSpacing: '0.1em',
+              letterSpacing: '0.15em',
               textTransform: 'uppercase',
-              marginBottom: '0.75rem',
-              opacity: 0,
-              animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards' : 'none',
-            }}>
-              Case Study · Air India
-            </div>
+              marginBottom: '1rem',
+            }}
+          >
+            Case Study
+          </motion.div>
 
-            {/* Anchor Stat Pill */}
-            <div style={{
+          {/* Brand Mark */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.5rem',
-              fontSize: '0.75rem',
-              fontWeight: '600',
-              color: 'rgb(218, 14, 41)',
-              marginBottom: '1rem',
-              padding: '0.375rem 0.875rem',
-              background: 'rgba(218, 14, 41, 0.1)',
-              border: '1px solid rgba(218, 14, 41, 0.2)',
-              borderRadius: '16px',
-              opacity: 0,
-              animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards' : 'none',
+              gap: '0.75rem',
+              marginBottom: '1.5rem',
+            }}
+          >
+            <div style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, rgb(218, 14, 41), rgb(180, 10, 35))',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 8px 24px rgba(218, 14, 41, 0.3)',
             }}>
-              $200M Transformation
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </div>
+            <div style={{ textAlign: 'left' }}>
+              <div style={{ fontSize: '1.25rem', fontWeight: '600', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Air India</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>$200M Digital Transformation</div>
+            </div>
+          </motion.div>
 
-            {/* Main Statement */}
-            <h1 style={{
-              fontSize: 'clamp(1.75rem, 4vw, 2.75rem)',
-              fontWeight: '200',
-              letterSpacing: '-0.03em',
-              lineHeight: '1.15',
+          {/* Main Statement */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.7 }}
+            style={{
+              fontSize: 'clamp(1.5rem, 4vw, 2.25rem)',
+              fontWeight: '300',
+              letterSpacing: '-0.02em',
+              lineHeight: '1.3',
               marginBottom: '1rem',
               color: 'var(--text-primary)',
-              opacity: 0,
-              animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.75s forwards' : 'none',
+            }}
+          >
+            Building{' '}
+            <span style={{
+              fontWeight: '600',
+              background: 'linear-gradient(135deg, rgb(218, 14, 41), rgb(251, 146, 60))',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
             }}>
-              I build{' '}
-              <span style={{
-                fontWeight: '600',
-                background: 'linear-gradient(135deg, rgb(218, 14, 41), rgb(251, 146, 60))',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}>
-                design infrastructure
-              </span>{' '}
-              where none exists.
-            </h1>
+              design infrastructure
+            </span>
+            <br />where none existed
+          </motion.h1>
 
-            {/* Subtitle */}
-            <p style={{
+          {/* Subtitle */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.8 }}
+            style={{
               fontSize: '0.9375rem',
               color: 'var(--text-secondary)',
-              lineHeight: '1.6',
-              fontWeight: '300',
-              marginBottom: '1.25rem',
-              opacity: 0,
-              animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.9s forwards' : 'none',
-            }}>
-              Tata inherited 69 years of technical debt—140 systems, 4 merging airlines, zero design language. I joined to build what didn&apos;t exist.
-            </p>
+              lineHeight: '1.7',
+              fontWeight: '400',
+              marginBottom: '1.75rem',
+              maxWidth: '420px',
+              margin: '0 auto 1.75rem',
+            }}
+          >
+            When Tata acquired Air India, they inherited 69 years of technical debt. I built the design systems and tools from zero.
+          </motion.p>
 
-            {/* Metadata Row */}
-            <div style={{
+          {/* Stats Row */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.9 }}
+            style={{
               display: 'flex',
-              flexWrap: 'wrap',
+              justifyContent: 'center',
+              gap: isMobile ? '1.5rem' : '2.5rem',
+              paddingTop: '1.5rem',
+              borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+            }}
+          >
+            {[
+              { value: '140', label: 'Legacy Systems' },
+              { value: '4', label: 'Airlines Merged' },
+              { value: '450+', label: 'Daily Users' },
+            ].map((stat, i) => (
+              <div key={i} style={{ textAlign: 'center' }}>
+                <div style={{
+                  fontSize: '1.5rem',
+                  fontWeight: '600',
+                  color: 'var(--text-primary)',
+                  letterSpacing: '-0.02em',
+                }}>{stat.value}</div>
+                <div style={{
+                  fontSize: '0.625rem',
+                  color: 'var(--text-muted)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  marginTop: '0.25rem',
+                }}>{stat.label}</div>
+              </div>
+            ))}
+          </motion.div>
+
+          {/* Award Badges */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.6, delay: 1.1 }}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
               gap: '0.5rem',
-              marginBottom: '1rem',
-              opacity: 0,
-              animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 1.05s forwards' : 'none',
-            }}>
-              <div style={{
-                padding: '0.375rem 0.75rem',
-                borderRadius: '10px',
-                background: 'var(--glass-06)',
-                border: '1px solid var(--glass-08)',
-                fontSize: '0.75rem',
-                fontWeight: '400',
-                color: 'var(--text-secondary)',
-              }}>
-                Product Designer · 2022–24
-              </div>
-              <div style={{
-                padding: '0.375rem 0.75rem',
-                borderRadius: '10px',
-                background: 'var(--glass-06)',
-                border: '1px solid var(--glass-08)',
-                fontSize: '0.75rem',
-                fontWeight: '400',
-                color: 'var(--text-secondary)',
-              }}>
-                Kochi → Global
-              </div>
-            </div>
-
-            {/* Proof Strip */}
-            <div style={{
-              display: 'flex',
+              marginTop: '1.5rem',
               flexWrap: 'wrap',
-              gap: '1.25rem',
-              paddingTop: '1rem',
-              borderTop: '1px solid var(--glass-08)',
-              opacity: 0,
-              animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 1.2s forwards' : 'none',
-            }}>
-              <div>
-                <div style={{ fontSize: '1.125rem', fontWeight: '600', color: 'var(--text-primary)' }}>140</div>
-                <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Systems</div>
+            }}
+          >
+            {['Red Dot 2024', 'Gold Stevie', 'APEX ★★★★'].map((award, i) => (
+              <div key={i} style={{
+                padding: '0.375rem 0.75rem',
+                borderRadius: '8px',
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                fontSize: '0.6875rem',
+                fontWeight: '500',
+                color: 'var(--text-secondary)',
+              }}>
+                {award}
               </div>
-              <div>
-                <div style={{ fontSize: '1.125rem', fontWeight: '600', color: 'var(--text-primary)' }}>4</div>
-                <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Airlines</div>
-              </div>
-              <div>
-                <div style={{ fontSize: '1.125rem', fontWeight: '600', color: 'var(--text-primary)' }}>450+</div>
-                <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Users</div>
-              </div>
-            </div>
-          </div>
-        </div>
+            ))}
+          </motion.div>
+        </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 1.3 }}
+          style={{
+            position: 'absolute',
+            bottom: '2rem',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '0.5rem',
+          }}
+        >
+          <div style={{
+            fontSize: '0.625rem',
+            color: 'var(--text-muted)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+          }}>Scroll</div>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+            style={{
+              width: '20px',
+              height: '32px',
+              borderRadius: '10px',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              display: 'flex',
+              justifyContent: 'center',
+              paddingTop: '6px',
+            }}
+          >
+            <div style={{
+              width: '3px',
+              height: '8px',
+              borderRadius: '2px',
+              background: 'rgba(255, 255, 255, 0.4)',
+            }} />
+          </motion.div>
+        </motion.div>
 
         {/* Scroll Indicator */}
         <div style={{
