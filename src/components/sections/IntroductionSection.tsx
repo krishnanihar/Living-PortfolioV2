@@ -340,7 +340,8 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
               marginBottom: '0.5rem',
               opacity: animationStage >= 1 ? 1 : 0,
               transform: animationStage >= 1 ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+              filter: animationStage >= 1 ? 'blur(0)' : 'blur(8px)',
+              transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
             {renderGreetingIcon(greetingDisplay.icon)}
@@ -361,7 +362,8 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
               animation: 'particleGlow 12s ease-in-out infinite, breathe 15s ease-in-out infinite',
               opacity: animationStage >= 1 ? 1 : 0,
               transform: animationStage >= 1 ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+              filter: animationStage >= 1 ? 'blur(0)' : 'blur(12px)',
+              transition: 'all 0.9s cubic-bezier(0.16, 1, 0.3, 1)',
               willChange: 'transform',
             }}
           >
@@ -395,7 +397,8 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
                 marginBottom: '1.5rem',
                 opacity: animationStage >= 1 ? 1 : 0,
                 transform: animationStage >= 1 ? 'translateY(0)' : 'translateY(15px)',
-                transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
+                filter: animationStage >= 1 ? 'blur(0)' : 'blur(8px)',
+                transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
               }}
             >
               {greetingDisplay.secondary}
@@ -411,7 +414,8 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
               marginBottom: '2.5rem',
               opacity: animationStage >= 2 ? 1 : 0,
               transform: animationStage >= 2 ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
+              filter: animationStage >= 2 ? 'blur(0)' : 'blur(10px)',
+              transition: 'all 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
             }}
           >
             <p
@@ -438,7 +442,8 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
               flexWrap: 'wrap',
               opacity: animationStage >= 3 ? 1 : 0,
               transform: animationStage >= 3 ? 'translateY(0)' : 'translateY(15px)',
-              transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
+              filter: animationStage >= 3 ? 'blur(0)' : 'blur(8px)',
+              transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
             }}
           >
             {/* Contact Button - Liquid Glass with Subtle Pink Reflection */}
