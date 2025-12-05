@@ -885,14 +885,14 @@ export function AirIndiaWork() {
             />
           </motion.div>
 
-          {/* Bottom Fade - Only gradient for OLED blend */}
+          {/* Bottom Fade - Seamless OLED blend */}
           <div style={{
             position: 'absolute',
             bottom: 0,
             left: 0,
             right: 0,
-            height: '60%',
-            background: 'linear-gradient(to top, rgba(10,10,10,1) 0%, rgba(10,10,10,0.95) 20%, rgba(10,10,10,0.7) 40%, rgba(10,10,10,0.3) 60%, transparent 100%)',
+            height: '70%',
+            background: 'linear-gradient(to top, #0A0A0A 0%, #0A0A0A 15%, rgba(10,10,10,0.85) 35%, rgba(10,10,10,0.5) 55%, rgba(10,10,10,0.2) 75%, transparent 100%)',
             pointerEvents: 'none',
           }} />
 
@@ -942,13 +942,13 @@ export function AirIndiaWork() {
             width: '90%',
             maxWidth: '580px',
             padding: isMobile ? '2rem' : '2.5rem 3rem',
-            // Dark mode glassmorphism
+            // Dark mode glassmorphism - more translucent
             background: `
-              linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 50%, rgba(255, 255, 255, 0.02) 100%),
-              rgba(10, 10, 12, 0.85)
+              linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.03) 100%),
+              rgba(10, 10, 12, 0.45)
             `,
-            backdropFilter: 'blur(40px) saturate(150%)',
-            WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+            backdropFilter: 'blur(60px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(60px) saturate(180%)',
             borderRadius: '32px',
             border: '1px solid rgba(255, 255, 255, 0.04)',
             // Dark mode shadows
@@ -1002,36 +1002,29 @@ export function AirIndiaWork() {
             Case Study
           </motion.div>
 
-          {/* Brand Mark */}
+          {/* Brand Mark - Air India Logo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={inView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.6, delay: 0.6 }}
             style={{
-              display: 'inline-flex',
+              display: 'flex',
+              flexDirection: 'column',
               alignItems: 'center',
               gap: '0.75rem',
               marginBottom: '1.5rem',
             }}
           >
-            <div style={{
-              width: '48px',
-              height: '48px',
-              borderRadius: '12px',
-              background: 'linear-gradient(135deg, rgb(218, 14, 41), rgb(180, 10, 35))',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 8px 24px rgba(218, 14, 41, 0.3)',
-            }}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-            <div style={{ textAlign: 'left' }}>
-              <div style={{ fontSize: '1.25rem', fontWeight: '600', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Air India</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>$200M Digital Transformation</div>
-            </div>
+            <img
+              src="/logos/air-india.svg"
+              alt="Air India"
+              style={{
+                width: '180px',
+                height: 'auto',
+                filter: 'drop-shadow(0 4px 16px rgba(218, 14, 41, 0.25))',
+              }}
+            />
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>$200M Digital Transformation</div>
           </motion.div>
 
           {/* Main Statement */}
