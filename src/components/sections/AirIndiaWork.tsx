@@ -556,6 +556,12 @@ export function AirIndiaWork() {
   const [figmaExpandedGroups, setFigmaExpandedGroups] = useState<Set<string>>(new Set(['Colors', 'Typography', 'Spacing']));
   const [figmaHoveredRow, setFigmaHoveredRow] = useState<string | null>(null);
   const [figmaHoveredSidebarItem, setFigmaHoveredSidebarItem] = useState<string | null>(null);
+  // Enhanced interactivity states
+  const [figmaSelectedRows, setFigmaSelectedRows] = useState<Set<string>>(new Set());
+  const [figmaCascadePhase, setFigmaCascadePhase] = useState<'idle' | 'playing' | 'complete'>('idle');
+  const [figmaCascadeStep, setFigmaCascadeStep] = useState<number>(0);
+  const [figmaHighlightedGroup, setFigmaHighlightedGroup] = useState<string | null>(null);
+  const [figmaPulsingRow, setFigmaPulsingRow] = useState<string | null>(null);
 
   // Card 2: Search with AI - NLU Query Pipeline states
   const [queryPhase, setQueryPhase] = useState<'idle' | 'typing' | 'tokenize' | 'entities' | 'intent' | 'results'>('idle');
@@ -3393,10 +3399,116 @@ export function AirIndiaWork() {
                           fontSize: '13px',
                           fontWeight: '500',
                           color: 'rgba(255, 255, 255, 0.9)',
-                          marginLeft: '-36px',
                         }}>
                           Local Variables
+                          {figmaCascadePhase === 'complete' && (
+                            <span style={{ marginLeft: '8px', color: '#30D158' }}>✓</span>
+                          )}
                         </span>
+                        {/* Play Cascade Button */}
+                        <button
+                          onClick={() => {
+                            if (figmaCascadePhase !== 'idle') return;
+                            setFigmaCascadePhase('playing');
+                            setFigmaSelectedRows(new Set());
+
+                            // Step 1: Select Primitives, expand it
+                            setFigmaSelectedCollection('Primitives');
+                            setFigmaExpandedCollections(new Set(['Primitives']));
+
+                            // Step 2: Highlight Colors group
+                            setTimeout(() => {
+                              setFigmaExpandedGroups(new Set(['Colors', 'Typography', 'Spacing']));
+                              setFigmaHighlightedGroup('Colors');
+                            }, 400);
+
+                            // Step 3: Pulse brand/primary row
+                            setTimeout(() => {
+                              setFigmaHighlightedGroup(null);
+                              setFigmaPulsingRow('brand/primary');
+                            }, 800);
+
+                            // Step 4: Select Semantic
+                            setTimeout(() => {
+                              setFigmaPulsingRow(null);
+                              setFigmaSelectedCollection('Semantic');
+                              setFigmaExpandedCollections(prev => new Set([...prev, 'Semantic']));
+                            }, 1400);
+
+                            // Step 5: Highlight Typography
+                            setTimeout(() => {
+                              setFigmaHighlightedGroup('Typography');
+                            }, 1800);
+
+                            // Step 6: Pulse heading/lg
+                            setTimeout(() => {
+                              setFigmaHighlightedGroup(null);
+                              setFigmaPulsingRow('heading/lg');
+                            }, 2200);
+
+                            // Step 7: Select Components
+                            setTimeout(() => {
+                              setFigmaPulsingRow(null);
+                              setFigmaSelectedCollection('Components');
+                              setFigmaExpandedCollections(prev => new Set([...prev, 'Components']));
+                            }, 2800);
+
+                            // Step 8: Highlight Spacing
+                            setTimeout(() => {
+                              setFigmaHighlightedGroup('Spacing');
+                            }, 3200);
+
+                            // Step 9: Pulse space-md
+                            setTimeout(() => {
+                              setFigmaHighlightedGroup(null);
+                              setFigmaPulsingRow('space-md');
+                            }, 3600);
+
+                            // Step 10: Complete
+                            setTimeout(() => {
+                              setFigmaPulsingRow(null);
+                              setFigmaCascadePhase('complete');
+                            }, 4200);
+
+                            // Reset to idle after showing complete
+                            setTimeout(() => {
+                              setFigmaCascadePhase('idle');
+                            }, 6000);
+                          }}
+                          disabled={figmaCascadePhase !== 'idle'}
+                          style={{
+                            padding: '4px 10px',
+                            borderRadius: '4px',
+                            border: 'none',
+                            background: figmaCascadePhase === 'playing'
+                              ? 'rgba(48, 209, 88, 0.2)'
+                              : figmaCascadePhase === 'complete'
+                                ? 'rgba(48, 209, 88, 0.3)'
+                                : 'rgba(13, 153, 255, 0.2)',
+                            color: figmaCascadePhase === 'playing' || figmaCascadePhase === 'complete'
+                              ? '#30D158'
+                              : '#0D99FF',
+                            fontSize: '11px',
+                            fontWeight: '500',
+                            cursor: figmaCascadePhase === 'idle' ? 'pointer' : 'default',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            transition: 'all 0.2s ease',
+                            opacity: figmaCascadePhase === 'idle' ? 1 : 0.8,
+                          }}
+                        >
+                          {figmaCascadePhase === 'playing' ? (
+                            <>
+                              <span style={{ display: 'inline-block', animation: 'spin 1s linear infinite' }}>⟳</span>
+                              Running...
+                            </>
+                          ) : figmaCascadePhase === 'complete' ? (
+                            <>✓ Complete</>
+                          ) : (
+                            <>▶ Play Cascade</>
+                          )}
+                        </button>
                       </div>
 
                       {/* Main Content Area */}
@@ -3464,15 +3576,22 @@ export function AirIndiaWork() {
                                   {['Colors', 'Typography', 'Spacing'].map((item) => (
                                     <div
                                       key={item}
+                                      onClick={() => {
+                                        // Expand the group in the table
+                                        setFigmaExpandedGroups(prev => new Set([...prev, item]));
+                                        // Pulse highlight the group
+                                        setFigmaHighlightedGroup(item);
+                                        setTimeout(() => setFigmaHighlightedGroup(null), 800);
+                                      }}
                                       onMouseEnter={() => setFigmaHoveredSidebarItem(item)}
                                       onMouseLeave={() => setFigmaHoveredSidebarItem(null)}
                                       style={{
                                         padding: '4px 12px',
                                         fontSize: '11px',
-                                        color: 'rgba(255, 255, 255, 0.6)',
+                                        color: figmaHighlightedGroup === item ? '#0D99FF' : 'rgba(255, 255, 255, 0.6)',
                                         cursor: 'pointer',
                                         background: figmaHoveredSidebarItem === item ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
-                                        transition: 'background 0.15s ease',
+                                        transition: 'all 0.15s ease',
                                       }}
                                     >
                                       {item}
@@ -3636,11 +3755,20 @@ export function AirIndiaWork() {
                                 gridTemplateColumns: '1fr 100px 100px',
                                 borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
                                 cursor: 'pointer',
-                                background: 'rgba(255, 255, 255, 0.02)',
+                                background: figmaHighlightedGroup === 'Colors'
+                                  ? 'rgba(13, 153, 255, 0.15)'
+                                  : 'rgba(255, 255, 255, 0.02)',
+                                borderLeft: figmaHighlightedGroup === 'Colors'
+                                  ? '3px solid #0D99FF'
+                                  : '3px solid transparent',
+                                boxShadow: figmaHighlightedGroup === 'Colors'
+                                  ? '0 0 12px rgba(13, 153, 255, 0.2)'
+                                  : 'none',
+                                transition: 'all 0.2s ease',
                               }}
                             >
-                              <div style={{ padding: '8px 16px', fontSize: '11px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.8)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>{figmaExpandedGroups.has('Colors') ? '▾' : '▸'}</span>
+                              <div style={{ padding: '8px 16px', fontSize: '11px', fontWeight: '500', color: figmaHighlightedGroup === 'Colors' ? '#0D99FF' : 'rgba(255, 255, 255, 0.8)', display: 'flex', alignItems: 'center', gap: '6px', transition: 'color 0.2s ease' }}>
+                                <span style={{ fontSize: '10px', color: figmaHighlightedGroup === 'Colors' ? '#0D99FF' : 'rgba(255, 255, 255, 0.5)' }}>{figmaExpandedGroups.has('Colors') ? '▾' : '▸'}</span>
                                 Colors
                               </div>
                               <div style={{ padding: '8px 12px' }} />
@@ -3656,17 +3784,38 @@ export function AirIndiaWork() {
                                 ].map((token) => (
                                   <div
                                     key={token.name}
+                                    onClick={() => {
+                                      setFigmaSelectedRows(prev => {
+                                        const next = new Set(prev);
+                                        if (next.has(token.name)) next.delete(token.name);
+                                        else next.add(token.name);
+                                        return next;
+                                      });
+                                    }}
                                     onMouseEnter={() => setFigmaHoveredRow(token.name)}
                                     onMouseLeave={() => setFigmaHoveredRow(null)}
                                     style={{
                                       display: 'grid',
                                       gridTemplateColumns: '1fr 100px 100px',
                                       borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
-                                      background: figmaHoveredRow === token.name ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
-                                      transition: 'background 0.1s ease',
+                                      background: figmaSelectedRows.has(token.name)
+                                        ? 'rgba(24, 160, 251, 0.12)'
+                                        : figmaHoveredRow === token.name
+                                          ? 'rgba(255, 255, 255, 0.04)'
+                                          : 'transparent',
+                                      borderLeft: figmaSelectedRows.has(token.name)
+                                        ? '2px solid #0D99FF'
+                                        : figmaPulsingRow === token.name
+                                          ? '3px solid #30D158'
+                                          : '2px solid transparent',
+                                      boxShadow: figmaPulsingRow === token.name
+                                        ? '0 0 12px rgba(48, 209, 88, 0.3)'
+                                        : 'none',
+                                      transition: 'all 0.15s ease',
+                                      cursor: 'pointer',
                                     }}
                                   >
-                                    <div style={{ padding: '6px 16px 6px 32px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)' }}>{token.name}</div>
+                                    <div style={{ padding: '6px 16px 6px 30px', fontSize: '11px', color: figmaSelectedRows.has(token.name) ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.7)' }}>{token.name}</div>
                                     <div style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
                                       <div style={{ width: '14px', height: '14px', borderRadius: '3px', background: token.light, border: token.light === '#FFFFFF' ? '1px solid rgba(255, 255, 255, 0.2)' : 'none' }} />
                                       <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'SF Mono, Monaco, monospace' }}>{token.light}</span>
@@ -3695,11 +3844,20 @@ export function AirIndiaWork() {
                                 gridTemplateColumns: '1fr 100px 100px',
                                 borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
                                 cursor: 'pointer',
-                                background: 'rgba(255, 255, 255, 0.02)',
+                                background: figmaHighlightedGroup === 'Typography'
+                                  ? 'rgba(13, 153, 255, 0.15)'
+                                  : 'rgba(255, 255, 255, 0.02)',
+                                borderLeft: figmaHighlightedGroup === 'Typography'
+                                  ? '3px solid #0D99FF'
+                                  : '3px solid transparent',
+                                boxShadow: figmaHighlightedGroup === 'Typography'
+                                  ? '0 0 12px rgba(13, 153, 255, 0.2)'
+                                  : 'none',
+                                transition: 'all 0.2s ease',
                               }}
                             >
-                              <div style={{ padding: '8px 16px', fontSize: '11px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.8)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>{figmaExpandedGroups.has('Typography') ? '▾' : '▸'}</span>
+                              <div style={{ padding: '8px 16px', fontSize: '11px', fontWeight: '500', color: figmaHighlightedGroup === 'Typography' ? '#0D99FF' : 'rgba(255, 255, 255, 0.8)', display: 'flex', alignItems: 'center', gap: '6px', transition: 'color 0.2s ease' }}>
+                                <span style={{ fontSize: '10px', color: figmaHighlightedGroup === 'Typography' ? '#0D99FF' : 'rgba(255, 255, 255, 0.5)' }}>{figmaExpandedGroups.has('Typography') ? '▾' : '▸'}</span>
                                 Typography
                               </div>
                               <div style={{ padding: '8px 12px' }} />
@@ -3714,19 +3872,40 @@ export function AirIndiaWork() {
                                 ].map((token) => (
                                   <div
                                     key={token.name}
+                                    onClick={() => {
+                                      setFigmaSelectedRows(prev => {
+                                        const next = new Set(prev);
+                                        if (next.has(token.name)) next.delete(token.name);
+                                        else next.add(token.name);
+                                        return next;
+                                      });
+                                    }}
                                     onMouseEnter={() => setFigmaHoveredRow(token.name)}
                                     onMouseLeave={() => setFigmaHoveredRow(null)}
                                     style={{
                                       display: 'grid',
                                       gridTemplateColumns: '1fr 100px 100px',
                                       borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
-                                      background: figmaHoveredRow === token.name ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
-                                      transition: 'background 0.1s ease',
+                                      background: figmaSelectedRows.has(token.name)
+                                        ? 'rgba(24, 160, 251, 0.12)'
+                                        : figmaHoveredRow === token.name
+                                          ? 'rgba(255, 255, 255, 0.04)'
+                                          : 'transparent',
+                                      borderLeft: figmaSelectedRows.has(token.name)
+                                        ? '2px solid #0D99FF'
+                                        : figmaPulsingRow === token.name
+                                          ? '3px solid #30D158'
+                                          : '2px solid transparent',
+                                      boxShadow: figmaPulsingRow === token.name
+                                        ? '0 0 12px rgba(48, 209, 88, 0.3)'
+                                        : 'none',
+                                      transition: 'all 0.15s ease',
+                                      cursor: 'pointer',
                                     }}
                                   >
-                                    <div style={{ padding: '6px 16px 6px 32px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)' }}>{token.name}</div>
-                                    <div style={{ padding: '6px 12px', textAlign: 'center', fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)' }}>{token.light}</div>
-                                    <div style={{ padding: '6px 12px', textAlign: 'center', fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)' }}>{token.dark}</div>
+                                    <div style={{ padding: '6px 16px 6px 30px', fontSize: '11px', color: figmaSelectedRows.has(token.name) ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.7)' }}>{token.name}</div>
+                                    <div style={{ padding: '6px 12px', textAlign: 'center', fontSize: '11px', color: figmaSelectedRows.has(token.name) ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.7)' }}>{token.light}</div>
+                                    <div style={{ padding: '6px 12px', textAlign: 'center', fontSize: '11px', color: figmaSelectedRows.has(token.name) ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.7)' }}>{token.dark}</div>
                                   </div>
                                 ))}
                               </>
@@ -3747,11 +3926,20 @@ export function AirIndiaWork() {
                                 gridTemplateColumns: '1fr 100px 100px',
                                 borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
                                 cursor: 'pointer',
-                                background: 'rgba(255, 255, 255, 0.02)',
+                                background: figmaHighlightedGroup === 'Spacing'
+                                  ? 'rgba(13, 153, 255, 0.15)'
+                                  : 'rgba(255, 255, 255, 0.02)',
+                                borderLeft: figmaHighlightedGroup === 'Spacing'
+                                  ? '3px solid #0D99FF'
+                                  : '3px solid transparent',
+                                boxShadow: figmaHighlightedGroup === 'Spacing'
+                                  ? '0 0 12px rgba(13, 153, 255, 0.2)'
+                                  : 'none',
+                                transition: 'all 0.2s ease',
                               }}
                             >
-                              <div style={{ padding: '8px 16px', fontSize: '11px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.8)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>{figmaExpandedGroups.has('Spacing') ? '▾' : '▸'}</span>
+                              <div style={{ padding: '8px 16px', fontSize: '11px', fontWeight: '500', color: figmaHighlightedGroup === 'Spacing' ? '#0D99FF' : 'rgba(255, 255, 255, 0.8)', display: 'flex', alignItems: 'center', gap: '6px', transition: 'color 0.2s ease' }}>
+                                <span style={{ fontSize: '10px', color: figmaHighlightedGroup === 'Spacing' ? '#0D99FF' : 'rgba(255, 255, 255, 0.5)' }}>{figmaExpandedGroups.has('Spacing') ? '▾' : '▸'}</span>
                                 Spacing
                               </div>
                               <div style={{ padding: '8px 12px' }} />
@@ -3767,19 +3955,40 @@ export function AirIndiaWork() {
                                 ].map((token) => (
                                   <div
                                     key={token.name}
+                                    onClick={() => {
+                                      setFigmaSelectedRows(prev => {
+                                        const next = new Set(prev);
+                                        if (next.has(token.name)) next.delete(token.name);
+                                        else next.add(token.name);
+                                        return next;
+                                      });
+                                    }}
                                     onMouseEnter={() => setFigmaHoveredRow(token.name)}
                                     onMouseLeave={() => setFigmaHoveredRow(null)}
                                     style={{
                                       display: 'grid',
                                       gridTemplateColumns: '1fr 100px 100px',
                                       borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
-                                      background: figmaHoveredRow === token.name ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
-                                      transition: 'background 0.1s ease',
+                                      background: figmaSelectedRows.has(token.name)
+                                        ? 'rgba(24, 160, 251, 0.12)'
+                                        : figmaHoveredRow === token.name
+                                          ? 'rgba(255, 255, 255, 0.04)'
+                                          : 'transparent',
+                                      borderLeft: figmaSelectedRows.has(token.name)
+                                        ? '2px solid #0D99FF'
+                                        : figmaPulsingRow === token.name
+                                          ? '3px solid #30D158'
+                                          : '2px solid transparent',
+                                      boxShadow: figmaPulsingRow === token.name
+                                        ? '0 0 12px rgba(48, 209, 88, 0.3)'
+                                        : 'none',
+                                      transition: 'all 0.15s ease',
+                                      cursor: 'pointer',
                                     }}
                                   >
-                                    <div style={{ padding: '6px 16px 6px 32px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)' }}>{token.name}</div>
-                                    <div style={{ padding: '6px 12px', textAlign: 'center', fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)' }}>{token.light}px</div>
-                                    <div style={{ padding: '6px 12px', textAlign: 'center', fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)' }}>{token.dark}px</div>
+                                    <div style={{ padding: '6px 16px 6px 30px', fontSize: '11px', color: figmaSelectedRows.has(token.name) ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.7)' }}>{token.name}</div>
+                                    <div style={{ padding: '6px 12px', textAlign: 'center', fontSize: '11px', color: figmaSelectedRows.has(token.name) ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.7)' }}>{token.light}px</div>
+                                    <div style={{ padding: '6px 12px', textAlign: 'center', fontSize: '11px', color: figmaSelectedRows.has(token.name) ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.7)' }}>{token.dark}px</div>
                                   </div>
                                 ))}
                               </>
