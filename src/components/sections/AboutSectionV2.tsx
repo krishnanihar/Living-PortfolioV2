@@ -588,6 +588,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                     {/* CTA Button - Pops out MOST */}
                     <Link
                       href={project.link}
+                      draggable="false"
                       data-atropos-offset="8"
                       onMouseEnter={() => setIsButtonHovered(true)}
                       onMouseLeave={() => setIsButtonHovered(false)}
@@ -671,15 +672,18 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
   return (
     <>
       <style jsx>{`
-        /* Fix Atropos pointer events - allow clicks through to links */
-        :global(.atropos-inner) {
-          pointer-events: auto !important;
+        /* Fix Atropos pointer events - disable blocking on wrapper layers */
+        :global(.atropos-scale) {
+          pointer-events: none !important;
         }
-        :global(.atropos-inner a),
-        :global(.atropos-inner button) {
-          pointer-events: auto !important;
+        :global(.atropos-rotate) {
+          pointer-events: all !important;
+        }
+        :global(.atropos a),
+        :global(.atropos button) {
+          pointer-events: all !important;
           position: relative;
-          z-index: 100;
+          z-index: 10;
         }
 
         @keyframes fadeInUp {
