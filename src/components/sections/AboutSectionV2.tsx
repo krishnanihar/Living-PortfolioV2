@@ -248,7 +248,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
     return (
       <div
         style={{
-          minHeight: '100vh',
+          height: '100vh',
           width: '100%',
           background: `linear-gradient(${isEven ? '135deg' : '225deg'}, rgba(${brandRgb}, 0.04) 0%, #0A0A0A 30%, #0A0A0A 100%)`,
           display: 'flex',
@@ -1072,12 +1072,13 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
         <div
           id="act-1-philosophy"
           style={{
-            minHeight: '100vh',
+            height: '100vh',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             padding: '6rem 1.5rem',
             position: 'relative',
+            overflow: 'hidden',
           }}
         >
           <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
@@ -1400,13 +1401,14 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
         {/* Full-Screen View All Work Card */}
         <div
           style={{
-            minHeight: '100vh',
+            height: '100vh',
             width: '100%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             padding: '4rem 1.5rem',
             position: 'relative',
+            overflow: 'hidden',
           }}
         >
           {/* Liquid Glass Card with Flowing Line Border */}
@@ -1544,11 +1546,12 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
           id="act-2-about"
           ref={timelineRef}
           style={{
-            minHeight: '100vh',
+            height: '100vh',
             display: 'flex',
             alignItems: 'center',
             padding: '4rem 1.5rem',
             position: 'relative',
+            overflow: 'hidden',
           }}
         >
           <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', position: 'relative' }}>

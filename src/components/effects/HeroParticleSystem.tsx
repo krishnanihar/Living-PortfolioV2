@@ -174,6 +174,10 @@ function HeroStarParticles({ scrollProgress, mousePosition }: HeroStarParticlesP
 interface HeroParticleSystemProps {
   starOpacity?: number;
   className?: string;
+  /** Simulated scroll Y position from snap scrolling */
+  simulatedScrollY?: number;
+  /** Pre-calculated scroll progress (0-1) from snap scrolling */
+  scrollProgress?: number;
 }
 
 /**
@@ -206,14 +210,28 @@ interface HeroParticleSystemProps {
 export default function HeroParticleSystem({
   starOpacity = 0.2, // Reduced so GPGPU particles dominate
   className = '',
+  simulatedScrollY,
+  scrollProgress: externalScrollProgress,
 }: HeroParticleSystemProps) {
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [internalScrollProgress, setInternalScrollProgress] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [userScrolled, setUserScrolled] = useState(false); // NEW: Track user scroll
+  const [userScrolled, setUserScrolled] = useState(false);
   const rafRef = useRef<number | null>(null);
 
-  // Scroll handler with requestAnimationFrame
+  // Use external scroll progress if provided (from snap scrolling), otherwise calculate from window
+  const scrollProgress = externalScrollProgress ?? internalScrollProgress;
+
+  // Scroll handler - only used when no external scroll values provided
   useEffect(() => {
+    // Skip if using external scroll values (snap scrolling mode)
+    if (simulatedScrollY !== undefined || externalScrollProgress !== undefined) {
+      // Determine userScrolled from external values
+      if (simulatedScrollY !== undefined && simulatedScrollY > 50) {
+        setUserScrolled(true);
+      }
+      return;
+    }
+
     const handleScroll = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
@@ -234,7 +252,7 @@ export default function HeroParticleSystem({
         const maxScroll = documentHeight - windowHeight;
         const progress = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
 
-        setScrollProgress(progress);
+        setInternalScrollProgress(progress);
       });
     };
 
@@ -247,7 +265,14 @@ export default function HeroParticleSystem({
         cancelAnimationFrame(rafRef.current);
       }
     };
-  }, []);
+  }, [simulatedScrollY, externalScrollProgress]);
+
+  // Update userScrolled when external scroll values change
+  useEffect(() => {
+    if (simulatedScrollY !== undefined && simulatedScrollY > 50) {
+      setUserScrolled(true);
+    }
+  }, [simulatedScrollY]);
 
   // Mouse parallax handler
   useEffect(() => {

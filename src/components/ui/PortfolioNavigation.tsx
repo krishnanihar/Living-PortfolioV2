@@ -8,6 +8,8 @@ import { useTheme } from '@/components/effects/ThemeProvider';
 
 interface PortfolioNavigationProps {
   className?: string;
+  /** Current snap section index (0 = hero). When provided, uses this instead of window scroll. */
+  snapIndex?: number;
 }
 
 /**
@@ -60,14 +62,21 @@ const NAV_HEIGHTS = {
   DEFAULT: { normal: 60, scrolled: 54 }, // Mobile and default
 } as const;
 
-export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
-  const [scrolled, setScrolled] = useState(false);
+export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigationProps) {
+  const [internalScrolled, setInternalScrolled] = useState(false);
   const [navHeight, setNavHeight] = useState({ normal: 60, scrolled: 54 });
   const pathname = usePathname();
   const { theme, resolvedTheme, toggleTheme } = useTheme();
 
-  // RAF-based scroll detection for buttery smooth 60fps performance
+  // When snapIndex is provided (snap scrolling mode), float nav when past hero (index > 0)
+  // Otherwise, use window scroll detection
+  const scrolled = snapIndex !== undefined ? snapIndex > 0 : internalScrolled;
+
+  // RAF-based scroll detection for normal scroll mode (when snapIndex not provided)
   useEffect(() => {
+    // Skip if using snap scrolling mode
+    if (snapIndex !== undefined) return;
+
     let rafId: number | null = null;
     let ticking = false;
 
@@ -75,7 +84,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
       if (!ticking) {
         ticking = true;
         rafId = requestAnimationFrame(() => {
-          setScrolled(window.scrollY > SCROLL_THRESHOLD);
+          setInternalScrolled(window.scrollY > SCROLL_THRESHOLD);
           ticking = false;
         });
       }
@@ -86,7 +95,7 @@ export function PortfolioNavigation({ className }: PortfolioNavigationProps) {
       window.removeEventListener('scroll', handleScroll);
       if (rafId) cancelAnimationFrame(rafId);
     };
-  }, []);
+  }, [snapIndex]);
 
   // Responsive navigation height based on screen size
   useEffect(() => {
