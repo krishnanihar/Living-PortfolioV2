@@ -774,7 +774,7 @@ export function AirIndiaWork() {
         background: 'var(--bg-primary)',
         fontFamily: 'Inter, sans-serif',
         position: 'relative',
-        overflow: 'hidden',
+        overflow: 'visible',
       }}
     >
       {/* Ambient Background Orbs */}
@@ -3056,7 +3056,7 @@ export function AirIndiaWork() {
                       style={{
                         width: '100%',
                         maxWidth: index === 0 ? '900px' : '1100px',
-                        margin: '3rem auto 0',
+                        margin: '5rem auto 0',
                         padding: '0 1rem',
                       }}
                     >
