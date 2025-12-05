@@ -134,7 +134,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
       title: 'Air India',
       category: 'Aviation Design System',
       description: 'Designing experiences for millions of passengers at 30,000ft across mobile app and in-flight entertainment systems',
-      image: '/images/work/air-india-hero.jpg',
+      image: '/images/air-india/hero.png',
       brandColor: { r: 218, g: 14, b: 41 },
       year: '2024',
       metrics: [
@@ -247,24 +247,22 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
   }
 
   function FullScreenProjectCard({ project, index }: ProjectCardProps) {
-    const [isHovered, setIsHovered] = useState(false);
+    const [isButtonHovered, setIsButtonHovered] = useState(false);
     const atroposRef = useRef<HTMLDivElement>(null);
     const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
     const brandRgb = `${project.brandColor.r}, ${project.brandColor.g}, ${project.brandColor.b}`;
-    const isEven = index % 2 === 0;
 
-    // Initialize Atropos 3D effect
+    // Initialize Atropos 3D effect on the ENTIRE card
     useEffect(() => {
       if (atroposRef.current && !isMobile) {
         atroposInstance.current = Atropos({
           el: atroposRef.current,
-          activeOffset: 50,
-          rotateXMax: 8,
-          rotateYMax: 8,
-          shadow: true,
-          shadowScale: 1.05,
-          highlight: true,
-          duration: 400,
+          activeOffset: 100,
+          rotateXMax: 4,
+          rotateYMax: 4,
+          shadow: false,
+          highlight: false,
+          duration: 600,
         });
       }
 
@@ -280,199 +278,254 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
         style={{
           height: '100vh',
           width: '100%',
-          background: `linear-gradient(${isEven ? '135deg' : '225deg'}, rgba(${brandRgb}, 0.04) 0%, #0A0A0A 30%, #0A0A0A 100%)`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: isMobile ? '4rem 1.5rem' : '4rem clamp(2rem, 5vw, 6rem)',
           position: 'relative',
           overflow: 'hidden',
+          background: '#000',
         }}
       >
-        {/* Subtle brand accent line at top */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: '1px',
-            background: `linear-gradient(90deg, transparent 10%, rgba(${brandRgb}, 0.3) 50%, transparent 90%)`,
-          }}
-        />
-
-        {/* Atropos 3D Card Container */}
+        {/* Atropos Container - Wraps ALL content for full-card 3D effect */}
         <div
           ref={atroposRef}
           className="atropos"
           style={{
-            width: isMobile ? '100%' : '85%',
-            maxWidth: '1200px',
+            position: 'absolute',
+            inset: 0,
           }}
         >
-          <div className="atropos-scale">
-            <div className="atropos-rotate">
-              <div
-                className="atropos-inner"
-                style={{
-                  background: `linear-gradient(145deg, rgba(${brandRgb}, 0.06) 0%, rgba(20, 20, 20, 0.95) 50%, rgba(10, 10, 10, 0.98) 100%)`,
-                  borderRadius: '24px',
-                  border: `1px solid rgba(${brandRgb}, 0.15)`,
-                  padding: isMobile ? '2rem' : '3rem',
-                  display: 'flex',
-                  flexDirection: isMobile ? 'column' : (isEven ? 'row' : 'row-reverse'),
-                  alignItems: 'center',
-                  gap: isMobile ? '2rem' : '3rem',
-                  boxShadow: `0 40px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(${brandRgb}, 0.08)`,
-                }}
-              >
-                {/* Image Container - Parallax Layer */}
+          <div className="atropos-scale" style={{ height: '100%' }}>
+            <div className="atropos-rotate" style={{ height: '100%' }}>
+              <div className="atropos-inner" style={{ width: '100%', height: '100%', position: 'relative' }}>
+
+                {/* Giant Editorial Number - Parallax BACK */}
                 <div
-                  data-atropos-offset="-3"
+                  data-atropos-offset="-8"
                   style={{
-                    position: 'relative',
-                    width: isMobile ? '100%' : '55%',
-                    height: isMobile ? '45vh' : '60vh',
-                    borderRadius: '16px',
-                    overflow: 'hidden',
-                    border: `1px solid rgba(${brandRgb}, 0.2)`,
-                    flexShrink: 0,
+                    position: 'absolute',
+                    top: isMobile ? '6%' : '6%',
+                    left: isMobile ? '4%' : '4%',
+                    fontSize: isMobile ? '28vw' : 'clamp(220px, 30vw, 450px)',
+                    fontWeight: '200',
+                    color: `rgba(${brandRgb}, 0.15)`,
+                    lineHeight: '0.85',
+                    letterSpacing: '-0.05em',
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
+                    pointerEvents: 'none',
+                    zIndex: 5,
+                    textShadow: `0 0 150px rgba(${brandRgb}, 0.3)`,
                   }}
                 >
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    style={{
-                      objectFit: 'cover',
-                      objectPosition: 'center',
-                    }}
-                    quality={90}
-                    priority={index === 0}
-                  />
+                  {String(index + 1).padStart(2, '0')}
+                </div>
 
-                  {/* Gradient overlay */}
+                {/* Multi-Layer Parallax Images for Air India */}
+                {project.id === 'air-india' ? (
+                  <>
+                    {/* LAYER 1: Sky Background - Furthest Back */}
+                    <div
+                      data-atropos-offset="-10"
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        zIndex: 1,
+                      }}
+                    >
+                      <Image
+                        src="/images/home/hero-sky.png"
+                        alt="Sky background"
+                        fill
+                        style={{
+                          objectFit: 'cover',
+                          objectPosition: 'center',
+                        }}
+                        quality={95}
+                        priority
+                      />
+                    </div>
+
+                    {/* LAYER 2: Clouds - Middle Depth */}
+                    <div
+                      data-atropos-offset="-5"
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        zIndex: 2,
+                      }}
+                    >
+                      <Image
+                        src="/images/home/hero-clouds.png"
+                        alt="Clouds"
+                        fill
+                        style={{
+                          objectFit: 'cover',
+                          objectPosition: 'center',
+                        }}
+                        quality={95}
+                      />
+                    </div>
+
+                    {/* LAYER 3: Aircraft - Center */}
+                    <div
+                      data-atropos-offset="0"
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        zIndex: 3,
+                      }}
+                    >
+                      <Image
+                        src="/images/home/hero-aircraft.png"
+                        alt="Air India Aircraft"
+                        fill
+                        style={{
+                          objectFit: 'cover',
+                          objectPosition: 'center',
+                        }}
+                        quality={95}
+                      />
+                    </div>
+
+                    {/* Light gradient overlay for glass panel readability */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: `linear-gradient(180deg,
+                          transparent 0%,
+                          transparent 70%,
+                          rgba(0, 0, 0, 0.4) 100%
+                        )`,
+                        pointerEvents: 'none',
+                        zIndex: 4,
+                      }}
+                    />
+                  </>
+                ) : (
+                  /* Single image for other projects */
                   <div
+                    data-atropos-offset="-4"
                     style={{
                       position: 'absolute',
                       inset: 0,
-                      background: 'linear-gradient(180deg, transparent 40%, rgba(10, 10, 10, 0.6) 100%)',
-                      pointerEvents: 'none',
-                    }}
-                  />
-
-                  {/* Year badge - floats forward */}
-                  <div
-                    data-atropos-offset="5"
-                    style={{
-                      position: 'absolute',
-                      top: '1rem',
-                      right: '1rem',
-                      background: 'rgba(10, 10, 10, 0.85)',
-                      backdropFilter: 'blur(10px)',
-                      border: '1px solid var(--text-15)',
-                      borderRadius: '10px',
-                      padding: '0.5rem 1rem',
-                      fontSize: '0.8rem',
-                      fontWeight: '600',
-                      color: 'var(--text-80)',
-                      letterSpacing: '0.05em',
+                      zIndex: 2,
                     }}
                   >
-                    {project.year}
-                  </div>
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      style={{
+                        objectFit: 'cover',
+                        objectPosition: 'center top',
+                      }}
+                      quality={95}
+                    />
 
-                  {/* Metrics overlay - floats forward */}
-                  <div
-                    data-atropos-offset="8"
-                    style={{
-                      position: 'absolute',
-                      bottom: '1rem',
-                      left: '1rem',
-                      background: 'rgba(10, 10, 10, 0.9)',
-                      backdropFilter: 'blur(12px)',
-                      border: '1px solid var(--text-12)',
-                      borderRadius: '14px',
-                      padding: '1rem 1.25rem',
-                      display: 'flex',
-                      gap: '1.5rem',
-                    }}
-                  >
-                    {project.metrics.map((metric, i) => (
-                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <metric.icon size={16} style={{ color: `rgba(${brandRgb}, 1)` }} />
-                        <span style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--text-90)' }}>
-                          {metric.value}
-                        </span>
-                      </div>
-                    ))}
+                    {/* Light gradient overlay */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: `linear-gradient(180deg,
+                          transparent 0%,
+                          transparent 60%,
+                          rgba(0, 0, 0, 0.5) 100%
+                        )`,
+                        pointerEvents: 'none',
+                      }}
+                    />
                   </div>
-                </div>
+                )}
 
-                {/* Content - Parallax Layer */}
+                {/* Floating Glass Panel - Parallax FORWARD */}
                 <div
-                  data-atropos-offset="5"
+                  data-atropos-offset="12"
                   style={{
-                    width: isMobile ? '100%' : '45%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '1.25rem',
+                    position: 'absolute',
+                    bottom: isMobile ? '18%' : '15%',
+                    right: isMobile ? '5%' : '8%',
+                    width: isMobile ? '90%' : 'clamp(340px, 32vw, 420px)',
+                    zIndex: 10,
+                    background: 'rgba(10, 10, 10, 0.65)',
+                    backdropFilter: 'blur(40px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+                    borderRadius: '24px',
+                    border: `1px solid rgba(${brandRgb}, 0.2)`,
+                    padding: isMobile ? '1.75rem' : '2.25rem',
+                    boxShadow: `
+                      0 32px 64px rgba(0, 0, 0, 0.5),
+                      0 0 0 1px rgba(255, 255, 255, 0.05),
+                      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                      0 0 80px rgba(${brandRgb}, 0.08)
+                    `,
                   }}
                 >
-                  {/* Index + Category */}
+                  {/* Category Tag */}
                   <div
-                    data-atropos-offset="2"
-                    style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      marginBottom: '1rem',
+                    }}
                   >
                     <span
                       style={{
-                        fontSize: '0.8rem',
-                        fontWeight: '500',
-                        color: 'var(--text-40)',
-                        fontFamily: 'monospace',
-                      }}
-                    >
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <span style={{ color: 'var(--text-25)', fontSize: '0.8rem' }}>—</span>
-                    <span
-                      style={{
-                        fontSize: '0.75rem',
+                        fontSize: '0.7rem',
                         fontWeight: '600',
                         textTransform: 'uppercase',
-                        letterSpacing: '0.12em',
+                        letterSpacing: '0.15em',
                         color: `rgba(${brandRgb}, 0.9)`,
                       }}
                     >
                       {project.category}
                     </span>
+                    <span style={{ color: 'var(--text-25)', fontSize: '0.65rem' }}>•</span>
+                    <span
+                      style={{
+                        fontSize: '0.7rem',
+                        fontWeight: '500',
+                        color: 'var(--text-50)',
+                        letterSpacing: '0.05em',
+                      }}
+                    >
+                      {project.year}
+                    </span>
                   </div>
 
-                  {/* Title - Pops out most */}
+                  {/* Title - Extra parallax forward */}
                   <h2
-                    data-atropos-offset="10"
+                    data-atropos-offset="5"
                     style={{
-                      fontSize: 'clamp(2rem, 4vw, 3rem)',
+                      fontSize: isMobile ? '1.75rem' : 'clamp(1.875rem, 3vw, 2.5rem)',
                       fontWeight: '300',
                       color: 'var(--text-95)',
                       lineHeight: '1.15',
                       letterSpacing: '-0.02em',
-                      margin: 0,
+                      margin: '0 0 0.875rem 0',
                     }}
                   >
                     {project.title}
                   </h2>
 
+                  {/* Divider line */}
+                  <div
+                    style={{
+                      width: '48px',
+                      height: '2px',
+                      background: `linear-gradient(90deg, rgba(${brandRgb}, 0.6), transparent)`,
+                      marginBottom: '1rem',
+                      borderRadius: '1px',
+                    }}
+                  />
+
                   {/* Description */}
                   <p
-                    data-atropos-offset="6"
                     style={{
-                      fontSize: 'clamp(0.9375rem, 1.2vw, 1rem)',
+                      fontSize: isMobile ? '0.875rem' : '0.9375rem',
                       fontWeight: '300',
-                      lineHeight: '1.75',
-                      color: 'var(--text-65)',
-                      maxWidth: '420px',
-                      margin: 0,
+                      lineHeight: '1.7',
+                      color: 'var(--text-60)',
+                      margin: '0 0 1.25rem 0',
                     }}
                   >
                     {project.description}
@@ -480,20 +533,24 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
 
                   {/* Tags */}
                   <div
-                    data-atropos-offset="4"
-                    style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.25rem' }}
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: '0.4rem',
+                      marginBottom: '1.5rem',
+                    }}
                   >
-                    {project.tags.map((tag, i) => (
+                    {project.tags.slice(0, 3).map((tag, i) => (
                       <span
                         key={i}
                         style={{
-                          fontSize: '0.7rem',
+                          fontSize: '0.65rem',
                           fontWeight: '500',
-                          color: 'var(--text-55)',
+                          color: 'var(--text-50)',
                           background: `rgba(${brandRgb}, 0.08)`,
-                          border: `1px solid rgba(${brandRgb}, 0.15)`,
-                          borderRadius: '8px',
-                          padding: '0.4rem 0.8rem',
+                          border: `1px solid rgba(${brandRgb}, 0.12)`,
+                          borderRadius: '6px',
+                          padding: '0.35rem 0.65rem',
                         }}
                       >
                         {tag}
@@ -501,67 +558,78 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                     ))}
                   </div>
 
-                  {/* CTA Button - Pops out most */}
+                  {/* CTA Button - Pops out MOST */}
                   <Link
                     href={project.link}
-                    data-atropos-offset="12"
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
+                    data-atropos-offset="8"
+                    onMouseEnter={() => setIsButtonHovered(true)}
+                    onMouseLeave={() => setIsButtonHovered(false)}
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
-                      gap: '0.75rem',
-                      width: 'fit-content',
-                      marginTop: '0.75rem',
-                      padding: '1rem 2rem',
-                      background: isHovered
+                      gap: '0.625rem',
+                      padding: '0.875rem 1.5rem',
+                      background: isButtonHovered
                         ? `rgba(${brandRgb}, 0.2)`
                         : `rgba(${brandRgb}, 0.1)`,
-                      border: `1px solid rgba(${brandRgb}, ${isHovered ? 0.4 : 0.25})`,
-                      borderRadius: '16px',
+                      border: `1px solid rgba(${brandRgb}, ${isButtonHovered ? 0.4 : 0.25})`,
+                      borderRadius: '14px',
                       color: 'var(--text-95)',
                       textDecoration: 'none',
-                      fontSize: '0.9rem',
+                      fontSize: '0.875rem',
                       fontWeight: '600',
-                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                      boxShadow: isHovered
-                        ? `0 16px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(${brandRgb}, 0.2)`
-                        : `0 8px 24px rgba(0, 0, 0, 0.3)`,
+                      transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+                      boxShadow: isButtonHovered
+                        ? `0 12px 32px rgba(0, 0, 0, 0.35), 0 0 24px rgba(${brandRgb}, 0.15)`
+                        : `0 6px 20px rgba(0, 0, 0, 0.25)`,
                     }}
                   >
-                    <span>View Case Study</span>
+                    <span>View Project</span>
                     <ArrowRight
-                      size={18}
+                      size={16}
                       style={{
                         transition: 'transform 0.3s ease',
-                        transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
+                        transform: isButtonHovered ? 'translateX(4px)' : 'translateX(0)',
                       }}
                     />
                   </Link>
                 </div>
+
               </div>
             </div>
           </div>
         </div>
 
-        {/* Progress indicator */}
+        {/* Progress Dots - OUTSIDE Atropos (stays fixed) */}
         <div
           style={{
             position: 'absolute',
-            bottom: '2rem',
+            bottom: '2.5rem',
             left: '50%',
             transform: 'translateX(-50%)',
             display: 'flex',
             alignItems: 'center',
-            gap: '0.5rem',
-            color: 'var(--text-30)',
-            fontSize: '0.75rem',
-            fontFamily: 'monospace',
+            gap: '10px',
+            zIndex: 20,
           }}
         >
-          <span style={{ color: `rgba(${brandRgb}, 0.7)` }}>{String(index + 1).padStart(2, '0')}</span>
-          <span>/</span>
-          <span>{String(featuredProjects.length).padStart(2, '0')}</span>
+          {featuredProjects.map((_, i) => (
+            <div
+              key={i}
+              style={{
+                width: i === index ? '12px' : '8px',
+                height: i === index ? '12px' : '8px',
+                borderRadius: '50%',
+                background: i === index
+                  ? `rgba(${brandRgb}, 0.9)`
+                  : 'var(--text-25)',
+                boxShadow: i === index
+                  ? `0 0 16px rgba(${brandRgb}, 0.5), 0 0 32px rgba(${brandRgb}, 0.25)`
+                  : 'none',
+                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            />
+          ))}
         </div>
       </div>
     );
