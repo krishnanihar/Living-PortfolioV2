@@ -1069,7 +1069,7 @@ export default function AboutSectionV2({ className = '' }: AboutSectionV2Props) 
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '6rem 1.5rem',
+            padding: '8rem 1.5rem 4rem 1.5rem',
             position: 'relative',
             overflow: 'hidden',
           }}
