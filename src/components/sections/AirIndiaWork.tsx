@@ -525,14 +525,15 @@ export function AirIndiaWork() {
   const heroRef = useRef<HTMLElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHeroHovered, setIsHeroHovered] = useState(false);
+  const [cardTilt, setCardTilt] = useState({ rotateX: 0, rotateY: 0 });
 
   // Scroll parallax for hero image
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"]
   });
-  const heroImageY = useTransform(scrollYProgress, [0, 1], [0, 150]);
-  const heroImageScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.05]);
+  const heroImageY = useTransform(scrollYProgress, [0, 1], [0, 250]);
+  const heroImageScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.15]);
 
   // Narrative act tracking
   const [currentAct, setCurrentAct] = useState<1 | 2 | 3>(1);
@@ -667,6 +668,22 @@ export function AirIndiaWork() {
   const handleHeroMouseLeave = () => {
     setMousePosition({ x: 0, y: 0 });
     setIsHeroHovered(false);
+  };
+
+  // Hero Card 3D tilt handler
+  const handleHeroCardTilt = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isMobile) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setCardTilt({
+      rotateX: -y * 8, // Tilt up/down (inverted for natural feel)
+      rotateY: x * 8,   // Tilt left/right
+    });
+  };
+
+  const resetHeroCardTilt = () => {
+    setCardTilt({ rotateX: 0, rotateY: 0 });
   };
 
   // =============================================================================
@@ -897,17 +914,33 @@ export function AirIndiaWork() {
           }} />
         </motion.div>
 
-        {/* Centered Content Card - Liquid Glass */}
+        {/* Centered Content Card - Liquid Glass with 3D Tilt */}
         <motion.div
           initial={{ opacity: 0, y: 40, scale: 0.95 }}
-          animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          animate={inView ? {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            rotateX: cardTilt.rotateX,
+            rotateY: cardTilt.rotateY,
+          } : {}}
+          transition={{
+            duration: 0.8,
+            delay: 0.3,
+            ease: [0.22, 1, 0.36, 1],
+            rotateX: { type: 'spring', stiffness: 300, damping: 30 },
+            rotateY: { type: 'spring', stiffness: 300, damping: 30 },
+          }}
+          onMouseMove={handleHeroCardTilt}
+          onMouseLeave={resetHeroCardTilt}
           style={{
             position: 'relative',
             zIndex: 10,
             width: '90%',
             maxWidth: '580px',
             padding: isMobile ? '2rem' : '2.5rem 3rem',
+            perspective: '1000px',
+            transformStyle: 'preserve-3d',
             // Dark mode glassmorphism - more translucent
             background: `
               linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.03) 100%),
