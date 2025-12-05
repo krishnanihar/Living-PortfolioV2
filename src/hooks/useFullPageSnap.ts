@@ -3,8 +3,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useMotionValue, animate } from 'framer-motion';
 
-// Configuration - 7 sections: Hero, Air India, PsoriAssist, Metamorphic, Latent Space, Explore All, About Me
-const TOTAL_SECTIONS = 7;
+// Configuration - 8 sections: Hero, Philosophy, Air India, PsoriAssist, Metamorphic, Latent Space, Explore All, About Me
+const TOTAL_SECTIONS = 8;
 
 // Spring config for smooth, snappy animations
 const springConfig = {
