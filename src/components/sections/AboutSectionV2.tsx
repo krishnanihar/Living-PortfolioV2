@@ -253,14 +253,14 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
     const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
     const brandRgb = `${project.brandColor.r}, ${project.brandColor.g}, ${project.brandColor.b}`;
 
-    // Initialize Atropos 3D effect on the ENTIRE card
+    // Initialize Atropos 3D effect on the ENTIRE card (reduced for easier clicking)
     useEffect(() => {
       if (atroposRef.current && !isMobile) {
         atroposInstance.current = Atropos({
           el: atroposRef.current,
-          activeOffset: 100,
-          rotateXMax: 4,
-          rotateYMax: 4,
+          activeOffset: 80,
+          rotateXMax: 2,
+          rotateYMax: 2,
           shadow: false,
           highlight: false,
           duration: 600,
@@ -735,16 +735,17 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
           </div>
         </div>
 
-        {/* Progress Dots - OUTSIDE Atropos (stays fixed) */}
+        {/* Progress Dots - Vertical on LEFT side */}
         <div
           style={{
             position: 'absolute',
-            bottom: '2.5rem',
-            left: '50%',
-            transform: 'translateX(-50%)',
+            left: isMobile ? '1rem' : '2rem',
+            top: '50%',
+            transform: 'translateY(-50%)',
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
-            gap: '10px',
+            gap: '12px',
             zIndex: 20,
           }}
         >
@@ -752,14 +753,14 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
             <div
               key={i}
               style={{
-                width: i === index ? '12px' : '8px',
-                height: i === index ? '12px' : '8px',
+                width: i === index ? '10px' : '6px',
+                height: i === index ? '10px' : '6px',
                 borderRadius: '50%',
                 background: i === index
                   ? `rgba(${brandRgb}, 0.9)`
                   : 'var(--text-25)',
                 boxShadow: i === index
-                  ? `0 0 16px rgba(${brandRgb}, 0.5), 0 0 32px rgba(${brandRgb}, 0.25)`
+                  ? `0 0 12px rgba(${brandRgb}, 0.5), 0 0 24px rgba(${brandRgb}, 0.25)`
                   : 'none',
                 transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
               }}
