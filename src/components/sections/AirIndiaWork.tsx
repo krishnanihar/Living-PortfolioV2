@@ -978,7 +978,7 @@ export function AirIndiaWork() {
           />
         </motion.div>
 
-        {/* Centered Content Card */}
+        {/* Centered Content Card - Liquid Glass */}
         <motion.div
           initial={{ opacity: 0, y: 40, scale: 0.95 }}
           animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
@@ -989,15 +989,73 @@ export function AirIndiaWork() {
             width: '90%',
             maxWidth: '580px',
             padding: isMobile ? '2rem' : '2.5rem 3rem',
-            background: 'rgba(20, 20, 22, 0.75)',
-            backdropFilter: 'blur(40px) saturate(180%)',
-            WebkitBackdropFilter: 'blur(40px) saturate(180%)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            borderRadius: '28px',
-            boxShadow: '0 32px 64px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.03) inset',
+            // Liquid glass layered background
+            background: `
+              linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.08) 100%),
+              linear-gradient(to bottom, rgba(255, 255, 255, 0.08), transparent 50%),
+              rgba(15, 15, 18, 0.6)
+            `,
+            backdropFilter: 'blur(50px) saturate(200%) brightness(1.1)',
+            WebkitBackdropFilter: 'blur(50px) saturate(200%) brightness(1.1)',
+            borderRadius: '32px',
+            // Multi-layer shadows: outer depth + inner glow
+            boxShadow: `
+              0 40px 80px rgba(0, 0, 0, 0.5),
+              0 20px 40px rgba(0, 0, 0, 0.3),
+              inset 0 1px 1px rgba(255, 255, 255, 0.15),
+              inset 0 -1px 1px rgba(0, 0, 0, 0.2),
+              inset 0 0 40px rgba(255, 255, 255, 0.03)
+            `,
             textAlign: 'center',
+            overflow: 'hidden',
           }}
         >
+          {/* Gradient Border Overlay */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            borderRadius: '32px',
+            padding: '1px',
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.1) 100%)',
+            WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+            WebkitMaskComposite: 'xor',
+            maskComposite: 'exclude',
+            pointerEvents: 'none',
+          }} />
+
+          {/* Animated Shine Effect */}
+          <motion.div
+            animate={{
+              x: ['-100%', '200%'],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              repeatDelay: 5,
+              ease: 'easeInOut',
+            }}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '50%',
+              height: '100%',
+              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)',
+              transform: 'skewX(-20deg)',
+              pointerEvents: 'none',
+            }}
+          />
+
+          {/* Top Highlight */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: '10%',
+            right: '10%',
+            height: '1px',
+            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+            pointerEvents: 'none',
+          }} />
           {/* Eyebrow */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
