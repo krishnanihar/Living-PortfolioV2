@@ -448,23 +448,24 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                   /* Liquid Glass CTA Card - Air India */
                   <Link
                     href={project.link}
+                    data-atropos-offset="12"
+                    onMouseEnter={() => setIsCardHovered(true)}
+                    onMouseLeave={() => setIsCardHovered(false)}
                     style={{
                       textDecoration: 'none',
                       pointerEvents: 'auto',
-                      position: 'relative',
-                      zIndex: 100,  // Above all Atropos layers
+                      position: 'absolute',
+                      bottom: isMobile ? '18%' : '15%',
+                      right: isMobile ? '5%' : '8%',
+                      width: isMobile ? '85%' : 'clamp(280px, 26vw, 360px)',
+                      zIndex: 100,
+                      display: 'block',
                     }}
                   >
                     <div
-                      data-atropos-offset="12"
-                      onMouseEnter={() => setIsCardHovered(true)}
-                      onMouseLeave={() => setIsCardHovered(false)}
                       style={{
-                        position: 'absolute',
-                        bottom: isMobile ? '18%' : '15%',
-                        right: isMobile ? '5%' : '8%',
-                        width: isMobile ? '85%' : 'clamp(280px, 26vw, 360px)',
-                        zIndex: 10,
+                        position: 'relative',
+                        width: '100%',
                         background: 'rgba(10, 10, 10, 0.55)',
                         backdropFilter: 'blur(40px) saturate(200%)',
                         WebkitBackdropFilter: 'blur(40px) saturate(200%)',
