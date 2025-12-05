@@ -515,7 +515,7 @@ export function AirIndiaWork() {
   const [inView, setInView] = useState(true);
   const [hoveredAward, setHoveredAward] = useState<string | null>(null);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
-  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set()); // Persistent expand state
+  // expandedCards removed - all sections are now full-screen (always "expanded")
   const [hoveredDiff, setHoveredDiff] = useState<number | null>(null);
   const [hoveredOtherProject, setHoveredOtherProject] = useState<number | null>(null);
   const [hoveredCTA, setHoveredCTA] = useState<string | null>(null);
@@ -591,10 +591,7 @@ export function AirIndiaWork() {
 
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Refs for card intersection observers
-  const cardRefs = useRef<Map<number, HTMLDivElement>>(new Map());
-
-  // Handler for hover effects only (no expansion)
+  // Handler for hover effects
   const handleCardMouseEnter = (id: number) => {
     setHoveredProject(id);
   };
@@ -602,34 +599,6 @@ export function AirIndiaWork() {
   const handleCardMouseLeave = () => {
     setHoveredProject(null);
   };
-
-  // Auto-expand cards when they reach center of viewport
-  useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-
-    cardRefs.current.forEach((element, id) => {
-      if (!element) return;
-
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setExpandedCards(prev => new Set(prev).add(id));
-          }
-        },
-        {
-          rootMargin: '-35% 0px -35% 0px', // Trigger when card is in center 30% of viewport
-          threshold: 0.1,
-        }
-      );
-
-      observer.observe(element);
-      observers.push(observer);
-    });
-
-    return () => {
-      observers.forEach(observer => observer.disconnect());
-    };
-  }, []);
 
   // Intersection Observer
   useEffect(() => {
@@ -879,7 +848,7 @@ export function AirIndiaWork() {
             position: 'absolute',
             top: 0,
             right: 0,
-            width: isMobile ? '100%' : '55%',
+            width: isMobile ? '100%' : '65%',
             height: '100%',
             zIndex: 0,
             overflow: 'hidden',
@@ -957,7 +926,7 @@ export function AirIndiaWork() {
           position: 'relative',
           zIndex: 10,
           width: '100%',
-          maxWidth: '1400px',
+          maxWidth: 'min(1400px, 92vw)',
           margin: '0 auto',
           padding: isMobile
             ? 'clamp(8rem, 15vh, 12rem) 1.5rem clamp(4rem, 8vh, 6rem)'
@@ -1138,9 +1107,9 @@ export function AirIndiaWork() {
           SECTION 2: THE CHALLENGE
       ========================================================================= */}
       <section style={{
-        maxWidth: '1000px',
+        maxWidth: 'min(900px, 85vw)',
         margin: '0 auto',
-        padding: '4rem 1.5rem 6rem',
+        padding: 'clamp(6rem, 12vh, 10rem) 2rem clamp(8rem, 15vh, 12rem)',
         position: 'relative',
         zIndex: 1,
       }}>
@@ -1161,12 +1130,12 @@ export function AirIndiaWork() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-            gap: '1.5rem',
-            marginBottom: '3rem',
+            gap: 'clamp(2rem, 4vw, 3rem)',
+            marginBottom: 'clamp(3rem, 6vh, 5rem)',
           }}>
             {/* 140 Legacy Systems */}
             <div style={{
-              padding: '2rem 1.5rem',
+              padding: 'clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.5rem)',
               borderRadius: '20px',
               background: 'var(--glass-04)',
               border: '1px solid var(--glass-08)',
@@ -1257,22 +1226,22 @@ export function AirIndiaWork() {
           SECTION 4: KEY PROJECTS - PREMIUM VISUAL BENTO GRID
       ========================================================================= */}
       <section style={{
-        maxWidth: '1400px',
+        maxWidth: 'min(1300px, 90vw)',
         margin: '0 auto',
-        padding: '4rem 1.5rem',
+        padding: 'clamp(5rem, 10vh, 8rem) 2rem',
         position: 'relative',
         zIndex: 1,
       }}>
         <div style={{
           textAlign: 'center',
-          marginBottom: '3rem',
+          marginBottom: 'clamp(3rem, 6vh, 5rem)',
           animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both' : 'none',
         }}>
           <h2 style={{
             fontSize: 'clamp(2rem, 5vw, 3rem)',
             fontWeight: '500',
             letterSpacing: '-0.03em',
-            marginBottom: '0.75rem',
+            marginBottom: '1.25rem',
             color: 'var(--text-primary)',
           }}>
             What I Built
@@ -1285,20 +1254,15 @@ export function AirIndiaWork() {
           </p>
         </div>
 
-        {/* Full-Width Stacked Cards */}
+        {/* Full-Screen Project Sections */}
         <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '1.25rem',
-          maxWidth: '1400px',
-          margin: '0 auto',
-          padding: isMobile ? '0' : '0 1.5rem',
+          width: '100%',
           position: 'relative',
         }}>
           {projects.map((project, index) => {
             const Icon = project.icon;
             const isHovered = hoveredProject === project.id;
-            const isExpanded = expandedCards.has(project.id);
+            const isExpanded = true; // All sections are now full-screen
 
             // Custom visual content per project type - ENHANCED 180x180px visuals
             const renderCardVisual = () => {
@@ -2248,84 +2212,229 @@ export function AirIndiaWork() {
                   </div>
                 )}
 
-                {/* The Card */}
-                <div
-                  ref={(el) => {
-                    if (el) cardRefs.current.set(project.id, el);
-                  }}
+                {/* Full-Screen Section */}
+                <section
                   onMouseEnter={() => handleCardMouseEnter(project.id)}
                   onMouseLeave={handleCardMouseLeave}
                   style={{
-                    width: '100%',
-                    minHeight: isMobile ? '280px' : (isExpanded ? '520px' : '200px'),
-                  position: 'relative',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '1.5rem',
-                  padding: isMobile ? '1.5rem' : (isExpanded ? '2.5rem 3rem' : '2rem 2.5rem'),
-                  borderRadius: isExpanded ? '28px' : '24px',
-                  background: `
-                    radial-gradient(ellipse at 70% 30%, rgba(${project.color}, ${isExpanded ? 0.15 : 0.08}), transparent 50%),
-                    radial-gradient(ellipse at 30% 70%, rgba(${project.color}, ${isExpanded ? 0.08 : 0.03}), transparent 50%),
-                    var(--glass-04)
-                  `,
-                  backdropFilter: 'blur(40px)',
-                  WebkitBackdropFilter: 'blur(40px)',
-                  border: `1px solid ${isExpanded ? `rgba(${project.color}, 0.4)` : 'var(--glass-08)'}`,
-                  transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                  transform: isHovered && !isMobile ? 'translate3d(0, -4px, 0)' : 'translate3d(0, 0, 0)',
-                  boxShadow: isExpanded
-                    ? `0 40px 80px -20px rgba(${project.color}, 0.35), 0 20px 40px -15px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(${project.color}, 0.12)`
-                    : '0 8px 32px -8px rgba(0,0,0,0.2)',
-                  opacity: isExpanded ? 1 : 0.9,
-                  animation: inView ? `scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.4 + index * 0.05}s both` : 'none',
-                  overflow: 'hidden',
-                  cursor: 'pointer',
-                  zIndex: isHovered ? 20 : 1,
-                }}
-              >
-                {/* Animated Glow Orb */}
-                <div style={{
-                  position: 'absolute',
-                  top: '20%',
-                  right: '10%',
-                  width: '150px',
-                  height: '150px',
-                  borderRadius: '50%',
-                  background: `radial-gradient(circle, rgba(${project.color}, ${isExpanded ? 0.2 : 0.08}), transparent 70%)`,
-                  filter: 'blur(50px)',
-                  transition: 'all 0.6s ease',
-                  pointerEvents: 'none',
-                }} />
-
-                {/* Border Shimmer when expanded */}
-                {isExpanded && (
+                    minHeight: '100vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative',
+                    padding: isMobile ? '4rem 1.5rem' : 'clamp(4rem, 8vh, 6rem) clamp(2rem, 4vw, 4rem)',
+                  }}
+                >
+                  {/* Background Gradient */}
                   <div style={{
                     position: 'absolute',
                     inset: 0,
-                    borderRadius: '28px',
-                    padding: '1px',
-                    background: `linear-gradient(90deg, transparent, rgba(${project.color}, 0.4), transparent)`,
-                    backgroundSize: '200% 100%',
-                    animation: 'borderShimmer 3s ease-in-out infinite',
-                    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                    WebkitMaskComposite: 'xor',
-                    maskComposite: 'exclude',
+                    background: `radial-gradient(ellipse at ${index % 2 === 0 ? '70%' : '30%'} 50%, rgba(${project.color}, 0.06), transparent 60%)`,
                     pointerEvents: 'none',
                   }} />
-                )}
 
-                {/* TOP ROW: Header with Category, Title, Subtitle, and Mini Visual */}
+                  {/* Animated Glow Orb */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '30%',
+                    right: index % 2 === 0 ? '20%' : 'auto',
+                    left: index % 2 === 0 ? 'auto' : '20%',
+                    width: '300px',
+                    height: '300px',
+                    borderRadius: '50%',
+                    background: `radial-gradient(circle, rgba(${project.color}, 0.12), transparent 70%)`,
+                    filter: 'blur(80px)',
+                    pointerEvents: 'none',
+                  }} />
+
+                  {/* Split-Screen Grid */}
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+                    gap: isMobile ? '3rem' : 'clamp(3rem, 6vw, 6rem)',
+                    maxWidth: '1400px',
+                    width: '100%',
+                    alignItems: 'center',
+                    position: 'relative',
+                    zIndex: 2,
+                  }}>
+                    {/* Content Column */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 40 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-15%' }}
+                      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '1.5rem',
+                        order: isMobile ? 2 : (index % 2 === 0 ? 1 : 2),
+                      }}
+                    >
+                      {/* Index Badge */}
+                      <motion.span
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.1 }}
+                        style={{
+                          fontSize: '0.75rem',
+                          fontWeight: '500',
+                          letterSpacing: '0.15em',
+                          color: `rgb(${project.color})`,
+                          textTransform: 'uppercase',
+                        }}
+                      >
+                        {String(index + 1).padStart(2, '0')} — {project.category}
+                      </motion.span>
+
+                      {/* Title */}
+                      <motion.h3
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.15 }}
+                        style={{
+                          fontSize: 'clamp(2rem, 4vw, 3rem)',
+                          fontWeight: '600',
+                          color: 'var(--text-primary)',
+                          letterSpacing: '-0.03em',
+                          lineHeight: 1.1,
+                          margin: 0,
+                        }}
+                      >
+                        {project.title}
+                      </motion.h3>
+
+                      {/* Subtitle */}
+                      <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        style={{
+                          fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
+                          color: 'var(--text-secondary)',
+                          lineHeight: 1.6,
+                          margin: 0,
+                        }}
+                      >
+                        {project.subtitle}
+                      </motion.p>
+
+                      {/* Stats Row */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 'clamp(1rem, 2vw, 1.5rem)',
+                          flexWrap: 'wrap',
+                          marginTop: '0.5rem',
+                        }}
+                      >
+                        {project.stats.map((stat, statIndex) => (
+                          <React.Fragment key={statIndex}>
+                            <div style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'flex-start',
+                            }}>
+                              <span style={{
+                                fontSize: 'clamp(1.5rem, 2.5vw, 2rem)',
+                                fontWeight: '700',
+                                color: `rgb(${project.color})`,
+                                lineHeight: 1,
+                              }}>
+                                {stat.value}
+                              </span>
+                              <span style={{
+                                fontSize: '0.75rem',
+                                color: 'var(--text-muted)',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.08em',
+                                marginTop: '0.25rem',
+                              }}>
+                                {stat.label}
+                              </span>
+                            </div>
+                            {statIndex < project.stats.length - 1 && !isMobile && (
+                              <div style={{
+                                width: '1px',
+                                height: '32px',
+                                background: `linear-gradient(180deg, transparent, rgba(${project.color}, 0.3), transparent)`,
+                              }} />
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </motion.div>
+
+                      {/* Description */}
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.7, delay: 0.4 }}
+                        style={{
+                          fontSize: '0.938rem',
+                          color: 'var(--text-60)',
+                          lineHeight: 1.8,
+                          margin: 0,
+                          maxWidth: '540px',
+                        }}
+                      >
+                        {project.longDescription?.split('\n\n')[0] || project.recruiterFrame}
+                      </motion.p>
+                    </motion.div>
+
+                    {/* Visual Column */}
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9, x: index % 2 === 0 ? 50 : -50 }}
+                      whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                      viewport={{ once: true, margin: '-10%' }}
+                      transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        order: isMobile ? 1 : (index % 2 === 0 ? 2 : 1),
+                        position: 'relative',
+                      }}
+                    >
+                      {/* Scaled Visual Container */}
+                      <div style={{
+                        transform: isMobile ? 'scale(2.2)' : 'scale(3.2)',
+                        transformOrigin: 'center',
+                        filter: isHovered ? `drop-shadow(0 0 60px rgba(${project.color}, 0.3))` : 'none',
+                        transition: 'filter 0.5s ease',
+                      }}>
+                        {renderCardVisual()}
+                      </div>
+                    </motion.div>
+                  </div>
+                </section>
+
+                {/* LEGACY EXPANDED CONTENT - Keeping for detailed demos */}
                 <div style={{
-                  display: 'flex',
-                  flexDirection: isMobile ? 'column' : 'row',
-                  justifyContent: 'space-between',
-                  alignItems: isMobile ? 'flex-start' : 'flex-start',
-                  gap: isMobile ? '1rem' : '2rem',
-                  position: 'relative',
-                  zIndex: 2,
+                  display: 'none', // Hidden for now - can be shown via interaction later
+                  opacity: isExpanded ? 1 : 0,
+                  maxHeight: isExpanded ? '800px' : '0',
+                  transform: isExpanded ? 'translateY(0)' : 'translateY(-20px)',
+                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
+                  overflow: 'hidden',
+                  flexDirection: 'column',
+                  gap: '1.5rem',
                 }}>
-                  {/* Left: Category + Title + Subtitle */}
+                  {/* NOTE: The detailed interactive demos below are preserved but hidden.
+                      They can be revealed via a "View Details" interaction in the future. */}
+                </div>
+
+                {/* Hidden legacy content - keeping structure intact */}
+                <div style={{ display: 'none' }}>
+                  {/* Original header section for reference */}
                   <div style={{ flex: 1, minWidth: 0 }}>
                     {/* Category Badge */}
                     <div style={{
@@ -2435,7 +2544,13 @@ export function AirIndiaWork() {
                       </div>
                     )}
                   </div>
+                </div>
 
+                {/* =====================================================
+                    LEGACY EXPANDED CONTENT - All interactive demos hidden
+                    Keep for potential "View Details" feature
+                    ===================================================== */}
+                <div style={{ display: 'none' }}>
                   {/* Right: Mini Visual (smaller in collapsed, fades when expanded) */}
                   <div style={{
                     flexShrink: 0,
@@ -2454,14 +2569,14 @@ export function AirIndiaWork() {
                   </div>
                 </div>
 
-                {/* EXPANDED CONTENT - Only shown when expanded */}
+                {/* EXPANDED CONTENT - Hidden (legacy content) */}
                 <div style={{
+                  display: 'none', // Hide legacy expanded content
                   opacity: isExpanded ? 1 : 0,
                   maxHeight: isExpanded ? '800px' : '0',
                   transform: isExpanded ? 'translateY(0)' : 'translateY(-20px)',
                   transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
                   overflow: 'hidden',
-                  display: 'flex',
                   flexDirection: 'column',
                   gap: '1.5rem',
                 }}>
@@ -5297,7 +5412,7 @@ export function AirIndiaWork() {
                     </p>
                   )}
                 </div>
-              </div>
+                {/* END LEGACY EXPANDED CONTENT */}
 
                 {/* Narrative Connectors */}
                 {index === 0 && (
@@ -5316,14 +5431,14 @@ export function AirIndiaWork() {
           SECTION 5: DEEP DIVE - PIXEL RADAR
       ========================================================================= */}
       <section style={{
-        maxWidth: '1000px',
+        maxWidth: 'min(880px, 85vw)',
         margin: '0 auto',
-        padding: '6rem 1.5rem',
+        padding: 'clamp(8rem, 14vh, 12rem) 2rem',
         position: 'relative',
         zIndex: 1,
       }}>
         <div style={{
-          padding: '3rem',
+          padding: 'clamp(2.5rem, 5vw, 4rem)',
           borderRadius: '24px',
           background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.06), var(--glass-04))',
           border: '1px solid rgba(218, 14, 41, 0.15)',
@@ -5439,14 +5554,14 @@ export function AirIndiaWork() {
           SECTION 6: DEEP DIVE - AI FEATURES
       ========================================================================= */}
       <section style={{
-        maxWidth: '1000px',
+        maxWidth: 'min(880px, 85vw)',
         margin: '0 auto',
-        padding: '0 1.5rem 6rem',
+        padding: 'clamp(4rem, 8vh, 6rem) 2rem clamp(8rem, 14vh, 12rem)',
         position: 'relative',
         zIndex: 1,
       }}>
         <div style={{
-          padding: '3rem',
+          padding: 'clamp(2.5rem, 5vw, 4rem)',
           borderRadius: '24px',
           background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.06), var(--glass-04))',
           border: '1px solid rgba(139, 92, 246, 0.15)',
@@ -5542,22 +5657,22 @@ export function AirIndiaWork() {
           SECTION 7: KEY DIFFERENTIATORS
       ========================================================================= */}
       <section style={{
-        maxWidth: '1200px',
+        maxWidth: 'min(1100px, 88vw)',
         margin: '0 auto',
-        padding: '4rem 1.5rem 6rem',
+        padding: 'clamp(6rem, 12vh, 10rem) 2rem clamp(8rem, 15vh, 12rem)',
         position: 'relative',
         zIndex: 1,
       }}>
         <div style={{
           textAlign: 'center',
-          marginBottom: '3rem',
+          marginBottom: 'clamp(3rem, 6vh, 5rem)',
           animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both' : 'none',
         }}>
           <h2 style={{
             fontSize: 'clamp(1.5rem, 3vw, 2rem)',
             fontWeight: '400',
             color: 'var(--text-primary)',
-            marginBottom: '0.75rem',
+            marginBottom: '1.25rem',
             letterSpacing: '-0.02em',
           }}>
             What I Bring
@@ -5568,7 +5683,7 @@ export function AirIndiaWork() {
         <div style={{
           display: 'grid',
           gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
-          gap: '1rem',
+          gap: 'clamp(1.5rem, 3vw, 2.5rem)',
         }}>
           {differentiators.map((diff, index) => {
             const Icon = diff.icon;
@@ -5632,14 +5747,14 @@ export function AirIndiaWork() {
           SECTION 8: TEAM RECOGNITION
       ========================================================================= */}
       <section style={{
-        padding: '4rem 0',
+        padding: 'clamp(6rem, 12vh, 10rem) 2rem',
         position: 'relative',
         zIndex: 1,
         overflow: 'hidden',
       }}>
         <div style={{
           textAlign: 'center',
-          marginBottom: '2rem',
+          marginBottom: 'clamp(2.5rem, 5vh, 4rem)',
           animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
         }}>
           <span style={{
@@ -5657,12 +5772,12 @@ export function AirIndiaWork() {
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: '0 1.5rem',
+          padding: '0',
         }}>
           <div style={{
             display: 'grid',
             gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(6, 1fr)',
-            gap: '1rem',
+            gap: 'clamp(1.25rem, 2.5vw, 2rem)',
           }}>
             {awards.map((award, index) => {
               const Icon = award.icon;
@@ -5732,12 +5847,12 @@ export function AirIndiaWork() {
       <section style={{
         maxWidth: '1400px',
         margin: '0 auto',
-        padding: '4rem 1.5rem 6rem',
+        padding: 'clamp(6rem, 12vh, 10rem) 2rem clamp(8rem, 15vh, 12rem)',
         position: 'relative',
         zIndex: 1,
       }}>
         <div style={{
-          marginBottom: '3rem',
+          marginBottom: 'clamp(3rem, 6vh, 5rem)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -5781,7 +5896,7 @@ export function AirIndiaWork() {
         <div style={{
           display: 'grid',
           gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '1.5rem',
+          gap: 'clamp(2rem, 4vw, 3rem)',
         }}>
           {otherProjects.map((project) => {
             const Icon = project.icon;

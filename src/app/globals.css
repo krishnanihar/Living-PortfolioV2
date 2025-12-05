@@ -182,6 +182,16 @@ button {
   --space-14: 3.5rem;    /* 56px */
   --space-16: 4rem;      /* 64px */
 
+  /* Generous Section Spacing (keerthi.design inspired) */
+  --space-section-sm: clamp(4rem, 8vh, 6rem);
+  --space-section-md: clamp(6rem, 12vh, 10rem);
+  --space-section-lg: clamp(8rem, 15vh, 12rem);
+
+  /* Card Gap Scale */
+  --gap-card-sm: clamp(1.25rem, 2.5vw, 2rem);
+  --gap-card-md: clamp(2rem, 4vw, 3rem);
+  --gap-card-lg: clamp(3rem, 5vw, 4rem);
+
   /* Border Radius Scale */
   --radius-none: 0;
   --radius-sm: 0.125rem;  /* 2px */
