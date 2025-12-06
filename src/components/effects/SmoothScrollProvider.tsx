@@ -10,6 +10,10 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+// Premium quart ease-out - luxurious, non-oscillating deceleration
+// Never exceeds 1.0, so no risk of triggering extra scroll events
+const premiumEaseOut = (t: number): number => 1 - Math.pow(1 - t, 4);
+
 interface SmoothScrollContextType {
   lenis: Lenis | null;
   scrollProgress: number;
@@ -67,11 +71,11 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
     const isHomePage = window.location.pathname === '/';
     const sectionCount = 8; // Hero, Philosophy, Air India, PsoriAssist, Metamorphic, Latent Space, View All, About
 
-    // Initialize Lenis with settings optimized for controlled snap on home page
+    // Initialize Lenis with premium smooth scroll settings
     const lenis = new Lenis({
-      lerp: prefersReducedMotion ? 1 : 0.15, // Snappier response
-      duration: prefersReducedMotion ? 0 : 0.6, // Faster animation
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exponential ease-out
+      lerp: prefersReducedMotion ? 1 : 0.15, // Keep same for stability
+      duration: prefersReducedMotion ? 0 : 0.7, // 700ms - more luxurious feel
+      easing: premiumEaseOut, // Quart ease-out - smooth, non-oscillating
 
       // THE FIX: virtualScroll returning false COMPLETELY disables Lenis wheel processing
       // wheelMultiplier: 0 only multiplies delta by 0, but Lenis still processes events internally
@@ -122,7 +126,8 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
           currentSectionRef.current = nextSection;
           lenis.scrollTo(nextSection * vh, {
             lock: true,
-            duration: 0.6,
+            duration: 0.7,
+            easing: premiumEaseOut,
           });
         }
       };
@@ -150,7 +155,8 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
             currentSectionRef.current = nextSection;
             lenis.scrollTo(nextSection * vh, {
               lock: true,
-              duration: 0.6,
+              duration: 0.7,
+              easing: premiumEaseOut,
             });
           }
         }
@@ -215,8 +221,8 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
 
     lenisRef.current.scrollTo(target, {
       offset: options.offset ?? 0,
-      duration: options.duration ?? 0.8,
-      easing: options.easing ?? ((t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t))),
+      duration: options.duration ?? 0.7,
+      easing: options.easing ?? premiumEaseOut,
       immediate: options.immediate ?? false,
       lock: options.lock ?? false,
       onComplete: options.onComplete,
