@@ -4,12 +4,13 @@ import React from 'react';
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Sparkles, Map, User, Plane, Users, Heart, Activity, Brain, Eye } from 'lucide-react';
+import { ArrowRight, Sparkles, Map, User, Plane, Users, Heart, Activity, Brain, Eye, ChevronDown } from 'lucide-react';
 import { ContactChat } from '../ContactChat';
 import { Chatbot } from '../Chatbot';
 import { useTheme } from '@/components/effects/ThemeProvider';
 import Atropos from 'atropos';
 import 'atropos/css';
+import { useLenisScroll } from '@/hooks/useLenisScroll';
 
 interface AboutSectionV2Props {
   className?: string;
@@ -18,6 +19,7 @@ interface AboutSectionV2Props {
 
 export default function AboutSectionV2({ className = '', snapIndex }: AboutSectionV2Props) {
   const { resolvedTheme } = useTheme();
+  const { scrollTo } = useLenisScroll();
   const [mounted, setMounted] = useState(false);
   const [act1InView, setAct1InView] = useState(false);
   const [act2InView, setAct2InView] = useState(false);
@@ -720,6 +722,15 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
           }
         }
 
+        @keyframes scrollBounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(8px);
+          }
+        }
+
         @keyframes slideIn {
           from {
             opacity: 0;
@@ -1355,6 +1366,46 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
               />
             </div>
           </div>
+
+          {/* Scroll Indicator */}
+          <div
+            onClick={() => scrollTo(window.innerHeight * 2, { duration: 0.7 })}
+            style={{
+              position: 'absolute',
+              bottom: '3rem',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '0.5rem',
+              cursor: 'pointer',
+              opacity: mounted ? 0.6 : 0,
+              transition: 'opacity 0.3s ease, transform 0.3s ease',
+              zIndex: 10,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.opacity = '1';
+              e.currentTarget.style.transform = 'translateX(-50%) scale(1.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.opacity = '0.6';
+              e.currentTarget.style.transform = 'translateX(-50%) scale(1)';
+            }}
+          >
+            <span style={{
+              fontSize: '0.75rem',
+              fontWeight: '300',
+              letterSpacing: '0.1em',
+              color: 'rgba(255, 255, 255, 0.5)',
+              textTransform: 'uppercase',
+            }}>
+              Scroll
+            </span>
+            <div style={{ animation: 'scrollBounce 3s ease-in-out infinite' }}>
+              <ChevronDown size={18} style={{ color: 'rgba(255, 255, 255, 0.5)' }} />
+            </div>
+          </div>
         </div>
 
         {/* Full-Screen Vertical Project Cards */}
@@ -1505,6 +1556,46 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                 <span>View All Work</span>
                 <ArrowRight size={16} />
               </Link>
+            </div>
+          </div>
+
+          {/* Scroll Indicator */}
+          <div
+            onClick={() => scrollTo(window.innerHeight * 7, { duration: 0.7 })}
+            style={{
+              position: 'absolute',
+              bottom: '3rem',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '0.5rem',
+              cursor: 'pointer',
+              opacity: mounted ? 0.6 : 0,
+              transition: 'opacity 0.3s ease, transform 0.3s ease',
+              zIndex: 10,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.opacity = '1';
+              e.currentTarget.style.transform = 'translateX(-50%) scale(1.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.opacity = '0.6';
+              e.currentTarget.style.transform = 'translateX(-50%) scale(1)';
+            }}
+          >
+            <span style={{
+              fontSize: '0.75rem',
+              fontWeight: '300',
+              letterSpacing: '0.1em',
+              color: 'rgba(255, 255, 255, 0.5)',
+              textTransform: 'uppercase',
+            }}>
+              Scroll
+            </span>
+            <div style={{ animation: 'scrollBounce 3s ease-in-out infinite' }}>
+              <ChevronDown size={18} style={{ color: 'rgba(255, 255, 255, 0.5)' }} />
             </div>
           </div>
         </div>
