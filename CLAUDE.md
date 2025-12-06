@@ -27,7 +27,7 @@ npm run build
 - **Styling**: Tailwind CSS 4.1.13 with custom design system
 - **UI Components**: Custom components using glassmorphism design
 - **Icons**: Lucide React
-- **Fonts**: Space Grotesk (headings), DM Sans (body)
+- **Font**: Inter (variable font)
 - **Animation**: Framer Motion (dev dependency), Anime.js
 - **Additional Libraries**: clsx, tailwind-merge for utility class management
 
@@ -236,34 +236,6 @@ color: 'var(--text-95)'
 - DNS prefetch for external resources
 - Remove console logs in production
 - Typed routes enabled for better performance
-
-### Typography System
-
-**Font Pairing**: Space Grotesk + DM Sans
-
-| Font | Role | Weights | Use Cases |
-|------|------|---------|-----------|
-| **Space Grotesk** | Headings | 300, 500, 600, 700 | Display text, headings, subheadings, labels |
-| **DM Sans** | Body | 400, 500, 600 | Body text, paragraphs, UI elements, buttons |
-
-**CSS Variables**:
-- `--font-space-grotesk` - Heading font
-- `--font-dm-sans` - Body font
-
-**Tailwind Classes**:
-- `font-sans` → DM Sans (body text)
-- `font-heading` → Space Grotesk (headings)
-
-**Typography Utilities** (in `globals.css`):
-- `.text-display` - Hero titles (Space Grotesk + SS03 stylistic alternate)
-- `.text-heading` - Section headings (Space Grotesk)
-- `.text-subheading` - Subheadings (Space Grotesk)
-- `.text-body` - Body text (DM Sans)
-- `.text-small` - Small text (DM Sans)
-- `.text-micro` - Labels/captions (Space Grotesk, uppercase)
-
-**SS03 Stylistic Alternate**:
-Space Grotesk includes SS03 (`font-feature-settings: 'ss03'`) which removes connecting strokes on letters A, M, N, V, W for a more geometric, modern look. This is enabled only on `.text-display` for hero titles.
 
 ## Important Notes
 

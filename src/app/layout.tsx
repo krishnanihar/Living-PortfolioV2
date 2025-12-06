@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Space_Grotesk, DM_Sans } from 'next/font/google';
+import { Inter, Manrope } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/effects/ThemeProvider';
 import { FocusManager } from '@/components/effects/FocusManager';
@@ -12,18 +12,18 @@ const MicroInteractionProvider = dynamic(
   () => import('@/components/effects/MicroInteractionProvider').then(mod => ({ default: mod.MicroInteractionProvider }))
 );
 
-const spaceGrotesk = Space_Grotesk({
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-space-grotesk',
+  variable: '--font-inter',
   display: 'swap',
-  weight: ['300', '500', '600', '700'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 });
 
-const dmSans = DM_Sans({
+const manrope = Manrope({
   subsets: ['latin'],
-  variable: '--font-dm-sans',
+  variable: '--font-manrope',
   display: 'swap',
-  weight: ['400', '500', '600'],
+  weight: ['200', '300', '400', '500', '600', '700', '800'],
 });
 
 export const metadata: Metadata = {
@@ -83,13 +83,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${dmSans.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${manrope.variable}`} suppressHydrationWarning>
       <head>
         {/* next/font/google automatically handles font optimization and preloading */}
       </head>
       <body
         className={`
-          ${dmSans.className}
+          ${inter.className}
           min-h-screen antialiased overflow-x-hidden
         `}
         style={{

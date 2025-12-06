@@ -225,6 +225,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
         ref={sectionRef}
         style={{
           background: 'var(--bg-primary)',
+          fontFamily: 'Inter, sans-serif',
           padding: '3rem 1.5rem',
           position: 'relative',
           overflow: 'hidden',

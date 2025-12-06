@@ -306,6 +306,7 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
         id="hero-section"
         style={{
           background: 'transparent',
+          fontFamily: 'Inter, sans-serif',
           padding: '6rem clamp(1.5rem, 3vw, 2.5rem) 3rem',
           paddingTop: '60px',
           position: 'relative',

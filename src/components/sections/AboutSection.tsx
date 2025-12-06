@@ -287,8 +287,10 @@ export function AboutSection() {
       paddingRight: '1.5rem',
       position: 'relative',
       overflow: 'hidden',
+      fontFamily: 'Inter, sans-serif',
     }}>
       <style jsx>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap');
 
         @keyframes fadeInUp {
           from {

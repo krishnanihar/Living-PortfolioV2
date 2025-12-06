@@ -309,6 +309,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                     color: `rgba(${brandRgb}, 0.15)`,
                     lineHeight: '0.85',
                     letterSpacing: '-0.05em',
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
                     pointerEvents: 'none',
                     zIndex: 5,
                     textShadow: `0 0 150px rgba(${brandRgb}, 0.3)`,
@@ -1240,6 +1241,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
       <section
         style={{
           background: 'transparent',
+          fontFamily: 'Inter, sans-serif',
           padding: '0',
           position: 'relative',
           zIndex: 1,

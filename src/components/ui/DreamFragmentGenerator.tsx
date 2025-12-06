@@ -268,6 +268,7 @@ export function DreamFragmentGenerator({ className = '' }: DreamFragmentGenerato
             lineHeight: '1.6',
             outline: 'none',
             resize: 'vertical',
+            fontFamily: 'Inter, sans-serif',
             transition: 'all 0.3s ease',
             marginBottom: '1rem',
           }}

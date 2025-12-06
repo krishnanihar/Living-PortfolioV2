@@ -76,8 +76,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['DM Sans', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-        heading: ['Space Grotesk', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
       },
       fontSize: {
         'xs': '0.75rem',

@@ -145,9 +145,12 @@ export function MetamorphicFractalWork() {
   return (
     <>
       <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600&display=swap');
+
         .psychedelic-page {
           background: var(--bg-primary);
           color: var(--text-primary);
+          font-family: 'Inter', -apple-system, system-ui, sans-serif;
           min-height: 100vh;
           overflow-x: hidden;
         }
