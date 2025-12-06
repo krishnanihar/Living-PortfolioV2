@@ -65,7 +65,7 @@ export function NarrativeWorkHero() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        overflow: 'hidden',
+        overflow: 'visible', // Allow content to overflow for smooth scrolling
       }}
     >
       {/* Main content */}

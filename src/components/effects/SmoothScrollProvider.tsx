@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useRef, useState, ReactNode, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -62,13 +63,18 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
   const touchStartYRef = useRef(0);
   // Timestamp when last scroll was TRIGGERED (not just any wheel event)
   const lastScrollTriggerTimeRef = useRef(0);
+  // Store ticker callback ref for proper cleanup
+  const tickerCallbackRef = useRef<((time: number) => void) | null>(null);
+
+  // Get current pathname for route detection
+  const pathname = usePathname();
 
   useEffect(() => {
     // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Check if home page for controlled snap behavior
-    const isHomePage = window.location.pathname === '/';
+    // Check if home page for controlled snap behavior (reactive to route changes)
+    const isHomePage = pathname === '/';
     const sectionCount = 8; // Hero, Philosophy, Air India, PsoriAssist, Metamorphic, Latent Space, View All, About
 
     // Initialize Lenis with premium smooth scroll settings
@@ -178,15 +184,17 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
       setScrollProgress(progress);
       setScrollVelocity(velocity);
       setScrollY(scroll);
-
-      // Update ScrollTrigger on each scroll event
-      ScrollTrigger.update();
+      // ScrollTrigger.update() moved to ticker callback for better performance
     });
 
     // Sync Lenis with GSAP's ticker for perfect frame alignment
-    gsap.ticker.add((time) => {
+    // Store callback in ref so we can properly remove it on cleanup
+    tickerCallbackRef.current = (time: number) => {
       lenis.raf(time * 1000);
-    });
+      ScrollTrigger.update(); // Update once per frame instead of per scroll event
+    };
+
+    gsap.ticker.add(tickerCallbackRef.current);
 
     // Disable GSAP lag smoothing for instant response
     gsap.ticker.lagSmoothing(0);
@@ -206,11 +214,16 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
         window.removeEventListener('touchend', touchEndHandler);
       }
 
+      // Remove ticker callback using stored reference
+      if (tickerCallbackRef.current) {
+        gsap.ticker.remove(tickerCallbackRef.current);
+        tickerCallbackRef.current = null;
+      }
+
       lenis.destroy();
       lenisRef.current = null;
-      gsap.ticker.remove((time) => lenis.raf(time * 1000));
     };
-  }, []);
+  }, [pathname]); // Re-run effect when route changes
 
   // Smooth scroll to target
   const scrollTo = useCallback((

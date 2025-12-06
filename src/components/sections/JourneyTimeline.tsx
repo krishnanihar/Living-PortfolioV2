@@ -104,7 +104,7 @@ export function JourneyTimeline() {
         trigger: containerRef.current,
         start: 'top center',
         end: 'bottom center',
-        scrub: 1,
+        scrub: true, // Instant sync with scroll (Lenis handles smoothing)
       }
     });
 
