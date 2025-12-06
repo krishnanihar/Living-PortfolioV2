@@ -10,7 +10,13 @@
       "Bash(git revert:*)",
       "Bash(git checkout:*)",
       "Bash(npm install:*)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(cat:*)",
+      "Bash(git pull:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(git log:*)"
     ],
     "deny": [],
     "ask": []

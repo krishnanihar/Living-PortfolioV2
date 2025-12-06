@@ -377,17 +377,19 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
                   : 'var(--logo-shadow-inactive)';
               }
             }}>
-              <span style={{
-                display: 'inline-block',
-                background: isActive('/') ? 'var(--logo-gradient-active)' : 'var(--logo-gradient-inactive)',
-                backgroundSize: '200% 100%',
-                backgroundPosition: '0% 50%',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                filter: isActive('/') ? 'var(--logo-shadow-active)' : 'var(--logo-shadow-inactive)',
-                transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
-              }}>
+              <span
+                className="font-heading"
+                style={{
+                  display: 'inline-block',
+                  background: isActive('/') ? 'var(--logo-gradient-active)' : 'var(--logo-gradient-inactive)',
+                  backgroundSize: '200% 100%',
+                  backgroundPosition: '0% 50%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  filter: isActive('/') ? 'var(--logo-shadow-active)' : 'var(--logo-shadow-inactive)',
+                  transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+                }}>
                 NIHAR
               </span>
 
@@ -459,7 +461,7 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
                       }}
                     >
                       <Icon size={15} />
-                      <span>{item.name}</span>
+                      <span className="font-heading">{item.name}</span>
                     </div>
 
                     {/* Aurora Mesh - Only for active state */}

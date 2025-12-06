@@ -11,6 +11,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ContactChat } from '../ContactChat';
 import { Chatbot } from '../Chatbot';
 import { useTheme } from '@/components/effects/ThemeProvider';
+import { useSmoothScroll } from '@/components/effects/SmoothScrollProvider';
 
 // Register GSAP plugins
 if (typeof window !== 'undefined') {
@@ -20,6 +21,7 @@ if (typeof window !== 'undefined') {
 export function JourneyTimeline() {
   const { resolvedTheme } = useTheme();
   const scrollProgress = useScrollProgress();
+  const { scrollTo } = useSmoothScroll();
   const [visibleMilestones, setVisibleMilestones] = useState<Set<number>>(new Set());
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState(0);
@@ -47,10 +49,8 @@ export function JourneyTimeline() {
           const elementPosition = targetElement.getBoundingClientRect().top;
           const offsetPosition = elementPosition + window.pageYOffset - navHeight;
 
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-          });
+          // Use Lenis scrollTo for smooth scroll consistency
+          scrollTo(offsetPosition, { duration: 0.7 });
         }, 100);
       }
     };
@@ -220,9 +220,10 @@ export function JourneyTimeline() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.history.scrollRestoration = 'manual';
-      window.scrollTo(0, 0);
+      // Use Lenis scrollTo with immediate for instant reset
+      scrollTo(0, { immediate: true });
     }
-  }, []);
+  }, [scrollTo]);
 
   // Card interaction handlers
   const handleCardMouseEnter = (index: number) => {

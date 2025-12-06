@@ -3,7 +3,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Register GSAP plugin
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 import {
   Target,
   Trophy,
@@ -523,17 +530,31 @@ export function AirIndiaWork() {
 
   // Hero image effects
   const heroRef = useRef<HTMLElement>(null);
+  const heroImageRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHeroHovered, setIsHeroHovered] = useState(false);
   const [cardTilt, setCardTilt] = useState({ rotateX: 0, rotateY: 0 });
 
-  // Scroll parallax for hero image
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"]
-  });
-  const heroImageY = useTransform(scrollYProgress, [0, 1], [0, 250]);
-  const heroImageScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.15]);
+  // GSAP ScrollTrigger for hero parallax (synced with Lenis)
+  useEffect(() => {
+    if (!heroImageRef.current || !heroRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.to(heroImageRef.current, {
+        y: 250,
+        scale: 1.15,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: 'top top',
+          end: 'bottom center',
+          scrub: true,
+        },
+      });
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, []);
 
   // Narrative act tracking
   const [currentAct, setCurrentAct] = useState<1 | 2 | 3>(1);
@@ -861,13 +882,12 @@ export function AirIndiaWork() {
         }}
       >
         {/* Full-Screen Background Image */}
-        <motion.div
+        <div
+          ref={heroImageRef}
           style={{
             position: 'absolute',
             inset: 0,
             zIndex: 0,
-            y: heroImageY,
-            scale: heroImageScale,
           }}
         >
           {/* Hero Image with Subtle Parallax */}
@@ -911,7 +931,7 @@ export function AirIndiaWork() {
             background: 'linear-gradient(to top, #000000 0%, #000000 20%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0.3) 80%, transparent 100%)',
             pointerEvents: 'none',
           }} />
-        </motion.div>
+        </div>
 
         {/* Centered Content Card - Liquid Glass with 3D Tilt */}
         <motion.div

@@ -20,7 +20,7 @@
 
 html {
   font-family: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  scroll-behavior: smooth;
+  /* Removed scroll-behavior: smooth - Lenis handles smooth scrolling */
   line-height: 1.6;
   overflow-x: hidden;
 }

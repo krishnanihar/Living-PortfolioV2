@@ -2,7 +2,15 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { motion, useSpring, AnimatePresence } from 'framer-motion';
+import { useSmoothScroll } from '@/components/effects/SmoothScrollProvider';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Register GSAP plugin
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 import { DreamFragmentGenerator } from '@/components/ui/DreamFragmentGenerator';
 import { PatternAnalyzer } from '@/components/ui/PatternAnalyzer';
 import { ConsciousnessOrbs } from '@/components/effects/ConsciousnessParticles';
@@ -72,7 +80,7 @@ const baseStyles = {
     minHeight: '100vh',
     backgroundColor: 'var(--bg-primary)',
     color: 'var(--text-primary)',
-    overflow: 'hidden' as const,
+    // Removed overflow: hidden to allow Lenis smooth scroll to work properly
   },
   section: {
     position: 'relative' as const,
@@ -327,23 +335,45 @@ export default function LatentSpaceSpeculative() {
 
 // Hero Section with proven inline styles
 function HeroSection({ isLoaded }: { isLoaded: boolean }) {
-  
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 150]);
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const sectionRef = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  // GSAP ScrollTrigger for hero parallax (synced with Lenis)
+  useEffect(() => {
+    if (!contentRef.current || !sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.to(contentRef.current, {
+        y: 150,
+        opacity: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section style={{
-      ...baseStyles.section,
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      textAlign: 'center' as const,
-      paddingTop: '8rem',
-      paddingBottom: '4rem',
-      position: 'relative' as const,
-    }}>
+    <section
+      ref={sectionRef}
+      style={{
+        ...baseStyles.section,
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center' as const,
+        paddingTop: '8rem',
+        paddingBottom: '4rem',
+        position: 'relative' as const,
+      }}
+    >
       {/* Floating Consciousness Orbs */}
       <div style={{
         position: 'absolute',
@@ -389,7 +419,7 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
       </div>
 
       <motion.div
-        style={{ y, opacity }}
+        ref={contentRef}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}

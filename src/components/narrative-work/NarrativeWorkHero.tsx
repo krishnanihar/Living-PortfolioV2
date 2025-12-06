@@ -1,39 +1,76 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import { useSmoothScroll } from '@/components/effects/SmoothScrollProvider';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Register GSAP plugin
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 /**
  * Hero entrance for narrative work page
  * Immersive title card with parallax and ambient particles
  */
 export function NarrativeWorkHero() {
-  const [scrollY, setScrollY] = React.useState(0);
+  const { scrollTo } = useSmoothScroll();
+  const sectionRef = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
+  // GSAP ScrollTrigger for parallax (synced with Lenis)
+  useEffect(() => {
+    if (!contentRef.current || !sectionRef.current || !scrollIndicatorRef.current) return;
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const ctx = gsap.context(() => {
+      // Parallax effect on content
+      gsap.to(contentRef.current, {
+        y: -200,
+        opacity: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      });
+
+      // Fade out scroll indicator faster
+      gsap.to(scrollIndicatorRef.current, {
+        opacity: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: '20% top',
+          scrub: true,
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
-  // Parallax offset (slower than scroll)
-  const parallaxOffset = scrollY * 0.5;
-
   return (
-    <section style={{
-      position: 'relative',
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      overflow: 'hidden',
-    }}>
+    <section
+      ref={sectionRef}
+      style={{
+        position: 'relative',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+      }}
+    >
       {/* Main content */}
       <div
+        ref={contentRef}
         style={{
           position: 'relative',
           zIndex: 10,
@@ -41,8 +78,6 @@ export function NarrativeWorkHero() {
           paddingLeft: '1.5rem',
           paddingRight: '1.5rem',
           maxWidth: '80rem',
-          transform: `translateY(-${parallaxOffset}px)`,
-          opacity: Math.max(0, 1 - scrollY / 400),
         }}
       >
         <motion.div
@@ -167,6 +202,7 @@ export function NarrativeWorkHero() {
 
       {/* Scroll indicator */}
       <motion.div
+        ref={scrollIndicatorRef}
         style={{
           position: 'absolute',
           left: '50%',
@@ -177,16 +213,12 @@ export function NarrativeWorkHero() {
           alignItems: 'center',
           gap: '0.5rem',
           cursor: 'pointer',
-          opacity: Math.max(0, 1 - scrollY / 200),
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
         onClick={() => {
-          window.scrollTo({
-            top: window.innerHeight,
-            behavior: 'smooth',
-          });
+          scrollTo(window.innerHeight, { duration: 0.7 });
         }}
       >
         <span
