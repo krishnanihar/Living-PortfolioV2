@@ -30,7 +30,6 @@ export function HeroCardSection() {
       id="hero-card-section"
       style={{
         background: 'var(--bg-primary)',
-        fontFamily: 'Inter, sans-serif',
         padding: '6rem clamp(1.5rem, 3vw, 2.5rem)',
         position: 'relative',
         minHeight: '80vh',

@@ -789,7 +789,6 @@ export function AirIndiaWork() {
       style={{
         minHeight: '100vh',
         background: 'var(--bg-primary)',
-        fontFamily: 'Inter, sans-serif',
         position: 'relative',
         overflow: 'visible',
       }}
@@ -2278,7 +2277,6 @@ export function AirIndiaWork() {
                   gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
                   gap: '24px',
                   padding: '8px',
-                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   fontSize: '11px',
                 }}>
                   {/* LEFT PANEL: Figma Plugin UI */}
@@ -2643,7 +2641,6 @@ export function AirIndiaWork() {
                 overflow: 'hidden',
                 background: '#1E1E1E',
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-                fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
               }}>
                 {/* Window Title Bar */}
                 <div style={{
@@ -3339,7 +3336,6 @@ export function AirIndiaWork() {
                       gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
                       gap: '24px',
                       padding: '8px',
-                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                       fontSize: '11px',
                     }}>
                       {/* ======== LEFT PANEL: Figma Plugin UI ======== */}
@@ -4201,7 +4197,6 @@ export function AirIndiaWork() {
                       overflow: 'hidden',
                       background: '#1E1E1E',
                       boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                     }}>
                       {/* Window Title Bar */}
                       <div style={{
