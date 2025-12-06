@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ChevronDown, Mail, Github, ArrowRight, X, Sun, Moon, Hand, Sparkles } from 'lucide-react';
-import type { FullPageSnapState } from '@/hooks/useFullPageSnap';
+import { useLenisScroll } from '@/hooks/useLenisScroll';
 import {
   initializeVisit,
   clearScrollMemory,
@@ -32,11 +32,8 @@ const PARTICLE_COLORS = {
   pink: 'rgba(236, 72, 153, 0.95)',    // #EC4899
 };
 
-interface IntroductionSectionProps {
-  snapController?: FullPageSnapState;
-}
-
-export function IntroductionSection({ snapController }: IntroductionSectionProps) {
+export function IntroductionSection() {
+  const { scrollTo } = useLenisScroll();
   const [hoveredButton, setHoveredButton] = useState<'contact' | 'github' | null>(null);
   const [mounted, setMounted] = useState(false);
   const [animationStage, setAnimationStage] = useState(0);
@@ -96,15 +93,8 @@ export function IntroductionSection({ snapController }: IntroductionSectionProps
   };
 
   const scrollToNext = () => {
-    // Use snap controller if available, otherwise fall back to native scroll
-    if (snapController) {
-      snapController.navigate(1);
-    } else {
-      const aboutSection = document.querySelector('[id*="about"]');
-      if (aboutSection) {
-        aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
+    // Use Lenis for buttery smooth scroll to about section
+    scrollTo('#act-1-philosophy', { offset: -60, duration: 1.5 });
   };
 
   return (

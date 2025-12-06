@@ -2,11 +2,10 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { motion } from 'framer-motion';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 import { IntroductionSection } from '@/components/sections/IntroductionSection';
 import { HomeNarrativeWrapper } from '@/components/sections/HomeNarrativeWrapper';
-import { useFullPageSnap } from '@/hooks/useFullPageSnap';
+import { useLenisScroll } from '@/hooks/useLenisScroll';
 import { saveScrollDepth } from '@/lib/personalization';
 
 // Dynamically import GPGPU Pattern Particles (interactive particle formations)
@@ -46,35 +45,18 @@ const Chatbot = dynamic(
 export default function HomePage() {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
-  // Full-page snap scrolling
-  const snapState = useFullPageSnap();
-  const { currentIndex, verticalY, viewportHeight, totalSections } = snapState;
+  // Lenis smooth scroll - provides buttery smooth scroll progress
+  const { progress, scrollY, stop, start } = useLenisScroll();
 
-  // Calculate simulated scroll position for particle effects
-  const simulatedScrollY = currentIndex * viewportHeight;
-  const totalHeight = totalSections * viewportHeight;
-  const scrollProgress = totalHeight > viewportHeight
-    ? simulatedScrollY / (totalHeight - viewportHeight)
-    : 0;
+  // Calculate current section index from scroll position (for components that need it)
+  const viewportHeight = typeof window !== 'undefined' ? window.innerHeight : 800;
+  const currentSectionIndex = Math.floor(scrollY / viewportHeight);
 
-  // Lock body scroll when snap mode is active
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    document.body.style.height = '100vh';
-    document.documentElement.style.overflow = 'hidden';
-
-    return () => {
-      document.body.style.overflow = '';
-      document.body.style.height = '';
-      document.documentElement.style.overflow = '';
-    };
-  }, []);
-
-  // Track scroll depth for personalization (using snap position)
+  // Track scroll depth for personalization
   const handleBeforeUnload = useCallback(() => {
-    const scrollDepth = (currentIndex / (totalSections - 1)) * 100;
+    const scrollDepth = progress * 100;
     saveScrollDepth(scrollDepth);
-  }, [currentIndex, totalSections]);
+  }, [progress]);
 
   useEffect(() => {
     window.addEventListener('beforeunload', handleBeforeUnload);
@@ -92,34 +74,39 @@ export default function HomePage() {
     };
   }, [handleBeforeUnload]);
 
+  // Stop/start Lenis when chat modal opens/closes
+  useEffect(() => {
+    if (isChatOpen) {
+      stop();
+    } else {
+      start();
+    }
+  }, [isChatOpen, stop, start]);
+
   return (
     <HomeNarrativeWrapper>
-      <PortfolioNavigation snapIndex={currentIndex} />
+      <PortfolioNavigation />
 
-      {/* GPGPU Pattern Particles - Interactive particle formations with zoom scroll */}
+      {/* GPGPU Pattern Particles - Interactive particle formations with smooth scroll */}
       <HeroParticleSystem
         starOpacity={0.35}
-        simulatedScrollY={simulatedScrollY}
-        scrollProgress={scrollProgress}
+        scrollProgress={progress}
       />
 
-      {/* Snap scrolling container */}
-      <motion.main
+      {/* Main content - natural scroll flow */}
+      <main
         id="main-content"
         style={{
-          y: verticalY,
-          height: `${totalSections * 100}vh`,
-          willChange: 'transform',
           position: 'relative',
           zIndex: 10,
         }}
       >
         {/* Hero Section */}
-        <IntroductionSection snapController={snapState} />
+        <IntroductionSection />
 
         {/* Rest of page content */}
-        <AboutSectionV2 snapIndex={currentIndex} />
-      </motion.main>
+        <AboutSectionV2 snapIndex={currentSectionIndex} />
+      </main>
 
       {/* Floating chat button */}
       <FloatingChatButton onClick={() => setIsChatOpen(true)} />

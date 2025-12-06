@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Space_Grotesk, DM_Sans } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/effects/ThemeProvider';
+import { SmoothScrollProvider } from '@/components/effects/SmoothScrollProvider';
 import { FocusManager } from '@/components/effects/FocusManager';
 import { PersonalizationProvider } from '@/hooks/usePersonalization';
 import { BehaviorTracker } from '@/components/effects/BehaviorTracker';
@@ -99,20 +100,23 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <ThemeProvider defaultTheme="dark" attribute="data-theme">
-          {/* Personalization system */}
-          <PersonalizationProvider>
-            {/* Behavioral tracking (invisible) */}
-            <BehaviorTracker />
+          {/* Smooth scrolling with Lenis */}
+          <SmoothScrollProvider>
+            {/* Personalization system */}
+            <PersonalizationProvider>
+              {/* Behavioral tracking (invisible) */}
+              <BehaviorTracker />
 
-            {/* Micro-interactions system */}
-            <MicroInteractionProvider />
+              {/* Micro-interactions system */}
+              <MicroInteractionProvider />
 
-            {/* Enhanced focus management */}
-            <FocusManager />
+              {/* Enhanced focus management */}
+              <FocusManager />
 
-            {/* Main content */}
-            {children}
-          </PersonalizationProvider>
+              {/* Main content */}
+              {children}
+            </PersonalizationProvider>
+          </SmoothScrollProvider>
         </ThemeProvider>
       </body>
     </html>

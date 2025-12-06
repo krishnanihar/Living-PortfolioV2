@@ -174,9 +174,7 @@ function HeroStarParticles({ scrollProgress, mousePosition }: HeroStarParticlesP
 interface HeroParticleSystemProps {
   starOpacity?: number;
   className?: string;
-  /** Simulated scroll Y position from snap scrolling */
-  simulatedScrollY?: number;
-  /** Pre-calculated scroll progress (0-1) from snap scrolling */
+  /** Scroll progress (0-1) from Lenis smooth scroll */
   scrollProgress?: number;
 }
 
@@ -195,84 +193,28 @@ interface HeroParticleSystemProps {
  * - White stars as subtle depth reference
  * - Mouse parallax camera movement
  * - Infinite tunnel with particle recycling
- * - 11,000-51,000 total particles (adaptive)
+ * - Powered by Lenis smooth scroll for buttery transitions
  *
  * @example
  * ```tsx
  * <HeroParticleSystem />
  *
- * // Customized
+ * // With Lenis scroll progress
  * <HeroParticleSystem
- *   starOpacity={0.5}
+ *   starOpacity={0.35}
+ *   scrollProgress={progress}
  * />
  * ```
  */
 export default function HeroParticleSystem({
-  starOpacity = 0.2, // Reduced so GPGPU particles dominate
+  starOpacity = 0.2,
   className = '',
-  simulatedScrollY,
-  scrollProgress: externalScrollProgress,
+  scrollProgress = 0,
 }: HeroParticleSystemProps) {
-  const [internalScrollProgress, setInternalScrollProgress] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [userScrolled, setUserScrolled] = useState(false);
-  const rafRef = useRef<number | null>(null);
 
-  // Use external scroll progress if provided (from snap scrolling), otherwise calculate from window
-  const scrollProgress = externalScrollProgress ?? internalScrollProgress;
-
-  // Scroll handler - only used when no external scroll values provided
-  useEffect(() => {
-    // Skip if using external scroll values (snap scrolling mode)
-    if (simulatedScrollY !== undefined || externalScrollProgress !== undefined) {
-      // Determine userScrolled from external values
-      if (simulatedScrollY !== undefined && simulatedScrollY > 50) {
-        setUserScrolled(true);
-      }
-      return;
-    }
-
-    const handleScroll = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-      // Detect user scroll (threshold: 50px)
-      if (scrollTop > 50) {
-        setUserScrolled(true);
-      }
-
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-
-      rafRef.current = requestAnimationFrame(() => {
-        const windowHeight = window.innerHeight;
-        const documentHeight = document.body.scrollHeight;
-
-        // Calculate scroll progress (0-1)
-        const maxScroll = documentHeight - windowHeight;
-        const progress = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
-
-        setInternalScrollProgress(progress);
-      });
-    };
-
-    handleScroll(); // Initial call
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-    };
-  }, [simulatedScrollY, externalScrollProgress]);
-
-  // Update userScrolled when external scroll values change
-  useEffect(() => {
-    if (simulatedScrollY !== undefined && simulatedScrollY > 50) {
-      setUserScrolled(true);
-    }
-  }, [simulatedScrollY]);
+  // User has scrolled when progress is above threshold
+  const userScrolled = scrollProgress > 0.02;
 
   // Mouse parallax handler
   useEffect(() => {
