@@ -246,9 +246,10 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
   interface ProjectCardProps {
     project: typeof featuredProjects[0];
     index: number;
+    scrollTo: (target: string | number | HTMLElement, options?: { duration?: number }) => void;
   }
 
-  function FullScreenProjectCard({ project, index }: ProjectCardProps) {
+  function FullScreenProjectCard({ project, index, scrollTo }: ProjectCardProps) {
     const [isButtonHovered, setIsButtonHovered] = useState(false);
     const atroposRef = useRef<HTMLDivElement>(null);
     const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
@@ -665,6 +666,46 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
               }}
             />
           ))}
+        </div>
+
+        {/* Scroll Indicator */}
+        <div
+          onClick={() => scrollTo(window.innerHeight * (index + 3), { duration: 0.7 })}
+          style={{
+            position: 'absolute',
+            bottom: '3rem',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '0.5rem',
+            cursor: 'pointer',
+            opacity: 0.6,
+            transition: 'opacity 0.3s ease, transform 0.3s ease',
+            zIndex: 15,
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.opacity = '1';
+            e.currentTarget.style.transform = 'translateX(-50%) scale(1.1)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.opacity = '0.6';
+            e.currentTarget.style.transform = 'translateX(-50%) scale(1)';
+          }}
+        >
+          <span style={{
+            fontSize: '0.75rem',
+            fontWeight: '300',
+            letterSpacing: '0.1em',
+            color: 'rgba(255, 255, 255, 0.5)',
+            textTransform: 'uppercase',
+          }}>
+            Scroll
+          </span>
+          <div style={{ animation: 'scrollBounce 3s ease-in-out infinite' }}>
+            <ChevronDown size={18} style={{ color: 'rgba(255, 255, 255, 0.5)' }} />
+          </div>
         </div>
       </div>
     );
@@ -1414,6 +1455,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
             key={project.id}
             project={project}
             index={index}
+            scrollTo={scrollTo}
           />
         ))}
 
