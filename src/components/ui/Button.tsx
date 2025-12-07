@@ -6,7 +6,6 @@ import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useMagneticEffect, useGlowEffect, transitions } from '@/lib/animations';
 import { prefersReducedMotion } from '@/lib/utils';
-import { useTheme } from '@/components/effects/ThemeProvider';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'ghost' | 'glass' | 'premium';
@@ -61,7 +60,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const buttonRef = useRef<HTMLButtonElement>(null);
     const [isPressed, setIsPressed] = useState(false);
     const [ripples, setRipples] = useState<Array<{ id: number; x: number; y: number }>>([]);
-    const { resolvedTheme } = useTheme();
 
     const { x, y, handleMouseMove: magneticMouseMove, handleMouseLeave: magneticMouseLeave } = useMagneticEffect(magneticStrength);
     const { x: glowX, y: glowY, opacity: glowOpacity, updateGlow, hideGlow } = useGlowEffect();
@@ -208,12 +206,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             className="absolute inset-0 rounded-full pointer-events-none"
             style={{
               background: variant === 'primary'
-                ? resolvedTheme === 'light'
-                  ? `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(0, 0, 0, 0.15), transparent 60%)`
-                  : `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(255, 255, 255, 0.15), transparent 60%)`
-                : resolvedTheme === 'light'
-                  ? `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(0, 0, 0, 0.1), transparent 70%)`
-                  : `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(255, 255, 255, 0.1), transparent 70%)`,
+                ? `radial-gradient(circle at ${glowX}% ${glowY}%, var(--glass-15), transparent 60%)`
+                : `radial-gradient(circle at ${glowX}% ${glowY}%, var(--glass-10), transparent 70%)`,
               opacity: glowOpacity,
             }}
           />
@@ -232,9 +226,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
               ease: 'easeInOut'
             }}
             style={{
-              background: resolvedTheme === 'light'
-                ? 'linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.3), transparent)'
-                : 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
+              background: 'linear-gradient(90deg, transparent, var(--glass-30), transparent)',
               pointerEvents: 'none',
             }}
           />
