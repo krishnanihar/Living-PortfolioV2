@@ -641,7 +641,8 @@ export function AirIndiaWork() {
         rotateYMax: 1,
         shadow: false,
         highlight: false,
-        duration: 600,
+        duration: 300,
+        alwaysActive: false,
       });
     }
 
