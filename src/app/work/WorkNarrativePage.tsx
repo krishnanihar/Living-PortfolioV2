@@ -181,13 +181,6 @@ export function WorkNarrativePage() {
         <JourneyOverview />
       </Suspense>
 
-      {/* SECTION 3: Professional Work */}
-      <ActTransition
-        actTitle="Systems Work"
-        quote="Air India, 2023—Present"
-        actColor="rgba(218, 14, 41, 0.8)"
-      />
-
       {/* Mobile Swipe Hint for Act II */}
       {isMobile && (
         <div style={{
