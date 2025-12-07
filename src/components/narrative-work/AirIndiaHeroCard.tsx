@@ -208,8 +208,8 @@ export function AirIndiaHeroCard() {
                   data-atropos-offset="4"
                   style={{
                     position: 'absolute',
-                    bottom: isMobile ? '18%' : '15%',
-                    right: isMobile ? '5%' : '8%',
+                    bottom: isMobile ? '6%' : '3%',
+                    right: isMobile ? '2%' : '2%',
                     width: isMobile ? '90%' : 'clamp(340px, 32vw, 420px)',
                     zIndex: 10,
                     background: 'rgba(10, 10, 10, 0.65)',
