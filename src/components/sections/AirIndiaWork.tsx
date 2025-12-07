@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Atropos from 'atropos';
+import 'atropos/css';
 
 // Register GSAP plugin
 if (typeof window !== 'undefined') {
@@ -531,30 +533,9 @@ export function AirIndiaWork() {
   // Hero image effects
   const heroRef = useRef<HTMLElement>(null);
   const heroImageRef = useRef<HTMLDivElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const atroposRef = useRef<HTMLDivElement>(null);
+  const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
   const [isHeroHovered, setIsHeroHovered] = useState(false);
-  const [cardTilt, setCardTilt] = useState({ rotateX: 0, rotateY: 0 });
-
-  // GSAP ScrollTrigger for hero parallax (synced with Lenis)
-  useEffect(() => {
-    if (!heroImageRef.current || !heroRef.current) return;
-
-    const ctx = gsap.context(() => {
-      gsap.to(heroImageRef.current, {
-        y: 250,
-        scale: 1.15,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: 'top top',
-          end: 'bottom center',
-          scrub: true,
-        },
-      });
-    }, heroRef);
-
-    return () => ctx.revert();
-  }, []);
 
   // Narrative act tracking
   const [currentAct, setCurrentAct] = useState<1 | 2 | 3>(1);
@@ -650,6 +631,27 @@ export function AirIndiaWork() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Atropos 3D parallax initialization
+  useEffect(() => {
+    if (atroposRef.current && !isMobile) {
+      atroposInstance.current = Atropos({
+        el: atroposRef.current,
+        activeOffset: 60,
+        rotateXMax: 1,
+        rotateYMax: 1,
+        shadow: false,
+        highlight: false,
+        duration: 600,
+      });
+    }
+
+    return () => {
+      if (atroposInstance.current) {
+        atroposInstance.current.destroy();
+      }
+    };
+  }, [isMobile]);
+
   // Act tracking scroll listener
   useEffect(() => {
     const handleScroll = () => {
@@ -676,36 +678,6 @@ export function AirIndiaWork() {
     handleScroll(); // Initial check
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // Hero mouse parallax handler
-  const handleHeroMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    if (isMobile) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setMousePosition({ x: x * 20, y: y * 15 }); // 20px max X, 15px max Y shift
-  };
-
-  const handleHeroMouseLeave = () => {
-    setMousePosition({ x: 0, y: 0 });
-    setIsHeroHovered(false);
-  };
-
-  // Hero Card 3D tilt handler
-  const handleHeroCardTilt = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (isMobile) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setCardTilt({
-      rotateX: -y * 8, // Tilt up/down (inverted for natural feel)
-      rotateY: x * 8,   // Tilt left/right
-    });
-  };
-
-  const resetHeroCardTilt = () => {
-    setCardTilt({ rotateX: 0, rotateY: 0 });
-  };
 
   // =============================================================================
   // NARRATIVE COMPONENTS
@@ -867,9 +839,6 @@ export function AirIndiaWork() {
       ========================================================================= */}
       <header
         ref={heroRef}
-        onMouseMove={handleHeroMouseMove}
-        onMouseEnter={() => setIsHeroHovered(true)}
-        onMouseLeave={handleHeroMouseLeave}
         style={{
           height: '100vh',
           width: '100%',
@@ -881,105 +850,137 @@ export function AirIndiaWork() {
           overflow: 'hidden',
         }}
       >
-        {/* Full-Screen Background Image */}
+        {/* Atropos Container - 3D Parallax Wrapper */}
         <div
-          ref={heroImageRef}
+          ref={atroposRef}
+          className="atropos"
           style={{
             position: 'absolute',
             inset: 0,
-            zIndex: 0,
           }}
         >
-          {/* Hero Image with Subtle Parallax */}
-          <motion.div
-            style={{
-              position: 'absolute',
-              inset: '-30px',
-              animation: inView ? 'heroImageReveal 1s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both' : 'none',
-            }}
-            animate={{
-              x: mousePosition.x * 0.5,
-              y: mousePosition.y * 0.5,
-            }}
-            transition={{
-              type: 'spring',
-              stiffness: 100,
-              damping: 20,
-            }}
-          >
-            <Image
-              src="/images/air-india/hero.png"
-              alt="Air India A350 aircraft flying through sunset clouds"
-              fill
-              priority
-              style={{
-                objectFit: 'cover',
-                objectPosition: 'center 40%',
-                filter: isHeroHovered ? 'brightness(1.05) saturate(1.1)' : 'brightness(0.95) saturate(1.05)',
-                transition: 'filter 0.6s ease-out',
-              }}
-            />
-          </motion.div>
+          <div className="atropos-scale" style={{ height: '100%', pointerEvents: 'none' }}>
+            <div className="atropos-rotate" style={{ height: '100%', pointerEvents: 'none' }}>
+              <div className="atropos-inner" style={{ width: '100%', height: '100%', position: 'relative' }}>
 
-          {/* Bottom Fade - Seamless OLED blend */}
-          <div style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: '50%',
-            background: 'linear-gradient(to top, #000000 0%, #000000 20%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0.3) 80%, transparent 100%)',
-            pointerEvents: 'none',
-          }} />
-        </div>
+                {/* LAYER 1: Sky Background - Furthest Back */}
+                <div
+                  data-atropos-offset="-10"
+                  style={{
+                    position: 'absolute',
+                    inset: '-10%',
+                    zIndex: 1,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <Image
+                    src="/images/home/hero-sky.png"
+                    alt="Sky background"
+                    fill
+                    priority
+                    style={{
+                      objectFit: 'cover',
+                      objectPosition: 'center 40%',
+                      transform: 'scale(1.2)',
+                    }}
+                    quality={95}
+                  />
+                </div>
 
-        {/* Centered Content Card - Liquid Glass with 3D Tilt */}
-        <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.95 }}
-          animate={inView ? {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            rotateX: cardTilt.rotateX,
-            rotateY: cardTilt.rotateY,
-          } : {}}
-          transition={{
-            duration: 0.8,
-            delay: 0.3,
-            ease: [0.22, 1, 0.36, 1],
-            rotateX: { type: 'spring', stiffness: 300, damping: 30 },
-            rotateY: { type: 'spring', stiffness: 300, damping: 30 },
-          }}
-          onMouseMove={handleHeroCardTilt}
-          onMouseLeave={resetHeroCardTilt}
-          style={{
-            position: 'relative',
-            zIndex: 10,
-            width: '90%',
-            maxWidth: '580px',
-            padding: isMobile ? '2rem' : '2.5rem 3rem',
-            perspective: '1000px',
-            transformStyle: 'preserve-3d',
-            // Dark mode glassmorphism - more translucent
-            background: `
-              linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.03) 100%),
-              rgba(10, 10, 12, 0.45)
-            `,
-            backdropFilter: 'blur(60px) saturate(180%)',
-            WebkitBackdropFilter: 'blur(60px) saturate(180%)',
-            borderRadius: '32px',
-            border: '1px solid rgba(255, 255, 255, 0.04)',
-            // Dark mode shadows
-            boxShadow: `
-              0 40px 80px rgba(0, 0, 0, 0.6),
-              0 20px 40px rgba(0, 0, 0, 0.4),
-              inset 0 1px 0 rgba(255, 255, 255, 0.05),
-              inset 0 0 20px rgba(0, 0, 0, 0.3)
-            `,
-            textAlign: 'center',
-            overflow: 'hidden',
-          }}
-        >
+                {/* LAYER 2: Clouds - Middle Depth */}
+                <div
+                  data-atropos-offset="-5"
+                  style={{
+                    position: 'absolute',
+                    inset: '-10%',
+                    zIndex: 2,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <Image
+                    src="/images/home/hero-clouds.png"
+                    alt="Clouds"
+                    fill
+                    style={{
+                      objectFit: 'cover',
+                      objectPosition: 'center 40%',
+                      transform: 'scale(1.2)',
+                    }}
+                    quality={95}
+                  />
+                </div>
+
+                {/* LAYER 3: Aircraft - Center */}
+                <div
+                  data-atropos-offset="0"
+                  style={{
+                    position: 'absolute',
+                    inset: '-10%',
+                    zIndex: 3,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <Image
+                    src="/images/home/hero-aircraft.png"
+                    alt="Air India Aircraft"
+                    fill
+                    style={{
+                      objectFit: 'cover',
+                      objectPosition: 'center 40%',
+                      transform: 'scale(1.2)',
+                    }}
+                    quality={95}
+                  />
+                </div>
+
+                {/* Bottom Fade - Seamless OLED blend */}
+                <div
+                  data-atropos-offset="-2"
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: '50%',
+                    background: 'linear-gradient(to top, #000000 0%, rgba(0, 0, 0, 0.8) 40%, transparent 100%)',
+                    pointerEvents: 'none',
+                    zIndex: 4,
+                  }}
+                />
+
+                {/* Centered Content Card - Liquid Glass with Atropos Parallax */}
+                <div
+                  data-atropos-offset="4"
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 10,
+                    width: '90%',
+                    maxWidth: '580px',
+                    padding: isMobile ? '2rem' : '2.5rem 3rem',
+                    pointerEvents: 'auto', // CRITICAL: Enable clicking on content
+                    // Dark mode glassmorphism - more translucent
+                    background: `
+                      linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.03) 100%),
+                      rgba(10, 10, 12, 0.45)
+                    `,
+                    backdropFilter: 'blur(60px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(60px) saturate(180%)',
+                    borderRadius: '32px',
+                    border: '1px solid rgba(255, 255, 255, 0.04)',
+                    // Dark mode shadows
+                    boxShadow: `
+                      0 40px 80px rgba(0, 0, 0, 0.6),
+                      0 20px 40px rgba(0, 0, 0, 0.4),
+                      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                      inset 0 0 20px rgba(0, 0, 0, 0.3)
+                    `,
+                    textAlign: 'center',
+                    overflow: 'hidden',
+                  }}
+                >
           {/* Gradient Border Overlay - Subtle for dark mode */}
           <div style={{
             position: 'absolute',
@@ -1126,24 +1127,27 @@ export function AirIndiaWork() {
               </div>
             ))}
           </motion.div>
-        </motion.div>
+                </div>
 
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 1.3 }}
-          style={{
-            position: 'absolute',
-            bottom: '2rem',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '0.5rem',
-          }}
-        >
+                {/* Scroll Indicator */}
+                <motion.div
+                  data-atropos-offset="2"
+                  initial={{ opacity: 0 }}
+                  animate={inView ? { opacity: 1 } : {}}
+                  transition={{ duration: 0.6, delay: 1.3 }}
+                  style={{
+                    position: 'absolute',
+                    bottom: '2rem',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    pointerEvents: 'none',
+                    zIndex: 5,
+                  }}
+                >
           <div style={{
             fontSize: '0.625rem',
             color: 'var(--text-muted)',
@@ -1170,7 +1174,12 @@ export function AirIndiaWork() {
               background: 'rgba(255, 255, 255, 0.4)',
             }} />
           </motion.div>
-        </motion.div>
+                </motion.div>
+
+              </div>
+            </div>
+          </div>
+        </div>
 
       </header>
 
