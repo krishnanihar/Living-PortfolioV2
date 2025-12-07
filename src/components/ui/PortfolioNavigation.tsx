@@ -13,31 +13,22 @@ interface PortfolioNavigationProps {
 }
 
 /**
- * PortfolioNavigation - Primary navigation component with floating effect
+ * PortfolioNavigation - Primary navigation component fixed at top
  *
  * Features:
- * - Floating pill design when scrolled past 50px threshold
+ * - Fixed at top with subtle backdrop blur
  * - Responsive heights optimized for 13"-16" laptop screens
- * - Multi-layer glassmorphism (iOS 18 / macOS Sequoia aesthetic)
  * - Active route detection with visual highlighting
  * - Theme toggle (Light / Dark / System)
  * - Logo gradient with hover effects using CSS variables
  *
  * Design Philosophy:
- * - Scroll threshold at 50px provides immediate feedback without being too sensitive
- * - Floating effect (12px offset, 48px narrowing) creates premium app-like feel
- * - Passive event listeners for 60fps scroll performance
+ * - Clean, minimal appearance with transparent background
  * - CSS variables prevent build timeouts (no inline theme conditionals)
  *
  * @param className - Optional className (currently unused but available for extension)
  */
 
-// Navigation constants
-const SCROLL_THRESHOLD = 50; // Pixels scrolled before floating effect activates
-const NAV_FLOATING_OFFSET = 12; // Top offset in pixels when navigation floats
-const NAV_WIDTH_OFFSET = 48; // Width reduction in pixels when navigation narrows
-const NAV_BORDER_RADIUS = 16; // Border radius in pixels for floating state
-const NAV_MAX_WIDTH = 'clamp(1200px, 90vw, 1400px)'; // Max width when floating
 
 // Screen size breakpoints for responsive navigation heights
 const BREAKPOINTS = {
@@ -63,39 +54,9 @@ const NAV_HEIGHTS = {
 } as const;
 
 export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigationProps) {
-  const [internalScrolled, setInternalScrolled] = useState(false);
   const [navHeight, setNavHeight] = useState({ normal: 60, scrolled: 54 });
   const pathname = usePathname();
   const { theme, resolvedTheme, toggleTheme } = useTheme();
-
-  // When snapIndex is provided (snap scrolling mode), float nav when past hero (index > 0)
-  // Otherwise, use window scroll detection
-  const scrolled = snapIndex !== undefined ? snapIndex > 0 : internalScrolled;
-
-  // RAF-based scroll detection for normal scroll mode (when snapIndex not provided)
-  useEffect(() => {
-    // Skip if using snap scrolling mode
-    if (snapIndex !== undefined) return;
-
-    let rafId: number | null = null;
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        rafId = requestAnimationFrame(() => {
-          setInternalScrolled(window.scrollY > SCROLL_THRESHOLD);
-          ticking = false;
-        });
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (rafId) cancelAnimationFrame(rafId);
-    };
-  }, [snapIndex]);
 
   // Responsive navigation height based on screen size
   useEffect(() => {
@@ -226,90 +187,38 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
         }
       `}</style>
 
-      {/* Navigation with floating effect when scrolled */}
+      {/* Navigation - fixed at top */}
       <nav style={{
         position: 'fixed',
-        top: scrolled ? `${NAV_FLOATING_OFFSET}px` : '0',
+        top: '0',
         left: 0,
         right: 0,
         zIndex: 9999,
-        height: scrolled ? `${navHeight.scrolled}px` : `${navHeight.normal}px`,
-        transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-        width: scrolled ? `calc(100% - ${NAV_WIDTH_OFFSET}px)` : '100%',
-        maxWidth: scrolled ? NAV_MAX_WIDTH : '100%',
+        height: `${navHeight.normal}px`,
+        width: '100%',
+        maxWidth: '100%',
         margin: '0 auto',
-        borderRadius: scrolled ? `${NAV_BORDER_RADIUS}px` : '0',
-        overflow: scrolled ? 'hidden' : 'visible',
+        borderRadius: '0',
+        overflow: 'visible',
         // GPU acceleration for buttery smooth performance
         transform: 'translate3d(0, 0, 0)',
-        willChange: scrolled ? 'transform, opacity' : 'auto',
         isolation: 'isolate',
         contain: 'layout paint',
       }}>
-        {/*
-          Multi-layer glassmorphism system (5 layers):
-          1. Base: Radial + linear gradients for depth
-          2. Backdrop filter: 80px blur + 200% saturation when scrolled (iOS 18 aesthetic)
-          3. Multi-shadow system: Inset highlights + drop shadows
-          4. Shimmer overlay: Animated gradient sweep (8s loop)
-          5. Liquid glass: Diagonal reflection with overlay blend mode
-        */}
+        {/* Subtle backdrop blur layer */}
         <div style={{
           position: 'absolute',
           inset: 0,
-          background: scrolled
-            ? `radial-gradient(ellipse 200% 100% at top, var(--glass-10) 0%, var(--glass-04) 60%),
-               linear-gradient(180deg,
-                 rgba(5, 5, 5, 0.92) 0%,
-                 rgba(0, 0, 0, 0.90) 50%,
-                 rgba(5, 5, 5, 0.92) 100%)`
-            : 'transparent',
-          backdropFilter: scrolled ? 'blur(40px) saturate(150%) brightness(0.75) contrast(1.15)' : 'blur(20px) saturate(120%)',
-          WebkitBackdropFilter: scrolled ? 'blur(40px) saturate(150%) brightness(0.75) contrast(1.15)' : 'blur(20px) saturate(120%)',
-          borderBottom: scrolled ? '1px solid var(--glass-12)' : '1px solid transparent',
-          boxShadow: scrolled
-            ? `inset 0 1px 0 var(--glass-25),
-               inset 0 -1px 0 rgba(0, 0, 0, 0.5),
-               0 4px 30px rgba(0, 0, 0, 0.5),
-               0 0 0 1px var(--glass-08)`
-            : 'none',
+          background: 'transparent',
+          backdropFilter: 'blur(20px) saturate(120%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(120%)',
+          borderBottom: '1px solid transparent',
+          boxShadow: 'none',
           pointerEvents: 'none',
-          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-          willChange: scrolled ? 'transform, box-shadow' : 'auto',
           // GPU acceleration for smooth performance
           transform: 'translate3d(0, 0, 0)',
           backfaceVisibility: 'hidden',
-        }}>
-          {/* Animated shimmer overlay - only visible when scrolled */}
-          {scrolled && (
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'linear-gradient(90deg, transparent 0%, var(--glass-03) 50%, transparent 100%)',
-              animation: 'shimmer 8s linear infinite',
-              pointerEvents: 'none',
-              transform: 'translate3d(0, 0, 0)',
-              willChange: 'transform',
-            }} />
-          )}
-
-          {/* Liquid Glass reflection layer - diagonal gradient overlay */}
-          {scrolled && (
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              background: `linear-gradient(135deg,
-                var(--glass-08) 0%,
-                var(--glass-03) 30%,
-                transparent 60%,
-                var(--glass-02) 100%)`,
-              pointerEvents: 'none',
-              mixBlendMode: 'overlay',
-              borderRadius: 'inherit',
-              transform: 'translate3d(0, 0, 0)',
-            }} />
-          )}
-        </div>
+        }} />
 
         <div style={{
           position: 'relative',
@@ -326,7 +235,7 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
             style={{
               position: 'absolute',
               inset: 0,
-              borderRadius: scrolled ? `${NAV_BORDER_RADIUS}px` : '0',
+              borderRadius: '0',
               background: isActive('/')
                 ? 'radial-gradient(ellipse 600px 200px at 15% 50%, var(--text-18), var(--text-10) 40%, transparent 70%)'
                 : isActive('/work')
