@@ -576,14 +576,7 @@ export function WorkNarrativePage() {
         )}
       </section>
 
-      {/* SECTION 7: Research & Innovation */}
-      <ActTransition
-        actTitle="Questions"
-        quote="What happens when design asks uncomfortable questions?"
-        actColor="rgba(14, 165, 233, 0.8)"
-      />
-
-      {/* SECTION 8: Research Triptych */}
+      {/* SECTION 7: Research Triptych */}
       <section
         ref={researchSectionRef}
         style={{
@@ -660,14 +653,7 @@ export function WorkNarrativePage() {
         </div>
       </section>
 
-      {/* SECTION 9: College Projects */}
-      <ActTransition
-        actTitle="Foundation"
-        quote="Academic exploration, 2023"
-        actColor="rgba(147, 51, 234, 0.8)"
-      />
-
-      {/* SECTION 10: Metamorphic Fractal Reflections */}
+      {/* SECTION 8: Metamorphic Fractal Reflections */}
       <section style={{
         position: 'relative',
         paddingTop: 'clamp(2rem, 4vw, 3rem)',
