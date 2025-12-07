@@ -187,8 +187,8 @@ export function WorkNarrativePage() {
         <div style={{
           display: 'flex',
           justifyContent: 'center',
-          padding: '1rem',
-          marginBottom: '1rem',
+          padding: '0',
+          marginBottom: '0',
         }}>
           <motion.div
             animate={{ y: [0, 8, 0] }}
