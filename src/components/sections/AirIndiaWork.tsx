@@ -716,54 +716,6 @@ export function AirIndiaWork() {
         overflow: 'visible',
       }}
     >
-      {/* Ambient Background Orbs */}
-      <div style={{
-        position: 'fixed',
-        inset: 0,
-        pointerEvents: 'none',
-        zIndex: 0,
-      }}>
-        <div style={{
-          position: 'absolute',
-          top: '10%',
-          right: '15%',
-          width: '600px',
-          height: '600px',
-          background: 'radial-gradient(circle, rgba(218, 14, 41, 0.08), transparent 70%)',
-          borderRadius: '50%',
-          filter: 'blur(100px)',
-          animation: 'floatOrb 30s ease-in-out infinite',
-          opacity: inView ? 1 : 0,
-          transition: 'opacity 2s ease-in-out',
-        }} />
-        <div style={{
-          position: 'absolute',
-          bottom: '20%',
-          left: '10%',
-          width: '450px',
-          height: '450px',
-          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.05), transparent 70%)',
-          borderRadius: '50%',
-          filter: 'blur(80px)',
-          animation: 'floatOrb 35s ease-in-out infinite 10s',
-          opacity: inView ? 1 : 0,
-          transition: 'opacity 2s ease-in-out',
-        }} />
-        <div style={{
-          position: 'absolute',
-          top: '60%',
-          right: '5%',
-          width: '350px',
-          height: '350px',
-          background: 'radial-gradient(circle, rgba(251, 191, 36, 0.04), transparent 70%)',
-          borderRadius: '50%',
-          filter: 'blur(60px)',
-          animation: 'floatOrb 40s ease-in-out infinite 20s',
-          opacity: inView ? 1 : 0,
-          transition: 'opacity 2s ease-in-out',
-        }} />
-      </div>
-
       {/* =========================================================================
           SECTION 1: HERO - Full-Screen Cinematic with Centered Card
       ========================================================================= */}
@@ -4231,23 +4183,6 @@ export function AirIndiaWork() {
                     right: 0,
                     bottom: 0,
                     background: `radial-gradient(ellipse at ${index % 2 === 0 ? '70%' : '30%'} 50%, rgba(${project.color}, 0.12), rgba(${project.color}, 0.04) 40%, transparent 70%)`,
-                    pointerEvents: 'none',
-                    zIndex: 0,
-                    opacity: isHovered ? 1 : 0,
-                    transition: 'opacity 0.8s ease-in-out',
-                  }} />
-
-                  {/* Animated Glow Orb - Always rendered, opacity controlled */}
-                  <div style={{
-                    position: 'fixed',
-                    top: '25%',
-                    right: index % 2 === 0 ? '15%' : 'auto',
-                    left: index % 2 === 0 ? 'auto' : '15%',
-                    width: '600px',
-                    height: '600px',
-                    borderRadius: '50%',
-                    background: `radial-gradient(circle, rgba(${project.color}, 0.15), rgba(${project.color}, 0.05) 40%, transparent 70%)`,
-                    filter: 'blur(100px)',
                     pointerEvents: 'none',
                     zIndex: 0,
                     opacity: isHovered ? 1 : 0,
