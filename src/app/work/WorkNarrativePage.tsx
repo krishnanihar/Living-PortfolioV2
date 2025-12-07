@@ -208,9 +208,6 @@ export function WorkNarrativePage() {
         </div>
       )}
 
-      {/* Air India Hero Card - Giant 3D Card */}
-      <AirIndiaHeroCard />
-
       {/* SECTION 6: Six Areas of Impact - Bento Grid */}
       <section style={{
         maxWidth: '1400px',
@@ -222,6 +219,9 @@ export function WorkNarrativePage() {
         position: 'relative',
         zIndex: 1,
       }}>
+        {/* Air India Hero Card - Giant 3D Card */}
+        <AirIndiaHeroCard />
+
         <div style={{
           textAlign: 'center',
           marginBottom: '4rem',
