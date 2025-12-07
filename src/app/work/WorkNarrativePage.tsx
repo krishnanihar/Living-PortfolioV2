@@ -215,7 +215,10 @@ export function WorkNarrativePage() {
       <section style={{
         maxWidth: '1400px',
         margin: '0 auto',
-        padding: '4rem 1.5rem',
+        paddingTop: '1rem',
+        paddingLeft: '1.5rem',
+        paddingRight: '1.5rem',
+        paddingBottom: '4rem',
         position: 'relative',
         zIndex: 1,
       }}>
