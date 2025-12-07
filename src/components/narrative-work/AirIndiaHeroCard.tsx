@@ -68,40 +68,32 @@ export function AirIndiaHeroCard() {
         zIndex: 1,
       }}
     >
+      {/* Atropos wrapper - hover triggers within card boundaries */}
       <div
+        ref={atroposRef}
+        className="atropos"
         style={{
           height: isMobile ? '85vh' : 'clamp(600px, 75vh, 800px)',
           width: '100%',
           position: 'relative',
-          overflow: 'hidden',
-          background: '#000',
-          borderRadius: '24px',
-          border: '1px solid var(--border-primary)',
+          pointerEvents: 'auto',
         }}
       >
-        {/* Atropos Container - Wraps all content for 3D effect */}
-        <div
-          ref={atroposRef}
-          className="atropos"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            borderRadius: '24px',
-            pointerEvents: 'none',
-          }}
-        >
-          <div className="atropos-scale" style={{ height: '100%' }}>
-            <div className="atropos-rotate" style={{ height: '100%' }}>
-              <div
-                className="atropos-inner"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  position: 'relative',
-                  borderRadius: '24px',
-                  overflow: 'hidden',
-                }}
-              >
+        <div className="atropos-scale" style={{ height: '100%', overflow: 'visible', pointerEvents: 'none' }}>
+          <div className="atropos-rotate" style={{ height: '100%', overflow: 'visible', pointerEvents: 'all' }}>
+            {/* Visual card with background/border - sized to original dimensions */}
+            <div
+              className="atropos-inner"
+              style={{
+                width: '100%',
+                height: '100%',
+                position: 'relative',
+                overflow: 'visible',
+                background: '#000',
+                borderRadius: '24px',
+                border: '1px solid var(--border-primary)',
+              }}
+            >
                 {/* Giant Editorial Number - Parallax BACK */}
                 <div
                   data-atropos-offset="-8"
@@ -122,14 +114,15 @@ export function AirIndiaHeroCard() {
                   01
                 </div>
 
-                {/* LAYER 1: Sky Background - Furthest Back */}
+                {/* LAYER 1: Sky Background - Static, no parallax movement */}
                 <div
-                  data-atropos-offset="-10"
+                  data-atropos-offset="0"
                   style={{
                     position: 'absolute',
-                    inset: '-10%',
+                    inset: 0,
                     zIndex: 1,
                     overflow: 'hidden',
+                    borderRadius: '24px',
                   }}
                 >
                   <Image
@@ -139,21 +132,22 @@ export function AirIndiaHeroCard() {
                     style={{
                       objectFit: 'cover',
                       objectPosition: 'center',
-                      transform: 'scale(1.2)',
+                      transform: 'scale(1.3)',
                     }}
                     quality={95}
                     priority
                   />
                 </div>
 
-                {/* LAYER 2: Clouds - Middle Depth */}
+                {/* LAYER 2: Clouds - Static, no parallax movement */}
                 <div
-                  data-atropos-offset="-5"
+                  data-atropos-offset="0"
                   style={{
                     position: 'absolute',
-                    inset: '-10%',
+                    inset: 0,
                     zIndex: 2,
                     overflow: 'hidden',
+                    borderRadius: '24px',
                   }}
                 >
                   <Image
@@ -163,20 +157,21 @@ export function AirIndiaHeroCard() {
                     style={{
                       objectFit: 'cover',
                       objectPosition: 'center',
-                      transform: 'scale(1.2)',
+                      transform: 'scale(1.3)',
                     }}
                     quality={95}
                   />
                 </div>
 
-                {/* LAYER 3: Aircraft - Center */}
+                {/* LAYER 3: Aircraft - breaks out of card, behind glass panel */}
                 <div
-                  data-atropos-offset="0"
+                  data-atropos-offset="-2"
                   style={{
                     position: 'absolute',
-                    inset: '-10%',
+                    inset: '-15%',
                     zIndex: 3,
-                    overflow: 'hidden',
+                    overflow: 'visible',
+                    pointerEvents: 'none',
                   }}
                 >
                   <Image
@@ -186,17 +181,18 @@ export function AirIndiaHeroCard() {
                     style={{
                       objectFit: 'cover',
                       objectPosition: 'center',
-                      transform: 'scale(1.2)',
+                      transform: 'scale(1.15)',
                     }}
                     quality={95}
                   />
                 </div>
 
-                {/* Gradient overlay for readability */}
+                {/* Gradient overlay for readability - clips to card */}
                 <div
                   style={{
                     position: 'absolute',
-                    inset: '-10%',
+                    inset: 0,
+                    borderRadius: '24px',
                     background: `linear-gradient(180deg,
                       transparent 0%,
                       transparent 70%,
@@ -332,17 +328,18 @@ export function AirIndiaHeroCard() {
                     ))}
                   </div>
 
-                  {/* CTA Button */}
+                  {/* CTA Button - No atropos-offset to ensure clickability */}
                   <Link
                     href="/work/air-india"
                     draggable="false"
-                    data-atropos-offset="3"
                     onMouseEnter={() => setIsButtonHovered(true)}
                     onMouseLeave={() => setIsButtonHovered(false)}
                     style={{
-                      display: 'inline-flex',
+                      display: 'flex',
                       alignItems: 'center',
+                      justifyContent: 'center',
                       gap: '0.5rem',
+                      width: '100%',
                       fontSize: '0.8125rem',
                       fontWeight: '500',
                       color: 'var(--text-95)',
@@ -357,7 +354,8 @@ export function AirIndiaHeroCard() {
                       transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
                       cursor: 'pointer',
                       textDecoration: 'none',
-                      pointerEvents: 'auto',
+                      position: 'relative',
+                      zIndex: 20,
                     }}
                   >
                     View Case Study
@@ -374,7 +372,6 @@ export function AirIndiaHeroCard() {
             </div>
           </div>
         </div>
-      </div>
     </section>
   );
 }
