@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
-import { OneirosScene } from '@/components/oneiros/scene/OneirosScene';
+import { OneirosExperience } from '@/components/oneiros/OneirosExperience';
 import { CaseStudyTracker } from '@/components/CaseStudyTracker';
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default function OneirosPalacePage() {
     <>
       <CaseStudyTracker slug="oneiros-palace" />
       <PortfolioNavigation />
-      <OneirosScene />
+      <OneirosExperience />
     </>
   );
 }

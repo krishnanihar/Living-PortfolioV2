@@ -8,6 +8,8 @@ import * as THREE from 'three';
 import { PalaceRoom } from './PalaceRoom';
 import { ArtworkFrame } from './ArtworkFrame';
 import { ONEIROS_ARTWORKS, type OneirosArtwork } from '@/data/oneiros/artworks-expanded';
+import { useDreamAnalysis } from '../context/DreamAnalysisContext';
+import type { GeneratedRoom } from '@/types/oneiros';
 
 // WASD movement speed
 const MOVE_SPEED = 5;
@@ -384,66 +386,85 @@ function DepthIndicator({ depth }: { depth: string }) {
 /**
  * The 3D scene content
  */
-function SceneContent() {
-  // Select 6 artworks for the gallery walls
-  // Select diverse artworks from the expanded database
-  const galleryArtworks = ONEIROS_ARTWORKS.slice(0, 6);
+interface SceneContentProps {
+  room: GeneratedRoom | null;
+}
+
+function SceneContent({ room }: SceneContentProps) {
+  // Use artworks from the generated room, or fall back to defaults
+  const galleryArtworks = room?.artworks || ONEIROS_ARTWORKS.slice(0, 6);
+  const atmosphere = room?.roomConfig.atmosphere;
+
+  // Get primary color for scene lighting
+  const primaryColor = atmosphere?.primaryColor || '#8B5CF6';
 
   return (
     <>
       {/* Lighting - increased for visibility */}
       <ambientLight intensity={0.8} />
       <directionalLight position={[10, 10, 5]} intensity={1.2} castShadow />
-      <pointLight position={[0, 5, 0]} intensity={1.5} color="#8B5CF6" />
+      <pointLight position={[0, 5, 0]} intensity={1.5} color={primaryColor} />
       <pointLight position={[0, 3, 5]} intensity={1} color="#FFFFFF" />
       <pointLight position={[0, 3, -5]} intensity={1} color="#FFFFFF" />
 
       {/* Environment for reflections and ambient lighting */}
       <Environment preset="night" background={false} />
 
-      {/* The palace room */}
-      <PalaceRoom />
+      {/* The palace room with dynamic atmosphere */}
+      <PalaceRoom atmosphere={atmosphere} />
 
       {/* Artwork frames on walls */}
       {/* Left wall artworks */}
-      <ArtworkFrame
-        position={[-14.9, 2.5, -8]}
-        rotation={[0, Math.PI / 2, 0]}
-        artwork={galleryArtworks[0]}
-        size={[3, 2]}
-      />
-      <ArtworkFrame
-        position={[-14.9, 2.5, 0]}
-        rotation={[0, Math.PI / 2, 0]}
-        artwork={galleryArtworks[1]}
-        size={[3, 2]}
-      />
-      <ArtworkFrame
-        position={[-14.9, 2.5, 8]}
-        rotation={[0, Math.PI / 2, 0]}
-        artwork={galleryArtworks[2]}
-        size={[3, 2]}
-      />
+      {galleryArtworks[0] && (
+        <ArtworkFrame
+          position={[-14.9, 2.5, -8]}
+          rotation={[0, Math.PI / 2, 0]}
+          artwork={galleryArtworks[0]}
+          size={[3, 2]}
+        />
+      )}
+      {galleryArtworks[1] && (
+        <ArtworkFrame
+          position={[-14.9, 2.5, 0]}
+          rotation={[0, Math.PI / 2, 0]}
+          artwork={galleryArtworks[1]}
+          size={[3, 2]}
+        />
+      )}
+      {galleryArtworks[2] && (
+        <ArtworkFrame
+          position={[-14.9, 2.5, 8]}
+          rotation={[0, Math.PI / 2, 0]}
+          artwork={galleryArtworks[2]}
+          size={[3, 2]}
+        />
+      )}
 
       {/* Right wall artworks */}
-      <ArtworkFrame
-        position={[14.9, 2.5, -8]}
-        rotation={[0, -Math.PI / 2, 0]}
-        artwork={galleryArtworks[3]}
-        size={[3, 2]}
-      />
-      <ArtworkFrame
-        position={[14.9, 2.5, 0]}
-        rotation={[0, -Math.PI / 2, 0]}
-        artwork={galleryArtworks[4]}
-        size={[3, 2]}
-      />
-      <ArtworkFrame
-        position={[14.9, 2.5, 8]}
-        rotation={[0, -Math.PI / 2, 0]}
-        artwork={galleryArtworks[5]}
-        size={[3, 2]}
-      />
+      {galleryArtworks[3] && (
+        <ArtworkFrame
+          position={[14.9, 2.5, -8]}
+          rotation={[0, -Math.PI / 2, 0]}
+          artwork={galleryArtworks[3]}
+          size={[3, 2]}
+        />
+      )}
+      {galleryArtworks[4] && (
+        <ArtworkFrame
+          position={[14.9, 2.5, 0]}
+          rotation={[0, -Math.PI / 2, 0]}
+          artwork={galleryArtworks[4]}
+          size={[3, 2]}
+        />
+      )}
+      {galleryArtworks[5] && (
+        <ArtworkFrame
+          position={[14.9, 2.5, 8]}
+          rotation={[0, -Math.PI / 2, 0]}
+          artwork={galleryArtworks[5]}
+          size={[3, 2]}
+        />
+      )}
 
       {/* Atmospheric particles */}
       <AtmosphericParticles />
@@ -477,10 +498,20 @@ function SceneContent() {
  * - Atmospheric particles and lighting
  * - Post-processing (bloom, vignette)
  * - Instructions overlay
+ * - Dynamic theming based on dream analysis
  */
 export function OneirosScene() {
+  const { state } = useDreamAnalysis();
   const [isLocked, setIsLocked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Get current room from context
+  const currentRoom = state.generatedRooms[state.currentRoomIndex] || null;
+
+  // Get depth label from current room
+  const depthLabel = currentRoom
+    ? `${currentRoom.roomConfig.sleepStage} — ${currentRoom.roomConfig.name}`
+    : 'N1 — Entrance Gallery';
 
   // Simulate loading
   useEffect(() => {
@@ -522,13 +553,13 @@ export function OneirosScene() {
         {/* PointerLockControls outside Suspense for immediate mounting */}
         <PointerLockControls selector="#enter-palace-button" />
         <Suspense fallback={null}>
-          <SceneContent />
+          <SceneContent room={currentRoom} />
         </Suspense>
       </Canvas>
 
       {/* UI Overlays */}
       <InstructionsOverlay isLocked={isLocked} />
-      {isLocked && <DepthIndicator depth="N1 — Entrance Gallery" />}
+      {isLocked && <DepthIndicator depth={depthLabel} />}
 
       {/* Crosshair when locked */}
       {isLocked && (

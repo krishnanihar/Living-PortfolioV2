@@ -4,10 +4,18 @@ import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
+interface RoomAtmosphere {
+  primaryColor: string;
+  secondaryColor: string;
+  ambientIntensity: number;
+  particleDensity: number;
+}
+
 interface PalaceRoomProps {
   width?: number;
   depth?: number;
   height?: number;
+  atmosphere?: RoomAtmosphere;
 }
 
 /**
@@ -19,11 +27,22 @@ interface PalaceRoomProps {
  * - Ceiling with ambient lighting effect
  * - Glassmorphic aesthetic with dark, dreamy atmosphere
  */
+// Default atmosphere (purple theme)
+const DEFAULT_ATMOSPHERE: RoomAtmosphere = {
+  primaryColor: '#8B5CF6',
+  secondaryColor: '#6366F1',
+  ambientIntensity: 0.5,
+  particleDensity: 0.5,
+};
+
 export function PalaceRoom({
   width = 30,
   depth = 30,
   height = 8,
+  atmosphere = DEFAULT_ATMOSPHERE,
 }: PalaceRoomProps) {
+  // Use atmosphere colors for lighting
+  const { primaryColor, secondaryColor, ambientIntensity } = atmosphere;
   const floorRef = useRef<THREE.Mesh>(null);
 
   // Create floor material with subtle reflection
@@ -93,7 +112,7 @@ export function PalaceRoom({
       >
         <planeGeometry args={[width, depth]} />
         <meshBasicMaterial
-          color="#8B5CF6"
+          color={primaryColor}
           transparent
           opacity={0.1}
           wireframe
@@ -158,32 +177,32 @@ export function PalaceRoom({
         />
       </mesh>
 
-      {/* Ambient floor lights */}
+      {/* Ambient floor lights - use atmosphere colors */}
       <pointLight
         position={[-10, 0.5, -10]}
-        intensity={0.8}
-        color="#8B5CF6"
+        intensity={ambientIntensity * 1.6}
+        color={primaryColor}
         distance={20}
         decay={2}
       />
       <pointLight
         position={[10, 0.5, -10]}
-        intensity={0.8}
-        color="#8B5CF6"
+        intensity={ambientIntensity * 1.6}
+        color={primaryColor}
         distance={20}
         decay={2}
       />
       <pointLight
         position={[-10, 0.5, 10]}
-        intensity={0.8}
-        color="#6366F1"
+        intensity={ambientIntensity * 1.6}
+        color={secondaryColor}
         distance={20}
         decay={2}
       />
       <pointLight
         position={[10, 0.5, 10]}
-        intensity={0.8}
-        color="#6366F1"
+        intensity={ambientIntensity * 1.6}
+        color={secondaryColor}
         distance={20}
         decay={2}
       />
