@@ -10,6 +10,8 @@ import { ArtworkFrame } from './ArtworkFrame';
 import { ONEIROS_ARTWORKS, type OneirosArtwork } from '@/data/oneiros/artworks-expanded';
 import { useDreamAnalysis } from '../context/DreamAnalysisContext';
 import type { GeneratedRoom } from '@/types/oneiros';
+import { useDepthProgress, type SleepStage, type NarrativeAct } from '@/hooks/useDepthProgress';
+import { FirstPersonMoments3D, NarrativeWhispers3D, DepthIndicatorEnhanced, ArtworkInfoPanel, SpatialAudio, AudioToggle } from '../narrative';
 
 // WASD movement speed
 const MOVE_SPEED = 5;
@@ -388,15 +390,27 @@ function DepthIndicator({ depth }: { depth: string }) {
  */
 interface SceneContentProps {
   room: GeneratedRoom | null;
+  isLocked: boolean;
+  depthState: ReturnType<typeof useDepthProgress>;
 }
 
-function SceneContent({ room }: SceneContentProps) {
+// Artwork positions for info panels
+const ARTWORK_POSITIONS: [number, number, number][] = [
+  [-14.9, 2.5, -8],
+  [-14.9, 2.5, 0],
+  [-14.9, 2.5, 8],
+  [14.9, 2.5, -8],
+  [14.9, 2.5, 0],
+  [14.9, 2.5, 8],
+];
+
+function SceneContent({ room, isLocked, depthState }: SceneContentProps) {
   // Use artworks from the generated room, or fall back to defaults
   const galleryArtworks = room?.artworks || ONEIROS_ARTWORKS.slice(0, 6);
   const atmosphere = room?.roomConfig.atmosphere;
 
   // Get primary color for scene lighting
-  const primaryColor = atmosphere?.primaryColor || '#8B5CF6';
+  const primaryColor = atmosphere?.primaryColor || depthState.color.primary;
 
   return (
     <>
@@ -466,6 +480,34 @@ function SceneContent({ room }: SceneContentProps) {
         />
       )}
 
+      {/* Artwork Info Panels - show when player is near */}
+      {galleryArtworks.map((artwork, index) => (
+        <ArtworkInfoPanel
+          key={artwork.id}
+          artwork={artwork}
+          position={ARTWORK_POSITIONS[index]}
+          viewDistance={4}
+          primaryColor={primaryColor}
+        />
+      ))}
+
+      {/* Narrative Whispers - ambient floating text */}
+      <NarrativeWhispers3D
+        act={depthState.act}
+        primaryColor={primaryColor}
+        intensity={depthState.intensity}
+        count={6}
+      />
+
+      {/* First-Person Narrative Moments */}
+      {isLocked && (
+        <FirstPersonMoments3D
+          isActive={isLocked}
+          currentSleepStage={depthState.sleepStage}
+          currentRoomIndex={depthState.roomIndex}
+        />
+      )}
+
       {/* Atmospheric particles */}
       <AtmosphericParticles />
 
@@ -499,19 +541,23 @@ function SceneContent({ room }: SceneContentProps) {
  * - Post-processing (bloom, vignette)
  * - Instructions overlay
  * - Dynamic theming based on dream analysis
+ * - Narrative storytelling system (Phase 4)
  */
 export function OneirosScene() {
   const { state } = useDreamAnalysis();
   const [isLocked, setIsLocked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [audioEnabled, setAudioEnabled] = useState(false);
 
   // Get current room from context
   const currentRoom = state.generatedRooms[state.currentRoomIndex] || null;
+  const totalRooms = state.generatedRooms.length || 1;
 
-  // Get depth label from current room
-  const depthLabel = currentRoom
-    ? `${currentRoom.roomConfig.sleepStage} — ${currentRoom.roomConfig.name}`
-    : 'N1 — Entrance Gallery';
+  // Use depth progress hook for narrative tracking
+  const depthState = useDepthProgress(state.currentRoomIndex, totalRooms);
+
+  // Get room name for display
+  const roomName = currentRoom?.roomConfig.name || 'Entrance Gallery';
 
   // Simulate loading
   useEffect(() => {
@@ -553,13 +599,27 @@ export function OneirosScene() {
         {/* PointerLockControls outside Suspense for immediate mounting */}
         <PointerLockControls selector="#enter-palace-button" />
         <Suspense fallback={null}>
-          <SceneContent room={currentRoom} />
+          <SceneContent
+            room={currentRoom}
+            isLocked={isLocked}
+            depthState={depthState}
+          />
         </Suspense>
       </Canvas>
 
       {/* UI Overlays */}
       <InstructionsOverlay isLocked={isLocked} />
-      {isLocked && <DepthIndicator depth={depthLabel} />}
+
+      {/* Enhanced Depth Indicator with sleep stage visualization */}
+      {isLocked && (
+        <DepthIndicatorEnhanced
+          sleepStage={depthState.sleepStage}
+          act={depthState.act}
+          progress={depthState.progress}
+          roomName={roomName}
+          primaryColor={depthState.color.primary}
+        />
+      )}
 
       {/* Crosshair when locked */}
       {isLocked && (
@@ -576,6 +636,22 @@ export function OneirosScene() {
             pointerEvents: 'none',
             zIndex: 30,
           }}
+        />
+      )}
+
+      {/* Spatial Audio System - binaural tones based on sleep stage */}
+      <SpatialAudio
+        sleepStage={depthState.sleepStage}
+        enabled={audioEnabled && isLocked}
+        masterVolume={0.4}
+      />
+
+      {/* Audio Toggle Button */}
+      {isLocked && (
+        <AudioToggle
+          enabled={audioEnabled}
+          onToggle={() => setAudioEnabled(!audioEnabled)}
+          primaryColor={depthState.color.primary}
         />
       )}
     </div>
