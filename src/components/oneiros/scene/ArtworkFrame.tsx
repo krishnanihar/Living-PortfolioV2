@@ -4,12 +4,12 @@ import React, { useRef, useState, useMemo } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import { Text, Html } from '@react-three/drei';
 import * as THREE from 'three';
-import type { Artwork } from '@/data/mythos/artworks';
+import type { OneirosArtwork } from '@/data/oneiros/artworks-expanded';
 
 interface ArtworkFrameProps {
   position: [number, number, number];
   rotation?: [number, number, number];
-  artwork: Artwork;
+  artwork: OneirosArtwork;
   size?: [number, number];
 }
 

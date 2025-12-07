@@ -7,7 +7,7 @@ import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import { PalaceRoom } from './PalaceRoom';
 import { ArtworkFrame } from './ArtworkFrame';
-import { ARTWORKS } from '@/data/mythos/artworks';
+import { ONEIROS_ARTWORKS, type OneirosArtwork } from '@/data/oneiros/artworks-expanded';
 
 // WASD movement speed
 const MOVE_SPEED = 5;
@@ -386,7 +386,8 @@ function DepthIndicator({ depth }: { depth: string }) {
  */
 function SceneContent() {
   // Select 6 artworks for the gallery walls
-  const galleryArtworks = ARTWORKS.slice(0, 6);
+  // Select diverse artworks from the expanded database
+  const galleryArtworks = ONEIROS_ARTWORKS.slice(0, 6);
 
   return (
     <>
