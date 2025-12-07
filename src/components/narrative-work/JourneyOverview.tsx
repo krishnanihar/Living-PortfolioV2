@@ -69,7 +69,7 @@ export function JourneyOverview() {
     <section style={{
       position: 'relative',
       paddingTop: '6rem',
-      paddingBottom: '6rem',
+      paddingBottom: '1rem',
       paddingLeft: '1.5rem',
       paddingRight: '1.5rem',
       overflow: 'hidden',
