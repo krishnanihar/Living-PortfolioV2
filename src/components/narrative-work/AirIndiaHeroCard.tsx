@@ -62,7 +62,7 @@ export function AirIndiaHeroCard() {
     <section
       style={{
         maxWidth: 'clamp(1200px, 90vw, 1400px)',
-        margin: '0 auto 1rem auto',
+        margin: '0 auto 0.5rem auto',
         padding: '0 1.5rem',
         position: 'relative',
         zIndex: 1,
