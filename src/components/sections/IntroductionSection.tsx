@@ -12,15 +12,16 @@ import {
 } from '@/lib/personalization';
 
 // Ultra-Liquid Glass Style - iOS 26 Inspired (More Translucent)
+// Uses CSS variables for theme-aware colors
 const UNIFIED_GLASS = {
-  background: 'rgba(255, 255, 255, 0.03)',
+  background: 'var(--glass-03)',
   backdropFilter: 'blur(100px) saturate(220%) brightness(1.08)',
   WebkitBackdropFilter: 'blur(100px) saturate(220%) brightness(1.08)',
-  border: '1px solid rgba(255, 255, 255, 0.10)',
+  border: '1px solid var(--text-10)',
   boxShadow: `
     0 12px 48px rgba(0, 0, 0, 0.15),
     0 4px 16px rgba(0, 0, 0, 0.10),
-    inset 0 1px 2px rgba(255, 255, 255, 0.25),
+    inset 0 1px 2px var(--glass-25),
     inset 0 -1px 2px rgba(0, 0, 0, 0.15)
   `,
 };
@@ -324,7 +325,7 @@ export function IntroductionSection() {
               gap: '0.5rem',
               fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
               fontWeight: '300',
-              color: 'rgba(255, 255, 255, 0.6)',
+              color: 'var(--text-60)',
               letterSpacing: '0.02em',
               marginBottom: '0.5rem',
               opacity: animationStage >= 1 ? 1 : 0,
@@ -346,7 +347,7 @@ export function IntroductionSection() {
               lineHeight: '1.3',
               letterSpacing: '0.02em',
               marginBottom: greetingDisplay.secondary ? '0.75rem' : '1.5rem',
-              color: 'rgba(255, 255, 255, 0.95)',
+              color: 'var(--text-95)',
               position: 'relative',
               animation: 'particleGlow 12s ease-in-out infinite, breathe 15s ease-in-out infinite',
               opacity: animationStage >= 1 ? 1 : 0,
@@ -381,7 +382,7 @@ export function IntroductionSection() {
               style={{
                 fontSize: 'clamp(0.9375rem, 1.5vw, 1.125rem)',
                 fontWeight: '300',
-                color: 'rgba(255, 255, 255, 0.6)',
+                color: 'var(--text-60)',
                 letterSpacing: '0.01em',
                 marginBottom: '1.5rem',
                 opacity: animationStage >= 1 ? 1 : 0,
@@ -411,7 +412,7 @@ export function IntroductionSection() {
               style={{
                 fontSize: 'clamp(0.9375rem, 1.75vw, 1.125rem)',
                 fontWeight: '300',
-                color: 'rgba(255, 255, 255, 0.65)',
+                color: 'var(--text-65)',
                 letterSpacing: '0.01em',
                 lineHeight: '1.6',
               }}
@@ -452,7 +453,7 @@ export function IntroductionSection() {
                   : `linear-gradient(135deg, rgba(236, 72, 153, 0.03), rgba(139, 92, 246, 0.02))`,
                 borderColor: hoveredButton === 'contact' ? 'rgba(236, 72, 153, 0.12)' : 'rgba(236, 72, 153, 0.08)',
                 borderRadius: '20px',
-                color: 'rgba(255, 255, 255, 0.95)',
+                color: 'var(--text-95)',
                 textDecoration: 'none',
                 fontSize: '0.875rem',
                 fontWeight: '500',
@@ -513,7 +514,7 @@ export function IntroductionSection() {
                   : `linear-gradient(135deg, rgba(59, 130, 246, 0.03), rgba(139, 92, 246, 0.02))`,
                 borderColor: hoveredButton === 'github' ? 'rgba(59, 130, 246, 0.12)' : 'rgba(59, 130, 246, 0.08)',
                 borderRadius: '20px',
-                color: 'rgba(255, 255, 255, 0.95)',
+                color: 'var(--text-95)',
                 textDecoration: 'none',
                 fontSize: '0.875rem',
                 fontWeight: '500',
@@ -576,7 +577,7 @@ export function IntroductionSection() {
               background: 'rgba(139, 92, 246, 0.06)',
               borderColor: 'rgba(139, 92, 246, 0.15)',
               borderRadius: '20px',
-              color: 'rgba(255, 255, 255, 0.85)',
+              color: 'var(--text-85)',
               textDecoration: 'none',
               fontSize: '0.8125rem',
               fontWeight: '400',
@@ -611,7 +612,7 @@ export function IntroductionSection() {
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
-                color: 'rgba(255, 255, 255, 0.4)',
+                color: 'var(--text-40)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -619,11 +620,11 @@ export function IntroductionSection() {
                 transition: 'all 0.2s ease',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)';
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                e.currentTarget.style.color = 'var(--text-80)';
+                e.currentTarget.style.background = 'var(--glass-10)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'rgba(255, 255, 255, 0.4)';
+                e.currentTarget.style.color = 'var(--text-40)';
                 e.currentTarget.style.background = 'transparent';
               }}
             >
@@ -670,7 +671,7 @@ export function IntroductionSection() {
               fontSize: '0.75rem',
               fontWeight: '300',
               letterSpacing: '0.1em',
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: 'var(--text-50)',
               textTransform: 'uppercase',
             }}
           >
@@ -681,7 +682,7 @@ export function IntroductionSection() {
               animation: 'scrollBounce 3s ease-in-out infinite',
             }}
           >
-            <ChevronDown size={18} style={{ color: 'rgba(255, 255, 255, 0.5)' }} />
+            <ChevronDown size={18} style={{ color: 'var(--text-50)' }} />
           </div>
         </div>
       </section>
