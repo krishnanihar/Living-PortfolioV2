@@ -863,7 +863,7 @@ export function AirIndiaWork() {
         >
           <div className="atropos-scale" style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
             <div className="atropos-rotate" style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
-              <div className="atropos-inner" style={{ width: '100%', height: '100%', position: 'relative', pointerEvents: 'none' }}>
+              <div className="atropos-inner" style={{ width: '100%', height: '100%', position: 'relative' }}>
 
                 {/* LAYER 1: Sky Background - Furthest Back */}
                 <div
@@ -950,9 +950,8 @@ export function AirIndiaWork() {
                   }}
                 />
 
-                {/* Centered Content Card - Liquid Glass with Atropos Parallax */}
+                {/* Centered Content Card - Liquid Glass (Static, No Parallax) */}
                 <div
-                  data-atropos-offset="4"
                   style={{
                     position: 'absolute',
                     top: '50%',
