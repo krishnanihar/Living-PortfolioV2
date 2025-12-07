@@ -60,11 +60,6 @@ interface ProjectStat {
   label: string;
 }
 
-interface CompanyRelevance {
-  company: string;
-  relevance: string;
-}
-
 interface Project {
   id: number;
   label: string;
@@ -75,9 +70,6 @@ interface Project {
   expandedDescription?: string;
   imagePlaceholder: string;
   stats: ProjectStat[];
-  recruiterFrame: string;
-  recruiterInsight: string;
-  companyRelevance: CompanyRelevance[];
   icon: LucideIcon;
   color: string;
   category: string;
@@ -171,13 +163,6 @@ const projects: Project[] = [
       { value: '100s', label: 'Screens Analyzed' },
       { value: 'Core', label: 'Infrastructure' }
     ],
-    recruiterFrame: 'Systems thinking from ambiguity',
-    recruiterInsight: 'Built systematic framework from chaos. Demonstrates ability to create order from ambiguity at enterprise scale.',
-    companyRelevance: [
-      { company: 'GitLab', relevance: 'Systematic documentation, scalable architecture' },
-      { company: 'Anthropic', relevance: 'Ambiguity tolerance, first-principles thinking' },
-      { company: 'Hugging Face', relevance: 'Technical depth, cross-team collaboration' }
-    ],
     icon: Layers,
     color: '99, 102, 241',
     category: 'SYSTEM'
@@ -194,13 +179,6 @@ const projects: Project[] = [
       { value: '450+', label: 'Daily Users' },
       { value: '30%', label: 'Faster Reviews' },
       { value: 'Active', label: 'Production Use' }
-    ],
-    recruiterFrame: 'Builder mindset — shipped tool when none existed',
-    recruiterInsight: 'Builder mindset — shipped production tool when none existed. Shows initiative and technical depth beyond design.',
-    companyRelevance: [
-      { company: 'GitLab', relevance: 'Systems thinking, async tooling' },
-      { company: 'Anthropic', relevance: 'Builder mindset, ships opinionated products' },
-      { company: 'Automattic', relevance: 'Initiative, solved real problems' }
     ],
     icon: Target,
     color: '218, 14, 41',
@@ -219,13 +197,6 @@ const projects: Project[] = [
       { value: 'NLU', label: 'Powered' },
       { value: 'Singapore', label: 'Museum Display' }
     ],
-    recruiterFrame: 'AI-native thinking before playbooks',
-    recruiterInsight: 'Designed for AI before industry patterns existed. Contributed to Red Dot Award-winning feature now in Singapore museum.',
-    companyRelevance: [
-      { company: 'Anthropic', relevance: 'AI-native product thinking, innovative interaction paradigms' },
-      { company: 'Hugging Face', relevance: 'ML/AI product experience, forward-looking design' },
-      { company: 'GitLab', relevance: 'Complex technical product design' }
-    ],
     icon: Search,
     color: '139, 92, 246',
     category: 'AI'
@@ -242,13 +213,6 @@ const projects: Project[] = [
       { value: 'MCP', label: 'Protocol' },
       { value: '0', label: 'Slack Chaos' },
       { value: 'AI', label: 'Assisted' }
-    ],
-    recruiterFrame: 'Understands AI infrastructure (Anthropic created MCP)',
-    recruiterInsight: 'Early adopter of emerging AI infrastructure. Understands and implements cutting-edge protocols (Anthropic created MCP).',
-    companyRelevance: [
-      { company: 'Anthropic', relevance: 'Directly relevant — implemented MCP you created' },
-      { company: 'GitLab', relevance: 'Design-engineering workflow optimization' },
-      { company: 'Automattic', relevance: 'Cross-functional collaboration, async tooling' }
     ],
     icon: GitBranch,
     color: '16, 185, 129',
@@ -267,13 +231,6 @@ const projects: Project[] = [
       { value: '3000+', label: 'Hours Content' },
       { value: 'Asia #1', label: 'IFE Ranking' }
     ],
-    recruiterFrame: 'Constraint-driven design excellence',
-    recruiterInsight: 'Unique constraint-driven design — typography at distance, touch during turbulence, zero onboarding. Won Asia\'s Leading IFE.',
-    companyRelevance: [
-      { company: 'Automattic', relevance: 'UI craft, accessibility across demographics' },
-      { company: 'GitLab', relevance: 'Complex interface design, user-centered methodology' },
-      { company: 'Anthropic', relevance: 'Designing for diverse user contexts' }
-    ],
     icon: Monitor,
     color: '251, 146, 60',
     category: 'IFE'
@@ -290,13 +247,6 @@ const projects: Project[] = [
       { value: 'Data', label: 'Driven' },
       { value: 'Quality', label: 'Improved' },
       { value: 'Strategic', label: 'Input' }
-    ],
-    recruiterFrame: 'Data-driven design, research methodology',
-    recruiterInsight: 'Transformed feedback from checkbox to strategic input. Data-driven approach to improving user research quality.',
-    companyRelevance: [
-      { company: 'GitLab', relevance: 'User research methodology, data-driven decisions' },
-      { company: 'Automattic', relevance: 'Consumer feedback integration' },
-      { company: 'Hugging Face', relevance: 'Community feedback systems' }
     ],
     icon: BarChart3,
     color: '236, 72, 153',
@@ -315,13 +265,6 @@ const projects: Project[] = [
       { value: 'Ongoing', label: 'Reference' },
       { value: 'Team', label: 'Resource' }
     ],
-    recruiterFrame: 'Strategic thinking, research skills',
-    recruiterInsight: 'Created lasting team resource through systematic research. Strategic benchmarking against 15+ competitors.',
-    companyRelevance: [
-      { company: 'GitLab', relevance: 'Strategic research, documentation excellence' },
-      { company: 'Hugging Face', relevance: 'Industry analysis, competitive positioning' },
-      { company: 'Automattic', relevance: 'Consumer product benchmarking' }
-    ],
     icon: Compass,
     color: '14, 165, 233',
     category: 'RESEARCH'
@@ -338,13 +281,6 @@ const projects: Project[] = [
       { value: 'Culture', label: 'Built' },
       { value: 'Shared', label: 'Vocabulary' },
       { value: 'Self', label: 'Initiated' }
-    ],
-    recruiterFrame: 'Leadership without authority',
-    recruiterInsight: 'Leadership without authority — built team programs independently. Created shared vocabulary and culture from scratch.',
-    companyRelevance: [
-      { company: 'Automattic', relevance: 'Remote team culture, written communication' },
-      { company: 'GitLab', relevance: 'Async collaboration, distributed team building' },
-      { company: 'Anthropic', relevance: 'Self-directed initiative, team enablement' }
     ],
     icon: Users,
     color: '251, 191, 36',
@@ -363,13 +299,6 @@ const projects: Project[] = [
       { value: 'AI', label: 'Powered' },
       { value: 'Working', label: 'Concept' }
     ],
-    recruiterFrame: 'External collaboration, AI application',
-    recruiterInsight: 'External collaboration with Microsoft. Won with AI-powered solution addressing real customer friction points.',
-    companyRelevance: [
-      { company: 'Anthropic', relevance: 'AI application to real problems, competitive wins' },
-      { company: 'Hugging Face', relevance: 'ML/AI product thinking, external partnerships' },
-      { company: 'GitLab', relevance: 'Cross-company collaboration, technical depth' }
-    ],
     icon: Zap,
     color: '99, 102, 241',
     category: 'HACKATHON'
@@ -386,13 +315,6 @@ const projects: Project[] = [
       { value: 'Winner', label: 'Internal' },
       { value: '24hrs', label: 'Shipped' },
       { value: 'E2E', label: 'Execution' }
-    ],
-    recruiterFrame: 'Speed, full-stack capability',
-    recruiterInsight: 'Full-stack execution — research, design, code, ship in 24 hours. Demonstrates speed and technical depth.',
-    companyRelevance: [
-      { company: 'Anthropic', relevance: 'End-to-end execution, builder mindset' },
-      { company: 'Hugging Face', relevance: 'Technical depth, rapid prototyping' },
-      { company: 'Automattic', relevance: 'Full-stack capability, self-direction' }
     ],
     icon: Rocket,
     color: '218, 14, 41',
@@ -554,11 +476,13 @@ export function AirIndiaWork() {
   const [isApplyingToken, setIsApplyingToken] = useState(false);
 
   // Figma Variables Panel states
-  const [figmaExpandedCollections, setFigmaExpandedCollections] = useState<Set<string>>(new Set(['Primitives']));
-  const [figmaSelectedCollection, setFigmaSelectedCollection] = useState<string>('Primitives');
-  const [figmaExpandedGroups, setFigmaExpandedGroups] = useState<Set<string>>(new Set(['Colors', 'Typography', 'Spacing']));
+  const [figmaExpandedCollections, setFigmaExpandedCollections] = useState<Set<string>>(new Set(['primitives']));
+  const [figmaSelectedCollection, setFigmaSelectedCollection] = useState<string>('primitives');
+  const [figmaExpandedCategories, setFigmaExpandedCategories] = useState<Set<string>>(new Set(['color']));
+  const [figmaExpandedGroups, setFigmaExpandedGroups] = useState<Set<string>>(new Set(['color/brand', 'color/text']));
   const [figmaHoveredRow, setFigmaHoveredRow] = useState<string | null>(null);
   const [figmaHoveredSidebarItem, setFigmaHoveredSidebarItem] = useState<string | null>(null);
+  const [figmaSearchQuery, setFigmaSearchQuery] = useState<string>('');
   // Enhanced interactivity states
   const [figmaSelectedRows, setFigmaSelectedRows] = useState<Set<string>>(new Set());
   const [figmaCascadePhase, setFigmaCascadePhase] = useState<'idle' | 'playing' | 'complete'>('idle');
@@ -2661,229 +2585,1164 @@ export function AirIndiaWork() {
               </>
             );
 
-            // Render Design System Demo - Figma Variables Panel
+            // Render Design System Demo - Figma Variables Panel (Pixel-Perfect)
+            // Figma dark theme color constants
+            const FIGMA = {
+              bg: '#1E1E1E',
+              bgSecondary: '#2C2C2C',
+              bgTertiary: '#252525',
+              bgInput: '#383838',
+              border: 'rgba(255,255,255,0.08)',
+              borderSubtle: 'rgba(255,255,255,0.04)',
+              textPrimary: 'rgba(255,255,255,0.9)',
+              textSecondary: 'rgba(255,255,255,0.6)',
+              textMuted: 'rgba(255,255,255,0.4)',
+              textDisabled: 'rgba(255,255,255,0.25)',
+              brand: '#0D99FF',
+              brandSubtle: 'rgba(13,153,255,0.15)',
+              hover: 'rgba(255,255,255,0.04)',
+              selected: 'rgba(24,160,251,0.12)',
+              success: '#30D158',
+            };
+
+            // Complete W3C DTCG-compliant token data structure (~105 tokens)
+            const figmaTokenData = {
+              primitives: {
+                id: 'primitives',
+                name: 'Primitives',
+                categories: [
+                  {
+                    id: 'color',
+                    name: 'color',
+                    displayName: 'Colors',
+                    icon: 'circle' as const,
+                    groups: [
+                      {
+                        id: 'brand',
+                        name: 'brand',
+                        displayName: 'Brand',
+                        tokens: [
+                          { name: 'color/brand/primary', type: 'color', light: '#DA0E29', dark: '#FF4D6A' },
+                          { name: 'color/brand/secondary', type: 'color', light: '#0D99FF', dark: '#3DB4FF' },
+                          { name: 'color/brand/accent', type: 'color', light: '#6366F1', dark: '#818CF8' },
+                        ]
+                      },
+                      {
+                        id: 'text',
+                        name: 'text',
+                        displayName: 'Text',
+                        tokens: [
+                          { name: 'color/text/primary', type: 'color', light: '#0A0A0A', dark: '#FFFFFF' },
+                          { name: 'color/text/secondary', type: 'color', light: '#525252', dark: '#A1A1AA' },
+                          { name: 'color/text/tertiary', type: 'color', light: '#737373', dark: '#71717A' },
+                          { name: 'color/text/muted', type: 'color', light: '#A3A3A3', dark: '#52525B' },
+                          { name: 'color/text/inverse', type: 'color', light: '#FFFFFF', dark: '#0A0A0A' },
+                          { name: 'color/text/link', type: 'color', light: '#0D99FF', dark: '#3DB4FF' },
+                          { name: 'color/text/success', type: 'color', light: '#16A34A', dark: '#22C55E' },
+                          { name: 'color/text/warning', type: 'color', light: '#CA8A04', dark: '#FACC15' },
+                          { name: 'color/text/error', type: 'color', light: '#DC2626', dark: '#EF4444' },
+                        ]
+                      },
+                      {
+                        id: 'surface',
+                        name: 'surface',
+                        displayName: 'Surface',
+                        tokens: [
+                          { name: 'color/surface/primary', type: 'color', light: '#FFFFFF', dark: '#0A0A0A' },
+                          { name: 'color/surface/secondary', type: 'color', light: '#FAFAFA', dark: '#141414' },
+                          { name: 'color/surface/tertiary', type: 'color', light: '#F5F5F5', dark: '#1E1E1E' },
+                          { name: 'color/surface/elevated', type: 'color', light: '#FFFFFF', dark: '#252525' },
+                          { name: 'color/surface/overlay', type: 'color', light: 'rgba(0,0,0,0.5)', dark: 'rgba(0,0,0,0.7)' },
+                          { name: 'color/surface/inverse', type: 'color', light: '#0A0A0A', dark: '#FFFFFF' },
+                        ]
+                      },
+                      {
+                        id: 'border',
+                        name: 'border',
+                        displayName: 'Border',
+                        tokens: [
+                          { name: 'color/border/default', type: 'color', light: '#E5E5E5', dark: '#2E2E2E' },
+                          { name: 'color/border/subtle', type: 'color', light: '#F0F0F0', dark: '#1A1A1A' },
+                          { name: 'color/border/strong', type: 'color', light: '#D4D4D4', dark: '#404040' },
+                          { name: 'color/border/focus', type: 'color', light: '#0D99FF', dark: '#3DB4FF' },
+                          { name: 'color/border/error', type: 'color', light: '#DC2626', dark: '#EF4444' },
+                        ]
+                      },
+                      {
+                        id: 'semantic',
+                        name: 'semantic',
+                        displayName: 'Semantic',
+                        tokens: [
+                          { name: 'color/semantic/success', type: 'color', light: '#16A34A', dark: '#22C55E' },
+                          { name: 'color/semantic/success-subtle', type: 'color', light: '#DCFCE7', dark: '#052E16' },
+                          { name: 'color/semantic/warning', type: 'color', light: '#CA8A04', dark: '#FACC15' },
+                          { name: 'color/semantic/warning-subtle', type: 'color', light: '#FEF9C3', dark: '#422006' },
+                          { name: 'color/semantic/error', type: 'color', light: '#DC2626', dark: '#EF4444' },
+                          { name: 'color/semantic/error-subtle', type: 'color', light: '#FEE2E2', dark: '#450A0A' },
+                          { name: 'color/semantic/info', type: 'color', light: '#0D99FF', dark: '#3DB4FF' },
+                          { name: 'color/semantic/info-subtle', type: 'color', light: '#DBEAFE', dark: '#082F49' },
+                        ]
+                      },
+                      {
+                        id: 'interaction',
+                        name: 'interaction',
+                        displayName: 'Interaction',
+                        tokens: [
+                          { name: 'color/interaction/hover', type: 'color', light: 'rgba(0,0,0,0.04)', dark: 'rgba(255,255,255,0.04)' },
+                          { name: 'color/interaction/pressed', type: 'color', light: 'rgba(0,0,0,0.08)', dark: 'rgba(255,255,255,0.08)' },
+                          { name: 'color/interaction/disabled', type: 'color', light: 'rgba(0,0,0,0.12)', dark: 'rgba(255,255,255,0.12)' },
+                          { name: 'color/interaction/focus-ring', type: 'color', light: 'rgba(13,153,255,0.4)', dark: 'rgba(61,180,255,0.4)' },
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    id: 'typography',
+                    name: 'typography',
+                    displayName: 'Typography',
+                    icon: 'text' as const,
+                    groups: [
+                      {
+                        id: 'font-family',
+                        name: 'font-family',
+                        displayName: 'Font Family',
+                        tokens: [
+                          { name: 'typography/font-family/heading', type: 'string', light: 'Space Grotesk', dark: 'Space Grotesk' },
+                          { name: 'typography/font-family/body', type: 'string', light: 'DM Sans', dark: 'DM Sans' },
+                          { name: 'typography/font-family/mono', type: 'string', light: 'SF Mono', dark: 'SF Mono' },
+                        ]
+                      },
+                      {
+                        id: 'font-size',
+                        name: 'font-size',
+                        displayName: 'Font Size',
+                        tokens: [
+                          { name: 'typography/font-size/xs', type: 'dimension', light: '12px', dark: '12px' },
+                          { name: 'typography/font-size/sm', type: 'dimension', light: '14px', dark: '14px' },
+                          { name: 'typography/font-size/md', type: 'dimension', light: '16px', dark: '16px' },
+                          { name: 'typography/font-size/lg', type: 'dimension', light: '18px', dark: '18px' },
+                          { name: 'typography/font-size/xl', type: 'dimension', light: '20px', dark: '20px' },
+                          { name: 'typography/font-size/2xl', type: 'dimension', light: '24px', dark: '24px' },
+                          { name: 'typography/font-size/3xl', type: 'dimension', light: '32px', dark: '32px' },
+                          { name: 'typography/font-size/4xl', type: 'dimension', light: '40px', dark: '40px' },
+                        ]
+                      },
+                      {
+                        id: 'font-weight',
+                        name: 'font-weight',
+                        displayName: 'Font Weight',
+                        tokens: [
+                          { name: 'typography/font-weight/regular', type: 'number', light: '400', dark: '400' },
+                          { name: 'typography/font-weight/medium', type: 'number', light: '500', dark: '500' },
+                          { name: 'typography/font-weight/semibold', type: 'number', light: '600', dark: '600' },
+                          { name: 'typography/font-weight/bold', type: 'number', light: '700', dark: '700' },
+                        ]
+                      },
+                      {
+                        id: 'line-height',
+                        name: 'line-height',
+                        displayName: 'Line Height',
+                        tokens: [
+                          { name: 'typography/line-height/tight', type: 'number', light: '1.2', dark: '1.2' },
+                          { name: 'typography/line-height/normal', type: 'number', light: '1.5', dark: '1.5' },
+                          { name: 'typography/line-height/relaxed', type: 'number', light: '1.75', dark: '1.75' },
+                        ]
+                      },
+                      {
+                        id: 'letter-spacing',
+                        name: 'letter-spacing',
+                        displayName: 'Letter Spacing',
+                        tokens: [
+                          { name: 'typography/letter-spacing/tight', type: 'dimension', light: '-0.02em', dark: '-0.02em' },
+                          { name: 'typography/letter-spacing/normal', type: 'dimension', light: '0', dark: '0' },
+                          { name: 'typography/letter-spacing/wide', type: 'dimension', light: '0.05em', dark: '0.05em' },
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    id: 'spacing',
+                    name: 'spacing',
+                    displayName: 'Spacing',
+                    icon: 'spacing' as const,
+                    groups: [
+                      {
+                        id: 'scale',
+                        name: 'scale',
+                        displayName: 'Scale',
+                        tokens: [
+                          { name: 'spacing/0', type: 'dimension', light: '0px', dark: '0px' },
+                          { name: 'spacing/1', type: 'dimension', light: '4px', dark: '4px' },
+                          { name: 'spacing/2', type: 'dimension', light: '8px', dark: '8px' },
+                          { name: 'spacing/3', type: 'dimension', light: '12px', dark: '12px' },
+                          { name: 'spacing/4', type: 'dimension', light: '16px', dark: '16px' },
+                          { name: 'spacing/5', type: 'dimension', light: '20px', dark: '20px' },
+                          { name: 'spacing/6', type: 'dimension', light: '24px', dark: '24px' },
+                          { name: 'spacing/8', type: 'dimension', light: '32px', dark: '32px' },
+                          { name: 'spacing/10', type: 'dimension', light: '40px', dark: '40px' },
+                          { name: 'spacing/12', type: 'dimension', light: '48px', dark: '48px' },
+                          { name: 'spacing/16', type: 'dimension', light: '64px', dark: '64px' },
+                          { name: 'spacing/20', type: 'dimension', light: '80px', dark: '80px' },
+                          { name: 'spacing/24', type: 'dimension', light: '96px', dark: '96px' },
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    id: 'sizing',
+                    name: 'sizing',
+                    displayName: 'Sizing',
+                    icon: 'hash' as const,
+                    groups: [
+                      {
+                        id: 'radius',
+                        name: 'radius',
+                        displayName: 'Border Radius',
+                        tokens: [
+                          { name: 'sizing/radius/none', type: 'dimension', light: '0px', dark: '0px' },
+                          { name: 'sizing/radius/sm', type: 'dimension', light: '4px', dark: '4px' },
+                          { name: 'sizing/radius/md', type: 'dimension', light: '8px', dark: '8px' },
+                          { name: 'sizing/radius/lg', type: 'dimension', light: '12px', dark: '12px' },
+                          { name: 'sizing/radius/xl', type: 'dimension', light: '16px', dark: '16px' },
+                          { name: 'sizing/radius/full', type: 'dimension', light: '9999px', dark: '9999px' },
+                        ]
+                      },
+                      {
+                        id: 'border-width',
+                        name: 'border-width',
+                        displayName: 'Border Width',
+                        tokens: [
+                          { name: 'sizing/border-width/none', type: 'dimension', light: '0px', dark: '0px' },
+                          { name: 'sizing/border-width/thin', type: 'dimension', light: '1px', dark: '1px' },
+                          { name: 'sizing/border-width/medium', type: 'dimension', light: '2px', dark: '2px' },
+                          { name: 'sizing/border-width/thick', type: 'dimension', light: '4px', dark: '4px' },
+                        ]
+                      },
+                      {
+                        id: 'icon',
+                        name: 'icon',
+                        displayName: 'Icon Sizes',
+                        tokens: [
+                          { name: 'sizing/icon/xs', type: 'dimension', light: '12px', dark: '12px' },
+                          { name: 'sizing/icon/sm', type: 'dimension', light: '16px', dark: '16px' },
+                          { name: 'sizing/icon/md', type: 'dimension', light: '20px', dark: '20px' },
+                          { name: 'sizing/icon/lg', type: 'dimension', light: '24px', dark: '24px' },
+                          { name: 'sizing/icon/xl', type: 'dimension', light: '32px', dark: '32px' },
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    id: 'effect',
+                    name: 'effect',
+                    displayName: 'Effects',
+                    icon: 'hash' as const,
+                    groups: [
+                      {
+                        id: 'shadow',
+                        name: 'shadow',
+                        displayName: 'Shadows',
+                        tokens: [
+                          { name: 'effect/shadow/none', type: 'string', light: 'none', dark: 'none' },
+                          { name: 'effect/shadow/sm', type: 'string', light: '0 1px 2px rgba(0,0,0,0.05)', dark: '0 1px 2px rgba(0,0,0,0.3)' },
+                          { name: 'effect/shadow/md', type: 'string', light: '0 4px 6px rgba(0,0,0,0.07)', dark: '0 4px 6px rgba(0,0,0,0.4)' },
+                          { name: 'effect/shadow/lg', type: 'string', light: '0 10px 15px rgba(0,0,0,0.1)', dark: '0 10px 15px rgba(0,0,0,0.5)' },
+                          { name: 'effect/shadow/xl', type: 'string', light: '0 20px 25px rgba(0,0,0,0.1)', dark: '0 20px 25px rgba(0,0,0,0.6)' },
+                        ]
+                      },
+                      {
+                        id: 'opacity',
+                        name: 'opacity',
+                        displayName: 'Opacity',
+                        tokens: [
+                          { name: 'effect/opacity/0', type: 'number', light: '0', dark: '0' },
+                          { name: 'effect/opacity/5', type: 'number', light: '0.05', dark: '0.05' },
+                          { name: 'effect/opacity/10', type: 'number', light: '0.1', dark: '0.1' },
+                          { name: 'effect/opacity/20', type: 'number', light: '0.2', dark: '0.2' },
+                          { name: 'effect/opacity/50', type: 'number', light: '0.5', dark: '0.5' },
+                          { name: 'effect/opacity/100', type: 'number', light: '1', dark: '1' },
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    id: 'number',
+                    name: 'number',
+                    displayName: 'Numbers',
+                    icon: 'hash' as const,
+                    groups: [
+                      {
+                        id: 'z-index',
+                        name: 'z-index',
+                        displayName: 'Z-Index',
+                        tokens: [
+                          { name: 'number/z-index/base', type: 'number', light: '0', dark: '0' },
+                          { name: 'number/z-index/dropdown', type: 'number', light: '100', dark: '100' },
+                          { name: 'number/z-index/sticky', type: 'number', light: '200', dark: '200' },
+                          { name: 'number/z-index/modal', type: 'number', light: '300', dark: '300' },
+                          { name: 'number/z-index/toast', type: 'number', light: '400', dark: '400' },
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              semantics: {
+                id: 'semantics',
+                name: 'Semantics',
+                categories: [
+                  {
+                    id: 'text',
+                    name: 'text',
+                    displayName: 'Text',
+                    icon: 'text' as const,
+                    groups: [
+                      {
+                        id: 'text-colors',
+                        name: 'text-colors',
+                        displayName: 'Text Colors',
+                        tokens: [
+                          { name: 'text/primary', type: 'color', light: '#0A0A0A', dark: '#FFFFFF', alias: 'color/text/primary' },
+                          { name: 'text/secondary', type: 'color', light: '#525252', dark: '#A1A1AA', alias: 'color/text/secondary' },
+                          { name: 'text/tertiary', type: 'color', light: '#737373', dark: '#71717A', alias: 'color/text/tertiary' },
+                          { name: 'text/muted', type: 'color', light: '#A3A3A3', dark: '#52525B', alias: 'color/text/muted' },
+                          { name: 'text/inverse', type: 'color', light: '#FFFFFF', dark: '#0A0A0A', alias: 'color/text/inverse' },
+                          { name: 'text/link', type: 'color', light: '#0D99FF', dark: '#3DB4FF', alias: 'color/text/link' },
+                          { name: 'text/on-action', type: 'color', light: '#FFFFFF', dark: '#FFFFFF', alias: 'color/text/inverse' },
+                          { name: 'text/success', type: 'color', light: '#16A34A', dark: '#22C55E', alias: 'color/text/success' },
+                          { name: 'text/error', type: 'color', light: '#DC2626', dark: '#EF4444', alias: 'color/text/error' },
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    id: 'background',
+                    name: 'background',
+                    displayName: 'Background',
+                    icon: 'circle' as const,
+                    groups: [
+                      {
+                        id: 'surfaces',
+                        name: 'surfaces',
+                        displayName: 'Surfaces',
+                        tokens: [
+                          { name: 'bg/canvas', type: 'color', light: '#FFFFFF', dark: '#0A0A0A', alias: 'color/surface/primary' },
+                          { name: 'bg/surface', type: 'color', light: '#FAFAFA', dark: '#141414', alias: 'color/surface/secondary' },
+                          { name: 'bg/elevated', type: 'color', light: '#FFFFFF', dark: '#252525', alias: 'color/surface/elevated' },
+                          { name: 'bg/overlay', type: 'color', light: 'rgba(0,0,0,0.5)', dark: 'rgba(0,0,0,0.7)', alias: 'color/surface/overlay' },
+                          { name: 'bg/inverse', type: 'color', light: '#0A0A0A', dark: '#FFFFFF', alias: 'color/surface/inverse' },
+                          { name: 'bg/subtle', type: 'color', light: '#F5F5F5', dark: '#1E1E1E', alias: 'color/surface/tertiary' },
+                          { name: 'bg/brand', type: 'color', light: '#DA0E29', dark: '#FF4D6A', alias: 'color/brand/primary' },
+                          { name: 'bg/muted', type: 'color', light: 'rgba(0,0,0,0.12)', dark: 'rgba(255,255,255,0.12)', alias: 'color/interaction/disabled' },
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    id: 'action',
+                    name: 'action',
+                    displayName: 'Action',
+                    icon: 'circle' as const,
+                    groups: [
+                      {
+                        id: 'interactive',
+                        name: 'interactive',
+                        displayName: 'Interactive',
+                        tokens: [
+                          { name: 'action/primary', type: 'color', light: '#DA0E29', dark: '#FF4D6A', alias: 'color/brand/primary' },
+                          { name: 'action/primary-hover', type: 'color', light: '#0D99FF', dark: '#3DB4FF', alias: 'color/brand/secondary' },
+                          { name: 'action/secondary', type: 'color', light: '#FFFFFF', dark: '#252525', alias: 'color/surface/elevated' },
+                          { name: 'action/secondary-hover', type: 'color', light: 'rgba(0,0,0,0.04)', dark: 'rgba(255,255,255,0.04)', alias: 'color/interaction/hover' },
+                          { name: 'action/ghost', type: 'color', light: 'transparent', dark: 'transparent', alias: 'transparent' },
+                          { name: 'action/ghost-hover', type: 'color', light: 'rgba(0,0,0,0.04)', dark: 'rgba(255,255,255,0.04)', alias: 'color/interaction/hover' },
+                          { name: 'action/disabled', type: 'color', light: 'rgba(0,0,0,0.12)', dark: 'rgba(255,255,255,0.12)', alias: 'color/interaction/disabled' },
+                          { name: 'action/destructive', type: 'color', light: '#DC2626', dark: '#EF4444', alias: 'color/semantic/error' },
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    id: 'border',
+                    name: 'border',
+                    displayName: 'Border',
+                    icon: 'hash' as const,
+                    groups: [
+                      {
+                        id: 'border-colors',
+                        name: 'border-colors',
+                        displayName: 'Border Colors',
+                        tokens: [
+                          { name: 'border/default', type: 'color', light: '#E5E5E5', dark: '#2E2E2E', alias: 'color/border/default' },
+                          { name: 'border/subtle', type: 'color', light: '#F0F0F0', dark: '#1A1A1A', alias: 'color/border/subtle' },
+                          { name: 'border/strong', type: 'color', light: '#D4D4D4', dark: '#404040', alias: 'color/border/strong' },
+                          { name: 'border/focus', type: 'color', light: '#0D99FF', dark: '#3DB4FF', alias: 'color/border/focus' },
+                          { name: 'border/error', type: 'color', light: '#DC2626', dark: '#EF4444', alias: 'color/border/error' },
+                          { name: 'border/interactive', type: 'color', light: '#6366F1', dark: '#818CF8', alias: 'color/brand/accent' },
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    id: 'feedback',
+                    name: 'feedback',
+                    displayName: 'Feedback',
+                    icon: 'circle' as const,
+                    groups: [
+                      {
+                        id: 'status',
+                        name: 'status',
+                        displayName: 'Status',
+                        tokens: [
+                          { name: 'feedback/success', type: 'color', light: '#16A34A', dark: '#22C55E', alias: 'color/semantic/success' },
+                          { name: 'feedback/success-subtle', type: 'color', light: '#DCFCE7', dark: '#052E16', alias: 'color/semantic/success-subtle' },
+                          { name: 'feedback/warning', type: 'color', light: '#CA8A04', dark: '#FACC15', alias: 'color/semantic/warning' },
+                          { name: 'feedback/warning-subtle', type: 'color', light: '#FEF9C3', dark: '#422006', alias: 'color/semantic/warning-subtle' },
+                          { name: 'feedback/error', type: 'color', light: '#DC2626', dark: '#EF4444', alias: 'color/semantic/error' },
+                          { name: 'feedback/error-subtle', type: 'color', light: '#FEE2E2', dark: '#450A0A', alias: 'color/semantic/error-subtle' },
+                          { name: 'feedback/info', type: 'color', light: '#0D99FF', dark: '#3DB4FF', alias: 'color/semantic/info' },
+                          { name: 'feedback/info-subtle', type: 'color', light: '#DBEAFE', dark: '#082F49', alias: 'color/semantic/info-subtle' },
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    id: 'icon',
+                    name: 'icon',
+                    displayName: 'Icon',
+                    icon: 'circle' as const,
+                    groups: [
+                      {
+                        id: 'icon-colors',
+                        name: 'icon-colors',
+                        displayName: 'Icon Colors',
+                        tokens: [
+                          { name: 'icon/primary', type: 'color', light: '#0A0A0A', dark: '#FFFFFF', alias: 'color/text/primary' },
+                          { name: 'icon/secondary', type: 'color', light: '#525252', dark: '#A1A1AA', alias: 'color/text/secondary' },
+                          { name: 'icon/muted', type: 'color', light: '#A3A3A3', dark: '#52525B', alias: 'color/text/muted' },
+                          { name: 'icon/inverse', type: 'color', light: '#FFFFFF', dark: '#0A0A0A', alias: 'color/text/inverse' },
+                          { name: 'icon/brand', type: 'color', light: '#DA0E29', dark: '#FF4D6A', alias: 'color/brand/primary' },
+                          { name: 'icon/interactive', type: 'color', light: '#6366F1', dark: '#818CF8', alias: 'color/brand/accent' },
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            };
+
+            // Helper function to get total token count for a collection
+            const getCollectionTokenCount = (collectionId: string) => {
+              const collection = figmaTokenData[collectionId as keyof typeof figmaTokenData];
+              if (!collection) return 0;
+              return collection.categories.reduce((catAcc, cat) =>
+                catAcc + cat.groups.reduce((grpAcc, grp) => grpAcc + grp.tokens.length, 0), 0
+              );
+            };
+
+            // Helper function to get category token count
+            const getCategoryTokenCount = (collectionId: string, categoryId: string) => {
+              const collection = figmaTokenData[collectionId as keyof typeof figmaTokenData];
+              if (!collection) return 0;
+              const category = collection.categories.find(c => c.id === categoryId);
+              if (!category) return 0;
+              return category.groups.reduce((acc, grp) => acc + grp.tokens.length, 0);
+            };
+
+            // Helper to check if value is a color
+            const isColorValue = (value: string) => value.startsWith('#') || value.startsWith('rgba') || value.startsWith('rgb');
+
+            // Helper to render type icon
+            const renderTypeIcon = (type: string, colorValue?: string) => {
+              if (type === 'color' && colorValue) {
+                return (
+                  <div style={{
+                    width: '14px',
+                    height: '14px',
+                    borderRadius: '3px',
+                    background: colorValue,
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    flexShrink: 0,
+                  }} />
+                );
+              }
+              if (type === 'number' || type === 'dimension') {
+                return (
+                  <div style={{
+                    width: '14px',
+                    height: '14px',
+                    borderRadius: '3px',
+                    background: 'rgba(255,255,255,0.08)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}>
+                    <span style={{ fontSize: '9px', fontWeight: 600, color: FIGMA.textSecondary }}>#</span>
+                  </div>
+                );
+              }
+              if (type === 'string') {
+                return (
+                  <div style={{
+                    width: '14px',
+                    height: '14px',
+                    borderRadius: '3px',
+                    background: 'rgba(255,255,255,0.08)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}>
+                    <span style={{ fontSize: '9px', fontWeight: 600, color: FIGMA.textSecondary }}>T</span>
+                  </div>
+                );
+              }
+              return null;
+            };
+
+            // Helper to render category icon
+            const renderCategoryIcon = (icon: string) => {
+              if (icon === 'circle') {
+                return (
+                  <div style={{
+                    width: '12px',
+                    height: '12px',
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #DA0E29, #6366F1, #0D99FF)',
+                    flexShrink: 0,
+                  }} />
+                );
+              }
+              if (icon === 'text') {
+                return (
+                  <div style={{
+                    width: '12px',
+                    height: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}>
+                    <span style={{ fontSize: '11px', fontWeight: 700, color: FIGMA.textSecondary }}>T</span>
+                  </div>
+                );
+              }
+              if (icon === 'spacing') {
+                return (
+                  <div style={{
+                    width: '12px',
+                    height: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '2px',
+                    flexShrink: 0,
+                  }}>
+                    <div style={{ width: '2px', height: '8px', background: FIGMA.textSecondary, borderRadius: '1px' }} />
+                    <div style={{ width: '2px', height: '8px', background: FIGMA.textSecondary, borderRadius: '1px' }} />
+                  </div>
+                );
+              }
+              return (
+                <div style={{
+                  width: '12px',
+                  height: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}>
+                  <span style={{ fontSize: '10px', fontWeight: 600, color: FIGMA.textSecondary }}>#</span>
+                </div>
+              );
+            };
+
+            // Filter tokens by search query
+            const filterTokensBySearch = (tokens: typeof figmaTokenData.primitives.categories[0]['groups'][0]['tokens']) => {
+              if (!figmaSearchQuery.trim()) return tokens;
+              const query = figmaSearchQuery.toLowerCase();
+              return tokens.filter(t => t.name.toLowerCase().includes(query));
+            };
+
+            // Play cascade animation handler
+            const playCascadeAnimation = () => {
+              if (figmaCascadePhase === 'playing') return;
+              setFigmaCascadePhase('playing');
+
+              // Step 1: Expand color category
+              setFigmaExpandedCategories(new Set(['color']));
+              setTimeout(() => {
+                setFigmaExpandedGroups(new Set(['color/brand']));
+                setFigmaHighlightedGroup('color/brand');
+              }, 200);
+
+              // Step 2: Pulse through brand tokens
+              setTimeout(() => setFigmaPulsingRow('color/brand/primary'), 400);
+              setTimeout(() => setFigmaPulsingRow('color/brand/secondary'), 700);
+              setTimeout(() => setFigmaPulsingRow('color/brand/accent'), 1000);
+
+              // Step 3: Expand text group
+              setTimeout(() => {
+                setFigmaPulsingRow(null);
+                setFigmaExpandedGroups(prev => new Set([...prev, 'color/text']));
+                setFigmaHighlightedGroup('color/text');
+              }, 1300);
+
+              // Step 4: Pulse text tokens
+              setTimeout(() => setFigmaPulsingRow('color/text/primary'), 1500);
+              setTimeout(() => setFigmaPulsingRow('color/text/secondary'), 1800);
+
+              // Step 5: Switch to Typography
+              setTimeout(() => {
+                setFigmaPulsingRow(null);
+                setFigmaExpandedCategories(prev => new Set([...prev, 'typography']));
+                setFigmaHighlightedGroup('typography');
+              }, 2200);
+
+              // Step 6: Expand font-size
+              setTimeout(() => {
+                setFigmaExpandedGroups(prev => new Set([...prev, 'typography/font-size']));
+                setFigmaHighlightedGroup('typography/font-size');
+              }, 2500);
+
+              // Step 7: Pulse typography tokens
+              setTimeout(() => setFigmaPulsingRow('typography/font-size/md'), 2700);
+              setTimeout(() => setFigmaPulsingRow('typography/font-size/lg'), 3000);
+
+              // Step 8: Switch to Spacing
+              setTimeout(() => {
+                setFigmaPulsingRow(null);
+                setFigmaExpandedCategories(prev => new Set([...prev, 'spacing']));
+                setFigmaExpandedGroups(prev => new Set([...prev, 'spacing/scale']));
+                setFigmaHighlightedGroup('spacing/scale');
+              }, 3400);
+
+              // Step 9: Pulse spacing tokens
+              setTimeout(() => setFigmaPulsingRow('spacing/4'), 3600);
+              setTimeout(() => setFigmaPulsingRow('spacing/8'), 3900);
+
+              // Step 10: Complete
+              setTimeout(() => {
+                setFigmaPulsingRow(null);
+                setFigmaHighlightedGroup(null);
+                setFigmaCascadePhase('complete');
+              }, 4300);
+            };
+
             const renderDesignSystemDemo = () => (
               <div style={{
                 width: '100%',
-                maxWidth: '900px',
+                maxWidth: '1000px',
                 margin: '0 auto',
                 borderRadius: '8px',
                 overflow: 'hidden',
-                background: '#1E1E1E',
+                background: FIGMA.bgSecondary,
+                border: `1px solid ${FIGMA.border}`,
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
               }}>
-                {/* Window Title Bar */}
+                {/* Panel Header */}
                 <div style={{
-                  height: '36px',
-                  background: '#2C2C2C',
-                  borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                  background: FIGMA.bg,
+                  padding: '10px 12px',
+                  borderBottom: `1px solid ${FIGMA.border}`,
                   display: 'flex',
                   alignItems: 'center',
-                  padding: '0 12px',
-                  gap: '8px',
+                  justifyContent: 'space-between',
                 }}>
-                  {/* Traffic Lights */}
-                  <div style={{ display: 'flex', gap: '6px' }}>
-                    <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#FF5F57' }} />
-                    <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#FEBC2E' }} />
-                    <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#28C840' }} />
+                  {/* Left: Traffic lights + Title */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    {/* macOS Traffic Lights */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#FF5F57' }} />
+                      <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#FEBC2E' }} />
+                      <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#28C840' }} />
+                    </div>
+
+                    {/* Title */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <div style={{
+                        width: '18px',
+                        height: '18px',
+                        borderRadius: '4px',
+                        background: FIGMA.brand,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                        <span style={{ fontSize: '11px', color: 'white', fontWeight: 700 }}>V</span>
+                      </div>
+                      <span style={{ fontSize: '12px', fontWeight: 600, color: FIGMA.textPrimary }}>
+                        Local Variables
+                      </span>
+                      {figmaCascadePhase === 'complete' && (
+                        <span style={{ fontSize: '11px', color: FIGMA.success }}>✓</span>
+                      )}
+                    </div>
                   </div>
-                  <span style={{
-                    flex: 1,
-                    textAlign: 'center',
-                    fontSize: '13px',
-                    fontWeight: '500',
-                    color: 'rgba(255, 255, 255, 0.9)',
-                  }}>
-                    Local Variables
-                    {figmaCascadePhase === 'complete' && <span style={{ marginLeft: '8px', color: '#30D158' }}>✓</span>}
-                  </span>
-                  {/* Play Cascade Button */}
-                  <button
-                    onClick={() => {
-                      if (figmaCascadePhase === 'playing') return;
-                      setFigmaCascadePhase('playing');
-                      // Cascade animation sequence
-                      setTimeout(() => { setFigmaSelectedCollection('Primitives'); setFigmaExpandedCollections(new Set(['Primitives'])); }, 0);
-                      setTimeout(() => setFigmaHighlightedGroup('Colors'), 400);
-                      setTimeout(() => setFigmaPulsingRow('brand/primary'), 800);
-                      setTimeout(() => { setFigmaSelectedCollection('Semantic'); setFigmaExpandedCollections(new Set(['Semantic'])); }, 1400);
-                      setTimeout(() => setFigmaHighlightedGroup('Typography'), 1800);
-                      setTimeout(() => setFigmaPulsingRow('heading/lg'), 2200);
-                      setTimeout(() => { setFigmaSelectedCollection('Components'); setFigmaExpandedCollections(new Set(['Components'])); }, 2800);
-                      setTimeout(() => setFigmaHighlightedGroup('Spacing'), 3200);
-                      setTimeout(() => setFigmaPulsingRow('space-md'), 3600);
-                      setTimeout(() => {
-                        setFigmaCascadePhase('complete');
-                        setFigmaHighlightedGroup(null);
-                        setFigmaPulsingRow(null);
-                      }, 4200);
-                    }}
-                    style={{
-                      padding: '4px 10px',
-                      borderRadius: '4px',
-                      background: figmaCascadePhase === 'playing' ? 'rgba(48, 209, 88, 0.2)' : 'rgba(99, 102, 241, 0.2)',
-                      border: `1px solid ${figmaCascadePhase === 'playing' ? 'rgba(48, 209, 88, 0.3)' : 'rgba(99, 102, 241, 0.3)'}`,
-                      color: figmaCascadePhase === 'playing' ? '#30D158' : '#6366F1',
-                      fontSize: '10px',
-                      fontWeight: '500',
-                      cursor: figmaCascadePhase === 'playing' ? 'not-allowed' : 'pointer',
+
+                  {/* Right: Search + Controls */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    {/* Search Input */}
+                    <div style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '4px',
-                    }}
-                  >
-                    {figmaCascadePhase === 'playing' ? (
-                      <>
-                        <span style={{ display: 'inline-block', animation: 'spin 1s linear infinite' }}>⟳</span>
-                        Playing...
-                      </>
-                    ) : (
-                      <>▶ Play Cascade</>
-                    )}
-                  </button>
+                      gap: '6px',
+                      background: FIGMA.bgInput,
+                      borderRadius: '6px',
+                      padding: '5px 10px',
+                      border: `1px solid ${FIGMA.border}`,
+                    }}>
+                      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style={{ opacity: 0.5 }}>
+                        <path d="M7 13A6 6 0 107 1a6 6 0 000 12zM15 15l-3.5-3.5" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+                      </svg>
+                      <input
+                        type="text"
+                        placeholder="Search..."
+                        value={figmaSearchQuery}
+                        onChange={(e) => setFigmaSearchQuery(e.target.value)}
+                        style={{
+                          background: 'transparent',
+                          border: 'none',
+                          outline: 'none',
+                          fontSize: '11px',
+                          color: FIGMA.textPrimary,
+                          width: '100px',
+                        }}
+                      />
+                    </div>
+
+                    {/* Add Variable Button */}
+                    <button style={{
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: '4px',
+                      background: FIGMA.brand,
+                      border: 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                    }}>
+                      <span style={{ fontSize: '16px', color: 'white', lineHeight: 1 }}>+</span>
+                    </button>
+
+                    {/* Play Cascade */}
+                    <button
+                      onClick={playCascadeAnimation}
+                      disabled={figmaCascadePhase === 'playing'}
+                      style={{
+                        height: '24px',
+                        borderRadius: '4px',
+                        background: figmaCascadePhase === 'playing' ? FIGMA.bgInput : 'rgba(99,102,241,0.9)',
+                        border: 'none',
+                        padding: '0 10px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        cursor: figmaCascadePhase === 'playing' ? 'not-allowed' : 'pointer',
+                        opacity: figmaCascadePhase === 'playing' ? 0.7 : 1,
+                      }}
+                    >
+                      {figmaCascadePhase === 'playing' ? (
+                        <div style={{
+                          width: '10px',
+                          height: '10px',
+                          borderRadius: '50%',
+                          border: '2px solid rgba(255,255,255,0.2)',
+                          borderTopColor: 'white',
+                          animation: 'spin 0.8s linear infinite',
+                        }} />
+                      ) : (
+                        <span style={{ fontSize: '10px', color: 'white' }}>▶</span>
+                      )}
+                      <span style={{ fontSize: '10px', color: 'white', fontWeight: 500 }}>
+                        {figmaCascadePhase === 'playing' ? 'Playing' : 'Demo'}
+                      </span>
+                    </button>
+                  </div>
                 </div>
 
-                {/* Main Content */}
-                <div style={{ display: 'flex', minHeight: '280px' }}>
+                {/* Main Content: Sidebar + Table */}
+                <div style={{ display: 'flex', minHeight: '400px' }}>
                   {/* Sidebar */}
                   {!isMobile && (
                     <div style={{
-                      width: '180px',
-                      borderRight: '1px solid rgba(255, 255, 255, 0.08)',
-                      padding: '8px',
-                      background: '#252525',
+                      width: '200px',
+                      background: FIGMA.bgTertiary,
+                      borderRight: `1px solid ${FIGMA.border}`,
+                      padding: '12px 0',
+                      flexShrink: 0,
                     }}>
-                      {['Primitives', 'Semantic', 'Components'].map((collection) => (
-                        <div
-                          key={collection}
-                          onClick={() => {
-                            setFigmaSelectedCollection(collection);
-                            setFigmaExpandedCollections(prev => {
-                              const newSet = new Set(prev);
-                              if (newSet.has(collection)) newSet.delete(collection);
-                              else newSet.add(collection);
-                              return newSet;
-                            });
-                          }}
-                          onMouseEnter={() => setFigmaHoveredSidebarItem(collection)}
-                          onMouseLeave={() => setFigmaHoveredSidebarItem(null)}
-                          style={{
-                            padding: '6px 8px',
-                            borderRadius: '4px',
-                            background: figmaSelectedCollection === collection ? 'rgba(99, 102, 241, 0.15)' : figmaHoveredSidebarItem === collection ? 'rgba(255, 255, 255, 0.05)' : 'transparent',
-                            cursor: 'pointer',
-                            marginBottom: '2px',
-                          }}
-                        >
-                          <div style={{
-                            fontSize: '11px',
-                            fontWeight: figmaSelectedCollection === collection ? '600' : '400',
-                            color: figmaSelectedCollection === collection ? '#6366F1' : 'rgba(255, 255, 255, 0.7)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '6px',
-                          }}>
-                            <span style={{ fontSize: '8px' }}>{figmaExpandedCollections.has(collection) ? '▼' : '▶'}</span>
-                            {collection}
+                      {/* Collections Header */}
+                      <div style={{
+                        padding: '0 12px 8px',
+                        fontSize: '10px',
+                        fontWeight: 600,
+                        color: FIGMA.textMuted,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                      }}>
+                        Collections
+                      </div>
+
+                      {/* Collection Items */}
+                      {Object.values(figmaTokenData).map((collection) => (
+                        <div key={collection.id}>
+                          {/* Collection Row */}
+                          <div
+                            onClick={() => {
+                              setFigmaSelectedCollection(collection.id);
+                              setFigmaExpandedCollections(prev => {
+                                const newSet = new Set(prev);
+                                if (newSet.has(collection.id)) newSet.delete(collection.id);
+                                else newSet.add(collection.id);
+                                return newSet;
+                              });
+                            }}
+                            onMouseEnter={() => setFigmaHoveredSidebarItem(collection.id)}
+                            onMouseLeave={() => setFigmaHoveredSidebarItem(null)}
+                            style={{
+                              padding: '6px 12px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              cursor: 'pointer',
+                              background: figmaSelectedCollection === collection.id ? FIGMA.selected :
+                                         figmaHoveredSidebarItem === collection.id ? FIGMA.hover : 'transparent',
+                              transition: 'background 0.1s ease',
+                            }}
+                          >
+                            <span style={{ fontSize: '8px', color: FIGMA.textMuted }}>
+                              {figmaExpandedCollections.has(collection.id) ? '▼' : '▶'}
+                            </span>
+                            <span style={{ fontSize: '11px', fontWeight: 500, color: FIGMA.textPrimary, flex: 1 }}>
+                              {collection.name}
+                            </span>
+                            <span style={{ fontSize: '10px', color: FIGMA.textMuted }}>
+                              {getCollectionTokenCount(collection.id)}
+                            </span>
                           </div>
+
+                          {/* Category Items (when expanded) */}
+                          {figmaExpandedCollections.has(collection.id) && collection.categories.map((category) => (
+                            <div
+                              key={category.id}
+                              onClick={() => setFigmaExpandedCategories(prev => {
+                                const newSet = new Set(prev);
+                                if (newSet.has(category.id)) newSet.delete(category.id);
+                                else newSet.add(category.id);
+                                return newSet;
+                              })}
+                              onMouseEnter={() => setFigmaHoveredSidebarItem(category.id)}
+                              onMouseLeave={() => setFigmaHoveredSidebarItem(null)}
+                              style={{
+                                padding: '5px 12px 5px 28px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                cursor: 'pointer',
+                                background: figmaHoveredSidebarItem === category.id ? FIGMA.hover : 'transparent',
+                              }}
+                            >
+                              {renderCategoryIcon(category.icon)}
+                              <span style={{ fontSize: '11px', color: FIGMA.textSecondary }}>
+                                {category.displayName}
+                              </span>
+                              <span style={{ fontSize: '9px', color: FIGMA.textDisabled, marginLeft: 'auto' }}>
+                                {getCategoryTokenCount(collection.id, category.id)}
+                              </span>
+                            </div>
+                          ))}
                         </div>
                       ))}
+
+                      {/* New Collection Button */}
+                      <div style={{
+                        padding: '12px',
+                        marginTop: '8px',
+                        borderTop: `1px solid ${FIGMA.border}`,
+                      }}>
+                        <button style={{
+                          width: '100%',
+                          padding: '6px',
+                          borderRadius: '4px',
+                          border: `1px dashed ${FIGMA.border}`,
+                          background: 'transparent',
+                          color: FIGMA.textMuted,
+                          fontSize: '10px',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '4px',
+                        }}>
+                          <span>+</span>
+                          <span>New collection</span>
+                        </button>
+                      </div>
                     </div>
                   )}
 
-                  {/* Table */}
-                  <div style={{ flex: 1, overflow: 'auto' }}>
-                    {/* Header */}
+                  {/* Table Area */}
+                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                    {/* Table Header */}
                     <div style={{
                       display: 'grid',
-                      gridTemplateColumns: '1fr 80px 80px',
+                      gridTemplateColumns: isMobile ? '1fr 80px 80px' : '1fr 120px 120px 32px',
                       padding: '8px 12px',
-                      background: '#252525',
-                      borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                      borderBottom: `1px solid ${FIGMA.border}`,
+                      background: FIGMA.bg,
                       position: 'sticky',
                       top: 0,
+                      zIndex: 1,
                     }}>
-                      <span style={{ fontSize: '10px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.5)' }}>Name</span>
-                      <span style={{ fontSize: '10px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.5)', textAlign: 'center' }}>Light</span>
-                      <span style={{ fontSize: '10px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.5)', textAlign: 'center' }}>Dark</span>
-                    </div>
-                    {/* Token Groups */}
-                    {[
-                      { name: 'Colors', tokens: [
-                        { name: 'brand/primary', light: '#DA0E29', dark: '#FF4D6A' },
-                        { name: 'brand/accent', light: '#6366F1', dark: '#818CF8' },
-                        { name: 'neutral/surface', light: '#FFFFFF', dark: '#1E1E1E' },
-                      ]},
-                      { name: 'Typography', tokens: [
-                        { name: 'heading/lg', light: '32px', dark: '32px' },
-                        { name: 'heading/md', light: '24px', dark: '24px' },
-                        { name: 'body/md', light: '16px', dark: '16px' },
-                      ]},
-                      { name: 'Spacing', tokens: [
-                        { name: 'space-xs', light: '4px', dark: '4px' },
-                        { name: 'space-sm', light: '8px', dark: '8px' },
-                        { name: 'space-md', light: '16px', dark: '16px' },
-                      ]},
-                    ].map((group) => (
-                      <div key={group.name}>
-                        <div
-                          onClick={() => setFigmaExpandedGroups(prev => {
-                            const newSet = new Set(prev);
-                            if (newSet.has(group.name)) newSet.delete(group.name);
-                            else newSet.add(group.name);
-                            return newSet;
-                          })}
-                          style={{
-                            padding: '6px 12px',
-                            background: figmaHighlightedGroup === group.name ? 'rgba(99, 102, 241, 0.1)' : '#252525',
-                            borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                      <span style={{ fontSize: '10px', fontWeight: 500, color: FIGMA.textMuted }}>Name</span>
+                      <span style={{ fontSize: '10px', fontWeight: 500, color: FIGMA.textMuted, textAlign: 'center' }}>Light</span>
+                      <span style={{ fontSize: '10px', fontWeight: 500, color: FIGMA.textMuted, textAlign: 'center' }}>Dark</span>
+                      {!isMobile && (
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                          <button style={{
+                            width: '20px',
+                            height: '20px',
+                            borderRadius: '3px',
+                            border: `1px solid ${FIGMA.border}`,
+                            background: 'transparent',
+                            color: FIGMA.textMuted,
+                            fontSize: '12px',
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '6px',
-                            transition: 'background 0.3s ease',
-                          }}
-                        >
-                          <span style={{ fontSize: '8px', color: 'rgba(255, 255, 255, 0.4)' }}>{figmaExpandedGroups.has(group.name) ? '▼' : '▶'}</span>
-                          <span style={{ fontSize: '10px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.7)' }}>{group.name}</span>
-                          <span style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.3)' }}>{group.tokens.length}</span>
+                            justifyContent: 'center',
+                          }}>+</button>
                         </div>
-                        {figmaExpandedGroups.has(group.name) && group.tokens.map((token) => (
+                      )}
+                    </div>
+
+                    {/* Table Body - Scrollable */}
+                    <div style={{ flex: 1, overflowY: 'auto', maxHeight: '350px' }}>
+                      {figmaTokenData[figmaSelectedCollection as keyof typeof figmaTokenData]?.categories.map((category) => (
+                        <div key={category.id}>
+                          {/* Category Row */}
                           <div
-                            key={token.name}
-                            onMouseEnter={() => setFigmaHoveredRow(token.name)}
-                            onMouseLeave={() => setFigmaHoveredRow(null)}
+                            onClick={() => setFigmaExpandedCategories(prev => {
+                              const newSet = new Set(prev);
+                              if (newSet.has(category.id)) newSet.delete(category.id);
+                              else newSet.add(category.id);
+                              return newSet;
+                            })}
                             style={{
-                              display: 'grid',
-                              gridTemplateColumns: '1fr 80px 80px',
-                              padding: '6px 12px 6px 28px',
-                              background: figmaPulsingRow === token.name ? 'rgba(99, 102, 241, 0.15)' : figmaHoveredRow === token.name ? 'rgba(255, 255, 255, 0.03)' : 'transparent',
-                              borderBottom: '1px solid rgba(255, 255, 255, 0.03)',
+                              padding: '8px 12px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '8px',
                               cursor: 'pointer',
+                              background: figmaHighlightedGroup === category.id ? FIGMA.brandSubtle : 'transparent',
+                              borderBottom: `1px solid ${FIGMA.borderSubtle}`,
                               transition: 'background 0.15s ease',
-                              animation: figmaPulsingRow === token.name ? 'rowPulse 0.5s ease' : 'none',
                             }}
                           >
-                            <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.8)', fontFamily: 'SF Mono, Monaco, Consolas, monospace' }}>{token.name}</span>
-                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '4px' }}>
-                              {token.light.startsWith('#') ? (
-                                <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: token.light, border: '1px solid rgba(255,255,255,0.1)' }} />
-                              ) : (
-                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.6)' }}>{token.light}</span>
-                              )}
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '4px' }}>
-                              {token.dark.startsWith('#') ? (
-                                <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: token.dark, border: '1px solid rgba(255,255,255,0.1)' }} />
-                              ) : (
-                                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.6)' }}>{token.dark}</span>
-                              )}
-                            </div>
+                            <span style={{ fontSize: '8px', color: FIGMA.textMuted }}>
+                              {figmaExpandedCategories.has(category.id) ? '▼' : '▶'}
+                            </span>
+                            {renderCategoryIcon(category.icon)}
+                            <span style={{ fontSize: '11px', fontWeight: 600, color: FIGMA.textPrimary }}>
+                              {category.displayName}
+                            </span>
+                            <span style={{ fontSize: '10px', color: FIGMA.textMuted }}>
+                              {getCategoryTokenCount(figmaSelectedCollection, category.id)}
+                            </span>
                           </div>
-                        ))}
-                      </div>
-                    ))}
+
+                          {/* Groups (when category expanded) */}
+                          {figmaExpandedCategories.has(category.id) && category.groups.map((group) => {
+                            const filteredTokens = filterTokensBySearch(group.tokens);
+                            if (figmaSearchQuery && filteredTokens.length === 0) return null;
+
+                            return (
+                              <div key={group.id}>
+                                {/* Group Row */}
+                                <div
+                                  onClick={() => setFigmaExpandedGroups(prev => {
+                                    const groupKey = `${category.id}/${group.id}`;
+                                    const newSet = new Set(prev);
+                                    if (newSet.has(groupKey)) newSet.delete(groupKey);
+                                    else newSet.add(groupKey);
+                                    return newSet;
+                                  })}
+                                  style={{
+                                    padding: '6px 12px 6px 32px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    cursor: 'pointer',
+                                    background: figmaHighlightedGroup === `${category.id}/${group.id}` ? FIGMA.brandSubtle : 'transparent',
+                                    borderBottom: `1px solid ${FIGMA.borderSubtle}`,
+                                    transition: 'background 0.15s ease',
+                                  }}
+                                >
+                                  <span style={{ fontSize: '7px', color: FIGMA.textDisabled }}>
+                                    {figmaExpandedGroups.has(`${category.id}/${group.id}`) ? '▼' : '▶'}
+                                  </span>
+                                  <span style={{ fontSize: '11px', fontWeight: 500, color: FIGMA.textSecondary }}>
+                                    {group.displayName}
+                                  </span>
+                                  <span style={{ fontSize: '9px', color: FIGMA.textDisabled }}>
+                                    {filteredTokens.length}
+                                  </span>
+                                </div>
+
+                                {/* Token Rows (when group expanded) */}
+                                {figmaExpandedGroups.has(`${category.id}/${group.id}`) && filteredTokens.map((token) => (
+                                  <div
+                                    key={token.name}
+                                    onMouseEnter={() => setFigmaHoveredRow(token.name)}
+                                    onMouseLeave={() => setFigmaHoveredRow(null)}
+                                    style={{
+                                      display: 'grid',
+                                      gridTemplateColumns: isMobile ? '1fr 80px 80px' : '1fr 120px 120px 32px',
+                                      padding: '6px 12px 6px 52px',
+                                      alignItems: 'center',
+                                      cursor: 'pointer',
+                                      background: figmaPulsingRow === token.name ? FIGMA.brandSubtle :
+                                                 figmaHoveredRow === token.name ? FIGMA.hover : 'transparent',
+                                      borderBottom: `1px solid ${FIGMA.borderSubtle}`,
+                                      transition: 'background 0.1s ease',
+                                      animation: figmaPulsingRow === token.name ? 'rowPulse 0.5s ease' : 'none',
+                                    }}
+                                  >
+                                    {/* Token Name with Type Icon */}
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
+                                      {renderTypeIcon(token.type, token.type === 'color' ? token.dark : undefined)}
+                                      <span style={{
+                                        fontSize: '11px',
+                                        color: FIGMA.textSecondary,
+                                        fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        whiteSpace: 'nowrap',
+                                      }}>
+                                        {token.name}
+                                      </span>
+                                      {/* Alias indicator for semantic tokens */}
+                                      {(token as { alias?: string }).alias && (
+                                        <span style={{
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          gap: '4px',
+                                          fontSize: '10px',
+                                          color: FIGMA.textMuted,
+                                          fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                                          flexShrink: 0,
+                                        }}>
+                                          <span style={{ color: FIGMA.brand }}>→</span>
+                                          <span style={{
+                                            opacity: 0.7,
+                                            maxWidth: isMobile ? '80px' : '140px',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            whiteSpace: 'nowrap',
+                                          }}>
+                                            {(token as { alias?: string }).alias}
+                                          </span>
+                                        </span>
+                                      )}
+                                    </div>
+
+                                    {/* Light Value */}
+                                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px' }}>
+                                      {isColorValue(token.light) ? (
+                                        <>
+                                          <div style={{
+                                            width: '16px',
+                                            height: '16px',
+                                            borderRadius: '4px',
+                                            background: token.light,
+                                            border: '1px solid rgba(0,0,0,0.1)',
+                                            flexShrink: 0,
+                                          }} />
+                                          {!isMobile && (
+                                            <span style={{ fontSize: '9px', color: FIGMA.textMuted, fontFamily: 'monospace' }}>
+                                              {token.light.length <= 7 ? token.light : ''}
+                                            </span>
+                                          )}
+                                        </>
+                                      ) : (
+                                        <span style={{ fontSize: '10px', color: FIGMA.textMuted }}>
+                                          {token.light}
+                                        </span>
+                                      )}
+                                    </div>
+
+                                    {/* Dark Value */}
+                                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px' }}>
+                                      {isColorValue(token.dark) ? (
+                                        <>
+                                          <div style={{
+                                            width: '16px',
+                                            height: '16px',
+                                            borderRadius: '4px',
+                                            background: token.dark,
+                                            border: '1px solid rgba(255,255,255,0.1)',
+                                            flexShrink: 0,
+                                          }} />
+                                          {!isMobile && (
+                                            <span style={{ fontSize: '9px', color: FIGMA.textMuted, fontFamily: 'monospace' }}>
+                                              {token.dark.length <= 7 ? token.dark : ''}
+                                            </span>
+                                          )}
+                                        </>
+                                      ) : (
+                                        <span style={{ fontSize: '10px', color: FIGMA.textMuted }}>
+                                          {token.dark}
+                                        </span>
+                                      )}
+                                    </div>
+
+                                    {/* Context Menu */}
+                                    {!isMobile && (
+                                      <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                        <span style={{
+                                          fontSize: '12px',
+                                          color: FIGMA.textDisabled,
+                                          opacity: figmaHoveredRow === token.name ? 1 : 0,
+                                          transition: 'opacity 0.1s ease',
+                                        }}>⋯</span>
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Table Footer */}
+                    <div style={{
+                      padding: '8px 12px',
+                      borderTop: `1px solid ${FIGMA.border}`,
+                      background: FIGMA.bg,
+                    }}>
+                      <button style={{
+                        width: '100%',
+                        padding: '6px',
+                        borderRadius: '4px',
+                        border: 'none',
+                        background: FIGMA.brand,
+                        color: 'white',
+                        fontSize: '11px',
+                        fontWeight: 500,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '4px',
+                      }}>
+                        <span>+</span>
+                        <span>Create variable</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -3108,7 +3967,7 @@ export function AirIndiaWork() {
                           maxWidth: '540px',
                         }}
                       >
-                        {project.longDescription?.split('\n\n')[0] || project.recruiterFrame}
+                        {project.longDescription?.split('\n\n')[0]}
                       </motion.p>
                     </motion.div>
 
@@ -3259,29 +4118,6 @@ export function AirIndiaWork() {
                         </React.Fragment>
                       ))}
                     </div>
-
-                    {/* Short Recruiter Hook - Collapsed state only */}
-                    {!isExpanded && (
-                      <div style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        padding: '0.375rem 0.625rem',
-                        borderRadius: '6px',
-                        background: 'var(--glass-03)',
-                        border: '1px solid var(--glass-06)',
-                        marginTop: '0.75rem',
-                      }}>
-                        <CheckCircle size={12} style={{ color: `rgb(${project.color})` }} />
-                        <span style={{
-                          fontSize: '0.75rem',
-                          color: 'var(--text-tertiary)',
-                          fontStyle: 'italic',
-                        }}>
-                          {project.recruiterFrame}
-                        </span>
-                      </div>
-                    )}
                   </div>
                 </div>
 
@@ -4396,13 +5232,13 @@ export function AirIndiaWork() {
                                 onClick={() => {
                                   setFigmaExpandedCollections(prev => {
                                     const next = new Set(prev);
-                                    if (next.has('Primitives')) next.delete('Primitives');
-                                    else next.add('Primitives');
+                                    if (next.has('primitives')) next.delete('primitives');
+                                    else next.add('primitives');
                                     return next;
                                   });
-                                  setFigmaSelectedCollection('Primitives');
+                                  setFigmaSelectedCollection('primitives');
                                 }}
-                                onMouseEnter={() => setFigmaHoveredSidebarItem('Primitives')}
+                                onMouseEnter={() => setFigmaHoveredSidebarItem('primitives')}
                                 onMouseLeave={() => setFigmaHoveredSidebarItem(null)}
                                 style={{
                                   padding: '6px 12px',
@@ -4410,20 +5246,20 @@ export function AirIndiaWork() {
                                   alignItems: 'center',
                                   gap: '6px',
                                   cursor: 'pointer',
-                                  background: figmaSelectedCollection === 'Primitives' ? 'rgba(24, 160, 251, 0.15)' : figmaHoveredSidebarItem === 'Primitives' ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
-                                  borderLeft: figmaSelectedCollection === 'Primitives' ? '2px solid #0D99FF' : '2px solid transparent',
+                                  background: figmaSelectedCollection === 'primitives' ? 'rgba(24, 160, 251, 0.15)' : figmaHoveredSidebarItem === 'primitives' ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
+                                  borderLeft: figmaSelectedCollection === 'primitives' ? '2px solid #0D99FF' : '2px solid transparent',
                                   transition: 'all 0.15s ease',
                                 }}
                               >
                                 <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', width: '12px' }}>
-                                  {figmaExpandedCollections.has('Primitives') ? '▾' : '▸'}
+                                  {figmaExpandedCollections.has('primitives') ? '▾' : '▸'}
                                 </span>
-                                <span style={{ fontSize: '11px', color: figmaSelectedCollection === 'Primitives' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.8)', fontWeight: figmaSelectedCollection === 'Primitives' ? '500' : '400' }}>
+                                <span style={{ fontSize: '11px', color: figmaSelectedCollection === 'primitives' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.8)', fontWeight: figmaSelectedCollection === 'primitives' ? '500' : '400' }}>
                                   Primitives
                                 </span>
                               </div>
                               {/* Nested items under Primitives */}
-                              {figmaExpandedCollections.has('Primitives') && (
+                              {figmaExpandedCollections.has('primitives') && (
                                 <div style={{ paddingLeft: '20px' }}>
                                   {['Colors', 'Typography', 'Spacing'].map((item) => (
                                     <div
@@ -4457,13 +5293,13 @@ export function AirIndiaWork() {
                                 onClick={() => {
                                   setFigmaExpandedCollections(prev => {
                                     const next = new Set(prev);
-                                    if (next.has('Semantic')) next.delete('Semantic');
-                                    else next.add('Semantic');
+                                    if (next.has('semantics')) next.delete('semantics');
+                                    else next.add('semantics');
                                     return next;
                                   });
-                                  setFigmaSelectedCollection('Semantic');
+                                  setFigmaSelectedCollection('semantics');
                                 }}
-                                onMouseEnter={() => setFigmaHoveredSidebarItem('Semantic')}
+                                onMouseEnter={() => setFigmaHoveredSidebarItem('semantics')}
                                 onMouseLeave={() => setFigmaHoveredSidebarItem(null)}
                                 style={{
                                   padding: '6px 12px',
@@ -4471,19 +5307,19 @@ export function AirIndiaWork() {
                                   alignItems: 'center',
                                   gap: '6px',
                                   cursor: 'pointer',
-                                  background: figmaSelectedCollection === 'Semantic' ? 'rgba(24, 160, 251, 0.15)' : figmaHoveredSidebarItem === 'Semantic' ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
-                                  borderLeft: figmaSelectedCollection === 'Semantic' ? '2px solid #0D99FF' : '2px solid transparent',
+                                  background: figmaSelectedCollection === 'semantics' ? 'rgba(24, 160, 251, 0.15)' : figmaHoveredSidebarItem === 'semantics' ? 'rgba(255, 255, 255, 0.04)' : 'transparent',
+                                  borderLeft: figmaSelectedCollection === 'semantics' ? '2px solid #0D99FF' : '2px solid transparent',
                                   transition: 'all 0.15s ease',
                                 }}
                               >
                                 <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', width: '12px' }}>
-                                  {figmaExpandedCollections.has('Semantic') ? '▾' : '▸'}
+                                  {figmaExpandedCollections.has('semantics') ? '▾' : '▸'}
                                 </span>
-                                <span style={{ fontSize: '11px', color: figmaSelectedCollection === 'Semantic' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.8)', fontWeight: figmaSelectedCollection === 'Semantic' ? '500' : '400' }}>
-                                  Semantic
+                                <span style={{ fontSize: '11px', color: figmaSelectedCollection === 'semantics' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.8)', fontWeight: figmaSelectedCollection === 'semantics' ? '500' : '400' }}>
+                                  Semantics
                                 </span>
                               </div>
-                              {figmaExpandedCollections.has('Semantic') && (
+                              {figmaExpandedCollections.has('semantics') && (
                                 <div style={{ paddingLeft: '20px' }}>
                                   {['Brand', 'Surface'].map((item) => (
                                     <div
