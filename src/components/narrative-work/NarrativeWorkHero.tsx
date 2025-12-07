@@ -144,7 +144,7 @@ export function NarrativeWorkHero() {
             </span>
           </motion.p>
 
-          {/* Stats pills */}
+          {/* Journey organization pills */}
           <motion.div
             style={{
               display: 'flex',
@@ -159,10 +159,11 @@ export function NarrativeWorkHero() {
             transition={{ duration: 1, delay: 1.1 }}
           >
             {[
-              { label: 'College Projects', value: 'Foundation' },
-              { label: 'Professional Work', value: 'Industry' },
-              { label: 'Research', value: 'Innovation' },
-            ].map((stat, index) => (
+              { organization: 'Infosys', timeframe: '2020', logo: 'infosys.svg' },
+              { organization: 'National Institute of Design', timeframe: '2021 - 2023', logo: 'nid.svg' },
+              { organization: 'Air India', timeframe: '2024 - Present', logo: 'air-india.svg' },
+              { organization: 'Indian School of Business', timeframe: '2023', logo: 'ISB.svg' },
+            ].map((org, index) => (
               <div
                 key={index}
                 style={{
@@ -191,9 +192,27 @@ export function NarrativeWorkHero() {
                   e.currentTarget.style.background = 'rgba(255, 255, 255, 0.07)';
                 }}
               >
-                <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>{stat.label}</span>
-                <span style={{ color: 'rgba(255, 255, 255, 0.3)' }}>→</span>
-                <span style={{ color: 'rgba(255, 255, 255, 0.85)', fontWeight: '500' }}>{stat.value}</span>
+                {/* Logo */}
+                <img
+                  src={`/logos/${org.logo}`}
+                  alt={org.organization}
+                  style={{
+                    width: '28px',
+                    height: '28px',
+                    objectFit: 'contain',
+                    flexShrink: 0,
+                  }}
+                />
+
+                {/* Organization name */}
+                <span style={{ color: 'rgba(255, 255, 255, 0.85)', fontWeight: '500', whiteSpace: 'nowrap' }}>
+                  {org.organization}
+                </span>
+
+                {/* Timeframe */}
+                <span style={{ color: 'rgba(255, 255, 255, 0.5)', marginLeft: 'auto', whiteSpace: 'nowrap' }}>
+                  {org.timeframe}
+                </span>
               </div>
             ))}
           </motion.div>
