@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import { Html } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -16,6 +16,7 @@ interface ArtworkInfoPanelProps {
 /**
  * 3D Info Panel for Artworks
  * Shows artwork details when player is close enough
+ * Uses refs for animation to avoid excessive re-renders
  */
 export function ArtworkInfoPanel({
   artwork,
@@ -25,38 +26,46 @@ export function ArtworkInfoPanel({
 }: ArtworkInfoPanelProps) {
   const { camera } = useThree();
   const [isVisible, setIsVisible] = useState(false);
-  const [opacity, setOpacity] = useState(0);
   const panelPos = useRef(new THREE.Vector3(...position));
+  const opacityRef = useRef(0);
+  const htmlRef = useRef<HTMLDivElement>(null);
 
-  // Check distance to camera each frame
+  // Check distance to camera each frame - use refs to avoid state updates every frame
   useFrame(() => {
     const distance = camera.position.distanceTo(panelPos.current);
     const shouldShow = distance < viewDistance;
 
+    // Only update state when visibility actually changes
     if (shouldShow !== isVisible) {
       setIsVisible(shouldShow);
     }
 
-    // Smooth opacity transition
+    // Animate opacity using ref (no state updates)
     const targetOpacity = shouldShow ? 1 : 0;
-    setOpacity((prev) => prev + (targetOpacity - prev) * 0.1);
+    opacityRef.current = opacityRef.current + (targetOpacity - opacityRef.current) * 0.1;
+
+    // Directly update DOM for smooth animation without re-renders
+    if (htmlRef.current) {
+      htmlRef.current.style.opacity = String(opacityRef.current);
+    }
   });
 
-  if (opacity < 0.01) return null;
+  // Don't render if fully invisible
+  if (!isVisible && opacityRef.current < 0.01) return null;
 
   return (
     <Html
       position={[position[0], position[1] + 1.2, position[2]]}
       center
       style={{
-        opacity,
-        transition: 'opacity 0.2s ease',
         pointerEvents: 'none',
         userSelect: 'none',
       }}
     >
       <div
+        ref={htmlRef}
         style={{
+          opacity: opacityRef.current,
           minWidth: '200px',
           maxWidth: '280px',
           padding: '1rem 1.25rem',

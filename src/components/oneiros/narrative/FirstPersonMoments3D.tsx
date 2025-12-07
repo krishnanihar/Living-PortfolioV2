@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
-import { Text, Html } from '@react-three/drei';
-import * as THREE from 'three';
+import { useFrame } from '@react-three/fiber';
+import { Html } from '@react-three/drei';
 import type { SleepStage, NarrativeAct } from '@/hooks/useDepthProgress';
 
 /**
@@ -117,42 +116,64 @@ interface FirstPersonMoments3DProps {
 /**
  * 3D First-Person Moments Component
  * Shows narrative text overlays as player explores
+ * Uses refs to avoid state updates in useFrame
  */
 export function FirstPersonMoments3D({
   isActive = true,
   currentSleepStage = 'wake',
   currentRoomIndex = 0,
 }: FirstPersonMoments3DProps) {
-  const { camera } = useThree();
   const [activeMoment, setActiveMoment] = useState<NarrativeMoment | null>(null);
-  const [shownMoments, setShownMoments] = useState<Set<string>>(new Set());
   const timeRef = useRef(0);
+  const shownMomentsRef = useRef<Set<string>>(new Set());
+  const pendingMomentRef = useRef<NarrativeMoment | null>(null);
 
-  // Track time since component mounted
+  // Track time since component mounted - no state updates in useFrame
   useFrame((_, delta) => {
     if (!isActive) return;
     timeRef.current += delta;
 
-    // Check time-based triggers
-    PALACE_MOMENTS.forEach((moment) => {
+    // Check time-based triggers using ref (no state updates here)
+    for (const moment of PALACE_MOMENTS) {
       if (
         moment.trigger === 'time' &&
         timeRef.current >= moment.triggerValue &&
-        !shownMoments.has(moment.id)
+        !shownMomentsRef.current.has(moment.id)
       ) {
-        // Trigger this moment
+        // Mark as shown in ref immediately to prevent double-triggering
+        shownMomentsRef.current.add(moment.id);
+        pendingMomentRef.current = moment;
+        break; // Only trigger one moment at a time
+      }
+    }
+  });
+
+  // Handle pending moments outside of useFrame via useEffect
+  useEffect(() => {
+    if (!isActive) return;
+
+    const checkPendingMoment = () => {
+      if (pendingMomentRef.current) {
+        const moment = pendingMomentRef.current;
+        pendingMomentRef.current = null;
+
         setActiveMoment(moment);
-        setShownMoments((prev) => new Set(prev).add(moment.id));
 
         // Auto-hide after duration
-        setTimeout(() => {
+        const timer = setTimeout(() => {
           setActiveMoment((current) =>
             current?.id === moment.id ? null : current
           );
         }, moment.duration);
+
+        return () => clearTimeout(timer);
       }
-    });
-  });
+    };
+
+    // Check periodically for pending moments
+    const interval = setInterval(checkPendingMoment, 100);
+    return () => clearInterval(interval);
+  }, [isActive]);
 
   if (!activeMoment || !isActive) return null;
 

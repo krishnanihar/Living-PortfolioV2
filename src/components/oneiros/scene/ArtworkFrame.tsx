@@ -1,10 +1,13 @@
 'use client';
 
-import React, { useRef, useState, useMemo } from 'react';
-import { useFrame, useLoader } from '@react-three/fiber';
-import { Text, Html } from '@react-three/drei';
+import React, { useRef, useState, useMemo, Suspense } from 'react';
+import { useFrame } from '@react-three/fiber';
+import { Text, Html, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import type { OneirosArtwork } from '@/data/oneiros/artworks-expanded';
+
+// Fallback placeholder texture color
+const FALLBACK_COLOR = '#2A2A2F';
 
 interface ArtworkFrameProps {
   position: [number, number, number];
@@ -14,14 +17,79 @@ interface ArtworkFrameProps {
 }
 
 /**
+ * Inner component that loads the artwork texture
+ * Separated to properly handle Suspense boundaries
+ */
+function ArtworkCanvas({
+  width,
+  height,
+  imageUrl,
+  frameDepth,
+  frameWidth,
+}: {
+  width: number;
+  height: number;
+  imageUrl: string;
+  frameDepth: number;
+  frameWidth: number;
+}) {
+  // useTexture from drei handles loading with proper Suspense support
+  // and won't crash on error - it will suspend until loaded
+  const texture = useTexture(imageUrl);
+
+  // Configure texture settings
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.minFilter = THREE.LinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+
+  return (
+    <mesh position={[0, 0, frameDepth / 2 + 0.01]}>
+      <planeGeometry args={[width - frameWidth * 2, height - frameWidth * 2]} />
+      <meshStandardMaterial
+        map={texture}
+        roughness={0.8}
+        metalness={0.1}
+      />
+    </mesh>
+  );
+}
+
+/**
+ * Fallback canvas shown while texture loads or if it fails
+ */
+function FallbackCanvas({
+  width,
+  height,
+  frameDepth,
+  frameWidth,
+}: {
+  width: number;
+  height: number;
+  frameDepth: number;
+  frameWidth: number;
+}) {
+  return (
+    <mesh position={[0, 0, frameDepth / 2 + 0.01]}>
+      <planeGeometry args={[width - frameWidth * 2, height - frameWidth * 2]} />
+      <meshStandardMaterial
+        color={FALLBACK_COLOR}
+        roughness={0.9}
+        metalness={0.1}
+      />
+    </mesh>
+  );
+}
+
+/**
  * ArtworkFrame - 3D artwork display with glassmorphic frame
  *
  * Features:
- * - Loads artwork image as texture
+ * - Loads artwork image as texture with error handling
  * - Glassmorphic frame effect
  * - Hover glow effect
  * - Info panel on interaction
  * - Subtle floating animation
+ * - Fallback display if texture fails to load
  */
 export function ArtworkFrame({
   position,
@@ -32,16 +100,8 @@ export function ArtworkFrame({
   const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
   const [width, height] = size;
-
-  // Load texture
-  const texture = useMemo(() => {
-    const loader = new THREE.TextureLoader();
-    const tex = loader.load(artwork.imageUrl);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    tex.minFilter = THREE.LinearFilter;
-    tex.magFilter = THREE.LinearFilter;
-    return tex;
-  }, [artwork.imageUrl]);
+  const frameDepth = 0.1;
+  const frameWidth = 0.12;
 
   // Frame material
   const frameMaterial = useMemo(() => {
@@ -62,9 +122,6 @@ export function ArtworkFrame({
     }
   });
 
-  const frameDepth = 0.1;
-  const frameWidth = 0.12;
-
   return (
     <group
       ref={groupRef}
@@ -73,15 +130,25 @@ export function ArtworkFrame({
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
     >
-      {/* Artwork canvas */}
-      <mesh position={[0, 0, frameDepth / 2 + 0.01]}>
-        <planeGeometry args={[width - frameWidth * 2, height - frameWidth * 2]} />
-        <meshStandardMaterial
-          map={texture}
-          roughness={0.8}
-          metalness={0.1}
+      {/* Artwork canvas with Suspense fallback for texture loading */}
+      <Suspense
+        fallback={
+          <FallbackCanvas
+            width={width}
+            height={height}
+            frameDepth={frameDepth}
+            frameWidth={frameWidth}
+          />
+        }
+      >
+        <ArtworkCanvas
+          width={width}
+          height={height}
+          imageUrl={artwork.imageUrl}
+          frameDepth={frameDepth}
+          frameWidth={frameWidth}
         />
-      </mesh>
+      </Suspense>
 
       {/* Frame backing */}
       <mesh position={[0, 0, 0]}>

@@ -103,10 +103,12 @@ export function NarrativeWhispers3D({
   // Animate whispers
   useFrame((state, delta) => {
     if (!groupRef.current) return;
+    if (!particlesRef.current || particlesRef.current.length === 0) return;
 
     const time = state.clock.elapsedTime;
 
-    particlesRef.current.forEach((particle, i) => {
+    particlesRef.current.forEach((particle) => {
+      if (!particle || !particle.position || !particle.velocity) return;
       // Move upward and drift
       particle.position.add(particle.velocity.clone().multiplyScalar(delta));
 

@@ -1,8 +1,8 @@
 'use client';
 
-import React, { Suspense, useState, useEffect, useRef } from 'react';
+import React, { Suspense, useState, useEffect, useRef, Component, type ReactNode } from 'react';
 import { Canvas, useThree, useFrame } from '@react-three/fiber';
-import { Environment, PointerLockControls, useTexture, Text } from '@react-three/drei';
+import { Environment, PointerLockControls, Text } from '@react-three/drei';
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import { PalaceRoom } from './PalaceRoom';
@@ -12,6 +12,81 @@ import { useDreamAnalysis } from '../context/DreamAnalysisContext';
 import type { GeneratedRoom } from '@/types/oneiros';
 import { useDepthProgress, type SleepStage, type NarrativeAct } from '@/hooks/useDepthProgress';
 import { FirstPersonMoments3D, NarrativeWhispers3D, DepthIndicatorEnhanced, ArtworkInfoPanel, SpatialAudio, AudioToggle } from '../narrative';
+
+/**
+ * Error Boundary for 3D Scene
+ * Catches errors in the Canvas and displays a fallback UI
+ */
+interface SceneErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+class SceneErrorBoundary extends Component<
+  { children: ReactNode; onRetry?: () => void },
+  SceneErrorBoundaryState
+> {
+  constructor(props: { children: ReactNode; onRetry?: () => void }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error): SceneErrorBoundaryState {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('Oneiros Scene Error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#0A0A0A',
+            color: 'white',
+            fontFamily: 'var(--font-dm-sans, system-ui)',
+            padding: '2rem',
+            textAlign: 'center',
+          }}
+        >
+          <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#EF4444' }}>
+            Scene Loading Error
+          </h2>
+          <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '1.5rem', maxWidth: '400px' }}>
+            The 3D scene encountered an error while loading. This may be due to texture loading issues.
+          </p>
+          <button
+            onClick={() => {
+              this.setState({ hasError: false, error: null });
+              this.props.onRetry?.();
+            }}
+            style={{
+              padding: '0.75rem 1.5rem',
+              backgroundColor: '#8B5CF6',
+              border: 'none',
+              borderRadius: '8px',
+              color: 'white',
+              cursor: 'pointer',
+              fontSize: '1rem',
+            }}
+          >
+            Try Again
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 
 // WASD movement speed
 const MOVE_SPEED = 5;
@@ -225,6 +300,37 @@ function LoadingScreen() {
         }
       `}</style>
     </div>
+  );
+}
+
+/**
+ * Fallback component shown inside Canvas while textures load
+ * Uses drei's Text which doesn't require external texture loading
+ */
+function SceneLoadingFallback() {
+  return (
+    <>
+      {/* Basic lighting so fallback is visible */}
+      <ambientLight intensity={0.5} />
+      <pointLight position={[0, 5, 0]} intensity={1} color="#8B5CF6" />
+
+      {/* Simple loading indicator */}
+      <Text
+        position={[0, 1.6, 0]}
+        fontSize={0.3}
+        color="#8B5CF6"
+        anchorX="center"
+        anchorY="middle"
+      >
+        Loading artworks...
+      </Text>
+
+      {/* Floor plane so scene isn't completely empty */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+        <planeGeometry args={[50, 50]} />
+        <meshStandardMaterial color="#1A1A1F" />
+      </mesh>
+    </>
   );
 }
 
@@ -581,31 +687,33 @@ export function OneirosScene() {
 
   return (
     <div style={{ position: 'fixed', inset: 0, backgroundColor: '#0A0A0A' }}>
-      <Canvas
-        camera={{
-          position: [0, 1.6, 10],
-          fov: 75,
-          near: 0.1,
-          far: 1000,
-        }}
-        shadows
-        gl={{
-          antialias: true,
-          alpha: false,
-          powerPreference: 'high-performance',
-        }}
-        dpr={Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 1, 2)}
-      >
-        {/* PointerLockControls outside Suspense for immediate mounting */}
-        <PointerLockControls selector="#enter-palace-button" />
-        <Suspense fallback={null}>
-          <SceneContent
-            room={currentRoom}
-            isLocked={isLocked}
-            depthState={depthState}
-          />
-        </Suspense>
-      </Canvas>
+      <SceneErrorBoundary>
+        <Canvas
+          camera={{
+            position: [0, 1.6, 10],
+            fov: 75,
+            near: 0.1,
+            far: 1000,
+          }}
+          shadows
+          gl={{
+            antialias: true,
+            alpha: false,
+            powerPreference: 'high-performance',
+          }}
+          dpr={Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 1, 2)}
+        >
+          {/* PointerLockControls outside Suspense for immediate mounting */}
+          <PointerLockControls selector="#enter-palace-button" />
+          <Suspense fallback={<SceneLoadingFallback />}>
+            <SceneContent
+              room={currentRoom}
+              isLocked={isLocked}
+              depthState={depthState}
+            />
+          </Suspense>
+        </Canvas>
+      </SceneErrorBoundary>
 
       {/* UI Overlays */}
       <InstructionsOverlay isLocked={isLocked} />
