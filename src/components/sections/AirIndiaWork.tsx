@@ -643,6 +643,7 @@ export function AirIndiaWork() {
         highlight: false,
         duration: 300,
         alwaysActive: false,
+        commonOrigin: true,
       });
     }
 
@@ -860,9 +861,9 @@ export function AirIndiaWork() {
             inset: 0,
           }}
         >
-          <div className="atropos-scale" style={{ height: '100%', pointerEvents: 'none' }}>
-            <div className="atropos-rotate" style={{ height: '100%', pointerEvents: 'none' }}>
-              <div className="atropos-inner" style={{ width: '100%', height: '100%', position: 'relative' }}>
+          <div className="atropos-scale" style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
+            <div className="atropos-rotate" style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
+              <div className="atropos-inner" style={{ width: '100%', height: '100%', position: 'relative', pointerEvents: 'none' }}>
 
                 {/* LAYER 1: Sky Background - Furthest Back */}
                 <div
