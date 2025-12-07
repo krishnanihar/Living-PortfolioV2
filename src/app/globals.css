@@ -70,6 +70,21 @@ button {
   --brand-red: #DA0E29;
   --brand-red-rgb: 218, 14, 41;
 
+  /* Chronicle Color Palette - Journey Timeline */
+  --spark-gold: #D4AF37;
+  --spark-gold-rgb: 212, 175, 55;
+  --foundation-indigo: #4A4E69;
+  --foundation-indigo-rgb: 74, 78, 105;
+  --research-teal: #2A9D8F;
+  --research-teal-rgb: 42, 157, 143;
+  --current-crimson: #C1121F;
+  --current-crimson-rgb: 193, 18, 31;
+
+  /* Chronicle Surface Colors */
+  --ink-black: #0D0D0D;
+  --paper-cream: #F5F3ED;
+  --metal-bronze: #CD7F32;
+  --metal-bronze-rgb: 205, 127, 50;
 
   /* Base Colors - Dark Theme */
   --bg-primary: #000000;
@@ -488,6 +503,21 @@ button {
   font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+}
+
+/* Journey Timeline Chronicle Fonts */
+.font-chronicle-display {
+  font-family: var(--font-fraunces), serif;
+  font-optical-sizing: auto;
+}
+
+.font-chronicle-body {
+  font-family: var(--font-manrope), sans-serif;
+}
+
+.font-chronicle-mono {
+  font-family: var(--font-jetbrains), 'Courier New', monospace;
+  font-variant-numeric: tabular-nums;
 }
 
 .text-gradient-animated {
@@ -2293,7 +2323,44 @@ select {
   perspective: 1000px;
 }
 
-/* === 14. ACCESSIBILITY - REDUCED MOTION === */
+/* === 14. JOURNEY TIMELINE ANIMATIONS === */
+
+@keyframes timelineDrawIn {
+  from {
+    stroke-dashoffset: 1000;
+    opacity: 0;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes particleFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.6;
+  }
+}
+
+@keyframes currentPulse {
+  0%, 100% {
+    box-shadow:
+      0 24px 48px rgba(0, 0, 0, 0.3),
+      0 0 40px rgba(218, 14, 41, 0.3),
+      0 0 80px rgba(218, 14, 41, 0.15);
+  }
+  50% {
+    box-shadow:
+      0 24px 48px rgba(0, 0, 0, 0.3),
+      0 0 60px rgba(218, 14, 41, 0.5),
+      0 0 120px rgba(218, 14, 41, 0.25);
+  }
+}
+
+/* === 15. ACCESSIBILITY - REDUCED MOTION === */
 
 @media (prefers-reduced-motion: reduce) {
   .blob-morph,
@@ -2307,5 +2374,12 @@ select {
   .card-hover-premium:hover,
   .shadow-depth-hover:hover {
     transform: none !important;
+  }
+
+  /* Disable timeline animations for reduced motion */
+  .timeline-spine,
+  .particle-constellation,
+  .milestone-card-pulse {
+    animation: none !important;
   }
 }

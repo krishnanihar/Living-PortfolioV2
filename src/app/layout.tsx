@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Space_Grotesk, DM_Sans } from 'next/font/google';
+import { Space_Grotesk, DM_Sans, Fraunces, Manrope, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/effects/ThemeProvider';
 import { SmoothScrollProvider } from '@/components/effects/SmoothScrollProvider';
@@ -25,6 +25,28 @@ const dmSans = DM_Sans({
   variable: '--font-dm-sans',
   display: 'swap',
   weight: ['400', '500', '600'],
+});
+
+// Journey Timeline fonts
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-fraunces',
+  display: 'swap',
+  axes: ['opsz', 'SOFT', 'WONK'], // Enable optical sizing and soft axes
+});
+
+const manrope = Manrope({
+  subsets: ['latin'],
+  variable: '--font-manrope',
+  weight: ['200', '300', '400', '500', '600', '700', '800'],
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jetbrains',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -84,7 +106,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${dmSans.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${spaceGrotesk.variable} ${dmSans.variable} ${fraunces.variable} ${manrope.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <head>
         {/* next/font/google automatically handles font optimization and preloading */}
       </head>
