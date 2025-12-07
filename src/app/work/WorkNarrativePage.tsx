@@ -222,29 +222,6 @@ export function WorkNarrativePage() {
         {/* Air India Hero Card - Giant 3D Card */}
         <AirIndiaHeroCard />
 
-        <div style={{
-          textAlign: 'center',
-          marginBottom: '4rem',
-          animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both' : 'none',
-          opacity: inView ? 1 : 0,
-        }}>
-          <h2 style={{
-            fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-            fontWeight: '400',
-            letterSpacing: '-0.02em',
-            marginBottom: '1rem',
-            color: 'var(--text-primary)',
-          }}>
-            Six Systems
-          </h2>
-          <p style={{
-            fontSize: '1rem',
-            color: 'var(--text-tertiary)',
-          }}>
-            Systems and innovation across Air India's digital transformation
-          </p>
-        </div>
-
         {/* Desktop: Bento Grid */}
         {!isMobile && (() => {
           // Grid template control - card stays in place, grid resizes around it
