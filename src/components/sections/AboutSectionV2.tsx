@@ -7,7 +7,6 @@ import Image from 'next/image';
 import { ArrowRight, Sparkles, Map, User, Plane, Users, Heart, Activity, Brain, Eye, ChevronDown } from 'lucide-react';
 import { ContactChat } from '../ContactChat';
 import { Chatbot } from '../Chatbot';
-import { useTheme } from '@/components/effects/ThemeProvider';
 import Atropos from 'atropos';
 import 'atropos/css';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
@@ -18,7 +17,6 @@ interface AboutSectionV2Props {
 }
 
 export default function AboutSectionV2({ className = '', snapIndex }: AboutSectionV2Props) {
-  const { resolvedTheme } = useTheme();
   const { scrollTo } = useLenisScroll();
   const [mounted, setMounted] = useState(false);
   const [act1InView, setAct1InView] = useState(false);
@@ -38,14 +36,6 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
   const [activeTimeline, setActiveTimeline] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [hoveredButton, setHoveredButton] = useState<'about' | 'journey' | null>(null);
-
-  // SVG dynamic color helper (for project-specific colors that can't use CSS variables)
-  const getThemedSvgColor = (r: number, g: number, b: number, alpha: number) =>
-    resolvedTheme === 'light'
-      ? `rgba(${r}, ${g}, ${b}, ${alpha * 0.7})`
-      : `rgba(${r}, ${g}, ${b}, ${alpha})`;
-
-
 
   useEffect(() => {
     setMounted(true);

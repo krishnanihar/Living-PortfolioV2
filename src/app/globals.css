@@ -136,6 +136,19 @@ button {
   --text-02: rgba(255, 255, 255, 0.02);
   --text-01: rgba(255, 255, 255, 0.01);
 
+  /* Solid Surface Backgrounds - Inverted for dark/light themes */
+  /* Use for card backgrounds, tooltips, buttons with solid fill */
+  --solid-100: rgba(10, 10, 10, 1.0);
+  --solid-95: rgba(10, 10, 10, 0.95);
+  --solid-90: rgba(10, 10, 10, 0.90);
+  --solid-85: rgba(10, 10, 10, 0.85);
+  --solid-80: rgba(10, 10, 10, 0.80);
+  --solid-75: rgba(10, 10, 10, 0.75);
+  --solid-72: rgba(18, 18, 18, 0.72);
+  --solid-70: rgba(10, 10, 10, 0.70);
+  --solid-65: rgba(12, 12, 12, 0.65);
+  --solid-60: rgba(10, 10, 10, 0.60);
+
   /* Glass Background - Extended opacity scale */
   --glass-100: rgba(255, 255, 255, 1.0);
   --glass-95: rgba(255, 255, 255, 0.95);
@@ -323,6 +336,18 @@ button {
   --text-03: rgba(0, 0, 0, 0.03);
   --text-02: rgba(0, 0, 0, 0.02);
   --text-01: rgba(0, 0, 0, 0.01);
+
+  /* Solid Surface Backgrounds - Light Mode (inverted) */
+  --solid-100: rgba(255, 255, 255, 1.0);
+  --solid-95: rgba(255, 255, 255, 0.95);
+  --solid-90: rgba(255, 255, 255, 0.90);
+  --solid-85: rgba(255, 255, 255, 0.85);
+  --solid-80: rgba(255, 255, 255, 0.80);
+  --solid-75: rgba(255, 255, 255, 0.75);
+  --solid-72: rgba(255, 255, 255, 0.72);
+  --solid-70: rgba(255, 255, 255, 0.70);
+  --solid-65: rgba(255, 255, 255, 0.65);
+  --solid-60: rgba(255, 255, 255, 0.60);
 
   /* Glass Background - Extended opacity scale (Light Mode) */
   --glass-100: rgba(0, 0, 0, 1.0);

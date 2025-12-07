@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles } from 'lucide-react';
-import { useTheme } from '@/components/effects/ThemeProvider';
 
 interface FloatingChatButtonProps {
   onClick: () => void;
@@ -13,7 +12,6 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
   const [isHovered, setIsHovered] = useState(false);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const leaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const { resolvedTheme } = useTheme();
 
   // Hero orb position (matches CosmicBackground.tsx)
   const spherePosition = { x: 65, y: 45 };
@@ -115,18 +113,14 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
             transform: 'translateY(-50%)',
             maxWidth: '180px',
             padding: '12px 16px',
-            background: resolvedTheme === 'light' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(10, 10, 10, 0.95)',
+            background: 'var(--solid-95)',
             backdropFilter: 'blur(100px) saturate(180%)',
             WebkitBackdropFilter: 'blur(100px) saturate(180%)',
-            border: `1px solid var(--border-primary)`,
+            border: '1px solid var(--border-primary)',
             borderRadius: '12px',
-            boxShadow: resolvedTheme === 'light'
-              ? `inset 0 1px 0 rgba(255, 255, 255, 0.5),
-                 inset 0 -1px 0 rgba(0, 0, 0, 0.1),
-                 0 8px 24px rgba(0, 0, 0, 0.15)`
-              : `inset 0 1px 0 rgba(255, 255, 255, 0.02),
-                 inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-                 0 8px 24px rgba(0, 0, 0, 0.7)`,
+            boxShadow: `inset 0 1px 0 var(--glass-05),
+               inset 0 -1px 0 var(--text-10),
+               0 8px 24px rgba(0, 0, 0, 0.4)`,
             pointerEvents: 'none',
             whiteSpace: 'nowrap',
           }}
@@ -154,7 +148,7 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
               height: 0,
               borderTop: '6px solid transparent',
               borderBottom: '6px solid transparent',
-              borderLeft: resolvedTheme === 'light' ? '6px solid rgba(255, 255, 255, 0.95)' : '6px solid rgba(10, 10, 10, 0.95)',
+              borderLeft: '6px solid var(--solid-95)',
             }}
           />
         </div>
@@ -170,17 +164,13 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
           width: 'clamp(48px, 10vw, 56px)',
           height: 'clamp(48px, 10vw, 56px)',
           borderRadius: '50%',
-          background: resolvedTheme === 'light' ? 'rgba(255, 255, 255, 0.6)' : 'rgba(10, 10, 10, 0.6)',
+          background: 'var(--solid-60)',
           backdropFilter: 'blur(100px) saturate(180%)',
           WebkitBackdropFilter: 'blur(100px) saturate(180%)',
-          border: `1px solid var(--border-primary)`,
-          boxShadow: resolvedTheme === 'light'
-            ? `inset 0 1px 0 rgba(255, 255, 255, 0.5),
-               inset 0 -1px 0 rgba(0, 0, 0, 0.1),
-               0 8px 24px rgba(0, 0, 0, 0.15)`
-            : `inset 0 1px 0 rgba(255, 255, 255, 0.02),
-               inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-               0 8px 24px rgba(0, 0, 0, 0.6)`,
+          border: '1px solid var(--border-primary)',
+          boxShadow: `inset 0 1px 0 var(--glass-05),
+             inset 0 -1px 0 var(--text-10),
+             0 8px 24px rgba(0, 0, 0, 0.4)`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -190,23 +180,15 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.transform = 'scale(1.05)';
-          e.currentTarget.style.boxShadow = resolvedTheme === 'light'
-            ? `inset 0 1px 0 rgba(255, 255, 255, 0.5),
-               inset 0 -1px 0 rgba(0, 0, 0, 0.1),
-               0 12px 32px rgba(0, 0, 0, 0.2)`
-            : `inset 0 1px 0 rgba(255, 255, 255, 0.02),
-               inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-               0 12px 32px rgba(0, 0, 0, 0.7)`;
+          e.currentTarget.style.boxShadow = `inset 0 1px 0 var(--glass-05),
+             inset 0 -1px 0 var(--text-10),
+             0 12px 32px rgba(0, 0, 0, 0.5)`;
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.transform = 'scale(1)';
-          e.currentTarget.style.boxShadow = resolvedTheme === 'light'
-            ? `inset 0 1px 0 rgba(255, 255, 255, 0.5),
-               inset 0 -1px 0 rgba(0, 0, 0, 0.1),
-               0 8px 24px rgba(0, 0, 0, 0.15)`
-            : `inset 0 1px 0 rgba(255, 255, 255, 0.02),
-               inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-               0 8px 24px rgba(0, 0, 0, 0.6)`;
+          e.currentTarget.style.boxShadow = `inset 0 1px 0 var(--glass-05),
+             inset 0 -1px 0 var(--text-10),
+             0 8px 24px rgba(0, 0, 0, 0.4)`;
         }}
         onMouseDown={(e) => {
           e.currentTarget.style.transform = 'scale(0.95)';
@@ -259,7 +241,7 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
               justifyContent: 'center',
               padding: '0 6px',
               boxShadow: '0 2px 8px rgba(218, 14, 41, 0.6)',
-              border: resolvedTheme === 'light' ? '2px solid rgba(255, 255, 255, 0.9)' : '2px solid rgba(0, 0, 0, 0.9)',
+              border: '2px solid var(--solid-90)',
             }}
           >
             {unreadCount > 9 ? '9+' : unreadCount}
