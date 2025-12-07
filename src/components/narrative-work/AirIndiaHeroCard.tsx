@@ -227,6 +227,7 @@ export function AirIndiaHeroCard() {
                       inset 0 1px 0 rgba(255, 255, 255, 0.1),
                       0 0 80px rgba(${brandRgb}, 0.08)
                     `,
+                    pointerEvents: 'auto',
                   }}
                 >
                   {/* Category Tag */}
