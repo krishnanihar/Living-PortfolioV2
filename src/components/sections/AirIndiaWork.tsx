@@ -3507,10 +3507,36 @@ export function AirIndiaWork() {
                         {figmaCascadePhase === 'playing' ? 'Playing' : 'Demo'}
                       </span>
                     </button>
+
+                    {/* Preview Toggle */}
+                    <button
+                      onClick={() => setFigmaPreviewMode(!figmaPreviewMode)}
+                      style={{
+                        height: '24px',
+                        padding: '0 10px',
+                        borderRadius: '4px',
+                        border: 'none',
+                        background: figmaPreviewMode ? 'rgba(13,153,255,0.15)' : FIGMA.bgInput,
+                        color: figmaPreviewMode ? '#0D99FF' : FIGMA.textSecondary,
+                        fontSize: '10px',
+                        fontWeight: 500,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        transition: 'all 0.15s ease',
+                      }}
+                    >
+                      <svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 3a5 5 0 100 10A5 5 0 008 3zm0 1a4 4 0 110 8 4 4 0 010-8z"/>
+                        <circle cx="8" cy="8" r="2"/>
+                      </svg>
+                      Preview
+                    </button>
                   </div>
                 </div>
 
-                {/* Main Content: Sidebar + Table */}
+                {/* Main Content: Sidebar + Table + Preview */}
                 <div style={{ display: 'flex', minHeight: '400px' }}>
                   {/* Sidebar */}
                   {!isMobile && (
@@ -3890,6 +3916,217 @@ export function AirIndiaWork() {
                         <span>+</span>
                         <span>Create variable</span>
                       </button>
+                    </div>
+                  </div>
+
+                  {/* Preview Panel - slides in from right */}
+                  <div style={{
+                    width: figmaPreviewMode ? '280px' : '0px',
+                    overflow: 'hidden',
+                    background: '#1E1E1E',
+                    borderLeft: figmaPreviewMode ? `1px solid ${FIGMA.border}` : 'none',
+                    transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flexShrink: 0,
+                  }}>
+                    {/* Header with component tabs */}
+                    <div style={{
+                      padding: '8px 12px',
+                      borderBottom: `1px solid ${FIGMA.border}`,
+                      background: FIGMA.bgSecondary,
+                    }}>
+                      <div style={{
+                        fontSize: '10px',
+                        fontWeight: 600,
+                        color: FIGMA.textMuted,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                        marginBottom: '8px',
+                      }}>
+                        Component Preview
+                      </div>
+                      <div style={{ display: 'flex', gap: '4px' }}>
+                        {(['button', 'card'] as const).map((comp) => (
+                          <button
+                            key={comp}
+                            onClick={() => setFigmaPreviewComponent(comp)}
+                            style={{
+                              padding: '4px 8px',
+                              borderRadius: '4px',
+                              border: 'none',
+                              background: figmaPreviewComponent === comp ? 'rgba(13,153,255,0.15)' : 'transparent',
+                              color: figmaPreviewComponent === comp ? '#0D99FF' : FIGMA.textSecondary,
+                              fontSize: '10px',
+                              fontWeight: 500,
+                              cursor: 'pointer',
+                              textTransform: 'capitalize',
+                              transition: 'all 0.15s ease',
+                            }}
+                          >
+                            {comp}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Preview Area */}
+                    <div style={{
+                      flex: 1,
+                      padding: '24px 16px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      background: '#1A1A1A',
+                      minHeight: '160px',
+                    }}>
+                      {figmaPreviewComponent === 'button' ? (
+                        /* Preview Button */
+                        <div style={{ position: 'relative' }}>
+                          {figmaHighlightedProperty && (
+                            <div style={{
+                              position: 'absolute',
+                              inset: '-6px',
+                              borderRadius: '12px',
+                              border: '2px dashed #0D99FF',
+                              pointerEvents: 'none',
+                              animation: 'pulse 1s ease infinite',
+                            }} />
+                          )}
+                          <button style={{
+                            background: componentTokenMappings.button.properties.find(p => p.id === 'bg')?.value.dark || '#DA0E29',
+                            color: componentTokenMappings.button.properties.find(p => p.id === 'text')?.value.dark || '#FFFFFF',
+                            padding: '12px 16px',
+                            borderRadius: componentTokenMappings.button.properties.find(p => p.id === 'radius')?.value.dark || '8px',
+                            fontSize: '14px',
+                            fontWeight: 500,
+                            border: 'none',
+                            cursor: 'pointer',
+                            boxShadow: '0 1px 2px rgba(0,0,0,0.3)',
+                          }}>
+                            Primary Button
+                          </button>
+                          {figmaHighlightedProperty && (
+                            <div style={{
+                              position: 'absolute',
+                              bottom: '-24px',
+                              left: '50%',
+                              transform: 'translateX(-50%)',
+                              padding: '2px 8px',
+                              background: '#0D99FF',
+                              color: 'white',
+                              fontSize: '9px',
+                              borderRadius: '3px',
+                              whiteSpace: 'nowrap',
+                              fontWeight: 500,
+                            }}>
+                              {componentTokenMappings.button.properties.find(p => p.id === figmaHighlightedProperty)?.name || figmaHighlightedProperty}
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        /* Preview Card */
+                        <div style={{ position: 'relative', width: '200px' }}>
+                          {figmaHighlightedProperty && (
+                            <div style={{
+                              position: 'absolute',
+                              inset: '-6px',
+                              borderRadius: '16px',
+                              border: '2px dashed #0D99FF',
+                              pointerEvents: 'none',
+                            }} />
+                          )}
+                          <div style={{
+                            background: componentTokenMappings.card.properties.find(p => p.id === 'bg')?.value.dark || '#252525',
+                            borderRadius: '12px',
+                            boxShadow: '0 4px 6px rgba(0,0,0,0.4)',
+                            border: `1px solid ${componentTokenMappings.card.properties.find(p => p.id === 'border')?.value.dark || '#1A1A1A'}`,
+                            overflow: 'hidden',
+                          }}>
+                            <div style={{
+                              padding: '12px 14px',
+                              borderBottom: `1px solid ${componentTokenMappings.card.properties.find(p => p.id === 'border')?.value.dark || '#1A1A1A'}`,
+                            }}>
+                              <div style={{
+                                fontSize: '12px',
+                                fontWeight: 600,
+                                color: componentTokenMappings.card.properties.find(p => p.id === 'title-color')?.value.dark || '#FFFFFF',
+                              }}>
+                                Card Title
+                              </div>
+                            </div>
+                            <div style={{ padding: '16px 14px' }}>
+                              <p style={{
+                                fontSize: '11px',
+                                color: componentTokenMappings.card.properties.find(p => p.id === 'desc-color')?.value.dark || '#A1A1AA',
+                                margin: 0,
+                                lineHeight: 1.5,
+                              }}>
+                                Sample card component with design tokens.
+                              </p>
+                            </div>
+                          </div>
+                          {figmaHighlightedProperty && (
+                            <div style={{
+                              position: 'absolute',
+                              bottom: '-24px',
+                              left: '50%',
+                              transform: 'translateX(-50%)',
+                              padding: '2px 8px',
+                              background: '#0D99FF',
+                              color: 'white',
+                              fontSize: '9px',
+                              borderRadius: '3px',
+                              whiteSpace: 'nowrap',
+                              fontWeight: 500,
+                            }}>
+                              {componentTokenMappings.card.properties.find(p => p.id === figmaHighlightedProperty)?.name || figmaHighlightedProperty}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Property List */}
+                    <div style={{
+                      maxHeight: '180px',
+                      overflow: 'auto',
+                      borderTop: `1px solid ${FIGMA.border}`,
+                    }}>
+                      {componentTokenMappings[figmaPreviewComponent].properties.map((prop) => (
+                        <div
+                          key={prop.id}
+                          onClick={() => {
+                            setFigmaHighlightedProperty(prop.id);
+                            setTimeout(() => setFigmaHighlightedProperty(null), 1500);
+                          }}
+                          style={{
+                            padding: '6px 12px',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            borderBottom: `1px solid ${FIGMA.border}`,
+                            background: figmaHighlightedProperty === prop.id ? 'rgba(13,153,255,0.15)' : 'transparent',
+                            cursor: 'pointer',
+                            transition: 'background 0.15s ease',
+                          }}
+                        >
+                          <span style={{
+                            fontSize: '10px',
+                            color: figmaHighlightedProperty === prop.id ? '#0D99FF' : FIGMA.textSecondary,
+                            fontWeight: figmaHighlightedProperty === prop.id ? 500 : 400,
+                          }}>
+                            {prop.name}
+                          </span>
+                          <span style={{
+                            fontSize: '9px',
+                            color: FIGMA.textMuted,
+                            fontFamily: 'monospace',
+                          }}>
+                            {prop.primitiveToken.split('/').pop()}
+                          </span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -5243,74 +5480,7 @@ export function AirIndiaWork() {
                         </span>
                         {/* Play Cascade Button */}
                         <button
-                          onClick={() => {
-                            if (figmaCascadePhase !== 'idle') return;
-                            setFigmaCascadePhase('playing');
-                            setFigmaSelectedRows(new Set());
-
-                            // Step 1: Select Primitives, expand it
-                            setFigmaSelectedCollection('Primitives');
-                            setFigmaExpandedCollections(new Set(['Primitives']));
-
-                            // Step 2: Highlight Colors group
-                            setTimeout(() => {
-                              setFigmaExpandedGroups(new Set(['Colors', 'Typography', 'Spacing']));
-                              setFigmaHighlightedGroup('Colors');
-                            }, 400);
-
-                            // Step 3: Pulse brand/primary row
-                            setTimeout(() => {
-                              setFigmaHighlightedGroup(null);
-                              setFigmaPulsingRow('brand/primary');
-                            }, 800);
-
-                            // Step 4: Select Semantic
-                            setTimeout(() => {
-                              setFigmaPulsingRow(null);
-                              setFigmaSelectedCollection('Semantic');
-                              setFigmaExpandedCollections(prev => new Set([...prev, 'Semantic']));
-                            }, 1400);
-
-                            // Step 5: Highlight Typography
-                            setTimeout(() => {
-                              setFigmaHighlightedGroup('Typography');
-                            }, 1800);
-
-                            // Step 6: Pulse heading/lg
-                            setTimeout(() => {
-                              setFigmaHighlightedGroup(null);
-                              setFigmaPulsingRow('heading/lg');
-                            }, 2200);
-
-                            // Step 7: Select Components
-                            setTimeout(() => {
-                              setFigmaPulsingRow(null);
-                              setFigmaSelectedCollection('Components');
-                              setFigmaExpandedCollections(prev => new Set([...prev, 'Components']));
-                            }, 2800);
-
-                            // Step 8: Highlight Spacing
-                            setTimeout(() => {
-                              setFigmaHighlightedGroup('Spacing');
-                            }, 3200);
-
-                            // Step 9: Pulse space-md
-                            setTimeout(() => {
-                              setFigmaHighlightedGroup(null);
-                              setFigmaPulsingRow('space-md');
-                            }, 3600);
-
-                            // Step 10: Complete
-                            setTimeout(() => {
-                              setFigmaPulsingRow(null);
-                              setFigmaCascadePhase('complete');
-                            }, 4200);
-
-                            // Reset to idle after showing complete
-                            setTimeout(() => {
-                              setFigmaCascadePhase('idle');
-                            }, 6000);
-                          }}
+                          onClick={playCascadeAnimation}
                           disabled={figmaCascadePhase !== 'idle'}
                           style={{
                             padding: '4px 10px',
