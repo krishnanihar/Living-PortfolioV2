@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef, Suspense } from 'react';
 import { WorkPageLayout } from '@/components/narrative-work/WorkPageLayout';
 import { NarrativeWorkHero } from '@/components/narrative-work/NarrativeWorkHero';
 import { JourneyOverview } from '@/components/narrative-work/JourneyOverview';
+import { AirIndiaHeroCard } from '@/components/narrative-work/AirIndiaHeroCard';
 import { type ImpactCard } from '@/components/narrative-work/ImpactBentoGrid';
 import { ResearchShowcase } from '@/components/narrative-work/ResearchShowcase';
 import { ActTransition } from '@/components/narrative-work/ActTransition';
@@ -206,6 +207,9 @@ export function WorkNarrativePage() {
           </motion.div>
         </div>
       )}
+
+      {/* Air India Hero Card - Giant 3D Card */}
+      <AirIndiaHeroCard />
 
       {/* SECTION 6: Six Areas of Impact - Bento Grid */}
       <section style={{
