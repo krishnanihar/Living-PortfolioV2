@@ -4128,6 +4128,47 @@ export function AirIndiaWork() {
                         </div>
                       ))}
                     </div>
+
+                    {/* Play Button - cycles through properties */}
+                    <div style={{
+                      padding: '8px 12px',
+                      borderTop: `1px solid ${FIGMA.border}`,
+                      background: FIGMA.bgSecondary,
+                    }}>
+                      <button
+                        onClick={() => {
+                          const properties = componentTokenMappings[figmaPreviewComponent].properties;
+                          let index = 0;
+                          const interval = setInterval(() => {
+                            if (index < properties.length) {
+                              setFigmaHighlightedProperty(properties[index].id);
+                              index++;
+                            } else {
+                              clearInterval(interval);
+                              setTimeout(() => setFigmaHighlightedProperty(null), 500);
+                            }
+                          }, 400);
+                        }}
+                        style={{
+                          width: '100%',
+                          padding: '6px',
+                          borderRadius: '4px',
+                          border: 'none',
+                          background: 'rgba(99,102,241,0.9)',
+                          color: 'white',
+                          fontSize: '10px',
+                          fontWeight: 500,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '4px',
+                        }}
+                      >
+                        <span>▶</span>
+                        <span>Play All Properties</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
