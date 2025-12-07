@@ -87,6 +87,7 @@ export function AirIndiaHeroCard() {
             position: 'absolute',
             inset: 0,
             borderRadius: '24px',
+            pointerEvents: 'none',
           }}
         >
           <div className="atropos-scale" style={{ height: '100%' }}>
