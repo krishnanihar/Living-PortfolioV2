@@ -153,14 +153,14 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled, isDarkMod
 
     // Theme-aware color palettes
     // Dark mode: Vibrant colors with additive blending
-    // Light mode: Deeper/more saturated colors for visibility on white background
+    // Light mode: Very dark colors for high contrast on white background
     const coolPalette = isDarkMode
       ? { slow: '#1E40AF', medium: '#06B6D4', fast: '#F0F9FF' }  // Deep Blue → Cyan → Near White
-      : { slow: '#1E3A8A', medium: '#0891B2', fast: '#374151' }; // Darker Blue → Darker Cyan → Gray
+      : { slow: '#0F172A', medium: '#1E293B', fast: '#334155' }; // Slate-900 → Slate-800 → Slate-700
 
     const warmPalette = isDarkMode
       ? { slow: '#3B82F6', medium: '#8B5CF6', fast: '#EC4899' }  // Blue → Purple → Pink
-      : { slow: '#1D4ED8', medium: '#7C3AED', fast: '#DB2777' }; // Deeper Blue → Deeper Purple → Deeper Pink
+      : { slow: '#1E1B4B', medium: '#4C1D95', fast: '#831843' }; // Indigo-950 → Violet-900 → Pink-900
 
     return new THREE.ShaderMaterial({
       uniforms: {
