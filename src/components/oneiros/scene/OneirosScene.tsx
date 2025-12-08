@@ -337,7 +337,7 @@ function SceneLoadingFallback() {
 /**
  * Instructions overlay
  */
-function InstructionsOverlay({ isLocked }: { isLocked: boolean }) {
+function InstructionsOverlay({ isLocked, onEnterPalace }: { isLocked: boolean; onEnterPalace: () => void }) {
   if (isLocked) return null;
 
   return (
@@ -409,6 +409,7 @@ function InstructionsOverlay({ isLocked }: { isLocked: boolean }) {
 
         <button
           id="enter-palace-button"
+          onClick={onEnterPalace}
           style={{
             padding: '1rem 2.5rem',
             fontSize: '1rem',
@@ -654,6 +655,8 @@ export function OneirosScene() {
   const [isLocked, setIsLocked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [audioEnabled, setAudioEnabled] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const controlsRef = useRef<any>(null);
 
   // Get current room from context
   const currentRoom = state.generatedRooms[state.currentRoomIndex] || null;
@@ -703,9 +706,9 @@ export function OneirosScene() {
           }}
           dpr={Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 1, 2)}
         >
-          {/* PointerLockControls outside Suspense for immediate mounting */}
-          <PointerLockControls selector="#enter-palace-button" />
           <Suspense fallback={<SceneLoadingFallback />}>
+            {/* PointerLockControls inside Suspense to ensure camera is ready */}
+            <PointerLockControls ref={controlsRef} />
             <SceneContent
               room={currentRoom}
               isLocked={isLocked}
@@ -716,7 +719,10 @@ export function OneirosScene() {
       </SceneErrorBoundary>
 
       {/* UI Overlays */}
-      <InstructionsOverlay isLocked={isLocked} />
+      <InstructionsOverlay
+        isLocked={isLocked}
+        onEnterPalace={() => controlsRef.current?.lock()}
+      />
 
       {/* Enhanced Depth Indicator with sleep stage visualization */}
       {isLocked && (

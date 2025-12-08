@@ -5,6 +5,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { shimmerVertexShader, shimmerFragmentShader } from '@/shaders/gladeye';
 import GPGPUPatternParticles from './GPGPUPatternParticles';
+import { useTheme } from '@/components/effects/ThemeProvider';
 
 // Particle count optimized for hero section
 function getHeroParticleCount(): number {
@@ -24,9 +25,10 @@ function getHeroParticleCount(): number {
 interface HeroStarParticlesProps {
   scrollProgress: number;
   mousePosition: { x: number; y: number };
+  isDarkMode: boolean;
 }
 
-function HeroStarParticles({ scrollProgress, mousePosition }: HeroStarParticlesProps) {
+function HeroStarParticles({ scrollProgress, mousePosition, isDarkMode }: HeroStarParticlesProps) {
   const pointsRef = useRef<THREE.Points>(null);
   const particleCount = useMemo(() => getHeroParticleCount(), []);
 
@@ -67,29 +69,33 @@ function HeroStarParticles({ scrollProgress, mousePosition }: HeroStarParticlesP
     return { geometry: geo };
   }, [particleCount]);
 
-  // Create shader material for white stars
+  // Create shader material for stars (theme-aware color)
   const material = useMemo(() => {
     // Check for reduced motion preference
     const prefersReducedMotion = typeof window !== 'undefined'
       ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
       : false;
 
+    // Theme-aware star color: white in dark mode, dark gray in light mode
+    const starColor = isDarkMode
+      ? new THREE.Color(1.0, 1.0, 1.0)      // White for dark mode
+      : new THREE.Color(0.15, 0.15, 0.18);  // Dark gray for light mode
+
     return new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
         shimmerIntensity: { value: prefersReducedMotion ? 0 : 0.2 },
         scrollProgress: { value: 0 },
-        // Pure white for star-like particles
-        color: { value: new THREE.Color(1.0, 1.0, 1.0) },
+        color: { value: starColor },
       },
       vertexShader: shimmerVertexShader,
       fragmentShader: shimmerFragmentShader,
-      blending: THREE.AdditiveBlending,
+      blending: isDarkMode ? THREE.AdditiveBlending : THREE.NormalBlending,
       depthTest: true,
       depthWrite: false,
       transparent: true,
     });
-  }, []);
+  }, [isDarkMode]);
 
   // Animation loop with zoom scroll effect
   useFrame((state) => {
@@ -212,6 +218,8 @@ export default function HeroParticleSystem({
   scrollProgress = 0,
 }: HeroParticleSystemProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme !== 'light';
 
   // User has scrolled when progress is above threshold
   const userScrolled = scrollProgress > 0.02;
@@ -265,7 +273,7 @@ export default function HeroParticleSystem({
           }}
           dpr={Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 1, 2)}
         >
-          <HeroStarParticles scrollProgress={scrollProgress} mousePosition={mousePosition} />
+          <HeroStarParticles scrollProgress={scrollProgress} mousePosition={mousePosition} isDarkMode={isDarkMode} />
           <ambientLight intensity={0.2} />
         </Canvas>
       </div>
@@ -275,6 +283,7 @@ export default function HeroParticleSystem({
         scrollProgress={scrollProgress}
         mousePosition={mousePosition}
         userScrolled={userScrolled}
+        isDarkMode={isDarkMode}
         className="hero-gpgpu-layer"
       />
 

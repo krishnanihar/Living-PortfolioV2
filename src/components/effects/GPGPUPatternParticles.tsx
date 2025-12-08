@@ -56,9 +56,10 @@ interface GPGPUParticlesProps {
   scrollProgress: number;
   mousePosition: { x: number; y: number };
   userScrolled: boolean;
+  isDarkMode: boolean;
 }
 
-function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUParticlesProps) {
+function GPGPUParticles({ scrollProgress, mousePosition, userScrolled, isDarkMode }: GPGPUParticlesProps) {
   const pointsRef = useRef<THREE.Points>(null);
   const particleCount = useMemo(() => getGPGPUParticleCount(), []);
   const noise3D = useMemo(() => createNoise3D(), []);
@@ -146,33 +147,44 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
     return { geometry: geom, initialPositions };
   }, [particleCount]);
 
-  // Create shader material with dual color palettes
+  // Create shader material with theme-aware dual color palettes
   const material = useMemo(() => {
     const responsiveSize = getResponsiveParticleSize();
+
+    // Theme-aware color palettes
+    // Dark mode: Vibrant colors with additive blending
+    // Light mode: Deeper/more saturated colors for visibility on white background
+    const coolPalette = isDarkMode
+      ? { slow: '#1E40AF', medium: '#06B6D4', fast: '#F0F9FF' }  // Deep Blue → Cyan → Near White
+      : { slow: '#1E3A8A', medium: '#0891B2', fast: '#374151' }; // Darker Blue → Darker Cyan → Gray
+
+    const warmPalette = isDarkMode
+      ? { slow: '#3B82F6', medium: '#8B5CF6', fast: '#EC4899' }  // Blue → Purple → Pink
+      : { slow: '#1D4ED8', medium: '#7C3AED', fast: '#DB2777' }; // Deeper Blue → Deeper Purple → Deeper Pink
 
     return new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
         uSize: { value: responsiveSize },
         uScrollProgress: { value: 0 },
-        // Cool palette (new)
-        uColorSlowCool: { value: new THREE.Color('#1E40AF') },    // Deep Blue
-        uColorMediumCool: { value: new THREE.Color('#06B6D4') },  // Cyan
-        uColorFastCool: { value: new THREE.Color('#F0F9FF') },    // Near White
-        // Warm palette (original)
-        uColorSlowWarm: { value: new THREE.Color('#3B82F6') },    // Blue
-        uColorMediumWarm: { value: new THREE.Color('#8B5CF6') },  // Purple
-        uColorFastWarm: { value: new THREE.Color('#EC4899') },    // Pink
+        // Cool palette
+        uColorSlowCool: { value: new THREE.Color(coolPalette.slow) },
+        uColorMediumCool: { value: new THREE.Color(coolPalette.medium) },
+        uColorFastCool: { value: new THREE.Color(coolPalette.fast) },
+        // Warm palette
+        uColorSlowWarm: { value: new THREE.Color(warmPalette.slow) },
+        uColorMediumWarm: { value: new THREE.Color(warmPalette.medium) },
+        uColorFastWarm: { value: new THREE.Color(warmPalette.fast) },
       },
       vertexShader: gpgpuVertexShader,
       fragmentShader: gpgpuFragmentShader,
       transparent: true,
-      blending: THREE.AdditiveBlending,
+      blending: isDarkMode ? THREE.AdditiveBlending : THREE.NormalBlending,
       depthTest: true,
       depthWrite: false,
       toneMapped: false, // Allow HDR colors for better bloom
     });
-  }, []);
+  }, [isDarkMode]);
 
   // Pattern target position calculators (camera-relative, depth -120)
   const calculateSpherePosition = (index: number, cameraZ: number, radius: number = 60): THREE.Vector3 => {
@@ -416,7 +428,8 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled }: GPGPUPa
 interface GPGPUPatternParticlesProps {
   scrollProgress: number;
   mousePosition: { x: number; y: number };
-  userScrolled: boolean; // NEW PROP
+  userScrolled: boolean;
+  isDarkMode: boolean;
   className?: string;
 }
 
@@ -436,6 +449,7 @@ export default function GPGPUPatternParticles({
   scrollProgress,
   mousePosition,
   userScrolled = false,
+  isDarkMode,
   className = '',
 }: GPGPUPatternParticlesProps) {
   // Respect reduced motion
@@ -474,6 +488,7 @@ export default function GPGPUPatternParticles({
           scrollProgress={scrollProgress}
           mousePosition={mousePosition}
           userScrolled={userScrolled}
+          isDarkMode={isDarkMode}
         />
       </Canvas>
     </div>
