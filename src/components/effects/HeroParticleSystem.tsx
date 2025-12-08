@@ -81,12 +81,16 @@ function HeroStarParticles({ scrollProgress, mousePosition, isDarkMode }: HeroSt
       ? new THREE.Color(1.0, 1.0, 1.0)      // White for dark mode
       : new THREE.Color(0.01, 0.01, 0.02);  // Nearly pure black for light mode
 
+    // Larger particles in light mode for better visibility
+    const sizeMultiplier = isDarkMode ? 1.0 : 1.5;
+
     return new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
         shimmerIntensity: { value: prefersReducedMotion ? 0 : 0.2 },
         scrollProgress: { value: 0 },
         color: { value: starColor },
+        sizeMultiplier: { value: sizeMultiplier },
       },
       vertexShader: shimmerVertexShader,
       fragmentShader: shimmerFragmentShader,

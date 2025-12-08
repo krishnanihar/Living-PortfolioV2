@@ -5,6 +5,7 @@ export const shimmerVertexShader = /* glsl */ `
 uniform float time;
 uniform float shimmerIntensity;
 uniform float scrollProgress;
+uniform float sizeMultiplier;
 attribute float randomOffset;
 attribute float twinklePhase;
 varying float vTwinklePhase;
@@ -25,8 +26,8 @@ void main() {
   vDepth = -mvPosition.z;
 
   // Size attenuation based on depth (near = large, far = small)
-  // Base size increases with scroll progress
-  float baseSize = 0.4 + scrollProgress * 1.6; // 0.4 -> 2.0
+  // Base size increases with scroll progress, multiplied by theme-aware size
+  float baseSize = (0.4 + scrollProgress * 1.6) * sizeMultiplier; // 0.4 -> 2.0
   gl_PointSize = baseSize * (300.0 / max(vDepth, 1.0));
 
   gl_Position = projectionMatrix * mvPosition;

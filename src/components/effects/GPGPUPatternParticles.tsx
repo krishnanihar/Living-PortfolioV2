@@ -150,6 +150,8 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled, isDarkMod
   // Create shader material with theme-aware dual color palettes
   const material = useMemo(() => {
     const responsiveSize = getResponsiveParticleSize();
+    // Slightly larger particles in light mode for better visibility
+    const themeSize = isDarkMode ? responsiveSize : responsiveSize * 1.4;
 
     // Theme-aware color palettes
     // Dark mode: Vibrant colors with additive blending
@@ -165,7 +167,7 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled, isDarkMod
     return new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
-        uSize: { value: responsiveSize },
+        uSize: { value: themeSize },
         uScrollProgress: { value: 0 },
         // Cool palette
         uColorSlowCool: { value: new THREE.Color(coolPalette.slow) },
