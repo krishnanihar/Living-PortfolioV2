@@ -678,22 +678,10 @@ export function AirIndiaWork() {
         padding: isMobile ? '3rem 1rem' : '4rem 2rem',
         overflow: 'hidden',
       }}>
-        {/* Gradient transition line */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '2px',
-          height: '60px',
-          background: `linear-gradient(180deg, rgba(${fromColor}, 0.6), rgba(${toColor}, 0.6))`,
-          borderRadius: '1px',
-        }} />
-
-        {/* Transition text */}
+          {/* Transition text */}
         <p style={{
           maxWidth: '500px',
-          margin: '60px auto 0',
+          margin: '0 auto',
           textAlign: 'center',
           fontSize: '0.9375rem',
           fontStyle: 'italic',
@@ -7507,7 +7495,7 @@ export function AirIndiaWork() {
                 {/* END LEGACY EXPANDED CONTENT */}
 
                 {/* Narrative Connectors */}
-                {index === 0 && (
+                {index === 1 && (
                   <NarrativeConnector fromAct={1} toAct={2} text={narrativeTransitions.act1to2} />
                 )}
                 {index === 5 && (
