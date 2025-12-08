@@ -150,8 +150,8 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled, isDarkMod
   // Create shader material with theme-aware dual color palettes
   const material = useMemo(() => {
     const responsiveSize = getResponsiveParticleSize();
-    // Slightly larger particles in light mode for better visibility
-    const themeSize = isDarkMode ? responsiveSize : responsiveSize * 1.4;
+    // Larger particles in light mode for better visibility
+    const themeSize = isDarkMode ? responsiveSize : responsiveSize * 2.0;
 
     // Theme-aware color palettes
     // Dark mode: Vibrant colors with additive blending

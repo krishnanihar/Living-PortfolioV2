@@ -82,7 +82,7 @@ function HeroStarParticles({ scrollProgress, mousePosition, isDarkMode }: HeroSt
       : new THREE.Color(0.01, 0.01, 0.02);  // Nearly pure black for light mode
 
     // Larger particles in light mode for better visibility
-    const sizeMultiplier = isDarkMode ? 1.0 : 1.5;
+    const sizeMultiplier = isDarkMode ? 1.0 : 2.2;
 
     return new THREE.ShaderMaterial({
       uniforms: {
