@@ -3,24 +3,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles, Loader, AlertCircle, Shuffle, Mic } from 'lucide-react';
 
-// Type definitions for SpeechRecognition API
-interface SpeechRecognition extends EventTarget {
+// Local type definition for SpeechRecognition API (to avoid conflicts with DOM types)
+interface LocalSpeechRecognition {
   continuous: boolean;
   interimResults: boolean;
   lang: string;
   onstart: (() => void) | null;
   onend: (() => void) | null;
-  onerror: ((event: any) => void) | null;
-  onresult: ((event: any) => void) | null;
+  onerror: ((event: { error: string }) => void) | null;
+  onresult: ((event: { resultIndex: number; results: { length: number; [index: number]: { isFinal: boolean; [index: number]: { transcript: string } } } }) => void) | null;
   start: () => void;
   stop: () => void;
-}
-
-declare global {
-  interface Window {
-    SpeechRecognition: { new (): SpeechRecognition };
-    webkitSpeechRecognition: { new (): SpeechRecognition };
-  }
 }
 
 interface ExhibitionCriteria {
@@ -48,7 +41,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState('');
   const [isListening, setIsListening] = useState(false);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<LocalSpeechRecognition | null>(null);
 
   const examplePrompts = [
     "Art about loneliness, but beautiful, from the Renaissance",
@@ -144,13 +137,14 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
       return;
     }
 
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const SpeechRecognitionAPI = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognitionAPI) {
       alert("Speech recognition not supported in this browser.");
       return;
     }
 
-    const recognition = new SpeechRecognition();
+    const recognition = new SpeechRecognitionAPI() as LocalSpeechRecognition;
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = 'en-US';
