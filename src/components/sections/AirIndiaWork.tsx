@@ -2137,14 +2137,14 @@ export function AirIndiaWork() {
                   }} />
                   <span style={{
                     fontSize: '11px',
-                    color: 'rgba(255, 255, 255, 0.7)',
+                    color: 'var(--text-70)',
                     fontWeight: '500',
                   }}>
                     Interactive Prototype
                   </span>
                   <span style={{
                     fontSize: '10px',
-                    color: 'rgba(255, 255, 255, 0.4)',
+                    color: 'var(--text-40)',
                   }}>
                     — Click &quot;Run Analysis&quot; to see it in action
                   </span>
