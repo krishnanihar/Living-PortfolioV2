@@ -248,8 +248,9 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
                 y1={sourcePos.y}
                 x2={targetPos.x}
                 y2={targetPos.y}
-                stroke={isHighlighted ? 'var(--text-30)' : 'var(--text-10)'}
+                stroke={isHighlighted ? 'var(--text-40)' : 'var(--text-15)'}
                 strokeWidth={isHighlighted ? 1.5 : 0.5}
+                strokeDasharray={isHighlighted ? 'none' : '4 4'}
                 opacity={isDimmed ? 0.2 : 1}
                 style={{ transition: 'all 0.3s ease' }}
               />

@@ -58,8 +58,8 @@ export function GraphEdge({
     opacity = baseOpacity * 0.1; // was 0.2 - more aggressive dimming
   }
 
-  // Color based on highlight state
-  const color = isHighlighted ? '#DA0E29' : '#ffffff';
+  // Color - neutral gray works in both light and dark modes
+  const color = '#888888';
 
   return (
     <group>
@@ -68,20 +68,23 @@ export function GraphEdge({
         <Line
           points={points}
           color={color}
-          lineWidth={1.5}
+          lineWidth={2}
           transparent
-          opacity={0.25}
+          opacity={0.3}
           depthWrite={false}
         />
       )}
 
-      {/* Main line - thinner for delicate appearance */}
+      {/* Main line - dashed by default, solid on hover */}
       <Line
         points={points}
         color={color}
-        lineWidth={isHighlighted ? 1 : 0.5}
+        lineWidth={isHighlighted ? 1.5 : 0.5}
         transparent
-        opacity={opacity}
+        opacity={isHighlighted ? 0.6 : opacity}
+        dashed={!isHighlighted}
+        dashSize={2}
+        gapSize={2}
       />
     </group>
   );
