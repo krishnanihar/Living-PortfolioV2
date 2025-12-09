@@ -4346,32 +4346,36 @@ export function AirIndiaWork() {
                       {/* Pixel Radar Featured Section */}
                       {index === 1 && (
                         <div style={{
-                          marginTop: '3rem',
+                          marginTop: '2rem',
                           display: 'flex',
                           flexDirection: 'row',
                           alignItems: 'center',
-                          gap: '2rem',
-                          maxWidth: '900px',
-                          margin: '3rem auto 0',
-                          padding: '0 1rem',
-                          flexWrap: 'wrap',
+                          gap: '1.5rem',
+                          maxWidth: '680px',
+                          margin: '2rem auto 0',
+                          padding: '1.25rem',
+                          background: 'var(--glass-04)',
+                          border: '1px solid var(--glass-10)',
+                          borderRadius: '16px',
+                          backdropFilter: 'blur(20px)',
                         }}>
                           {/* Left: Image */}
                           <img
                             src="/images/pixel-radar-author.jpeg"
                             alt="Pixel Radar Featured in Magazine"
                             style={{
-                              width: '100%',
-                              maxWidth: '320px',
-                              borderRadius: '16px',
+                              width: '200px',
+                              height: '200px',
+                              objectFit: 'cover',
+                              borderRadius: '12px',
                               border: '1px solid var(--glass-10)',
                               flexShrink: 0,
                             }}
                           />
                           {/* Right: Text */}
-                          <div style={{ flex: 1, minWidth: '280px' }}>
+                          <div style={{ flex: 1 }}>
                             <p style={{
-                              fontSize: '0.75rem',
+                              fontSize: '0.65rem',
                               fontWeight: 600,
                               letterSpacing: '0.1em',
                               textTransform: 'uppercase',
@@ -4381,9 +4385,9 @@ export function AirIndiaWork() {
                               Featured in Magazine
                             </p>
                             <p style={{
-                              fontSize: '1rem',
-                              color: 'var(--text-70)',
-                              lineHeight: 1.7,
+                              fontSize: '0.875rem',
+                              color: 'var(--text-60)',
+                              lineHeight: 1.6,
                               margin: 0,
                             }}>
                               The Pixel Radar Figma plugin was recognized and featured in our internal design magazine for its contribution to maintaining visual consistency across Air India's digital products.
