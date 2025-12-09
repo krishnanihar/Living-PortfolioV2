@@ -4343,6 +4343,26 @@ export function AirIndiaWork() {
                     >
                       {index === 0 ? renderDesignSystemDemo() : renderPixelRadarDemo()}
 
+                      {/* Pixel Radar Author Image */}
+                      {index === 1 && (
+                        <div style={{
+                          marginTop: '3rem',
+                          display: 'flex',
+                          justifyContent: 'center',
+                        }}>
+                          <img
+                            src="/images/pixel-radar-author.jpeg"
+                            alt="Pixel Radar Author"
+                            style={{
+                              width: '100%',
+                              maxWidth: '900px',
+                              borderRadius: '16px',
+                              border: '1px solid var(--glass-10)',
+                            }}
+                          />
+                        </div>
+                      )}
+
                       {/* External Play Button - Air India branded glassmorphism style */}
                       {index === 0 && (
                         <div style={{
