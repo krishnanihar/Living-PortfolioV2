@@ -176,7 +176,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
         style={{
           position: 'fixed',
           inset: 0,
-          background: 'rgba(0, 0, 0, 0.3)',
+          background: 'var(--overlay-30)',
           backdropFilter: 'blur(4px)',
           zIndex: 9998,
           opacity: 0,
@@ -200,14 +200,14 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
         <div style={{
           height: '100%',
           borderRadius: '24px',
-          background: 'linear-gradient(135deg, rgba(10, 10, 10, 0.15) 0%, rgba(10, 10, 10, 0.1) 100%)',
+          background: 'linear-gradient(135deg, var(--solid-15) 0%, var(--solid-10) 100%)',
           backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
           WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
-          border: '1px solid rgba(255, 255, 255, 0.06)',
+          border: '1px solid var(--glass-06)',
           boxShadow: `
-            inset 0 1px 0 rgba(255, 255, 255, 0.05),
-            inset 0 -1px 0 rgba(0, 0, 0, 0.2),
-            0 16px 32px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 var(--glass-05),
+            inset 0 -1px 0 var(--overlay-20),
+            0 16px 32px var(--overlay-40),
             0 0 60px rgba(218, 14, 41, 0.05)
           `,
           display: 'flex',
@@ -217,7 +217,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
           {/* Header */}
           <div style={{
             padding: '1.5rem',
-            borderBottom: showIntentPrompt ? 'none' : '1px solid rgba(255, 255, 255, 0.08)',
+            borderBottom: showIntentPrompt ? 'none' : '1px solid var(--glass-08)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -255,8 +255,8 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
                 width: '32px',
                 height: '32px',
                 borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                background: 'var(--glass-05)',
+                border: '1px solid var(--glass-10)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -270,7 +270,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
                 e.currentTarget.style.transform = 'rotate(90deg)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                e.currentTarget.style.background = 'var(--glass-05)';
                 e.currentTarget.style.color = 'var(--text-muted)';
                 e.currentTarget.style.transform = 'rotate(0)';
               }}
@@ -321,10 +321,10 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
                   borderRadius: message.isUser ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
                   background: message.isUser
                     ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.3) 0%, rgba(218, 14, 41, 0.2) 100%)'
-                    : 'rgba(255, 255, 255, 0.08)',
+                    : 'var(--glass-08)',
                   border: message.isUser
                     ? '1px solid rgba(218, 14, 41, 0.4)'
-                    : '1px solid rgba(255, 255, 255, 0.08)',
+                    : '1px solid var(--glass-08)',
                   backdropFilter: 'blur(20px) saturate(120%) brightness(0.95)',
                   WebkitBackdropFilter: 'blur(20px) saturate(120%) brightness(0.95)',
                 }}>
@@ -362,8 +362,8 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
                 <div style={{
                   padding: '0.875rem 1.125rem',
                   borderRadius: '18px 18px 18px 4px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  background: 'var(--glass-05)',
+                  border: '1px solid var(--glass-08)',
                   backdropFilter: 'blur(20px) brightness(0.9)',
                   WebkitBackdropFilter: 'blur(20px) brightness(0.9)',
                   display: 'flex',
@@ -391,16 +391,16 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
           {/* Input */}
           <div style={{
             padding: '1.5rem',
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+            borderTop: '1px solid var(--glass-08)',
           }}>
             <div style={{
               display: 'flex',
               alignItems: 'center',
               gap: '0.75rem',
-              background: 'rgba(255, 255, 255, 0.05)',
+              background: 'var(--glass-05)',
               backdropFilter: 'blur(20px) saturate(120%) brightness(0.9)',
               WebkitBackdropFilter: 'blur(20px) saturate(120%) brightness(0.9)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
+              border: '1px solid var(--glass-08)',
               borderRadius: '20px',
               padding: '0.75rem 1rem',
               transition: 'all 0.3s ease',
@@ -409,7 +409,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
               e.currentTarget.style.border = '1px solid rgba(218, 14, 41, 0.2)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.08)';
+              e.currentTarget.style.border = '1px solid var(--glass-08)';
             }}
             >
               <input
@@ -438,8 +438,8 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
                   width: '32px',
                   height: '32px',
                   borderRadius: '50%',
-                  background: (inputValue.trim() && !isLoading) ? 'rgba(218, 14, 41, 0.3)' : 'rgba(255, 255, 255, 0.05)',
-                  border: (inputValue.trim() && !isLoading) ? '1px solid rgba(218, 14, 41, 0.5)' : '1px solid rgba(255, 255, 255, 0.1)',
+                  background: (inputValue.trim() && !isLoading) ? 'rgba(218, 14, 41, 0.3)' : 'var(--glass-05)',
+                  border: (inputValue.trim() && !isLoading) ? '1px solid rgba(218, 14, 41, 0.5)' : '1px solid var(--glass-10)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

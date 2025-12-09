@@ -148,6 +148,8 @@ button {
   --solid-70: rgba(10, 10, 10, 0.70);
   --solid-65: rgba(12, 12, 12, 0.65);
   --solid-60: rgba(10, 10, 10, 0.60);
+  --solid-15: rgba(10, 10, 10, 0.15);
+  --solid-10: rgba(10, 10, 10, 0.10);
 
   /* Glass Background - Extended opacity scale */
   --glass-100: rgba(255, 255, 255, 1.0);
@@ -185,6 +187,7 @@ button {
   --overlay-50: rgba(0, 0, 0, 0.50);
   --overlay-45: rgba(0, 0, 0, 0.45);
   --overlay-40: rgba(0, 0, 0, 0.40);
+  --overlay-30: rgba(0, 0, 0, 0.30);
   --overlay-20: rgba(0, 0, 0, 0.20);
   --overlay-15: rgba(0, 0, 0, 0.15);
   --overlay-10: rgba(0, 0, 0, 0.10);
@@ -363,6 +366,8 @@ button {
   --solid-70: rgba(255, 255, 255, 0.70);
   --solid-65: rgba(255, 255, 255, 0.65);
   --solid-60: rgba(255, 255, 255, 0.60);
+  --solid-15: rgba(255, 255, 255, 0.15);
+  --solid-10: rgba(255, 255, 255, 0.10);
 
   /* Glass Background - Extended opacity scale (Light Mode) */
   --glass-100: rgba(0, 0, 0, 1.0);
@@ -399,6 +404,7 @@ button {
   --overlay-50: rgba(255, 255, 255, 0.50);
   --overlay-45: rgba(255, 255, 255, 0.45);
   --overlay-40: rgba(255, 255, 255, 0.40);
+  --overlay-30: rgba(255, 255, 255, 0.30);
   --overlay-20: rgba(255, 255, 255, 0.20);
   --overlay-15: rgba(255, 255, 255, 0.15);
   --overlay-10: rgba(255, 255, 255, 0.10);
