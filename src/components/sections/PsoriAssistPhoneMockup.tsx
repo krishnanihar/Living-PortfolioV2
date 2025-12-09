@@ -457,7 +457,7 @@ export function PsoriAssistPhoneMockup() {
               inset: '54px 0 0 0',
               overflow: 'auto',
               overflowX: 'hidden',
-              paddingBottom: '90px',
+              paddingBottom: '110px',
               paddingLeft: '4px',
               paddingRight: '4px',
               cursor: 'grab',
@@ -1928,16 +1928,20 @@ function MentalHealthScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) 
         >
           <motion.div
             animate={{
-              scale: [1, 1.05, 1],
-              opacity: [0.5, 1, 0.5]
+              scale: [1, 1.08, 1]
             }}
             transition={{
-              duration: 3,
+              duration: 2.5,
               repeat: Infinity,
               ease: 'easeInOut'
             }}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '16px'
+            }}
           >
-            <Heart size={56} color={IOS_COLORS.systemPink} style={{ margin: '0 auto 16px', opacity: 0.6 }} />
+            <Heart size={56} color={IOS_COLORS.systemPink} style={{ filter: 'drop-shadow(0 0 10px rgba(255, 55, 95, 0.5))' }} />
           </motion.div>
 
           <h3 style={{
@@ -1953,25 +1957,29 @@ function MentalHealthScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) 
             fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
             color: IOS_COLORS.secondaryLabel,
             lineHeight: `${IOS_TYPOGRAPHY.subheadline.lineHeight}px`,
-            marginBottom: '20px'
+            marginBottom: '24px'
           }}>
             Start your first wellness check-in to track your mental health over time.
           </p>
 
           <motion.button
             whileTap={{ scale: 0.96 }}
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ scale: 1.02, boxShadow: `0 0 20px rgba(255, 55, 95, 0.5), ${IOS_SHADOWS.button}` }}
+            aria-label="Begin wellness check-in"
             style={{
-              padding: '12px 24px',
-              borderRadius: '12px',
-              backgroundColor: IOS_COLORS.systemPink,
+              padding: '14px 28px',
+              borderRadius: '14px',
+              background: 'linear-gradient(135deg, #FF375F 0%, #FF6B8A 100%)',
               border: 'none',
               color: 'white',
-              fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+              fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
               fontWeight: '600',
               cursor: 'pointer',
-              boxShadow: IOS_SHADOWS.button
+              boxShadow: `0 4px 16px rgba(255, 55, 95, 0.4), ${IOS_SHADOWS.button}`,
+              outline: 'none'
             }}
+            onFocus={(e) => e.currentTarget.style.boxShadow = `0 0 0 3px rgba(255, 55, 95, 0.5), 0 4px 16px rgba(255, 55, 95, 0.4)`}
+            onBlur={(e) => e.currentTarget.style.boxShadow = `0 4px 16px rgba(255, 55, 95, 0.4), ${IOS_SHADOWS.button}`}
           >
             Begin Check-in
           </motion.button>
@@ -4342,6 +4350,7 @@ function BackButton({ onClick }: { onClick: () => void }) {
   return (
     <motion.button
       onClick={onClick}
+      aria-label="Go back"
       whileTap={{ scale: 0.96, transition: SPRING_CONFIG.button }}
       whileHover={{ scale: 1.02, transition: SPRING_CONFIG.smooth }}
       style={{
@@ -4356,10 +4365,13 @@ function BackButton({ onClick }: { onClick: () => void }) {
         alignItems: 'center',
         justifyContent: 'center',
         cursor: 'pointer',
-        boxShadow: IOS_SHADOWS.button
+        boxShadow: IOS_SHADOWS.button,
+        outline: 'none'
       }}
+      onFocus={(e) => e.currentTarget.style.boxShadow = `0 0 0 3px ${IOS_COLORS.systemBlue}60, ${IOS_SHADOWS.button}`}
+      onBlur={(e) => e.currentTarget.style.boxShadow = IOS_SHADOWS.button}
     >
-      <ChevronLeft size={20} color={IOS_COLORS.systemBlue} />
+      <ChevronLeft size={20} color={IOS_COLORS.systemBlue} aria-hidden="true" />
     </motion.button>
   );
 }
@@ -4377,6 +4389,7 @@ function QuickActionButton({
 }) {
   return (
     <motion.button
+      aria-label={label}
       whileHover={{
         scale: 1.03,
         boxShadow: `0 0 20px ${color}40, ${IOS_GLASS.card.boxShadow}`
@@ -4386,6 +4399,7 @@ function QuickActionButton({
       style={{
         padding: '14px 8px',
         minHeight: '80px',
+        minWidth: '80px',
         borderRadius: '20px',
         background: IOS_GLASS.card.background,
         backdropFilter: IOS_GLASS.card.backdropFilter,
@@ -4402,6 +4416,8 @@ function QuickActionButton({
         position: 'relative',
         overflow: 'hidden'
       } as React.CSSProperties}
+      onFocus={(e) => e.currentTarget.style.boxShadow = `0 0 0 3px ${color}60, ${IOS_GLASS.card.boxShadow}`}
+      onBlur={(e) => e.currentTarget.style.boxShadow = IOS_GLASS.card.boxShadow}
     >
       {/* Accent glow */}
       <div style={{
@@ -4424,7 +4440,7 @@ function QuickActionButton({
         pointerEvents: 'none',
         borderRadius: '20px 20px 0 0'
       }} />
-      <Icon size={22} color={color} />
+      <Icon size={22} color={color} aria-hidden="true" />
       <span style={{
         fontSize: '12px',
         fontWeight: '600',
@@ -4451,6 +4467,8 @@ function TabBarItem({
   return (
     <motion.button
       onClick={onClick}
+      aria-label={`${label} tab${active ? ', selected' : ''}`}
+      aria-current={active ? 'page' : undefined}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       style={{
@@ -4465,12 +4483,15 @@ function TabBarItem({
         minWidth: '64px',
         borderRadius: '16px',
         outline: 'none',
-        transition: 'background 0.2s ease'
+        transition: 'background 0.2s ease, box-shadow 0.2s ease'
       }}
+      onFocus={(e) => e.currentTarget.style.boxShadow = `0 0 0 3px ${IOS_COLORS.systemBlue}60`}
+      onBlur={(e) => e.currentTarget.style.boxShadow = 'none'}
     >
       <Icon
         size={22}
         color={active ? IOS_COLORS.systemBlue : IOS_COLORS.tertiaryLabel}
+        aria-hidden="true"
       />
       <span style={{
         fontSize: '10px',
