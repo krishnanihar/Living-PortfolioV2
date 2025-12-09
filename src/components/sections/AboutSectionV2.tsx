@@ -1428,13 +1428,13 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
               fontSize: '0.75rem',
               fontWeight: '300',
               letterSpacing: '0.1em',
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: 'var(--text-50)',
               textTransform: 'uppercase',
             }}>
               Scroll
             </span>
             <div style={{ animation: 'scrollBounce 3s ease-in-out infinite' }}>
-              <ChevronDown size={18} style={{ color: 'rgba(255, 255, 255, 0.5)' }} />
+              <ChevronDown size={18} style={{ color: 'var(--text-50)' }} />
             </div>
           </div>
         </div>
@@ -1471,7 +1471,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
               borderRadius: '30px',
               border: '2px solid transparent',
               background: `
-                linear-gradient(rgba(10, 10, 10, 0.95), rgba(10, 10, 10, 0.95)) padding-box,
+                linear-gradient(var(--solid-95), var(--solid-95)) padding-box,
                 conic-gradient(
                   from var(--border-angle),
                   transparent 0%,
@@ -1490,16 +1490,16 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
             <div
               style={{
                 position: 'relative',
-                background: 'rgba(10, 10, 10, 0.35)',
+                background: 'var(--solid-65)',
                 backdropFilter: 'blur(120px) saturate(200%) brightness(1.1)',
                 WebkitBackdropFilter: 'blur(120px) saturate(200%) brightness(1.1)',
                 borderRadius: '28px',
                 padding: 'clamp(2.5rem, 5vw, 3.5rem)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
+                border: '1px solid var(--text-12)',
                 boxShadow: `
-                  inset 0 1px 0 rgba(255, 255, 255, 0.15),
-                  0 8px 32px rgba(0, 0, 0, 0.4),
-                  0 16px 64px rgba(0, 0, 0, 0.3),
+                  inset 0 1px 0 var(--glass-15),
+                  0 8px 32px var(--glass-40),
+                  0 16px 64px var(--glass-30),
                   0 0 40px rgba(59, 130, 246, 0.08)
                 `,
                 textAlign: 'center',
@@ -1512,7 +1512,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                   alignItems: 'center',
                   gap: '0.5rem',
                   padding: '0.5rem 1rem',
-                  background: 'rgba(255, 255, 255, 0.03)',
+                  background: 'var(--glass-03)',
                   border: '1px solid var(--text-08)',
                   borderRadius: '20px',
                   marginBottom: '2rem',
@@ -1621,13 +1621,13 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
               fontSize: '0.75rem',
               fontWeight: '300',
               letterSpacing: '0.1em',
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: 'var(--text-50)',
               textTransform: 'uppercase',
             }}>
               Scroll
             </span>
             <div style={{ animation: 'scrollBounce 3s ease-in-out infinite' }}>
-              <ChevronDown size={18} style={{ color: 'rgba(255, 255, 255, 0.5)' }} />
+              <ChevronDown size={18} style={{ color: 'var(--text-50)' }} />
             </div>
           </div>
         </div>
@@ -1655,7 +1655,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
               borderRadius: '30px',
               border: '2px solid transparent',
               background: `
-                linear-gradient(rgba(10, 10, 10, 0.95), rgba(10, 10, 10, 0.95)) padding-box,
+                linear-gradient(var(--solid-95), var(--solid-95)) padding-box,
                 conic-gradient(
                   from var(--border-angle),
                   transparent 0%,
@@ -1676,16 +1676,16 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
             <div
               style={{
                 position: 'relative',
-                background: 'rgba(10, 10, 10, 0.35)',
+                background: 'var(--solid-65)',
                 backdropFilter: 'blur(120px) saturate(200%) brightness(1.1)',
                 WebkitBackdropFilter: 'blur(120px) saturate(200%) brightness(1.1)',
                 borderRadius: '28px',
                 padding: 'clamp(2.5rem, 5vw, 3rem)',
-                border: `1px solid rgba(255, 255, 255, 0.12)`,
+                border: '1px solid var(--text-12)',
                 boxShadow: `
-                  inset 0 1px 0 rgba(255, 255, 255, 0.15),
-                  0 8px 32px rgba(0, 0, 0, 0.4),
-                  0 16px 64px rgba(0, 0, 0, 0.3),
+                  inset 0 1px 0 var(--glass-15),
+                  0 8px 32px var(--glass-40),
+                  0 16px 64px var(--glass-30),
                   0 0 40px rgba(59, 130, 246, 0.08)
                 `,
               }}
@@ -1825,7 +1825,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                       WebkitBackdropFilter: 'blur(100px) saturate(220%) brightness(1.08)',
                       border: hoveredButton === 'about' ? '1px solid rgba(236, 72, 153, 0.12)' : '1px solid rgba(236, 72, 153, 0.08)',
                       borderRadius: '20px',
-                      color: 'rgba(255, 255, 255, 0.95)',
+                      color: 'var(--text-95)',
                       fontSize: '0.875rem',
                       fontWeight: '500',
                       cursor: 'pointer',
@@ -1833,10 +1833,10 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                       transform: hoveredButton === 'about' ? 'translateY(-2px) scale(1.02)' : 'translateY(0) scale(1)',
                       overflow: 'hidden',
                       boxShadow: `
-                        0 12px 48px rgba(0, 0, 0, 0.15),
-                        0 4px 16px rgba(0, 0, 0, 0.10),
-                        inset 0 1px 2px rgba(255, 255, 255, 0.25),
-                        inset 0 -1px 2px rgba(0, 0, 0, 0.15)
+                        0 12px 48px var(--glass-15),
+                        0 4px 16px var(--glass-10),
+                        inset 0 1px 2px var(--glass-25),
+                        inset 0 -1px 2px var(--glass-15)
                       `,
                       animation: hoveredButton === 'about' ? 'buttonGlow 8s ease-in-out infinite' : 'none',
                     }}
@@ -1891,7 +1891,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                       WebkitBackdropFilter: 'blur(100px) saturate(220%) brightness(1.08)',
                       border: hoveredButton === 'journey' ? '1px solid rgba(59, 130, 246, 0.12)' : '1px solid rgba(59, 130, 246, 0.08)',
                       borderRadius: '20px',
-                      color: 'rgba(255, 255, 255, 0.95)',
+                      color: 'var(--text-95)',
                       fontSize: '0.875rem',
                       fontWeight: '500',
                       cursor: 'pointer',
@@ -1899,10 +1899,10 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                       transform: hoveredButton === 'journey' ? 'translateY(-2px) scale(1.02)' : 'translateY(0) scale(1)',
                       overflow: 'hidden',
                       boxShadow: `
-                        0 12px 48px rgba(0, 0, 0, 0.15),
-                        0 4px 16px rgba(0, 0, 0, 0.10),
-                        inset 0 1px 2px rgba(255, 255, 255, 0.25),
-                        inset 0 -1px 2px rgba(0, 0, 0, 0.15)
+                        0 12px 48px var(--glass-15),
+                        0 4px 16px var(--glass-10),
+                        inset 0 1px 2px var(--glass-25),
+                        inset 0 -1px 2px var(--glass-15)
                       `,
                       animation: hoveredButton === 'journey' ? 'buttonGlow 8s ease-in-out infinite' : 'none',
                     }}
