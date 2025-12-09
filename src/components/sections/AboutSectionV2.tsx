@@ -1496,12 +1496,6 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                 borderRadius: '28px',
                 padding: 'clamp(2.5rem, 5vw, 3.5rem)',
                 border: '1px solid var(--text-12)',
-                boxShadow: `
-                  inset 0 1px 0 var(--glass-15),
-                  0 8px 32px var(--glass-40),
-                  0 16px 64px var(--glass-30),
-                  0 0 40px rgba(59, 130, 246, 0.08)
-                `,
                 textAlign: 'center',
               }}
             >
@@ -1682,12 +1676,6 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                 borderRadius: '28px',
                 padding: 'clamp(2.5rem, 5vw, 3rem)',
                 border: '1px solid var(--text-12)',
-                boxShadow: `
-                  inset 0 1px 0 var(--glass-15),
-                  0 8px 32px var(--glass-40),
-                  0 16px 64px var(--glass-30),
-                  0 0 40px rgba(59, 130, 246, 0.08)
-                `,
               }}
             >
               {/* Profile Image - Centered */}
