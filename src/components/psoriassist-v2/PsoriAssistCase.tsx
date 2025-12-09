@@ -144,12 +144,7 @@ export function PsoriAssistCase() {
                   hidden: { opacity: 0, y: 20, scale: 0.95 },
                   visible: { opacity: 1, y: 0, scale: 1 },
                 }}
-                whileHover={{
-                  y: -6,
-                  background: 'var(--glass-08)',
-                  boxShadow: `0 8px 32px rgba(${stat.color}, 0.15)`,
-                  borderColor: `rgba(${stat.color}, 0.3)`,
-                }}
+                whileHover={{ y: -4 }}
                 transition={{ duration: 0.3 }}
                 style={{
                   padding: '1.25rem',
@@ -255,11 +250,7 @@ export function PsoriAssistCase() {
                   hidden: { opacity: 0, y: 30, scale: 0.95 },
                   visible: { opacity: 1, y: 0, scale: 1 },
                 }}
-                whileHover={{
-                  y: -8,
-                  boxShadow: `0 12px 40px rgba(${node.color}, 0.2)`,
-                  borderColor: `rgba(${node.color}, 0.4)`,
-                }}
+                whileHover={{ y: -4 }}
                 onClick={() =>
                   setExpandedTimeline(expandedTimeline === node.id ? null : node.id)
                 }
@@ -381,12 +372,12 @@ export function PsoriAssistCase() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                whileHover={{ scale: 1.02, borderColor: `rgba(${theme.color}, 0.4)` }}
+                whileHover={{ y: -4 }}
                 style={{
                   padding: '1.5rem',
                   borderRadius: 20,
-                  background: `linear-gradient(135deg, rgba(${theme.color}, 0.05) 0%, var(--glass-02) 100%)`,
-                  border: `1px solid rgba(${theme.color}, 0.2)`,
+                  background: 'var(--glass-03)',
+                  border: '1px solid var(--border-primary)',
                   cursor: 'default',
                 }}
               >
@@ -424,9 +415,8 @@ export function PsoriAssistCase() {
                   fontSize: '0.85rem',
                   color: 'var(--text-50)',
                   padding: '0.75rem',
-                  background: 'var(--glass-03)',
+                  background: 'var(--glass-05)',
                   borderRadius: 10,
-                  borderLeft: `3px solid rgb(${theme.color})`,
                 }}>
                   {theme.insight}
                 </div>
@@ -532,12 +522,12 @@ export function PsoriAssistCase() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                whileHover={{ borderColor: `rgba(${app.color}, 0.4)` }}
+                whileHover={{ y: -4 }}
                 style={{
                   padding: '1.5rem',
                   borderRadius: 20,
-                  background: `rgba(${app.color}, 0.03)`,
-                  border: `1px solid rgba(${app.color}, 0.2)`,
+                  background: 'var(--glass-03)',
+                  border: '1px solid var(--border-primary)',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
@@ -585,12 +575,12 @@ export function PsoriAssistCase() {
             style={{
               padding: '1.5rem',
               borderRadius: 20,
-              background: 'rgba(251, 191, 36, 0.05)',
-              border: '1px solid rgba(251, 191, 36, 0.3)',
+              background: 'var(--glass-03)',
+              border: '1px solid var(--border-primary)',
               textAlign: 'center',
             }}
           >
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 500, color: 'rgb(251, 191, 36)', marginBottom: '1rem' }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 500, color: 'var(--text-80)', marginBottom: '1rem' }}>
               Critical Market Gaps Identified
             </h3>
             <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
@@ -767,12 +757,12 @@ export function PsoriAssistCase() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.1 }}
-                  whileHover={{ scale: 1.03, borderColor: `rgba(${p.color}, 0.4)` }}
+                  whileHover={{ y: -4 }}
                   style={{
                     padding: '1.5rem',
                     borderRadius: 20,
-                    background: `rgba(${p.color}, 0.05)`,
-                    border: `1px solid rgba(${p.color}, 0.2)`,
+                    background: 'var(--glass-03)',
+                    border: '1px solid var(--border-primary)',
                     textAlign: 'center',
                   }}
                 >
@@ -861,12 +851,12 @@ export function PsoriAssistCase() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.15 }}
-                whileHover={{ y: -5, boxShadow: `0 12px 40px rgba(${persona.color}, 0.2)` }}
+                whileHover={{ y: -4 }}
                 style={{
                   padding: '1.5rem',
                   borderRadius: 20,
                   background: 'var(--glass-03)',
-                  border: `1px solid rgba(${persona.color}, 0.2)`,
+                  border: '1px solid var(--border-primary)',
                 }}
               >
                 {/* Header */}
@@ -905,9 +895,8 @@ export function PsoriAssistCase() {
                 {/* Quote */}
                 <div style={{
                   padding: '0.75rem',
-                  background: 'var(--glass-04)',
+                  background: 'var(--glass-05)',
                   borderRadius: 10,
-                  borderLeft: `3px solid rgb(${persona.color})`,
                   marginBottom: '1rem',
                 }}>
                   <p style={{ fontSize: '0.85rem', color: 'var(--text-70)', fontStyle: 'italic', margin: 0, lineHeight: 1.5 }}>
@@ -982,12 +971,12 @@ export function PsoriAssistCase() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                whileHover={{ borderColor: `rgba(${phase.color}, 0.4)` }}
+                whileHover={{ y: -4 }}
                 style={{
                   padding: '1.5rem',
                   borderRadius: 20,
                   background: 'var(--glass-03)',
-                  border: `1px solid rgba(${phase.color}, 0.15)`,
+                  border: '1px solid var(--border-primary)',
                 }}
               >
                 <div style={{
@@ -1304,12 +1293,12 @@ export function PsoriAssistCase() {
                 <div style={{
                   padding: '1rem',
                   borderRadius: 12,
-                  background: 'rgba(80, 200, 120, 0.1)',
-                  border: '1px solid rgba(80, 200, 120, 0.2)',
+                  background: 'var(--glass-05)',
+                  border: '1px solid var(--border-primary)',
                   textAlign: 'center',
                   minWidth: 80,
                 }}>
-                  <div style={{ fontSize: '1.75rem', fontWeight: 600, color: 'rgb(80, 200, 120)' }}>
+                  <div style={{ fontSize: '1.75rem', fontWeight: 600, color: 'var(--text-90)' }}>
                     {round.taskCompletion}
                   </div>
                   <div style={{ fontSize: '0.7rem', color: 'var(--text-50)' }}>Task Completion</div>
@@ -1325,8 +1314,8 @@ export function PsoriAssistCase() {
             style={{
               padding: '1.5rem',
               borderRadius: 20,
-              background: 'rgba(80, 200, 120, 0.05)',
-              border: '1px solid rgba(80, 200, 120, 0.2)',
+              background: 'var(--glass-03)',
+              border: '1px solid var(--border-primary)',
             }}
           >
             <h3 style={{ fontSize: '1.1rem', fontWeight: 500, color: 'var(--text-90)', textAlign: 'center', marginBottom: '1.25rem' }}>
@@ -1335,8 +1324,8 @@ export function PsoriAssistCase() {
             <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: '1.25rem' }}>
               {usabilityMetrics.map((m, i) => (
                 <div key={i} style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '1.5rem', fontWeight: 600, color: 'rgb(80, 200, 120)' }}>{m.value}</div>
-                  <div style={{ fontSize: '0.9rem', color: 'var(--text-80)', fontWeight: 500 }}>{m.label}</div>
+                  <div style={{ fontSize: '1.5rem', fontWeight: 600, color: 'var(--text-90)' }}>{m.value}</div>
+                  <div style={{ fontSize: '0.9rem', color: 'var(--text-70)', fontWeight: 500 }}>{m.label}</div>
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-50)' }}>{m.sublabel}</div>
                 </div>
               ))}
@@ -1484,8 +1473,8 @@ export function PsoriAssistCase() {
                 style={{
                   padding: '1.5rem',
                   borderRadius: 20,
-                  background: `rgba(${flow.color}, 0.03)`,
-                  border: `1px solid rgba(${flow.color}, 0.2)`,
+                  background: 'var(--glass-03)',
+                  border: '1px solid var(--border-primary)',
                 }}
               >
                 <h3 style={{ fontSize: '1.1rem', fontWeight: 500, color: `rgb(${flow.color})`, marginBottom: '1.25rem' }}>
@@ -1536,8 +1525,6 @@ export function PsoriAssistCase() {
                         <div style={{
                           fontSize: '0.8rem',
                           color: 'var(--text-50)',
-                          paddingLeft: '0.75rem',
-                          borderLeft: `2px solid rgba(${flow.color}, 0.3)`,
                         }}>
                           → {s.result}
                         </div>
@@ -1593,8 +1580,8 @@ export function PsoriAssistCase() {
                   style={{
                     padding: '1rem 1.25rem',
                     borderRadius: 14,
-                    background: `rgba(${layer.color}, 0.05)`,
-                    border: `1px solid rgba(${layer.color}, 0.2)`,
+                    background: 'var(--glass-03)',
+                    border: '1px solid var(--border-primary)',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '1rem',
@@ -1631,8 +1618,8 @@ export function PsoriAssistCase() {
                   style={{
                     padding: '1.25rem',
                     borderRadius: 16,
-                    background: `rgba(${ml.color}, 0.05)`,
-                    border: `1px solid rgba(${ml.color}, 0.2)`,
+                    background: 'var(--glass-03)',
+                    border: '1px solid var(--border-primary)',
                   }}
                 >
                   <h4 style={{ fontSize: '1rem', fontWeight: 500, color: `rgb(${ml.color})`, marginBottom: '1rem' }}>
@@ -1660,8 +1647,7 @@ export function PsoriAssistCase() {
                     marginTop: '1rem',
                     padding: '0.75rem',
                     borderRadius: 10,
-                    background: 'var(--glass-04)',
-                    borderLeft: `3px solid rgb(${ml.color})`,
+                    background: 'var(--glass-05)',
                   }}>
                     <div style={{ fontSize: '0.7rem', fontWeight: 500, color: 'var(--text-40)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
                       Performance
@@ -1688,8 +1674,8 @@ export function PsoriAssistCase() {
                     style={{
                       padding: '1.25rem',
                       borderRadius: 16,
-                      background: `rgba(${sec.color}, 0.05)`,
-                      border: `1px solid rgba(${sec.color}, 0.2)`,
+                      background: 'var(--glass-03)',
+                      border: '1px solid var(--border-primary)',
                     }}
                   >
                     <div style={{
@@ -1926,12 +1912,7 @@ export function PsoriAssistCase() {
                   hidden: { opacity: 0, y: 30, scale: 0.9 },
                   visible: { opacity: 1, y: 0, scale: 1 },
                 }}
-                whileHover={{
-                  y: -8,
-                  boxShadow: `0 16px 48px rgba(${metric.color}, 0.25)`,
-                  borderColor: `rgba(${metric.color}, 0.4)`,
-                  background: 'var(--glass-06)',
-                }}
+                whileHover={{ y: -4 }}
                 transition={{ duration: 0.3 }}
                 style={{
                   padding: '1.5rem',
@@ -1971,10 +1952,7 @@ export function PsoriAssistCase() {
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
-            whileHover={{
-              boxShadow: '0 8px 32px rgba(74, 144, 226, 0.1)',
-              borderColor: 'rgba(74, 144, 226, 0.2)',
-            }}
+            whileHover={{ y: -2 }}
             style={{
               padding: '2rem',
               borderRadius: 24,
@@ -2069,14 +2047,14 @@ export function PsoriAssistCase() {
                     style={{
                       padding: '1.5rem',
                       borderRadius: 20,
-                      background: 'rgba(80, 200, 120, 0.05)',
-                      border: '1px solid rgba(80, 200, 120, 0.2)',
+                      background: 'var(--glass-03)',
+                      border: '1px solid var(--border-primary)',
                     }}
                   >
                     <h4
                       style={{
                         fontSize: '1rem',
-                        color: 'rgb(80, 200, 120)',
+                        color: 'var(--text-80)',
                         marginBottom: '1rem',
                       }}
                     >
@@ -2102,14 +2080,14 @@ export function PsoriAssistCase() {
                     style={{
                       padding: '1.5rem',
                       borderRadius: 20,
-                      background: 'rgba(251, 191, 36, 0.05)',
-                      border: '1px solid rgba(251, 191, 36, 0.2)',
+                      background: 'var(--glass-03)',
+                      border: '1px solid var(--border-primary)',
                     }}
                   >
                     <h4
                       style={{
                         fontSize: '1rem',
-                        color: 'rgb(251, 191, 36)',
+                        color: 'var(--text-80)',
                         marginBottom: '1rem',
                       }}
                     >
@@ -2221,12 +2199,12 @@ export function PsoriAssistCase() {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.15 }}
-                whileHover={{ y: -6, boxShadow: `0 12px 40px rgba(${phase.color}, 0.2)` }}
+                whileHover={{ y: -4 }}
                 style={{
                   padding: '1.5rem',
                   borderRadius: 20,
-                  background: `rgba(${phase.color}, 0.05)`,
-                  border: `1px solid rgba(${phase.color}, 0.3)`,
+                  background: 'var(--glass-03)',
+                  border: '1px solid var(--border-primary)',
                   position: 'relative',
                   overflow: 'hidden',
                 }}
