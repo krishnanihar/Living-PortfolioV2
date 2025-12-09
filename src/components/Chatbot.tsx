@@ -630,15 +630,18 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
               )}
 
               {/* Messages */}
-              <div style={{
-                flex: 1,
-                minHeight: 0,
-                overflowY: 'auto',
-                padding: '1rem 1.5rem',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.875rem',
-              }}>
+              <div
+                data-lenis-prevent
+                style={{
+                  flex: 1,
+                  minHeight: 0,
+                  overflowY: 'auto',
+                  padding: '1rem 1.5rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.875rem',
+                }}
+              >
                 {messages.map((message, index) => (
                   <div
                     key={message.id}

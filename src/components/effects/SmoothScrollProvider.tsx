@@ -118,6 +118,15 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
 
       // Wheel handler - intercept and navigate one section at a time
       wheelHandler = (e: WheelEvent) => {
+        // Check if target is inside an element that handles its own scroll (e.g., chatbot)
+        let target = e.target as HTMLElement | null;
+        while (target) {
+          if (target.hasAttribute('data-lenis-prevent')) {
+            return; // Don't interfere with this element's scroll
+          }
+          target = target.parentElement;
+        }
+
         e.preventDefault();
 
         const now = Date.now();
