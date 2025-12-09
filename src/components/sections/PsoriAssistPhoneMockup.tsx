@@ -246,12 +246,6 @@ export function PsoriAssistPhoneMockup() {
   const screenContainerRef = useRef<HTMLDivElement>(null);
   const dragY = useMotionValue(0);
 
-  // 3D Perspective Tilt State
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const containerRef = useRef<HTMLDivElement>(null);
-
   // PsA/PEST Screening State
   const [pestStep, setPestStep] = useState(0);
   const [pestAnswers, setPestAnswers] = useState<(boolean | null)[]>([null, null, null, null, null]);
@@ -363,88 +357,25 @@ export function PsoriAssistPhoneMockup() {
     }
   };
 
-  // 3D Perspective Tilt Handlers
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current || prefersReducedMotion) return;
-
-    const rect = containerRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    const mouseX = e.clientX - centerX;
-    const mouseY = e.clientY - centerY;
-
-    // Max tilt: 3 degrees for extremely subtle, premium micro-interaction
-    const maxTilt = 3;
-    const tiltX = -(mouseY / (rect.height / 2)) * maxTilt;
-    const tiltY = (mouseX / (rect.width / 2)) * maxTilt;
-
-    setRotateX(tiltX);
-    setRotateY(tiltY);
-    setMousePosition({ x: mouseX, y: mouseY });
-  };
-
-  const handleMouseLeave = () => {
-    if (prefersReducedMotion) return;
-    setRotateX(0);
-    setRotateY(0);
-    setMousePosition({ x: 0, y: 0 });
-  };
-
   return (
     <div
-      ref={containerRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       style={{
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         padding: '4rem 2rem',
-        position: 'relative',
-        perspective: '1200px',
-        perspectiveOrigin: 'center center'
+        position: 'relative'
       }}
     >
-      {/* Environmental Gradient Spotlight - Follows Mouse for Depth */}
-      <motion.div
-        animate={{
-          background: `radial-gradient(
-            600px circle at ${50 + (mousePosition.x / 10)}% ${50 + (mousePosition.y / 10)}%,
-            rgba(74, 144, 226, 0.15),
-            rgba(80, 200, 120, 0.10) 40%,
-            transparent 70%
-          )`
-        }}
-        transition={{ type: 'spring', stiffness: 100, damping: 30 }}
-        style={{
-          position: 'absolute',
-          inset: '-200px',
-          pointerEvents: 'none',
-          zIndex: 0,
-          opacity: 0.6
-        }}
-      />
-
-      {/* iPhone 14 Pro Mockup Frame - 3D Interactive */}
-      <motion.div
-        animate={{
-          rotateX,
-          rotateY,
-          transition: {
-            type: 'spring',
-            stiffness: 300,
-            damping: 30,
-            mass: 0.3
-          }
-        }}
+      {/* iPhone 14 Pro Mockup Frame */}
+      <div
         style={{
           width: '393px',
           height: '852px',
           backgroundColor: '#1a1a1a',
           borderRadius: '60px',
           padding: '14px',
-          // Premium 6-layer shadow system for 3D floating effect
+          // Premium 6-layer shadow system for floating effect
           boxShadow: `
             0 50px 100px rgba(0, 0, 0, 0.30),
             0 30px 60px rgba(0, 0, 0, 0.25),
@@ -456,8 +387,7 @@ export function PsoriAssistPhoneMockup() {
           `,
           position: 'relative',
           overflow: 'hidden',
-          zIndex: 1,
-          transformStyle: 'preserve-3d'
+          zIndex: 1
         }}
       >
         {/* Screen Container */}
@@ -751,7 +681,7 @@ export function PsoriAssistPhoneMockup() {
             />
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
