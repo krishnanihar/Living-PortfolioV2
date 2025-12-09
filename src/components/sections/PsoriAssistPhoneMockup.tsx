@@ -5,10 +5,12 @@ import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from '
 import {
   Home, Camera, Activity, Settings, ChevronLeft,
   TrendingUp, Calendar, Heart, FileText, Award,
-  Check, X, Info, Sparkles
+  Check, X, Info, Sparkles, AlertTriangle, BookOpen,
+  Users, Bell, MapPin, Clock, MessageCircle, ThumbsUp,
+  CircleDot, Bone, Brain, Zap
 } from 'lucide-react';
 
-type Screen = 'home' | 'photo' | 'pasi' | 'meds' | 'mental' | 'triggers' | 'report' | 'settings';
+type Screen = 'home' | 'photo' | 'pasi' | 'meds' | 'mental' | 'triggers' | 'report' | 'settings' | 'pest' | 'flare' | 'reminders' | 'learn' | 'community';
 
 // PsoriAssist Brand Color System (Portfolio-Grade)
 const BRAND_COLORS = {
@@ -249,6 +251,24 @@ export function PsoriAssistPhoneMockup() {
   const [rotateY, setRotateY] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // PsA/PEST Screening State
+  const [pestStep, setPestStep] = useState(0);
+  const [pestAnswers, setPestAnswers] = useState<(boolean | null)[]>([null, null, null, null, null]);
+  const [showPestResult, setShowPestResult] = useState(false);
+
+  // Enhanced Mental Health State
+  const [mentalMode, setMentalMode] = useState<'select' | 'phq9' | 'gad7' | 'result'>('select');
+  const [mentalStep, setMentalStep] = useState(0);
+  const [mentalAnswers, setMentalAnswers] = useState<number[]>([]);
+
+  // Smart Reminders State
+  const [reminderTime, setReminderTime] = useState<'morning' | 'evening' | 'night'>('evening');
+  const [locationTriggers, setLocationTriggers] = useState({ home: true, work: false, gym: true });
+  const [showNotificationPreview, setShowNotificationPreview] = useState(false);
+
+  // Educational Library State
+  const [learnCategory, setLearnCategory] = useState<string>('all');
 
   // Detect reduced motion preference
   const prefersReducedMotion = typeof window !== 'undefined'
@@ -573,10 +593,65 @@ export function PsoriAssistPhoneMockup() {
                   prefersReducedMotion={prefersReducedMotion}
                 />
               )}
-              {activeScreen === 'mental' && <MentalHealthScreen setActiveScreen={setActiveScreen} />}
+              {activeScreen === 'mental' && (
+                <EnhancedMentalHealthScreen
+                  setActiveScreen={setActiveScreen}
+                  mentalMode={mentalMode}
+                  setMentalMode={setMentalMode}
+                  mentalStep={mentalStep}
+                  setMentalStep={setMentalStep}
+                  mentalAnswers={mentalAnswers}
+                  setMentalAnswers={setMentalAnswers}
+                  prefersReducedMotion={prefersReducedMotion}
+                />
+              )}
               {activeScreen === 'triggers' && <TriggerScreen setActiveScreen={setActiveScreen} />}
               {activeScreen === 'report' && <ReportScreen setActiveScreen={setActiveScreen} />}
               {activeScreen === 'settings' && <SettingsScreen setActiveScreen={setActiveScreen} />}
+              {activeScreen === 'pest' && (
+                <PESTScreen
+                  setActiveScreen={setActiveScreen}
+                  pestStep={pestStep}
+                  setPestStep={setPestStep}
+                  pestAnswers={pestAnswers}
+                  setPestAnswers={setPestAnswers}
+                  showPestResult={showPestResult}
+                  setShowPestResult={setShowPestResult}
+                  prefersReducedMotion={prefersReducedMotion}
+                />
+              )}
+              {activeScreen === 'flare' && (
+                <FlareAlertScreen
+                  setActiveScreen={setActiveScreen}
+                  prefersReducedMotion={prefersReducedMotion}
+                />
+              )}
+              {activeScreen === 'reminders' && (
+                <SmartRemindersScreen
+                  setActiveScreen={setActiveScreen}
+                  reminderTime={reminderTime}
+                  setReminderTime={setReminderTime}
+                  locationTriggers={locationTriggers}
+                  setLocationTriggers={setLocationTriggers}
+                  showNotificationPreview={showNotificationPreview}
+                  setShowNotificationPreview={setShowNotificationPreview}
+                  prefersReducedMotion={prefersReducedMotion}
+                />
+              )}
+              {activeScreen === 'learn' && (
+                <EducationalScreen
+                  setActiveScreen={setActiveScreen}
+                  learnCategory={learnCategory}
+                  setLearnCategory={setLearnCategory}
+                  prefersReducedMotion={prefersReducedMotion}
+                />
+              )}
+              {activeScreen === 'community' && (
+                <CommunityScreen
+                  setActiveScreen={setActiveScreen}
+                  prefersReducedMotion={prefersReducedMotion}
+                />
+              )}
             </AnimatePresence>
           </motion.div>
 
@@ -887,6 +962,24 @@ function HomeScreen({
             label="Check-in"
             color={IOS_COLORS.systemPink}
             onClick={() => setActiveScreen('mental')}
+          />
+          <QuickActionButton
+            icon={Bone}
+            label="PsA Check"
+            color={IOS_COLORS.systemRed}
+            onClick={() => setActiveScreen('pest')}
+          />
+          <QuickActionButton
+            icon={AlertTriangle}
+            label="Forecast"
+            color={IOS_COLORS.systemYellow}
+            onClick={() => setActiveScreen('flare')}
+          />
+          <QuickActionButton
+            icon={BookOpen}
+            label="Learn"
+            color={IOS_COLORS.systemBlue}
+            onClick={() => setActiveScreen('learn')}
           />
         </div>
       </div>
@@ -2269,6 +2362,14 @@ function SettingsScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => v
           <SettingsItem label="Medication Reminders" value="On" />
           <SettingsItem label="Photo Reminders" value="Weekly" />
           <SettingsItem label="Provider Messages" value="On" />
+          <SettingsItem label="Smart Reminders" value="→" onClick={() => setActiveScreen('reminders')} />
+        </SettingsSection>
+
+        <SettingsSection title="Features">
+          <SettingsItem label="Educational Library" value="→" onClick={() => setActiveScreen('learn')} />
+          <SettingsItem label="Community" value="→" onClick={() => setActiveScreen('community')} />
+          <SettingsItem label="PsA Screening" value="→" onClick={() => setActiveScreen('pest')} />
+          <SettingsItem label="Flare Forecast" value="→" onClick={() => setActiveScreen('flare')} />
         </SettingsSection>
 
         <SettingsSection title="Privacy & Data">
@@ -2282,6 +2383,1878 @@ function SettingsScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => v
           <SettingsItem label="Support" value="help@psoriassist.com" />
         </SettingsSection>
       </div>
+    </motion.div>
+  );
+}
+
+// ===== NEW SCREENS =====
+
+// PEST Questions Data
+const PEST_QUESTIONS = [
+  "Have you ever had a swollen joint (or joints)?",
+  "Has a doctor ever told you that you have arthritis?",
+  "Do your fingernails or toenails have holes or pits?",
+  "Have you had pain in your heel?",
+  "Have you had a finger or toe that was completely swollen and painful for no apparent reason?"
+];
+
+function PESTScreen({
+  setActiveScreen,
+  pestStep,
+  setPestStep,
+  pestAnswers,
+  setPestAnswers,
+  showPestResult,
+  setShowPestResult,
+  prefersReducedMotion
+}: {
+  setActiveScreen: (s: Screen) => void;
+  pestStep: number;
+  setPestStep: (n: number) => void;
+  pestAnswers: (boolean | null)[];
+  setPestAnswers: (a: (boolean | null)[]) => void;
+  showPestResult: boolean;
+  setShowPestResult: (b: boolean) => void;
+  prefersReducedMotion: boolean;
+}) {
+  const pestScore = pestAnswers.filter(a => a === true).length;
+  const isPositive = pestScore >= 3;
+
+  const handleAnswer = (answer: boolean) => {
+    const newAnswers = [...pestAnswers];
+    newAnswers[pestStep] = answer;
+    setPestAnswers(newAnswers);
+  };
+
+  const handleNext = () => {
+    if (pestStep < 4) {
+      setPestStep(pestStep + 1);
+    } else {
+      setShowPestResult(true);
+    }
+  };
+
+  const handleBack = () => {
+    if (showPestResult) {
+      setShowPestResult(false);
+    } else if (pestStep > 0) {
+      setPestStep(pestStep - 1);
+    } else {
+      // Reset and go back
+      setPestStep(0);
+      setPestAnswers([null, null, null, null, null]);
+      setShowPestResult(false);
+      setActiveScreen('home');
+    }
+  };
+
+  const resetAndClose = () => {
+    setPestStep(0);
+    setPestAnswers([null, null, null, null, null]);
+    setShowPestResult(false);
+    setActiveScreen('home');
+  };
+
+  return (
+    <motion.div
+      key="pest"
+      initial={{ opacity: 0, x: 300 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -300 }}
+      transition={prefersReducedMotion ? { duration: 0.2 } : SPRING_CONFIG.screen}
+      style={{ padding: '16px 16px 24px' }}
+    >
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+        <BackButton onClick={handleBack} />
+        <h2 style={{
+          fontSize: `${IOS_TYPOGRAPHY.title3.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.title3.weight,
+          color: IOS_COLORS.label,
+          letterSpacing: `${IOS_TYPOGRAPHY.title3.tracking}px`
+        }}>
+          PsA Screening
+        </h2>
+      </div>
+
+      {!showPestResult ? (
+        <>
+          {/* Info Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            style={{
+              padding: '16px',
+              borderRadius: '16px',
+              background: IOS_GLASS.card.background,
+              backdropFilter: IOS_GLASS.card.backdropFilter,
+              borderLeft: `4px solid ${IOS_COLORS.systemRed}`,
+              marginBottom: '16px',
+              boxShadow: IOS_GLASS.card.boxShadow
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+              <Bone size={20} color={IOS_COLORS.systemRed} />
+              <span style={{
+                fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+                fontWeight: IOS_TYPOGRAPHY.headline.weight,
+                color: IOS_COLORS.label
+              }}>
+                Early Detection Matters
+              </span>
+            </div>
+            <p style={{
+              fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+              color: IOS_COLORS.secondaryLabel,
+              lineHeight: `${IOS_TYPOGRAPHY.subheadline.lineHeight}px`
+            }}>
+              30-40% of psoriasis patients develop PsA. Early screening prevents irreversible joint damage.
+            </p>
+          </motion.div>
+
+          {/* Progress Indicator */}
+          <div style={{ marginBottom: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span style={{ fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`, color: IOS_COLORS.secondaryLabel }}>
+                Question {pestStep + 1} of 5
+              </span>
+              <span style={{ fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`, color: IOS_COLORS.systemRed, fontWeight: '600' }}>
+                PEST Screening
+              </span>
+            </div>
+            <div style={{ display: 'flex', gap: '6px' }}>
+              {[0, 1, 2, 3, 4].map(i => (
+                <motion.div
+                  key={i}
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: i * 0.05 }}
+                  style={{
+                    flex: 1,
+                    height: '4px',
+                    borderRadius: '2px',
+                    backgroundColor: i <= pestStep
+                      ? (pestAnswers[i] === true ? IOS_COLORS.systemRed : pestAnswers[i] === false ? IOS_COLORS.systemGreen : IOS_COLORS.systemBlue)
+                      : IOS_COLORS.quaternarySystemFill
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Question Card */}
+          <motion.div
+            key={pestStep}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={SPRING_CONFIG.card}
+            style={{
+              padding: '20px',
+              borderRadius: '16px',
+              background: IOS_GLASS.card.background,
+              backdropFilter: IOS_GLASS.card.backdropFilter,
+              border: IOS_GLASS.card.border,
+              marginBottom: '16px',
+              boxShadow: IOS_GLASS.card.boxShadow
+            }}
+          >
+            <p style={{
+              fontSize: `${IOS_TYPOGRAPHY.body.size}px`,
+              color: IOS_COLORS.label,
+              lineHeight: '1.5',
+              marginBottom: '20px'
+            }}>
+              {PEST_QUESTIONS[pestStep]}
+            </p>
+
+            <div style={{ display: 'grid', gap: '12px' }}>
+              {[{ label: 'Yes', value: true }, { label: 'No', value: false }].map(option => (
+                <motion.button
+                  key={option.label}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => handleAnswer(option.value)}
+                  style={{
+                    padding: '16px',
+                    borderRadius: '12px',
+                    backgroundColor: pestAnswers[pestStep] === option.value
+                      ? (option.value ? IOS_COLORS.systemRed : IOS_COLORS.systemGreen)
+                      : IOS_COLORS.tertiarySystemFill,
+                    border: 'none',
+                    color: pestAnswers[pestStep] === option.value ? 'white' : IOS_COLORS.label,
+                    fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <div style={{
+                    width: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    border: `2px solid ${pestAnswers[pestStep] === option.value ? 'white' : IOS_COLORS.separator}`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    {pestAnswers[pestStep] === option.value && <Check size={14} color="white" />}
+                  </div>
+                  {option.label}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Continue Button */}
+          <motion.button
+            whileTap={{ scale: 0.96 }}
+            onClick={handleNext}
+            disabled={pestAnswers[pestStep] === null}
+            style={{
+              width: '100%',
+              padding: '16px',
+              borderRadius: '14px',
+              backgroundColor: pestAnswers[pestStep] !== null ? IOS_COLORS.systemRed : IOS_COLORS.quaternarySystemFill,
+              border: 'none',
+              color: pestAnswers[pestStep] !== null ? 'white' : IOS_COLORS.tertiaryLabel,
+              fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+              fontWeight: '600',
+              cursor: pestAnswers[pestStep] !== null ? 'pointer' : 'not-allowed',
+              boxShadow: pestAnswers[pestStep] !== null ? IOS_SHADOWS.button : 'none'
+            }}
+          >
+            {pestStep < 4 ? 'Continue' : 'See Results'}
+          </motion.button>
+        </>
+      ) : (
+        /* Results Screen */
+        <>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={SPRING_CONFIG.card}
+            style={{
+              padding: '24px',
+              borderRadius: '20px',
+              background: IOS_GLASS.card.background,
+              backdropFilter: IOS_GLASS.card.backdropFilter,
+              borderLeft: `4px solid ${isPositive ? IOS_COLORS.systemRed : IOS_COLORS.systemGreen}`,
+              marginBottom: '16px',
+              textAlign: 'center',
+              boxShadow: IOS_GLASS.card.boxShadow
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ ...SPRING_CONFIG.elastic, delay: 0.2 }}
+              style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                backgroundColor: isPositive ? `${IOS_COLORS.systemRed}20` : `${IOS_COLORS.systemGreen}20`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 16px'
+              }}
+            >
+              {isPositive ? (
+                <AlertTriangle size={40} color={IOS_COLORS.systemRed} />
+              ) : (
+                <Check size={40} color={IOS_COLORS.systemGreen} />
+              )}
+            </motion.div>
+
+            <div style={{
+              fontSize: '48px',
+              fontWeight: '700',
+              color: isPositive ? IOS_COLORS.systemRed : IOS_COLORS.systemGreen,
+              marginBottom: '8px'
+            }}>
+              {pestScore}/5
+            </div>
+
+            <div style={{
+              fontSize: `${IOS_TYPOGRAPHY.title3.size}px`,
+              fontWeight: IOS_TYPOGRAPHY.title3.weight,
+              color: IOS_COLORS.label,
+              marginBottom: '8px'
+            }}>
+              {isPositive ? 'Positive Screen' : 'Low Risk'}
+            </div>
+
+            <p style={{
+              fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+              color: IOS_COLORS.secondaryLabel,
+              lineHeight: '1.5'
+            }}>
+              {isPositive
+                ? 'We recommend discussing these results with a rheumatologist for further evaluation.'
+                : 'Continue monitoring. Retake this screening quarterly or if you notice new joint symptoms.'}
+            </p>
+          </motion.div>
+
+          {/* Sensitivity Info */}
+          <div style={{
+            padding: '12px',
+            borderRadius: '12px',
+            background: IOS_GLASS.cardSubtle.background,
+            backdropFilter: IOS_GLASS.cardSubtle.backdropFilter,
+            marginBottom: '16px',
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '10px'
+          }}>
+            <Info size={18} color={IOS_COLORS.systemBlue} style={{ flexShrink: 0, marginTop: '2px' }} />
+            <p style={{
+              fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+              color: IOS_COLORS.secondaryLabel,
+              lineHeight: '1.5'
+            }}>
+              PEST sensitivity: 0.74, specificity: 0.83. This is a screening tool, not a diagnosis.
+            </p>
+          </div>
+
+          {/* Action Buttons */}
+          <div style={{ display: 'grid', gap: '12px' }}>
+            {isPositive && (
+              <motion.button
+                whileTap={{ scale: 0.96 }}
+                style={{
+                  width: '100%',
+                  padding: '16px',
+                  borderRadius: '14px',
+                  backgroundColor: IOS_COLORS.systemRed,
+                  border: 'none',
+                  color: 'white',
+                  fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  boxShadow: IOS_SHADOWS.button
+                }}
+              >
+                Find a Rheumatologist
+              </motion.button>
+            )}
+            <motion.button
+              whileTap={{ scale: 0.96 }}
+              onClick={() => setActiveScreen('report')}
+              style={{
+                width: '100%',
+                padding: '16px',
+                borderRadius: '14px',
+                backgroundColor: IOS_COLORS.systemBlue,
+                border: 'none',
+                color: 'white',
+                fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+                fontWeight: '600',
+                cursor: 'pointer',
+                boxShadow: IOS_SHADOWS.button
+              }}
+            >
+              Add to Provider Report
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.96 }}
+              onClick={resetAndClose}
+              style={{
+                width: '100%',
+                padding: '16px',
+                borderRadius: '14px',
+                backgroundColor: IOS_COLORS.tertiarySystemFill,
+                border: 'none',
+                color: IOS_COLORS.label,
+                fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+                fontWeight: '600',
+                cursor: 'pointer'
+              }}
+            >
+              Done
+            </motion.button>
+          </div>
+        </>
+      )}
+    </motion.div>
+  );
+}
+
+// Flare Prediction Data
+const FLARE_FACTORS = [
+  { factor: 'Weather Change', contribution: 25, icon: '🌡️' },
+  { factor: 'Missed Doses', contribution: 20, icon: '💊' },
+  { factor: 'High Stress', contribution: 15, icon: '😰' },
+  { factor: 'Poor Sleep', contribution: 10, icon: '😴' }
+];
+
+const FLARE_ACTIONS = [
+  'Apply treatment tonight',
+  'Get 8+ hours of sleep',
+  'Try a stress-relief activity',
+  'Stay hydrated'
+];
+
+function FlareAlertScreen({
+  setActiveScreen,
+  prefersReducedMotion
+}: {
+  setActiveScreen: (s: Screen) => void;
+  prefersReducedMotion: boolean;
+}) {
+  const flareProbability = 70;
+  const riskLevel = flareProbability >= 70 ? 'HIGH' : flareProbability >= 40 ? 'MODERATE' : 'LOW';
+  const riskColor = flareProbability >= 70 ? IOS_COLORS.systemRed : flareProbability >= 40 ? IOS_COLORS.systemYellow : IOS_COLORS.systemGreen;
+
+  return (
+    <motion.div
+      key="flare"
+      initial={{ opacity: 0, x: 300 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -300 }}
+      transition={prefersReducedMotion ? { duration: 0.2 } : SPRING_CONFIG.screen}
+      style={{ padding: '16px 16px 24px' }}
+    >
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+        <BackButton onClick={() => setActiveScreen('home')} />
+        <h2 style={{
+          fontSize: `${IOS_TYPOGRAPHY.title3.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.title3.weight,
+          color: IOS_COLORS.label
+        }}>
+          Flare Forecast
+        </h2>
+      </div>
+
+      {/* Main Alert Card */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.1 }}
+        style={{
+          padding: '24px',
+          borderRadius: '20px',
+          background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
+          borderLeft: `4px solid ${riskColor}`,
+          marginBottom: '16px',
+          textAlign: 'center',
+          boxShadow: IOS_GLASS.card.boxShadow
+        }}
+      >
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+          marginBottom: '16px'
+        }}>
+          <AlertTriangle size={20} color={riskColor} />
+          <span style={{
+            fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+            fontWeight: '700',
+            color: riskColor,
+            textTransform: 'uppercase',
+            letterSpacing: '1px'
+          }}>
+            {riskLevel} RISK DETECTED
+          </span>
+        </div>
+
+        <motion.div
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ ...SPRING_CONFIG.elastic, delay: 0.2 }}
+          style={{
+            fontSize: '64px',
+            fontWeight: '700',
+            color: riskColor,
+            marginBottom: '4px'
+          }}
+        >
+          {flareProbability}%
+        </motion.div>
+
+        <p style={{
+          fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+          color: IOS_COLORS.secondaryLabel,
+          marginBottom: '16px'
+        }}>
+          Flare probability in next 7 days
+        </p>
+
+        {/* Progress Bar */}
+        <div style={{
+          height: '8px',
+          borderRadius: '4px',
+          backgroundColor: IOS_COLORS.quaternarySystemFill,
+          overflow: 'hidden'
+        }}>
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${flareProbability}%` }}
+            transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              height: '100%',
+              backgroundColor: riskColor,
+              borderRadius: '4px'
+            }}
+          />
+        </div>
+      </motion.div>
+
+      {/* Contributing Factors */}
+      <div style={{ marginBottom: '16px' }}>
+        <h3 style={{
+          fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.headline.weight,
+          color: IOS_COLORS.label,
+          marginBottom: '12px'
+        }}>
+          Contributing Factors
+        </h3>
+        <div style={{ display: 'grid', gap: '8px' }}>
+          {FLARE_FACTORS.map((item, i) => (
+            <motion.div
+              key={item.factor}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 + i * 0.1 }}
+              style={{
+                padding: '12px 16px',
+                borderRadius: '12px',
+                background: IOS_GLASS.cardSubtle.background,
+                backdropFilter: IOS_GLASS.cardSubtle.backdropFilter,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <span style={{ fontSize: '20px' }}>{item.icon}</span>
+                <span style={{
+                  fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+                  color: IOS_COLORS.label
+                }}>
+                  {item.factor}
+                </span>
+              </div>
+              <span style={{
+                fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+                fontWeight: '600',
+                color: IOS_COLORS.systemRed
+              }}>
+                +{item.contribution}%
+              </span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Suggested Actions */}
+      <div style={{ marginBottom: '16px' }}>
+        <h3 style={{
+          fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.headline.weight,
+          color: IOS_COLORS.label,
+          marginBottom: '12px'
+        }}>
+          Suggested Actions
+        </h3>
+        <div style={{
+          padding: '16px',
+          borderRadius: '16px',
+          background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
+          borderLeft: `4px solid ${IOS_COLORS.systemGreen}`,
+          boxShadow: IOS_GLASS.card.boxShadow
+        }}>
+          {FLARE_ACTIONS.map((action, i) => (
+            <motion.div
+              key={action}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 + i * 0.1 }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '8px 0',
+                borderBottom: i < FLARE_ACTIONS.length - 1 ? `1px solid ${IOS_COLORS.separator}` : 'none'
+              }}
+            >
+              <Check size={18} color={IOS_COLORS.systemGreen} />
+              <span style={{
+                fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+                color: IOS_COLORS.label
+              }}>
+                {action}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div style={{ display: 'grid', gap: '12px' }}>
+        <motion.button
+          whileTap={{ scale: 0.96 }}
+          onClick={() => setActiveScreen('reminders')}
+          style={{
+            width: '100%',
+            padding: '16px',
+            borderRadius: '14px',
+            backgroundColor: IOS_COLORS.systemGreen,
+            border: 'none',
+            color: 'white',
+            fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+            fontWeight: '600',
+            cursor: 'pointer',
+            boxShadow: IOS_SHADOWS.button
+          }}
+        >
+          Set Prevention Reminder
+        </motion.button>
+        <motion.button
+          whileTap={{ scale: 0.96 }}
+          onClick={() => setActiveScreen('home')}
+          style={{
+            width: '100%',
+            padding: '16px',
+            borderRadius: '14px',
+            backgroundColor: IOS_COLORS.tertiarySystemFill,
+            border: 'none',
+            color: IOS_COLORS.label,
+            fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+            fontWeight: '600',
+            cursor: 'pointer'
+          }}
+        >
+          Dismiss
+        </motion.button>
+      </div>
+
+      {/* Model Info */}
+      <div style={{
+        marginTop: '16px',
+        padding: '12px',
+        borderRadius: '12px',
+        background: IOS_GLASS.cardSubtle.background,
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '10px'
+      }}>
+        <Brain size={16} color={IOS_COLORS.systemPurple} style={{ flexShrink: 0, marginTop: '2px' }} />
+        <p style={{
+          fontSize: `${IOS_TYPOGRAPHY.caption1.size}px`,
+          color: IOS_COLORS.tertiaryLabel,
+          lineHeight: '1.4'
+        }}>
+          Prediction powered by LSTM model with 80%+ accuracy based on your 14-day health patterns.
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+// PHQ-9 Questions
+const PHQ9_QUESTIONS = [
+  "Little interest or pleasure in doing things",
+  "Feeling down, depressed, or hopeless",
+  "Trouble falling or staying asleep, or sleeping too much",
+  "Feeling tired or having little energy",
+  "Poor appetite or overeating",
+  "Feeling bad about yourself — or that you are a failure",
+  "Trouble concentrating on things",
+  "Moving or speaking so slowly that others noticed, or being fidgety",
+  "Thoughts that you would be better off dead, or of hurting yourself"
+];
+
+// GAD-7 Questions
+const GAD7_QUESTIONS = [
+  "Feeling nervous, anxious, or on edge",
+  "Not being able to stop or control worrying",
+  "Worrying too much about different things",
+  "Trouble relaxing",
+  "Being so restless that it's hard to sit still",
+  "Becoming easily annoyed or irritable",
+  "Feeling afraid, as if something awful might happen"
+];
+
+function EnhancedMentalHealthScreen({
+  setActiveScreen,
+  mentalMode,
+  setMentalMode,
+  mentalStep,
+  setMentalStep,
+  mentalAnswers,
+  setMentalAnswers,
+  prefersReducedMotion
+}: {
+  setActiveScreen: (s: Screen) => void;
+  mentalMode: 'select' | 'phq9' | 'gad7' | 'result';
+  setMentalMode: (m: 'select' | 'phq9' | 'gad7' | 'result') => void;
+  mentalStep: number;
+  setMentalStep: (n: number) => void;
+  mentalAnswers: number[];
+  setMentalAnswers: (a: number[]) => void;
+  prefersReducedMotion: boolean;
+}) {
+  const questions = mentalMode === 'phq9' ? PHQ9_QUESTIONS : GAD7_QUESTIONS;
+  const totalQuestions = questions.length;
+  const totalScore = mentalAnswers.reduce((a, b) => a + b, 0);
+  const maxScore = mentalMode === 'phq9' ? 27 : 21;
+
+  const getSeverity = () => {
+    if (mentalMode === 'phq9') {
+      if (totalScore <= 4) return { label: 'Minimal', color: IOS_COLORS.systemGreen };
+      if (totalScore <= 9) return { label: 'Mild', color: IOS_COLORS.systemYellow };
+      if (totalScore <= 14) return { label: 'Moderate', color: IOS_COLORS.systemOrange };
+      if (totalScore <= 19) return { label: 'Moderately Severe', color: IOS_COLORS.systemRed };
+      return { label: 'Severe', color: IOS_COLORS.systemRed };
+    } else {
+      if (totalScore <= 4) return { label: 'Minimal', color: IOS_COLORS.systemGreen };
+      if (totalScore <= 9) return { label: 'Mild', color: IOS_COLORS.systemYellow };
+      if (totalScore <= 14) return { label: 'Moderate', color: IOS_COLORS.systemOrange };
+      return { label: 'Severe', color: IOS_COLORS.systemRed };
+    }
+  };
+
+  const handleAnswer = (value: number) => {
+    const newAnswers = [...mentalAnswers];
+    newAnswers[mentalStep] = value;
+    setMentalAnswers(newAnswers);
+  };
+
+  const handleNext = () => {
+    if (mentalStep < totalQuestions - 1) {
+      setMentalStep(mentalStep + 1);
+    } else {
+      setMentalMode('result');
+    }
+  };
+
+  const handleBack = () => {
+    if (mentalMode === 'result') {
+      setMentalMode('select');
+      setMentalStep(0);
+      setMentalAnswers([]);
+    } else if (mentalStep > 0) {
+      setMentalStep(mentalStep - 1);
+    } else {
+      setMentalMode('select');
+      setMentalStep(0);
+      setMentalAnswers([]);
+    }
+  };
+
+  const startAssessment = (type: 'phq9' | 'gad7') => {
+    setMentalMode(type);
+    setMentalStep(0);
+    setMentalAnswers(new Array(type === 'phq9' ? 9 : 7).fill(-1));
+  };
+
+  const resetAndClose = () => {
+    setMentalMode('select');
+    setMentalStep(0);
+    setMentalAnswers([]);
+    setActiveScreen('home');
+  };
+
+  return (
+    <motion.div
+      key="mental-enhanced"
+      initial={{ opacity: 0, x: 300 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -300 }}
+      transition={prefersReducedMotion ? { duration: 0.2 } : SPRING_CONFIG.screen}
+      style={{ padding: '16px 16px 24px' }}
+    >
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+        <BackButton onClick={mentalMode === 'select' ? () => setActiveScreen('home') : handleBack} />
+        <h2 style={{
+          fontSize: `${IOS_TYPOGRAPHY.title3.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.title3.weight,
+          color: IOS_COLORS.label
+        }}>
+          {mentalMode === 'select' ? 'Wellness Check-in' :
+           mentalMode === 'result' ? 'Your Results' :
+           mentalMode === 'phq9' ? `PHQ-9 (${mentalStep + 1}/${totalQuestions})` :
+           `GAD-7 (${mentalStep + 1}/${totalQuestions})`}
+        </h2>
+      </div>
+
+      {mentalMode === 'select' && (
+        <>
+          <p style={{
+            fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+            color: IOS_COLORS.secondaryLabel,
+            marginBottom: '20px'
+          }}>
+            Choose your assessment. All responses are private and secure.
+          </p>
+
+          <div style={{ display: 'grid', gap: '12px' }}>
+            <motion.button
+              whileTap={{ scale: 0.98 }}
+              onClick={() => startAssessment('phq9')}
+              style={{
+                padding: '20px',
+                borderRadius: '16px',
+                background: IOS_GLASS.card.background,
+                backdropFilter: IOS_GLASS.card.backdropFilter,
+                borderLeft: `4px solid ${IOS_COLORS.systemPink}`,
+                border: 'none',
+                textAlign: 'left',
+                cursor: 'pointer',
+                boxShadow: IOS_GLASS.card.boxShadow
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+                <Heart size={24} color={IOS_COLORS.systemPink} />
+                <span style={{
+                  fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+                  fontWeight: IOS_TYPOGRAPHY.headline.weight,
+                  color: IOS_COLORS.label
+                }}>
+                  PHQ-9 Depression Screen
+                </span>
+              </div>
+              <p style={{
+                fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+                color: IOS_COLORS.secondaryLabel
+              }}>
+                9 questions • 2 min
+              </p>
+            </motion.button>
+
+            <motion.button
+              whileTap={{ scale: 0.98 }}
+              onClick={() => startAssessment('gad7')}
+              style={{
+                padding: '20px',
+                borderRadius: '16px',
+                background: IOS_GLASS.card.background,
+                backdropFilter: IOS_GLASS.card.backdropFilter,
+                borderLeft: `4px solid ${IOS_COLORS.systemBlue}`,
+                border: 'none',
+                textAlign: 'left',
+                cursor: 'pointer',
+                boxShadow: IOS_GLASS.card.boxShadow
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+                <Brain size={24} color={IOS_COLORS.systemBlue} />
+                <span style={{
+                  fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+                  fontWeight: IOS_TYPOGRAPHY.headline.weight,
+                  color: IOS_COLORS.label
+                }}>
+                  GAD-7 Anxiety Screen
+                </span>
+              </div>
+              <p style={{
+                fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+                color: IOS_COLORS.secondaryLabel
+              }}>
+                7 questions • 2 min
+              </p>
+            </motion.button>
+          </div>
+
+          <div style={{
+            marginTop: '20px',
+            padding: '12px',
+            borderRadius: '12px',
+            background: IOS_GLASS.cardSubtle.background,
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '10px'
+          }}>
+            <Info size={16} color={IOS_COLORS.systemBlue} style={{ flexShrink: 0, marginTop: '2px' }} />
+            <p style={{
+              fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+              color: IOS_COLORS.secondaryLabel,
+              lineHeight: '1.5'
+            }}>
+              Last completed: 14 days ago. Regular screening helps identify changes in your mental health.
+            </p>
+          </div>
+        </>
+      )}
+
+      {(mentalMode === 'phq9' || mentalMode === 'gad7') && (
+        <>
+          {/* Progress */}
+          <div style={{ marginBottom: '20px' }}>
+            <div style={{ display: 'flex', gap: '4px' }}>
+              {questions.map((_, i) => (
+                <div
+                  key={i}
+                  style={{
+                    flex: 1,
+                    height: '4px',
+                    borderRadius: '2px',
+                    backgroundColor: i < mentalStep
+                      ? (mentalMode === 'phq9' ? IOS_COLORS.systemPink : IOS_COLORS.systemBlue)
+                      : i === mentalStep
+                        ? IOS_COLORS.systemPurple
+                        : IOS_COLORS.quaternarySystemFill
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Question */}
+          <motion.div
+            key={mentalStep}
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            style={{
+              padding: '20px',
+              borderRadius: '16px',
+              background: IOS_GLASS.card.background,
+              backdropFilter: IOS_GLASS.card.backdropFilter,
+              marginBottom: '16px',
+              boxShadow: IOS_GLASS.card.boxShadow
+            }}
+          >
+            <p style={{
+              fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+              color: IOS_COLORS.secondaryLabel,
+              marginBottom: '8px'
+            }}>
+              Over the last 2 weeks, how often have you been bothered by:
+            </p>
+            <p style={{
+              fontSize: `${IOS_TYPOGRAPHY.body.size}px`,
+              fontWeight: '600',
+              color: IOS_COLORS.label,
+              lineHeight: '1.5'
+            }}>
+              {questions[mentalStep]}
+            </p>
+          </motion.div>
+
+          {/* Answer Options */}
+          <div style={{ display: 'grid', gap: '8px', marginBottom: '16px' }}>
+            {[
+              { value: 0, label: 'Not at all' },
+              { value: 1, label: 'Several days' },
+              { value: 2, label: 'More than half the days' },
+              { value: 3, label: 'Nearly every day' }
+            ].map(option => (
+              <motion.button
+                key={option.value}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => handleAnswer(option.value)}
+                style={{
+                  padding: '14px 16px',
+                  borderRadius: '12px',
+                  backgroundColor: mentalAnswers[mentalStep] === option.value
+                    ? (mentalMode === 'phq9' ? IOS_COLORS.systemPink : IOS_COLORS.systemBlue)
+                    : IOS_COLORS.tertiarySystemFill,
+                  border: 'none',
+                  color: mentalAnswers[mentalStep] === option.value ? 'white' : IOS_COLORS.label,
+                  fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+                  fontWeight: mentalAnswers[mentalStep] === option.value ? '600' : '400',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <div style={{
+                  width: '20px',
+                  height: '20px',
+                  borderRadius: '50%',
+                  border: `2px solid ${mentalAnswers[mentalStep] === option.value ? 'white' : IOS_COLORS.separator}`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }}>
+                  {mentalAnswers[mentalStep] === option.value && (
+                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'white' }} />
+                  )}
+                </div>
+                {option.label}
+              </motion.button>
+            ))}
+          </div>
+
+          {/* Continue Button */}
+          <motion.button
+            whileTap={{ scale: 0.96 }}
+            onClick={handleNext}
+            disabled={mentalAnswers[mentalStep] === -1 || mentalAnswers[mentalStep] === undefined}
+            style={{
+              width: '100%',
+              padding: '16px',
+              borderRadius: '14px',
+              backgroundColor: mentalAnswers[mentalStep] >= 0
+                ? (mentalMode === 'phq9' ? IOS_COLORS.systemPink : IOS_COLORS.systemBlue)
+                : IOS_COLORS.quaternarySystemFill,
+              border: 'none',
+              color: mentalAnswers[mentalStep] >= 0 ? 'white' : IOS_COLORS.tertiaryLabel,
+              fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+              fontWeight: '600',
+              cursor: mentalAnswers[mentalStep] >= 0 ? 'pointer' : 'not-allowed'
+            }}
+          >
+            {mentalStep < totalQuestions - 1 ? 'Continue' : 'See Results'}
+          </motion.button>
+        </>
+      )}
+
+      {mentalMode === 'result' && (
+        <>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            style={{
+              padding: '24px',
+              borderRadius: '20px',
+              background: IOS_GLASS.card.background,
+              backdropFilter: IOS_GLASS.card.backdropFilter,
+              borderLeft: `4px solid ${getSeverity().color}`,
+              marginBottom: '16px',
+              textAlign: 'center',
+              boxShadow: IOS_GLASS.card.boxShadow
+            }}
+          >
+            <div style={{
+              fontSize: '56px',
+              fontWeight: '700',
+              color: getSeverity().color,
+              marginBottom: '8px'
+            }}>
+              {totalScore}
+            </div>
+            <div style={{
+              fontSize: `${IOS_TYPOGRAPHY.title3.size}px`,
+              fontWeight: '600',
+              color: IOS_COLORS.label,
+              marginBottom: '4px'
+            }}>
+              {getSeverity().label}
+            </div>
+            <p style={{
+              fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+              color: IOS_COLORS.secondaryLabel
+            }}>
+              Score range: 0-{maxScore}
+            </p>
+
+            {/* Score Bar */}
+            <div style={{
+              marginTop: '16px',
+              height: '8px',
+              borderRadius: '4px',
+              backgroundColor: IOS_COLORS.quaternarySystemFill,
+              overflow: 'hidden'
+            }}>
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${(totalScore / maxScore) * 100}%` }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                style={{
+                  height: '100%',
+                  backgroundColor: getSeverity().color,
+                  borderRadius: '4px'
+                }}
+              />
+            </div>
+          </motion.div>
+
+          {/* Disclaimer */}
+          <div style={{
+            padding: '16px',
+            borderRadius: '16px',
+            background: IOS_GLASS.cardSubtle.background,
+            marginBottom: '16px',
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '12px'
+          }}>
+            <Info size={20} color={IOS_COLORS.systemBlue} style={{ flexShrink: 0, marginTop: '2px' }} />
+            <p style={{
+              fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+              color: IOS_COLORS.secondaryLabel,
+              lineHeight: '1.5'
+            }}>
+              This is a screening tool, not a diagnosis. Consider discussing these results with your healthcare provider.
+            </p>
+          </div>
+
+          {/* Crisis Resources (if high score) */}
+          {totalScore >= 15 && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              style={{
+                padding: '16px',
+                borderRadius: '16px',
+                backgroundColor: `${IOS_COLORS.systemRed}15`,
+                borderLeft: `4px solid ${IOS_COLORS.systemRed}`,
+                marginBottom: '16px'
+              }}
+            >
+              <div style={{
+                fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+                fontWeight: '600',
+                color: IOS_COLORS.systemRed,
+                marginBottom: '8px'
+              }}>
+                Need Support?
+              </div>
+              <p style={{
+                fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+                color: IOS_COLORS.label,
+                marginBottom: '12px'
+              }}>
+                If you're in crisis, help is available 24/7.
+              </p>
+              <motion.button
+                whileTap={{ scale: 0.96 }}
+                style={{
+                  padding: '12px 20px',
+                  borderRadius: '10px',
+                  backgroundColor: IOS_COLORS.systemRed,
+                  border: 'none',
+                  color: 'white',
+                  fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+                  fontWeight: '600',
+                  cursor: 'pointer'
+                }}
+              >
+                Call 988 (Crisis Hotline)
+              </motion.button>
+            </motion.div>
+          )}
+
+          {/* Action Buttons */}
+          <div style={{ display: 'grid', gap: '12px' }}>
+            <motion.button
+              whileTap={{ scale: 0.96 }}
+              onClick={() => setActiveScreen('report')}
+              style={{
+                width: '100%',
+                padding: '16px',
+                borderRadius: '14px',
+                backgroundColor: IOS_COLORS.systemBlue,
+                border: 'none',
+                color: 'white',
+                fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+                fontWeight: '600',
+                cursor: 'pointer',
+                boxShadow: IOS_SHADOWS.button
+              }}
+            >
+              Share with Provider
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.96 }}
+              onClick={resetAndClose}
+              style={{
+                width: '100%',
+                padding: '16px',
+                borderRadius: '14px',
+                backgroundColor: IOS_COLORS.tertiarySystemFill,
+                border: 'none',
+                color: IOS_COLORS.label,
+                fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+                fontWeight: '600',
+                cursor: 'pointer'
+              }}
+            >
+              Done
+            </motion.button>
+          </div>
+        </>
+      )}
+    </motion.div>
+  );
+}
+
+// Smart Reminders Data
+const REMINDER_PATTERNS = {
+  morning: { time: '8:30 AM', reason: 'After your morning shower routine', confidence: 78 },
+  evening: { time: '9:45 PM', reason: 'Your highest adherence window', confidence: 94 },
+  night: { time: '11:00 PM', reason: 'Before bedtime routine', confidence: 82 }
+};
+
+function SmartRemindersScreen({
+  setActiveScreen,
+  reminderTime,
+  setReminderTime,
+  locationTriggers,
+  setLocationTriggers,
+  showNotificationPreview,
+  setShowNotificationPreview,
+  prefersReducedMotion
+}: {
+  setActiveScreen: (s: Screen) => void;
+  reminderTime: 'morning' | 'evening' | 'night';
+  setReminderTime: (t: 'morning' | 'evening' | 'night') => void;
+  locationTriggers: { home: boolean; work: boolean; gym: boolean };
+  setLocationTriggers: (t: { home: boolean; work: boolean; gym: boolean }) => void;
+  showNotificationPreview: boolean;
+  setShowNotificationPreview: (b: boolean) => void;
+  prefersReducedMotion: boolean;
+}) {
+  const pattern = REMINDER_PATTERNS[reminderTime];
+
+  return (
+    <motion.div
+      key="reminders"
+      initial={{ opacity: 0, x: 300 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -300 }}
+      transition={prefersReducedMotion ? { duration: 0.2 } : SPRING_CONFIG.screen}
+      style={{ padding: '16px 16px 24px' }}
+    >
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+        <BackButton onClick={() => setActiveScreen('settings')} />
+        <h2 style={{
+          fontSize: `${IOS_TYPOGRAPHY.title3.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.title3.weight,
+          color: IOS_COLORS.label
+        }}>
+          Smart Reminders
+        </h2>
+      </div>
+
+      <p style={{
+        fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+        color: IOS_COLORS.secondaryLabel,
+        marginBottom: '20px',
+        lineHeight: '1.5'
+      }}>
+        AI learns your patterns to suggest optimal treatment times.
+      </p>
+
+      {/* Time Selection */}
+      <div style={{ marginBottom: '20px' }}>
+        <h3 style={{
+          fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.headline.weight,
+          color: IOS_COLORS.label,
+          marginBottom: '12px'
+        }}>
+          Preferred Time
+        </h3>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          {(['morning', 'evening', 'night'] as const).map(time => (
+            <motion.button
+              key={time}
+              whileTap={{ scale: 0.96 }}
+              onClick={() => setReminderTime(time)}
+              style={{
+                flex: 1,
+                padding: '12px',
+                borderRadius: '12px',
+                backgroundColor: reminderTime === time ? IOS_COLORS.systemGreen : IOS_COLORS.tertiarySystemFill,
+                border: 'none',
+                color: reminderTime === time ? 'white' : IOS_COLORS.label,
+                fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+                fontWeight: '600',
+                cursor: 'pointer',
+                textTransform: 'capitalize'
+              }}
+            >
+              {time}
+            </motion.button>
+          ))}
+        </div>
+      </div>
+
+      {/* AI Recommendation Card */}
+      <motion.div
+        key={reminderTime}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        style={{
+          padding: '20px',
+          borderRadius: '16px',
+          background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
+          borderLeft: `4px solid ${IOS_COLORS.systemGreen}`,
+          marginBottom: '20px',
+          boxShadow: IOS_GLASS.card.boxShadow
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+          <Clock size={18} color={IOS_COLORS.systemGreen} />
+          <span style={{
+            fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+            fontWeight: '600',
+            color: IOS_COLORS.label
+          }}>
+            Recommended: {pattern.time}
+          </span>
+        </div>
+        <p style={{
+          fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+          color: IOS_COLORS.secondaryLabel,
+          marginBottom: '16px'
+        }}>
+          {pattern.reason}. Based on your 30-day history, you're {pattern.confidence}% adherent at this time.
+        </p>
+
+        {/* Confidence Bar */}
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+            <span style={{ fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`, color: IOS_COLORS.secondaryLabel }}>
+              Confidence
+            </span>
+            <span style={{ fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`, fontWeight: '600', color: IOS_COLORS.systemGreen }}>
+              {pattern.confidence}%
+            </span>
+          </div>
+          <div style={{
+            height: '6px',
+            borderRadius: '3px',
+            backgroundColor: IOS_COLORS.quaternarySystemFill,
+            overflow: 'hidden'
+          }}>
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${pattern.confidence}%` }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              style={{
+                height: '100%',
+                backgroundColor: IOS_COLORS.systemGreen,
+                borderRadius: '3px'
+              }}
+            />
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Location Triggers */}
+      <div style={{ marginBottom: '20px' }}>
+        <h3 style={{
+          fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.headline.weight,
+          color: IOS_COLORS.label,
+          marginBottom: '12px'
+        }}>
+          Location Triggers
+        </h3>
+        <div style={{
+          borderRadius: '16px',
+          background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
+          overflow: 'hidden',
+          boxShadow: IOS_GLASS.card.boxShadow
+        }}>
+          {[
+            { key: 'home', icon: '🏠', label: 'At Home' },
+            { key: 'work', icon: '🏢', label: 'At Work' },
+            { key: 'gym', icon: '🏃', label: 'After Gym' }
+          ].map((item, i) => (
+            <div
+              key={item.key}
+              style={{
+                padding: '14px 16px',
+                borderBottom: i < 2 ? `1px solid ${IOS_COLORS.separator}` : 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <span style={{ fontSize: '20px' }}>{item.icon}</span>
+                <span style={{
+                  fontSize: `${IOS_TYPOGRAPHY.body.size}px`,
+                  color: IOS_COLORS.label
+                }}>
+                  {item.label}
+                </span>
+              </div>
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setLocationTriggers({
+                  ...locationTriggers,
+                  [item.key]: !locationTriggers[item.key as keyof typeof locationTriggers]
+                })}
+                style={{
+                  width: '51px',
+                  height: '31px',
+                  borderRadius: '16px',
+                  backgroundColor: locationTriggers[item.key as keyof typeof locationTriggers]
+                    ? IOS_COLORS.systemGreen
+                    : IOS_COLORS.tertiarySystemFill,
+                  border: 'none',
+                  cursor: 'pointer',
+                  position: 'relative',
+                  padding: '2px'
+                }}
+              >
+                <motion.div
+                  animate={{
+                    x: locationTriggers[item.key as keyof typeof locationTriggers] ? 20 : 0
+                  }}
+                  transition={SPRING_CONFIG.button}
+                  style={{
+                    width: '27px',
+                    height: '27px',
+                    borderRadius: '50%',
+                    backgroundColor: 'white',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                  }}
+                />
+              </motion.button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Preview Button */}
+      <motion.button
+        whileTap={{ scale: 0.96 }}
+        onClick={() => setShowNotificationPreview(!showNotificationPreview)}
+        style={{
+          width: '100%',
+          padding: '16px',
+          borderRadius: '14px',
+          backgroundColor: IOS_COLORS.systemBlue,
+          border: 'none',
+          color: 'white',
+          fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+          fontWeight: '600',
+          cursor: 'pointer',
+          boxShadow: IOS_SHADOWS.button
+        }}
+      >
+        {showNotificationPreview ? 'Hide Preview' : 'Preview Notification'}
+      </motion.button>
+
+      {/* Notification Preview */}
+      <AnimatePresence>
+        {showNotificationPreview && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={SPRING_CONFIG.card}
+            style={{
+              marginTop: '16px',
+              padding: '16px',
+              borderRadius: '16px',
+              backgroundColor: IOS_COLORS.systemBackground,
+              boxShadow: IOS_SHADOWS.elevated
+            }}
+          >
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              marginBottom: '8px'
+            }}>
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '10px',
+                background: BRAND_COLORS.primaryGradient,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Bell size={20} color="white" />
+              </div>
+              <div>
+                <div style={{
+                  fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+                  fontWeight: '600',
+                  color: IOS_COLORS.label
+                }}>
+                  PsoriAssist
+                </div>
+                <div style={{
+                  fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+                  color: IOS_COLORS.secondaryLabel
+                }}>
+                  now
+                </div>
+              </div>
+            </div>
+            <p style={{
+              fontSize: `${IOS_TYPOGRAPHY.body.size}px`,
+              color: IOS_COLORS.label,
+              marginBottom: '4px'
+            }}>
+              Time for your treatment! 💊
+            </p>
+            <p style={{
+              fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+              color: IOS_COLORS.secondaryLabel
+            }}>
+              {pattern.reason}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+// Educational Content Data
+const LEARN_CONTENT = [
+  { id: 'pasi', icon: '📊', title: 'Understanding PASI', subtitle: 'What your score means', time: '5 min', category: 'basics', color: IOS_COLORS.systemBlue },
+  { id: 'biologics', icon: '💉', title: 'Biologics Guide', subtitle: 'What to expect from treatment', time: '8 min', category: 'treatment', color: IOS_COLORS.systemGreen },
+  { id: 'topicals', icon: '🧴', title: 'Topical Treatment Tips', subtitle: 'Maximize effectiveness', time: '4 min', category: 'treatment', color: IOS_COLORS.systemGreen },
+  { id: 'stress', icon: '🧘', title: 'Stress & Flare-ups', subtitle: 'Managing the connection', time: '4 min', category: 'lifestyle', color: IOS_COLORS.systemOrange },
+  { id: 'mental', icon: '💜', title: 'Depression & Psoriasis', subtitle: 'Understanding the link', time: '6 min', category: 'mental', color: IOS_COLORS.systemPink }
+];
+
+function EducationalScreen({
+  setActiveScreen,
+  learnCategory,
+  setLearnCategory,
+  prefersReducedMotion
+}: {
+  setActiveScreen: (s: Screen) => void;
+  learnCategory: string;
+  setLearnCategory: (c: string) => void;
+  prefersReducedMotion: boolean;
+}) {
+  const filteredContent = learnCategory === 'all'
+    ? LEARN_CONTENT
+    : LEARN_CONTENT.filter(item => item.category === learnCategory);
+
+  const categories = ['all', 'basics', 'treatment', 'lifestyle', 'mental'];
+
+  return (
+    <motion.div
+      key="learn"
+      initial={{ opacity: 0, x: 300 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -300 }}
+      transition={prefersReducedMotion ? { duration: 0.2 } : SPRING_CONFIG.screen}
+      style={{ padding: '16px 16px 24px' }}
+    >
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+        <BackButton onClick={() => setActiveScreen('settings')} />
+        <h2 style={{
+          fontSize: `${IOS_TYPOGRAPHY.title3.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.title3.weight,
+          color: IOS_COLORS.label
+        }}>
+          Learn
+        </h2>
+      </div>
+
+      {/* Category Tabs */}
+      <div style={{
+        display: 'flex',
+        gap: '8px',
+        marginBottom: '20px',
+        overflowX: 'auto',
+        paddingBottom: '4px'
+      }}>
+        {categories.map(cat => (
+          <motion.button
+            key={cat}
+            whileTap={{ scale: 0.96 }}
+            onClick={() => setLearnCategory(cat)}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '20px',
+              backgroundColor: learnCategory === cat ? IOS_COLORS.systemBlue : IOS_COLORS.tertiarySystemFill,
+              border: 'none',
+              color: learnCategory === cat ? 'white' : IOS_COLORS.label,
+              fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+              fontWeight: '600',
+              cursor: 'pointer',
+              textTransform: 'capitalize',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            {cat}
+          </motion.button>
+        ))}
+      </div>
+
+      {/* Content Cards */}
+      <div style={{ display: 'grid', gap: '12px' }}>
+        {filteredContent.map((item, i) => (
+          <motion.div
+            key={item.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+            style={{
+              padding: '16px',
+              borderRadius: '16px',
+              background: IOS_GLASS.card.background,
+              backdropFilter: IOS_GLASS.card.backdropFilter,
+              borderLeft: `4px solid ${item.color}`,
+              boxShadow: IOS_GLASS.card.boxShadow,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '14px',
+              cursor: 'pointer'
+            }}
+          >
+            <span style={{ fontSize: '28px' }}>{item.icon}</span>
+            <div style={{ flex: 1 }}>
+              <div style={{
+                fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+                fontWeight: IOS_TYPOGRAPHY.headline.weight,
+                color: IOS_COLORS.label,
+                marginBottom: '2px'
+              }}>
+                {item.title}
+              </div>
+              <div style={{
+                fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+                color: IOS_COLORS.secondaryLabel
+              }}>
+                {item.subtitle}
+              </div>
+              <div style={{
+                fontSize: `${IOS_TYPOGRAPHY.caption1.size}px`,
+                color: IOS_COLORS.tertiaryLabel,
+                marginTop: '4px'
+              }}>
+                {item.time} read • {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
+              </div>
+            </div>
+            <ChevronLeft size={20} color={IOS_COLORS.tertiaryLabel} style={{ transform: 'rotate(180deg)' }} />
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Footer */}
+      <div style={{
+        marginTop: '20px',
+        padding: '12px',
+        borderRadius: '12px',
+        background: IOS_GLASS.cardSubtle.background,
+        textAlign: 'center'
+      }}>
+        <p style={{
+          fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+          color: IOS_COLORS.secondaryLabel
+        }}>
+          All content reviewed by board-certified dermatologists
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+// Community Thread Data
+const COMMUNITY_THREADS = [
+  { id: 1, user: 'Sarah', time: '2h ago', title: 'Finally found what works!', preview: 'After trying 3 biologics, I finally found one that...', replies: 12, likes: 45, tags: ['Treatment', 'Win'], avatar: '👩' },
+  { id: 2, user: 'Marcus', time: '5h ago', title: 'Joint pain - is this PsA?', preview: "I've been noticing stiffness in my fingers lately...", replies: 8, likes: 23, tags: ['Symptoms', 'Question'], avatar: '👨' },
+  { id: 3, user: 'Priya', time: '1d ago', title: 'Stress management tips', preview: 'What works for you when stress triggers flare-ups?', replies: 34, likes: 89, tags: ['Lifestyle', 'Discussion'], avatar: '👩‍🦰' }
+];
+
+function CommunityScreen({
+  setActiveScreen,
+  prefersReducedMotion
+}: {
+  setActiveScreen: (s: Screen) => void;
+  prefersReducedMotion: boolean;
+}) {
+  return (
+    <motion.div
+      key="community"
+      initial={{ opacity: 0, x: 300 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -300 }}
+      transition={prefersReducedMotion ? { duration: 0.2 } : SPRING_CONFIG.screen}
+      style={{ padding: '16px 16px 24px' }}
+    >
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+        <BackButton onClick={() => setActiveScreen('settings')} />
+        <h2 style={{
+          fontSize: `${IOS_TYPOGRAPHY.title3.size}px`,
+          fontWeight: IOS_TYPOGRAPHY.title3.weight,
+          color: IOS_COLORS.label
+        }}>
+          Community
+        </h2>
+      </div>
+
+      {/* Stats Banner */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        style={{
+          padding: '20px',
+          borderRadius: '16px',
+          background: BRAND_COLORS.primaryGradient,
+          marginBottom: '20px',
+          textAlign: 'center'
+        }}
+      >
+        <Users size={32} color="white" style={{ marginBottom: '8px' }} />
+        <div style={{
+          fontSize: `${IOS_TYPOGRAPHY.title2.size}px`,
+          fontWeight: '700',
+          color: 'white',
+          marginBottom: '4px'
+        }}>
+          80K+ Members
+        </div>
+        <p style={{
+          fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+          color: 'rgba(255,255,255,0.8)'
+        }}>
+          Moderated peer support community
+        </p>
+      </motion.div>
+
+      {/* Recent Discussions */}
+      <h3 style={{
+        fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+        fontWeight: IOS_TYPOGRAPHY.headline.weight,
+        color: IOS_COLORS.label,
+        marginBottom: '12px'
+      }}>
+        Recent Discussions
+      </h3>
+
+      <div style={{ display: 'grid', gap: '12px', marginBottom: '20px' }}>
+        {COMMUNITY_THREADS.map((thread, i) => (
+          <motion.div
+            key={thread.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 + i * 0.1 }}
+            style={{
+              padding: '16px',
+              borderRadius: '16px',
+              background: IOS_GLASS.card.background,
+              backdropFilter: IOS_GLASS.card.backdropFilter,
+              boxShadow: IOS_GLASS.card.boxShadow,
+              cursor: 'pointer'
+            }}
+          >
+            {/* Author */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              marginBottom: '10px'
+            }}>
+              <span style={{ fontSize: '24px' }}>{thread.avatar}</span>
+              <span style={{
+                fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+                fontWeight: '600',
+                color: IOS_COLORS.label
+              }}>
+                {thread.user}
+              </span>
+              <span style={{
+                fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+                color: IOS_COLORS.tertiaryLabel
+              }}>
+                • {thread.time}
+              </span>
+            </div>
+
+            {/* Content */}
+            <div style={{
+              fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+              fontWeight: '600',
+              color: IOS_COLORS.label,
+              marginBottom: '4px'
+            }}>
+              {thread.title}
+            </div>
+            <p style={{
+              fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
+              color: IOS_COLORS.secondaryLabel,
+              marginBottom: '12px',
+              lineHeight: '1.4',
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden'
+            }}>
+              {thread.preview}
+            </p>
+
+            {/* Engagement & Tags */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <MessageCircle size={14} color={IOS_COLORS.tertiaryLabel} />
+                  <span style={{
+                    fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+                    color: IOS_COLORS.tertiaryLabel
+                  }}>
+                    {thread.replies}
+                  </span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <ThumbsUp size={14} color={IOS_COLORS.tertiaryLabel} />
+                  <span style={{
+                    fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
+                    color: IOS_COLORS.tertiaryLabel
+                  }}>
+                    {thread.likes}
+                  </span>
+                </div>
+              </div>
+              <div style={{ display: 'flex', gap: '6px' }}>
+                {thread.tags.map(tag => (
+                  <span
+                    key={tag}
+                    style={{
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                      backgroundColor: IOS_COLORS.tertiarySystemFill,
+                      fontSize: `${IOS_TYPOGRAPHY.caption2.size}px`,
+                      color: IOS_COLORS.secondaryLabel
+                    }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Join Button */}
+      <motion.button
+        whileTap={{ scale: 0.96 }}
+        style={{
+          width: '100%',
+          padding: '16px',
+          borderRadius: '14px',
+          backgroundColor: IOS_COLORS.systemPurple,
+          border: 'none',
+          color: 'white',
+          fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
+          fontWeight: '600',
+          cursor: 'pointer',
+          boxShadow: IOS_SHADOWS.button
+        }}
+      >
+        Join Community
+      </motion.button>
     </motion.div>
   );
 }
@@ -2450,22 +4423,26 @@ function SettingsSection({ title, children }: { title: string; children: React.R
   );
 }
 
-function SettingsItem({ label, value }: { label: string; value: string }) {
+function SettingsItem({ label, value, onClick }: { label: string; value: string; onClick?: () => void }) {
   return (
-    <div style={{
-      padding: '14px 16px',
-      borderBottom: `1px solid ${IOS_COLORS.separator}`,
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center'
-    }}>
+    <div
+      onClick={onClick}
+      style={{
+        padding: '14px 16px',
+        borderBottom: `1px solid ${IOS_COLORS.separator}`,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        cursor: onClick ? 'pointer' : 'default'
+      }}
+    >
       <span style={{
         fontSize: `${IOS_TYPOGRAPHY.body.size}px`,
         color: IOS_COLORS.label
       }}>{label}</span>
       <span style={{
         fontSize: `${IOS_TYPOGRAPHY.body.size}px`,
-        color: IOS_COLORS.secondaryLabel
+        color: onClick ? IOS_COLORS.systemBlue : IOS_COLORS.secondaryLabel
       }}>{value}</span>
     </div>
   );
