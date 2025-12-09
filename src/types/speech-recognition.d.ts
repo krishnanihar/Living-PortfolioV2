@@ -1,7 +1,6 @@
 /**
  * Web Speech API Type Declarations
  * These types are needed for the SpeechRecognition API used in the Chatbot component.
- * Note: ExhibitionBuilder.tsx has its own local types that take precedence.
  */
 
 // SpeechRecognition event types used by Chatbot.tsx
@@ -24,6 +23,14 @@ interface SpeechRecognitionResultList {
 interface SpeechRecognitionEvent extends Event {
   resultIndex: number;
   results: SpeechRecognitionResultList;
+}
+
+// Augment Window interface for Web Speech API
+declare global {
+  interface Window {
+    SpeechRecognition: new () => SpeechRecognition;
+    webkitSpeechRecognition: new () => SpeechRecognition;
+  }
 }
 
 export { SpeechRecognitionEvent, SpeechRecognitionResult, SpeechRecognitionResultItem, SpeechRecognitionResultList };

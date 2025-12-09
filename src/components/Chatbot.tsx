@@ -632,6 +632,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
               {/* Messages */}
               <div style={{
                 flex: 1,
+                minHeight: 0,
                 overflowY: 'auto',
                 padding: '1rem 1.5rem',
                 display: 'flex',
