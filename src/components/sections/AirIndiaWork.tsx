@@ -443,6 +443,9 @@ const narrativeTransitions = {
 // =============================================================================
 
 export function AirIndiaWork() {
+  // Air India brand color (RGB: 218, 14, 41 = #DA0E29)
+  const brandRgb = '218, 14, 41';
+
   const [inView, setInView] = useState(true);
   const [hoveredAward, setHoveredAward] = useState<string | null>(null);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
@@ -491,6 +494,7 @@ export function AirIndiaWork() {
   const [figmaPulsingRow, setFigmaPulsingRow] = useState<string | null>(null);
   // Preview Mode states for token-to-component visualization
   const [figmaPreviewMode, setFigmaPreviewMode] = useState<boolean>(false);
+  const [expandedTokenCard, setExpandedTokenCard] = useState<string | null>(null);
   const [figmaPreviewComponent, setFigmaPreviewComponent] = useState<'button' | 'card'>('button');
   const [figmaHighlightedProperty, setFigmaHighlightedProperty] = useState<string | null>(null);
 
@@ -1182,28 +1186,6 @@ export function AirIndiaWork() {
         zIndex: 1,
         overflow: 'visible',
       }}>
-        <div style={{
-          textAlign: 'center',
-          marginBottom: 'clamp(3rem, 6vh, 5rem)',
-          animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both' : 'none',
-        }}>
-          <h2 style={{
-            fontSize: 'clamp(2rem, 5vw, 3rem)',
-            fontWeight: '500',
-            letterSpacing: '-0.03em',
-            marginBottom: '1.25rem',
-            color: 'var(--text-primary)',
-          }}>
-            What I Built
-          </h2>
-          <p style={{
-            fontSize: '1.125rem',
-            color: 'var(--text-tertiary)',
-          }}>
-            10 projects shipped during the transformation
-          </p>
-        </div>
-
         {/* Full-Screen Project Sections */}
         <div style={{
           width: '100%',
@@ -4360,6 +4342,625 @@ export function AirIndiaWork() {
                       }}
                     >
                       {index === 0 ? renderDesignSystemDemo() : renderPixelRadarDemo()}
+
+                      {/* External Play Button - Air India branded glassmorphism style */}
+                      {index === 0 && (
+                        <div style={{
+                          marginTop: '2rem',
+                          display: 'flex',
+                          justifyContent: 'center',
+                        }}>
+                          <button
+                            onClick={playCascadeAnimation}
+                            disabled={figmaCascadePhase === 'playing'}
+                            style={{
+                              padding: '14px 28px',
+                              borderRadius: '14px',
+                              background: figmaCascadePhase === 'playing'
+                                ? 'var(--glass-08)'
+                                : `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-08))`,
+                              border: `1px solid rgba(${brandRgb}, 0.25)`,
+                              backdropFilter: 'blur(20px)',
+                              WebkitBackdropFilter: 'blur(20px)',
+                              color: figmaCascadePhase === 'playing' ? 'var(--text-40)' : 'var(--text-80)',
+                              fontSize: '0.875rem',
+                              fontWeight: 500,
+                              letterSpacing: '0.02em',
+                              cursor: figmaCascadePhase === 'playing' ? 'not-allowed' : 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '10px',
+                              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                              opacity: figmaCascadePhase === 'playing' ? 0.7 : 1,
+                              boxShadow: figmaCascadePhase === 'playing'
+                                ? 'none'
+                                : `0 8px 32px rgba(${brandRgb}, 0.12)`,
+                            }}
+                          >
+                            {figmaCascadePhase === 'playing' ? (
+                              <div style={{
+                                width: '16px',
+                                height: '16px',
+                                borderRadius: '50%',
+                                border: '2px solid var(--text-20)',
+                                borderTopColor: `rgb(${brandRgb})`,
+                                animation: 'spin 0.8s linear infinite',
+                              }} />
+                            ) : (
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M4 2.5v11l9-5.5L4 2.5z"/>
+                              </svg>
+                            )}
+                            <span>{figmaCascadePhase === 'playing' ? 'Running Demo...' : 'Play Token Cascade'}</span>
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Token Architecture Visualization - 4-Tier Hierarchy (Interactive) */}
+                      {index === 0 && (
+                        <div style={{ marginTop: '4rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+
+                          {/* Section Label */}
+                          <div style={{
+                            fontSize: '0.7rem',
+                            fontWeight: 600,
+                            letterSpacing: '0.15em',
+                            textTransform: 'uppercase',
+                            color: 'var(--text-40)',
+                            textAlign: 'center',
+                            marginBottom: '0.5rem',
+                          }}>
+                            Design Token Architecture
+                          </div>
+
+                          {/* Click hint */}
+                          <div style={{
+                            fontSize: '0.65rem',
+                            color: 'var(--text-30)',
+                            textAlign: 'center',
+                            marginBottom: '0.5rem',
+                          }}>
+                            Click cards to explore token details
+                          </div>
+
+                          {/* ====== TIER 1: FOUNDATIONS ====== */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                            style={{
+                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.08), var(--glass-04))` : 'var(--glass-04)',
+                              border: figmaCascadePhase === 'playing' ? `1px solid rgba(${brandRgb}, 0.3)` : '1px solid var(--glass-10)',
+                              borderRadius: '16px',
+                              padding: '1rem 1.25rem',
+                              backdropFilter: 'blur(20px)',
+                              transition: 'all 0.4s ease',
+                            }}
+                          >
+                            {/* Tier Label */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.75rem' }}>
+                              <div style={{
+                                width: '24px',
+                                height: '24px',
+                                borderRadius: '8px',
+                                background: `rgba(${brandRgb}, 0.15)`,
+                                border: `1px solid rgba(${brandRgb}, 0.3)`,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '0.7rem',
+                                fontWeight: 700,
+                                color: `rgb(${brandRgb})`,
+                              }}>1</div>
+                              <span style={{
+                                fontSize: '0.75rem',
+                                fontWeight: 600,
+                                letterSpacing: '0.08em',
+                                color: 'var(--text-60)',
+                                textTransform: 'uppercase',
+                              }}>Foundations</span>
+                              <span style={{
+                                fontSize: '0.6rem',
+                                color: 'var(--text-30)',
+                                marginLeft: 'auto',
+                              }}>Base values & raw colors</span>
+                            </div>
+
+                            {/* Token Cards */}
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                              {/* Unit Tokens Card */}
+                              <motion.div
+                                onClick={() => setExpandedTokenCard(expandedTokenCard === 'unit-tokens' ? null : 'unit-tokens')}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                style={{
+                                  background: expandedTokenCard === 'unit-tokens' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-08))` : 'var(--glass-06)',
+                                  border: expandedTokenCard === 'unit-tokens' ? `1px solid rgba(${brandRgb}, 0.3)` : '1px solid var(--glass-12)',
+                                  borderRadius: '12px',
+                                  padding: '0.75rem 1rem',
+                                  cursor: 'pointer',
+                                  transition: 'all 0.3s ease',
+                                  flex: expandedTokenCard === 'unit-tokens' ? '1 1 100%' : '0 0 auto',
+                                }}
+                              >
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                  <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-85)' }}>Unit Tokens</span>
+                                  <svg width="12" height="12" viewBox="0 0 12 12" style={{ transform: expandedTokenCard === 'unit-tokens' ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}>
+                                    <path d="M2 4L6 8L10 4" stroke="var(--text-40)" strokeWidth="1.5" fill="none" />
+                                  </svg>
+                                </div>
+                                {expandedTokenCard === 'unit-tokens' && (
+                                  <motion.div
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: 'auto' }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid var(--glass-10)' }}
+                                  >
+                                    <div style={{ fontSize: '0.65rem', color: 'var(--text-50)', marginBottom: '0.5rem' }}>
+                                      Quantum measurement unit establishing absolute dimensional scale
+                                    </div>
+                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '0.5rem' }}>
+                                      <div style={{ background: 'var(--glass-04)', padding: '0.5rem', borderRadius: '8px' }}>
+                                        <div style={{ fontSize: '0.6rem', color: 'var(--text-40)', marginBottom: '0.25rem' }}>Micro</div>
+                                        <div style={{ fontSize: '0.7rem', color: `rgb(${brandRgb})`, fontFamily: 'monospace' }}>0-2px</div>
+                                        <div style={{ fontSize: '0.55rem', color: 'var(--text-35)' }}>borders, hairlines</div>
+                                      </div>
+                                      <div style={{ background: 'var(--glass-04)', padding: '0.5rem', borderRadius: '8px' }}>
+                                        <div style={{ fontSize: '0.6rem', color: 'var(--text-40)', marginBottom: '0.25rem' }}>Standard</div>
+                                        <div style={{ fontSize: '0.7rem', color: `rgb(${brandRgb})`, fontFamily: 'monospace' }}>4-48px</div>
+                                        <div style={{ fontSize: '0.55rem', color: 'var(--text-35)' }}>spacing, padding</div>
+                                      </div>
+                                      <div style={{ background: 'var(--glass-04)', padding: '0.5rem', borderRadius: '8px' }}>
+                                        <div style={{ fontSize: '0.6rem', color: 'var(--text-40)', marginBottom: '0.25rem' }}>Macro</div>
+                                        <div style={{ fontSize: '0.7rem', color: `rgb(${brandRgb})`, fontFamily: 'monospace' }}>50-600px</div>
+                                        <div style={{ fontSize: '0.55rem', color: 'var(--text-35)' }}>layouts, containers</div>
+                                      </div>
+                                    </div>
+                                    <div style={{ marginTop: '0.5rem', fontSize: '0.6rem', color: 'var(--text-40)' }}>
+                                      <span style={{ color: `rgb(${brandRgb})` }}>4n scale:</span> 4, 8, 12, 16, 20, 24... &nbsp;|&nbsp; <span style={{ color: `rgb(${brandRgb})` }}>2^n:</span> 2, 4, 8, 16, 32...
+                                    </div>
+                                  </motion.div>
+                                )}
+                              </motion.div>
+
+                              {/* Primitives: Colour Card */}
+                              <motion.div
+                                onClick={() => setExpandedTokenCard(expandedTokenCard === 'primitives-colour' ? null : 'primitives-colour')}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                style={{
+                                  background: expandedTokenCard === 'primitives-colour' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-08))` : 'var(--glass-06)',
+                                  border: expandedTokenCard === 'primitives-colour' ? `1px solid rgba(${brandRgb}, 0.3)` : '1px solid var(--glass-12)',
+                                  borderRadius: '12px',
+                                  padding: '0.75rem 1rem',
+                                  cursor: 'pointer',
+                                  transition: 'all 0.3s ease',
+                                  flex: expandedTokenCard === 'primitives-colour' ? '1 1 100%' : '0 0 auto',
+                                }}
+                              >
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                  <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-85)' }}>Primitives: Colour</span>
+                                  <svg width="12" height="12" viewBox="0 0 12 12" style={{ transform: expandedTokenCard === 'primitives-colour' ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}>
+                                    <path d="M2 4L6 8L10 4" stroke="var(--text-40)" strokeWidth="1.5" fill="none" />
+                                  </svg>
+                                </div>
+                                {expandedTokenCard === 'primitives-colour' && (
+                                  <motion.div
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: 'auto' }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid var(--glass-10)' }}
+                                  >
+                                    <div style={{ fontSize: '0.65rem', color: 'var(--text-50)', marginBottom: '0.5rem' }}>
+                                      Abstract colour values without semantic application
+                                    </div>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                                      {[
+                                        { name: 'AI Red', color: '#DA0E29', scale: 'R50-R900' },
+                                        { name: 'AI Grey', color: '#6B7280', scale: 'G50-G900' },
+                                        { name: 'AI Purple', color: '#7C3AED', scale: 'P50-P900' },
+                                        { name: 'Base White', color: '#FFFFFF', scale: '#FFFFFF' },
+                                        { name: 'Base Black', color: '#000000', scale: '#000000' },
+                                      ].map((c) => (
+                                        <div key={c.name} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: 'var(--glass-04)', padding: '0.35rem 0.6rem', borderRadius: '6px' }}>
+                                          <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: c.color, border: c.name === 'Base White' ? '1px solid var(--glass-20)' : 'none' }} />
+                                          <span style={{ fontSize: '0.6rem', color: 'var(--text-70)' }}>{c.name}</span>
+                                          <span style={{ fontSize: '0.55rem', color: 'var(--text-35)', fontFamily: 'monospace' }}>{c.scale}</span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </motion.div>
+                                )}
+                              </motion.div>
+                            </div>
+                          </motion.div>
+
+                          {/* Connection Line 1 - Multi-branch */}
+                          <div style={{ display: 'flex', justifyContent: 'center', padding: '0.15rem 0' }}>
+                            <svg width="200" height="32" viewBox="0 0 200 32">
+                              <defs>
+                                <linearGradient id="tierLineGradNew1" x1="0%" y1="0%" x2="0%" y2="100%">
+                                  <stop offset="0%" stopColor={`rgba(${brandRgb}, 0.3)`} />
+                                  <stop offset="100%" stopColor={`rgba(${brandRgb}, 0.7)`} />
+                                </linearGradient>
+                              </defs>
+                              {/* Main trunk */}
+                              <line x1="100" y1="0" x2="100" y2="16" stroke="url(#tierLineGradNew1)" strokeWidth="2" strokeDasharray="4 3" style={{ animation: figmaCascadePhase === 'playing' ? 'flowLine 1s linear infinite' : 'none' }} />
+                              {/* Branch left */}
+                              <path d="M100 16 Q100 24 60 28" stroke="url(#tierLineGradNew1)" strokeWidth="1.5" fill="none" strokeDasharray="3 2" style={{ animation: figmaCascadePhase === 'playing' ? 'flowLine 1s linear infinite' : 'none', animationDelay: '0.1s' }} />
+                              {/* Branch right */}
+                              <path d="M100 16 Q100 24 140 28" stroke="url(#tierLineGradNew1)" strokeWidth="1.5" fill="none" strokeDasharray="3 2" style={{ animation: figmaCascadePhase === 'playing' ? 'flowLine 1s linear infinite' : 'none', animationDelay: '0.2s' }} />
+                              <circle cx="60" cy="28" r="3" fill={`rgb(${brandRgb})`} style={{ animation: figmaCascadePhase === 'playing' ? 'statusPulse 1.5s ease-in-out infinite' : 'none' }} />
+                              <circle cx="140" cy="28" r="3" fill={`rgb(${brandRgb})`} style={{ animation: figmaCascadePhase === 'playing' ? 'statusPulse 1.5s ease-in-out infinite' : 'none', animationDelay: '0.2s' }} />
+                            </svg>
+                          </div>
+
+                          {/* ====== TIER 2: PRIMITIVES ====== */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.15 }}
+                            style={{
+                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.06), var(--glass-04))` : 'var(--glass-04)',
+                              border: '1px solid var(--glass-10)',
+                              borderRadius: '16px',
+                              padding: '1rem 1.25rem',
+                              backdropFilter: 'blur(20px)',
+                              transition: 'all 0.4s ease 0.3s',
+                            }}
+                          >
+                            {/* Tier Label */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.75rem' }}>
+                              <div style={{
+                                width: '24px',
+                                height: '24px',
+                                borderRadius: '8px',
+                                background: `rgba(${brandRgb}, 0.15)`,
+                                border: `1px solid rgba(${brandRgb}, 0.3)`,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '0.7rem',
+                                fontWeight: 700,
+                                color: `rgb(${brandRgb})`,
+                              }}>2</div>
+                              <span style={{
+                                fontSize: '0.75rem',
+                                fontWeight: 600,
+                                letterSpacing: '0.08em',
+                                color: 'var(--text-60)',
+                                textTransform: 'uppercase',
+                              }}>Primitives</span>
+                              <span style={{
+                                fontSize: '0.6rem',
+                                color: 'var(--text-30)',
+                                marginLeft: 'auto',
+                              }}>Abstract attributes</span>
+                            </div>
+
+                            {/* Token Cards Grid */}
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.5rem' }}>
+                              {[
+                                { id: 'type', name: 'Primitives: Type', desc: 'Font families, weights, sizes', subItems: ['Font Family', 'Weight', 'Size', 'Line Height'] },
+                                { id: 'space', name: 'Space', desc: 'T-shirt sizing scale', subItems: ['3XS: 0px', 'XS: 4px', 'S: 8px', 'M: 12px', 'L: 16px', 'XL: 20px', '2XL: 24px', '3XL: 32px'] },
+                                { id: 'border', name: 'Border', desc: 'Border weights & styles', subItems: ['S: 0.5px', 'M: 1px', 'L: 2px', 'XL: 4px'] },
+                                { id: 'semantics-color', name: 'Semantics: Color', desc: 'Contextual color application', subItems: ['text/default', 'surface/brand', 'border/subtle'] },
+                              ].map((token) => (
+                                <motion.div
+                                  key={token.id}
+                                  onClick={() => setExpandedTokenCard(expandedTokenCard === token.id ? null : token.id)}
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.98 }}
+                                  style={{
+                                    background: expandedTokenCard === token.id ? `linear-gradient(135deg, rgba(${brandRgb}, 0.1), var(--glass-08))` : 'var(--glass-06)',
+                                    border: expandedTokenCard === token.id ? `1px solid rgba(${brandRgb}, 0.25)` : '1px solid var(--glass-12)',
+                                    borderRadius: '10px',
+                                    padding: '0.6rem 0.8rem',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                    gridColumn: expandedTokenCard === token.id ? '1 / -1' : 'auto',
+                                  }}
+                                >
+                                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                    <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-80)' }}>{token.name}</span>
+                                    <svg width="10" height="10" viewBox="0 0 10 10" style={{ transform: expandedTokenCard === token.id ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}>
+                                      <path d="M2 3L5 7L8 3" stroke="var(--text-35)" strokeWidth="1.2" fill="none" />
+                                    </svg>
+                                  </div>
+                                  {expandedTokenCard === token.id && (
+                                    <motion.div
+                                      initial={{ opacity: 0 }}
+                                      animate={{ opacity: 1 }}
+                                      style={{ marginTop: '0.6rem', paddingTop: '0.6rem', borderTop: '1px solid var(--glass-08)' }}
+                                    >
+                                      <div style={{ fontSize: '0.6rem', color: 'var(--text-45)', marginBottom: '0.4rem' }}>{token.desc}</div>
+                                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem' }}>
+                                        {token.subItems.map((item, idx) => (
+                                          <span key={idx} style={{
+                                            fontSize: '0.55rem',
+                                            color: 'var(--text-60)',
+                                            background: 'var(--glass-06)',
+                                            padding: '0.2rem 0.5rem',
+                                            borderRadius: '4px',
+                                            border: '1px solid var(--glass-08)',
+                                            fontFamily: item.includes(':') || item.includes('px') ? 'monospace' : 'inherit',
+                                          }}>{item}</span>
+                                        ))}
+                                      </div>
+                                    </motion.div>
+                                  )}
+                                </motion.div>
+                              ))}
+                            </div>
+                          </motion.div>
+
+                          {/* Connection Line 2 */}
+                          <div style={{ display: 'flex', justifyContent: 'center', padding: '0.15rem 0' }}>
+                            <svg width="100" height="24" viewBox="0 0 100 24">
+                              <line x1="50" y1="0" x2="50" y2="24" stroke={`rgba(${brandRgb}, 0.5)`} strokeWidth="2" strokeDasharray="4 3" style={{ animation: figmaCascadePhase === 'playing' ? 'flowLine 1s linear infinite' : 'none', animationDelay: '0.4s' }} />
+                              <circle cx="50" cy="20" r="3" fill={`rgb(${brandRgb})`} style={{ animation: figmaCascadePhase === 'playing' ? 'statusPulse 1.5s ease-in-out infinite' : 'none', animationDelay: '0.4s' }} />
+                            </svg>
+                          </div>
+
+                          {/* ====== TIER 3: SEMANTICS ====== */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.3 }}
+                            style={{
+                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.05), var(--glass-04))` : 'var(--glass-04)',
+                              border: '1px solid var(--glass-10)',
+                              borderRadius: '16px',
+                              padding: '1rem 1.25rem',
+                              backdropFilter: 'blur(20px)',
+                              transition: 'all 0.4s ease 0.6s',
+                            }}
+                          >
+                            {/* Tier Label */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.75rem' }}>
+                              <div style={{
+                                width: '24px',
+                                height: '24px',
+                                borderRadius: '8px',
+                                background: `rgba(${brandRgb}, 0.15)`,
+                                border: `1px solid rgba(${brandRgb}, 0.3)`,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '0.7rem',
+                                fontWeight: 700,
+                                color: `rgb(${brandRgb})`,
+                              }}>3</div>
+                              <span style={{
+                                fontSize: '0.75rem',
+                                fontWeight: 600,
+                                letterSpacing: '0.08em',
+                                color: 'var(--text-60)',
+                                textTransform: 'uppercase',
+                              }}>Semantics</span>
+                              <span style={{
+                                fontSize: '0.6rem',
+                                color: 'var(--text-30)',
+                                marginLeft: 'auto',
+                              }}>Contextual meaning</span>
+                            </div>
+
+                            {/* Token Cards */}
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                              {[
+                                { id: 'sem-type', name: 'Semantics: Type', desc: 'Heading, Body, Caption styles', example: 'heading/h1 → 48px Bold' },
+                                { id: 'radius', name: 'Radius', desc: 'Corner curvature', example: 'S: 4px, M: 8px, L: 16px' },
+                                { id: 'width', name: 'Width', desc: 'Border thickness', example: 'hairline: 0.5px, default: 1px' },
+                              ].map((token) => (
+                                <motion.div
+                                  key={token.id}
+                                  onClick={() => setExpandedTokenCard(expandedTokenCard === token.id ? null : token.id)}
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.98 }}
+                                  style={{
+                                    background: expandedTokenCard === token.id ? `linear-gradient(135deg, rgba(${brandRgb}, 0.1), var(--glass-08))` : 'var(--glass-06)',
+                                    border: expandedTokenCard === token.id ? `1px solid rgba(${brandRgb}, 0.25)` : '1px solid var(--glass-12)',
+                                    borderRadius: '10px',
+                                    padding: '0.6rem 0.9rem',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                    flex: expandedTokenCard === token.id ? '1 1 100%' : '0 0 auto',
+                                  }}
+                                >
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                    <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-80)' }}>{token.name}</span>
+                                    <svg width="10" height="10" viewBox="0 0 10 10" style={{ transform: expandedTokenCard === token.id ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}>
+                                      <path d="M2 3L5 7L8 3" stroke="var(--text-35)" strokeWidth="1.2" fill="none" />
+                                    </svg>
+                                  </div>
+                                  {expandedTokenCard === token.id && (
+                                    <motion.div
+                                      initial={{ opacity: 0 }}
+                                      animate={{ opacity: 1 }}
+                                      style={{ marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid var(--glass-08)' }}
+                                    >
+                                      <div style={{ fontSize: '0.6rem', color: 'var(--text-45)', marginBottom: '0.3rem' }}>{token.desc}</div>
+                                      <div style={{ fontSize: '0.6rem', color: `rgb(${brandRgb})`, fontFamily: 'monospace', background: 'var(--glass-04)', padding: '0.3rem 0.5rem', borderRadius: '4px', display: 'inline-block' }}>
+                                        {token.example}
+                                      </div>
+                                    </motion.div>
+                                  )}
+                                </motion.div>
+                              ))}
+                            </div>
+                          </motion.div>
+
+                          {/* Connection Line 3 - Fan out */}
+                          <div style={{ display: 'flex', justifyContent: 'center', padding: '0.15rem 0' }}>
+                            <svg width="300" height="32" viewBox="0 0 300 32">
+                              <line x1="150" y1="0" x2="150" y2="12" stroke={`rgba(${brandRgb}, 0.5)`} strokeWidth="2" strokeDasharray="4 3" style={{ animation: figmaCascadePhase === 'playing' ? 'flowLine 1s linear infinite' : 'none', animationDelay: '0.8s' }} />
+                              {/* Fan out lines */}
+                              {[-100, -60, -20, 20, 60, 100].map((offset, i) => (
+                                <g key={i}>
+                                  <path d={`M150 12 Q150 22 ${150 + offset} 28`} stroke={`rgba(${brandRgb}, 0.4)`} strokeWidth="1" fill="none" strokeDasharray="2 2" style={{ animation: figmaCascadePhase === 'playing' ? 'flowLine 1s linear infinite' : 'none', animationDelay: `${0.8 + i * 0.05}s` }} />
+                                  <circle cx={150 + offset} cy="28" r="2" fill={`rgb(${brandRgb})`} style={{ animation: figmaCascadePhase === 'playing' ? 'statusPulse 1.5s ease-in-out infinite' : 'none', animationDelay: `${0.8 + i * 0.05}s` }} />
+                                </g>
+                              ))}
+                            </svg>
+                          </div>
+
+                          {/* ====== TIER 4: COMPONENTS ====== */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.45 }}
+                            style={{
+                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.04), var(--glass-04))` : 'var(--glass-04)',
+                              border: '1px solid var(--glass-10)',
+                              borderRadius: '16px',
+                              padding: '1rem 1.25rem',
+                              backdropFilter: 'blur(20px)',
+                              transition: 'all 0.4s ease 0.9s',
+                            }}
+                          >
+                            {/* Tier Label */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.75rem' }}>
+                              <div style={{
+                                width: '24px',
+                                height: '24px',
+                                borderRadius: '8px',
+                                background: `rgba(${brandRgb}, 0.15)`,
+                                border: `1px solid rgba(${brandRgb}, 0.3)`,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '0.7rem',
+                                fontWeight: 700,
+                                color: `rgb(${brandRgb})`,
+                              }}>4</div>
+                              <span style={{
+                                fontSize: '0.75rem',
+                                fontWeight: 600,
+                                letterSpacing: '0.08em',
+                                color: 'var(--text-60)',
+                                textTransform: 'uppercase',
+                              }}>Components</span>
+                              <span style={{
+                                fontSize: '0.6rem',
+                                color: 'var(--text-30)',
+                                marginLeft: 'auto',
+                              }}>Direct usage in UI</span>
+                            </div>
+
+                            {/* Component Chips - Interactive */}
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                              {[
+                                { name: 'Heading', icon: 'H', tokens: ['H1: 48px', 'H2: 40px', 'H3: 32px', 'H4: 28px'] },
+                                { name: 'Subheading', icon: 'Sh', tokens: ['Large', 'Medium', 'Small'] },
+                                { name: 'Body', icon: 'B', tokens: ['Large', 'Medium', 'Small'] },
+                                { name: 'Caption', icon: 'C', tokens: ['default', 'secondary'] },
+                                { name: 'Button', icon: 'Bt', tokens: ['primary', 'secondary', 'tertiary'] },
+                                { name: 'Overline', icon: 'O', tokens: ['brand', 'default'] },
+                                { name: 'Text', icon: 'Tx', tokens: ['default', 'secondary', 'link', 'brand'] },
+                                { name: 'Background', icon: 'Bg', tokens: ['default', 'surface', 'subtle'] },
+                                { name: 'Border', icon: 'Bd', tokens: ['default', 'subtle', 'focus'] },
+                                { name: 'Icon', icon: 'Ic', tokens: ['default', 'brand', 'interactive'] },
+                                { name: 'Feedback', icon: 'Fb', tokens: ['success', 'warning', 'critical', 'info'] },
+                              ].map((component, i) => (
+                                <motion.div
+                                  key={component.name}
+                                  onClick={() => setExpandedTokenCard(expandedTokenCard === `comp-${component.name}` ? null : `comp-${component.name}`)}
+                                  initial={{ opacity: 0, scale: 0.95 }}
+                                  whileInView={{ opacity: 1, scale: 1 }}
+                                  viewport={{ once: true }}
+                                  whileHover={{ scale: 1.05, background: `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-10))` }}
+                                  whileTap={{ scale: 0.95 }}
+                                  transition={{ delay: 0.45 + i * 0.03, duration: 0.25 }}
+                                  style={{
+                                    background: expandedTokenCard === `comp-${component.name}` ? `linear-gradient(135deg, rgba(${brandRgb}, 0.15), var(--glass-10))` : 'var(--glass-06)',
+                                    border: expandedTokenCard === `comp-${component.name}` ? `1px solid rgba(${brandRgb}, 0.3)` : '1px solid var(--glass-12)',
+                                    borderRadius: '8px',
+                                    padding: expandedTokenCard === `comp-${component.name}` ? '0.6rem 0.8rem' : '0.4rem 0.7rem',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '0.3rem',
+                                    flex: expandedTokenCard === `comp-${component.name}` ? '1 1 calc(50% - 0.2rem)' : '0 0 auto',
+                                    minWidth: expandedTokenCard === `comp-${component.name}` ? '150px' : 'auto',
+                                  }}
+                                >
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                    <span style={{
+                                      width: '18px',
+                                      height: '18px',
+                                      borderRadius: '4px',
+                                      background: `rgba(${brandRgb}, 0.1)`,
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      fontSize: '0.5rem',
+                                      fontWeight: 700,
+                                      color: `rgb(${brandRgb})`,
+                                    }}>{component.icon}</span>
+                                    <span style={{ fontSize: '0.65rem', fontWeight: 500, color: 'var(--text-70)' }}>{component.name}</span>
+                                  </div>
+                                  {expandedTokenCard === `comp-${component.name}` && (
+                                    <motion.div
+                                      initial={{ opacity: 0 }}
+                                      animate={{ opacity: 1 }}
+                                      style={{ display: 'flex', flexWrap: 'wrap', gap: '0.2rem', marginTop: '0.2rem' }}
+                                    >
+                                      {component.tokens.map((t, idx) => (
+                                        <span key={idx} style={{
+                                          fontSize: '0.5rem',
+                                          color: 'var(--text-50)',
+                                          background: 'var(--glass-06)',
+                                          padding: '0.15rem 0.4rem',
+                                          borderRadius: '3px',
+                                          fontFamily: 'monospace',
+                                        }}>{t}</span>
+                                      ))}
+                                    </motion.div>
+                                  )}
+                                </motion.div>
+                              ))}
+                            </div>
+                          </motion.div>
+
+                          {/* Token Flow Legend */}
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.6 }}
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              gap: '1.5rem',
+                              marginTop: '0.5rem',
+                              padding: '0.6rem',
+                              background: 'var(--glass-03)',
+                              borderRadius: '10px',
+                              flexWrap: 'wrap',
+                            }}
+                          >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                              <div style={{ width: '20px', height: '2px', background: `linear-gradient(90deg, rgba(${brandRgb}, 0.3), rgba(${brandRgb}, 0.7))` }} />
+                              <span style={{ fontSize: '0.55rem', color: 'var(--text-40)' }}>Token inheritance</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                              <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: `rgb(${brandRgb})` }} />
+                              <span style={{ fontSize: '0.55rem', color: 'var(--text-40)' }}>Value resolved</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                              <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: `rgba(${brandRgb}, 0.1)`, border: `1px solid rgba(${brandRgb}, 0.2)` }} />
+                              <span style={{ fontSize: '0.55rem', color: 'var(--text-40)' }}>Click to expand</span>
+                            </div>
+                          </motion.div>
+
+                        </div>
+                      )}
                     </motion.div>
                   )}
                 </section>
