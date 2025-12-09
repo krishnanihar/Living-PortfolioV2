@@ -1496,6 +1496,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                 borderRadius: '28px',
                 padding: 'clamp(2.5rem, 5vw, 3.5rem)',
                 border: '1px solid var(--text-12)',
+                boxShadow: '0 4px 16px var(--glass-08)',
                 textAlign: 'center',
               }}
             >
@@ -1676,6 +1677,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                 borderRadius: '28px',
                 padding: 'clamp(2.5rem, 5vw, 3rem)',
                 border: '1px solid var(--text-12)',
+                boxShadow: '0 4px 16px var(--glass-08)',
               }}
             >
               {/* Profile Image - Centered */}
