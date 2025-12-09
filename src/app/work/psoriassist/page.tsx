@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
-import { PsoriAssistWork } from '@/components/sections/PsoriAssistWork';
+import { PsoriAssistCase } from '@/components/psoriassist-v2/PsoriAssistCase';
 import { CaseStudyTracker } from '@/components/CaseStudyTracker';
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default function PsoriAssistPage() {
     <>
       <CaseStudyTracker slug="psoriassist" />
       <PortfolioNavigation />
-      <PsoriAssistWork />
+      <PsoriAssistCase />
     </>
   );
 }
