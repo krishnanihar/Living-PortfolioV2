@@ -8855,6 +8855,398 @@ export function AirIndiaWork() {
                         </p>
                       </div>
                     </div>
+                  ) : index === 2 ? (
+                    /* Search with AI - Interactive Demo */
+                    <>
+                    {/* Interactive Prototype Helper */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      marginBottom: '12px',
+                      padding: '8px 16px',
+                      background: `rgba(${project.color}, 0.1)`,
+                      borderRadius: '20px',
+                      border: `1px solid rgba(${project.color}, 0.2)`,
+                      width: 'fit-content',
+                      margin: '0 auto 12px',
+                    }}>
+                      <span style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        background: `rgb(${project.color})`,
+                        animation: 'statusPulse 1.5s ease infinite',
+                      }} />
+                      <span style={{
+                        fontSize: '11px',
+                        color: 'var(--text-70)',
+                        fontWeight: '500',
+                      }}>
+                        Interactive Prototype
+                      </span>
+                      <span style={{
+                        fontSize: '10px',
+                        color: 'var(--text-40)',
+                      }}>
+                        — Click &quot;Send&quot; to see AI in action
+                      </span>
+                    </div>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '1100px',
+                      margin: '0 auto',
+                      display: 'grid',
+                      gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+                      gap: '24px',
+                      padding: '8px',
+                      fontSize: '11px',
+                    }}>
+                      {/* LEFT PANEL: AI.g Chat Interface */}
+                      <div style={{
+                        background: '#1A1A2E',
+                        borderRadius: '12px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        overflow: 'hidden',
+                        display: 'flex',
+                        flexDirection: 'column',
+                      }}>
+                        {/* Chat Header */}
+                        <div style={{
+                          background: '#0F0F1A',
+                          padding: '12px 16px',
+                          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <div style={{
+                              width: '28px',
+                              height: '28px',
+                              borderRadius: '8px',
+                              background: `linear-gradient(135deg, rgb(${project.color}), rgb(${brandRgb}))`,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}>
+                              <span style={{ fontSize: '14px' }}>✈️</span>
+                            </div>
+                            <div>
+                              <span style={{ fontSize: '13px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.9)' }}>AI.g</span>
+                              <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>Air India Assistant</div>
+                            </div>
+                          </div>
+                          <div style={{
+                            padding: '4px 10px',
+                            borderRadius: '12px',
+                            background: 'rgba(48, 209, 88, 0.15)',
+                            fontSize: '10px',
+                            fontWeight: '600',
+                            color: '#30D158',
+                          }}>
+                            3rd Place - Battle of Apps
+                          </div>
+                        </div>
+
+                        {/* Chat Messages */}
+                        <div style={{
+                          flex: 1,
+                          padding: '16px',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '12px',
+                          minHeight: '280px',
+                          maxHeight: '320px',
+                          overflowY: 'auto',
+                        }}>
+                          {/* User Message */}
+                          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <div style={{
+                              maxWidth: '80%',
+                              padding: '10px 14px',
+                              borderRadius: '16px 16px 4px 16px',
+                              background: `rgb(${project.color})`,
+                              color: 'white',
+                              fontSize: '12px',
+                              lineHeight: 1.4,
+                            }}>
+                              {queryPhase === 'idle' ? 'Show me flights to Delhi under ₹5000 next weekend' :
+                               queryPhase === 'typing' ? displayedQuery.replace(/"/g, '') :
+                               'Show me flights to Delhi under ₹5000 next weekend'}
+                            </div>
+                          </div>
+
+                          {/* AI Response - appears after processing */}
+                          {(queryPhase === 'results' || queryPhase === 'idle') && (
+                            <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                              <div style={{
+                                maxWidth: '85%',
+                                padding: '12px 14px',
+                                borderRadius: '16px 16px 16px 4px',
+                                background: 'rgba(255, 255, 255, 0.08)',
+                                color: 'rgba(255, 255, 255, 0.9)',
+                                fontSize: '12px',
+                                lineHeight: 1.5,
+                              }}>
+                                <div style={{ marginBottom: '10px' }}>
+                                  I found <strong style={{ color: `rgb(${project.color})` }}>12 flights</strong> to Delhi for next weekend under ₹5,000:
+                                </div>
+                                {/* Flight Cards */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                  {[
+                                    { flight: 'AI-302', time: '06:00', price: '₹4,299', seats: '8 left' },
+                                    { flight: 'AI-456', time: '08:30', price: '₹4,599', seats: '12 left' },
+                                    { flight: 'AI-118', time: '14:15', price: '₹4,850', seats: '5 left' },
+                                  ].map((f, i) => (
+                                    <div key={i} style={{
+                                      padding: '8px 12px',
+                                      borderRadius: '8px',
+                                      background: 'rgba(255, 255, 255, 0.06)',
+                                      border: i === 0 ? `1px solid rgba(${project.color}, 0.4)` : '1px solid rgba(255, 255, 255, 0.08)',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'space-between',
+                                      opacity: queryPhase === 'results' ? 1 : 0.7,
+                                      transition: `all 0.3s ease ${i * 0.1}s`,
+                                    }}>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>{f.flight}</span>
+                                        <span style={{ fontWeight: '600', color: 'white' }}>{f.time}</span>
+                                      </div>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <span style={{ fontSize: '10px', color: '#30D158' }}>{f.seats}</span>
+                                        <span style={{ fontWeight: '700', color: `rgb(${project.color})` }}>{f.price}</span>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                                <div style={{ marginTop: '10px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)' }}>
+                                  Would you like me to book one of these?
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Processing indicator */}
+                          {queryPhase !== 'idle' && queryPhase !== 'results' && (
+                            <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                              <div style={{
+                                padding: '10px 14px',
+                                borderRadius: '16px',
+                                background: 'rgba(255, 255, 255, 0.08)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                              }}>
+                                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: `rgb(${project.color})`, animation: 'statusPulse 0.8s ease infinite' }} />
+                                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: `rgb(${project.color})`, animation: 'statusPulse 0.8s ease infinite 0.2s' }} />
+                                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: `rgb(${project.color})`, animation: 'statusPulse 0.8s ease infinite 0.4s' }} />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Chat Input */}
+                        <div style={{
+                          padding: '12px 16px',
+                          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                        }}>
+                          <div style={{
+                            flex: 1,
+                            padding: '10px 14px',
+                            borderRadius: '20px',
+                            background: 'rgba(255, 255, 255, 0.06)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            fontSize: '12px',
+                            color: 'rgba(255, 255, 255, 0.4)',
+                          }}>
+                            Type your travel plans...
+                          </div>
+                          <button
+                            onClick={() => {
+                              if (queryPhase !== 'idle') return;
+                              const fullQuery = '"Show me flights to Delhi under ₹5000 next weekend"';
+                              setQueryPhase('typing');
+                              setDisplayedQuery('');
+
+                              let charIndex = 0;
+                              const typeInterval = setInterval(() => {
+                                if (charIndex < fullQuery.length) {
+                                  setDisplayedQuery(fullQuery.slice(0, charIndex + 1));
+                                  charIndex++;
+                                } else {
+                                  clearInterval(typeInterval);
+                                  setTimeout(() => setQueryPhase('tokenize'), 300);
+                                  setTimeout(() => setQueryPhase('entities'), 800);
+                                  setTimeout(() => setQueryPhase('intent'), 1300);
+                                  setTimeout(() => setQueryPhase('results'), 1800);
+                                  setTimeout(() => setQueryPhase('idle'), 5000);
+                                }
+                              }, 25);
+                            }}
+                            style={{
+                              width: '36px',
+                              height: '36px',
+                              borderRadius: '50%',
+                              background: queryPhase === 'idle' ? `rgb(${project.color})` : 'rgba(255, 255, 255, 0.1)',
+                              border: 'none',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              cursor: queryPhase === 'idle' ? 'pointer' : 'default',
+                              transition: 'all 0.3s ease',
+                            }}
+                          >
+                            <span style={{ color: 'white', fontSize: '14px' }}>→</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* RIGHT PANEL: NLU Pipeline Visualization */}
+                      <div style={{
+                        background: '#0F0F1A',
+                        borderRadius: '12px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        overflow: 'hidden',
+                      }}>
+                        {/* Pipeline Header */}
+                        <div style={{
+                          background: '#1A1A2E',
+                          padding: '12px 16px',
+                          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span style={{ fontSize: '12px' }}>⚡</span>
+                            <span style={{ fontSize: '12px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.9)' }}>NLU Processing Pipeline</span>
+                          </div>
+                          <div style={{
+                            width: '8px',
+                            height: '8px',
+                            borderRadius: '50%',
+                            background: queryPhase === 'idle' ? 'rgba(255, 255, 255, 0.2)' : '#30D158',
+                            animation: queryPhase !== 'idle' ? 'statusPulse 1s ease infinite' : 'none',
+                          }} />
+                        </div>
+
+                        {/* Pipeline Stages */}
+                        <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                          {[
+                            {
+                              title: 'Intent Detection',
+                              icon: '🎯',
+                              result: 'BOOK_FLIGHT',
+                              detail: 'confidence: 94.7%',
+                              phase: 'tokenize',
+                              color: '#6B7280'
+                            },
+                            {
+                              title: 'Entity Extraction',
+                              icon: '📍',
+                              result: 'destination: DEL',
+                              detail: 'budget: ₹5000 • date: weekend',
+                              phase: 'entities',
+                              color: '#0D99FF'
+                            },
+                            {
+                              title: 'Context Memory',
+                              icon: '🧠',
+                              result: 'Frequent: DEL route',
+                              detail: 'preference: morning • class: economy',
+                              phase: 'intent',
+                              color: '#30D158'
+                            },
+                            {
+                              title: 'Response Generation',
+                              icon: '✨',
+                              result: 'Personalized results',
+                              detail: '12 flights matched • 3 recommended',
+                              phase: 'results',
+                              color: project.color
+                            },
+                          ].map((stage, i) => {
+                            const isActive = queryPhase === stage.phase ||
+                              (queryPhase === 'results' && i < 4) ||
+                              (queryPhase === 'intent' && i < 3) ||
+                              (queryPhase === 'entities' && i < 2) ||
+                              (queryPhase === 'tokenize' && i < 1);
+                            const isCurrent = queryPhase === stage.phase;
+
+                            return (
+                              <div key={stage.title} style={{
+                                padding: '14px',
+                                borderRadius: '10px',
+                                background: isCurrent ? `rgba(${stage.color === project.color ? project.color : stage.color.replace('#', '').match(/.{2}/g)?.map(x => parseInt(x, 16)).join(', ')}, 0.15)` : 'rgba(255, 255, 255, 0.03)',
+                                border: `1px solid ${isCurrent ? `rgba(${stage.color === project.color ? project.color : stage.color.replace('#', '').match(/.{2}/g)?.map(x => parseInt(x, 16)).join(', ')}, 0.4)` : 'rgba(255, 255, 255, 0.06)'}`,
+                                transition: 'all 0.4s ease',
+                                transform: isCurrent ? 'translateX(4px)' : 'translateX(0)',
+                                opacity: queryPhase === 'idle' ? 0.6 : (isActive ? 1 : 0.3),
+                              }}>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <span style={{ fontSize: '14px' }}>{stage.icon}</span>
+                                    <span style={{ fontSize: '11px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.8)' }}>{stage.title}</span>
+                                  </div>
+                                  {isActive && queryPhase !== 'idle' && (
+                                    <span style={{ fontSize: '10px', color: '#30D158' }}>✓</span>
+                                  )}
+                                </div>
+                                <div style={{
+                                  fontSize: '12px',
+                                  fontWeight: '600',
+                                  color: stage.color === project.color ? `rgb(${project.color})` : stage.color,
+                                  marginBottom: '4px',
+                                  fontFamily: 'SF Mono, Monaco, monospace',
+                                  opacity: isActive ? 1 : 0.5,
+                                }}>
+                                  {stage.result}
+                                </div>
+                                <div style={{
+                                  fontSize: '10px',
+                                  color: 'rgba(255, 255, 255, 0.4)',
+                                  opacity: isActive ? 1 : 0.5,
+                                }}>
+                                  {stage.detail}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        {/* Status Bar */}
+                        <div style={{
+                          padding: '12px 16px',
+                          borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span style={{
+                              width: '6px',
+                              height: '6px',
+                              borderRadius: '50%',
+                              background: queryPhase === 'idle' ? 'rgba(255, 255, 255, 0.3)' : '#30D158',
+                            }} />
+                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>
+                              {queryPhase === 'idle' ? 'Ready to process' :
+                               queryPhase === 'results' ? 'Complete' : 'Processing...'}
+                            </span>
+                          </div>
+                          <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.3)' }}>
+                            ~0.8s latency
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    </>
                   ) : index === 0 ? (
                     /* Full-width narrative text for Design System */
                     <div style={{
