@@ -58,8 +58,8 @@ export function GraphEdge({
     opacity = baseOpacity * 0.1; // was 0.2 - more aggressive dimming
   }
 
-  // Color - neutral gray works in both light and dark modes
-  const color = '#888888';
+  // Color - darker gray for visibility in light mode, still visible in dark mode
+  const color = '#555555';
 
   return (
     <group>
