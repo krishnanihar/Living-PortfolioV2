@@ -446,6 +446,12 @@ export function PsoriAssistPhoneMockup() {
               }
             }}
             onDragEnd={activeScreen === 'home' ? handlePullDragEnd : handleDragEnd}
+            onWheel={(e) => {
+              e.stopPropagation();
+              if (screenContainerRef.current) {
+                screenContainerRef.current.scrollTop += e.deltaY;
+              }
+            }}
             style={{
               position: 'absolute',
               inset: '54px 0 0 0',
