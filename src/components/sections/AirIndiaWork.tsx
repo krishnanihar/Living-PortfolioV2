@@ -443,6 +443,9 @@ const narrativeTransitions = {
 // =============================================================================
 
 export function AirIndiaWork() {
+  // Air India brand color (RGB: 218, 14, 41 = #DA0E29)
+  const brandRgb = '218, 14, 41';
+
   const [inView, setInView] = useState(true);
   const [hoveredAward, setHoveredAward] = useState<string | null>(null);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
@@ -1182,28 +1185,6 @@ export function AirIndiaWork() {
         zIndex: 1,
         overflow: 'visible',
       }}>
-        <div style={{
-          textAlign: 'center',
-          marginBottom: 'clamp(3rem, 6vh, 5rem)',
-          animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both' : 'none',
-        }}>
-          <h2 style={{
-            fontSize: 'clamp(2rem, 5vw, 3rem)',
-            fontWeight: '500',
-            letterSpacing: '-0.03em',
-            marginBottom: '1.25rem',
-            color: 'var(--text-primary)',
-          }}>
-            What I Built
-          </h2>
-          <p style={{
-            fontSize: '1.125rem',
-            color: 'var(--text-tertiary)',
-          }}>
-            10 projects shipped during the transformation
-          </p>
-        </div>
-
         {/* Full-Screen Project Sections */}
         <div style={{
           width: '100%',
@@ -4360,6 +4341,676 @@ export function AirIndiaWork() {
                       }}
                     >
                       {index === 0 ? renderDesignSystemDemo() : renderPixelRadarDemo()}
+
+                      {/* External Play Button - Air India branded glassmorphism style */}
+                      {index === 0 && (
+                        <div style={{
+                          marginTop: '2rem',
+                          display: 'flex',
+                          justifyContent: 'center',
+                        }}>
+                          <button
+                            onClick={playCascadeAnimation}
+                            disabled={figmaCascadePhase === 'playing'}
+                            style={{
+                              padding: '14px 28px',
+                              borderRadius: '14px',
+                              background: figmaCascadePhase === 'playing'
+                                ? 'var(--glass-08)'
+                                : `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-08))`,
+                              border: `1px solid rgba(${brandRgb}, 0.25)`,
+                              backdropFilter: 'blur(20px)',
+                              WebkitBackdropFilter: 'blur(20px)',
+                              color: figmaCascadePhase === 'playing' ? 'var(--text-40)' : 'var(--text-80)',
+                              fontSize: '0.875rem',
+                              fontWeight: 500,
+                              letterSpacing: '0.02em',
+                              cursor: figmaCascadePhase === 'playing' ? 'not-allowed' : 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '10px',
+                              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                              opacity: figmaCascadePhase === 'playing' ? 0.7 : 1,
+                              boxShadow: figmaCascadePhase === 'playing'
+                                ? 'none'
+                                : `0 8px 32px rgba(${brandRgb}, 0.12)`,
+                            }}
+                          >
+                            {figmaCascadePhase === 'playing' ? (
+                              <div style={{
+                                width: '16px',
+                                height: '16px',
+                                borderRadius: '50%',
+                                border: '2px solid var(--text-20)',
+                                borderTopColor: `rgb(${brandRgb})`,
+                                animation: 'spin 0.8s linear infinite',
+                              }} />
+                            ) : (
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M4 2.5v11l9-5.5L4 2.5z"/>
+                              </svg>
+                            )}
+                            <span>{figmaCascadePhase === 'playing' ? 'Running Demo...' : 'Play Token Cascade'}</span>
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Token Cascade Visualizations - Animated diagrams showing token flow */}
+                      {index === 0 && (
+                        <div style={{ marginTop: '4rem', display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+
+                          {/* ====== VISUALIZATION 1: Token Flow Diagram ====== */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              gap: '2rem',
+                            }}
+                          >
+                            {/* Section Label */}
+                            <div style={{
+                              fontSize: '0.7rem',
+                              fontWeight: 600,
+                              letterSpacing: '0.15em',
+                              textTransform: 'uppercase',
+                              color: 'var(--text-40)',
+                            }}>
+                              How Tokens Cascade
+                            </div>
+
+                            {/* Flow Diagram Container */}
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '0',
+                              flexWrap: 'wrap',
+                              width: '100%',
+                              maxWidth: '900px',
+                            }}>
+                              {/* Component Card (Left) - APT Component Token */}
+                              <motion.div
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6, delay: 0.2 }}
+                                style={{
+                                  background: 'var(--glass-06)',
+                                  border: `1px solid rgba(${brandRgb}, 0.2)`,
+                                  borderRadius: '16px',
+                                  padding: '1.25rem',
+                                  minWidth: '180px',
+                                  position: 'relative',
+                                  backdropFilter: 'blur(20px)',
+                                }}
+                              >
+                                <div style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '0.5rem',
+                                  marginBottom: '0.75rem',
+                                }}>
+                                  <span style={{
+                                    background: `rgba(${brandRgb}, 0.15)`,
+                                    color: 'var(--text-70)',
+                                    fontSize: '0.65rem',
+                                    padding: '0.2rem 0.5rem',
+                                    borderRadius: '10px',
+                                    fontWeight: 500,
+                                  }}>③</span>
+                                  <span style={{ fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.1em', color: 'var(--text-50)' }}>COMPONENT TOKEN</span>
+                                </div>
+                                <div style={{
+                                  background: 'var(--glass-04)',
+                                  border: '1px solid var(--glass-08)',
+                                  borderRadius: '8px',
+                                  padding: '0.75rem',
+                                  marginBottom: '0.75rem',
+                                }}>
+                                  <div style={{ fontSize: '0.8rem', color: 'var(--text-90)', fontWeight: 500 }}>button-secondary</div>
+                                  <div style={{ fontSize: '0.7rem', color: 'var(--text-40)', marginTop: '0.25rem' }}>background-default</div>
+                                </div>
+                                <div style={{
+                                  background: `rgba(${brandRgb}, 0.15)`,
+                                  border: `1px solid rgba(${brandRgb}, 0.3)`,
+                                  color: 'var(--text-80)',
+                                  fontSize: '0.7rem',
+                                  fontWeight: 500,
+                                  padding: '0.4rem 0.75rem',
+                                  borderRadius: '6px',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '0.35rem',
+                                }}>
+                                  <span style={{ fontSize: '0.9rem' }}>+</span>
+                                  Button
+                                </div>
+                              </motion.div>
+
+                              {/* Connection Line 1 - Air India red */}
+                              <svg width="60" height="80" style={{ overflow: 'visible', flexShrink: 0 }}>
+                                <defs>
+                                  <filter id="lineGlow1" x="-50%" y="-50%" width="200%" height="200%">
+                                    <feGaussianBlur stdDeviation="2" result="blur" />
+                                    <feMerge>
+                                      <feMergeNode in="blur" />
+                                      <feMergeNode in="SourceGraphic" />
+                                    </feMerge>
+                                  </filter>
+                                </defs>
+                                <path
+                                  d="M0 40 C30 40, 30 20, 60 20"
+                                  stroke={`rgba(${brandRgb}, 0.5)`}
+                                  strokeWidth="1.5"
+                                  fill="none"
+                                  strokeDasharray="4 3"
+                                  style={{ animation: 'flowLine 1.5s linear infinite' }}
+                                  filter="url(#lineGlow1)"
+                                />
+                                <circle cx="60" cy="20" r="4" fill={`rgb(${brandRgb})`} style={{ animation: 'statusPulse 2s ease-in-out infinite' }} />
+                              </svg>
+
+                              {/* Semantic Token Card (Middle) */}
+                              <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6, delay: 0.4 }}
+                                style={{
+                                  background: 'var(--glass-06)',
+                                  border: `1px solid rgba(${brandRgb}, 0.25)`,
+                                  borderRadius: '16px',
+                                  padding: '1.25rem',
+                                  minWidth: '240px',
+                                  backdropFilter: 'blur(20px)',
+                                }}
+                              >
+                                <div style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '0.5rem',
+                                  marginBottom: '1rem',
+                                }}>
+                                  <span style={{
+                                    background: `rgba(${brandRgb}, 0.15)`,
+                                    color: 'var(--text-70)',
+                                    fontSize: '0.65rem',
+                                    padding: '0.2rem 0.5rem',
+                                    borderRadius: '10px',
+                                    fontWeight: 500,
+                                  }}>②</span>
+                                  <span style={{ fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.1em', color: 'var(--text-50)' }}>SEMANTIC TOKENS</span>
+                                </div>
+                                <div style={{
+                                  background: 'var(--glass-04)',
+                                  border: '1px solid var(--glass-08)',
+                                  borderRadius: '8px',
+                                  padding: '0.75rem',
+                                }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                    <span style={{ fontSize: '0.8rem', color: 'var(--text-90)' }}>button-secondary-bg</span>
+                                    <span style={{ fontSize: '0.75rem', color: 'var(--text-40)' }}>⚙</span>
+                                  </div>
+                                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.25rem' }}>
+                                    <span style={{ fontSize: '0.7rem', color: `rgba(${brandRgb}, 0.8)` }}>{'{white-08}'}</span>
+                                    <span style={{ fontSize: '0.7rem', color: 'var(--text-50)' }}>rgba(255,255,255,0.08)</span>
+                                  </div>
+                                </div>
+                              </motion.div>
+
+                              {/* Connection Line 2 - Air India red */}
+                              <svg width="60" height="80" style={{ overflow: 'visible', flexShrink: 0 }}>
+                                <path
+                                  d="M0 20 C30 20, 30 40, 60 40"
+                                  stroke={`rgba(${brandRgb}, 0.5)`}
+                                  strokeWidth="1.5"
+                                  fill="none"
+                                  strokeDasharray="4 3"
+                                  style={{ animation: 'flowLine 1.5s linear infinite', animationDelay: '0.5s' }}
+                                  filter="url(#lineGlow1)"
+                                />
+                                <circle cx="60" cy="40" r="4" fill={`rgb(${brandRgb})`} style={{ animation: 'statusPulse 2s ease-in-out infinite', animationDelay: '0.5s' }} />
+                              </svg>
+
+                              {/* Global Token Card (Right) */}
+                              <motion.div
+                                initial={{ opacity: 0, x: 20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6, delay: 0.6 }}
+                                style={{
+                                  background: 'var(--glass-06)',
+                                  border: '1px solid var(--glass-12)',
+                                  borderRadius: '16px',
+                                  padding: '1.25rem',
+                                  minWidth: '200px',
+                                  backdropFilter: 'blur(20px)',
+                                }}
+                              >
+                                <div style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '0.5rem',
+                                  marginBottom: '1rem',
+                                }}>
+                                  <span style={{
+                                    background: 'var(--glass-10)',
+                                    color: 'var(--text-60)',
+                                    fontSize: '0.65rem',
+                                    padding: '0.2rem 0.5rem',
+                                    borderRadius: '10px',
+                                    fontWeight: 500,
+                                  }}>①</span>
+                                  <span style={{ fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.1em', color: 'var(--text-50)' }}>GLOBAL TOKENS</span>
+                                </div>
+                                {[
+                                  { name: 'white-100', value: '#FFFFFF', color: '#FFFFFF', border: true },
+                                  { name: 'deep-night', value: '#050209', color: '#050209', border: false },
+                                  { name: 'maharaja-red', value: '#DA0E29', color: '#DA0E29', border: false },
+                                ].map((token, i) => (
+                                  <div key={i} style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    padding: '0.5rem 0.75rem',
+                                    background: 'var(--glass-04)',
+                                    border: '1px solid var(--glass-08)',
+                                    borderRadius: '6px',
+                                    marginBottom: i < 2 ? '0.5rem' : 0,
+                                  }}>
+                                    <div>
+                                      <div style={{ fontSize: '0.8rem', color: 'var(--text-90)', fontWeight: 500 }}>{token.name}</div>
+                                      <div style={{ fontSize: '0.7rem', color: 'var(--text-45)' }}>{token.value}</div>
+                                    </div>
+                                    <div style={{
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '0.5rem',
+                                    }}>
+                                      <div style={{
+                                        width: '16px',
+                                        height: '16px',
+                                        borderRadius: '50%',
+                                        background: token.color,
+                                        border: token.border ? '1px solid var(--text-15)' : 'none',
+                                        boxShadow: token.name === 'maharaja-red' ? `0 0 8px rgba(${brandRgb}, 0.4)` : 'none',
+                                      }} />
+                                      <span style={{ fontSize: '0.65rem', color: 'var(--text-40)' }}>(COLOR)</span>
+                                    </div>
+                                  </div>
+                                ))}
+                              </motion.div>
+                            </div>
+                          </motion.div>
+
+                          {/* ====== VISUALIZATION 2: Light/Dark Mode Token Resolution ====== */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              gap: '2rem',
+                            }}
+                          >
+                            {/* Section Label */}
+                            <div style={{
+                              fontSize: '0.7rem',
+                              fontWeight: 600,
+                              letterSpacing: '0.15em',
+                              textTransform: 'uppercase',
+                              color: 'var(--text-40)',
+                            }}>
+                              Mode-Aware Token Resolution
+                            </div>
+
+                            {/* Split Container - Transparent with glassmorphism */}
+                            <div style={{
+                              display: 'grid',
+                              gridTemplateColumns: '1fr auto 1fr',
+                              gap: '0',
+                              background: 'var(--glass-04)',
+                              border: '1px solid var(--glass-10)',
+                              borderRadius: '20px',
+                              overflow: 'hidden',
+                              maxWidth: '900px',
+                              width: '100%',
+                              backdropFilter: 'blur(20px)',
+                            }}>
+                              {/* Light Mode Side */}
+                              <div style={{
+                                padding: '2rem 1.5rem',
+                                position: 'relative',
+                                minHeight: '380px',
+                              }}>
+                                {/* Token Flow - Light Mode */}
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', paddingTop: '0.5rem' }}>
+                                  {/* Global Token */}
+                                  <motion.div
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.5, delay: 0.3 }}
+                                    style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                                  >
+                                    <div style={{
+                                      width: '14px',
+                                      height: '14px',
+                                      borderRadius: '50%',
+                                      background: '#050209',
+                                      border: '2px solid var(--glass-20)',
+                                    }} />
+                                    <div style={{
+                                      background: 'var(--glass-08)',
+                                      border: '1px solid var(--glass-12)',
+                                      padding: '0.4rem 0.75rem',
+                                      borderRadius: '16px',
+                                      fontSize: '0.75rem',
+                                      fontWeight: 500,
+                                      color: 'var(--text-80)',
+                                    }}>#050209</div>
+                                    <div style={{
+                                      background: 'var(--glass-06)',
+                                      border: '1px solid var(--glass-10)',
+                                      padding: '0.4rem 0.6rem',
+                                      borderRadius: '12px',
+                                      fontSize: '0.7rem',
+                                      fontWeight: 500,
+                                      color: 'var(--text-50)',
+                                    }}>8%</div>
+                                  </motion.div>
+
+                                  {/* Animated Connection Line */}
+                                  <svg width="40" height="40" style={{ overflow: 'visible' }}>
+                                    <defs>
+                                      <linearGradient id="lightLineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stopColor={`rgba(${brandRgb}, 0.3)`} />
+                                        <stop offset="100%" stopColor={`rgba(${brandRgb}, 0.6)`} />
+                                      </linearGradient>
+                                    </defs>
+                                    <line x1="20" y1="0" x2="20" y2="40" stroke="url(#lightLineGrad)" strokeWidth="2" strokeDasharray="4 3" style={{ animation: 'flowLine 1.5s linear infinite' }} />
+                                    <circle cx="20" cy="36" r="4" fill={`rgb(${brandRgb})`} style={{ animation: 'statusPulse 2s ease-in-out infinite' }} />
+                                  </svg>
+
+                                  {/* Semantic Token */}
+                                  <motion.div
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.5, delay: 0.5 }}
+                                    style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                                  >
+                                    <div style={{
+                                      width: '14px',
+                                      height: '14px',
+                                      borderRadius: '50%',
+                                      background: 'rgba(5,2,9,0.08)',
+                                      border: '1px solid var(--glass-15)',
+                                    }} />
+                                    <div style={{
+                                      background: 'var(--glass-08)',
+                                      border: `1px solid rgba(${brandRgb}, 0.2)`,
+                                      padding: '0.5rem 0.875rem',
+                                      borderRadius: '16px',
+                                      fontSize: '0.8rem',
+                                      fontWeight: 500,
+                                      color: 'var(--text-85)',
+                                    }}>deep-night-08</div>
+                                  </motion.div>
+
+                                  {/* Animated Connection Line */}
+                                  <svg width="40" height="40" style={{ overflow: 'visible' }}>
+                                    <line x1="20" y1="0" x2="20" y2="40" stroke="url(#lightLineGrad)" strokeWidth="2" strokeDasharray="4 3" style={{ animation: 'flowLine 1.5s linear infinite', animationDelay: '0.3s' }} />
+                                    <circle cx="20" cy="36" r="4" fill={`rgb(${brandRgb})`} style={{ animation: 'statusPulse 2s ease-in-out infinite', animationDelay: '0.3s' }} />
+                                  </svg>
+
+                                  {/* Component Token */}
+                                  <motion.div
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.5, delay: 0.7 }}
+                                    style={{
+                                      background: `linear-gradient(135deg, rgba(${brandRgb}, 0.08), var(--glass-08))`,
+                                      border: `1px solid rgba(${brandRgb}, 0.15)`,
+                                      padding: '0.6rem 1rem',
+                                      borderRadius: '16px',
+                                      fontSize: '0.7rem',
+                                      fontWeight: 500,
+                                      color: 'var(--text-80)',
+                                      textAlign: 'center',
+                                    }}
+                                  >
+                                    button-secondary<br />
+                                    <span style={{ color: 'var(--text-50)' }}>background-default</span>
+                                  </motion.div>
+
+                                  {/* Animated Connection Line */}
+                                  <svg width="40" height="40" style={{ overflow: 'visible' }}>
+                                    <line x1="20" y1="0" x2="20" y2="40" stroke="url(#lightLineGrad)" strokeWidth="2" strokeDasharray="4 3" style={{ animation: 'flowLine 1.5s linear infinite', animationDelay: '0.6s' }} />
+                                    <circle cx="20" cy="36" r="4" fill={`rgb(${brandRgb})`} style={{ animation: 'statusPulse 2s ease-in-out infinite', animationDelay: '0.6s' }} />
+                                  </svg>
+
+                                  {/* Final Button Component */}
+                                  <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.5, delay: 0.9 }}
+                                    style={{
+                                      background: 'rgba(5,2,9,0.08)',
+                                      border: '1px solid var(--glass-12)',
+                                      padding: '0.6rem 1.25rem',
+                                      borderRadius: '10px',
+                                      fontSize: '0.8rem',
+                                      fontWeight: 500,
+                                      color: 'var(--text-90)',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '0.5rem',
+                                    }}
+                                  >
+                                    <span style={{ fontSize: '1rem' }}>+</span>
+                                    Button
+                                  </motion.div>
+                                </div>
+
+                                {/* Mode Label */}
+                                <div style={{
+                                  position: 'absolute',
+                                  bottom: '1rem',
+                                  left: '1.5rem',
+                                  fontSize: '0.7rem',
+                                  fontWeight: 600,
+                                  letterSpacing: '0.1em',
+                                  color: 'var(--text-35)',
+                                  textTransform: 'uppercase',
+                                }}>Light Mode</div>
+                              </div>
+
+                              {/* Center Divider */}
+                              <div style={{
+                                width: '1px',
+                                background: `linear-gradient(180deg, transparent 0%, rgba(${brandRgb}, 0.3) 20%, rgba(${brandRgb}, 0.3) 80%, transparent 100%)`,
+                                position: 'relative',
+                              }}>
+                                {/* Divider Node */}
+                                <div style={{
+                                  position: 'absolute',
+                                  top: '50%',
+                                  left: '50%',
+                                  transform: 'translate(-50%, -50%)',
+                                  width: '8px',
+                                  height: '8px',
+                                  borderRadius: '50%',
+                                  background: `rgb(${brandRgb})`,
+                                  boxShadow: `0 0 12px rgba(${brandRgb}, 0.5)`,
+                                }} />
+                              </div>
+
+                              {/* Dark Mode Side */}
+                              <div style={{
+                                padding: '2rem 1.5rem',
+                                position: 'relative',
+                                minHeight: '380px',
+                              }}>
+                                {/* Token Flow - Dark Mode */}
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', paddingTop: '0.5rem' }}>
+                                  {/* Global Token */}
+                                  <motion.div
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.5, delay: 0.35 }}
+                                    style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                                  >
+                                    <div style={{
+                                      width: '14px',
+                                      height: '14px',
+                                      borderRadius: '50%',
+                                      background: '#FFFFFF',
+                                      border: '2px solid var(--glass-20)',
+                                    }} />
+                                    <div style={{
+                                      background: 'var(--glass-08)',
+                                      border: '1px solid var(--glass-12)',
+                                      padding: '0.4rem 0.75rem',
+                                      borderRadius: '16px',
+                                      fontSize: '0.75rem',
+                                      fontWeight: 500,
+                                      color: 'var(--text-80)',
+                                    }}>#FFFFFF</div>
+                                    <div style={{
+                                      background: 'var(--glass-06)',
+                                      border: '1px solid var(--glass-10)',
+                                      padding: '0.4rem 0.6rem',
+                                      borderRadius: '12px',
+                                      fontSize: '0.7rem',
+                                      fontWeight: 500,
+                                      color: 'var(--text-50)',
+                                    }}>8%</div>
+                                  </motion.div>
+
+                                  {/* Animated Connection Line */}
+                                  <svg width="40" height="40" style={{ overflow: 'visible' }}>
+                                    <defs>
+                                      <linearGradient id="darkLineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stopColor={`rgba(${brandRgb}, 0.3)`} />
+                                        <stop offset="100%" stopColor={`rgba(${brandRgb}, 0.6)`} />
+                                      </linearGradient>
+                                    </defs>
+                                    <line x1="20" y1="0" x2="20" y2="40" stroke="url(#darkLineGrad)" strokeWidth="2" strokeDasharray="4 3" style={{ animation: 'flowLine 1.5s linear infinite', animationDelay: '0.15s' }} />
+                                    <circle cx="20" cy="36" r="4" fill={`rgb(${brandRgb})`} style={{ animation: 'statusPulse 2s ease-in-out infinite', animationDelay: '0.15s' }} />
+                                  </svg>
+
+                                  {/* Semantic Token */}
+                                  <motion.div
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.5, delay: 0.55 }}
+                                    style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                                  >
+                                    <div style={{
+                                      width: '14px',
+                                      height: '14px',
+                                      borderRadius: '50%',
+                                      background: 'rgba(255,255,255,0.08)',
+                                      border: '1px solid var(--glass-15)',
+                                    }} />
+                                    <div style={{
+                                      background: 'var(--glass-08)',
+                                      border: `1px solid rgba(${brandRgb}, 0.2)`,
+                                      padding: '0.5rem 0.875rem',
+                                      borderRadius: '16px',
+                                      fontSize: '0.8rem',
+                                      fontWeight: 500,
+                                      color: 'var(--text-85)',
+                                    }}>white-08</div>
+                                  </motion.div>
+
+                                  {/* Animated Connection Line */}
+                                  <svg width="40" height="40" style={{ overflow: 'visible' }}>
+                                    <line x1="20" y1="0" x2="20" y2="40" stroke="url(#darkLineGrad)" strokeWidth="2" strokeDasharray="4 3" style={{ animation: 'flowLine 1.5s linear infinite', animationDelay: '0.45s' }} />
+                                    <circle cx="20" cy="36" r="4" fill={`rgb(${brandRgb})`} style={{ animation: 'statusPulse 2s ease-in-out infinite', animationDelay: '0.45s' }} />
+                                  </svg>
+
+                                  {/* Component Token */}
+                                  <motion.div
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.5, delay: 0.75 }}
+                                    style={{
+                                      background: `linear-gradient(135deg, rgba(${brandRgb}, 0.08), var(--glass-08))`,
+                                      border: `1px solid rgba(${brandRgb}, 0.15)`,
+                                      padding: '0.6rem 1rem',
+                                      borderRadius: '16px',
+                                      fontSize: '0.7rem',
+                                      fontWeight: 500,
+                                      color: 'var(--text-80)',
+                                      textAlign: 'center',
+                                    }}
+                                  >
+                                    button-secondary<br />
+                                    <span style={{ color: 'var(--text-50)' }}>background-default</span>
+                                  </motion.div>
+
+                                  {/* Animated Connection Line */}
+                                  <svg width="40" height="40" style={{ overflow: 'visible' }}>
+                                    <line x1="20" y1="0" x2="20" y2="40" stroke="url(#darkLineGrad)" strokeWidth="2" strokeDasharray="4 3" style={{ animation: 'flowLine 1.5s linear infinite', animationDelay: '0.75s' }} />
+                                    <circle cx="20" cy="36" r="4" fill={`rgb(${brandRgb})`} style={{ animation: 'statusPulse 2s ease-in-out infinite', animationDelay: '0.75s' }} />
+                                  </svg>
+
+                                  {/* Final Button Component */}
+                                  <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.5, delay: 0.95 }}
+                                    style={{
+                                      background: 'rgba(255,255,255,0.08)',
+                                      border: '1px solid var(--glass-12)',
+                                      padding: '0.6rem 1.25rem',
+                                      borderRadius: '10px',
+                                      fontSize: '0.8rem',
+                                      fontWeight: 500,
+                                      color: 'var(--text-90)',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '0.5rem',
+                                    }}
+                                  >
+                                    <span style={{ fontSize: '1rem' }}>+</span>
+                                    Button
+                                  </motion.div>
+                                </div>
+
+                                {/* Mode Label */}
+                                <div style={{
+                                  position: 'absolute',
+                                  bottom: '1rem',
+                                  right: '1.5rem',
+                                  fontSize: '0.7rem',
+                                  fontWeight: 600,
+                                  letterSpacing: '0.1em',
+                                  color: 'var(--text-35)',
+                                  textTransform: 'uppercase',
+                                }}>Dark Mode</div>
+                              </div>
+                            </div>
+                          </motion.div>
+
+                        </div>
+                      )}
                     </motion.div>
                   )}
                 </section>
