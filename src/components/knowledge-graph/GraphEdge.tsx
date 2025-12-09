@@ -48,18 +48,18 @@ export function GraphEdge({
   });
 
   // Calculate opacity based on state and edge strength
-  // Thinner, more delicate appearance with lower base opacity
-  const baseOpacity = edge.strength * 0.2; // was 0.3
+  // Higher opacity for better visibility in light mode
+  const baseOpacity = edge.strength * 0.5; // increased from 0.2
   let opacity = baseOpacity;
 
   if (isHighlighted) {
-    opacity = 0.5; // was 0.6
+    opacity = 0.8; // increased from 0.5
   } else if (isDimmed) {
-    opacity = baseOpacity * 0.1; // was 0.2 - more aggressive dimming
+    opacity = baseOpacity * 0.15; // slightly increased from 0.1
   }
 
-  // Color - darker gray for visibility in light mode, still visible in dark mode
-  const color = '#555555';
+  // Color - very dark gray for visibility in both light and dark modes
+  const color = '#333333';
 
   return (
     <group>
@@ -68,9 +68,9 @@ export function GraphEdge({
         <Line
           points={points}
           color={color}
-          lineWidth={2}
+          lineWidth={4}
           transparent
-          opacity={0.3}
+          opacity={0.4}
           depthWrite={false}
         />
       )}
@@ -79,11 +79,11 @@ export function GraphEdge({
       <Line
         points={points}
         color={color}
-        lineWidth={isHighlighted ? 1.5 : 0.5}
+        lineWidth={isHighlighted ? 2 : 1}
         transparent
-        opacity={isHighlighted ? 0.6 : opacity}
+        opacity={isHighlighted ? 0.9 : opacity}
         dashed={!isHighlighted}
-        dashSize={2}
+        dashSize={3}
         gapSize={2}
       />
     </group>
