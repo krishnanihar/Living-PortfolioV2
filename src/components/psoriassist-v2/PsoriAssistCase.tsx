@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp, ExternalLink, Smartphone, Camera, Clock, Activity, Brain, Heart, Users, Zap, CheckCircle } from 'lucide-react';
 import { SnapSection } from './ui/SnapSection';
 import { ExpandableCard } from './ui/ExpandableCard';
+import { AccordionGroup, CollapsibleSection } from './ui/AccordionGroup';
+import { InteractiveSwatchPicker, InteractiveTypography } from './ui/InteractiveSwatchPicker';
 import {
   heroStats,
   genesisTimeline,
@@ -509,32 +511,20 @@ export function PsoriAssistCase() {
             15 apps analyzed using MARS-G framework
           </motion.p>
 
-          {/* Competitor Cards */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
-            gap: '1.25rem',
-            marginBottom: '2rem',
-          }}>
-            {competitors.map((app, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                whileHover={{ y: -4 }}
-                style={{
-                  padding: '1.5rem',
-                  borderRadius: 20,
-                  background: 'var(--glass-03)',
-                  border: '1px solid var(--border-primary)',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
-                  <h3 style={{ fontSize: '1.1rem', fontWeight: 500, color: 'var(--text-90)' }}>{app.name}</h3>
+          {/* Competitor Accordion Cards */}
+          <div style={{ marginBottom: '1.5rem' }}>
+            <AccordionGroup
+              columns={isMobile ? 1 : 2}
+              gap="1rem"
+              items={competitors.map((app, i) => ({
+                id: `competitor-${i}`,
+                title: app.name,
+                subtitle: app.market,
+                accentColor: app.color,
+                badge: (
                   <span style={{
-                    padding: '0.25rem 0.5rem',
-                    borderRadius: 8,
+                    padding: '0.2rem 0.5rem',
+                    borderRadius: 6,
                     background: `rgba(${app.color}, 0.15)`,
                     fontSize: '0.7rem',
                     fontWeight: 500,
@@ -542,56 +532,54 @@ export function PsoriAssistCase() {
                   }}>
                     {app.rating}
                   </span>
-                </div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-40)', marginBottom: '1rem' }}>{app.market}</div>
-
-                <div style={{ marginBottom: '1rem' }}>
-                  <div style={{ fontSize: '0.75rem', fontWeight: 500, color: 'rgb(80, 200, 120)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>Strengths</div>
-                  {app.strengths.map((s, j) => (
-                    <div key={j} style={{ fontSize: '0.8rem', color: 'var(--text-60)', paddingLeft: '1rem', position: 'relative', marginBottom: '0.25rem' }}>
-                      <span style={{ position: 'absolute', left: 0, color: 'rgb(80, 200, 120)' }}>✓</span>
-                      {s}
+                ),
+                content: (
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                    <div>
+                      <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'rgb(80, 200, 120)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        Strengths
+                      </div>
+                      {app.strengths.map((s, j) => (
+                        <div key={j} style={{ fontSize: '0.8rem', color: 'var(--text-60)', paddingLeft: '1rem', position: 'relative', marginBottom: '0.3rem' }}>
+                          <span style={{ position: 'absolute', left: 0, color: 'rgb(80, 200, 120)' }}>✓</span>
+                          {s}
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-
-                <div>
-                  <div style={{ fontSize: '0.75rem', fontWeight: 500, color: 'rgb(239, 68, 68)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>Gaps</div>
-                  {app.gaps.map((g, j) => (
-                    <div key={j} style={{ fontSize: '0.8rem', color: 'var(--text-60)', paddingLeft: '1rem', position: 'relative', marginBottom: '0.25rem' }}>
-                      <span style={{ position: 'absolute', left: 0, color: 'rgb(239, 68, 68)' }}>✗</span>
-                      {g}
+                    <div>
+                      <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'rgb(239, 68, 68)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        Gaps
+                      </div>
+                      {app.gaps.map((g, j) => (
+                        <div key={j} style={{ fontSize: '0.8rem', color: 'var(--text-60)', paddingLeft: '1rem', position: 'relative', marginBottom: '0.3rem' }}>
+                          <span style={{ position: 'absolute', left: 0, color: 'rgb(239, 68, 68)' }}>✗</span>
+                          {g}
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
+                  </div>
+                ),
+              }))}
+            />
           </div>
 
-          {/* Market Gaps Summary */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            style={{
-              padding: '1.5rem',
-              borderRadius: 20,
-              background: 'var(--glass-03)',
-              border: '1px solid var(--border-primary)',
-              textAlign: 'center',
-            }}
-          >
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 500, color: 'var(--text-80)', marginBottom: '1rem' }}>
-              Critical Market Gaps Identified
-            </h3>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
+          {/* Market Gaps Summary - Collapsible */}
+          <CollapsibleSection title="Critical Market Gaps Identified">
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap', paddingTop: '0.5rem' }}>
               {marketGaps.map((gap, i) => (
-                <div key={i} style={{ textAlign: 'center' }}>
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.1 }}
+                  style={{ textAlign: 'center' }}
+                >
                   <div style={{ fontSize: '2rem', fontWeight: 600, color: 'rgb(251, 191, 36)' }}>{gap.value}</div>
                   <div style={{ fontSize: '0.85rem', color: 'var(--text-60)', maxWidth: 150 }}>{gap.label}</div>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </motion.div>
+          </CollapsibleSection>
         </div>
       </SnapSection>
 
@@ -1363,73 +1351,46 @@ export function PsoriAssistCase() {
             WCAG AA compliant · Inter typeface · Calming color palette
           </motion.p>
 
-          {/* Color Palette */}
+          {/* Interactive Color Palette */}
           <div style={{ marginBottom: '2rem' }}>
-            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '1rem' }}>Color Palette</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: '1rem' }}>
-              {colorPalette.map((color, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: i * 0.1 }}
-                  whileHover={{ y: -4 }}
-                  style={{
-                    padding: '1rem',
-                    borderRadius: 16,
-                    background: 'var(--glass-03)',
-                    border: '1px solid var(--border-primary)',
-                  }}
-                >
-                  <div style={{
-                    width: '100%',
-                    height: 60,
-                    borderRadius: 10,
-                    backgroundColor: color.hex,
-                    marginBottom: '0.75rem',
-                    boxShadow: `0 4px 20px rgba(${color.rgb}, 0.3)`,
-                  }} />
-                  <h4 style={{ fontSize: '0.9rem', fontWeight: 500, color: color.hex, marginBottom: '0.25rem' }}>{color.name}</h4>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-50)', fontFamily: 'monospace', marginBottom: '0.25rem' }}>{color.hex}</div>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-40)' }}>WCAG: {color.contrast}</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-50)', marginTop: '0.5rem', lineHeight: 1.4 }}>{color.use}</div>
-                </motion.div>
-              ))}
-            </div>
+            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '1rem' }}>
+              Color Palette
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-40)', marginLeft: '0.75rem', fontWeight: 400 }}>
+                Click to explore
+              </span>
+            </h3>
+            <InteractiveSwatchPicker
+              colors={colorPalette.map((c, i) => ({
+                id: `color-${i}`,
+                name: c.name,
+                hex: c.hex,
+                rgb: c.rgb,
+                contrast: c.contrast,
+                use: c.use,
+              }))}
+              defaultSelectedId="color-0"
+            />
           </div>
 
-          {/* Typography */}
+          {/* Interactive Typography */}
           <div>
-            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '1rem' }}>Typography Scale</h3>
-            <div style={{
-              padding: '1.25rem',
-              borderRadius: 16,
-              background: 'var(--glass-03)',
-              border: '1px solid var(--border-primary)',
-            }}>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-40)', marginBottom: '0.75rem' }}>
-                Typeface: Inter (Google Fonts) - Optimized for digital screens
-              </div>
-              {typographyScale.map((type, i) => (
-                <div
-                  key={i}
-                  style={{
-                    padding: '0.75rem 0',
-                    borderBottom: i < typographyScale.length - 1 ? '1px solid var(--border-primary)' : 'none',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'baseline',
-                    flexWrap: 'wrap',
-                    gap: '0.5rem',
-                  }}
-                >
-                  <span style={{ fontSize: type.size, fontWeight: type.weight, color: 'var(--text-90)' }}>{type.sample}</span>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-40)', fontFamily: 'monospace' }}>
-                    {type.name}: {type.size}, {type.weight}
-                  </span>
-                </div>
-              ))}
+            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '1rem' }}>
+              Typography Scale
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-40)', marginLeft: '0.75rem', fontWeight: 400 }}>
+                Hover for specs
+              </span>
+            </h3>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-40)', marginBottom: '0.75rem' }}>
+              Typeface: Inter (Google Fonts) - Optimized for digital screens
             </div>
+            <InteractiveTypography
+              items={typographyScale.map((t) => ({
+                name: t.name,
+                sample: t.sample,
+                size: t.size,
+                weight: parseInt(String(t.weight)),
+              }))}
+            />
           </div>
         </div>
       </SnapSection>
@@ -1567,133 +1528,53 @@ export function PsoriAssistCase() {
             HIPAA-compliant · Scalable · AI/ML pipeline
           </motion.p>
 
-          {/* System Layers */}
-          <div style={{ marginBottom: '2rem' }}>
-            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '1rem' }}>System Architecture</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              {techStack.map((layer, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  style={{
-                    padding: '1rem 1.25rem',
-                    borderRadius: 14,
-                    background: 'var(--glass-03)',
-                    border: '1px solid var(--border-primary)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '1rem',
-                  }}
-                >
+          {/* System Architecture Accordion Stack */}
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '1rem' }}>
+              System Architecture
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-40)', marginLeft: '0.75rem', fontWeight: 400 }}>
+                Click layers to explore
+              </span>
+            </h3>
+            <AccordionGroup
+              items={techStack.map((layer) => ({
+                id: layer.id,
+                title: layer.title,
+                accentColor: layer.color,
+                icon: (
                   <div style={{
                     width: 10,
                     height: 10,
                     borderRadius: '50%',
                     background: `rgb(${layer.color})`,
-                    flexShrink: 0,
                   }} />
-                  <div>
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 500, color: `rgb(${layer.color})`, marginBottom: '0.125rem' }}>
-                      {layer.title}
-                    </h4>
-                    <p style={{ fontSize: '0.8rem', color: 'var(--text-50)', margin: 0 }}>{layer.description}</p>
+                ),
+                content: (
+                  <div style={{ fontSize: '0.85rem', color: 'var(--text-70)', lineHeight: 1.6 }}>
+                    {layer.description}
                   </div>
-                </motion.div>
-              ))}
-            </div>
+                ),
+              }))}
+            />
           </div>
 
-          {/* ML Models */}
-          <div style={{ marginBottom: '2rem' }}>
+          {/* ML Models - Accordion */}
+          <div style={{ marginBottom: '1.5rem' }}>
             <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '1rem' }}>AI/ML Pipeline</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', gap: '1rem' }}>
-              {mlModels.map((ml, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  style={{
-                    padding: '1.25rem',
-                    borderRadius: 16,
-                    background: 'var(--glass-03)',
-                    border: '1px solid var(--border-primary)',
-                  }}
-                >
-                  <h4 style={{ fontSize: '1rem', fontWeight: 500, color: `rgb(${ml.color})`, marginBottom: '1rem' }}>
-                    {ml.model}
-                  </h4>
-                  {ml.stages.map((stage, j) => (
-                    <div
-                      key={j}
-                      style={{
-                        fontSize: '0.8rem',
-                        color: 'var(--text-60)',
-                        paddingLeft: '1rem',
-                        position: 'relative',
-                        marginBottom: '0.4rem',
-                        fontFamily: j > 0 ? 'monospace' : 'inherit',
-                      }}
-                    >
-                      <span style={{ position: 'absolute', left: 0, color: `rgb(${ml.color})` }}>
-                        {j === ml.stages.length - 1 ? '↓' : '•'}
-                      </span>
-                      {stage}
+            <AccordionGroup
+              columns={isMobile ? 1 : 2}
+              gap="1rem"
+              items={mlModels.map((ml, i) => ({
+                id: `ml-${i}`,
+                title: ml.model,
+                subtitle: ml.performance,
+                accentColor: ml.color,
+                content: (
+                  <div>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-50)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      Pipeline Stages
                     </div>
-                  ))}
-                  <div style={{
-                    marginTop: '1rem',
-                    padding: '0.75rem',
-                    borderRadius: 10,
-                    background: 'var(--glass-05)',
-                  }}>
-                    <div style={{ fontSize: '0.7rem', fontWeight: 500, color: 'var(--text-40)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
-                      Performance
-                    </div>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--text-60)', fontFamily: 'monospace' }}>{ml.performance}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Security */}
-          <div>
-            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '1rem' }}>HIPAA Compliance</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: '1rem' }}>
-              {securityCompliance.map((sec, i) => {
-                const Icon = sec.icon;
-                return (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    style={{
-                      padding: '1.25rem',
-                      borderRadius: 16,
-                      background: 'var(--glass-03)',
-                      border: '1px solid var(--border-primary)',
-                    }}
-                  >
-                    <div style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 10,
-                      background: `rgba(${sec.color}, 0.15)`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginBottom: '0.75rem',
-                    }}>
-                      <Icon size={20} color={`rgb(${sec.color})`} />
-                    </div>
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 500, color: `rgb(${sec.color})`, marginBottom: '0.75rem' }}>
-                      {sec.category}
-                    </h4>
-                    {sec.items.map((item, j) => (
+                    {ml.stages.map((stage, j) => (
                       <div
                         key={j}
                         style={{
@@ -1701,7 +1582,65 @@ export function PsoriAssistCase() {
                           color: 'var(--text-60)',
                           paddingLeft: '1rem',
                           position: 'relative',
-                          marginBottom: '0.3rem',
+                          marginBottom: '0.4rem',
+                          fontFamily: j > 0 ? 'monospace' : 'inherit',
+                        }}
+                      >
+                        <span style={{ position: 'absolute', left: 0, color: `rgb(${ml.color})` }}>
+                          {j === ml.stages.length - 1 ? '↓' : '•'}
+                        </span>
+                        {stage}
+                      </div>
+                    ))}
+                  </div>
+                ),
+              }))}
+            />
+          </div>
+
+          {/* Security - Collapsible */}
+          <CollapsibleSection title="HIPAA Compliance" defaultOpen={false}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: '1rem', paddingTop: '0.5rem' }}>
+              {securityCompliance.map((sec, i) => {
+                const Icon = sec.icon;
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: i * 0.1 }}
+                    style={{
+                      padding: '1rem',
+                      borderRadius: 14,
+                      background: 'var(--glass-03)',
+                      border: '1px solid var(--border-primary)',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                      <div style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: 8,
+                        background: `rgba(${sec.color}, 0.15)`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                        <Icon size={16} color={`rgb(${sec.color})`} />
+                      </div>
+                      <h4 style={{ fontSize: '0.9rem', fontWeight: 500, color: `rgb(${sec.color})`, margin: 0 }}>
+                        {sec.category}
+                      </h4>
+                    </div>
+                    {sec.items.map((item, j) => (
+                      <div
+                        key={j}
+                        style={{
+                          fontSize: '0.75rem',
+                          color: 'var(--text-60)',
+                          paddingLeft: '0.75rem',
+                          position: 'relative',
+                          marginBottom: '0.25rem',
                         }}
                       >
                         <span style={{ position: 'absolute', left: 0, color: `rgb(${sec.color})` }}>✓</span>
@@ -1712,7 +1651,7 @@ export function PsoriAssistCase() {
                 );
               })}
             </div>
-          </div>
+          </CollapsibleSection>
         </div>
       </SnapSection>
 
