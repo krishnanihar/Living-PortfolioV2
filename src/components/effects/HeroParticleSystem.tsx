@@ -76,13 +76,13 @@ function HeroStarParticles({ scrollProgress, mousePosition, isDarkMode }: HeroSt
       ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
       : false;
 
-    // Theme-aware star color: white in dark mode, pure black in light mode
+    // Theme-aware star color: white in dark mode, deep blue in light mode
     const starColor = isDarkMode
       ? new THREE.Color(1.0, 1.0, 1.0)      // White for dark mode
-      : new THREE.Color(0.01, 0.01, 0.02);  // Nearly pure black for light mode
+      : new THREE.Color(0.12, 0.25, 0.69);  // Deep blue (#1E40AF) for light mode
 
-    // Larger particles in light mode for better visibility
-    const sizeMultiplier = isDarkMode ? 1.0 : 2.2;
+    // Slightly larger particles in light mode
+    const sizeMultiplier = isDarkMode ? 1.0 : 1.4;
 
     return new THREE.ShaderMaterial({
       uniforms: {

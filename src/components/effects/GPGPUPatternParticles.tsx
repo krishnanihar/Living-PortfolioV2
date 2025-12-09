@@ -150,19 +150,19 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled, isDarkMod
   // Create shader material with theme-aware dual color palettes
   const material = useMemo(() => {
     const responsiveSize = getResponsiveParticleSize();
-    // Larger particles in light mode for better visibility
-    const themeSize = isDarkMode ? responsiveSize : responsiveSize * 2.0;
+    // Slightly larger particles in light mode (vibrant colors don't need huge size)
+    const themeSize = isDarkMode ? responsiveSize : responsiveSize * 1.3;
 
     // Theme-aware color palettes
-    // Dark mode: Vibrant colors with additive blending
-    // Light mode: Near-black colors for maximum contrast on white background
+    // Dark mode: Vibrant colors with additive blending (glow effect)
+    // Light mode: Vibrant saturated colors for visual appeal on white background
     const coolPalette = isDarkMode
       ? { slow: '#1E40AF', medium: '#06B6D4', fast: '#F0F9FF' }  // Deep Blue → Cyan → Near White
-      : { slow: '#020617', medium: '#0F172A', fast: '#1E293B' }; // Slate-950 → Slate-900 → Slate-800
+      : { slow: '#1E40AF', medium: '#0EA5E9', fast: '#06B6D4' }; // Deep Blue → Sky → Cyan
 
     const warmPalette = isDarkMode
       ? { slow: '#3B82F6', medium: '#8B5CF6', fast: '#EC4899' }  // Blue → Purple → Pink
-      : { slow: '#0C0A1D', medium: '#1E1B4B', fast: '#4C1D95' }; // Near-black → Indigo-950 → Violet-900
+      : { slow: '#7C3AED', medium: '#A855F7', fast: '#EC4899' }; // Violet → Purple → Pink
 
     return new THREE.ShaderMaterial({
       uniforms: {
