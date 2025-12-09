@@ -4348,7 +4348,9 @@ export function AirIndiaWork() {
                         <div style={{
                           marginTop: '3rem',
                           display: 'flex',
-                          justifyContent: 'center',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '1rem',
                         }}>
                           <img
                             src="/images/pixel-radar-author.jpeg"
@@ -4360,6 +4362,14 @@ export function AirIndiaWork() {
                               border: '1px solid var(--glass-10)',
                             }}
                           />
+                          <p style={{
+                            fontSize: '0.875rem',
+                            color: 'var(--text-50)',
+                            fontStyle: 'italic',
+                            textAlign: 'center',
+                          }}>
+                            Featured in our magazine
+                          </p>
                         </div>
                       )}
 
