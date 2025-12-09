@@ -181,7 +181,10 @@ button {
 
   /* Background Overlay Scale - Inverted glass (blends WITH background) */
   /* Dark mode = black with opacity, Light mode = white with opacity */
+  --overlay-65: rgba(0, 0, 0, 0.65);
+  --overlay-50: rgba(0, 0, 0, 0.50);
   --overlay-45: rgba(0, 0, 0, 0.45);
+  --overlay-40: rgba(0, 0, 0, 0.40);
   --overlay-20: rgba(0, 0, 0, 0.20);
   --overlay-15: rgba(0, 0, 0, 0.15);
   --overlay-10: rgba(0, 0, 0, 0.10);
@@ -392,7 +395,10 @@ button {
   --glass-01: rgba(0, 0, 0, 0.01);
 
   /* Background Overlay Scale - Inverted (blends WITH light background) */
+  --overlay-65: rgba(255, 255, 255, 0.65);
+  --overlay-50: rgba(255, 255, 255, 0.50);
   --overlay-45: rgba(255, 255, 255, 0.45);
+  --overlay-40: rgba(255, 255, 255, 0.40);
   --overlay-20: rgba(255, 255, 255, 0.20);
   --overlay-15: rgba(255, 255, 255, 0.15);
   --overlay-10: rgba(255, 255, 255, 0.10);

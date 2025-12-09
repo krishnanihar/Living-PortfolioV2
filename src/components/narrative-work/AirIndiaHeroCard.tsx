@@ -89,7 +89,7 @@ export function AirIndiaHeroCard() {
                 height: '100%',
                 position: 'relative',
                 overflow: 'visible',
-                background: '#000',
+                background: 'var(--bg-primary)',
                 borderRadius: '24px',
                 border: '1px solid var(--border-primary)',
               }}
@@ -196,7 +196,7 @@ export function AirIndiaHeroCard() {
                     background: `linear-gradient(180deg,
                       transparent 0%,
                       transparent 70%,
-                      rgba(0, 0, 0, 0.4) 100%
+                      var(--overlay-40) 100%
                     )`,
                     pointerEvents: 'none',
                     zIndex: 4,
@@ -212,16 +212,16 @@ export function AirIndiaHeroCard() {
                     right: isMobile ? '2%' : '2%',
                     width: isMobile ? '90%' : 'clamp(340px, 32vw, 420px)',
                     zIndex: 10,
-                    background: 'rgba(10, 10, 10, 0.65)',
+                    background: `linear-gradient(135deg, var(--glass-04) 0%, var(--glass-02) 50%, var(--glass-03) 100%), var(--overlay-65)`,
                     backdropFilter: 'blur(40px) saturate(180%)',
                     WebkitBackdropFilter: 'blur(40px) saturate(180%)',
                     borderRadius: '24px',
                     border: `1px solid rgba(${brandRgb}, 0.2)`,
                     padding: isMobile ? '1.75rem' : '2.25rem',
                     boxShadow: `
-                      0 32px 64px rgba(0, 0, 0, 0.5),
-                      0 0 0 1px rgba(255, 255, 255, 0.05),
-                      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                      0 32px 64px var(--overlay-20),
+                      0 0 0 1px var(--glass-05),
+                      inset 0 1px 0 var(--glass-10),
                       0 0 80px rgba(${brandRgb}, 0.08)
                     `,
                     pointerEvents: 'auto',
