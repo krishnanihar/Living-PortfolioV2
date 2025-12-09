@@ -4424,11 +4424,7 @@ export function AirIndiaWork() {
                           </div>
 
                           {/* ====== TIER 1: FOUNDATIONS ====== */}
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
+                          <div
                             style={{
                               background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.08), var(--glass-04))` : 'var(--glass-04)',
                               border: figmaCascadePhase === 'playing' ? `1px solid rgba(${brandRgb}, 0.3)` : '1px solid var(--glass-10)',
@@ -4574,7 +4570,7 @@ export function AirIndiaWork() {
                                 )}
                               </motion.div>
                             </div>
-                          </motion.div>
+                          </div>
 
                           {/* Connection Line 1 - Multi-branch */}
                           <div style={{ display: 'flex', justifyContent: 'center', padding: '0.15rem 0' }}>
@@ -4597,11 +4593,7 @@ export function AirIndiaWork() {
                           </div>
 
                           {/* ====== TIER 2: PRIMITIVES ====== */}
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.15 }}
+                          <div
                             style={{
                               background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.06), var(--glass-04))` : 'var(--glass-04)',
                               border: '1px solid var(--glass-10)',
@@ -4694,7 +4686,7 @@ export function AirIndiaWork() {
                                 </motion.div>
                               ))}
                             </div>
-                          </motion.div>
+                          </div>
 
                           {/* Connection Line 2 */}
                           <div style={{ display: 'flex', justifyContent: 'center', padding: '0.15rem 0' }}>
@@ -4705,11 +4697,7 @@ export function AirIndiaWork() {
                           </div>
 
                           {/* ====== TIER 3: SEMANTICS ====== */}
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.3 }}
+                          <div
                             style={{
                               background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.05), var(--glass-04))` : 'var(--glass-04)',
                               border: '1px solid var(--glass-10)',
@@ -4791,7 +4779,7 @@ export function AirIndiaWork() {
                                 </motion.div>
                               ))}
                             </div>
-                          </motion.div>
+                          </div>
 
                           {/* Connection Line 3 - Fan out */}
                           <div style={{ display: 'flex', justifyContent: 'center', padding: '0.15rem 0' }}>
@@ -4808,18 +4796,14 @@ export function AirIndiaWork() {
                           </div>
 
                           {/* ====== TIER 4: COMPONENTS ====== */}
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.45 }}
+                          <div
                             style={{
-                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.04), var(--glass-04))` : 'var(--glass-04)',
+                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.05), var(--glass-04))` : 'var(--glass-04)',
                               border: '1px solid var(--glass-10)',
                               borderRadius: '16px',
                               padding: '1rem 1.25rem',
                               backdropFilter: 'blur(20px)',
-                              transition: 'all 0.4s ease 0.9s',
+                              transition: 'all 0.4s ease 0.6s',
                             }}
                           >
                             {/* Tier Label */}
@@ -4851,81 +4835,92 @@ export function AirIndiaWork() {
                               }}>Direct usage in UI</span>
                             </div>
 
-                            {/* Component Chips - Interactive */}
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                            {/* Component Cards - Enhanced with detailed content */}
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                               {[
-                                { name: 'Heading', icon: 'H', tokens: ['H1: 48px', 'H2: 40px', 'H3: 32px', 'H4: 28px'] },
-                                { name: 'Subheading', icon: 'Sh', tokens: ['Large', 'Medium', 'Small'] },
-                                { name: 'Body', icon: 'B', tokens: ['Large', 'Medium', 'Small'] },
-                                { name: 'Caption', icon: 'C', tokens: ['default', 'secondary'] },
-                                { name: 'Button', icon: 'Bt', tokens: ['primary', 'secondary', 'tertiary'] },
-                                { name: 'Overline', icon: 'O', tokens: ['brand', 'default'] },
-                                { name: 'Text', icon: 'Tx', tokens: ['default', 'secondary', 'link', 'brand'] },
-                                { name: 'Background', icon: 'Bg', tokens: ['default', 'surface', 'subtle'] },
-                                { name: 'Border', icon: 'Bd', tokens: ['default', 'subtle', 'focus'] },
-                                { name: 'Icon', icon: 'Ic', tokens: ['default', 'brand', 'interactive'] },
-                                { name: 'Feedback', icon: 'Fb', tokens: ['success', 'warning', 'critical', 'info'] },
+                                { name: 'Heading', icon: 'H', tokens: ['H1: 48px', 'H2: 40px', 'H3: 32px', 'H4: 28px'], desc: 'Primary typography hierarchy for page titles and sections', specs: [{ label: 'Font', value: 'Space Grotesk' }, { label: 'Weights', value: '600-700' }, { label: 'Line Height', value: '1.1-1.2' }], tokenRef: 'type/heading/*' },
+                                { name: 'Subheading', icon: 'Sh', tokens: ['Large: 24px', 'Medium: 20px', 'Small: 18px'], desc: 'Secondary titles and section labels', specs: [{ label: 'Font', value: 'Space Grotesk' }, { label: 'Weight', value: '500-600' }, { label: 'Letter Spacing', value: '-0.02em' }], tokenRef: 'type/subheading/*' },
+                                { name: 'Body', icon: 'B', tokens: ['Large: 18px', 'Medium: 16px', 'Small: 14px'], desc: 'Primary reading text and paragraphs', specs: [{ label: 'Font', value: 'DM Sans' }, { label: 'Weight', value: '400-500' }, { label: 'Line Height', value: '1.5-1.6' }], tokenRef: 'type/body/*' },
+                                { name: 'Caption', icon: 'C', tokens: ['Default: 12px', 'Secondary: 11px'], desc: 'Supporting text, labels, and metadata', specs: [{ label: 'Font', value: 'DM Sans' }, { label: 'Weight', value: '400' }, { label: 'Opacity', value: '60-80%' }], tokenRef: 'type/caption/*' },
+                                { name: 'Button', icon: 'Bt', tokens: ['Primary', 'Secondary', 'Tertiary', 'Ghost'], desc: 'Interactive call-to-action elements', specs: [{ label: 'Height', value: '40/48/56px' }, { label: 'Padding', value: '12px 24px' }, { label: 'Radius', value: '8px' }], tokenRef: 'color/button/*' },
+                                { name: 'Text Color', icon: 'Tx', tokens: ['Primary: 95%', 'Secondary: 70%', 'Muted: 50%', 'Brand'], desc: 'Semantic text color applications', specs: [{ label: 'Primary', value: '--text-95' }, { label: 'Secondary', value: '--text-70' }, { label: 'Link', value: 'AI Red' }], tokenRef: 'color/text/*' },
+                                { name: 'Background', icon: 'Bg', tokens: ['Default', 'Surface', 'Elevated', 'Subtle'], desc: 'Container and surface backgrounds', specs: [{ label: 'Canvas', value: '#0A0A0A' }, { label: 'Surface', value: '4-6% white' }, { label: 'Elevated', value: '8-12%' }], tokenRef: 'color/background/*' },
+                                { name: 'Border', icon: 'Bd', tokens: ['Default: 1px', 'Subtle: 0.5px', 'Focus: 2px'], desc: 'Element boundaries and separators', specs: [{ label: 'Color', value: '--glass-10' }, { label: 'Focus', value: 'AI Red' }, { label: 'Radius', value: '4-16px' }], tokenRef: 'border/*' },
+                                { name: 'Icon', icon: 'Ic', tokens: ['16px', '20px', '24px', '32px'], desc: 'Iconography sizing and colors', specs: [{ label: 'Default', value: '--text-70' }, { label: 'Brand', value: 'AI Red' }, { label: 'Stroke', value: '1.5-2px' }], tokenRef: 'icon/*' },
+                                { name: 'Feedback', icon: 'Fb', tokens: ['Success', 'Warning', 'Critical', 'Info'], desc: 'System status and validation colors', specs: [{ label: 'Success', value: '#10B981' }, { label: 'Warning', value: '#F59E0B' }, { label: 'Critical', value: '#EF4444' }], tokenRef: 'color/feedback/*' },
                               ].map((component, i) => (
                                 <motion.div
                                   key={component.name}
                                   onClick={() => setExpandedTokenCard(expandedTokenCard === `comp-${component.name}` ? null : `comp-${component.name}`)}
-                                  initial={{ opacity: 0, scale: 0.95 }}
-                                  whileInView={{ opacity: 1, scale: 1 }}
-                                  viewport={{ once: true }}
-                                  whileHover={{ scale: 1.05, background: `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-10))` }}
-                                  whileTap={{ scale: 0.95 }}
-                                  transition={{ delay: 0.45 + i * 0.03, duration: 0.25 }}
+                                  whileHover={{ scale: 1.02, boxShadow: `0 4px 20px rgba(${brandRgb}, 0.1)` }}
+                                  whileTap={{ scale: 0.98 }}
                                   style={{
-                                    background: expandedTokenCard === `comp-${component.name}` ? `linear-gradient(135deg, rgba(${brandRgb}, 0.15), var(--glass-10))` : 'var(--glass-06)',
+                                    background: expandedTokenCard === `comp-${component.name}` ? `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-08))` : 'var(--glass-06)',
                                     border: expandedTokenCard === `comp-${component.name}` ? `1px solid rgba(${brandRgb}, 0.3)` : '1px solid var(--glass-12)',
-                                    borderRadius: '8px',
-                                    padding: expandedTokenCard === `comp-${component.name}` ? '0.6rem 0.8rem' : '0.4rem 0.7rem',
+                                    borderRadius: '10px',
+                                    padding: '0.75rem 1rem',
                                     cursor: 'pointer',
-                                    transition: 'all 0.2s ease',
+                                    transition: 'all 0.3s ease',
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    gap: '0.3rem',
-                                    flex: expandedTokenCard === `comp-${component.name}` ? '1 1 calc(50% - 0.2rem)' : '0 0 auto',
-                                    minWidth: expandedTokenCard === `comp-${component.name}` ? '150px' : 'auto',
+                                    gap: '0.4rem',
+                                    flex: expandedTokenCard === `comp-${component.name}` ? '1 1 100%' : '0 0 auto',
                                   }}
                                 >
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <span style={{
-                                      width: '18px',
-                                      height: '18px',
-                                      borderRadius: '4px',
+                                      width: '20px',
+                                      height: '20px',
+                                      borderRadius: '5px',
                                       background: `rgba(${brandRgb}, 0.1)`,
                                       display: 'flex',
                                       alignItems: 'center',
                                       justifyContent: 'center',
-                                      fontSize: '0.5rem',
+                                      fontSize: '0.55rem',
                                       fontWeight: 700,
                                       color: `rgb(${brandRgb})`,
                                     }}>{component.icon}</span>
-                                    <span style={{ fontSize: '0.65rem', fontWeight: 500, color: 'var(--text-70)' }}>{component.name}</span>
+                                    <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-80)' }}>{component.name}</span>
+                                    <svg width="10" height="10" viewBox="0 0 10 10" style={{ marginLeft: 'auto', transform: expandedTokenCard === `comp-${component.name}` ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}>
+                                      <path d="M2 3L5 7L8 3" stroke="var(--text-40)" strokeWidth="1.2" fill="none" />
+                                    </svg>
                                   </div>
                                   {expandedTokenCard === `comp-${component.name}` && (
                                     <motion.div
                                       initial={{ opacity: 0 }}
                                       animate={{ opacity: 1 }}
-                                      style={{ display: 'flex', flexWrap: 'wrap', gap: '0.2rem', marginTop: '0.2rem' }}
+                                      style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.3rem', paddingTop: '0.5rem', borderTop: '1px solid var(--glass-08)' }}
                                     >
-                                      {component.tokens.map((t, idx) => (
-                                        <span key={idx} style={{
-                                          fontSize: '0.5rem',
-                                          color: 'var(--text-50)',
-                                          background: 'var(--glass-06)',
-                                          padding: '0.15rem 0.4rem',
-                                          borderRadius: '3px',
-                                          fontFamily: 'monospace',
-                                        }}>{t}</span>
-                                      ))}
+                                      <div style={{ fontSize: '0.6rem', color: 'var(--text-50)', lineHeight: 1.4 }}>{component.desc}</div>
+                                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.4rem' }}>
+                                        {component.specs.map((spec, idx) => (
+                                          <div key={idx} style={{ background: 'var(--glass-04)', padding: '0.4rem', borderRadius: '6px' }}>
+                                            <div style={{ fontSize: '0.5rem', color: 'var(--text-35)', marginBottom: '0.15rem' }}>{spec.label}</div>
+                                            <div style={{ fontSize: '0.6rem', color: `rgb(${brandRgb})`, fontFamily: 'monospace' }}>{spec.value}</div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem', marginTop: '0.2rem' }}>
+                                        {component.tokens.map((t, idx) => (
+                                          <span key={idx} style={{
+                                            fontSize: '0.5rem',
+                                            color: 'var(--text-60)',
+                                            background: 'var(--glass-06)',
+                                            padding: '0.2rem 0.5rem',
+                                            borderRadius: '4px',
+                                            fontFamily: 'monospace',
+                                          }}>{t}</span>
+                                        ))}
+                                      </div>
+                                      <div style={{ fontSize: '0.5rem', color: 'var(--text-30)', fontFamily: 'monospace', marginTop: '0.1rem' }}>
+                                        Token: {component.tokenRef}
+                                      </div>
                                     </motion.div>
                                   )}
                                 </motion.div>
                               ))}
                             </div>
-                          </motion.div>
+                          </div>
 
                           {/* Connection Line 4 - Downward converge to Atoms */}
                           <div style={{ display: 'flex', justifyContent: 'center', padding: '0.15rem 0' }}>
@@ -4941,18 +4936,14 @@ export function AirIndiaWork() {
                           </div>
 
                           {/* ====== TIER 5: ATOMS ====== */}
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.5 }}
+                          <div
                             style={{
-                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.06), var(--glass-04))` : 'var(--glass-04)',
+                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.04), var(--glass-04))` : 'var(--glass-04)',
                               border: '1px solid var(--glass-10)',
                               borderRadius: '16px',
                               padding: '1rem 1.25rem',
                               backdropFilter: 'blur(20px)',
-                              transition: 'all 0.4s ease 1s',
+                              transition: 'all 0.4s ease 0.8s',
                             }}
                           >
                             {/* Tier Label */}
@@ -4984,79 +4975,88 @@ export function AirIndiaWork() {
                               }}>Basic UI building blocks</span>
                             </div>
 
-                            {/* Atom Cards */}
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                            {/* Atom Cards - Enhanced */}
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                               {[
-                                { name: 'Button', icon: 'Bt', tokens: ['Primary', 'Secondary', 'Ghost', 'Icon-only'], desc: 'Interactive triggers' },
-                                { name: 'Input', icon: 'In', tokens: ['Text', 'Number', 'Password', 'Search'], desc: 'Data entry fields' },
-                                { name: 'Icon', icon: 'Ic', tokens: ['Navigation', 'Action', 'Status', 'Decorative'], desc: 'Visual symbols' },
-                                { name: 'Label', icon: 'Lb', tokens: ['Form', 'Tag', 'Status', 'Badge'], desc: 'Text identifiers' },
-                                { name: 'Avatar', icon: 'Av', tokens: ['User', 'Placeholder', 'Group', 'Status'], desc: 'Identity representation' },
-                                { name: 'Badge', icon: 'Bd', tokens: ['Count', 'Status', 'New', 'Dot'], desc: 'Notification indicators' },
+                                { name: 'Button', icon: 'Bt', variants: ['Primary', 'Secondary', 'Ghost', 'Icon-only'], desc: 'Core interactive triggers for all user actions across booking, navigation, and forms', specs: [{ label: 'Min Width', value: '88px' }, { label: 'Height', value: '40-56px' }, { label: 'States', value: '4 states' }], usage: 'Booking CTAs, form submissions, navigation' },
+                                { name: 'Input', icon: 'In', variants: ['Text', 'Number', 'Password', 'Search', 'Date'], desc: 'Data entry fields for passenger information, flight search, and user authentication', specs: [{ label: 'Height', value: '48px' }, { label: 'Padding', value: '12px 16px' }, { label: 'Border', value: '1px' }], usage: 'Flight search, passenger details, login' },
+                                { name: 'Icon', icon: 'Ic', variants: ['Navigation', 'Action', 'Status', 'Decorative'], desc: 'Visual symbols from Lucide icon library for UI actions and status indicators', specs: [{ label: 'Sizes', value: '16-32px' }, { label: 'Stroke', value: '1.5-2px' }, { label: 'Colors', value: '3 variants' }], usage: 'Nav icons, action buttons, status' },
+                                { name: 'Label', icon: 'Lb', variants: ['Form', 'Tag', 'Status', 'Category'], desc: 'Text identifiers for form fields, content tags, and status indicators', specs: [{ label: 'Font Size', value: '12-14px' }, { label: 'Weight', value: '500-600' }, { label: 'Case', value: 'Mixed' }], usage: 'Form labels, flight tags, badges' },
+                                { name: 'Avatar', icon: 'Av', variants: ['User', 'Placeholder', 'Group', 'Status'], desc: 'Identity representation for user profiles and passenger information', specs: [{ label: 'Sizes', value: '24-64px' }, { label: 'Shape', value: 'Circle' }, { label: 'Fallback', value: 'Initials' }], usage: 'User profiles, passenger list, crew' },
+                                { name: 'Badge', icon: 'Bd', variants: ['Count', 'Status', 'New', 'Priority'], desc: 'Notification indicators for alerts, counts, and status updates', specs: [{ label: 'Min Width', value: '18px' }, { label: 'Height', value: '18-24px' }, { label: 'Radius', value: 'Full' }], usage: 'Notifications, flight status, alerts' },
                               ].map((atom, i) => (
                                 <motion.div
                                   key={atom.name}
                                   onClick={() => setExpandedTokenCard(expandedTokenCard === `atom-${atom.name}` ? null : `atom-${atom.name}`)}
-                                  initial={{ opacity: 0, scale: 0.95 }}
-                                  whileInView={{ opacity: 1, scale: 1 }}
-                                  viewport={{ once: true }}
-                                  whileHover={{ scale: 1.05, background: `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-10))` }}
-                                  whileTap={{ scale: 0.95 }}
-                                  transition={{ delay: 0.5 + i * 0.03, duration: 0.25 }}
+                                  whileHover={{ scale: 1.02, boxShadow: `0 4px 20px rgba(${brandRgb}, 0.1)` }}
+                                  whileTap={{ scale: 0.98 }}
                                   style={{
-                                    background: expandedTokenCard === `atom-${atom.name}` ? `linear-gradient(135deg, rgba(${brandRgb}, 0.15), var(--glass-10))` : 'var(--glass-06)',
+                                    background: expandedTokenCard === `atom-${atom.name}` ? `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-08))` : 'var(--glass-06)',
                                     border: expandedTokenCard === `atom-${atom.name}` ? `1px solid rgba(${brandRgb}, 0.3)` : '1px solid var(--glass-12)',
-                                    borderRadius: '8px',
-                                    padding: expandedTokenCard === `atom-${atom.name}` ? '0.6rem 0.8rem' : '0.4rem 0.7rem',
+                                    borderRadius: '10px',
+                                    padding: '0.75rem 1rem',
                                     cursor: 'pointer',
-                                    transition: 'all 0.2s ease',
+                                    transition: 'all 0.3s ease',
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    gap: '0.3rem',
-                                    flex: expandedTokenCard === `atom-${atom.name}` ? '1 1 calc(50% - 0.2rem)' : '0 0 auto',
-                                    minWidth: expandedTokenCard === `atom-${atom.name}` ? '150px' : 'auto',
+                                    gap: '0.4rem',
+                                    flex: expandedTokenCard === `atom-${atom.name}` ? '1 1 100%' : '0 0 auto',
                                   }}
                                 >
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <span style={{
-                                      width: '18px',
-                                      height: '18px',
-                                      borderRadius: '4px',
+                                      width: '20px',
+                                      height: '20px',
+                                      borderRadius: '5px',
                                       background: `rgba(${brandRgb}, 0.1)`,
                                       display: 'flex',
                                       alignItems: 'center',
                                       justifyContent: 'center',
-                                      fontSize: '0.5rem',
+                                      fontSize: '0.55rem',
                                       fontWeight: 700,
                                       color: `rgb(${brandRgb})`,
                                     }}>{atom.icon}</span>
-                                    <span style={{ fontSize: '0.65rem', fontWeight: 500, color: 'var(--text-70)' }}>{atom.name}</span>
+                                    <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-80)' }}>{atom.name}</span>
+                                    <svg width="10" height="10" viewBox="0 0 10 10" style={{ marginLeft: 'auto', transform: expandedTokenCard === `atom-${atom.name}` ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}>
+                                      <path d="M2 3L5 7L8 3" stroke="var(--text-40)" strokeWidth="1.2" fill="none" />
+                                    </svg>
                                   </div>
                                   {expandedTokenCard === `atom-${atom.name}` && (
                                     <motion.div
                                       initial={{ opacity: 0 }}
                                       animate={{ opacity: 1 }}
-                                      style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', marginTop: '0.2rem' }}
+                                      style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.3rem', paddingTop: '0.5rem', borderTop: '1px solid var(--glass-08)' }}
                                     >
-                                      <span style={{ fontSize: '0.55rem', color: 'var(--text-40)' }}>{atom.desc}</span>
-                                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.2rem' }}>
-                                        {atom.tokens.map((t, idx) => (
+                                      <div style={{ fontSize: '0.6rem', color: 'var(--text-50)', lineHeight: 1.4 }}>{atom.desc}</div>
+                                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.4rem' }}>
+                                        {atom.specs.map((spec, idx) => (
+                                          <div key={idx} style={{ background: 'var(--glass-04)', padding: '0.4rem', borderRadius: '6px' }}>
+                                            <div style={{ fontSize: '0.5rem', color: 'var(--text-35)', marginBottom: '0.15rem' }}>{spec.label}</div>
+                                            <div style={{ fontSize: '0.6rem', color: `rgb(${brandRgb})`, fontFamily: 'monospace' }}>{spec.value}</div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem', marginTop: '0.2rem' }}>
+                                        {atom.variants.map((v, idx) => (
                                           <span key={idx} style={{
                                             fontSize: '0.5rem',
-                                            color: 'var(--text-50)',
+                                            color: 'var(--text-60)',
                                             background: 'var(--glass-06)',
-                                            padding: '0.15rem 0.4rem',
-                                            borderRadius: '3px',
+                                            padding: '0.2rem 0.5rem',
+                                            borderRadius: '4px',
                                             fontFamily: 'monospace',
-                                          }}>{t}</span>
+                                          }}>{v}</span>
                                         ))}
+                                      </div>
+                                      <div style={{ fontSize: '0.5rem', color: 'var(--text-30)', marginTop: '0.1rem' }}>
+                                        <span style={{ color: 'var(--text-40)' }}>Usage:</span> {atom.usage}
                                       </div>
                                     </motion.div>
                                   )}
                                 </motion.div>
                               ))}
                             </div>
-                          </motion.div>
+                          </div>
 
                           {/* Connection Line 5 - Branching to Molecules */}
                           <div style={{ display: 'flex', justifyContent: 'center', padding: '0.15rem 0' }}>
@@ -5073,18 +5073,14 @@ export function AirIndiaWork() {
                           </div>
 
                           {/* ====== TIER 6: MOLECULES ====== */}
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.55 }}
+                          <div
                             style={{
-                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.05), var(--glass-04))` : 'var(--glass-04)',
+                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.035), var(--glass-04))` : 'var(--glass-04)',
                               border: '1px solid var(--glass-10)',
                               borderRadius: '16px',
                               padding: '1rem 1.25rem',
                               backdropFilter: 'blur(20px)',
-                              transition: 'all 0.4s ease 1.1s',
+                              transition: 'all 0.4s ease 1s',
                             }}
                           >
                             {/* Tier Label */}
@@ -5116,84 +5112,90 @@ export function AirIndiaWork() {
                               }}>Atom combinations</span>
                             </div>
 
-                            {/* Molecule Cards */}
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                            {/* Molecule Cards - Enhanced */}
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                               {[
-                                { name: 'Search Bar', icon: 'Sb', atoms: ['Input', 'Icon', 'Button'], desc: 'Query interface' },
-                                { name: 'Form Field', icon: 'Ff', atoms: ['Label', 'Input', 'Helper'], desc: 'Data entry unit' },
-                                { name: 'Card Header', icon: 'Ch', atoms: ['Avatar', 'Title', 'Badge'], desc: 'Content identifier' },
-                                { name: 'Nav Item', icon: 'Ni', atoms: ['Icon', 'Label', 'Chevron'], desc: 'Navigation link' },
-                                { name: 'List Item', icon: 'Li', atoms: ['Checkbox', 'Content', 'Action'], desc: 'Collection unit' },
-                                { name: 'Metric Card', icon: 'Mc', atoms: ['Icon', 'Value', 'Label'], desc: 'Data display' },
+                                { name: 'Search Bar', icon: 'Sb', atoms: [{ name: 'Input', role: 'Destination entry' }, { name: 'Icon', role: 'Search indicator' }, { name: 'Button', role: 'Submit action' }], desc: 'Flight search interface enabling destination, date, and passenger input for booking flows', specs: [{ label: 'Width', value: '100%' }, { label: 'Height', value: '56px' }, { label: 'Gap', value: '8px' }], example: 'Homepage hero, flight search' },
+                                { name: 'Form Field', icon: 'Ff', atoms: [{ name: 'Label', role: 'Field identifier' }, { name: 'Input', role: 'Data entry' }, { name: 'Helper', role: 'Validation feedback' }], desc: 'Complete data entry unit with label, input, and contextual help for passenger information', specs: [{ label: 'Stack', value: 'Vertical' }, { label: 'Label Gap', value: '6px' }, { label: 'Helper Gap', value: '4px' }], example: 'Passenger details, checkout' },
+                                { name: 'Card Header', icon: 'Ch', atoms: [{ name: 'Avatar', role: 'User identity' }, { name: 'Title', role: 'Primary info' }, { name: 'Badge', role: 'Status indicator' }], desc: 'Content card identifier showing user info, flight details, or booking status', specs: [{ label: 'Height', value: '48px' }, { label: 'Avatar', value: '32px' }, { label: 'Gap', value: '12px' }], example: 'Booking cards, user profiles' },
+                                { name: 'Nav Item', icon: 'Ni', atoms: [{ name: 'Icon', role: 'Visual cue' }, { name: 'Label', role: 'Link text' }, { name: 'Chevron', role: 'Expand indicator' }], desc: 'Navigation link component for menus, sidebars, and mobile navigation', specs: [{ label: 'Height', value: '44px' }, { label: 'Padding', value: '12px 16px' }, { label: 'Icon', value: '20px' }], example: 'Main nav, mobile menu' },
+                                { name: 'List Item', icon: 'Li', atoms: [{ name: 'Checkbox', role: 'Selection' }, { name: 'Content', role: 'Item details' }, { name: 'Action', role: 'Quick action' }], desc: 'Selectable list row for flight results, passenger lists, and service selections', specs: [{ label: 'Height', value: '64-80px' }, { label: 'Padding', value: '16px' }, { label: 'Divider', value: '1px' }], example: 'Flight results, add-ons' },
+                                { name: 'Metric Card', icon: 'Mc', atoms: [{ name: 'Icon', role: 'Category symbol' }, { name: 'Value', role: 'Primary metric' }, { name: 'Label', role: 'Description' }], desc: 'Data visualization unit for stats, prices, and key information display', specs: [{ label: 'Min Width', value: '120px' }, { label: 'Padding', value: '16px' }, { label: 'Icon', value: '24px' }], example: 'Pricing, flight stats' },
                               ].map((molecule, i) => (
                                 <motion.div
                                   key={molecule.name}
                                   onClick={() => setExpandedTokenCard(expandedTokenCard === `mol-${molecule.name}` ? null : `mol-${molecule.name}`)}
-                                  initial={{ opacity: 0, scale: 0.95 }}
-                                  whileInView={{ opacity: 1, scale: 1 }}
-                                  viewport={{ once: true }}
-                                  whileHover={{ scale: 1.05, background: `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-10))` }}
-                                  whileTap={{ scale: 0.95 }}
-                                  transition={{ delay: 0.55 + i * 0.03, duration: 0.25 }}
+                                  whileHover={{ scale: 1.02, boxShadow: `0 4px 20px rgba(${brandRgb}, 0.1)` }}
+                                  whileTap={{ scale: 0.98 }}
                                   style={{
-                                    background: expandedTokenCard === `mol-${molecule.name}` ? `linear-gradient(135deg, rgba(${brandRgb}, 0.15), var(--glass-10))` : 'var(--glass-06)',
+                                    background: expandedTokenCard === `mol-${molecule.name}` ? `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-08))` : 'var(--glass-06)',
                                     border: expandedTokenCard === `mol-${molecule.name}` ? `1px solid rgba(${brandRgb}, 0.3)` : '1px solid var(--glass-12)',
-                                    borderRadius: '8px',
-                                    padding: expandedTokenCard === `mol-${molecule.name}` ? '0.6rem 0.8rem' : '0.4rem 0.7rem',
+                                    borderRadius: '10px',
+                                    padding: '0.75rem 1rem',
                                     cursor: 'pointer',
-                                    transition: 'all 0.2s ease',
+                                    transition: 'all 0.3s ease',
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    gap: '0.3rem',
-                                    flex: expandedTokenCard === `mol-${molecule.name}` ? '1 1 calc(50% - 0.2rem)' : '0 0 auto',
-                                    minWidth: expandedTokenCard === `mol-${molecule.name}` ? '150px' : 'auto',
+                                    gap: '0.4rem',
+                                    flex: expandedTokenCard === `mol-${molecule.name}` ? '1 1 100%' : '0 0 auto',
                                   }}
                                 >
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <span style={{
-                                      width: '18px',
-                                      height: '18px',
-                                      borderRadius: '4px',
+                                      width: '20px',
+                                      height: '20px',
+                                      borderRadius: '5px',
                                       background: `rgba(${brandRgb}, 0.1)`,
                                       display: 'flex',
                                       alignItems: 'center',
                                       justifyContent: 'center',
-                                      fontSize: '0.5rem',
+                                      fontSize: '0.55rem',
                                       fontWeight: 700,
                                       color: `rgb(${brandRgb})`,
                                     }}>{molecule.icon}</span>
-                                    <span style={{ fontSize: '0.65rem', fontWeight: 500, color: 'var(--text-70)' }}>{molecule.name}</span>
+                                    <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-80)' }}>{molecule.name}</span>
+                                    <svg width="10" height="10" viewBox="0 0 10 10" style={{ marginLeft: 'auto', transform: expandedTokenCard === `mol-${molecule.name}` ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}>
+                                      <path d="M2 3L5 7L8 3" stroke="var(--text-40)" strokeWidth="1.2" fill="none" />
+                                    </svg>
                                   </div>
                                   {expandedTokenCard === `mol-${molecule.name}` && (
                                     <motion.div
                                       initial={{ opacity: 0 }}
                                       animate={{ opacity: 1 }}
-                                      style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', marginTop: '0.2rem' }}
+                                      style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.3rem', paddingTop: '0.5rem', borderTop: '1px solid var(--glass-08)' }}
                                     >
-                                      <span style={{ fontSize: '0.55rem', color: 'var(--text-40)' }}>{molecule.desc}</span>
-                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', flexWrap: 'wrap' }}>
+                                      <div style={{ fontSize: '0.6rem', color: 'var(--text-50)', lineHeight: 1.4 }}>{molecule.desc}</div>
+                                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.4rem' }}>
+                                        {molecule.specs.map((spec, idx) => (
+                                          <div key={idx} style={{ background: 'var(--glass-04)', padding: '0.4rem', borderRadius: '6px' }}>
+                                            <div style={{ fontSize: '0.5rem', color: 'var(--text-35)', marginBottom: '0.15rem' }}>{spec.label}</div>
+                                            <div style={{ fontSize: '0.6rem', color: `rgb(${brandRgb})`, fontFamily: 'monospace' }}>{spec.value}</div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                      <div style={{ fontSize: '0.55rem', color: 'var(--text-40)', marginTop: '0.2rem' }}>Composition:</div>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', flexWrap: 'wrap' }}>
                                         {molecule.atoms.map((a, idx) => (
                                           <React.Fragment key={idx}>
-                                            <span style={{
-                                              fontSize: '0.5rem',
-                                              color: `rgb(${brandRgb})`,
-                                              background: `rgba(${brandRgb}, 0.1)`,
-                                              padding: '0.15rem 0.4rem',
-                                              borderRadius: '3px',
-                                              fontWeight: 500,
-                                            }}>{a}</span>
+                                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.15rem', background: `rgba(${brandRgb}, 0.08)`, padding: '0.3rem 0.5rem', borderRadius: '5px' }}>
+                                              <span style={{ fontSize: '0.55rem', color: `rgb(${brandRgb})`, fontWeight: 600 }}>{a.name}</span>
+                                              <span style={{ fontSize: '0.45rem', color: 'var(--text-40)' }}>{a.role}</span>
+                                            </div>
                                             {idx < molecule.atoms.length - 1 && (
-                                              <span style={{ fontSize: '0.5rem', color: 'var(--text-30)' }}>+</span>
+                                              <span style={{ fontSize: '0.6rem', color: 'var(--text-30)', fontWeight: 600 }}>+</span>
                                             )}
                                           </React.Fragment>
                                         ))}
+                                      </div>
+                                      <div style={{ fontSize: '0.5rem', color: 'var(--text-30)', marginTop: '0.1rem' }}>
+                                        <span style={{ color: 'var(--text-40)' }}>Example:</span> {molecule.example}
                                       </div>
                                     </motion.div>
                                   )}
                                 </motion.div>
                               ))}
                             </div>
-                          </motion.div>
+                          </div>
 
                           {/* Connection Line 6 - Tree to Organisms */}
                           <div style={{ display: 'flex', justifyContent: 'center', padding: '0.15rem 0' }}>
@@ -5209,13 +5211,9 @@ export function AirIndiaWork() {
                           </div>
 
                           {/* ====== TIER 7: ORGANISMS ====== */}
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.6 }}
+                          <div
                             style={{
-                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.04), var(--glass-04))` : 'var(--glass-04)',
+                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.03), var(--glass-04))` : 'var(--glass-04)',
                               border: '1px solid var(--glass-10)',
                               borderRadius: '16px',
                               padding: '1rem 1.25rem',
@@ -5252,84 +5250,96 @@ export function AirIndiaWork() {
                               }}>Complex UI sections</span>
                             </div>
 
-                            {/* Organism Cards */}
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                            {/* Organism Cards - Enhanced */}
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                               {[
-                                { name: 'Navigation', icon: 'Nv', molecules: ['Logo', 'Nav Items', 'User Menu'], desc: 'Site-wide nav' },
-                                { name: 'Hero Section', icon: 'Hr', molecules: ['Heading', 'CTA', 'Media'], desc: 'Landing focal' },
-                                { name: 'Footer', icon: 'Ft', molecules: ['Links', 'Social', 'Legal'], desc: 'Page terminus' },
-                                { name: 'Sidebar', icon: 'Sd', molecules: ['Profile', 'Menu', 'Actions'], desc: 'Secondary nav' },
-                                { name: 'Data Table', icon: 'Dt', molecules: ['Header', 'Rows', 'Pagination'], desc: 'Tabular data' },
-                                { name: 'Modal', icon: 'Md', molecules: ['Header', 'Content', 'Actions'], desc: 'Overlay dialog' },
+                                { name: 'Navigation', icon: 'Nv', molecules: ['Logo', 'Nav Items', 'User Menu'], desc: 'Global site navigation header with responsive behavior across all device sizes', layout: 'Flex: space-between', specs: [{ label: 'Height', value: '64px' }, { label: 'Z-Index', value: '100' }, { label: 'Position', value: 'Sticky' }], breakpoints: { desktop: '3-column', tablet: 'Hamburger', mobile: 'Bottom sheet' } },
+                                { name: 'Hero Section', icon: 'Hr', molecules: ['Heading', 'Search Form', 'Media'], desc: 'Primary landing focal point with flight search and brand imagery for homepage engagement', layout: 'Grid: 2-column', specs: [{ label: 'Min Height', value: '600px' }, { label: 'Padding', value: '80px' }, { label: 'Media', value: '50% width' }], breakpoints: { desktop: 'Side-by-side', tablet: 'Stacked', mobile: 'Compact' } },
+                                { name: 'Footer', icon: 'Ft', molecules: ['Link Groups', 'Social', 'Legal'], desc: 'Site-wide page terminus with navigation links, social media, and legal information', layout: 'Grid: 4-column', specs: [{ label: 'Padding', value: '64px 0' }, { label: 'Gap', value: '48px' }, { label: 'Border', value: 'Top 1px' }], breakpoints: { desktop: '4-column', tablet: '2-column', mobile: 'Stacked' } },
+                                { name: 'Sidebar', icon: 'Sd', molecules: ['Profile Card', 'Nav Menu', 'Actions'], desc: 'Secondary navigation panel for logged-in user dashboard and account management', layout: 'Flex: column', specs: [{ label: 'Width', value: '280px' }, { label: 'Position', value: 'Fixed' }, { label: 'Scroll', value: 'Internal' }], breakpoints: { desktop: 'Visible', tablet: 'Collapsible', mobile: 'Hidden' } },
+                                { name: 'Booking Card', icon: 'Bc', molecules: ['Flight Info', 'Price Card', 'Actions'], desc: 'Flight booking information card displaying route, timing, pricing, and selection actions', layout: 'Grid: responsive', specs: [{ label: 'Padding', value: '24px' }, { label: 'Radius', value: '16px' }, { label: 'Shadow', value: 'Level 2' }], breakpoints: { desktop: 'Horizontal', tablet: 'Compact', mobile: 'Stacked' } },
+                                { name: 'Modal', icon: 'Md', molecules: ['Header', 'Content', 'Actions'], desc: 'Overlay dialog for confirmations, forms, and focused interactions requiring user attention', layout: 'Flex: column', specs: [{ label: 'Max Width', value: '560px' }, { label: 'Padding', value: '32px' }, { label: 'Backdrop', value: '60% black' }], breakpoints: { desktop: 'Centered', tablet: 'Centered', mobile: 'Full-screen' } },
                               ].map((organism, i) => (
                                 <motion.div
                                   key={organism.name}
                                   onClick={() => setExpandedTokenCard(expandedTokenCard === `org-${organism.name}` ? null : `org-${organism.name}`)}
-                                  initial={{ opacity: 0, scale: 0.95 }}
-                                  whileInView={{ opacity: 1, scale: 1 }}
-                                  viewport={{ once: true }}
-                                  whileHover={{ scale: 1.05, background: `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-10))` }}
-                                  whileTap={{ scale: 0.95 }}
-                                  transition={{ delay: 0.6 + i * 0.03, duration: 0.25 }}
+                                  whileHover={{ scale: 1.02, boxShadow: `0 4px 20px rgba(${brandRgb}, 0.1)` }}
+                                  whileTap={{ scale: 0.98 }}
                                   style={{
-                                    background: expandedTokenCard === `org-${organism.name}` ? `linear-gradient(135deg, rgba(${brandRgb}, 0.15), var(--glass-10))` : 'var(--glass-06)',
+                                    background: expandedTokenCard === `org-${organism.name}` ? `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-08))` : 'var(--glass-06)',
                                     border: expandedTokenCard === `org-${organism.name}` ? `1px solid rgba(${brandRgb}, 0.3)` : '1px solid var(--glass-12)',
-                                    borderRadius: '8px',
-                                    padding: expandedTokenCard === `org-${organism.name}` ? '0.6rem 0.8rem' : '0.4rem 0.7rem',
+                                    borderRadius: '10px',
+                                    padding: '0.75rem 1rem',
                                     cursor: 'pointer',
-                                    transition: 'all 0.2s ease',
+                                    transition: 'all 0.3s ease',
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    gap: '0.3rem',
-                                    flex: expandedTokenCard === `org-${organism.name}` ? '1 1 calc(50% - 0.2rem)' : '0 0 auto',
-                                    minWidth: expandedTokenCard === `org-${organism.name}` ? '150px' : 'auto',
+                                    gap: '0.4rem',
+                                    flex: expandedTokenCard === `org-${organism.name}` ? '1 1 100%' : '0 0 auto',
                                   }}
                                 >
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <span style={{
-                                      width: '18px',
-                                      height: '18px',
-                                      borderRadius: '4px',
+                                      width: '20px',
+                                      height: '20px',
+                                      borderRadius: '5px',
                                       background: `rgba(${brandRgb}, 0.1)`,
                                       display: 'flex',
                                       alignItems: 'center',
                                       justifyContent: 'center',
-                                      fontSize: '0.5rem',
+                                      fontSize: '0.55rem',
                                       fontWeight: 700,
                                       color: `rgb(${brandRgb})`,
                                     }}>{organism.icon}</span>
-                                    <span style={{ fontSize: '0.65rem', fontWeight: 500, color: 'var(--text-70)' }}>{organism.name}</span>
+                                    <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-80)' }}>{organism.name}</span>
+                                    <svg width="10" height="10" viewBox="0 0 10 10" style={{ marginLeft: 'auto', transform: expandedTokenCard === `org-${organism.name}` ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}>
+                                      <path d="M2 3L5 7L8 3" stroke="var(--text-40)" strokeWidth="1.2" fill="none" />
+                                    </svg>
                                   </div>
                                   {expandedTokenCard === `org-${organism.name}` && (
                                     <motion.div
                                       initial={{ opacity: 0 }}
                                       animate={{ opacity: 1 }}
-                                      style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', marginTop: '0.2rem' }}
+                                      style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.3rem', paddingTop: '0.5rem', borderTop: '1px solid var(--glass-08)' }}
                                     >
-                                      <span style={{ fontSize: '0.55rem', color: 'var(--text-40)' }}>{organism.desc}</span>
-                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', flexWrap: 'wrap' }}>
+                                      <div style={{ fontSize: '0.6rem', color: 'var(--text-50)', lineHeight: 1.4 }}>{organism.desc}</div>
+                                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.4rem' }}>
+                                        {organism.specs.map((spec, idx) => (
+                                          <div key={idx} style={{ background: 'var(--glass-04)', padding: '0.4rem', borderRadius: '6px' }}>
+                                            <div style={{ fontSize: '0.5rem', color: 'var(--text-35)', marginBottom: '0.15rem' }}>{spec.label}</div>
+                                            <div style={{ fontSize: '0.6rem', color: `rgb(${brandRgb})`, fontFamily: 'monospace' }}>{spec.value}</div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                      <div style={{ fontSize: '0.55rem', color: 'var(--text-40)', marginTop: '0.2rem' }}>Layout: <span style={{ color: `rgb(${brandRgb})`, fontFamily: 'monospace' }}>{organism.layout}</span></div>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', flexWrap: 'wrap' }}>
                                         {organism.molecules.map((m, idx) => (
                                           <React.Fragment key={idx}>
                                             <span style={{
-                                              fontSize: '0.5rem',
+                                              fontSize: '0.55rem',
                                               color: `rgb(${brandRgb})`,
                                               background: `rgba(${brandRgb}, 0.1)`,
-                                              padding: '0.15rem 0.4rem',
-                                              borderRadius: '3px',
+                                              padding: '0.2rem 0.5rem',
+                                              borderRadius: '4px',
                                               fontWeight: 500,
                                             }}>{m}</span>
                                             {idx < organism.molecules.length - 1 && (
-                                              <span style={{ fontSize: '0.5rem', color: 'var(--text-30)' }}>+</span>
+                                              <span style={{ fontSize: '0.6rem', color: 'var(--text-30)', fontWeight: 600 }}>+</span>
                                             )}
                                           </React.Fragment>
                                         ))}
+                                      </div>
+                                      <div style={{ fontSize: '0.5rem', color: 'var(--text-35)', marginTop: '0.2rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                        <span><span style={{ color: 'var(--text-45)' }}>Desktop:</span> {organism.breakpoints.desktop}</span>
+                                        <span><span style={{ color: 'var(--text-45)' }}>Tablet:</span> {organism.breakpoints.tablet}</span>
+                                        <span><span style={{ color: 'var(--text-45)' }}>Mobile:</span> {organism.breakpoints.mobile}</span>
                                       </div>
                                     </motion.div>
                                   )}
                                 </motion.div>
                               ))}
                             </div>
-                          </motion.div>
+                          </div>
 
                           {/* Connection Line 7 - Consolidation to Templates */}
                           <div style={{ display: 'flex', justifyContent: 'center', padding: '0.15rem 0' }}>
@@ -5347,18 +5357,14 @@ export function AirIndiaWork() {
                           </div>
 
                           {/* ====== TIER 8: TEMPLATES ====== */}
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.65 }}
+                          <div
                             style={{
-                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.03), var(--glass-04))` : 'var(--glass-04)',
+                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.025), var(--glass-04))` : 'var(--glass-04)',
                               border: '1px solid var(--glass-10)',
                               borderRadius: '16px',
                               padding: '1rem 1.25rem',
                               backdropFilter: 'blur(20px)',
-                              transition: 'all 0.4s ease 1.3s',
+                              transition: 'all 0.4s ease 1.4s',
                             }}
                           >
                             {/* Tier Label */}
@@ -5390,72 +5396,80 @@ export function AirIndiaWork() {
                               }}>Page layouts & compositions</span>
                             </div>
 
-                            {/* Template Cards */}
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                            {/* Template Cards - Enhanced */}
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                               {[
-                                { name: 'Dashboard', icon: 'Db', organisms: ['Nav', 'Sidebar', 'Content Grid', 'Footer'], desc: 'Main workspace layout' },
-                                { name: 'Settings', icon: 'St', organisms: ['Nav', 'Form Sections', 'Actions'], desc: 'Configuration page' },
-                                { name: 'Profile', icon: 'Pf', organisms: ['Header', 'Content', 'Activity Feed'], desc: 'User detail view' },
-                                { name: 'List View', icon: 'Lv', organisms: ['Filters', 'Table', 'Pagination'], desc: 'Collection browser' },
+                                { name: 'Homepage', icon: 'Hp', organisms: ['Navigation', 'Hero Section', 'Featured', 'Footer'], desc: 'Primary landing page with flight search, featured destinations, and brand storytelling', grid: '12-column responsive', regions: [{ name: 'Nav', size: '64px' }, { name: 'Hero', size: '600px' }, { name: 'Content', size: 'auto' }, { name: 'Footer', size: '200px' }], responsive: 'Mobile-first with breakpoints at 768px, 1024px, 1440px' },
+                                { name: 'Booking Flow', icon: 'Bf', organisms: ['Navigation', 'Progress', 'Form Section', 'Summary'], desc: 'Multi-step flight booking wizard with passenger details, seat selection, and payment', grid: '2-column (form + summary)', regions: [{ name: 'Progress', size: '80px' }, { name: 'Form', size: '60%' }, { name: 'Summary', size: '40%' }], responsive: 'Summary collapses below form on mobile' },
+                                { name: 'My Trips', icon: 'Mt', organisms: ['Navigation', 'Sidebar', 'Trip Cards', 'Footer'], desc: 'User dashboard showing upcoming flights, past journeys, and booking management', grid: 'Sidebar + content grid', regions: [{ name: 'Sidebar', size: '280px' }, { name: 'Cards', size: 'auto' }, { name: 'Filters', size: '200px' }], responsive: 'Sidebar becomes bottom sheet on mobile' },
+                                { name: 'Flight Results', icon: 'Fr', organisms: ['Navigation', 'Filters', 'Results List', 'Pagination'], desc: 'Search results page with filtering, sorting, and flight comparison features', grid: 'Filters + list', regions: [{ name: 'Filters', size: '260px' }, { name: 'Results', size: 'auto' }, { name: 'Sort', size: '48px' }], responsive: 'Filters slide-in on mobile' },
                               ].map((template, i) => (
                                 <motion.div
                                   key={template.name}
                                   onClick={() => setExpandedTokenCard(expandedTokenCard === `tpl-${template.name}` ? null : `tpl-${template.name}`)}
-                                  initial={{ opacity: 0, scale: 0.95 }}
-                                  whileInView={{ opacity: 1, scale: 1 }}
-                                  viewport={{ once: true }}
-                                  whileHover={{ scale: 1.05, background: `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-10))` }}
-                                  whileTap={{ scale: 0.95 }}
-                                  transition={{ delay: 0.65 + i * 0.03, duration: 0.25 }}
+                                  whileHover={{ scale: 1.02, boxShadow: `0 4px 20px rgba(${brandRgb}, 0.1)` }}
+                                  whileTap={{ scale: 0.98 }}
                                   style={{
-                                    background: expandedTokenCard === `tpl-${template.name}` ? `linear-gradient(135deg, rgba(${brandRgb}, 0.15), var(--glass-10))` : 'var(--glass-06)',
+                                    background: expandedTokenCard === `tpl-${template.name}` ? `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-08))` : 'var(--glass-06)',
                                     border: expandedTokenCard === `tpl-${template.name}` ? `1px solid rgba(${brandRgb}, 0.3)` : '1px solid var(--glass-12)',
-                                    borderRadius: '8px',
-                                    padding: expandedTokenCard === `tpl-${template.name}` ? '0.6rem 0.8rem' : '0.4rem 0.7rem',
+                                    borderRadius: '10px',
+                                    padding: '0.75rem 1rem',
                                     cursor: 'pointer',
-                                    transition: 'all 0.2s ease',
+                                    transition: 'all 0.3s ease',
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    gap: '0.3rem',
-                                    flex: expandedTokenCard === `tpl-${template.name}` ? '1 1 calc(50% - 0.2rem)' : '0 0 auto',
-                                    minWidth: expandedTokenCard === `tpl-${template.name}` ? '150px' : 'auto',
+                                    gap: '0.4rem',
+                                    flex: expandedTokenCard === `tpl-${template.name}` ? '1 1 100%' : '0 0 auto',
                                   }}
                                 >
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <span style={{
-                                      width: '18px',
-                                      height: '18px',
-                                      borderRadius: '4px',
+                                      width: '20px',
+                                      height: '20px',
+                                      borderRadius: '5px',
                                       background: `rgba(${brandRgb}, 0.1)`,
                                       display: 'flex',
                                       alignItems: 'center',
                                       justifyContent: 'center',
-                                      fontSize: '0.5rem',
+                                      fontSize: '0.55rem',
                                       fontWeight: 700,
                                       color: `rgb(${brandRgb})`,
                                     }}>{template.icon}</span>
-                                    <span style={{ fontSize: '0.65rem', fontWeight: 500, color: 'var(--text-70)' }}>{template.name}</span>
+                                    <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-80)' }}>{template.name}</span>
+                                    <svg width="10" height="10" viewBox="0 0 10 10" style={{ marginLeft: 'auto', transform: expandedTokenCard === `tpl-${template.name}` ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}>
+                                      <path d="M2 3L5 7L8 3" stroke="var(--text-40)" strokeWidth="1.2" fill="none" />
+                                    </svg>
                                   </div>
                                   {expandedTokenCard === `tpl-${template.name}` && (
                                     <motion.div
                                       initial={{ opacity: 0 }}
                                       animate={{ opacity: 1 }}
-                                      style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', marginTop: '0.2rem' }}
+                                      style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.3rem', paddingTop: '0.5rem', borderTop: '1px solid var(--glass-08)' }}
                                     >
-                                      <span style={{ fontSize: '0.55rem', color: 'var(--text-40)' }}>{template.desc}</span>
-                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', flexWrap: 'wrap' }}>
+                                      <div style={{ fontSize: '0.6rem', color: 'var(--text-50)', lineHeight: 1.4 }}>{template.desc}</div>
+                                      <div style={{ fontSize: '0.55rem', color: 'var(--text-40)', marginTop: '0.1rem' }}>Grid: <span style={{ color: `rgb(${brandRgb})`, fontFamily: 'monospace' }}>{template.grid}</span></div>
+                                      <div style={{ fontSize: '0.55rem', color: 'var(--text-40)' }}>Page Regions:</div>
+                                      <div style={{ display: 'flex', gap: '0.3rem', flexWrap: 'wrap' }}>
+                                        {template.regions.map((r, idx) => (
+                                          <div key={idx} style={{ background: 'var(--glass-04)', padding: '0.3rem 0.5rem', borderRadius: '5px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.1rem' }}>
+                                            <span style={{ fontSize: '0.55rem', color: `rgb(${brandRgb})`, fontWeight: 500 }}>{r.name}</span>
+                                            <span style={{ fontSize: '0.45rem', color: 'var(--text-35)', fontFamily: 'monospace' }}>{r.size}</span>
+                                          </div>
+                                        ))}
+                                      </div>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', flexWrap: 'wrap', marginTop: '0.2rem' }}>
                                         {template.organisms.map((o, idx) => (
                                           <React.Fragment key={idx}>
                                             <span style={{
-                                              fontSize: '0.5rem',
+                                              fontSize: '0.55rem',
                                               color: `rgb(${brandRgb})`,
                                               background: `rgba(${brandRgb}, 0.1)`,
-                                              padding: '0.15rem 0.4rem',
-                                              borderRadius: '3px',
+                                              padding: '0.2rem 0.5rem',
+                                              borderRadius: '4px',
                                               fontWeight: 500,
                                             }}>{o}</span>
                                             {idx < template.organisms.length - 1 && (
-                                              <span style={{ fontSize: '0.5rem', color: 'var(--text-30)' }}>+</span>
+                                              <span style={{ fontSize: '0.6rem', color: 'var(--text-30)', fontWeight: 600 }}>+</span>
                                             )}
                                           </React.Fragment>
                                         ))}
@@ -5465,14 +5479,10 @@ export function AirIndiaWork() {
                                 </motion.div>
                               ))}
                             </div>
-                          </motion.div>
+                          </div>
 
                           {/* Token Flow Legend */}
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.6 }}
+                          <div
                             style={{
                               display: 'flex',
                               justifyContent: 'center',
@@ -5497,7 +5507,7 @@ export function AirIndiaWork() {
                               <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: `rgba(${brandRgb}, 0.1)`, border: `1px solid rgba(${brandRgb}, 0.2)` }} />
                               <span style={{ fontSize: '0.55rem', color: 'var(--text-40)' }}>Click to expand</span>
                             </div>
-                          </motion.div>
+                          </div>
 
                         </div>
                       )}
