@@ -84,6 +84,9 @@ function HeroStarParticles({ scrollProgress, mousePosition, isDarkMode }: HeroSt
     // Slightly larger particles in light mode
     const sizeMultiplier = isDarkMode ? 1.0 : 1.4;
 
+    // Alpha multiplier: higher for light mode to compensate for low base alpha (60% max)
+    const alphaMultiplier = isDarkMode ? 1.0 : 2.0;
+
     return new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
@@ -91,6 +94,7 @@ function HeroStarParticles({ scrollProgress, mousePosition, isDarkMode }: HeroSt
         scrollProgress: { value: 0 },
         color: { value: starColor },
         sizeMultiplier: { value: sizeMultiplier },
+        alphaMultiplier: { value: alphaMultiplier },
       },
       vertexShader: shimmerVertexShader,
       fragmentShader: shimmerFragmentShader,

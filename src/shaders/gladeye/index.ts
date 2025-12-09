@@ -39,6 +39,7 @@ export const shimmerFragmentShader = /* glsl */ `
 uniform float time;
 uniform vec3 color;
 uniform float scrollProgress;
+uniform float alphaMultiplier; // Theme-aware alpha (1.0 dark, 2.0 light)
 varying float vTwinklePhase;
 varying float vDepth;
 
@@ -66,8 +67,11 @@ void main() {
   // Add glow to white color for luminosity
   vec3 finalColor = color + vec3(glow);
 
-  // Apply twinkle to alpha (reduced for subtlety)
-  float finalAlpha = alpha * (0.35 + twinkle * 0.25);
+  // Apply twinkle to alpha with theme-aware multiplier
+  float finalAlpha = alpha * (0.35 + twinkle * 0.25) * alphaMultiplier;
+
+  // Clamp alpha to valid range
+  finalAlpha = clamp(finalAlpha, 0.0, 1.0);
 
   gl_FragColor = vec4(finalColor, finalAlpha);
 }

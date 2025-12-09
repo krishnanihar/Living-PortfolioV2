@@ -46,6 +46,7 @@ void main() {
 export const gpgpuFragmentShader = /* glsl */ `
 // GPGPU Pattern Particles - Fragment Shader (Single Ring with Blended Palettes)
 uniform float uTime;
+uniform float uAlphaMultiplier; // Theme-aware alpha (1.0 dark, 2.5 light)
 // Cool palette
 uniform vec3 uColorSlowCool;    // Deep Blue
 uniform vec3 uColorMediumCool;  // Cyan
@@ -101,11 +102,14 @@ void main() {
   // Add glow to color for luminosity
   vec3 finalColor = color * (1.0 + glow);
 
-  // Alpha with lifetime fade
-  float alpha = radialGradient * vLifetime * 0.95;
+  // Alpha with lifetime fade and theme-aware multiplier
+  float alpha = radialGradient * vLifetime * 0.95 * uAlphaMultiplier;
 
   // Softer depth-based fade
   alpha *= 1.0 - clamp((vDepth - 80.0) / 400.0, 0.0, 0.5);
+
+  // Clamp alpha to valid range
+  alpha = clamp(alpha, 0.0, 1.0);
 
   gl_FragColor = vec4(finalColor, alpha);
 }

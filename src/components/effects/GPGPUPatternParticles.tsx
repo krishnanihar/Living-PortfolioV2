@@ -164,11 +164,15 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled, isDarkMod
       ? { slow: '#3B82F6', medium: '#8B5CF6', fast: '#EC4899' }  // Blue → Purple → Pink
       : { slow: '#7C3AED', medium: '#A855F7', fast: '#EC4899' }; // Violet → Purple → Pink
 
+    // Alpha multiplier: higher for light mode to compensate for low base alpha
+    const alphaMultiplier = isDarkMode ? 1.0 : 2.5;
+
     return new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
         uSize: { value: themeSize },
         uScrollProgress: { value: 0 },
+        uAlphaMultiplier: { value: alphaMultiplier },
         // Cool palette
         uColorSlowCool: { value: new THREE.Color(coolPalette.slow) },
         uColorMediumCool: { value: new THREE.Color(coolPalette.medium) },
