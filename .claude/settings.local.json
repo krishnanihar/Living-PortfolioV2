@@ -1,23 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run build:*)",
-      "Bash(npm run type-check:*)",
-      "Bash(curl:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(git push:*)",
-      "Bash(git revert:*)",
-      "Bash(git checkout:*)",
-      "Bash(npm install:*)",
-      "Bash(npm uninstall:*)",
-      "Bash(cat:*)",
-      "Bash(git pull:*)",
-      "Bash(grep:*)",
-      "Bash(find:*)",
-      "Bash(ls:*)",
-      "Bash(git log:*)",
-      "Bash(claude mcp add:*)"
+      "Bash",
+      "WebSearch",
+      "WebFetch",
+      "mcp__playwright__*",
+      "mcp__context7__*",
+      "Edit",
+      "Write",
+      "Skill(frontend-design)"
     ],
     "deny": [],
     "ask": []

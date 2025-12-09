@@ -73,9 +73,13 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
     // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Check if home page for controlled snap behavior (reactive to route changes)
+    // Check if page needs controlled snap behavior (reactive to route changes)
     const isHomePage = pathname === '/';
-    const sectionCount = 8; // Hero, Philosophy, Air India, PsoriAssist, Metamorphic, Latent Space, View All, About
+
+    const useControlledSnap = isHomePage; // Only home page uses controlled snap
+
+    // Section counts for snap pages
+    const sectionCount = isHomePage ? 8 : 1;
 
     // Initialize Lenis with premium smooth scroll settings
     const lenis = new Lenis({
@@ -85,13 +89,13 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
 
       // THE FIX: virtualScroll returning false COMPLETELY disables Lenis wheel processing
       // wheelMultiplier: 0 only multiplies delta by 0, but Lenis still processes events internally
-      // This ensures our custom handler has FULL control on home page
-      virtualScroll: () => !isHomePage, // false on home page = Lenis ignores ALL wheel/touch events
+      // This ensures our custom handler has FULL control on snap scroll pages
+      virtualScroll: () => !useControlledSnap, // false on snap pages = Lenis ignores ALL wheel/touch events
 
-      wheelMultiplier: isHomePage ? 0 : 0.8, // Keep for safety
-      touchMultiplier: isHomePage ? 0 : 1.5,
+      wheelMultiplier: useControlledSnap ? 0 : 0.8, // Keep for safety
+      touchMultiplier: useControlledSnap ? 0 : 1.5,
       smoothWheel: !prefersReducedMotion,
-      syncTouch: !isHomePage,
+      syncTouch: !useControlledSnap,
       syncTouchLerp: 0.1,
       orientation: 'vertical',
       gestureOrientation: 'vertical',
@@ -105,7 +109,7 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
     let touchStartHandler: ((e: TouchEvent) => void) | null = null;
     let touchEndHandler: ((e: TouchEvent) => void) | null = null;
 
-    if (isHomePage && !prefersReducedMotion) {
+    if (useControlledSnap && !prefersReducedMotion) {
       const vh = window.innerHeight;
       const SWIPE_THRESHOLD = 50; // Minimum swipe distance to trigger
       // ABSOLUTE LOCKOUT: Ignore ALL scroll input for this duration after triggering a scroll
