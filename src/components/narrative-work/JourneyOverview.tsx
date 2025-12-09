@@ -101,7 +101,7 @@ export function JourneyOverview() {
             fontWeight: '300',
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
-            color: 'rgba(255, 255, 255, 0.6)',
+            color: 'var(--text-60)',
             marginBottom: '1rem',
           }}
           initial={{ opacity: 0, y: 20 }}
@@ -115,7 +115,7 @@ export function JourneyOverview() {
           style={{
             fontSize: 'clamp(1.875rem, 4vw, 2.25rem)',
             fontWeight: '200',
-            color: 'rgba(255, 255, 255, 0.9)',
+            color: 'var(--text-90)',
             marginBottom: '1rem',
           }}
           initial={{ opacity: 0, y: 20 }}
@@ -127,7 +127,7 @@ export function JourneyOverview() {
         </motion.h2>
         <motion.p
           style={{
-            color: 'rgba(255, 255, 255, 0.6)',
+            color: 'var(--text-60)',
             maxWidth: '42rem',
             marginLeft: 'auto',
             marginRight: 'auto',
@@ -182,9 +182,9 @@ export function JourneyOverview() {
                       transition: 'all 500ms ease',
                       background: isHovered
                         ? `${act.color.replace('0.8', '0.04')}`
-                        : 'rgba(255, 255, 255, 0.02)',
+                        : 'var(--glass-02)',
                       backdropFilter: 'blur(40px)',
-                      border: `1px solid ${isHovered ? act.color.replace('0.8', '0.15') : 'rgba(255, 255, 255, 0.06)'}`,
+                      border: `1px solid ${isHovered ? act.color.replace('0.8', '0.15') : 'var(--text-06)'}`,
                       transform: isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
                     }}
                   >
@@ -209,7 +209,7 @@ export function JourneyOverview() {
                         <Icon
                           size={64}
                           style={{
-                            color: 'rgba(255, 255, 255, 0.7)',
+                            color: 'var(--text-70)',
                             filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2))',
                           }}
                         />
@@ -223,7 +223,7 @@ export function JourneyOverview() {
                         fontWeight: '300',
                         marginBottom: '0.75rem',
                         transition: 'color 500ms ease',
-                        color: isHovered ? act.color : 'rgba(255, 255, 255, 0.9)',
+                        color: isHovered ? act.color : 'var(--text-90)',
                       }}
                     >
                       {act.title}
@@ -232,7 +232,7 @@ export function JourneyOverview() {
                     {/* Description */}
                     <p style={{
                       fontSize: '0.875rem',
-                      color: 'rgba(255, 255, 255, 0.6)',
+                      color: 'var(--text-60)',
                       marginBottom: '1.5rem',
                       lineHeight: '1.625',
                     }}>
@@ -254,7 +254,7 @@ export function JourneyOverview() {
                             gap: '0.5rem',
                             fontSize: '0.75rem',
                             transition: 'color 300ms ease',
-                            color: isHovered ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.5)',
+                            color: isHovered ? 'var(--text-70)' : 'var(--text-50)',
                           }}
                         >
                           <div
@@ -263,7 +263,7 @@ export function JourneyOverview() {
                               height: '0.25rem',
                               borderRadius: '9999px',
                               transition: 'all 300ms ease',
-                              background: isHovered ? act.color.replace('0.8', '0.6') : 'rgba(255, 255, 255, 0.3)',
+                              background: isHovered ? act.color.replace('0.8', '0.6') : 'var(--text-30)',
                               boxShadow: isHovered ? `0 0 8px ${act.color.replace('0.8', '0.3')}` : 'none',
                             }}
                           />
@@ -306,7 +306,7 @@ export function JourneyOverview() {
                         <div style={{
                           height: '1px',
                           width: '100%',
-                          background: 'linear-gradient(to right, rgba(255, 255, 255, 0.2), transparent)',
+                          background: 'linear-gradient(to right, var(--text-20), transparent)',
                         }} />
                     </div>
                   )}
@@ -320,7 +320,7 @@ export function JourneyOverview() {
           style={{
             textAlign: 'center',
             fontSize: '0.75rem',
-            color: 'rgba(255, 255, 255, 0.4)',
+            color: 'var(--text-40)',
             marginTop: '2rem',
             letterSpacing: '0.025em',
           }}

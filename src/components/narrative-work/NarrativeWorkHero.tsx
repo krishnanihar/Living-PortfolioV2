@@ -92,7 +92,7 @@ export function NarrativeWorkHero() {
               fontWeight: '300',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
-              color: 'rgba(255, 255, 255, 0.6)',
+              color: 'var(--text-60)',
               marginBottom: '2rem',
             }}
             initial={{ opacity: 0 }}
@@ -110,7 +110,7 @@ export function NarrativeWorkHero() {
               lineHeight: '1.15',
               letterSpacing: '0.02em',
               marginBottom: '2.5rem',
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.7) 100%)',
+              background: 'linear-gradient(135deg, var(--text-95) 0%, var(--text-70) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
@@ -126,7 +126,7 @@ export function NarrativeWorkHero() {
             style={{
               fontSize: 'clamp(1rem, 2vw, 1.25rem)',
               fontWeight: '300',
-              color: 'rgba(255, 255, 255, 0.7)',
+              color: 'var(--text-70)',
               maxWidth: '42rem',
               marginLeft: 'auto',
               marginRight: 'auto',
@@ -139,7 +139,7 @@ export function NarrativeWorkHero() {
           >
             4 years. 3 domains. 12+ shipped products.
             <br />
-            <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>
+            <span style={{ color: 'var(--text-50)' }}>
               Exploring the intersection of design, technology, and human experience.
             </span>
           </motion.p>
@@ -175,21 +175,21 @@ export function NarrativeWorkHero() {
                   paddingTop: '0.75rem',
                   paddingBottom: '0.75rem',
                   borderRadius: '1rem',
-                  background: 'rgba(255, 255, 255, 0.07)',
+                  background: 'var(--glass-08)',
                   backdropFilter: 'blur(20px) saturate(150%)',
                   WebkitBackdropFilter: 'blur(20px) saturate(150%)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  border: '1px solid var(--text-10)',
                   fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
                   transition: 'all 300ms ease',
                   cursor: 'default',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                  e.currentTarget.style.borderColor = 'var(--text-20)';
+                  e.currentTarget.style.background = 'var(--glass-10)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.07)';
+                  e.currentTarget.style.borderColor = 'var(--text-10)';
+                  e.currentTarget.style.background = 'var(--glass-08)';
                 }}
               >
                 {/* Logo */}
@@ -205,12 +205,12 @@ export function NarrativeWorkHero() {
                 />
 
                 {/* Organization name */}
-                <span style={{ color: 'rgba(255, 255, 255, 0.85)', fontWeight: '500', whiteSpace: 'nowrap' }}>
+                <span style={{ color: 'var(--text-85)', fontWeight: '500', whiteSpace: 'nowrap' }}>
                   {org.organization}
                 </span>
 
                 {/* Timeframe */}
-                <span style={{ color: 'rgba(255, 255, 255, 0.5)', marginLeft: 'auto', whiteSpace: 'nowrap' }}>
+                <span style={{ color: 'var(--text-50)', marginLeft: 'auto', whiteSpace: 'nowrap' }}>
                   {org.timeframe}
                 </span>
               </div>
@@ -245,7 +245,7 @@ export function NarrativeWorkHero() {
             fontSize: 'clamp(0.625rem, 1.2vw, 0.75rem)',
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
-            color: 'rgba(255, 255, 255, 0.5)',
+            color: 'var(--text-50)',
           }}
         >
           Begin Journey
@@ -260,7 +260,7 @@ export function NarrativeWorkHero() {
             ease: 'easeInOut',
           }}
         >
-          <ChevronDown size={24} style={{ color: 'rgba(255, 255, 255, 0.5)' }} />
+          <ChevronDown size={24} style={{ color: 'var(--text-50)' }} />
         </motion.div>
       </motion.div>
     </section>
