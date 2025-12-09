@@ -4927,6 +4927,546 @@ export function AirIndiaWork() {
                             </div>
                           </motion.div>
 
+                          {/* Connection Line 4 - Downward converge to Atoms */}
+                          <div style={{ display: 'flex', justifyContent: 'center', padding: '0.15rem 0' }}>
+                            <svg width="300" height="32" viewBox="0 0 300 32">
+                              {/* Fan-in lines from components to atoms */}
+                              {[-90, -45, 0, 45, 90].map((offset, i) => (
+                                <g key={i}>
+                                  <path d={`M${150 + offset} 4 Q${150 + offset * 0.5} 16 150 28`} stroke={`rgba(${brandRgb}, 0.4)`} strokeWidth="1.5" fill="none" strokeDasharray="3 2" style={{ animation: figmaCascadePhase === 'playing' ? 'flowLine 1s linear infinite' : 'none', animationDelay: `${1.0 + i * 0.05}s` }} />
+                                </g>
+                              ))}
+                              <circle cx="150" cy="28" r="3" fill={`rgb(${brandRgb})`} style={{ animation: figmaCascadePhase === 'playing' ? 'statusPulse 1.5s ease-in-out infinite' : 'none', animationDelay: '1.0s' }} />
+                            </svg>
+                          </div>
+
+                          {/* ====== TIER 5: ATOMS ====== */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.5 }}
+                            style={{
+                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.06), var(--glass-04))` : 'var(--glass-04)',
+                              border: '1px solid var(--glass-10)',
+                              borderRadius: '16px',
+                              padding: '1rem 1.25rem',
+                              backdropFilter: 'blur(20px)',
+                              transition: 'all 0.4s ease 1s',
+                            }}
+                          >
+                            {/* Tier Label */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.75rem' }}>
+                              <div style={{
+                                width: '24px',
+                                height: '24px',
+                                borderRadius: '8px',
+                                background: `rgba(${brandRgb}, 0.15)`,
+                                border: `1px solid rgba(${brandRgb}, 0.3)`,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '0.7rem',
+                                fontWeight: 700,
+                                color: `rgb(${brandRgb})`,
+                              }}>5</div>
+                              <span style={{
+                                fontSize: '0.75rem',
+                                fontWeight: 600,
+                                letterSpacing: '0.08em',
+                                color: 'var(--text-60)',
+                                textTransform: 'uppercase',
+                              }}>Atoms</span>
+                              <span style={{
+                                fontSize: '0.6rem',
+                                color: 'var(--text-30)',
+                                marginLeft: 'auto',
+                              }}>Basic UI building blocks</span>
+                            </div>
+
+                            {/* Atom Cards */}
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                              {[
+                                { name: 'Button', icon: 'Bt', tokens: ['Primary', 'Secondary', 'Ghost', 'Icon-only'], desc: 'Interactive triggers' },
+                                { name: 'Input', icon: 'In', tokens: ['Text', 'Number', 'Password', 'Search'], desc: 'Data entry fields' },
+                                { name: 'Icon', icon: 'Ic', tokens: ['Navigation', 'Action', 'Status', 'Decorative'], desc: 'Visual symbols' },
+                                { name: 'Label', icon: 'Lb', tokens: ['Form', 'Tag', 'Status', 'Badge'], desc: 'Text identifiers' },
+                                { name: 'Avatar', icon: 'Av', tokens: ['User', 'Placeholder', 'Group', 'Status'], desc: 'Identity representation' },
+                                { name: 'Badge', icon: 'Bd', tokens: ['Count', 'Status', 'New', 'Dot'], desc: 'Notification indicators' },
+                              ].map((atom, i) => (
+                                <motion.div
+                                  key={atom.name}
+                                  onClick={() => setExpandedTokenCard(expandedTokenCard === `atom-${atom.name}` ? null : `atom-${atom.name}`)}
+                                  initial={{ opacity: 0, scale: 0.95 }}
+                                  whileInView={{ opacity: 1, scale: 1 }}
+                                  viewport={{ once: true }}
+                                  whileHover={{ scale: 1.05, background: `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-10))` }}
+                                  whileTap={{ scale: 0.95 }}
+                                  transition={{ delay: 0.5 + i * 0.03, duration: 0.25 }}
+                                  style={{
+                                    background: expandedTokenCard === `atom-${atom.name}` ? `linear-gradient(135deg, rgba(${brandRgb}, 0.15), var(--glass-10))` : 'var(--glass-06)',
+                                    border: expandedTokenCard === `atom-${atom.name}` ? `1px solid rgba(${brandRgb}, 0.3)` : '1px solid var(--glass-12)',
+                                    borderRadius: '8px',
+                                    padding: expandedTokenCard === `atom-${atom.name}` ? '0.6rem 0.8rem' : '0.4rem 0.7rem',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '0.3rem',
+                                    flex: expandedTokenCard === `atom-${atom.name}` ? '1 1 calc(50% - 0.2rem)' : '0 0 auto',
+                                    minWidth: expandedTokenCard === `atom-${atom.name}` ? '150px' : 'auto',
+                                  }}
+                                >
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                    <span style={{
+                                      width: '18px',
+                                      height: '18px',
+                                      borderRadius: '4px',
+                                      background: `rgba(${brandRgb}, 0.1)`,
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      fontSize: '0.5rem',
+                                      fontWeight: 700,
+                                      color: `rgb(${brandRgb})`,
+                                    }}>{atom.icon}</span>
+                                    <span style={{ fontSize: '0.65rem', fontWeight: 500, color: 'var(--text-70)' }}>{atom.name}</span>
+                                  </div>
+                                  {expandedTokenCard === `atom-${atom.name}` && (
+                                    <motion.div
+                                      initial={{ opacity: 0 }}
+                                      animate={{ opacity: 1 }}
+                                      style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', marginTop: '0.2rem' }}
+                                    >
+                                      <span style={{ fontSize: '0.55rem', color: 'var(--text-40)' }}>{atom.desc}</span>
+                                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.2rem' }}>
+                                        {atom.tokens.map((t, idx) => (
+                                          <span key={idx} style={{
+                                            fontSize: '0.5rem',
+                                            color: 'var(--text-50)',
+                                            background: 'var(--glass-06)',
+                                            padding: '0.15rem 0.4rem',
+                                            borderRadius: '3px',
+                                            fontFamily: 'monospace',
+                                          }}>{t}</span>
+                                        ))}
+                                      </div>
+                                    </motion.div>
+                                  )}
+                                </motion.div>
+                              ))}
+                            </div>
+                          </motion.div>
+
+                          {/* Connection Line 5 - Branching to Molecules */}
+                          <div style={{ display: 'flex', justifyContent: 'center', padding: '0.15rem 0' }}>
+                            <svg width="300" height="32" viewBox="0 0 300 32">
+                              <line x1="150" y1="0" x2="150" y2="12" stroke={`rgba(${brandRgb}, 0.5)`} strokeWidth="2" strokeDasharray="4 3" style={{ animation: figmaCascadePhase === 'playing' ? 'flowLine 1s linear infinite' : 'none', animationDelay: '1.1s' }} />
+                              {/* Branch to molecules */}
+                              {[-80, -40, 0, 40, 80].map((offset, i) => (
+                                <g key={i}>
+                                  <path d={`M150 12 Q150 20 ${150 + offset} 28`} stroke={`rgba(${brandRgb}, 0.4)`} strokeWidth="1" fill="none" strokeDasharray="2 2" style={{ animation: figmaCascadePhase === 'playing' ? 'flowLine 1s linear infinite' : 'none', animationDelay: `${1.1 + i * 0.04}s` }} />
+                                  <circle cx={150 + offset} cy="28" r="2" fill={`rgb(${brandRgb})`} style={{ animation: figmaCascadePhase === 'playing' ? 'statusPulse 1.5s ease-in-out infinite' : 'none', animationDelay: `${1.1 + i * 0.04}s` }} />
+                                </g>
+                              ))}
+                            </svg>
+                          </div>
+
+                          {/* ====== TIER 6: MOLECULES ====== */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.55 }}
+                            style={{
+                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.05), var(--glass-04))` : 'var(--glass-04)',
+                              border: '1px solid var(--glass-10)',
+                              borderRadius: '16px',
+                              padding: '1rem 1.25rem',
+                              backdropFilter: 'blur(20px)',
+                              transition: 'all 0.4s ease 1.1s',
+                            }}
+                          >
+                            {/* Tier Label */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.75rem' }}>
+                              <div style={{
+                                width: '24px',
+                                height: '24px',
+                                borderRadius: '8px',
+                                background: `rgba(${brandRgb}, 0.15)`,
+                                border: `1px solid rgba(${brandRgb}, 0.3)`,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '0.7rem',
+                                fontWeight: 700,
+                                color: `rgb(${brandRgb})`,
+                              }}>6</div>
+                              <span style={{
+                                fontSize: '0.75rem',
+                                fontWeight: 600,
+                                letterSpacing: '0.08em',
+                                color: 'var(--text-60)',
+                                textTransform: 'uppercase',
+                              }}>Molecules</span>
+                              <span style={{
+                                fontSize: '0.6rem',
+                                color: 'var(--text-30)',
+                                marginLeft: 'auto',
+                              }}>Atom combinations</span>
+                            </div>
+
+                            {/* Molecule Cards */}
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                              {[
+                                { name: 'Search Bar', icon: 'Sb', atoms: ['Input', 'Icon', 'Button'], desc: 'Query interface' },
+                                { name: 'Form Field', icon: 'Ff', atoms: ['Label', 'Input', 'Helper'], desc: 'Data entry unit' },
+                                { name: 'Card Header', icon: 'Ch', atoms: ['Avatar', 'Title', 'Badge'], desc: 'Content identifier' },
+                                { name: 'Nav Item', icon: 'Ni', atoms: ['Icon', 'Label', 'Chevron'], desc: 'Navigation link' },
+                                { name: 'List Item', icon: 'Li', atoms: ['Checkbox', 'Content', 'Action'], desc: 'Collection unit' },
+                                { name: 'Metric Card', icon: 'Mc', atoms: ['Icon', 'Value', 'Label'], desc: 'Data display' },
+                              ].map((molecule, i) => (
+                                <motion.div
+                                  key={molecule.name}
+                                  onClick={() => setExpandedTokenCard(expandedTokenCard === `mol-${molecule.name}` ? null : `mol-${molecule.name}`)}
+                                  initial={{ opacity: 0, scale: 0.95 }}
+                                  whileInView={{ opacity: 1, scale: 1 }}
+                                  viewport={{ once: true }}
+                                  whileHover={{ scale: 1.05, background: `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-10))` }}
+                                  whileTap={{ scale: 0.95 }}
+                                  transition={{ delay: 0.55 + i * 0.03, duration: 0.25 }}
+                                  style={{
+                                    background: expandedTokenCard === `mol-${molecule.name}` ? `linear-gradient(135deg, rgba(${brandRgb}, 0.15), var(--glass-10))` : 'var(--glass-06)',
+                                    border: expandedTokenCard === `mol-${molecule.name}` ? `1px solid rgba(${brandRgb}, 0.3)` : '1px solid var(--glass-12)',
+                                    borderRadius: '8px',
+                                    padding: expandedTokenCard === `mol-${molecule.name}` ? '0.6rem 0.8rem' : '0.4rem 0.7rem',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '0.3rem',
+                                    flex: expandedTokenCard === `mol-${molecule.name}` ? '1 1 calc(50% - 0.2rem)' : '0 0 auto',
+                                    minWidth: expandedTokenCard === `mol-${molecule.name}` ? '150px' : 'auto',
+                                  }}
+                                >
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                    <span style={{
+                                      width: '18px',
+                                      height: '18px',
+                                      borderRadius: '4px',
+                                      background: `rgba(${brandRgb}, 0.1)`,
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      fontSize: '0.5rem',
+                                      fontWeight: 700,
+                                      color: `rgb(${brandRgb})`,
+                                    }}>{molecule.icon}</span>
+                                    <span style={{ fontSize: '0.65rem', fontWeight: 500, color: 'var(--text-70)' }}>{molecule.name}</span>
+                                  </div>
+                                  {expandedTokenCard === `mol-${molecule.name}` && (
+                                    <motion.div
+                                      initial={{ opacity: 0 }}
+                                      animate={{ opacity: 1 }}
+                                      style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', marginTop: '0.2rem' }}
+                                    >
+                                      <span style={{ fontSize: '0.55rem', color: 'var(--text-40)' }}>{molecule.desc}</span>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', flexWrap: 'wrap' }}>
+                                        {molecule.atoms.map((a, idx) => (
+                                          <React.Fragment key={idx}>
+                                            <span style={{
+                                              fontSize: '0.5rem',
+                                              color: `rgb(${brandRgb})`,
+                                              background: `rgba(${brandRgb}, 0.1)`,
+                                              padding: '0.15rem 0.4rem',
+                                              borderRadius: '3px',
+                                              fontWeight: 500,
+                                            }}>{a}</span>
+                                            {idx < molecule.atoms.length - 1 && (
+                                              <span style={{ fontSize: '0.5rem', color: 'var(--text-30)' }}>+</span>
+                                            )}
+                                          </React.Fragment>
+                                        ))}
+                                      </div>
+                                    </motion.div>
+                                  )}
+                                </motion.div>
+                              ))}
+                            </div>
+                          </motion.div>
+
+                          {/* Connection Line 6 - Tree to Organisms */}
+                          <div style={{ display: 'flex', justifyContent: 'center', padding: '0.15rem 0' }}>
+                            <svg width="300" height="32" viewBox="0 0 300 32">
+                              {/* Multiple inputs converging */}
+                              {[-60, -30, 0, 30, 60].map((offset, i) => (
+                                <g key={i}>
+                                  <path d={`M${150 + offset * 1.5} 4 Q${150 + offset} 16 ${150 + offset * 0.6} 28`} stroke={`rgba(${brandRgb}, 0.35)`} strokeWidth="1" fill="none" strokeDasharray="2 2" style={{ animation: figmaCascadePhase === 'playing' ? 'flowLine 1s linear infinite' : 'none', animationDelay: `${1.2 + i * 0.04}s` }} />
+                                  <circle cx={150 + offset * 0.6} cy="28" r="1.5" fill={`rgb(${brandRgb})`} style={{ animation: figmaCascadePhase === 'playing' ? 'statusPulse 1.5s ease-in-out infinite' : 'none', animationDelay: `${1.2 + i * 0.04}s` }} />
+                                </g>
+                              ))}
+                            </svg>
+                          </div>
+
+                          {/* ====== TIER 7: ORGANISMS ====== */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.6 }}
+                            style={{
+                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.04), var(--glass-04))` : 'var(--glass-04)',
+                              border: '1px solid var(--glass-10)',
+                              borderRadius: '16px',
+                              padding: '1rem 1.25rem',
+                              backdropFilter: 'blur(20px)',
+                              transition: 'all 0.4s ease 1.2s',
+                            }}
+                          >
+                            {/* Tier Label */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.75rem' }}>
+                              <div style={{
+                                width: '24px',
+                                height: '24px',
+                                borderRadius: '8px',
+                                background: `rgba(${brandRgb}, 0.15)`,
+                                border: `1px solid rgba(${brandRgb}, 0.3)`,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '0.7rem',
+                                fontWeight: 700,
+                                color: `rgb(${brandRgb})`,
+                              }}>7</div>
+                              <span style={{
+                                fontSize: '0.75rem',
+                                fontWeight: 600,
+                                letterSpacing: '0.08em',
+                                color: 'var(--text-60)',
+                                textTransform: 'uppercase',
+                              }}>Organisms</span>
+                              <span style={{
+                                fontSize: '0.6rem',
+                                color: 'var(--text-30)',
+                                marginLeft: 'auto',
+                              }}>Complex UI sections</span>
+                            </div>
+
+                            {/* Organism Cards */}
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                              {[
+                                { name: 'Navigation', icon: 'Nv', molecules: ['Logo', 'Nav Items', 'User Menu'], desc: 'Site-wide nav' },
+                                { name: 'Hero Section', icon: 'Hr', molecules: ['Heading', 'CTA', 'Media'], desc: 'Landing focal' },
+                                { name: 'Footer', icon: 'Ft', molecules: ['Links', 'Social', 'Legal'], desc: 'Page terminus' },
+                                { name: 'Sidebar', icon: 'Sd', molecules: ['Profile', 'Menu', 'Actions'], desc: 'Secondary nav' },
+                                { name: 'Data Table', icon: 'Dt', molecules: ['Header', 'Rows', 'Pagination'], desc: 'Tabular data' },
+                                { name: 'Modal', icon: 'Md', molecules: ['Header', 'Content', 'Actions'], desc: 'Overlay dialog' },
+                              ].map((organism, i) => (
+                                <motion.div
+                                  key={organism.name}
+                                  onClick={() => setExpandedTokenCard(expandedTokenCard === `org-${organism.name}` ? null : `org-${organism.name}`)}
+                                  initial={{ opacity: 0, scale: 0.95 }}
+                                  whileInView={{ opacity: 1, scale: 1 }}
+                                  viewport={{ once: true }}
+                                  whileHover={{ scale: 1.05, background: `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-10))` }}
+                                  whileTap={{ scale: 0.95 }}
+                                  transition={{ delay: 0.6 + i * 0.03, duration: 0.25 }}
+                                  style={{
+                                    background: expandedTokenCard === `org-${organism.name}` ? `linear-gradient(135deg, rgba(${brandRgb}, 0.15), var(--glass-10))` : 'var(--glass-06)',
+                                    border: expandedTokenCard === `org-${organism.name}` ? `1px solid rgba(${brandRgb}, 0.3)` : '1px solid var(--glass-12)',
+                                    borderRadius: '8px',
+                                    padding: expandedTokenCard === `org-${organism.name}` ? '0.6rem 0.8rem' : '0.4rem 0.7rem',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '0.3rem',
+                                    flex: expandedTokenCard === `org-${organism.name}` ? '1 1 calc(50% - 0.2rem)' : '0 0 auto',
+                                    minWidth: expandedTokenCard === `org-${organism.name}` ? '150px' : 'auto',
+                                  }}
+                                >
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                    <span style={{
+                                      width: '18px',
+                                      height: '18px',
+                                      borderRadius: '4px',
+                                      background: `rgba(${brandRgb}, 0.1)`,
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      fontSize: '0.5rem',
+                                      fontWeight: 700,
+                                      color: `rgb(${brandRgb})`,
+                                    }}>{organism.icon}</span>
+                                    <span style={{ fontSize: '0.65rem', fontWeight: 500, color: 'var(--text-70)' }}>{organism.name}</span>
+                                  </div>
+                                  {expandedTokenCard === `org-${organism.name}` && (
+                                    <motion.div
+                                      initial={{ opacity: 0 }}
+                                      animate={{ opacity: 1 }}
+                                      style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', marginTop: '0.2rem' }}
+                                    >
+                                      <span style={{ fontSize: '0.55rem', color: 'var(--text-40)' }}>{organism.desc}</span>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', flexWrap: 'wrap' }}>
+                                        {organism.molecules.map((m, idx) => (
+                                          <React.Fragment key={idx}>
+                                            <span style={{
+                                              fontSize: '0.5rem',
+                                              color: `rgb(${brandRgb})`,
+                                              background: `rgba(${brandRgb}, 0.1)`,
+                                              padding: '0.15rem 0.4rem',
+                                              borderRadius: '3px',
+                                              fontWeight: 500,
+                                            }}>{m}</span>
+                                            {idx < organism.molecules.length - 1 && (
+                                              <span style={{ fontSize: '0.5rem', color: 'var(--text-30)' }}>+</span>
+                                            )}
+                                          </React.Fragment>
+                                        ))}
+                                      </div>
+                                    </motion.div>
+                                  )}
+                                </motion.div>
+                              ))}
+                            </div>
+                          </motion.div>
+
+                          {/* Connection Line 7 - Consolidation to Templates */}
+                          <div style={{ display: 'flex', justifyContent: 'center', padding: '0.15rem 0' }}>
+                            <svg width="300" height="32" viewBox="0 0 300 32">
+                              {/* Consolidating lines */}
+                              {[-50, -25, 0, 25, 50].map((offset, i) => (
+                                <g key={i}>
+                                  <path d={`M${150 + offset * 2} 4 Q${150 + offset} 16 ${150 + offset * 0.4} 28`} stroke={`rgba(${brandRgb}, 0.35)`} strokeWidth="1" fill="none" strokeDasharray="2 2" style={{ animation: figmaCascadePhase === 'playing' ? 'flowLine 1s linear infinite' : 'none', animationDelay: `${1.3 + i * 0.04}s` }} />
+                                </g>
+                              ))}
+                              {[-20, 0, 20].map((offset, i) => (
+                                <circle key={i} cx={150 + offset} cy="28" r="2" fill={`rgb(${brandRgb})`} style={{ animation: figmaCascadePhase === 'playing' ? 'statusPulse 1.5s ease-in-out infinite' : 'none', animationDelay: `${1.3 + i * 0.05}s` }} />
+                              ))}
+                            </svg>
+                          </div>
+
+                          {/* ====== TIER 8: TEMPLATES ====== */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.65 }}
+                            style={{
+                              background: figmaCascadePhase === 'playing' ? `linear-gradient(135deg, rgba(${brandRgb}, 0.03), var(--glass-04))` : 'var(--glass-04)',
+                              border: '1px solid var(--glass-10)',
+                              borderRadius: '16px',
+                              padding: '1rem 1.25rem',
+                              backdropFilter: 'blur(20px)',
+                              transition: 'all 0.4s ease 1.3s',
+                            }}
+                          >
+                            {/* Tier Label */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.75rem' }}>
+                              <div style={{
+                                width: '24px',
+                                height: '24px',
+                                borderRadius: '8px',
+                                background: `rgba(${brandRgb}, 0.15)`,
+                                border: `1px solid rgba(${brandRgb}, 0.3)`,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '0.7rem',
+                                fontWeight: 700,
+                                color: `rgb(${brandRgb})`,
+                              }}>8</div>
+                              <span style={{
+                                fontSize: '0.75rem',
+                                fontWeight: 600,
+                                letterSpacing: '0.08em',
+                                color: 'var(--text-60)',
+                                textTransform: 'uppercase',
+                              }}>Templates</span>
+                              <span style={{
+                                fontSize: '0.6rem',
+                                color: 'var(--text-30)',
+                                marginLeft: 'auto',
+                              }}>Page layouts & compositions</span>
+                            </div>
+
+                            {/* Template Cards */}
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                              {[
+                                { name: 'Dashboard', icon: 'Db', organisms: ['Nav', 'Sidebar', 'Content Grid', 'Footer'], desc: 'Main workspace layout' },
+                                { name: 'Settings', icon: 'St', organisms: ['Nav', 'Form Sections', 'Actions'], desc: 'Configuration page' },
+                                { name: 'Profile', icon: 'Pf', organisms: ['Header', 'Content', 'Activity Feed'], desc: 'User detail view' },
+                                { name: 'List View', icon: 'Lv', organisms: ['Filters', 'Table', 'Pagination'], desc: 'Collection browser' },
+                              ].map((template, i) => (
+                                <motion.div
+                                  key={template.name}
+                                  onClick={() => setExpandedTokenCard(expandedTokenCard === `tpl-${template.name}` ? null : `tpl-${template.name}`)}
+                                  initial={{ opacity: 0, scale: 0.95 }}
+                                  whileInView={{ opacity: 1, scale: 1 }}
+                                  viewport={{ once: true }}
+                                  whileHover={{ scale: 1.05, background: `linear-gradient(135deg, rgba(${brandRgb}, 0.12), var(--glass-10))` }}
+                                  whileTap={{ scale: 0.95 }}
+                                  transition={{ delay: 0.65 + i * 0.03, duration: 0.25 }}
+                                  style={{
+                                    background: expandedTokenCard === `tpl-${template.name}` ? `linear-gradient(135deg, rgba(${brandRgb}, 0.15), var(--glass-10))` : 'var(--glass-06)',
+                                    border: expandedTokenCard === `tpl-${template.name}` ? `1px solid rgba(${brandRgb}, 0.3)` : '1px solid var(--glass-12)',
+                                    borderRadius: '8px',
+                                    padding: expandedTokenCard === `tpl-${template.name}` ? '0.6rem 0.8rem' : '0.4rem 0.7rem',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '0.3rem',
+                                    flex: expandedTokenCard === `tpl-${template.name}` ? '1 1 calc(50% - 0.2rem)' : '0 0 auto',
+                                    minWidth: expandedTokenCard === `tpl-${template.name}` ? '150px' : 'auto',
+                                  }}
+                                >
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                    <span style={{
+                                      width: '18px',
+                                      height: '18px',
+                                      borderRadius: '4px',
+                                      background: `rgba(${brandRgb}, 0.1)`,
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      fontSize: '0.5rem',
+                                      fontWeight: 700,
+                                      color: `rgb(${brandRgb})`,
+                                    }}>{template.icon}</span>
+                                    <span style={{ fontSize: '0.65rem', fontWeight: 500, color: 'var(--text-70)' }}>{template.name}</span>
+                                  </div>
+                                  {expandedTokenCard === `tpl-${template.name}` && (
+                                    <motion.div
+                                      initial={{ opacity: 0 }}
+                                      animate={{ opacity: 1 }}
+                                      style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', marginTop: '0.2rem' }}
+                                    >
+                                      <span style={{ fontSize: '0.55rem', color: 'var(--text-40)' }}>{template.desc}</span>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', flexWrap: 'wrap' }}>
+                                        {template.organisms.map((o, idx) => (
+                                          <React.Fragment key={idx}>
+                                            <span style={{
+                                              fontSize: '0.5rem',
+                                              color: `rgb(${brandRgb})`,
+                                              background: `rgba(${brandRgb}, 0.1)`,
+                                              padding: '0.15rem 0.4rem',
+                                              borderRadius: '3px',
+                                              fontWeight: 500,
+                                            }}>{o}</span>
+                                            {idx < template.organisms.length - 1 && (
+                                              <span style={{ fontSize: '0.5rem', color: 'var(--text-30)' }}>+</span>
+                                            )}
+                                          </React.Fragment>
+                                        ))}
+                                      </div>
+                                    </motion.div>
+                                  )}
+                                </motion.div>
+                              ))}
+                            </div>
+                          </motion.div>
+
                           {/* Token Flow Legend */}
                           <motion.div
                             initial={{ opacity: 0 }}
