@@ -85,10 +85,10 @@ export function ThemeProvider({
   };
 
   const toggleTheme = () => {
-    if (theme === 'light') {
+    // Simple toggle between light and dark (no system option in toggle)
+    // Uses resolvedTheme to determine current state even if theme is 'system'
+    if (resolvedTheme === 'light') {
       setTheme('dark');
-    } else if (theme === 'dark') {
-      setTheme('system');
     } else {
       setTheme('light');
     }
@@ -130,12 +130,10 @@ export function ThemeToggle() {
   const { theme, resolvedTheme, toggleTheme } = useTheme();
 
   const getThemeIcon = () => {
-    if (theme === 'system') return '🌓';
     return resolvedTheme === 'dark' ? '🌙' : '☀️';
   };
 
   const getThemeLabel = () => {
-    if (theme === 'system') return 'System';
     return resolvedTheme === 'dark' ? 'Dark' : 'Light';
   };
 
@@ -153,7 +151,7 @@ export function ThemeToggle() {
         [data-theme="light"] &:bg-black/10 [data-theme="light"] &:border-black/20
         [data-theme="light"] &:hover:bg-black/20
       `}
-      title={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light'} theme`}
+      title={`Switch to ${resolvedTheme === 'light' ? 'dark' : 'light'} theme`}
       aria-label={`Current theme: ${getThemeLabel()}. Click to cycle themes.`}
     >
       <span className="text-lg" aria-hidden="true">

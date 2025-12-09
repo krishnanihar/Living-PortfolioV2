@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Briefcase, User, Moon, Sun, Palette, HelpCircle } from 'lucide-react';
+import { Briefcase, User, Moon, Sun, HelpCircle } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
 
 interface PortfolioNavigationProps {
@@ -19,7 +19,7 @@ interface PortfolioNavigationProps {
  * - Fixed at top with subtle backdrop blur
  * - Responsive heights optimized for 13"-16" laptop screens
  * - Active route detection with visual highlighting
- * - Theme toggle (Light / Dark / System)
+ * - Theme toggle (Light / Dark)
  * - Logo gradient with hover effects using CSS variables
  *
  * Design Philosophy:
@@ -464,7 +464,7 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
                 (e.currentTarget as HTMLElement).style.background = 'var(--surface-primary)';
               }}
             >
-              {theme === 'system' ? <Palette size={15} /> : (resolvedTheme === 'dark' ? <Moon size={15} /> : <Sun size={15} />)}
+              {resolvedTheme === 'dark' ? <Moon size={15} /> : <Sun size={15} />}
             </div>
 
             {/* Journey Button - HelpCircle icon represents "getting to know me" / learning journey */}
