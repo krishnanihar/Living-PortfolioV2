@@ -803,7 +803,7 @@ export function AirIndiaWork() {
                   />
                 </div>
 
-                {/* Bottom Fade - Seamless OLED blend */}
+                {/* Bottom Fade - Theme-aware blend */}
                 <div
                   data-atropos-offset="-2"
                   style={{
@@ -812,7 +812,7 @@ export function AirIndiaWork() {
                     left: 0,
                     right: 0,
                     height: '50%',
-                    background: 'linear-gradient(to top, #000000 0%, rgba(0, 0, 0, 0.8) 40%, transparent 100%)',
+                    background: 'linear-gradient(to top, var(--bg-primary) 0%, var(--bg-primary) 25%, transparent 100%)',
                     pointerEvents: 'none',
                     zIndex: 4,
                   }}
@@ -830,47 +830,47 @@ export function AirIndiaWork() {
                     maxWidth: '580px',
                     padding: isMobile ? '2rem' : '2.5rem 3rem',
                     pointerEvents: 'auto', // CRITICAL: Enable clicking on content
-                    // Dark mode glassmorphism - more translucent
+                    // Theme-aware glassmorphism
                     background: `
-                      linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.03) 100%),
-                      rgba(10, 10, 12, 0.45)
+                      linear-gradient(135deg, var(--glass-04) 0%, var(--glass-02) 50%, var(--glass-03) 100%),
+                      var(--overlay-45)
                     `,
                     backdropFilter: 'blur(60px) saturate(180%)',
                     WebkitBackdropFilter: 'blur(60px) saturate(180%)',
                     borderRadius: '32px',
-                    border: '1px solid rgba(255, 255, 255, 0.04)',
-                    // Dark mode shadows
+                    border: '1px solid var(--glass-04)',
+                    // Theme-aware shadows
                     boxShadow: `
-                      0 40px 80px rgba(0, 0, 0, 0.6),
-                      0 20px 40px rgba(0, 0, 0, 0.4),
-                      inset 0 1px 0 rgba(255, 255, 255, 0.05),
-                      inset 0 0 20px rgba(0, 0, 0, 0.3)
+                      0 40px 80px var(--overlay-20),
+                      0 20px 40px var(--overlay-15),
+                      inset 0 1px 0 var(--glass-05),
+                      inset 0 0 20px var(--overlay-10)
                     `,
                     textAlign: 'center',
                     overflow: 'hidden',
                   }}
                 >
-          {/* Gradient Border Overlay - Subtle for dark mode */}
+          {/* Gradient Border Overlay - Theme-aware */}
           <div style={{
             position: 'absolute',
             inset: 0,
             borderRadius: '32px',
             padding: '1px',
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.04) 100%)',
+            background: 'linear-gradient(135deg, var(--glass-06) 0%, var(--glass-02) 50%, var(--glass-04) 100%)',
             WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
             WebkitMaskComposite: 'xor',
             maskComposite: 'exclude',
             pointerEvents: 'none',
           }} />
 
-          {/* Top Highlight - Subtle for dark mode */}
+          {/* Top Highlight - Theme-aware */}
           <div style={{
             position: 'absolute',
             top: 0,
             left: '10%',
             right: '10%',
             height: '1px',
-            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)',
+            background: 'linear-gradient(90deg, transparent, var(--glass-10), transparent)',
             pointerEvents: 'none',
           }} />
           {/* Eyebrow */}

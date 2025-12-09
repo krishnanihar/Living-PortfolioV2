@@ -179,6 +179,18 @@ button {
   --glass-02: rgba(255, 255, 255, 0.02);
   --glass-01: rgba(255, 255, 255, 0.01);
 
+  /* Background Overlay Scale - Inverted glass (blends WITH background) */
+  /* Dark mode = black with opacity, Light mode = white with opacity */
+  --overlay-45: rgba(0, 0, 0, 0.45);
+  --overlay-20: rgba(0, 0, 0, 0.20);
+  --overlay-15: rgba(0, 0, 0, 0.15);
+  --overlay-10: rgba(0, 0, 0, 0.10);
+  --overlay-06: rgba(0, 0, 0, 0.06);
+  --overlay-05: rgba(0, 0, 0, 0.05);
+  --overlay-04: rgba(0, 0, 0, 0.04);
+  --overlay-03: rgba(0, 0, 0, 0.03);
+  --overlay-02: rgba(0, 0, 0, 0.02);
+
   /* Logo Accent Colors (Blue) - Theme-independent */
   --logo-accent: rgba(180, 210, 240, 1);
   --logo-accent-70: rgba(180, 210, 240, 0.7);
@@ -378,6 +390,17 @@ button {
   --glass-03: rgba(0, 0, 0, 0.03);
   --glass-02: rgba(0, 0, 0, 0.02);
   --glass-01: rgba(0, 0, 0, 0.01);
+
+  /* Background Overlay Scale - Inverted (blends WITH light background) */
+  --overlay-45: rgba(255, 255, 255, 0.45);
+  --overlay-20: rgba(255, 255, 255, 0.20);
+  --overlay-15: rgba(255, 255, 255, 0.15);
+  --overlay-10: rgba(255, 255, 255, 0.10);
+  --overlay-06: rgba(255, 255, 255, 0.06);
+  --overlay-05: rgba(255, 255, 255, 0.05);
+  --overlay-04: rgba(255, 255, 255, 0.04);
+  --overlay-03: rgba(255, 255, 255, 0.03);
+  --overlay-02: rgba(255, 255, 255, 0.02);
 
   /* Logo Gradients - Light Theme */
   --logo-gradient-active: linear-gradient(90deg, rgba(180, 210, 240, 0.7) 0%, rgba(180, 210, 240, 1) 30%, rgba(180, 210, 240, 1) 70%, rgba(180, 210, 240, 0.7) 100%);
