@@ -75,6 +75,7 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInteracting, setIsInteracting] = useState(false);
+  const [introTimedOut, setIntroTimedOut] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   // Detect mobile
@@ -105,8 +106,17 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Auto-hide intro text after interaction or scroll
-  const showIntroText = scrollProgress < 0.3 && !isInteracting && !hoveredNode;
+  // Auto-hide intro text after 4 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIntroTimedOut(true);
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Auto-hide intro text after timeout, interaction, or scroll
+  const showIntroText = !introTimedOut && scrollProgress < 0.3 && !isInteracting && !hoveredNode;
 
   // Handle scroll to content
   const handleScrollDown = () => {
