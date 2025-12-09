@@ -12,212 +12,197 @@ import {
 
 type Screen = 'home' | 'photo' | 'pasi' | 'meds' | 'mental' | 'triggers' | 'report' | 'settings' | 'pest' | 'flare' | 'reminders' | 'learn' | 'community';
 
-// PsoriAssist Brand Color System (Portfolio-Grade)
-const BRAND_COLORS = {
-  // Primary Brand Colors
-  primary: '#4A90E2',      // Trust blue
-  secondary: '#50C878',    // Wellness green
-  accent: '#FF9E67',       // Human warmth
+// ═══════════════════════════════════════════════════════════════════════════════
+// iOS 26 LIQUID GLASS DESIGN SYSTEM (2025)
+// Stunning, recruiter-impressing dark mode with floating elements and specular highlights
+// ═══════════════════════════════════════════════════════════════════════════════
 
-  // Semantic Health Colors
-  healing: '#50C878',
-  improving: '#9B7EF2',
-  stable: '#4A90E2',
-  flareup: '#FF6B6B',
-  moderate: '#FBD24C',
-
-  // Gradients
-  primaryGradient: 'linear-gradient(135deg, #4A90E2 0%, #50C878 100%)',
-  warmGradient: 'linear-gradient(135deg, #FF9E67 0%, #FBD24C 100%)',
-  healingGradient: 'linear-gradient(135deg, #50C878 0%, #9B7EF2 100%)',
-  glowGradient: 'radial-gradient(circle, rgba(74,144,226,0.3) 0%, rgba(80,200,120,0.2) 100%)'
-};
-
-// iOS 17 Light Mode Design System (Enhanced)
+// Color System - OLED optimized with vibrant accents
 const IOS_COLORS = {
-  // Backgrounds
-  systemBackground: '#FFFFFF',
-  secondarySystemBackground: '#F2F2F7',
-  tertiarySystemBackground: '#FFFFFF',
-  groupedBackground: '#F2F2F7',
+  // Backgrounds - OLED black for true blacks
+  systemBackground: '#000000',
+  secondarySystemBackground: '#1C1C1E',
+  tertiarySystemBackground: '#2C2C2E',
+  groupedBackground: '#000000',
 
-  // Labels
-  label: '#000000',
-  secondaryLabel: 'rgba(60, 60, 67, 0.6)',
-  tertiaryLabel: 'rgba(60, 60, 67, 0.3)',
-  quaternaryLabel: 'rgba(60, 60, 67, 0.18)',
+  // Text - High contrast on dark
+  label: 'rgba(255, 255, 255, 0.95)',
+  secondaryLabel: 'rgba(255, 255, 255, 0.70)',
+  tertiaryLabel: 'rgba(255, 255, 255, 0.50)',
+  quaternaryLabel: 'rgba(255, 255, 255, 0.30)',
 
-  // System Colors - Using brand colors where applicable
-  systemBlue: BRAND_COLORS.primary,
-  systemGreen: BRAND_COLORS.healing,
-  systemRed: '#FF3B30',
-  systemPink: '#FF2D55',
-  systemYellow: BRAND_COLORS.moderate,
-  systemPurple: BRAND_COLORS.improving,
-  systemOrange: BRAND_COLORS.accent,
+  // System Colors - Vibrant on dark
+  systemBlue: '#0A84FF',
+  systemGreen: '#30D158',
+  systemRed: '#FF453A',
+  systemPink: '#FF375F',
+  systemYellow: '#FFD60A',
+  systemPurple: '#BF5AF2',
+  systemOrange: '#FF9F0A',
+  systemTeal: '#64D2FF',
+  systemIndigo: '#5E5CE6',
+
+  // Glass surfaces
+  glassPrimary: 'rgba(255, 255, 255, 0.12)',
+  glassSecondary: 'rgba(255, 255, 255, 0.08)',
+  glassAccent: 'rgba(255, 255, 255, 0.18)',
 
   // Separators
-  separator: 'rgba(60, 60, 67, 0.29)',
-  opaqueSeparator: '#C6C6C8',
+  separator: 'rgba(255, 255, 255, 0.15)',
+  opaqueSeparator: 'rgba(56, 56, 58, 1)',
 
-  // Fills (for buttons/controls)
-  tertiarySystemFill: 'rgba(118, 118, 128, 0.12)',
-  quaternarySystemFill: 'rgba(116, 116, 128, 0.08)'
+  // Fills
+  tertiarySystemFill: 'rgba(118, 118, 128, 0.24)',
+  quaternarySystemFill: 'rgba(118, 118, 128, 0.18)'
 };
 
-// iOS 17 Typography Scale
+// Brand Colors - Health-focused vibrant palette
+const BRAND_COLORS = {
+  primary: '#0A84FF',
+  secondary: '#30D158',
+  accent: '#FF9F0A',
+  healing: '#30D158',
+  improving: '#BF5AF2',
+  stable: '#0A84FF',
+  flareup: '#FF453A',
+  moderate: '#FFD60A',
+  primaryGradient: 'linear-gradient(135deg, #0A84FF 0%, #5E5CE6 100%)',
+  warmGradient: 'linear-gradient(135deg, #FF9F0A 0%, #FFD60A 100%)',
+  healingGradient: 'linear-gradient(135deg, #30D158 0%, #64D2FF 100%)',
+  glowGradient: 'radial-gradient(circle, rgba(10,132,255,0.4) 0%, rgba(48,209,88,0.2) 100%)'
+};
+
+// Typography - Enhanced with tighter tracking
 const IOS_TYPOGRAPHY = {
-  largeTitle: { size: 34, lineHeight: 41, weight: '700' as const, tracking: -0.38 },
-  title1: { size: 28, lineHeight: 34, weight: '700' as const, tracking: -0.36 },
-  title2: { size: 22, lineHeight: 28, weight: '700' as const, tracking: -0.26 },
-  title3: { size: 20, lineHeight: 25, weight: '600' as const, tracking: -0.45 },
-  headline: { size: 17, lineHeight: 22, weight: '600' as const, tracking: -0.43 },
-  body: { size: 17, lineHeight: 22, weight: '400' as const, tracking: -0.41 },
-  callout: { size: 16, lineHeight: 21, weight: '400' as const, tracking: -0.32 },
-  subheadline: { size: 15, lineHeight: 20, weight: '400' as const, tracking: -0.24 },
-  footnote: { size: 13, lineHeight: 18, weight: '400' as const, tracking: -0.08 },
-  caption1: { size: 12, lineHeight: 16, weight: '400' as const, tracking: 0 },
-  caption2: { size: 11, lineHeight: 13, weight: '400' as const, tracking: 0.06 }
+  largeTitle: { size: 34, lineHeight: 41, weight: '700' as const, tracking: -0.8 },
+  title1: { size: 28, lineHeight: 34, weight: '700' as const, tracking: -0.6 },
+  title2: { size: 22, lineHeight: 28, weight: '600' as const, tracking: -0.4 },
+  title3: { size: 20, lineHeight: 25, weight: '600' as const, tracking: -0.3 },
+  headline: { size: 17, lineHeight: 22, weight: '600' as const, tracking: -0.2 },
+  body: { size: 17, lineHeight: 24, weight: '400' as const, tracking: 0 },
+  callout: { size: 16, lineHeight: 21, weight: '400' as const, tracking: 0 },
+  subheadline: { size: 15, lineHeight: 20, weight: '500' as const, tracking: 0.1 },
+  footnote: { size: 13, lineHeight: 18, weight: '500' as const, tracking: 0.1 },
+  caption1: { size: 12, lineHeight: 16, weight: '500' as const, tracking: 0.2 },
+  caption2: { size: 11, lineHeight: 13, weight: '600' as const, tracking: 0.3 }
 };
 
-// Advanced Shadow System (Portfolio-Grade - 4-6 layers)
+// Advanced Shadow System - Bold on dark
 const IOS_SHADOWS = {
-  // Standard card with depth
   card: `
-    0 2px 4px rgba(0,0,0,0.04),
-    0 4px 8px rgba(0,0,0,0.06),
-    0 8px 16px rgba(0,0,0,0.08),
-    0 16px 32px rgba(0,0,0,0.10),
-    inset 0 1px 0 rgba(255,255,255,0.9)
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1)
   `,
-
-  // Button with subtle depth
   button: `
-    0 2px 6px rgba(0,0,0,0.10),
-    0 4px 12px rgba(0,0,0,0.08),
-    inset 0 1px 0 rgba(255,255,255,0.8)
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1)
   `,
-
-  // Elevated elements (modals, popovers)
   elevated: `
-    0 20px 40px rgba(0,0,0,0.15),
-    0 10px 20px rgba(0,0,0,0.10),
-    0 4px 8px rgba(0,0,0,0.08),
-    inset 0 1px 1px rgba(255,255,255,0.9)
+    0 24px 48px rgba(0, 0, 0, 0.6),
+    0 12px 24px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15)
   `,
-
-  // Colored shadows for brand elements
-  brandBlue: `
-    0 8px 24px rgba(74,144,226,0.25),
-    0 4px 12px rgba(74,144,226,0.15),
-    0 2px 6px rgba(0,0,0,0.08)
-  `,
-
-  brandGreen: `
-    0 8px 24px rgba(80,200,120,0.25),
-    0 4px 12px rgba(80,200,120,0.15),
-    0 2px 6px rgba(0,0,0,0.08)
-  `,
-
-  // Floating effect for interactive elements
   floating: `
-    0 20px 40px rgba(0,0,0,0.15),
-    0 10px 20px rgba(0,0,0,0.10),
-    0 4px 8px rgba(0,0,0,0.08),
-    inset 0 1px 1px rgba(255,255,255,1),
-    inset 0 -1px 1px rgba(0,0,0,0.05)
+    0 16px 40px rgba(0, 0, 0, 0.5),
+    0 8px 20px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1)
+  `,
+  glow: (color: string) => `
+    0 0 20px ${color}40,
+    0 4px 16px rgba(0, 0, 0, 0.3)
+  `,
+  brandBlue: `
+    0 8px 24px rgba(10, 132, 255, 0.4),
+    0 4px 12px rgba(10, 132, 255, 0.25)
+  `,
+  brandGreen: `
+    0 8px 24px rgba(48, 209, 88, 0.4),
+    0 4px 12px rgba(48, 209, 88, 0.25)
   `
 };
 
-// Advanced Glassmorphism System (Portfolio-Grade)
-const NOISE_TEXTURE = `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E")`;
-
+// Liquid Glass System - iOS 26 style
 const IOS_GLASS = {
   card: {
-    background: `
-      linear-gradient(135deg,
-        rgba(255,255,255,0.85) 0%,
-        rgba(255,255,255,0.65) 100%
-      )
-    `,
-    backdropFilter: 'blur(40px) saturate(180%) brightness(1.08)',
-    border: '1px solid rgba(255,255,255,0.9)',
+    background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%)',
+    backdropFilter: 'blur(40px) saturate(200%)',
+    border: '1px solid rgba(255, 255, 255, 0.15)',
+    borderRadius: '24px',
     boxShadow: `
-      0 8px 32px rgba(0,0,0,0.08),
-      inset 0 1px 1px rgba(255,255,255,1),
-      inset 0 -1px 1px rgba(0,0,0,0.05)
-    `,
-    backgroundImage: NOISE_TEXTURE
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      0 4px 16px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12)
+    `
   },
 
   cardSubtle: {
-    background: `
-      linear-gradient(135deg,
-        rgba(255,255,255,0.70) 0%,
-        rgba(255,255,255,0.50) 100%
-      )
-    `,
-    backdropFilter: 'blur(30px) saturate(150%) brightness(1.05)',
-    border: '1px solid rgba(255,255,255,0.6)',
-    boxShadow: `
-      0 4px 16px rgba(0,0,0,0.06),
-      inset 0 1px 0.5px rgba(255,255,255,0.8)
-    `,
-    backgroundImage: NOISE_TEXTURE
+    background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%)',
+    backdropFilter: 'blur(30px) saturate(180%)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    borderRadius: '20px',
+    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)'
   },
 
-  // Brand-colored glass variants
-  brandBlueGlass: {
-    background: `
-      linear-gradient(135deg,
-        rgba(74,144,226,0.15) 0%,
-        rgba(74,144,226,0.08) 100%
-      )
-    `,
-    backdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
-    border: '1px solid rgba(74,144,226,0.3)',
+  floating: {
+    background: 'rgba(30, 30, 30, 0.85)',
+    backdropFilter: 'blur(50px) saturate(220%)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    borderRadius: '28px',
     boxShadow: `
-      0 8px 32px rgba(74,144,226,0.15),
-      0 4px 16px rgba(0,0,0,0.05),
-      inset 0 1px 1px rgba(255,255,255,0.5),
-      inset 0 -1px 1px rgba(74,144,226,0.1)
+      0 12px 40px rgba(0, 0, 0, 0.5),
+      0 4px 12px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08)
     `
   },
 
-  brandGreenGlass: {
-    background: `
-      linear-gradient(135deg,
-        rgba(80,200,120,0.15) 0%,
-        rgba(80,200,120,0.08) 100%
-      )
-    `,
-    backdropFilter: 'blur(40px) saturate(180%) brightness(1.05)',
-    border: '1px solid rgba(80,200,120,0.3)',
-    boxShadow: `
-      0 8px 32px rgba(80,200,120,0.15),
-      0 4px 16px rgba(0,0,0,0.05),
-      inset 0 1px 1px rgba(255,255,255,0.5),
-      inset 0 -1px 1px rgba(80,200,120,0.1)
-    `
+  interactive: {
+    background: 'rgba(255, 255, 255, 0.08)',
+    backdropFilter: 'blur(20px) saturate(180%)',
+    border: '1px solid rgba(255, 255, 255, 0.12)',
+    borderRadius: '16px',
+    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)'
+  },
+
+  pill: {
+    background: 'rgba(255, 255, 255, 0.08)',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    borderRadius: '100px'
   },
 
   statusBar: {
-    background: 'rgba(242, 242, 247, 0.75)',
-    backdropFilter: 'blur(30px) saturate(180%)'
+    background: 'transparent',
+    backdropFilter: 'blur(20px) saturate(180%)'
   },
 
   tabBar: {
-    background: 'rgba(249, 249, 249, 0.82)',
-    backdropFilter: 'blur(30px) saturate(180%)'
+    background: 'rgba(30, 30, 30, 0.85)',
+    backdropFilter: 'blur(50px) saturate(220%)'
+  },
+
+  brandBlueGlass: {
+    background: 'linear-gradient(135deg, rgba(10,132,255,0.2) 0%, rgba(10,132,255,0.08) 100%)',
+    backdropFilter: 'blur(40px) saturate(200%)',
+    border: '1px solid rgba(10,132,255,0.3)',
+    boxShadow: '0 8px 32px rgba(10,132,255,0.25), inset 0 1px 0 rgba(255,255,255,0.1)'
+  },
+
+  brandGreenGlass: {
+    background: 'linear-gradient(135deg, rgba(48,209,88,0.2) 0%, rgba(48,209,88,0.08) 100%)',
+    backdropFilter: 'blur(40px) saturate(200%)',
+    border: '1px solid rgba(48,209,88,0.3)',
+    boxShadow: '0 8px 32px rgba(48,209,88,0.25), inset 0 1px 0 rgba(255,255,255,0.1)'
   }
 };
 
-// iOS-native spring animation constants
+// Spring Animation Configs - Snappy and fluid
 const SPRING_CONFIG = {
-  screen: { type: 'spring' as const, stiffness: 300, damping: 30, mass: 0.8 },
-  button: { type: 'spring' as const, stiffness: 400, damping: 17 },
-  card: { type: 'spring' as const, stiffness: 260, damping: 26 },
-  smooth: { type: 'spring' as const, stiffness: 200, damping: 20 },
+  screen: { type: 'spring' as const, stiffness: 400, damping: 35, mass: 0.8 },
+  button: { type: 'spring' as const, stiffness: 500, damping: 25 },
+  card: { type: 'spring' as const, stiffness: 300, damping: 28 },
+  smooth: { type: 'spring' as const, stiffness: 200, damping: 25 },
   elastic: { type: 'spring' as const, stiffness: 150, damping: 12, mass: 1 }
 };
 
@@ -367,44 +352,55 @@ export function PsoriAssistPhoneMockup() {
         position: 'relative'
       }}
     >
-      {/* iPhone 14 Pro Mockup Frame */}
+      {/* Ambient Glow Effect */}
+      <div style={{
+        position: 'absolute',
+        width: '500px',
+        height: '500px',
+        background: 'radial-gradient(circle, rgba(10,132,255,0.15) 0%, rgba(48,209,88,0.1) 40%, transparent 70%)',
+        top: '-100px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        pointerEvents: 'none',
+        zIndex: 0
+      }} />
+
+      {/* iPhone 14 Pro Mockup Frame - iOS 26 Dark Mode */}
       <div
         style={{
           width: '393px',
           height: '852px',
-          backgroundColor: '#1a1a1a',
+          backgroundColor: '#000000',
           borderRadius: '60px',
           padding: '14px',
-          // Premium 6-layer shadow system for floating effect
           boxShadow: `
-            0 50px 100px rgba(0, 0, 0, 0.30),
-            0 30px 60px rgba(0, 0, 0, 0.25),
-            0 20px 40px rgba(0, 0, 0, 0.20),
-            0 10px 20px rgba(0, 0, 0, 0.15),
-            0 5px 10px rgba(0, 0, 0, 0.10),
-            0 2px 4px rgba(0, 0, 0, 0.08),
-            0 0 0 1px rgba(255, 255, 255, 0.1)
+            0 50px 100px rgba(0, 0, 0, 0.6),
+            0 30px 60px rgba(0, 0, 0, 0.5),
+            0 20px 40px rgba(0, 0, 0, 0.4),
+            0 10px 20px rgba(0, 0, 0, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05)
           `,
           position: 'relative',
           overflow: 'hidden',
           zIndex: 1
         }}
       >
-        {/* Screen Container */}
+        {/* Screen Container - OLED Black with Gradient */}
         <div style={{
           width: '100%',
           height: '100%',
-          backgroundColor: IOS_COLORS.groupedBackground,
+          background: 'radial-gradient(ellipse at top center, #0a0a14 0%, #000000 60%)',
           borderRadius: '48px',
           overflow: 'hidden',
           position: 'relative',
           WebkitMaskImage: '-webkit-radial-gradient(white, black)',
           maskImage: 'radial-gradient(white, black)'
         } as React.CSSProperties}>
-          {/* Status Bar */}
+          {/* Status Bar - Transparent with blur */}
           <div style={{
             height: '54px',
-            background: `linear-gradient(180deg, ${IOS_GLASS.statusBar.background} 0%, rgba(242,242,247,0) 100%)`,
+            background: 'linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 100%)',
             position: 'absolute',
             top: 0,
             left: 0,
@@ -415,25 +411,26 @@ export function PsoriAssistPhoneMockup() {
             justifyContent: 'space-between',
             padding: '0 24px',
             paddingTop: '8px',
-            backdropFilter: IOS_GLASS.statusBar.backdropFilter
+            backdropFilter: 'blur(20px)'
           }}>
             <div style={{ fontSize: '15px', fontWeight: '600', color: IOS_COLORS.label }}>
               9:41
             </div>
-            {/* Dynamic Island */}
+            {/* Dynamic Island - Enhanced with glow */}
             <div style={{
               width: '126px',
               height: '37px',
-              backgroundColor: 'black',
+              backgroundColor: '#000000',
               borderRadius: '20px',
               position: 'absolute',
               top: '11px',
               left: '50%',
-              transform: 'translateX(-50%)'
+              transform: 'translateX(-50%)',
+              boxShadow: '0 0 20px rgba(0,0,0,0.8), inset 0 0 0 0.5px rgba(255,255,255,0.1)'
             }} />
-            <div style={{ fontSize: '15px', color: IOS_COLORS.label, display: 'flex', gap: '6px' }}>
-              <span>100%</span>
-              <span>●</span>
+            <div style={{ fontSize: '15px', color: IOS_COLORS.label, display: 'flex', gap: '6px', alignItems: 'center' }}>
+              <span style={{ opacity: 0.9 }}>100%</span>
+              <span style={{ color: IOS_COLORS.systemGreen }}>●</span>
             </div>
           </div>
 
@@ -640,20 +637,22 @@ export function PsoriAssistPhoneMockup() {
             </AnimatePresence>
           </div>
 
-          {/* Tab Bar */}
+          {/* Tab Bar - iOS 26 Floating Style */}
           <div style={{
             position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: '90px',
-            backgroundColor: IOS_GLASS.tabBar.background,
-            backdropFilter: IOS_GLASS.tabBar.backdropFilter,
-            borderTop: `0.5px solid ${IOS_COLORS.separator}`,
+            bottom: '12px',
+            left: '16px',
+            right: '16px',
+            height: '72px',
+            background: IOS_GLASS.floating.background,
+            backdropFilter: IOS_GLASS.floating.backdropFilter,
+            border: IOS_GLASS.floating.border,
+            borderRadius: '28px',
+            boxShadow: IOS_GLASS.floating.boxShadow,
             display: 'flex',
             justifyContent: 'space-around',
-            alignItems: 'flex-start',
-            padding: '12px 0 24px'
+            alignItems: 'center',
+            padding: '0 8px'
           }}>
             <TabBarItem
               icon={Home}
@@ -735,21 +734,43 @@ function HomeScreen({
         </p>
       </div>
 
-      {/* PASI Score Card */}
+      {/* PASI Score Card - Liquid Glass */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ ...SPRING_CONFIG.card, delay: 0.1 }}
         style={{
-          padding: '16px',
-          borderRadius: '16px',
+          padding: '20px',
+          borderRadius: '24px',
           background: IOS_GLASS.card.background,
           backdropFilter: IOS_GLASS.card.backdropFilter,
-          borderLeft: `4px solid ${IOS_COLORS.systemBlue}`,
           border: IOS_GLASS.card.border,
-          marginBottom: '12px',
-          boxShadow: IOS_GLASS.card.boxShadow
+          marginBottom: '16px',
+          boxShadow: `${IOS_GLASS.card.boxShadow}, 0 0 30px rgba(48,209,88,0.15)`,
+          position: 'relative',
+          overflow: 'hidden'
         } as React.CSSProperties}>
+        {/* Specular highlight */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '50%',
+          background: 'linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%)',
+          pointerEvents: 'none',
+          borderRadius: '24px 24px 0 0'
+        }} />
+        {/* Accent glow */}
+        <div style={{
+          position: 'absolute',
+          top: '-30px',
+          right: '-30px',
+          width: '120px',
+          height: '120px',
+          background: 'radial-gradient(circle, rgba(48,209,88,0.3) 0%, transparent 70%)',
+          pointerEvents: 'none'
+        }} />
         <div style={{
           fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
           color: IOS_COLORS.secondaryLabel,
@@ -914,58 +935,124 @@ function HomeScreen({
         </div>
       </div>
 
-      {/* Streak Card */}
-      <div style={{
-        padding: '16px',
-        borderRadius: '16px',
-        background: IOS_GLASS.card.background,
-        backdropFilter: IOS_GLASS.card.backdropFilter,
-        borderLeft: `4px solid ${IOS_COLORS.systemGreen}`,
-        border: IOS_GLASS.card.border,
-        marginBottom: '12px',
-        boxShadow: IOS_GLASS.card.boxShadow
-      } as React.CSSProperties}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      {/* Streak Card - Liquid Glass with Glow */}
+      <motion.div
+        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ ...SPRING_CONFIG.card, delay: 0.2 }}
+        style={{
+          padding: '16px',
+          borderRadius: '20px',
+          background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
+          border: IOS_GLASS.card.border,
+          marginBottom: '12px',
+          boxShadow: `${IOS_GLASS.card.boxShadow}, 0 0 25px rgba(48,209,88,0.2)`,
+          position: 'relative',
+          overflow: 'hidden'
+        } as React.CSSProperties}>
+        {/* Specular highlight */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '50%',
+          background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 100%)',
+          pointerEvents: 'none',
+          borderRadius: '20px 20px 0 0'
+        }} />
+        {/* Green accent glow */}
+        <div style={{
+          position: 'absolute',
+          top: '-25px',
+          right: '-25px',
+          width: '100px',
+          height: '100px',
+          background: 'radial-gradient(circle, rgba(48,209,88,0.35) 0%, transparent 70%)',
+          pointerEvents: 'none'
+        }} />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative' }}>
           <div>
             <div style={{
               fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
               color: IOS_COLORS.secondaryLabel,
-              marginBottom: '2px'
+              marginBottom: '2px',
+              textTransform: 'uppercase',
+              letterSpacing: `${IOS_TYPOGRAPHY.footnote.tracking}px`
             }}>
               Current Streak
             </div>
             <div style={{
               fontSize: `${IOS_TYPOGRAPHY.title1.size}px`,
               fontWeight: '700',
-              color: IOS_COLORS.systemGreen
-            }}>
+              background: BRAND_COLORS.healingGradient,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            } as React.CSSProperties}>
               {streak} days
             </div>
           </div>
-          <Award size={40} color={IOS_COLORS.systemGreen} />
+          <motion.div
+            animate={{
+              scale: [1, 1.1, 1],
+              rotate: [0, 5, -5, 0]
+            }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <Award size={40} color={IOS_COLORS.systemGreen} />
+          </motion.div>
         </div>
         <div style={{
           marginTop: '8px',
           fontSize: `${IOS_TYPOGRAPHY.footnote.size}px`,
           color: IOS_COLORS.secondaryLabel,
           lineHeight: `${IOS_TYPOGRAPHY.footnote.lineHeight}px`,
-          fontStyle: 'italic'
+          fontStyle: 'italic',
+          position: 'relative'
         }}>
           You're doing amazing! Just 16 days until your 30-day milestone 🎉
         </div>
-      </div>
+      </motion.div>
 
-      {/* Upcoming Appointment */}
-      <div style={{
-        padding: '16px',
-        borderRadius: '16px',
-        background: IOS_GLASS.card.background,
-        backdropFilter: IOS_GLASS.card.backdropFilter,
-        borderLeft: `4px solid ${IOS_COLORS.systemYellow}`,
-        border: IOS_GLASS.card.border,
-        boxShadow: IOS_GLASS.card.boxShadow
-      } as React.CSSProperties}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+      {/* Upcoming Appointment - Liquid Glass */}
+      <motion.div
+        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ ...SPRING_CONFIG.card, delay: 0.3 }}
+        style={{
+          padding: '16px',
+          borderRadius: '20px',
+          background: IOS_GLASS.card.background,
+          backdropFilter: IOS_GLASS.card.backdropFilter,
+          border: IOS_GLASS.card.border,
+          boxShadow: `${IOS_GLASS.card.boxShadow}, 0 0 20px rgba(255,214,10,0.15)`,
+          position: 'relative',
+          overflow: 'hidden'
+        } as React.CSSProperties}>
+        {/* Specular highlight */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '50%',
+          background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 100%)',
+          pointerEvents: 'none',
+          borderRadius: '20px 20px 0 0'
+        }} />
+        {/* Yellow accent glow */}
+        <div style={{
+          position: 'absolute',
+          top: '-20px',
+          left: '-20px',
+          width: '80px',
+          height: '80px',
+          background: 'radial-gradient(circle, rgba(255,214,10,0.3) 0%, transparent 70%)',
+          pointerEvents: 'none'
+        }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', position: 'relative' }}>
           <Calendar size={18} color={IOS_COLORS.systemYellow} />
           <span style={{
             fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
@@ -980,27 +1067,31 @@ function HomeScreen({
           fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
           color: IOS_COLORS.secondaryLabel,
           lineHeight: `${IOS_TYPOGRAPHY.subheadline.lineHeight}px`,
-          marginBottom: '12px'
+          marginBottom: '12px',
+          position: 'relative'
         }}>
           Dr. Sarah Johnson • Friday, Oct 25 at 2:30 PM
         </div>
-        <button
+        <motion.button
           onClick={() => setActiveScreen('report')}
+          whileHover={{ scale: 1.02, boxShadow: `0 0 20px rgba(255,214,10,0.4), ${IOS_SHADOWS.button}` }}
+          whileTap={{ scale: 0.98 }}
           style={{
-            padding: '8px 14px',
-            borderRadius: '10px',
-            backgroundColor: IOS_COLORS.systemYellow,
+            padding: '10px 16px',
+            borderRadius: '12px',
+            background: BRAND_COLORS.warmGradient,
             border: 'none',
             color: IOS_COLORS.systemBackground,
             fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
             fontWeight: '600',
             cursor: 'pointer',
-            boxShadow: IOS_SHADOWS.button
+            boxShadow: `0 4px 12px rgba(255,159,10,0.3), ${IOS_SHADOWS.button}`,
+            position: 'relative'
           }}
         >
           Prepare Report →
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
     </motion.div>
   );
 }
@@ -1370,7 +1461,7 @@ function PasiResultScreen({
         </div>
       </div>
 
-      {/* Breakdown */}
+      {/* Breakdown - Animated Progress Bars with Glow */}
       <div style={{ marginBottom: '16px' }}>
         <h3 style={{
           fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
@@ -1381,22 +1472,40 @@ function PasiResultScreen({
         }}>
           Breakdown
         </h3>
-        <div style={{ display: 'grid', gap: '8px' }}>
+        <div style={{ display: 'grid', gap: '10px' }}>
           {[
             { label: 'Erythema (Redness)', value: 2.8, color: IOS_COLORS.systemRed },
             { label: 'Scaling', value: 3.1, color: IOS_COLORS.systemYellow },
             { label: 'Thickness', value: 2.5, color: IOS_COLORS.systemPurple },
             { label: 'Area Affected', value: 18, color: IOS_COLORS.systemBlue, suffix: '%' }
           ].map((item, i) => (
-            <div key={i} style={{
-              padding: '12px',
-              borderRadius: '12px',
-              background: IOS_GLASS.card.background,
-          backdropFilter: IOS_GLASS.card.backdropFilter,
-              border: IOS_GLASS.card.border,
-              boxShadow: IOS_GLASS.card.boxShadow
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ ...SPRING_CONFIG.card, delay: 0.1 + i * 0.08 }}
+              style={{
+                padding: '14px',
+                borderRadius: '16px',
+                background: IOS_GLASS.card.background,
+                backdropFilter: IOS_GLASS.card.backdropFilter,
+                border: IOS_GLASS.card.border,
+                boxShadow: IOS_GLASS.card.boxShadow,
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              {/* Subtle accent glow */}
+              <div style={{
+                position: 'absolute',
+                top: '-15px',
+                right: '-15px',
+                width: '50px',
+                height: '50px',
+                background: `radial-gradient(circle, ${item.color}25 0%, transparent 70%)`,
+                pointerEvents: 'none'
+              }} />
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', position: 'relative' }}>
                 <span style={{
                   fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
                   color: IOS_COLORS.label
@@ -1412,18 +1521,25 @@ function PasiResultScreen({
                 </span>
               </div>
               <div style={{
-                height: '4px',
-                borderRadius: '2px',
+                height: '6px',
+                borderRadius: '3px',
                 backgroundColor: IOS_COLORS.quaternarySystemFill,
-                overflow: 'hidden'
+                overflow: 'hidden',
+                position: 'relative'
               }}>
-                <div style={{
-                  width: `${item.suffix ? item.value : (item.value / 4) * 100}%`,
-                  height: '100%',
-                  backgroundColor: item.color
-                }} />
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${item.suffix ? item.value : (item.value / 4) * 100}%` }}
+                  transition={{ duration: 0.8, delay: 0.3 + i * 0.1, ease: 'easeOut' }}
+                  style={{
+                    height: '100%',
+                    background: `linear-gradient(90deg, ${item.color} 0%, ${item.color}CC 100%)`,
+                    borderRadius: '3px',
+                    boxShadow: `0 0 10px ${item.color}60, 0 0 5px ${item.color}40`
+                  }}
+                />
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -1965,15 +2081,33 @@ function TriggerScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => vo
             { trigger: 'Cold Weather', confidence: 76, color: IOS_COLORS.systemBlue },
             { trigger: 'Missed Applications', confidence: 64, color: IOS_COLORS.systemYellow }
           ].map((item, i) => (
-            <div key={i} style={{
-              padding: '12px',
-              borderRadius: '14px',
-              background: IOS_GLASS.card.background,
-          backdropFilter: IOS_GLASS.card.backdropFilter,
-              border: IOS_GLASS.card.border,
-              boxShadow: IOS_GLASS.card.boxShadow
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ ...SPRING_CONFIG.card, delay: 0.1 + i * 0.08 }}
+              style={{
+                padding: '14px',
+                borderRadius: '16px',
+                background: IOS_GLASS.card.background,
+                backdropFilter: IOS_GLASS.card.backdropFilter,
+                border: IOS_GLASS.card.border,
+                boxShadow: IOS_GLASS.card.boxShadow,
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              {/* Accent glow */}
+              <div style={{
+                position: 'absolute',
+                top: '-15px',
+                right: '-15px',
+                width: '50px',
+                height: '50px',
+                background: `radial-gradient(circle, ${item.color}25 0%, transparent 70%)`,
+                pointerEvents: 'none'
+              }} />
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', position: 'relative' }}>
                 <span style={{
                   fontSize: `${IOS_TYPOGRAPHY.subheadline.size}px`,
                   fontWeight: '600',
@@ -1993,15 +2127,22 @@ function TriggerScreen({ setActiveScreen }: { setActiveScreen: (s: Screen) => vo
                 height: '6px',
                 borderRadius: '3px',
                 backgroundColor: IOS_COLORS.quaternarySystemFill,
-                overflow: 'hidden'
+                overflow: 'hidden',
+                position: 'relative'
               }}>
-                <div style={{
-                  width: `${item.confidence}%`,
-                  height: '100%',
-                  backgroundColor: item.color
-                }} />
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${item.confidence}%` }}
+                  transition={{ duration: 0.8, delay: 0.3 + i * 0.1, ease: 'easeOut' }}
+                  style={{
+                    height: '100%',
+                    background: `linear-gradient(90deg, ${item.color} 0%, ${item.color}CC 100%)`,
+                    borderRadius: '3px',
+                    boxShadow: `0 0 10px ${item.color}60, 0 0 5px ${item.color}40`
+                  }}
+                />
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -4228,47 +4369,61 @@ function QuickActionButton({
   color: string;
   onClick: () => void;
 }) {
-  const [isFocused, setIsFocused] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <motion.button
-      whileTap={{
-        scale: 0.96,
-        transition: SPRING_CONFIG.button
+      whileHover={{
+        scale: 1.03,
+        boxShadow: `0 0 20px ${color}40, ${IOS_GLASS.card.boxShadow}`
       }}
+      whileTap={{ scale: 0.96 }}
       onClick={onClick}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       style={{
-        padding: '12px 8px',
-        minHeight: '76px',
-        borderRadius: '14px',
-        background: isHovered ? IOS_COLORS.tertiarySystemFill : IOS_GLASS.cardSubtle.background,
-        backdropFilter: IOS_GLASS.cardSubtle.backdropFilter,
-        border: IOS_GLASS.cardSubtle.border,
+        padding: '14px 8px',
+        minHeight: '80px',
+        borderRadius: '20px',
+        background: IOS_GLASS.card.background,
+        backdropFilter: IOS_GLASS.card.backdropFilter,
+        border: IOS_GLASS.card.border,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '6px',
+        gap: '8px',
         cursor: 'pointer',
-        boxShadow: isFocused
-          ? `${IOS_GLASS.cardSubtle.boxShadow}, 0 0 0 3px ${color}40`
-          : IOS_GLASS.cardSubtle.boxShadow,
+        boxShadow: IOS_GLASS.card.boxShadow,
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
         outline: 'none',
-        transition: 'background 0.2s ease, box-shadow 0.2s ease'
+        position: 'relative',
+        overflow: 'hidden'
       } as React.CSSProperties}
     >
-      <Icon size={20} color={color} />
+      {/* Accent glow */}
+      <div style={{
+        position: 'absolute',
+        top: '-20px',
+        right: '-20px',
+        width: '60px',
+        height: '60px',
+        background: `radial-gradient(circle, ${color}30 0%, transparent 70%)`,
+        pointerEvents: 'none'
+      }} />
+      {/* Specular highlight */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '50%',
+        background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 100%)',
+        pointerEvents: 'none',
+        borderRadius: '20px 20px 0 0'
+      }} />
+      <Icon size={22} color={color} />
       <span style={{
-        fontSize: `${IOS_TYPOGRAPHY.caption1.size}px`,
+        fontSize: '12px',
         fontWeight: '600',
         color: IOS_COLORS.label,
-        letterSpacing: `${IOS_TYPOGRAPHY.caption1.tracking}px`
+        letterSpacing: '0.2px'
       }}>
         {label}
       </span>
@@ -4287,42 +4442,40 @@ function TabBarItem({
   active: boolean;
   onClick: () => void;
 }) {
-  const [isFocused, setIsFocused] = useState(false);
-
   return (
-    <button
+    <motion.button
       onClick={onClick}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
       style={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '2px',
-        background: 'none',
+        gap: '4px',
+        background: active ? 'rgba(10, 132, 255, 0.15)' : 'transparent',
         border: 'none',
         cursor: 'pointer',
-        padding: '8px',
-        minWidth: '60px',
-        borderRadius: '12px',
+        padding: '8px 16px',
+        minWidth: '64px',
+        borderRadius: '16px',
         outline: 'none',
-        boxShadow: isFocused ? `0 0 0 2px ${IOS_COLORS.systemBlue}99` : 'none',
-        transition: 'box-shadow 0.2s ease'
+        transition: 'background 0.2s ease'
       }}
     >
       <Icon
-        size={24}
-        color={active ? IOS_COLORS.systemBlue : IOS_COLORS.secondaryLabel}
+        size={22}
+        color={active ? IOS_COLORS.systemBlue : IOS_COLORS.tertiaryLabel}
       />
       <span style={{
-        fontSize: `${IOS_TYPOGRAPHY.caption2.size}px`,
-        fontWeight: active ? '600' : '400',
-        color: active ? IOS_COLORS.systemBlue : IOS_COLORS.secondaryLabel,
-        letterSpacing: `${IOS_TYPOGRAPHY.caption2.tracking}px`
+        fontSize: '10px',
+        fontWeight: '600',
+        color: active ? IOS_COLORS.systemBlue : IOS_COLORS.tertiaryLabel,
+        letterSpacing: '0.3px',
+        textTransform: 'uppercase' as const
       }}>
         {label}
       </span>
-    </button>
+    </motion.button>
   );
 }
 
