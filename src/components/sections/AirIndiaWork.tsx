@@ -5697,16 +5697,12 @@ export function AirIndiaWork() {
                   </div>
                 </div>
 
-                {/* EXPANDED CONTENT - Hidden (legacy content) */}
+                {/* EXPANDED CONTENT - Interactive demos */}
                 <div style={{
-                  display: 'none', // Hide legacy expanded content
-                  opacity: isExpanded ? 1 : 0,
-                  maxHeight: isExpanded ? '800px' : '0',
-                  transform: isExpanded ? 'translateY(0)' : 'translateY(-20px)',
-                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
-                  overflow: 'hidden',
+                  display: 'flex',
                   flexDirection: 'column',
                   gap: '1.5rem',
+                  marginTop: '2rem',
                 }}>
                   {/* Animated Illustration or Placeholder */}
                   {index === 1 ? (
