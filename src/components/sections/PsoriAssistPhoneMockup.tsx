@@ -298,50 +298,50 @@ const IOS_GLASS = {
   }
 };
 
-// Light Mode Liquid Glass System - White-based for light backgrounds
+// Light Mode Liquid Glass System - iOS secondarySystemBackground for visible contrast
 const IOS_GLASS_LIGHT = {
   card: {
-    background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%)',
+    background: '#F2F2F7',  // iOS secondarySystemBackground - visible on white
     backdropFilter: 'blur(40px) saturate(180%)',
-    border: '1px solid rgba(0, 0, 0, 0.08)',
+    border: '1px solid rgba(0, 0, 0, 0.04)',
     borderRadius: '24px',
     boxShadow: `
-      0 2px 8px rgba(0, 0, 0, 0.08),
-      0 1px 4px rgba(0, 0, 0, 0.06)
+      0 1px 3px rgba(0, 0, 0, 0.06),
+      0 4px 12px rgba(0, 0, 0, 0.03)
     `
   },
 
   cardSubtle: {
-    background: 'linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.6) 100%)',
+    background: 'rgba(242, 242, 247, 0.8)',  // Semi-transparent F2F2F7
     backdropFilter: 'blur(30px) saturate(160%)',
-    border: '1px solid rgba(0, 0, 0, 0.06)',
+    border: '1px solid rgba(0, 0, 0, 0.03)',
     borderRadius: '20px',
-    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.06)'
+    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.04)'
   },
 
   floating: {
-    background: 'rgba(255, 255, 255, 0.85)',
+    background: 'rgba(255, 255, 255, 0.95)',
     backdropFilter: 'blur(50px) saturate(200%)',
-    border: '1px solid rgba(0, 0, 0, 0.06)',
+    border: '1px solid rgba(0, 0, 0, 0.04)',
     borderRadius: '28px',
     boxShadow: `
-      0 4px 16px rgba(0, 0, 0, 0.1),
-      0 2px 8px rgba(0, 0, 0, 0.06)
+      0 2px 8px rgba(0, 0, 0, 0.06),
+      0 8px 24px rgba(0, 0, 0, 0.04)
     `
   },
 
   interactive: {
-    background: 'rgba(0, 0, 0, 0.04)',
+    background: 'rgba(0, 0, 0, 0.03)',
     backdropFilter: 'blur(20px) saturate(160%)',
-    border: '1px solid rgba(0, 0, 0, 0.08)',
+    border: '1px solid rgba(0, 0, 0, 0.05)',
     borderRadius: '16px',
-    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.06)'
+    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)'
   },
 
   pill: {
     background: 'rgba(0, 0, 0, 0.04)',
     backdropFilter: 'blur(10px)',
-    border: '1px solid rgba(0, 0, 0, 0.06)',
+    border: '1px solid rgba(0, 0, 0, 0.04)',
     borderRadius: '100px'
   },
 
@@ -351,22 +351,22 @@ const IOS_GLASS_LIGHT = {
   },
 
   tabBar: {
-    background: 'rgba(255, 255, 255, 0.85)',
-    backdropFilter: 'blur(50px) saturate(200%)'
+    background: 'rgba(249, 249, 249, 0.94)',
+    backdropFilter: 'blur(50px) saturate(180%)'
   },
 
   brandBlueGlass: {
-    background: 'linear-gradient(135deg, rgba(0,122,255,0.15) 0%, rgba(0,122,255,0.06) 100%)',
+    background: 'linear-gradient(135deg, rgba(0,122,255,0.12) 0%, rgba(0,122,255,0.04) 100%)',
     backdropFilter: 'blur(40px) saturate(180%)',
-    border: '1px solid rgba(0,122,255,0.25)',
-    boxShadow: '0 4px 16px rgba(0,122,255,0.15)'
+    border: '1px solid rgba(0,122,255,0.15)',
+    boxShadow: '0 4px 16px rgba(0,122,255,0.08)'
   },
 
   brandGreenGlass: {
-    background: 'linear-gradient(135deg, rgba(52,199,89,0.15) 0%, rgba(52,199,89,0.06) 100%)',
+    background: 'linear-gradient(135deg, rgba(52,199,89,0.12) 0%, rgba(52,199,89,0.04) 100%)',
     backdropFilter: 'blur(40px) saturate(180%)',
-    border: '1px solid rgba(52,199,89,0.25)',
-    boxShadow: '0 4px 16px rgba(52,199,89,0.15)'
+    border: '1px solid rgba(52,199,89,0.15)',
+    boxShadow: '0 4px 16px rgba(52,199,89,0.08)'
   }
 };
 
@@ -703,7 +703,7 @@ export function PsoriAssistPhoneMockup() {
     <div
       style={{
         display: 'flex',
-        justifyContent: 'center',
+        flexDirection: 'column',
         alignItems: 'center',
         padding: '4rem 2rem',
         position: 'relative'
@@ -717,45 +717,51 @@ export function PsoriAssistPhoneMockup() {
         background: effectiveTheme === 'light'
           ? 'radial-gradient(circle, rgba(0,122,255,0.1) 0%, rgba(52,199,89,0.05) 40%, transparent 70%)'
           : 'radial-gradient(circle, rgba(10,132,255,0.15) 0%, rgba(48,209,88,0.1) 40%, transparent 70%)',
-        top: '-100px',
+        top: '0',
         left: '50%',
         transform: 'translateX(-50%)',
         pointerEvents: 'none',
         zIndex: 0
       }} />
 
-      {/* Prototype Theme Toggle Button */}
+      {/* Minimal Theme Toggle - Centered Above Prototype */}
       <motion.button
         onClick={togglePrototypeTheme}
-        whileHover={{ scale: 1.05 }}
+        whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
         style={{
-          position: 'absolute',
-          top: '1rem',
-          right: 'calc(50% - 240px)',
-          padding: '8px 16px',
-          borderRadius: '100px',
-          background: effectiveTheme === 'light'
-            ? 'rgba(0, 0, 0, 0.8)'
-            : 'rgba(255, 255, 255, 0.15)',
-          backdropFilter: 'blur(20px)',
-          border: `1px solid ${effectiveTheme === 'light' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)'}`,
           display: 'flex',
           alignItems: 'center',
-          gap: '8px',
+          justifyContent: 'center',
+          width: '44px',
+          height: '44px',
+          borderRadius: '50%',
+          background: 'var(--glass-08)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid var(--glass-12)',
           cursor: 'pointer',
-          color: effectiveTheme === 'light' ? '#fff' : 'rgba(255, 255, 255, 0.9)',
-          fontSize: '13px',
-          fontWeight: '500',
-          fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif',
-          zIndex: 10,
-          boxShadow: effectiveTheme === 'light'
-            ? '0 4px 16px rgba(0, 0, 0, 0.2)'
-            : '0 4px 16px rgba(0, 0, 0, 0.3)'
+          marginBottom: '1.5rem',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.15)',
+          color: 'var(--text-70)',
+          zIndex: 10
         }}
       >
-        <span style={{ fontSize: '16px' }}>{effectiveTheme === 'light' ? '☀️' : '🌙'}</span>
-        <span>{effectiveTheme === 'light' ? 'Light' : 'Dark'}</span>
+        <motion.div
+          animate={{ rotate: effectiveTheme === 'light' ? 0 : 180 }}
+          transition={{ duration: 0.4, ease: 'easeInOut' }}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          {effectiveTheme === 'light' ? (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="5"/>
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+          ) : (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          )}
+        </motion.div>
       </motion.button>
 
       {/* iPhone 14 Pro Mockup Frame */}
