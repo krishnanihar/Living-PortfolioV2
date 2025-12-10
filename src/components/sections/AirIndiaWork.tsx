@@ -5795,6 +5795,8 @@ export function AirIndiaWork() {
                                 display: 'flex',
                                 flexDirection: 'column',
                                 padding: '60px 20px 20px',
+                                overflowY: 'auto',
+                                overflowX: 'hidden',
                               }}
                             >
                               {/* Header */}
