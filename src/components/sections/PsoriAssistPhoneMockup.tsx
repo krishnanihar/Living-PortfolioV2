@@ -477,6 +477,7 @@ interface ConfettiParticle {
 
 export function PsoriAssistPhoneMockup() {
   const [activeScreen, setActiveScreen] = useState<Screen>('home');
+  const [navigationSource, setNavigationSource] = useState<Screen>('home'); // Track where we navigated from
   const [photoOpacity, setPhotoOpacity] = useState(50);
   const [isCapturing, setIsCapturing] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -1029,6 +1030,7 @@ export function PsoriAssistPhoneMockup() {
               {activeScreen === 'home' && (
                 <HomeScreen
                   setActiveScreen={setActiveScreen}
+                  setNavigationSource={setNavigationSource}
                   streak={streak}
                   prefersReducedMotion={prefersReducedMotion}
                   colors={colors}
@@ -1094,10 +1096,11 @@ export function PsoriAssistPhoneMockup() {
               )}
               {activeScreen === 'triggers' && <TriggerScreen setActiveScreen={setActiveScreen} colors={colors} glass={glass} shadows={shadows} brandColors={brandColors} />}
               {activeScreen === 'report' && <ReportScreen setActiveScreen={setActiveScreen} colors={colors} glass={glass} shadows={shadows} brandColors={brandColors} />}
-              {activeScreen === 'settings' && <SettingsScreen setActiveScreen={setActiveScreen} colors={colors} glass={glass} shadows={shadows} brandColors={brandColors} />}
+              {activeScreen === 'settings' && <SettingsScreen setActiveScreen={setActiveScreen} setNavigationSource={setNavigationSource} colors={colors} glass={glass} shadows={shadows} brandColors={brandColors} />}
               {activeScreen === 'pest' && (
                 <PESTScreen
                   setActiveScreen={setActiveScreen}
+                  navigationSource={navigationSource}
                   pestStep={pestStep}
                   setPestStep={setPestStep}
                   pestAnswers={pestAnswers}
@@ -1114,6 +1117,7 @@ export function PsoriAssistPhoneMockup() {
               {activeScreen === 'flare' && (
                 <FlareAlertScreen
                   setActiveScreen={setActiveScreen}
+                  navigationSource={navigationSource}
                   prefersReducedMotion={prefersReducedMotion}
                   colors={colors}
                   glass={glass}
@@ -1140,6 +1144,7 @@ export function PsoriAssistPhoneMockup() {
               {activeScreen === 'learn' && (
                 <EducationalScreen
                   setActiveScreen={setActiveScreen}
+                  navigationSource={navigationSource}
                   learnCategory={learnCategory}
                   setLearnCategory={setLearnCategory}
                   prefersReducedMotion={prefersReducedMotion}
@@ -1363,6 +1368,7 @@ export function PsoriAssistPhoneMockup() {
 
 function HomeScreen({
   setActiveScreen,
+  setNavigationSource,
   streak,
   prefersReducedMotion,
   colors,
@@ -1371,6 +1377,7 @@ function HomeScreen({
   brandColors
 }: {
   setActiveScreen: (s: Screen) => void;
+  setNavigationSource: (s: Screen) => void;
   streak: number;
   prefersReducedMotion: boolean;
 } & ScreenThemeProps) {
@@ -1596,19 +1603,19 @@ function HomeScreen({
             icon={Bone}
             label="PsA Check"
             color={colors.systemRed}
-            onClick={() => setActiveScreen('pest')}
+            onClick={() => { setNavigationSource('home'); setActiveScreen('pest'); }}
           />
           <QuickActionButton
             icon={AlertTriangle}
             label="Forecast"
             color={colors.systemYellow}
-            onClick={() => setActiveScreen('flare')}
+            onClick={() => { setNavigationSource('home'); setActiveScreen('flare'); }}
           />
           <QuickActionButton
             icon={BookOpen}
             label="Learn"
             color={colors.systemBlue}
-            onClick={() => setActiveScreen('learn')}
+            onClick={() => { setNavigationSource('home'); setActiveScreen('learn'); }}
           />
         </div>
       </div>
@@ -3102,7 +3109,7 @@ function ReportScreen({ setActiveScreen, colors, glass, shadows, brandColors }: 
   );
 }
 
-function SettingsScreen({ setActiveScreen, colors, glass, shadows, brandColors }: { setActiveScreen: (s: Screen) => void } & ScreenThemeProps) {
+function SettingsScreen({ setActiveScreen, setNavigationSource, colors, glass, shadows, brandColors }: { setActiveScreen: (s: Screen) => void; setNavigationSource: (s: Screen) => void } & ScreenThemeProps) {
   return (
     <motion.div
       key="settings"
@@ -3145,10 +3152,10 @@ function SettingsScreen({ setActiveScreen, colors, glass, shadows, brandColors }
         </SettingsSection>
 
         <SettingsSection title="Features">
-          <SettingsItem label="Educational Library" value="→" onClick={() => setActiveScreen('learn')} />
+          <SettingsItem label="Educational Library" value="→" onClick={() => { setNavigationSource('settings'); setActiveScreen('learn'); }} />
           <SettingsItem label="Community" value="→" onClick={() => setActiveScreen('community')} />
-          <SettingsItem label="PsA Screening" value="→" onClick={() => setActiveScreen('pest')} />
-          <SettingsItem label="Flare Forecast" value="→" onClick={() => setActiveScreen('flare')} />
+          <SettingsItem label="PsA Screening" value="→" onClick={() => { setNavigationSource('settings'); setActiveScreen('pest'); }} />
+          <SettingsItem label="Flare Forecast" value="→" onClick={() => { setNavigationSource('settings'); setActiveScreen('flare'); }} />
         </SettingsSection>
 
         <SettingsSection title="Privacy & Data">
@@ -3179,6 +3186,7 @@ const PEST_QUESTIONS = [
 
 function PESTScreen({
   setActiveScreen,
+  navigationSource,
   pestStep,
   setPestStep,
   pestAnswers,
@@ -3192,6 +3200,7 @@ function PESTScreen({
   brandColors
 }: {
   setActiveScreen: (s: Screen) => void;
+  navigationSource: Screen;
   pestStep: number;
   setPestStep: (n: number) => void;
   pestAnswers: (boolean | null)[];
@@ -3223,11 +3232,11 @@ function PESTScreen({
     } else if (pestStep > 0) {
       setPestStep(pestStep - 1);
     } else {
-      // Reset and go back
+      // Reset and go back to where we came from
       setPestStep(0);
       setPestAnswers([null, null, null, null, null]);
       setShowPestResult(false);
-      setActiveScreen('home');
+      setActiveScreen(navigationSource);
     }
   };
 
@@ -3235,7 +3244,7 @@ function PESTScreen({
     setPestStep(0);
     setPestAnswers([null, null, null, null, null]);
     setShowPestResult(false);
-    setActiveScreen('home');
+    setActiveScreen(navigationSource);
   };
 
   return (
@@ -3582,6 +3591,7 @@ const FLARE_ACTIONS = [
 
 function FlareAlertScreen({
   setActiveScreen,
+  navigationSource,
   prefersReducedMotion,
   colors,
   glass,
@@ -3589,6 +3599,7 @@ function FlareAlertScreen({
   brandColors
 }: {
   setActiveScreen: (s: Screen) => void;
+  navigationSource: Screen;
   prefersReducedMotion: boolean;
 } & ScreenThemeProps) {
   const flareProbability = 70;
@@ -3606,7 +3617,7 @@ function FlareAlertScreen({
     >
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-        <BackButton onClick={() => setActiveScreen('home')} />
+        <BackButton onClick={() => setActiveScreen(navigationSource)} />
         <h2 style={{
           fontSize: `${IOS_TYPOGRAPHY.title3.size}px`,
           fontWeight: IOS_TYPOGRAPHY.title3.weight,
@@ -4714,6 +4725,7 @@ const LEARN_CONTENT = [
 
 function EducationalScreen({
   setActiveScreen,
+  navigationSource,
   learnCategory,
   setLearnCategory,
   prefersReducedMotion,
@@ -4723,6 +4735,7 @@ function EducationalScreen({
   brandColors
 }: {
   setActiveScreen: (s: Screen) => void;
+  navigationSource: Screen;
   learnCategory: string;
   setLearnCategory: (c: string) => void;
   prefersReducedMotion: boolean;
@@ -4744,7 +4757,7 @@ function EducationalScreen({
     >
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-        <BackButton onClick={() => setActiveScreen('settings')} />
+        <BackButton onClick={() => setActiveScreen(navigationSource)} />
         <h2 style={{
           fontSize: `${IOS_TYPOGRAPHY.title3.size}px`,
           fontWeight: IOS_TYPOGRAPHY.title3.weight,
