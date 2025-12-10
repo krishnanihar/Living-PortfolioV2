@@ -5802,6 +5802,7 @@ export function AirIndiaWork() {
                                 overflowX: 'hidden',
                                 WebkitOverflowScrolling: 'touch',
                                 touchAction: 'pan-y',
+                                overscrollBehavior: 'contain',
                               }}
                             >
                               {/* Header */}
@@ -6073,6 +6074,7 @@ export function AirIndiaWork() {
                                 overflowX: 'hidden',
                                 WebkitOverflowScrolling: 'touch',
                                 touchAction: 'pan-y',
+                                overscrollBehavior: 'contain',
                               }}
                             >
                               {/* Hero Image */}
