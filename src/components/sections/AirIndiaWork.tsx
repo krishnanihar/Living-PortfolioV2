@@ -5823,7 +5823,7 @@ export function AirIndiaWork() {
                                   width: '48px',
                                   height: '48px',
                                   borderRadius: '14px',
-                                  background: `linear-gradient(135deg, rgb(${project.color}), rgb(${brandRgb}))`,
+                                  background: `rgb(${project.color})`,
                                   display: 'flex',
                                   alignItems: 'center',
                                   justifyContent: 'center',
@@ -6044,7 +6044,7 @@ export function AirIndiaWork() {
                                   transition={{ duration: 1.5, ease: 'easeOut' }}
                                   style={{
                                     height: '100%',
-                                    background: `linear-gradient(90deg, rgb(${project.color}), rgb(${brandRgb}))`,
+                                    background: `rgb(${project.color})`,
                                     borderRadius: '2px',
                                   }}
                                 />
@@ -6310,7 +6310,7 @@ export function AirIndiaWork() {
                                     width: '100%',
                                     padding: '14px',
                                     borderRadius: '14px',
-                                    background: `linear-gradient(135deg, rgb(${project.color}), rgb(${brandRgb}))`,
+                                    background: `rgb(${project.color})`,
                                     border: 'none',
                                     cursor: 'pointer',
                                     display: 'flex',
