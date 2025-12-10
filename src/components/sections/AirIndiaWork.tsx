@@ -5800,6 +5800,8 @@ export function AirIndiaWork() {
                                 padding: '60px 20px 20px',
                                 overflowY: 'auto',
                                 overflowX: 'hidden',
+                                WebkitOverflowScrolling: 'touch',
+                                touchAction: 'pan-y',
                               }}
                             >
                               {/* Header */}
@@ -5880,6 +5882,8 @@ export function AirIndiaWork() {
                                     { name: 'Maldives', location: 'South Asia', temp: '30°C', image: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=400&h=300&fit=crop' },
                                     { name: 'Paris', location: 'France', temp: '18°C', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&h=300&fit=crop' },
                                     { name: 'Tokyo', location: 'Japan', temp: '22°C', image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&h=300&fit=crop' },
+                                    { name: 'Dubai', location: 'UAE', temp: '35°C', image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&h=300&fit=crop' },
+                                    { name: 'Singapore', location: 'Southeast Asia', temp: '32°C', image: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=400&h=300&fit=crop' },
                                   ].map((dest) => (
                                     <motion.button
                                       key={dest.name}
@@ -5928,7 +5932,7 @@ export function AirIndiaWork() {
 
                               {/* AI Badge */}
                               <div style={{
-                                marginTop: 'auto',
+                                marginTop: '24px',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -5936,6 +5940,7 @@ export function AirIndiaWork() {
                                 padding: '10px',
                                 background: 'rgba(0,0,0,0.03)',
                                 borderRadius: '12px',
+                                flexShrink: 0,
                               }}>
                                 <Sparkles size={14} style={{ color: `rgb(${project.color})` }} />
                                 <span style={{
@@ -6066,6 +6071,8 @@ export function AirIndiaWork() {
                                 bottom: 0,
                                 overflowY: 'auto',
                                 overflowX: 'hidden',
+                                WebkitOverflowScrolling: 'touch',
+                                touchAction: 'pan-y',
                               }}
                             >
                               {/* Hero Image */}
