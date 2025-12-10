@@ -5,6 +5,9 @@ import { WorkPageLayout } from '@/components/narrative-work/WorkPageLayout';
 import { NarrativeWorkHero } from '@/components/narrative-work/NarrativeWorkHero';
 import { JourneyOverview } from '@/components/narrative-work/JourneyOverview';
 import { AirIndiaHeroCard } from '@/components/narrative-work/AirIndiaHeroCard';
+import { PsoriAssistHeroCard } from '@/components/narrative-work/PsoriAssistHeroCard';
+import { MetamorphicHeroCard } from '@/components/narrative-work/MetamorphicHeroCard';
+import { LatentSpaceHeroCard } from '@/components/narrative-work/LatentSpaceHeroCard';
 import { type ImpactCard } from '@/components/narrative-work/ImpactBentoGrid';
 import { ResearchShowcase } from '@/components/narrative-work/ResearchShowcase';
 import { ActTransition } from '@/components/narrative-work/ActTransition';
@@ -37,6 +40,27 @@ export function WorkNarrativePage() {
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const researchSectionRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
+
+  // PsoriAssist section state
+  const [psoriassistHoveredCard, setPsoriassistHoveredCard] = useState<number | null>(null);
+  const [psoriassistDebouncedCard, setPsoriassistDebouncedCard] = useState<number | null>(null);
+  const psoriassistHoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [psoriassistCarouselIndex, setPsoriassistCarouselIndex] = useState(0);
+  const psoriassistCarouselRef = useRef<HTMLDivElement>(null);
+
+  // Metamorphic section state
+  const [metamorphicHoveredCard, setMetamorphicHoveredCard] = useState<number | null>(null);
+  const [metamorphicDebouncedCard, setMetamorphicDebouncedCard] = useState<number | null>(null);
+  const metamorphicHoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [metamorphicCarouselIndex, setMetamorphicCarouselIndex] = useState(0);
+  const metamorphicCarouselRef = useRef<HTMLDivElement>(null);
+
+  // Latent Space section state
+  const [latentHoveredCard, setLatentHoveredCard] = useState<number | null>(null);
+  const [latentDebouncedCard, setLatentDebouncedCard] = useState<number | null>(null);
+  const latentHoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [latentCarouselIndex, setLatentCarouselIndex] = useState(0);
+  const latentCarouselRef = useRef<HTMLDivElement>(null);
 
   // Detect mobile devices
   useEffect(() => {
@@ -132,7 +156,64 @@ export function WorkNarrativePage() {
       if (hoverTimeoutRef.current) {
         clearTimeout(hoverTimeoutRef.current);
       }
+      if (psoriassistHoverTimeoutRef.current) {
+        clearTimeout(psoriassistHoverTimeoutRef.current);
+      }
+      if (metamorphicHoverTimeoutRef.current) {
+        clearTimeout(metamorphicHoverTimeoutRef.current);
+      }
+      if (latentHoverTimeoutRef.current) {
+        clearTimeout(latentHoverTimeoutRef.current);
+      }
     };
+  }, []);
+
+  // PsoriAssist debounced hover handler
+  const handlePsoriassistHover = useCallback((cardId: number | null) => {
+    if (psoriassistHoverTimeoutRef.current) {
+      clearTimeout(psoriassistHoverTimeoutRef.current);
+    }
+    if (cardId !== null) {
+      setPsoriassistHoveredCard(cardId);
+      psoriassistHoverTimeoutRef.current = setTimeout(() => {
+        setPsoriassistDebouncedCard(cardId);
+      }, 50);
+    } else {
+      setPsoriassistHoveredCard(null);
+      setPsoriassistDebouncedCard(null);
+    }
+  }, []);
+
+  // Metamorphic debounced hover handler
+  const handleMetamorphicHover = useCallback((cardId: number | null) => {
+    if (metamorphicHoverTimeoutRef.current) {
+      clearTimeout(metamorphicHoverTimeoutRef.current);
+    }
+    if (cardId !== null) {
+      setMetamorphicHoveredCard(cardId);
+      metamorphicHoverTimeoutRef.current = setTimeout(() => {
+        setMetamorphicDebouncedCard(cardId);
+      }, 50);
+    } else {
+      setMetamorphicHoveredCard(null);
+      setMetamorphicDebouncedCard(null);
+    }
+  }, []);
+
+  // Latent Space debounced hover handler
+  const handleLatentHover = useCallback((cardId: number | null) => {
+    if (latentHoverTimeoutRef.current) {
+      clearTimeout(latentHoverTimeoutRef.current);
+    }
+    if (cardId !== null) {
+      setLatentHoveredCard(cardId);
+      latentHoverTimeoutRef.current = setTimeout(() => {
+        setLatentDebouncedCard(cardId);
+      }, 50);
+    } else {
+      setLatentHoveredCard(null);
+      setLatentDebouncedCard(null);
+    }
   }, []);
 
   // Impact Cards with expanded content
@@ -195,6 +276,198 @@ export function WorkNarrativePage() {
       expandedDescription: 'Led hackathon projects that graduated to production. Rapid prototyping to validate ideas before committing engineering resources.',
       metric: '→ Rapid validation',
       tags: ['Prototyping', 'Hackathon', 'MVP'],
+      color: '14, 165, 233',
+    },
+  ];
+
+  // PsoriAssist Impact Cards
+  const psoriassistImpactCards = [
+    {
+      id: 1,
+      label: '01',
+      title: 'Ghost Overlay',
+      description: 'Photo alignment for progress tracking',
+      expandedDescription: 'Innovative camera overlay system that aligns previous photos with current shots, enabling precise visual comparison of psoriasis progression over time.',
+      metric: '↑ Tracking accuracy',
+      tags: ['Computer Vision', 'UX'],
+      color: '236, 72, 153',
+    },
+    {
+      id: 2,
+      label: '02',
+      title: 'AI PASI Scoring',
+      description: 'CNN-based severity assessment, 33% better',
+      expandedDescription: 'Deep learning model trained on dermatological data to provide automated PASI severity scores, improving assessment consistency by 33% compared to manual methods.',
+      metric: '+33% accuracy',
+      tags: ['ML', 'Clinical'],
+      color: '139, 92, 246',
+    },
+    {
+      id: 3,
+      label: '03',
+      title: 'Smart Reminders',
+      description: 'Context-aware medication adherence',
+      expandedDescription: 'Intelligent notification system that learns user behavior patterns to deliver reminders at optimal times, improving medication adherence rates.',
+      metric: '↑ Adherence rate',
+      tags: ['Notifications', 'AI'],
+      color: '16, 185, 129',
+    },
+    {
+      id: 4,
+      label: '04',
+      title: 'Early PsA Detection',
+      description: 'PEST screening for arthritis',
+      expandedDescription: 'Integrated PEST (Psoriasis Epidemiology Screening Tool) questionnaire with AI analysis to flag early signs of psoriatic arthritis.',
+      metric: '→ Prevention first',
+      tags: ['Prevention', 'ML'],
+      color: '251, 146, 60',
+    },
+    {
+      id: 5,
+      label: '05',
+      title: 'Mental Health',
+      description: 'PHQ-9/GAD-7 integrated screening',
+      expandedDescription: 'Holistic health approach with validated mental health questionnaires integrated into regular check-ins, recognizing the psychological impact of chronic skin conditions.',
+      metric: '↑ Holistic care',
+      tags: ['Holistic', 'Research'],
+      color: '14, 165, 233',
+    },
+    {
+      id: 6,
+      label: '06',
+      title: 'Provider Dashboard',
+      description: 'Clinical data export & analytics',
+      expandedDescription: 'B2B analytics dashboard for healthcare providers with HIPAA-compliant data export, patient progress tracking, and population health insights.',
+      metric: '→ Clinical integration',
+      tags: ['B2B', 'Analytics'],
+      color: '99, 102, 241',
+    },
+  ];
+
+  // Metamorphic Impact Cards
+  const metamorphicImpactCards = [
+    {
+      id: 1,
+      label: '01',
+      title: 'Research Foundation',
+      description: 'Psychedelic literature & trip reports',
+      expandedDescription: 'Deep research into psychedelic phenomenology, studying trip reports and academic literature to inform the visual language of consciousness exploration.',
+      metric: '→ Conceptual depth',
+      tags: ['Conceptual', 'Research'],
+      color: '147, 51, 234',
+    },
+    {
+      id: 2,
+      label: '02',
+      title: '3D Modelling',
+      description: 'VR previsualization of installation',
+      expandedDescription: 'Created detailed 3D models in Blender for VR previsualization, allowing stakeholders to experience the installation before physical construction.',
+      metric: '↑ Stakeholder buy-in',
+      tags: ['Blender', 'VR'],
+      color: '139, 92, 246',
+    },
+    {
+      id: 3,
+      label: '03',
+      title: 'TouchDesigner',
+      description: 'Real-time visual generation',
+      expandedDescription: 'Built the core visual engine in TouchDesigner, creating responsive generative systems that morph and evolve based on audience interaction.',
+      metric: '→ Real-time response',
+      tags: ['Creative Coding', 'TD'],
+      color: '236, 72, 153',
+    },
+    {
+      id: 4,
+      label: '04',
+      title: 'Stable Diffusion',
+      description: 'AI-generated fractal imagery',
+      expandedDescription: 'Trained custom Stable Diffusion models on fractal and psychedelic imagery to generate unique visual assets that blend organic and geometric forms.',
+      metric: '→ Unique aesthetics',
+      tags: ['Generative AI', 'SD'],
+      color: '16, 185, 129',
+    },
+    {
+      id: 5,
+      label: '05',
+      title: 'Arduino Integration',
+      description: 'Sensor-driven interactions',
+      expandedDescription: 'Designed custom Arduino sensor arrays to capture audience presence and movement, translating physical interaction into visual responses.',
+      metric: '↑ Interactivity',
+      tags: ['Hardware', 'IoT'],
+      color: '251, 146, 60',
+    },
+    {
+      id: 6,
+      label: '06',
+      title: 'Audio-Reactive SFX',
+      description: 'Sound-responsive visuals',
+      expandedDescription: 'Created a binaural audio soundscape with visuals that respond to frequency and amplitude, creating a multi-sensory immersive experience.',
+      metric: '→ Multi-sensory',
+      tags: ['Sound Design', 'Audio'],
+      color: '14, 165, 233',
+    },
+  ];
+
+  // Latent Space Impact Cards
+  const latentSpaceImpactCards = [
+    {
+      id: 1,
+      label: '01',
+      title: 'Eye-Gaze Tracking',
+      description: '87% REM detection accuracy',
+      expandedDescription: 'Developed speculative eye-tracking algorithms capable of detecting REM sleep phases with 87% accuracy through subtle lid movement analysis.',
+      metric: '87% accuracy',
+      tags: ['Detection', 'ML'],
+      color: '139, 92, 246',
+    },
+    {
+      id: 2,
+      label: '02',
+      title: 'EEG Delta Analysis',
+      description: '92% dream state accuracy',
+      expandedDescription: 'Proposed EEG-based system analyzing delta wave patterns to identify dream states with 92% accuracy, enabling precise dream capture timing.',
+      metric: '92% accuracy',
+      tags: ['Neuroscience', 'EEG'],
+      color: '147, 51, 234',
+    },
+    {
+      id: 3,
+      label: '03',
+      title: 'Biometric Fusion',
+      description: '95% multi-modal accuracy',
+      expandedDescription: 'Conceptualized sensor fusion architecture combining EEG, eye-tracking, and physiological data for comprehensive dream state detection.',
+      metric: '95% combined',
+      tags: ['Sensor Fusion', 'AI'],
+      color: '236, 72, 153',
+    },
+    {
+      id: 4,
+      label: '04',
+      title: 'Consent Framework',
+      description: 'Ethical dream data ownership',
+      expandedDescription: 'Designed a comprehensive ethical framework addressing dream data ownership, privacy rights, and consent protocols for speculative dream technology.',
+      metric: '→ Ethics first',
+      tags: ['Ethics', 'Privacy'],
+      color: '16, 185, 129',
+    },
+    {
+      id: 5,
+      label: '05',
+      title: 'Dream Recorder',
+      description: 'Speculative design fiction prototype',
+      expandedDescription: 'Created detailed product fiction for the Dream Recorder device, exploring form factors, interaction paradigms, and user experience implications.',
+      metric: '→ Speculation',
+      tags: ['Speculation', 'Product'],
+      color: '251, 146, 60',
+    },
+    {
+      id: 6,
+      label: '06',
+      title: 'Narrative Arc',
+      description: 'Three-act storytelling structure',
+      expandedDescription: 'Structured the case study as a three-act narrative: Seduction (promise), Complication (ethics), Resolution (framework), creating an immersive reading experience.',
+      metric: '→ Storytelling',
+      tags: ['UX Writing', 'Narrative'],
       color: '14, 165, 233',
     },
   ];
@@ -624,221 +897,853 @@ export function WorkNarrativePage() {
         )}
       </section>
 
-      {/* SECTION 7: Research Triptych */}
-      <section
-        ref={researchSectionRef}
-        style={{
-          position: 'relative',
-          paddingTop: 'clamp(2rem, 4vw, 3rem)',
-          paddingBottom: 'clamp(2rem, 4vw, 3rem)',
-          paddingLeft: isMobile ? '1rem' : '1.5rem',
-          paddingRight: isMobile ? '1rem' : '1.5rem',
-        }}
-      >
-        <div style={{
-          maxWidth: '96rem',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: isMobile ? '3rem' : '4rem',
-        }}>
-          {/* Latent Space */}
-          <Suspense fallback={<ResearchSkeleton />}>
-            <ResearchShowcase
-              project={{
-                title: 'Latent Space',
-                description: 'A speculative design exploration questioning the ethics of dream technology. What do we lose when we quantify consciousness?',
-                category: 'Speculative Design',
-                stats: [
-                  { label: 'Provocations', value: '12+' },
-                  { label: 'Ethical Considerations', value: '8' },
-                  { label: 'Privacy Approach', value: 'First' },
-                ],
-                caseStudyUrl: '/work/latent-space',
-                color: '147, 51, 234',
-              }}
-              inView={researchInView}
-              index={0}
-            />
-          </Suspense>
-
-          {/* mythOS */}
-          <Suspense fallback={<ResearchSkeleton />}>
-            <ResearchShowcase
-              project={{
-                title: 'mythOS',
-                description: 'An AI-powered exhibition generator that creates personalized mythological journeys. Built with Gemini AI.',
-                category: 'AI Experiment',
-                demoUrl: 'https://mythos-demo.vercel.app',
-                caseStudyUrl: '/work/mythos',
-                color: '139, 92, 246',
-              }}
-              inView={researchInView}
-              index={1}
-            />
-          </Suspense>
-
-          {/* PsoriAssist */}
-          <Suspense fallback={<ResearchSkeleton />}>
-            <ResearchShowcase
-              project={{
-                title: 'PsoriAssist',
-                description: '18 months. 2M patients. Clinical validation pathway. AI-powered psoriasis management with iOS prototypes.',
-                category: 'Health Tech · Featured',
-                stats: [
-                  { label: 'SUS Score', value: '82/100' },
-                  { label: 'Year 5 Projection', value: '$38M' },
-                  { label: 'AI PASI Accuracy', value: '+33%' },
-                ],
-                caseStudyUrl: '/work/psoriassist',
-                color: '236, 72, 153',
-              }}
-              inView={researchInView}
-              index={2}
-            />
-          </Suspense>
-        </div>
-      </section>
-
-      {/* SECTION 8: Metamorphic Fractal Reflections */}
+      {/* PSORIASSIST SECTION */}
       <section style={{
+        maxWidth: '1400px',
+        margin: '0 auto',
+        padding: '4rem 1.5rem',
         position: 'relative',
-        paddingTop: 'clamp(2rem, 4vw, 3rem)',
-        paddingBottom: 'clamp(2rem, 4vw, 3rem)',
-        paddingLeft: isMobile ? '1rem' : '1.5rem',
-        paddingRight: isMobile ? '1rem' : '1.5rem',
-      }} ref={sectionRef}>
-        <div style={{
-          maxWidth: '80rem',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-        }}>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            style={{ willChange: 'opacity, transform' }}
-          >
-            <p style={{
-              fontSize: isMobile ? '0.75rem' : '0.875rem',
-              fontWeight: '300',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--text-100)',
-              marginBottom: '1rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.75rem',
-            }}>
-              {/* NID Logo */}
-              <span style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '32px',
-                height: '32px',
-                background: 'var(--glass-95)',
-                borderRadius: '8px',
-                padding: '4px',
-                flexShrink: 0,
-              }}>
-                <Image
-                  src="/logos/nid.svg"
-                  alt="National Institute of Design"
-                  width={24}
-                  height={24}
-                  style={{ objectFit: 'contain' }}
-                />
-              </span>
-              College Project · 2023
-            </p>
-            <h2 style={{
-              fontSize: 'clamp(2rem, 5vw, 3rem)',
-              fontWeight: '200',
-              color: 'var(--text-primary)',
-              marginBottom: '1.5rem',
-            }}>
-              Metamorphic Fractal Reflections
-            </h2>
-            <p style={{
-              fontSize: isMobile ? '1rem' : '1.125rem',
-              color: 'var(--text-90)',
-              lineHeight: '1.625',
-              marginBottom: '2rem',
-              maxWidth: '48rem',
-            }}>
-              An immersive installation exploring consciousness through ego dissolution.
-              Inspired by <em>The Psychedelic Experience</em>, this generative art piece
-              guides viewers through an 8-stage journey of self-discovery.
-            </p>
+        zIndex: 1,
+      }}>
+        <PsoriAssistHeroCard />
 
-            {/* Video embed */}
-            <div style={{
-              borderRadius: '1rem',
-              overflow: 'hidden',
-              marginBottom: '2rem',
-              background: 'var(--surface-secondary)',
-              backdropFilter: 'blur(40px)',
-              WebkitBackdropFilter: 'blur(40px)',
-              border: '1px solid var(--border-primary)',
-              willChange: 'transform',
-            }}>
-              <iframe
-                src="https://www.youtube.com/embed/your-video-id"
+        {/* Desktop: Bento Grid */}
+        {!isMobile && (() => {
+          const getGridTemplate = () => {
+            if (!psoriassistDebouncedCard) {
+              return { cols: '1fr 1fr 1fr', rows: '1fr 1fr' };
+            }
+            const index = psoriassistImpactCards.findIndex(c => c.id === psoriassistDebouncedCard);
+            const col = index % 3;
+            const row = Math.floor(index / 3);
+            const cols = [0, 1, 2].map(c => c === col ? '2fr' : '0.5fr').join(' ');
+            const rows = [0, 1].map(r => r === row ? '2fr' : '0.5fr').join(' ');
+            return { cols, rows };
+          };
+          const { cols, rows } = getGridTemplate();
+
+          return (
+            <LayoutGroup>
+              <motion.div
+                layout
                 style={{
-                  width: '100%',
-                  aspectRatio: '16 / 9',
+                  display: 'grid',
+                  gridTemplateColumns: cols,
+                  gridTemplateRows: rows,
+                  gap: '1.5rem',
                 }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
+                transition={{
+                  layout: { duration: 0.5, ease: [0.32, 0.72, 0, 1] }
+                }}
+              >
+                {psoriassistImpactCards.map((card) => {
+                  const isHovered = psoriassistHoveredCard === card.id;
+                  return (
+                    <motion.div
+                      key={card.id}
+                      layout
+                      layoutId={`psoriassist-card-${card.id}`}
+                      onHoverStart={() => handlePsoriassistHover(card.id)}
+                      onHoverEnd={() => handlePsoriassistHover(null)}
+                      transition={{ layout: { duration: 0.4, ease: [0.32, 0.72, 0, 1] } }}
+                      style={{
+                        position: 'relative',
+                        padding: isHovered ? '2rem' : '1.5rem',
+                        borderRadius: 20,
+                        background: isHovered
+                          ? `linear-gradient(135deg, rgba(${card.color}, 0.08), var(--surface-primary))`
+                          : 'var(--surface-primary)',
+                        backdropFilter: 'blur(40px)',
+                        WebkitBackdropFilter: 'blur(40px)',
+                        border: '1px solid transparent',
+                        cursor: 'pointer',
+                        boxShadow: isHovered
+                          ? `0 30px 60px rgba(${card.color}, 0.2)`
+                          : 'var(--shadow-sm)',
+                        overflow: 'hidden',
+                        transition: 'background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease',
+                      }}
+                    >
+                      {isHovered && (
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          borderRadius: '20px',
+                          padding: '1px',
+                          background: `linear-gradient(90deg, transparent, rgba(${card.color}, 0.8), transparent)`,
+                          backgroundSize: '200% 100%',
+                          animation: 'borderShimmer 3s ease-in-out infinite',
+                          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                          WebkitMaskComposite: 'xor',
+                          maskComposite: 'exclude',
+                          pointerEvents: 'none',
+                        }} />
+                      )}
+                      <div style={{ display: 'flex', gap: '1.5rem', height: '100%' }}>
+                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                          <div style={{
+                            fontSize: '0.75rem',
+                            fontWeight: '600',
+                            color: `rgb(${card.color})`,
+                            marginBottom: '1rem',
+                            letterSpacing: '0.1em',
+                            opacity: 0.8,
+                          }}>
+                            {card.label}
+                          </div>
+                          <h3 style={{
+                            fontSize: '1.25rem',
+                            fontWeight: '500',
+                            color: 'var(--text-primary)',
+                            marginBottom: '0.75rem',
+                            letterSpacing: '-0.01em',
+                          }}>
+                            {card.title}
+                          </h3>
+                          <p style={{
+                            fontSize: '0.875rem',
+                            color: 'var(--text-tertiary)',
+                            lineHeight: '1.6',
+                            marginBottom: '1rem',
+                          }}>
+                            {isHovered ? card.expandedDescription : card.description}
+                          </p>
+                          {isHovered && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.3, delay: 0.1 }}
+                              style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}
+                            >
+                              {card.tags.map((tag: string, i: number) => (
+                                <span key={i} style={{
+                                  fontSize: '0.6875rem',
+                                  padding: '0.25rem 0.5rem',
+                                  borderRadius: '4px',
+                                  background: `rgba(${card.color}, 0.15)`,
+                                  color: `rgb(${card.color})`,
+                                  fontWeight: '500',
+                                }}>
+                                  {tag}
+                                </span>
+                              ))}
+                            </motion.div>
+                          )}
+                          <div style={{
+                            fontSize: '0.813rem',
+                            fontWeight: '500',
+                            color: `rgb(${card.color})`,
+                            letterSpacing: '0.02em',
+                            marginTop: 'auto',
+                          }}>
+                            {card.metric}
+                          </div>
+                        </div>
+                        {isHovered && (
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
+                            style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}
+                          >
+                            <div style={{
+                              flex: 1,
+                              borderRadius: '12px',
+                              background: `linear-gradient(135deg, rgba(${card.color}, 0.1), rgba(${card.color}, 0.05))`,
+                              border: `1px dashed rgba(${card.color}, 0.3)`,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              minHeight: '120px',
+                            }}>
+                              <div style={{ textAlign: 'center', color: `rgba(${card.color}, 0.5)` }}>
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                                  <polyline points="21 15 16 10 5 21"/>
+                                </svg>
+                                <p style={{ fontSize: '0.6875rem', marginTop: '0.5rem' }}>Preview</p>
+                              </div>
+                            </div>
+                            <div style={{ display: 'flex', gap: '0.5rem' }}>
+                              {[1, 2].map((i) => (
+                                <div key={i} style={{
+                                  flex: 1,
+                                  height: '48px',
+                                  borderRadius: '8px',
+                                  background: `rgba(${card.color}, 0.08)`,
+                                  border: `1px dashed rgba(${card.color}, 0.2)`,
+                                }} />
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+                <PsoriAssistCTACard isMobile={false} />
+              </motion.div>
+            </LayoutGroup>
+          );
+        })()}
 
-            {/* Tech stack */}
-            <div style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: isMobile ? '0.375rem' : '0.5rem',
-              marginBottom: '2rem',
-            }}>
-              {['Processing', 'Generative Art', 'Projection Mapping', 'Sound Design'].map((tech) => (
-                <motion.span
-                  key={tech}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
+        {/* Mobile: Horizontal Carousel */}
+        {isMobile && (
+          <>
+            <div
+              ref={psoriassistCarouselRef}
+              style={{
+                display: 'flex',
+                gap: '1rem',
+                overflowX: 'auto',
+                scrollSnapType: 'x mandatory',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch',
+              }}
+            >
+              {psoriassistImpactCards.map((card) => (
+                <div
+                  key={card.id}
                   style={{
-                    paddingLeft: isMobile ? '0.625rem' : '0.75rem',
-                    paddingRight: isMobile ? '0.625rem' : '0.75rem',
-                    paddingTop: '0.375rem',
-                    paddingBottom: '0.375rem',
-                    borderRadius: '0.5rem',
-                    fontSize: isMobile ? '0.6875rem' : '0.75rem',
-                    background: 'var(--glass-08)',
-                    border: '1px solid var(--glass-15)',
-                    color: 'var(--text-90)',
-                    transition: 'all 0.3s ease',
-                    cursor: 'default',
-                    willChange: 'transform',
+                    flex: '0 0 85%',
+                    scrollSnapAlign: 'center',
+                    position: 'relative',
+                    padding: '2rem',
+                    borderRadius: '20px',
+                    background: 'var(--surface-primary)',
+                    backdropFilter: 'blur(40px)',
+                    WebkitBackdropFilter: 'blur(40px)',
+                    border: '1px solid var(--border-primary)',
+                    boxShadow: 'var(--shadow-sm)',
                   }}
                 >
-                  {tech}
-                </motion.span>
+                  <div style={{
+                    fontSize: '0.75rem',
+                    fontWeight: '600',
+                    color: `rgb(${card.color})`,
+                    marginBottom: '1rem',
+                    letterSpacing: '0.1em',
+                    opacity: 0.8,
+                  }}>
+                    {card.label}
+                  </div>
+                  <h3 style={{
+                    fontSize: '1.25rem',
+                    fontWeight: '500',
+                    color: 'var(--text-primary)',
+                    marginBottom: '0.75rem',
+                  }}>
+                    {card.title}
+                  </h3>
+                  <p style={{
+                    fontSize: '0.875rem',
+                    color: 'var(--text-tertiary)',
+                    lineHeight: '1.6',
+                    marginBottom: '1.5rem',
+                  }}>
+                    {card.description}
+                  </p>
+                  <div style={{
+                    fontSize: '0.813rem',
+                    fontWeight: '500',
+                    color: `rgb(${card.color})`,
+                  }}>
+                    {card.metric}
+                  </div>
+                </div>
+              ))}
+              <PsoriAssistCTACard isMobile={true} />
+            </div>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              marginTop: '2rem',
+            }}>
+              {psoriassistImpactCards.map((_, index) => (
+                <div
+                  key={index}
+                  style={{
+                    width: psoriassistCarouselIndex === index ? '24px' : '8px',
+                    height: '8px',
+                    borderRadius: '4px',
+                    background: psoriassistCarouselIndex === index ? 'var(--accent-primary)' : 'var(--border-primary)',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                />
               ))}
             </div>
-
-            {/* View Case Study Button with enhanced hover */}
-            <EnhancedButton
-              href="/work/metamorphic-fractal-reflections"
-              label="View Full Case Study"
-              isMobile={isMobile}
-            />
-          </motion.div>
-        </div>
+          </>
+        )}
       </section>
 
-      {/* SECTION 11: Closing & Navigation */}
+      {/* METAMORPHIC FRACTAL SECTION */}
+      <section style={{
+        maxWidth: '1400px',
+        margin: '0 auto',
+        padding: '4rem 1.5rem',
+        position: 'relative',
+        zIndex: 1,
+      }}>
+        <MetamorphicHeroCard />
+
+        {/* Desktop: Bento Grid */}
+        {!isMobile && (() => {
+          const getGridTemplate = () => {
+            if (!metamorphicDebouncedCard) {
+              return { cols: '1fr 1fr 1fr', rows: '1fr 1fr' };
+            }
+            const index = metamorphicImpactCards.findIndex(c => c.id === metamorphicDebouncedCard);
+            const col = index % 3;
+            const row = Math.floor(index / 3);
+            const cols = [0, 1, 2].map(c => c === col ? '2fr' : '0.5fr').join(' ');
+            const rows = [0, 1].map(r => r === row ? '2fr' : '0.5fr').join(' ');
+            return { cols, rows };
+          };
+          const { cols, rows } = getGridTemplate();
+
+          return (
+            <LayoutGroup>
+              <motion.div
+                layout
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: cols,
+                  gridTemplateRows: rows,
+                  gap: '1.5rem',
+                }}
+                transition={{
+                  layout: { duration: 0.5, ease: [0.32, 0.72, 0, 1] }
+                }}
+              >
+                {metamorphicImpactCards.map((card) => {
+                  const isHovered = metamorphicHoveredCard === card.id;
+                  return (
+                    <motion.div
+                      key={card.id}
+                      layout
+                      layoutId={`metamorphic-card-${card.id}`}
+                      onHoverStart={() => handleMetamorphicHover(card.id)}
+                      onHoverEnd={() => handleMetamorphicHover(null)}
+                      transition={{ layout: { duration: 0.4, ease: [0.32, 0.72, 0, 1] } }}
+                      style={{
+                        position: 'relative',
+                        padding: isHovered ? '2rem' : '1.5rem',
+                        borderRadius: 20,
+                        background: isHovered
+                          ? `linear-gradient(135deg, rgba(${card.color}, 0.08), var(--surface-primary))`
+                          : 'var(--surface-primary)',
+                        backdropFilter: 'blur(40px)',
+                        WebkitBackdropFilter: 'blur(40px)',
+                        border: '1px solid transparent',
+                        cursor: 'pointer',
+                        boxShadow: isHovered
+                          ? `0 30px 60px rgba(${card.color}, 0.2)`
+                          : 'var(--shadow-sm)',
+                        overflow: 'hidden',
+                        transition: 'background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease',
+                      }}
+                    >
+                      {isHovered && (
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          borderRadius: '20px',
+                          padding: '1px',
+                          background: `linear-gradient(90deg, transparent, rgba(${card.color}, 0.8), transparent)`,
+                          backgroundSize: '200% 100%',
+                          animation: 'borderShimmer 3s ease-in-out infinite',
+                          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                          WebkitMaskComposite: 'xor',
+                          maskComposite: 'exclude',
+                          pointerEvents: 'none',
+                        }} />
+                      )}
+                      <div style={{ display: 'flex', gap: '1.5rem', height: '100%' }}>
+                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                          <div style={{
+                            fontSize: '0.75rem',
+                            fontWeight: '600',
+                            color: `rgb(${card.color})`,
+                            marginBottom: '1rem',
+                            letterSpacing: '0.1em',
+                            opacity: 0.8,
+                          }}>
+                            {card.label}
+                          </div>
+                          <h3 style={{
+                            fontSize: '1.25rem',
+                            fontWeight: '500',
+                            color: 'var(--text-primary)',
+                            marginBottom: '0.75rem',
+                            letterSpacing: '-0.01em',
+                          }}>
+                            {card.title}
+                          </h3>
+                          <p style={{
+                            fontSize: '0.875rem',
+                            color: 'var(--text-tertiary)',
+                            lineHeight: '1.6',
+                            marginBottom: '1rem',
+                          }}>
+                            {isHovered ? card.expandedDescription : card.description}
+                          </p>
+                          {isHovered && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.3, delay: 0.1 }}
+                              style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}
+                            >
+                              {card.tags.map((tag: string, i: number) => (
+                                <span key={i} style={{
+                                  fontSize: '0.6875rem',
+                                  padding: '0.25rem 0.5rem',
+                                  borderRadius: '4px',
+                                  background: `rgba(${card.color}, 0.15)`,
+                                  color: `rgb(${card.color})`,
+                                  fontWeight: '500',
+                                }}>
+                                  {tag}
+                                </span>
+                              ))}
+                            </motion.div>
+                          )}
+                          <div style={{
+                            fontSize: '0.813rem',
+                            fontWeight: '500',
+                            color: `rgb(${card.color})`,
+                            letterSpacing: '0.02em',
+                            marginTop: 'auto',
+                          }}>
+                            {card.metric}
+                          </div>
+                        </div>
+                        {isHovered && (
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
+                            style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}
+                          >
+                            <div style={{
+                              flex: 1,
+                              borderRadius: '12px',
+                              background: `linear-gradient(135deg, rgba(${card.color}, 0.1), rgba(${card.color}, 0.05))`,
+                              border: `1px dashed rgba(${card.color}, 0.3)`,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              minHeight: '120px',
+                            }}>
+                              <div style={{ textAlign: 'center', color: `rgba(${card.color}, 0.5)` }}>
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                                  <polyline points="21 15 16 10 5 21"/>
+                                </svg>
+                                <p style={{ fontSize: '0.6875rem', marginTop: '0.5rem' }}>Preview</p>
+                              </div>
+                            </div>
+                            <div style={{ display: 'flex', gap: '0.5rem' }}>
+                              {[1, 2].map((i) => (
+                                <div key={i} style={{
+                                  flex: 1,
+                                  height: '48px',
+                                  borderRadius: '8px',
+                                  background: `rgba(${card.color}, 0.08)`,
+                                  border: `1px dashed rgba(${card.color}, 0.2)`,
+                                }} />
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+                <MetamorphicCTACard isMobile={false} />
+              </motion.div>
+            </LayoutGroup>
+          );
+        })()}
+
+        {/* Mobile: Horizontal Carousel */}
+        {isMobile && (
+          <>
+            <div
+              ref={metamorphicCarouselRef}
+              style={{
+                display: 'flex',
+                gap: '1rem',
+                overflowX: 'auto',
+                scrollSnapType: 'x mandatory',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch',
+              }}
+            >
+              {metamorphicImpactCards.map((card) => (
+                <div
+                  key={card.id}
+                  style={{
+                    flex: '0 0 85%',
+                    scrollSnapAlign: 'center',
+                    position: 'relative',
+                    padding: '2rem',
+                    borderRadius: '20px',
+                    background: 'var(--surface-primary)',
+                    backdropFilter: 'blur(40px)',
+                    WebkitBackdropFilter: 'blur(40px)',
+                    border: '1px solid var(--border-primary)',
+                    boxShadow: 'var(--shadow-sm)',
+                  }}
+                >
+                  <div style={{
+                    fontSize: '0.75rem',
+                    fontWeight: '600',
+                    color: `rgb(${card.color})`,
+                    marginBottom: '1rem',
+                    letterSpacing: '0.1em',
+                    opacity: 0.8,
+                  }}>
+                    {card.label}
+                  </div>
+                  <h3 style={{
+                    fontSize: '1.25rem',
+                    fontWeight: '500',
+                    color: 'var(--text-primary)',
+                    marginBottom: '0.75rem',
+                  }}>
+                    {card.title}
+                  </h3>
+                  <p style={{
+                    fontSize: '0.875rem',
+                    color: 'var(--text-tertiary)',
+                    lineHeight: '1.6',
+                    marginBottom: '1.5rem',
+                  }}>
+                    {card.description}
+                  </p>
+                  <div style={{
+                    fontSize: '0.813rem',
+                    fontWeight: '500',
+                    color: `rgb(${card.color})`,
+                  }}>
+                    {card.metric}
+                  </div>
+                </div>
+              ))}
+              <MetamorphicCTACard isMobile={true} />
+            </div>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              marginTop: '2rem',
+            }}>
+              {metamorphicImpactCards.map((_, index) => (
+                <div
+                  key={index}
+                  style={{
+                    width: metamorphicCarouselIndex === index ? '24px' : '8px',
+                    height: '8px',
+                    borderRadius: '4px',
+                    background: metamorphicCarouselIndex === index ? 'var(--accent-primary)' : 'var(--border-primary)',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </section>
+
+      {/* LATENT SPACE SECTION */}
+      <section style={{
+        maxWidth: '1400px',
+        margin: '0 auto',
+        padding: '4rem 1.5rem',
+        position: 'relative',
+        zIndex: 1,
+      }}>
+        <LatentSpaceHeroCard />
+
+        {/* Desktop: Bento Grid */}
+        {!isMobile && (() => {
+          const getGridTemplate = () => {
+            if (!latentDebouncedCard) {
+              return { cols: '1fr 1fr 1fr', rows: '1fr 1fr' };
+            }
+            const index = latentSpaceImpactCards.findIndex(c => c.id === latentDebouncedCard);
+            const col = index % 3;
+            const row = Math.floor(index / 3);
+            const cols = [0, 1, 2].map(c => c === col ? '2fr' : '0.5fr').join(' ');
+            const rows = [0, 1].map(r => r === row ? '2fr' : '0.5fr').join(' ');
+            return { cols, rows };
+          };
+          const { cols, rows } = getGridTemplate();
+
+          return (
+            <LayoutGroup>
+              <motion.div
+                layout
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: cols,
+                  gridTemplateRows: rows,
+                  gap: '1.5rem',
+                }}
+                transition={{
+                  layout: { duration: 0.5, ease: [0.32, 0.72, 0, 1] }
+                }}
+              >
+                {latentSpaceImpactCards.map((card) => {
+                  const isHovered = latentHoveredCard === card.id;
+                  return (
+                    <motion.div
+                      key={card.id}
+                      layout
+                      layoutId={`latent-card-${card.id}`}
+                      onHoverStart={() => handleLatentHover(card.id)}
+                      onHoverEnd={() => handleLatentHover(null)}
+                      transition={{ layout: { duration: 0.4, ease: [0.32, 0.72, 0, 1] } }}
+                      style={{
+                        position: 'relative',
+                        padding: isHovered ? '2rem' : '1.5rem',
+                        borderRadius: 20,
+                        background: isHovered
+                          ? `linear-gradient(135deg, rgba(${card.color}, 0.08), var(--surface-primary))`
+                          : 'var(--surface-primary)',
+                        backdropFilter: 'blur(40px)',
+                        WebkitBackdropFilter: 'blur(40px)',
+                        border: '1px solid transparent',
+                        cursor: 'pointer',
+                        boxShadow: isHovered
+                          ? `0 30px 60px rgba(${card.color}, 0.2)`
+                          : 'var(--shadow-sm)',
+                        overflow: 'hidden',
+                        transition: 'background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease',
+                      }}
+                    >
+                      {isHovered && (
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          borderRadius: '20px',
+                          padding: '1px',
+                          background: `linear-gradient(90deg, transparent, rgba(${card.color}, 0.8), transparent)`,
+                          backgroundSize: '200% 100%',
+                          animation: 'borderShimmer 3s ease-in-out infinite',
+                          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                          WebkitMaskComposite: 'xor',
+                          maskComposite: 'exclude',
+                          pointerEvents: 'none',
+                        }} />
+                      )}
+                      <div style={{ display: 'flex', gap: '1.5rem', height: '100%' }}>
+                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                          <div style={{
+                            fontSize: '0.75rem',
+                            fontWeight: '600',
+                            color: `rgb(${card.color})`,
+                            marginBottom: '1rem',
+                            letterSpacing: '0.1em',
+                            opacity: 0.8,
+                          }}>
+                            {card.label}
+                          </div>
+                          <h3 style={{
+                            fontSize: '1.25rem',
+                            fontWeight: '500',
+                            color: 'var(--text-primary)',
+                            marginBottom: '0.75rem',
+                            letterSpacing: '-0.01em',
+                          }}>
+                            {card.title}
+                          </h3>
+                          <p style={{
+                            fontSize: '0.875rem',
+                            color: 'var(--text-tertiary)',
+                            lineHeight: '1.6',
+                            marginBottom: '1rem',
+                          }}>
+                            {isHovered ? card.expandedDescription : card.description}
+                          </p>
+                          {isHovered && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.3, delay: 0.1 }}
+                              style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}
+                            >
+                              {card.tags.map((tag: string, i: number) => (
+                                <span key={i} style={{
+                                  fontSize: '0.6875rem',
+                                  padding: '0.25rem 0.5rem',
+                                  borderRadius: '4px',
+                                  background: `rgba(${card.color}, 0.15)`,
+                                  color: `rgb(${card.color})`,
+                                  fontWeight: '500',
+                                }}>
+                                  {tag}
+                                </span>
+                              ))}
+                            </motion.div>
+                          )}
+                          <div style={{
+                            fontSize: '0.813rem',
+                            fontWeight: '500',
+                            color: `rgb(${card.color})`,
+                            letterSpacing: '0.02em',
+                            marginTop: 'auto',
+                          }}>
+                            {card.metric}
+                          </div>
+                        </div>
+                        {isHovered && (
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
+                            style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}
+                          >
+                            <div style={{
+                              flex: 1,
+                              borderRadius: '12px',
+                              background: `linear-gradient(135deg, rgba(${card.color}, 0.1), rgba(${card.color}, 0.05))`,
+                              border: `1px dashed rgba(${card.color}, 0.3)`,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              minHeight: '120px',
+                            }}>
+                              <div style={{ textAlign: 'center', color: `rgba(${card.color}, 0.5)` }}>
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                                  <polyline points="21 15 16 10 5 21"/>
+                                </svg>
+                                <p style={{ fontSize: '0.6875rem', marginTop: '0.5rem' }}>Preview</p>
+                              </div>
+                            </div>
+                            <div style={{ display: 'flex', gap: '0.5rem' }}>
+                              {[1, 2].map((i) => (
+                                <div key={i} style={{
+                                  flex: 1,
+                                  height: '48px',
+                                  borderRadius: '8px',
+                                  background: `rgba(${card.color}, 0.08)`,
+                                  border: `1px dashed rgba(${card.color}, 0.2)`,
+                                }} />
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+                <LatentSpaceCTACard isMobile={false} />
+              </motion.div>
+            </LayoutGroup>
+          );
+        })()}
+
+        {/* Mobile: Horizontal Carousel */}
+        {isMobile && (
+          <>
+            <div
+              ref={latentCarouselRef}
+              style={{
+                display: 'flex',
+                gap: '1rem',
+                overflowX: 'auto',
+                scrollSnapType: 'x mandatory',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch',
+              }}
+            >
+              {latentSpaceImpactCards.map((card) => (
+                <div
+                  key={card.id}
+                  style={{
+                    flex: '0 0 85%',
+                    scrollSnapAlign: 'center',
+                    position: 'relative',
+                    padding: '2rem',
+                    borderRadius: '20px',
+                    background: 'var(--surface-primary)',
+                    backdropFilter: 'blur(40px)',
+                    WebkitBackdropFilter: 'blur(40px)',
+                    border: '1px solid var(--border-primary)',
+                    boxShadow: 'var(--shadow-sm)',
+                  }}
+                >
+                  <div style={{
+                    fontSize: '0.75rem',
+                    fontWeight: '600',
+                    color: `rgb(${card.color})`,
+                    marginBottom: '1rem',
+                    letterSpacing: '0.1em',
+                    opacity: 0.8,
+                  }}>
+                    {card.label}
+                  </div>
+                  <h3 style={{
+                    fontSize: '1.25rem',
+                    fontWeight: '500',
+                    color: 'var(--text-primary)',
+                    marginBottom: '0.75rem',
+                  }}>
+                    {card.title}
+                  </h3>
+                  <p style={{
+                    fontSize: '0.875rem',
+                    color: 'var(--text-tertiary)',
+                    lineHeight: '1.6',
+                    marginBottom: '1.5rem',
+                  }}>
+                    {card.description}
+                  </p>
+                  <div style={{
+                    fontSize: '0.813rem',
+                    fontWeight: '500',
+                    color: `rgb(${card.color})`,
+                  }}>
+                    {card.metric}
+                  </div>
+                </div>
+              ))}
+              <LatentSpaceCTACard isMobile={true} />
+            </div>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              marginTop: '2rem',
+            }}>
+              {latentSpaceImpactCards.map((_, index) => (
+                <div
+                  key={index}
+                  style={{
+                    width: latentCarouselIndex === index ? '24px' : '8px',
+                    height: '8px',
+                    borderRadius: '4px',
+                    background: latentCarouselIndex === index ? 'var(--accent-primary)' : 'var(--border-primary)',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </section>
+
+      {/* SECTION: Closing & Navigation */}
       <section style={{
         position: 'relative',
         paddingTop: 'clamp(3rem, 6vw, 4rem)',
@@ -1329,6 +2234,297 @@ function CTACard({ isMobile, inView }: { isMobile: boolean; inView: boolean }) {
           fontSize: '0.813rem',
           fontWeight: '500',
           color: `rgb(${airIndiaRed})`,
+          letterSpacing: '0.02em',
+        }}
+      >
+        <span>Explore case study</span>
+        <ArrowRight size={14} />
+      </motion.div>
+    </Link>
+  );
+}
+
+/**
+ * CTA Card for PsoriAssist case study
+ */
+function PsoriAssistCTACard({ isMobile }: { isMobile: boolean }) {
+  const [isHovered, setIsHovered] = React.useState(false);
+  const brandColor = '236, 72, 153';
+
+  return (
+    <Link
+      href="/work/psoriassist"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        position: 'relative',
+        padding: '2rem',
+        borderRadius: '20px',
+        gridColumn: isMobile ? undefined : 'span 2',
+        flex: isMobile ? '0 0 85%' : undefined,
+        scrollSnapAlign: isMobile ? 'center' : undefined,
+        background: isHovered
+          ? `linear-gradient(135deg, rgba(${brandColor}, 0.06), var(--surface-primary))`
+          : 'var(--surface-primary)',
+        backdropFilter: 'blur(40px)',
+        WebkitBackdropFilter: 'blur(40px)',
+        border: '1px solid transparent',
+        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+        transform: isHovered ? 'translateY(-4px) scale(1.01)' : 'translateY(0) scale(1)',
+        cursor: 'pointer',
+        boxShadow: isHovered
+          ? `0 20px 40px rgba(${brandColor}, 0.15)`
+          : 'var(--shadow-sm)',
+        overflow: 'hidden',
+        textDecoration: 'none',
+      }}
+    >
+      {isHovered && (
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          borderRadius: '20px',
+          padding: '1px',
+          background: `linear-gradient(90deg, transparent, rgba(${brandColor}, 0.8), transparent)`,
+          backgroundSize: '200% 100%',
+          animation: 'borderShimmer 3s ease-in-out infinite',
+          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMaskComposite: 'xor',
+          maskComposite: 'exclude',
+          pointerEvents: 'none',
+        }} />
+      )}
+      <div style={{
+        fontSize: '0.75rem',
+        fontWeight: '600',
+        color: `rgb(${brandColor})`,
+        marginBottom: '1rem',
+        letterSpacing: '0.1em',
+        opacity: 0.8,
+      }}>
+        →
+      </div>
+      <h3 style={{
+        fontSize: isMobile ? '1.25rem' : '1.5rem',
+        fontWeight: '500',
+        color: 'var(--text-primary)',
+        marginBottom: '0.75rem',
+        letterSpacing: '-0.01em',
+      }}>
+        View Full Case Study
+      </h3>
+      <p style={{
+        fontSize: '0.875rem',
+        color: 'var(--text-tertiary)',
+        lineHeight: '1.6',
+        marginBottom: '1.5rem',
+      }}>
+        AI-powered psoriasis management for 125M patients
+      </p>
+      <motion.div
+        animate={{ x: isHovered ? 4 : 0 }}
+        transition={{ duration: 0.3 }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          fontSize: '0.813rem',
+          fontWeight: '500',
+          color: `rgb(${brandColor})`,
+          letterSpacing: '0.02em',
+        }}
+      >
+        <span>Explore case study</span>
+        <ArrowRight size={14} />
+      </motion.div>
+    </Link>
+  );
+}
+
+/**
+ * CTA Card for Metamorphic Fractal Reflections case study
+ */
+function MetamorphicCTACard({ isMobile }: { isMobile: boolean }) {
+  const [isHovered, setIsHovered] = React.useState(false);
+  const brandColor = '147, 51, 234';
+
+  return (
+    <Link
+      href="/work/metamorphic-fractal-reflections"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        position: 'relative',
+        padding: '2rem',
+        borderRadius: '20px',
+        gridColumn: isMobile ? undefined : 'span 2',
+        flex: isMobile ? '0 0 85%' : undefined,
+        scrollSnapAlign: isMobile ? 'center' : undefined,
+        background: isHovered
+          ? `linear-gradient(135deg, rgba(${brandColor}, 0.06), var(--surface-primary))`
+          : 'var(--surface-primary)',
+        backdropFilter: 'blur(40px)',
+        WebkitBackdropFilter: 'blur(40px)',
+        border: '1px solid transparent',
+        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+        transform: isHovered ? 'translateY(-4px) scale(1.01)' : 'translateY(0) scale(1)',
+        cursor: 'pointer',
+        boxShadow: isHovered
+          ? `0 20px 40px rgba(${brandColor}, 0.15)`
+          : 'var(--shadow-sm)',
+        overflow: 'hidden',
+        textDecoration: 'none',
+      }}
+    >
+      {isHovered && (
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          borderRadius: '20px',
+          padding: '1px',
+          background: `linear-gradient(90deg, transparent, rgba(${brandColor}, 0.8), transparent)`,
+          backgroundSize: '200% 100%',
+          animation: 'borderShimmer 3s ease-in-out infinite',
+          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMaskComposite: 'xor',
+          maskComposite: 'exclude',
+          pointerEvents: 'none',
+        }} />
+      )}
+      <div style={{
+        fontSize: '0.75rem',
+        fontWeight: '600',
+        color: `rgb(${brandColor})`,
+        marginBottom: '1rem',
+        letterSpacing: '0.1em',
+        opacity: 0.8,
+      }}>
+        →
+      </div>
+      <h3 style={{
+        fontSize: isMobile ? '1.25rem' : '1.5rem',
+        fontWeight: '500',
+        color: 'var(--text-primary)',
+        marginBottom: '0.75rem',
+        letterSpacing: '-0.01em',
+      }}>
+        View Full Case Study
+      </h3>
+      <p style={{
+        fontSize: '0.875rem',
+        color: 'var(--text-tertiary)',
+        lineHeight: '1.6',
+        marginBottom: '1.5rem',
+      }}>
+        Immersive installation exploring consciousness
+      </p>
+      <motion.div
+        animate={{ x: isHovered ? 4 : 0 }}
+        transition={{ duration: 0.3 }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          fontSize: '0.813rem',
+          fontWeight: '500',
+          color: `rgb(${brandColor})`,
+          letterSpacing: '0.02em',
+        }}
+      >
+        <span>Explore case study</span>
+        <ArrowRight size={14} />
+      </motion.div>
+    </Link>
+  );
+}
+
+/**
+ * CTA Card for Latent Space case study
+ */
+function LatentSpaceCTACard({ isMobile }: { isMobile: boolean }) {
+  const [isHovered, setIsHovered] = React.useState(false);
+  const brandColor = '139, 92, 246';
+
+  return (
+    <Link
+      href="/work/latent-space"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        position: 'relative',
+        padding: '2rem',
+        borderRadius: '20px',
+        gridColumn: isMobile ? undefined : 'span 2',
+        flex: isMobile ? '0 0 85%' : undefined,
+        scrollSnapAlign: isMobile ? 'center' : undefined,
+        background: isHovered
+          ? `linear-gradient(135deg, rgba(${brandColor}, 0.06), var(--surface-primary))`
+          : 'var(--surface-primary)',
+        backdropFilter: 'blur(40px)',
+        WebkitBackdropFilter: 'blur(40px)',
+        border: '1px solid transparent',
+        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+        transform: isHovered ? 'translateY(-4px) scale(1.01)' : 'translateY(0) scale(1)',
+        cursor: 'pointer',
+        boxShadow: isHovered
+          ? `0 20px 40px rgba(${brandColor}, 0.15)`
+          : 'var(--shadow-sm)',
+        overflow: 'hidden',
+        textDecoration: 'none',
+      }}
+    >
+      {isHovered && (
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          borderRadius: '20px',
+          padding: '1px',
+          background: `linear-gradient(90deg, transparent, rgba(${brandColor}, 0.8), transparent)`,
+          backgroundSize: '200% 100%',
+          animation: 'borderShimmer 3s ease-in-out infinite',
+          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMaskComposite: 'xor',
+          maskComposite: 'exclude',
+          pointerEvents: 'none',
+        }} />
+      )}
+      <div style={{
+        fontSize: '0.75rem',
+        fontWeight: '600',
+        color: `rgb(${brandColor})`,
+        marginBottom: '1rem',
+        letterSpacing: '0.1em',
+        opacity: 0.8,
+      }}>
+        →
+      </div>
+      <h3 style={{
+        fontSize: isMobile ? '1.25rem' : '1.5rem',
+        fontWeight: '500',
+        color: 'var(--text-primary)',
+        marginBottom: '0.75rem',
+        letterSpacing: '-0.01em',
+      }}>
+        View Full Case Study
+      </h3>
+      <p style={{
+        fontSize: '0.875rem',
+        color: 'var(--text-tertiary)',
+        lineHeight: '1.6',
+        marginBottom: '1.5rem',
+      }}>
+        Speculative design fiction on dream recording
+      </p>
+      <motion.div
+        animate={{ x: isHovered ? 4 : 0 }}
+        transition={{ duration: 0.3 }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          fontSize: '0.813rem',
+          fontWeight: '500',
+          color: `rgb(${brandColor})`,
           letterSpacing: '0.02em',
         }}
       >
