@@ -6239,7 +6239,6 @@ export function AirIndiaWork() {
 
                                   {[
                                     { airline: 'Air India', depart: '06:30', arrive: '07:15', price: '₹3,450', duration: '45m', direct: true },
-                                    { airline: 'IndiGo', depart: '09:00', arrive: '09:50', price: '₹2,890', duration: '50m', direct: true },
                                   ].map((flight, i) => (
                                     <motion.div
                                       key={flight.airline}
