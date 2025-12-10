@@ -6115,17 +6115,18 @@ export function AirIndiaWork() {
                                     position: 'absolute',
                                     top: '52px',
                                     left: '12px',
-                                    width: '32px',
-                                    height: '32px',
+                                    width: '34px',
+                                    height: '34px',
                                     borderRadius: '50%',
-                                    background: 'rgba(255,255,255,0.9)',
-                                    backdropFilter: 'blur(10px)',
-                                    border: '1px solid rgba(0,0,0,0.08)',
+                                    background: 'rgba(255,255,255,0.7)',
+                                    backdropFilter: 'blur(20px) saturate(180%)',
+                                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                                    border: '1px solid rgba(255,255,255,0.5)',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     cursor: 'pointer',
-                                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                    boxShadow: '0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.8)',
                                   }}
                                 >
                                   <ArrowLeft size={16} style={{ color: '#1A1A1A' }} />
@@ -6138,13 +6139,14 @@ export function AirIndiaWork() {
                                   right: '12px',
                                   padding: '6px 12px',
                                   borderRadius: '20px',
-                                  background: 'rgba(255,255,255,0.9)',
-                                  backdropFilter: 'blur(10px)',
-                                  border: '1px solid rgba(0,0,0,0.08)',
+                                  background: 'rgba(255,255,255,0.7)',
+                                  backdropFilter: 'blur(20px) saturate(180%)',
+                                  WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                                  border: '1px solid rgba(255,255,255,0.5)',
                                   display: 'flex',
                                   alignItems: 'center',
                                   gap: '6px',
-                                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                  boxShadow: '0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.8)',
                                 }}>
                                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <circle cx="12" cy="12" r="4"/>
@@ -6177,12 +6179,14 @@ export function AirIndiaWork() {
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ delay: 0.1 }}
                                   style={{
-                                    background: '#FFFFFF',
-                                    borderRadius: '14px',
+                                    background: 'rgba(255, 255, 255, 0.65)',
+                                    backdropFilter: 'blur(20px) saturate(180%)',
+                                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                                    borderRadius: '16px',
                                     padding: '14px',
                                     marginBottom: '12px',
-                                    border: '1px solid rgba(0,0,0,0.08)',
-                                    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                                    border: '1px solid rgba(255, 255, 255, 0.5)',
+                                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
                                   }}
                                 >
                                   <div style={{
@@ -6212,10 +6216,12 @@ export function AirIndiaWork() {
                                   style={{
                                     marginBottom: '12px',
                                     padding: '14px',
-                                    background: '#FFFFFF',
+                                    background: 'rgba(255, 255, 255, 0.65)',
+                                    backdropFilter: 'blur(20px) saturate(180%)',
+                                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
                                     borderRadius: '16px',
-                                    border: '1px solid rgba(0,0,0,0.06)',
-                                    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                                    border: '1px solid rgba(255, 255, 255, 0.5)',
+                                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
                                   }}
                                 >
                                   <div style={{
@@ -6291,10 +6297,12 @@ export function AirIndiaWork() {
                                   style={{
                                     marginBottom: '12px',
                                     padding: '14px',
-                                    background: '#FFFFFF',
+                                    background: 'rgba(255, 255, 255, 0.65)',
+                                    backdropFilter: 'blur(20px) saturate(180%)',
+                                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
                                     borderRadius: '16px',
-                                    border: '1px solid rgba(0,0,0,0.06)',
-                                    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                                    border: '1px solid rgba(255, 255, 255, 0.5)',
+                                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
                                   }}
                                 >
                                   <div style={{
@@ -6378,7 +6386,16 @@ export function AirIndiaWork() {
                                   initial={{ opacity: 0, y: 10 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ delay: 0.2 }}
-                                  style={{ marginBottom: '12px' }}
+                                  style={{
+                                    marginBottom: '12px',
+                                    padding: '14px',
+                                    background: 'rgba(255, 255, 255, 0.65)',
+                                    backdropFilter: 'blur(20px) saturate(180%)',
+                                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                                    borderRadius: '16px',
+                                    border: '1px solid rgba(255, 255, 255, 0.5)',
+                                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
+                                  }}
                                 >
                                   <div style={{
                                     display: 'flex',
@@ -6486,10 +6503,12 @@ export function AirIndiaWork() {
                                   style={{
                                     marginBottom: '12px',
                                     padding: '14px',
-                                    background: '#FFFFFF',
+                                    background: 'rgba(255, 255, 255, 0.65)',
+                                    backdropFilter: 'blur(20px) saturate(180%)',
+                                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
                                     borderRadius: '16px',
-                                    border: '1px solid rgba(0,0,0,0.06)',
-                                    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                                    border: '1px solid rgba(255, 255, 255, 0.5)',
+                                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
                                   }}
                                 >
                                   <div style={{
@@ -6558,15 +6577,15 @@ export function AirIndiaWork() {
                                   style={{
                                     width: '100%',
                                     padding: '14px',
-                                    borderRadius: '14px',
-                                    background: `rgb(${brandRgb})`,
+                                    borderRadius: '16px',
+                                    background: `linear-gradient(135deg, rgb(${brandRgb}) 0%, rgba(${brandRgb}, 0.85) 100%)`,
                                     border: 'none',
                                     cursor: 'pointer',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     gap: '8px',
-                                    boxShadow: `0 8px 24px rgba(${brandRgb}, 0.3)`,
+                                    boxShadow: `0 8px 24px rgba(${brandRgb}, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3)`,
                                   }}
                                 >
                                   <Plane size={16} style={{ color: 'white' }} />
