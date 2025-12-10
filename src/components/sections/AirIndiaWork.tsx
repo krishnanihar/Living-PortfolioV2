@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Atropos from 'atropos';
@@ -501,6 +501,8 @@ export function AirIndiaWork() {
   // Card 2: Search with AI - NLU Query Pipeline states
   const [queryPhase, setQueryPhase] = useState<'idle' | 'typing' | 'tokenize' | 'entities' | 'intent' | 'results'>('idle');
   const [displayedQuery, setDisplayedQuery] = useState('');
+  const [aiExplorerScreen, setAiExplorerScreen] = useState<'home' | 'loading' | 'results'>('home');
+  const [selectedDestination, setSelectedDestination] = useState<{ name: string; location: string; temp: string; image: string } | null>(null);
 
   // Card 3: MCP Handoff states
   const [mcpPhase, setMcpPhase] = useState<'idle' | 'design' | 'server' | 'agent' | 'output'>('idle');
@@ -5706,7 +5708,7 @@ export function AirIndiaWork() {
                 }}>
                   {/* Animated Illustration or Placeholder */}
                   {index === 2 ? (
-                    /* Card 2: Search with AI - Interactive Demo (like Pixel Radar) */
+                    /* Card 2: Search with AI - Interactive Mobile Mockup */
                     <>
                     {/* Interactive Prototype Helper */}
                     <div style={{
@@ -5714,13 +5716,13 @@ export function AirIndiaWork() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       gap: '8px',
-                      marginBottom: '12px',
+                      marginBottom: '16px',
                       padding: '8px 16px',
                       background: `rgba(${project.color}, 0.1)`,
                       borderRadius: '20px',
                       border: `1px solid rgba(${project.color}, 0.2)`,
                       width: 'fit-content',
-                      margin: '0 auto 12px',
+                      margin: '0 auto 16px',
                     }}>
                       <span style={{
                         width: '6px',
@@ -5740,360 +5742,549 @@ export function AirIndiaWork() {
                         fontSize: '10px',
                         color: 'var(--text-40)',
                       }}>
-                        — Click &quot;Send&quot; to see AI in action
+                        — Tap a destination to explore
                       </span>
                     </div>
+
+                    {/* Mobile Phone Frame */}
                     <div style={{
-                      width: '100%',
-                      maxWidth: '1100px',
+                      width: '320px',
+                      height: '680px',
                       margin: '0 auto',
-                      display: 'grid',
-                      gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-                      gap: '24px',
-                      padding: '8px',
-                      fontSize: '11px',
+                      borderRadius: '44px',
+                      background: '#000',
+                      padding: '10px',
+                      boxShadow: '0 25px 80px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1)',
+                      position: 'relative',
+                      overflow: 'hidden',
                     }}>
-                      {/* LEFT PANEL: AI.g Chat Interface */}
+                      {/* Dynamic Island */}
                       <div style={{
-                        background: '#1A1A2E',
-                        borderRadius: '12px',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        position: 'absolute',
+                        top: '16px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: '100px',
+                        height: '28px',
+                        borderRadius: '20px',
+                        background: '#000',
+                        zIndex: 20,
+                      }} />
+
+                      {/* Screen Container */}
+                      <div style={{
+                        width: '100%',
+                        height: '100%',
+                        borderRadius: '36px',
                         overflow: 'hidden',
-                        display: 'flex',
-                        flexDirection: 'column',
+                        background: 'linear-gradient(180deg, #1A1A2E 0%, #0F0F1A 100%)',
+                        position: 'relative',
                       }}>
-                        {/* Chat Header */}
-                        <div style={{
-                          background: '#0F0F1A',
-                          padding: '12px 16px',
-                          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <div style={{
-                              width: '28px',
-                              height: '28px',
-                              borderRadius: '8px',
-                              background: `linear-gradient(135deg, rgb(${project.color}), rgb(${brandRgb}))`,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                            }}>
-                              <span style={{ fontSize: '14px' }}>✈️</span>
-                            </div>
-                            <div>
-                              <span style={{ fontSize: '13px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.9)' }}>AI.g</span>
-                              <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>Air India Assistant</div>
-                            </div>
-                          </div>
-                          <div style={{
-                            padding: '4px 10px',
-                            borderRadius: '12px',
-                            background: 'rgba(48, 209, 88, 0.15)',
-                            fontSize: '10px',
-                            fontWeight: '600',
-                            color: '#30D158',
-                          }}>
-                            3rd Place - Battle of Apps
-                          </div>
-                        </div>
-
-                        {/* Chat Messages */}
-                        <div style={{
-                          flex: 1,
-                          padding: '16px',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: '12px',
-                          minHeight: '280px',
-                          maxHeight: '320px',
-                          overflowY: 'auto',
-                        }}>
-                          {/* User Message */}
-                          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <div style={{
-                              maxWidth: '80%',
-                              padding: '10px 14px',
-                              borderRadius: '16px 16px 4px 16px',
-                              background: `rgb(${project.color})`,
-                              color: 'white',
-                              fontSize: '12px',
-                              lineHeight: 1.4,
-                            }}>
-                              {queryPhase === 'idle' ? 'Show me flights to Delhi under ₹5000 next weekend' :
-                               queryPhase === 'typing' ? displayedQuery.replace(/"/g, '') :
-                               'Show me flights to Delhi under ₹5000 next weekend'}
-                            </div>
-                          </div>
-
-                          {/* AI Response - appears after processing */}
-                          {(queryPhase === 'results' || queryPhase === 'idle') && (
-                            <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                        <AnimatePresence mode="wait">
+                          {/* SCREEN 1: AI Explorer Home */}
+                          {aiExplorerScreen === 'home' && (
+                            <motion.div
+                              key="home"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0, x: -20 }}
+                              transition={{ duration: 0.3 }}
+                              style={{
+                                width: '100%',
+                                height: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                padding: '60px 20px 20px',
+                              }}
+                            >
+                              {/* Header */}
                               <div style={{
-                                maxWidth: '85%',
-                                padding: '12px 14px',
-                                borderRadius: '16px 16px 16px 4px',
-                                background: 'rgba(255, 255, 255, 0.08)',
-                                color: 'rgba(255, 255, 255, 0.9)',
-                                fontSize: '12px',
-                                lineHeight: 1.5,
+                                textAlign: 'center',
+                                marginBottom: '32px',
                               }}>
-                                <div style={{ marginBottom: '10px' }}>
-                                  I found <strong style={{ color: `rgb(${project.color})` }}>12 flights</strong> to Delhi for next weekend under ₹5,000:
+                                <div style={{
+                                  width: '48px',
+                                  height: '48px',
+                                  borderRadius: '14px',
+                                  background: `linear-gradient(135deg, rgb(${project.color}), rgb(${brandRgb}))`,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  margin: '0 auto 12px',
+                                  boxShadow: `0 8px 24px rgba(${project.color}, 0.3)`,
+                                }}>
+                                  <span style={{ fontSize: '22px' }}>✈️</span>
                                 </div>
-                                {/* Flight Cards */}
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <h3 style={{
+                                  fontSize: '18px',
+                                  fontWeight: '700',
+                                  color: 'white',
+                                  marginBottom: '4px',
+                                }}>AI Explorer</h3>
+                                <p style={{
+                                  fontSize: '12px',
+                                  color: 'var(--text-50)',
+                                }}>Your intelligent travel companion</p>
+                              </div>
+
+                              {/* Search Input */}
+                              <div style={{
+                                background: 'var(--glass-08)',
+                                borderRadius: '16px',
+                                padding: '16px',
+                                border: '1px solid var(--glass-10)',
+                                marginBottom: '24px',
+                              }}>
+                                <div style={{
+                                  fontSize: '11px',
+                                  color: 'var(--text-40)',
+                                  marginBottom: '8px',
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '0.5px',
+                                }}>Where do you want to go?</div>
+                                <div style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '8px',
+                                }}>
+                                  <Search size={16} style={{ color: 'var(--text-30)' }} />
+                                  <span style={{
+                                    fontSize: '14px',
+                                    color: 'var(--text-25)',
+                                  }}>Search destinations...</span>
+                                </div>
+                              </div>
+
+                              {/* Suggested Destinations */}
+                              <div style={{ marginBottom: '16px' }}>
+                                <div style={{
+                                  fontSize: '11px',
+                                  color: 'var(--text-50)',
+                                  marginBottom: '12px',
+                                  fontWeight: '600',
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '0.5px',
+                                }}>Popular Destinations</div>
+                                <div style={{
+                                  display: 'grid',
+                                  gridTemplateColumns: '1fr 1fr',
+                                  gap: '10px',
+                                }}>
                                   {[
-                                    { flight: 'AI-302', time: '06:00', price: '₹4,299', seats: '8 left' },
-                                    { flight: 'AI-456', time: '08:30', price: '₹4,599', seats: '12 left' },
-                                    { flight: 'AI-118', time: '14:15', price: '₹4,850', seats: '5 left' },
-                                  ].map((f, i) => (
-                                    <div key={i} style={{
-                                      padding: '8px 12px',
-                                      borderRadius: '8px',
-                                      background: 'rgba(255, 255, 255, 0.06)',
-                                      border: i === 0 ? `1px solid rgba(${project.color}, 0.4)` : '1px solid rgba(255, 255, 255, 0.08)',
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      justifyContent: 'space-between',
-                                      opacity: queryPhase === 'results' ? 1 : 0.7,
-                                      transition: `all 0.3s ease ${i * 0.1}s`,
-                                    }}>
-                                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                        <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>{f.flight}</span>
-                                        <span style={{ fontWeight: '600', color: 'white' }}>{f.time}</span>
-                                      </div>
-                                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <span style={{ fontSize: '10px', color: '#30D158' }}>{f.seats}</span>
-                                        <span style={{ fontWeight: '700', color: `rgb(${project.color})` }}>{f.price}</span>
-                                      </div>
-                                    </div>
+                                    { name: 'Taj Mahal', location: 'Agra, India', temp: '28°C', image: '🕌' },
+                                    { name: 'Maldives', location: 'South Asia', temp: '30°C', image: '🏝️' },
+                                    { name: 'Paris', location: 'France', temp: '18°C', image: '🗼' },
+                                    { name: 'Tokyo', location: 'Japan', temp: '22°C', image: '🗾' },
+                                  ].map((dest) => (
+                                    <motion.button
+                                      key={dest.name}
+                                      whileHover={{ scale: 1.02 }}
+                                      whileTap={{ scale: 0.98 }}
+                                      onClick={() => {
+                                        setSelectedDestination(dest);
+                                        setAiExplorerScreen('loading');
+                                        setTimeout(() => setAiExplorerScreen('results'), 1800);
+                                      }}
+                                      style={{
+                                        background: 'var(--glass-06)',
+                                        border: '1px solid var(--glass-10)',
+                                        borderRadius: '14px',
+                                        padding: '14px 12px',
+                                        cursor: 'pointer',
+                                        textAlign: 'left',
+                                        transition: 'all 0.2s ease',
+                                      }}
+                                    >
+                                      <div style={{
+                                        fontSize: '24px',
+                                        marginBottom: '8px',
+                                      }}>{dest.image}</div>
+                                      <div style={{
+                                        fontSize: '13px',
+                                        fontWeight: '600',
+                                        color: 'white',
+                                        marginBottom: '2px',
+                                      }}>{dest.name}</div>
+                                      <div style={{
+                                        fontSize: '10px',
+                                        color: 'var(--text-40)',
+                                      }}>{dest.location}</div>
+                                    </motion.button>
                                   ))}
                                 </div>
-                                <div style={{ marginTop: '10px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)' }}>
-                                  Would you like me to book one of these?
-                                </div>
                               </div>
-                            </div>
-                          )}
 
-                          {/* Processing indicator */}
-                          {queryPhase !== 'idle' && queryPhase !== 'results' && (
-                            <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                              {/* AI Badge */}
                               <div style={{
-                                padding: '10px 14px',
-                                borderRadius: '16px',
-                                background: 'rgba(255, 255, 255, 0.08)',
+                                marginTop: 'auto',
                                 display: 'flex',
                                 alignItems: 'center',
+                                justifyContent: 'center',
                                 gap: '6px',
+                                padding: '10px',
+                                background: 'var(--glass-04)',
+                                borderRadius: '12px',
                               }}>
-                                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: `rgb(${project.color})`, animation: 'statusPulse 0.8s ease infinite' }} />
-                                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: `rgb(${project.color})`, animation: 'statusPulse 0.8s ease infinite 0.2s' }} />
-                                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: `rgb(${project.color})`, animation: 'statusPulse 0.8s ease infinite 0.4s' }} />
+                                <Sparkles size={14} style={{ color: `rgb(${project.color})` }} />
+                                <span style={{
+                                  fontSize: '11px',
+                                  color: 'var(--text-50)',
+                                }}>Powered by AI.g — 3rd Place, Battle of Apps</span>
                               </div>
-                            </div>
+                            </motion.div>
                           )}
-                        </div>
 
-                        {/* Chat Input */}
-                        <div style={{
-                          padding: '12px 16px',
-                          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '10px',
-                        }}>
-                          <div style={{
-                            flex: 1,
-                            padding: '10px 14px',
-                            borderRadius: '20px',
-                            background: 'rgba(255, 255, 255, 0.06)',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
-                            fontSize: '12px',
-                            color: 'rgba(255, 255, 255, 0.4)',
-                          }}>
-                            Type your travel plans...
-                          </div>
-                          <button
-                            onClick={() => {
-                              if (queryPhase !== 'idle') return;
-                              const fullQuery = '"Show me flights to Delhi under ₹5000 next weekend"';
-                              setQueryPhase('typing');
-                              setDisplayedQuery('');
+                          {/* SCREEN 2: Loading State */}
+                          {aiExplorerScreen === 'loading' && selectedDestination && (
+                            <motion.div
+                              key="loading"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.3 }}
+                              style={{
+                                width: '100%',
+                                height: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                padding: '40px 20px',
+                                background: `linear-gradient(180deg, rgba(${project.color}, 0.1) 0%, transparent 50%)`,
+                              }}
+                            >
+                              {/* Airplane Animation */}
+                              <motion.div
+                                animate={{
+                                  y: [0, -10, 0],
+                                  rotate: [0, 5, -5, 0],
+                                }}
+                                transition={{
+                                  duration: 1.5,
+                                  repeat: Infinity,
+                                  ease: 'easeInOut',
+                                }}
+                                style={{
+                                  fontSize: '48px',
+                                  marginBottom: '24px',
+                                }}
+                              >
+                                ✈️
+                              </motion.div>
 
-                              let charIndex = 0;
-                              const typeInterval = setInterval(() => {
-                                if (charIndex < fullQuery.length) {
-                                  setDisplayedQuery(fullQuery.slice(0, charIndex + 1));
-                                  charIndex++;
-                                } else {
-                                  clearInterval(typeInterval);
-                                  setTimeout(() => setQueryPhase('tokenize'), 300);
-                                  setTimeout(() => setQueryPhase('entities'), 800);
-                                  setTimeout(() => setQueryPhase('intent'), 1300);
-                                  setTimeout(() => setQueryPhase('results'), 1800);
-                                  setTimeout(() => setQueryPhase('idle'), 5000);
-                                }
-                              }, 25);
-                            }}
-                            style={{
-                              width: '36px',
-                              height: '36px',
-                              borderRadius: '50%',
-                              background: queryPhase === 'idle' ? `rgb(${project.color})` : 'rgba(255, 255, 255, 0.1)',
-                              border: 'none',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              cursor: queryPhase === 'idle' ? 'pointer' : 'default',
-                              transition: 'all 0.3s ease',
-                            }}
-                          >
-                            <span style={{ color: 'white', fontSize: '14px' }}>→</span>
-                          </button>
-                        </div>
-                      </div>
+                              <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                                style={{
+                                  textAlign: 'center',
+                                }}
+                              >
+                                <div style={{
+                                  fontSize: '13px',
+                                  color: 'var(--text-50)',
+                                  marginBottom: '8px',
+                                }}>Taking you on a trip to</div>
+                                <motion.div
+                                  initial={{ opacity: 0, scale: 0.9 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  transition={{ delay: 0.4 }}
+                                  style={{
+                                    fontSize: '22px',
+                                    fontWeight: '700',
+                                    color: 'white',
+                                    marginBottom: '20px',
+                                  }}
+                                >
+                                  {selectedDestination.name}
+                                </motion.div>
+                              </motion.div>
 
-                      {/* RIGHT PANEL: NLU Pipeline Visualization */}
-                      <div style={{
-                        background: '#0F0F1A',
-                        borderRadius: '12px',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                        overflow: 'hidden',
-                      }}>
-                        {/* Pipeline Header */}
-                        <div style={{
-                          background: '#1A1A2E',
-                          padding: '12px 16px',
-                          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <span style={{ fontSize: '12px' }}>⚡</span>
-                            <span style={{ fontSize: '12px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.9)' }}>NLU Processing Pipeline</span>
-                          </div>
-                          <div style={{
-                            width: '8px',
-                            height: '8px',
-                            borderRadius: '50%',
-                            background: queryPhase === 'idle' ? 'rgba(255, 255, 255, 0.2)' : '#30D158',
-                            animation: queryPhase !== 'idle' ? 'statusPulse 1s ease infinite' : 'none',
-                          }} />
-                        </div>
-
-                        {/* Pipeline Stages */}
-                        <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                          {[
-                            {
-                              title: 'Intent Detection',
-                              icon: '🎯',
-                              result: 'BOOK_FLIGHT',
-                              detail: 'confidence: 94.7%',
-                              phase: 'tokenize',
-                              color: '#6B7280'
-                            },
-                            {
-                              title: 'Entity Extraction',
-                              icon: '📍',
-                              result: 'destination: DEL',
-                              detail: 'budget: ₹5000 • date: weekend',
-                              phase: 'entities',
-                              color: '#0D99FF'
-                            },
-                            {
-                              title: 'Context Memory',
-                              icon: '🧠',
-                              result: 'Frequent: DEL route',
-                              detail: 'preference: morning • class: economy',
-                              phase: 'intent',
-                              color: '#30D158'
-                            },
-                            {
-                              title: 'Response Generation',
-                              icon: '✨',
-                              result: 'Personalized results',
-                              detail: '12 flights matched • 3 recommended',
-                              phase: 'results',
-                              color: project.color
-                            },
-                          ].map((stage, i) => {
-                            const isActive = queryPhase === stage.phase ||
-                              (queryPhase === 'results' && i < 4) ||
-                              (queryPhase === 'intent' && i < 3) ||
-                              (queryPhase === 'entities' && i < 2) ||
-                              (queryPhase === 'tokenize' && i < 1);
-                            const isCurrent = queryPhase === stage.phase;
-
-                            return (
-                              <div key={stage.title} style={{
-                                padding: '14px',
-                                borderRadius: '10px',
-                                background: isCurrent ? `rgba(${stage.color === project.color ? project.color : stage.color.replace('#', '').match(/.{2}/g)?.map(x => parseInt(x, 16)).join(', ')}, 0.15)` : 'rgba(255, 255, 255, 0.03)',
-                                border: `1px solid ${isCurrent ? `rgba(${stage.color === project.color ? project.color : stage.color.replace('#', '').match(/.{2}/g)?.map(x => parseInt(x, 16)).join(', ')}, 0.4)` : 'rgba(255, 255, 255, 0.06)'}`,
-                                transition: 'all 0.4s ease',
-                                transform: isCurrent ? 'translateX(4px)' : 'translateX(0)',
-                                opacity: queryPhase === 'idle' ? 0.6 : (isActive ? 1 : 0.3),
+                              {/* Progress Bar */}
+                              <div style={{
+                                width: '200px',
+                                height: '4px',
+                                borderRadius: '2px',
+                                background: 'var(--glass-10)',
+                                overflow: 'hidden',
                               }}>
-                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <span style={{ fontSize: '14px' }}>{stage.icon}</span>
-                                    <span style={{ fontSize: '11px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.8)' }}>{stage.title}</span>
-                                  </div>
-                                  {isActive && queryPhase !== 'idle' && (
-                                    <span style={{ fontSize: '10px', color: '#30D158' }}>✓</span>
-                                  )}
-                                </div>
-                                <div style={{
-                                  fontSize: '12px',
-                                  fontWeight: '600',
-                                  color: stage.color === project.color ? `rgb(${project.color})` : stage.color,
-                                  marginBottom: '4px',
-                                  fontFamily: 'SF Mono, Monaco, monospace',
-                                  opacity: isActive ? 1 : 0.5,
-                                }}>
-                                  {stage.result}
-                                </div>
-                                <div style={{
-                                  fontSize: '10px',
-                                  color: 'rgba(255, 255, 255, 0.4)',
-                                  opacity: isActive ? 1 : 0.5,
-                                }}>
-                                  {stage.detail}
-                                </div>
+                                <motion.div
+                                  initial={{ width: '0%' }}
+                                  animate={{ width: '100%' }}
+                                  transition={{ duration: 1.5, ease: 'easeOut' }}
+                                  style={{
+                                    height: '100%',
+                                    background: `linear-gradient(90deg, rgb(${project.color}), rgb(${brandRgb}))`,
+                                    borderRadius: '2px',
+                                  }}
+                                />
                               </div>
-                            );
-                          })}
-                        </div>
 
-                        {/* Status Bar */}
-                        <div style={{
-                          padding: '12px 16px',
-                          borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <span style={{
-                              width: '6px',
-                              height: '6px',
-                              borderRadius: '50%',
-                              background: queryPhase === 'idle' ? 'rgba(255, 255, 255, 0.3)' : '#30D158',
-                            }} />
-                            <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)' }}>
-                              {queryPhase === 'idle' ? 'Ready to process' :
-                               queryPhase === 'results' ? 'Complete' : 'Processing...'}
-                            </span>
-                          </div>
-                          <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.3)' }}>
-                            ~0.8s latency
-                          </span>
-                        </div>
+                              <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.6 }}
+                                style={{
+                                  marginTop: '16px',
+                                  fontSize: '11px',
+                                  color: 'var(--text-30)',
+                                }}
+                              >
+                                Curating your personalized itinerary...
+                              </motion.div>
+                            </motion.div>
+                          )}
+
+                          {/* SCREEN 3: Results Page */}
+                          {aiExplorerScreen === 'results' && selectedDestination && (
+                            <motion.div
+                              key="results"
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.4 }}
+                              style={{
+                                width: '100%',
+                                height: '100%',
+                                overflowY: 'auto',
+                                overflowX: 'hidden',
+                              }}
+                            >
+                              {/* Hero Image */}
+                              <div style={{
+                                height: '180px',
+                                background: selectedDestination.name === 'Taj Mahal'
+                                  ? 'linear-gradient(180deg, rgba(255,200,150,0.3) 0%, rgba(15,15,26,1) 100%), url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 60\'%3E%3Cdefs%3E%3ClinearGradient id=\'sky\' x1=\'0%25\' y1=\'0%25\' x2=\'0%25\' y2=\'100%25\'%3E%3Cstop offset=\'0%25\' style=\'stop-color:%23FF9966\'/%3E%3Cstop offset=\'100%25\' style=\'stop-color:%23FF5E62\'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill=\'url(%23sky)\' width=\'100\' height=\'60\'/%3E%3C/svg%3E")'
+                                  : `linear-gradient(180deg, rgba(${project.color}, 0.2) 0%, rgba(15,15,26,1) 100%)`,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'flex-end',
+                                padding: '16px',
+                                position: 'relative',
+                              }}>
+                                {/* Back Button */}
+                                <motion.button
+                                  whileTap={{ scale: 0.95 }}
+                                  onClick={() => {
+                                    setAiExplorerScreen('home');
+                                    setSelectedDestination(null);
+                                  }}
+                                  style={{
+                                    position: 'absolute',
+                                    top: '52px',
+                                    left: '12px',
+                                    width: '32px',
+                                    height: '32px',
+                                    borderRadius: '50%',
+                                    background: 'rgba(0,0,0,0.5)',
+                                    backdropFilter: 'blur(10px)',
+                                    border: 'none',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                  }}
+                                >
+                                  <ArrowLeft size={16} style={{ color: 'white' }} />
+                                </motion.button>
+
+                                {/* Weather Pill */}
+                                <div style={{
+                                  position: 'absolute',
+                                  top: '52px',
+                                  right: '12px',
+                                  padding: '6px 12px',
+                                  borderRadius: '20px',
+                                  background: 'rgba(0,0,0,0.5)',
+                                  backdropFilter: 'blur(10px)',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '6px',
+                                }}>
+                                  <span style={{ fontSize: '14px' }}>☀️</span>
+                                  <span style={{ fontSize: '12px', color: 'white', fontWeight: '500' }}>
+                                    {selectedDestination.temp}
+                                  </span>
+                                </div>
+
+                                {/* Destination Title */}
+                                <div style={{ fontSize: '36px', marginBottom: '8px' }}>
+                                  {selectedDestination.image}
+                                </div>
+                                <h2 style={{
+                                  fontSize: '22px',
+                                  fontWeight: '700',
+                                  color: 'white',
+                                  marginBottom: '4px',
+                                }}>{selectedDestination.name}</h2>
+                                <p style={{
+                                  fontSize: '12px',
+                                  color: 'var(--text-60)',
+                                }}>{selectedDestination.location}</p>
+                              </div>
+
+                              {/* Content */}
+                              <div style={{ padding: '16px' }}>
+                                {/* Why Visit */}
+                                <motion.div
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: 0.1 }}
+                                  style={{
+                                    background: 'var(--glass-06)',
+                                    borderRadius: '14px',
+                                    padding: '14px',
+                                    marginBottom: '12px',
+                                    border: '1px solid var(--glass-08)',
+                                  }}
+                                >
+                                  <div style={{
+                                    fontSize: '11px',
+                                    fontWeight: '600',
+                                    color: `rgb(${project.color})`,
+                                    marginBottom: '8px',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px',
+                                  }}>Why Visit?</div>
+                                  <p style={{
+                                    fontSize: '12px',
+                                    color: 'var(--text-70)',
+                                    lineHeight: '1.5',
+                                  }}>
+                                    {selectedDestination.name === 'Taj Mahal'
+                                      ? 'A UNESCO World Heritage Site and one of the Seven Wonders of the World. Best visited at sunrise.'
+                                      : `Experience the beauty of ${selectedDestination.name}, curated just for you.`}
+                                  </p>
+                                </motion.div>
+
+                                {/* AI Itinerary */}
+                                <motion.div
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: 0.2 }}
+                                  style={{ marginBottom: '12px' }}
+                                >
+                                  <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    marginBottom: '10px',
+                                  }}>
+                                    <div style={{
+                                      fontSize: '11px',
+                                      fontWeight: '600',
+                                      color: 'var(--text-70)',
+                                      textTransform: 'uppercase',
+                                      letterSpacing: '0.5px',
+                                    }}>7-Day Itinerary</div>
+                                    <div style={{
+                                      fontSize: '10px',
+                                      color: 'var(--text-40)',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '4px',
+                                    }}>
+                                      <Sparkles size={10} />
+                                      AI Curated
+                                    </div>
+                                  </div>
+
+                                  {[
+                                    { day: 1, title: 'Arrive & Explore Old City', time: '9:00 AM' },
+                                    { day: 2, title: 'Sunrise at Main Site', time: '5:30 AM' },
+                                    { day: 3, title: 'Local Markets & Culture', time: '10:00 AM' },
+                                  ].map((item, i) => (
+                                    <motion.div
+                                      key={item.day}
+                                      initial={{ opacity: 0, x: -10 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: 0.3 + i * 0.1 }}
+                                      style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '12px',
+                                        padding: '10px',
+                                        background: i === 0 ? `rgba(${project.color}, 0.1)` : 'var(--glass-04)',
+                                        borderRadius: '10px',
+                                        marginBottom: '8px',
+                                        border: i === 0 ? `1px solid rgba(${project.color}, 0.2)` : '1px solid var(--glass-06)',
+                                      }}
+                                    >
+                                      <div style={{
+                                        width: '28px',
+                                        height: '28px',
+                                        borderRadius: '8px',
+                                        background: i === 0 ? `rgb(${project.color})` : 'var(--glass-10)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        fontSize: '12px',
+                                        fontWeight: '700',
+                                        color: 'white',
+                                      }}>
+                                        {item.day}
+                                      </div>
+                                      <div style={{ flex: 1 }}>
+                                        <div style={{
+                                          fontSize: '12px',
+                                          fontWeight: '600',
+                                          color: 'white',
+                                          marginBottom: '2px',
+                                        }}>{item.title}</div>
+                                        <div style={{
+                                          fontSize: '10px',
+                                          color: 'var(--text-40)',
+                                        }}>{item.time}</div>
+                                      </div>
+                                    </motion.div>
+                                  ))}
+
+                                  <div style={{
+                                    fontSize: '11px',
+                                    color: 'var(--text-40)',
+                                    textAlign: 'center',
+                                    padding: '8px',
+                                  }}>
+                                    + 4 more days...
+                                  </div>
+                                </motion.div>
+
+                                {/* Book Flight CTA */}
+                                <motion.button
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: 0.5 }}
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.98 }}
+                                  onClick={() => {
+                                    setAiExplorerScreen('home');
+                                    setSelectedDestination(null);
+                                  }}
+                                  style={{
+                                    width: '100%',
+                                    padding: '14px',
+                                    borderRadius: '14px',
+                                    background: `linear-gradient(135deg, rgb(${project.color}), rgb(${brandRgb}))`,
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '8px',
+                                    boxShadow: `0 8px 24px rgba(${project.color}, 0.3)`,
+                                  }}
+                                >
+                                  <Plane size={16} style={{ color: 'white' }} />
+                                  <span style={{
+                                    fontSize: '14px',
+                                    fontWeight: '600',
+                                    color: 'white',
+                                  }}>Book Flight</span>
+                                </motion.button>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     </div>
                     </>
