@@ -5871,10 +5871,10 @@ export function AirIndiaWork() {
                                   gap: '10px',
                                 }}>
                                   {[
-                                    { name: 'Taj Mahal', location: 'Agra, India', temp: '28°C', image: '🕌' },
-                                    { name: 'Maldives', location: 'South Asia', temp: '30°C', image: '🏝️' },
-                                    { name: 'Paris', location: 'France', temp: '18°C', image: '🗼' },
-                                    { name: 'Tokyo', location: 'Japan', temp: '22°C', image: '🗾' },
+                                    { name: 'Taj Mahal', location: 'Agra, India', temp: '28°C', image: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=400&h=300&fit=crop' },
+                                    { name: 'Maldives', location: 'South Asia', temp: '30°C', image: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=400&h=300&fit=crop' },
+                                    { name: 'Paris', location: 'France', temp: '18°C', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&h=300&fit=crop' },
+                                    { name: 'Tokyo', location: 'Japan', temp: '22°C', image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&h=300&fit=crop' },
                                   ].map((dest) => (
                                     <motion.button
                                       key={dest.name}
@@ -5889,27 +5889,33 @@ export function AirIndiaWork() {
                                         background: '#FFFFFF',
                                         border: '1px solid rgba(0,0,0,0.08)',
                                         borderRadius: '14px',
-                                        padding: '14px 12px',
+                                        padding: '0',
                                         cursor: 'pointer',
                                         textAlign: 'left',
                                         transition: 'all 0.2s ease',
-                                        boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                                        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+                                        overflow: 'hidden',
                                       }}
                                     >
                                       <div style={{
-                                        fontSize: '24px',
-                                        marginBottom: '8px',
-                                      }}>{dest.image}</div>
-                                      <div style={{
-                                        fontSize: '13px',
-                                        fontWeight: '600',
-                                        color: '#1A1A1A',
-                                        marginBottom: '2px',
-                                      }}>{dest.name}</div>
-                                      <div style={{
-                                        fontSize: '10px',
-                                        color: 'rgba(0,0,0,0.5)',
-                                      }}>{dest.location}</div>
+                                        width: '100%',
+                                        height: '70px',
+                                        backgroundImage: `url(${dest.image})`,
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                      }} />
+                                      <div style={{ padding: '10px 12px' }}>
+                                        <div style={{
+                                          fontSize: '13px',
+                                          fontWeight: '600',
+                                          color: '#1A1A1A',
+                                          marginBottom: '2px',
+                                        }}>{dest.name}</div>
+                                        <div style={{
+                                          fontSize: '10px',
+                                          color: 'rgba(0,0,0,0.5)',
+                                        }}>{dest.location}</div>
+                                      </div>
                                     </motion.button>
                                   ))}
                                 </div>
@@ -6054,9 +6060,9 @@ export function AirIndiaWork() {
                               {/* Hero Image */}
                               <div style={{
                                 height: '180px',
-                                background: selectedDestination.name === 'Taj Mahal'
-                                  ? 'linear-gradient(180deg, rgba(255,180,120,0.8) 0%, rgba(248,248,248,1) 100%)'
-                                  : `linear-gradient(180deg, rgba(${project.color}, 0.3) 0%, rgba(248,248,248,1) 100%)`,
+                                backgroundImage: `linear-gradient(180deg, transparent 0%, rgba(248,248,248,0.6) 60%, rgba(248,248,248,1) 100%), url(${selectedDestination.image})`,
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 justifyContent: 'flex-end',
@@ -6112,14 +6118,12 @@ export function AirIndiaWork() {
                                 </div>
 
                                 {/* Destination Title */}
-                                <div style={{ fontSize: '36px', marginBottom: '8px' }}>
-                                  {selectedDestination.image}
-                                </div>
                                 <h2 style={{
                                   fontSize: '22px',
                                   fontWeight: '700',
                                   color: '#1A1A1A',
                                   marginBottom: '4px',
+                                  textShadow: '0 1px 2px rgba(255,255,255,0.5)',
                                 }}>{selectedDestination.name}</h2>
                                 <p style={{
                                   fontSize: '12px',
