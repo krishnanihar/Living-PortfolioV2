@@ -5777,7 +5777,7 @@ export function AirIndiaWork() {
                         height: '100%',
                         borderRadius: '36px',
                         overflow: 'hidden',
-                        background: 'linear-gradient(180deg, #1A1A2E 0%, #0F0F1A 100%)',
+                        background: 'linear-gradient(180deg, #FFFFFF 0%, #F8F8F8 100%)',
                         position: 'relative',
                       }}>
                         <AnimatePresence mode="wait">
@@ -5818,26 +5818,26 @@ export function AirIndiaWork() {
                                 <h3 style={{
                                   fontSize: '18px',
                                   fontWeight: '700',
-                                  color: 'white',
+                                  color: '#1A1A1A',
                                   marginBottom: '4px',
                                 }}>AI Explorer</h3>
                                 <p style={{
                                   fontSize: '12px',
-                                  color: 'var(--text-50)',
+                                  color: 'rgba(0,0,0,0.5)',
                                 }}>Your intelligent travel companion</p>
                               </div>
 
                               {/* Search Input */}
                               <div style={{
-                                background: 'var(--glass-08)',
+                                background: '#F5F5F5',
                                 borderRadius: '16px',
                                 padding: '16px',
-                                border: '1px solid var(--glass-10)',
+                                border: '1px solid rgba(0,0,0,0.08)',
                                 marginBottom: '24px',
                               }}>
                                 <div style={{
                                   fontSize: '11px',
-                                  color: 'var(--text-40)',
+                                  color: 'rgba(0,0,0,0.5)',
                                   marginBottom: '8px',
                                   textTransform: 'uppercase',
                                   letterSpacing: '0.5px',
@@ -5847,10 +5847,10 @@ export function AirIndiaWork() {
                                   alignItems: 'center',
                                   gap: '8px',
                                 }}>
-                                  <Search size={16} style={{ color: 'var(--text-30)' }} />
+                                  <Search size={16} style={{ color: 'rgba(0,0,0,0.3)' }} />
                                   <span style={{
                                     fontSize: '14px',
-                                    color: 'var(--text-25)',
+                                    color: 'rgba(0,0,0,0.35)',
                                   }}>Search destinations...</span>
                                 </div>
                               </div>
@@ -5859,7 +5859,7 @@ export function AirIndiaWork() {
                               <div style={{ marginBottom: '16px' }}>
                                 <div style={{
                                   fontSize: '11px',
-                                  color: 'var(--text-50)',
+                                  color: 'rgba(0,0,0,0.5)',
                                   marginBottom: '12px',
                                   fontWeight: '600',
                                   textTransform: 'uppercase',
@@ -5886,13 +5886,14 @@ export function AirIndiaWork() {
                                         setTimeout(() => setAiExplorerScreen('results'), 1800);
                                       }}
                                       style={{
-                                        background: 'var(--glass-06)',
-                                        border: '1px solid var(--glass-10)',
+                                        background: '#FFFFFF',
+                                        border: '1px solid rgba(0,0,0,0.08)',
                                         borderRadius: '14px',
                                         padding: '14px 12px',
                                         cursor: 'pointer',
                                         textAlign: 'left',
                                         transition: 'all 0.2s ease',
+                                        boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
                                       }}
                                     >
                                       <div style={{
@@ -5902,12 +5903,12 @@ export function AirIndiaWork() {
                                       <div style={{
                                         fontSize: '13px',
                                         fontWeight: '600',
-                                        color: 'white',
+                                        color: '#1A1A1A',
                                         marginBottom: '2px',
                                       }}>{dest.name}</div>
                                       <div style={{
                                         fontSize: '10px',
-                                        color: 'var(--text-40)',
+                                        color: 'rgba(0,0,0,0.5)',
                                       }}>{dest.location}</div>
                                     </motion.button>
                                   ))}
@@ -5922,13 +5923,13 @@ export function AirIndiaWork() {
                                 justifyContent: 'center',
                                 gap: '6px',
                                 padding: '10px',
-                                background: 'var(--glass-04)',
+                                background: 'rgba(0,0,0,0.03)',
                                 borderRadius: '12px',
                               }}>
                                 <Sparkles size={14} style={{ color: `rgb(${project.color})` }} />
                                 <span style={{
                                   fontSize: '11px',
-                                  color: 'var(--text-50)',
+                                  color: 'rgba(0,0,0,0.5)',
                                 }}>Powered by AI.g — 3rd Place, Battle of Apps</span>
                               </div>
                             </motion.div>
@@ -5982,7 +5983,7 @@ export function AirIndiaWork() {
                               >
                                 <div style={{
                                   fontSize: '13px',
-                                  color: 'var(--text-50)',
+                                  color: 'rgba(0,0,0,0.5)',
                                   marginBottom: '8px',
                                 }}>Taking you on a trip to</div>
                                 <motion.div
@@ -5992,7 +5993,7 @@ export function AirIndiaWork() {
                                   style={{
                                     fontSize: '22px',
                                     fontWeight: '700',
-                                    color: 'white',
+                                    color: '#1A1A1A',
                                     marginBottom: '20px',
                                   }}
                                 >
@@ -6005,7 +6006,7 @@ export function AirIndiaWork() {
                                 width: '200px',
                                 height: '4px',
                                 borderRadius: '2px',
-                                background: 'var(--glass-10)',
+                                background: 'rgba(0,0,0,0.08)',
                                 overflow: 'hidden',
                               }}>
                                 <motion.div
@@ -6027,7 +6028,7 @@ export function AirIndiaWork() {
                                 style={{
                                   marginTop: '16px',
                                   fontSize: '11px',
-                                  color: 'var(--text-30)',
+                                  color: 'rgba(0,0,0,0.4)',
                                 }}
                               >
                                 Curating your personalized itinerary...
@@ -6054,8 +6055,8 @@ export function AirIndiaWork() {
                               <div style={{
                                 height: '180px',
                                 background: selectedDestination.name === 'Taj Mahal'
-                                  ? 'linear-gradient(180deg, rgba(255,200,150,0.3) 0%, rgba(15,15,26,1) 100%), url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 60\'%3E%3Cdefs%3E%3ClinearGradient id=\'sky\' x1=\'0%25\' y1=\'0%25\' x2=\'0%25\' y2=\'100%25\'%3E%3Cstop offset=\'0%25\' style=\'stop-color:%23FF9966\'/%3E%3Cstop offset=\'100%25\' style=\'stop-color:%23FF5E62\'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill=\'url(%23sky)\' width=\'100\' height=\'60\'/%3E%3C/svg%3E")'
-                                  : `linear-gradient(180deg, rgba(${project.color}, 0.2) 0%, rgba(15,15,26,1) 100%)`,
+                                  ? 'linear-gradient(180deg, rgba(255,180,120,0.8) 0%, rgba(248,248,248,1) 100%)'
+                                  : `linear-gradient(180deg, rgba(${project.color}, 0.3) 0%, rgba(248,248,248,1) 100%)`,
                                 display: 'flex',
                                 flexDirection: 'column',
                                 justifyContent: 'flex-end',
@@ -6076,16 +6077,17 @@ export function AirIndiaWork() {
                                     width: '32px',
                                     height: '32px',
                                     borderRadius: '50%',
-                                    background: 'rgba(0,0,0,0.5)',
+                                    background: 'rgba(255,255,255,0.9)',
                                     backdropFilter: 'blur(10px)',
-                                    border: 'none',
+                                    border: '1px solid rgba(0,0,0,0.08)',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     cursor: 'pointer',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                                   }}
                                 >
-                                  <ArrowLeft size={16} style={{ color: 'white' }} />
+                                  <ArrowLeft size={16} style={{ color: '#1A1A1A' }} />
                                 </motion.button>
 
                                 {/* Weather Pill */}
@@ -6095,14 +6097,16 @@ export function AirIndiaWork() {
                                   right: '12px',
                                   padding: '6px 12px',
                                   borderRadius: '20px',
-                                  background: 'rgba(0,0,0,0.5)',
+                                  background: 'rgba(255,255,255,0.9)',
                                   backdropFilter: 'blur(10px)',
+                                  border: '1px solid rgba(0,0,0,0.08)',
                                   display: 'flex',
                                   alignItems: 'center',
                                   gap: '6px',
+                                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                                 }}>
                                   <span style={{ fontSize: '14px' }}>☀️</span>
-                                  <span style={{ fontSize: '12px', color: 'white', fontWeight: '500' }}>
+                                  <span style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: '500' }}>
                                     {selectedDestination.temp}
                                   </span>
                                 </div>
@@ -6114,12 +6118,12 @@ export function AirIndiaWork() {
                                 <h2 style={{
                                   fontSize: '22px',
                                   fontWeight: '700',
-                                  color: 'white',
+                                  color: '#1A1A1A',
                                   marginBottom: '4px',
                                 }}>{selectedDestination.name}</h2>
                                 <p style={{
                                   fontSize: '12px',
-                                  color: 'var(--text-60)',
+                                  color: 'rgba(0,0,0,0.6)',
                                 }}>{selectedDestination.location}</p>
                               </div>
 
@@ -6131,11 +6135,12 @@ export function AirIndiaWork() {
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ delay: 0.1 }}
                                   style={{
-                                    background: 'var(--glass-06)',
+                                    background: '#FFFFFF',
                                     borderRadius: '14px',
                                     padding: '14px',
                                     marginBottom: '12px',
-                                    border: '1px solid var(--glass-08)',
+                                    border: '1px solid rgba(0,0,0,0.08)',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
                                   }}
                                 >
                                   <div style={{
@@ -6148,7 +6153,7 @@ export function AirIndiaWork() {
                                   }}>Why Visit?</div>
                                   <p style={{
                                     fontSize: '12px',
-                                    color: 'var(--text-70)',
+                                    color: 'rgba(0,0,0,0.7)',
                                     lineHeight: '1.5',
                                   }}>
                                     {selectedDestination.name === 'Taj Mahal'
@@ -6173,13 +6178,13 @@ export function AirIndiaWork() {
                                     <div style={{
                                       fontSize: '11px',
                                       fontWeight: '600',
-                                      color: 'var(--text-70)',
+                                      color: 'rgba(0,0,0,0.7)',
                                       textTransform: 'uppercase',
                                       letterSpacing: '0.5px',
                                     }}>7-Day Itinerary</div>
                                     <div style={{
                                       fontSize: '10px',
-                                      color: 'var(--text-40)',
+                                      color: 'rgba(0,0,0,0.5)',
                                       display: 'flex',
                                       alignItems: 'center',
                                       gap: '4px',
@@ -6204,23 +6209,24 @@ export function AirIndiaWork() {
                                         alignItems: 'center',
                                         gap: '12px',
                                         padding: '10px',
-                                        background: i === 0 ? `rgba(${project.color}, 0.1)` : 'var(--glass-04)',
+                                        background: i === 0 ? `rgba(${project.color}, 0.08)` : '#FFFFFF',
                                         borderRadius: '10px',
                                         marginBottom: '8px',
-                                        border: i === 0 ? `1px solid rgba(${project.color}, 0.2)` : '1px solid var(--glass-06)',
+                                        border: i === 0 ? `1px solid rgba(${project.color}, 0.2)` : '1px solid rgba(0,0,0,0.06)',
+                                        boxShadow: i === 0 ? 'none' : '0 1px 4px rgba(0,0,0,0.04)',
                                       }}
                                     >
                                       <div style={{
                                         width: '28px',
                                         height: '28px',
                                         borderRadius: '8px',
-                                        background: i === 0 ? `rgb(${project.color})` : 'var(--glass-10)',
+                                        background: i === 0 ? `rgb(${project.color})` : 'rgba(0,0,0,0.06)',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         fontSize: '12px',
                                         fontWeight: '700',
-                                        color: 'white',
+                                        color: i === 0 ? 'white' : 'rgba(0,0,0,0.6)',
                                       }}>
                                         {item.day}
                                       </div>
@@ -6228,12 +6234,12 @@ export function AirIndiaWork() {
                                         <div style={{
                                           fontSize: '12px',
                                           fontWeight: '600',
-                                          color: 'white',
+                                          color: '#1A1A1A',
                                           marginBottom: '2px',
                                         }}>{item.title}</div>
                                         <div style={{
                                           fontSize: '10px',
-                                          color: 'var(--text-40)',
+                                          color: 'rgba(0,0,0,0.5)',
                                         }}>{item.time}</div>
                                       </div>
                                     </motion.div>
@@ -6241,7 +6247,7 @@ export function AirIndiaWork() {
 
                                   <div style={{
                                     fontSize: '11px',
-                                    color: 'var(--text-40)',
+                                    color: 'rgba(0,0,0,0.4)',
                                     textAlign: 'center',
                                     padding: '8px',
                                   }}>
