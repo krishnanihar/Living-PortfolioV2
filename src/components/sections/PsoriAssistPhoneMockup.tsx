@@ -78,11 +78,11 @@ const IOS_COLORS_LIGHT = {
   tertiarySystemBackground: '#FFFFFF',
   groupedBackground: '#F2F2F7',
 
-  // Text - High contrast black
+  // Text - High contrast black (increased tertiary/quaternary for better visibility)
   label: 'rgba(0, 0, 0, 0.95)',
   secondaryLabel: 'rgba(60, 60, 67, 0.60)',
-  tertiaryLabel: 'rgba(60, 60, 67, 0.30)',
-  quaternaryLabel: 'rgba(60, 60, 67, 0.18)',
+  tertiaryLabel: 'rgba(60, 60, 67, 0.50)',
+  quaternaryLabel: 'rgba(60, 60, 67, 0.35)',
 
   // System Colors - Adjusted for light backgrounds
   systemBlue: '#007AFF',
@@ -331,17 +331,17 @@ const IOS_GLASS_LIGHT = {
   },
 
   interactive: {
-    background: 'rgba(0, 0, 0, 0.03)',
+    background: 'rgba(0, 0, 0, 0.06)',
     backdropFilter: 'blur(20px) saturate(160%)',
-    border: '1px solid rgba(0, 0, 0, 0.05)',
+    border: '1px solid rgba(0, 0, 0, 0.08)',
     borderRadius: '16px',
-    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)'
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.06)'
   },
 
   pill: {
-    background: 'rgba(0, 0, 0, 0.04)',
+    background: 'rgba(0, 0, 0, 0.06)',
     backdropFilter: 'blur(10px)',
-    border: '1px solid rgba(0, 0, 0, 0.04)',
+    border: '1px solid rgba(0, 0, 0, 0.06)',
     borderRadius: '100px'
   },
 
@@ -1586,36 +1586,48 @@ function HomeScreen({
             label="Photo"
             color={colors.systemBlue}
             onClick={() => setActiveScreen('photo')}
+            colors={colors}
+            glass={glass}
           />
           <QuickActionButton
             icon={Check}
             label="Meds"
             color={colors.systemGreen}
             onClick={() => setActiveScreen('meds')}
+            colors={colors}
+            glass={glass}
           />
           <QuickActionButton
             icon={Heart}
             label="Check-in"
             color={colors.systemPink}
             onClick={() => setActiveScreen('mental')}
+            colors={colors}
+            glass={glass}
           />
           <QuickActionButton
             icon={Bone}
             label="PsA Check"
             color={colors.systemRed}
             onClick={() => { setNavigationSource('home'); setActiveScreen('pest'); }}
+            colors={colors}
+            glass={glass}
           />
           <QuickActionButton
             icon={AlertTriangle}
             label="Forecast"
             color={colors.systemYellow}
             onClick={() => { setNavigationSource('home'); setActiveScreen('flare'); }}
+            colors={colors}
+            glass={glass}
           />
           <QuickActionButton
             icon={BookOpen}
             label="Learn"
             color={colors.systemBlue}
             onClick={() => { setNavigationSource('home'); setActiveScreen('learn'); }}
+            colors={colors}
+            glass={glass}
           />
         </div>
       </div>
@@ -5260,14 +5272,14 @@ function TabBarItem({
       >
         <Icon
           size={22}
-          color={active ? colors.systemBlue : colors.tertiaryLabel}
+          color={active ? colors.systemBlue : colors.secondaryLabel}
           aria-hidden="true"
         />
       </motion.div>
       <span style={{
         fontSize: '10px',
         fontWeight: '600',
-        color: active ? colors.systemBlue : colors.tertiaryLabel,
+        color: active ? colors.systemBlue : colors.secondaryLabel,
         letterSpacing: '0.3px',
         textTransform: 'uppercase' as const
       }}>
