@@ -6204,6 +6204,176 @@ export function AirIndiaWork() {
                                   </p>
                                 </motion.div>
 
+                                {/* Best Flights */}
+                                <motion.div
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: 0.15 }}
+                                  style={{
+                                    marginBottom: '12px',
+                                    padding: '14px',
+                                    background: '#FFFFFF',
+                                    borderRadius: '16px',
+                                    border: '1px solid rgba(0,0,0,0.06)',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                                  }}
+                                >
+                                  <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    marginBottom: '12px',
+                                  }}>
+                                    <div style={{
+                                      fontSize: '11px',
+                                      fontWeight: '600',
+                                      color: `rgb(${brandRgb})`,
+                                      textTransform: 'uppercase',
+                                      letterSpacing: '0.5px',
+                                    }}>Best Flights</div>
+                                    <div style={{
+                                      fontSize: '10px',
+                                      color: 'rgba(0,0,0,0.4)',
+                                    }}>From Delhi</div>
+                                  </div>
+
+                                  {[
+                                    { airline: 'Air India', depart: '06:30', arrive: '07:15', price: '₹3,450', duration: '45m', direct: true },
+                                    { airline: 'IndiGo', depart: '09:00', arrive: '09:50', price: '₹2,890', duration: '50m', direct: true },
+                                  ].map((flight, i) => (
+                                    <motion.div
+                                      key={flight.airline}
+                                      initial={{ opacity: 0, x: -10 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: 0.2 + i * 0.08 }}
+                                      style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        padding: '10px 12px',
+                                        background: i === 0 ? `rgba(${brandRgb}, 0.06)` : 'rgba(0,0,0,0.02)',
+                                        borderRadius: '10px',
+                                        marginBottom: i === 0 ? '8px' : '0',
+                                        border: i === 0 ? `1px solid rgba(${brandRgb}, 0.15)` : '1px solid transparent',
+                                      }}
+                                    >
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <div style={{
+                                          width: '32px',
+                                          height: '32px',
+                                          borderRadius: '8px',
+                                          background: flight.airline === 'Air India' ? `rgb(${brandRgb})` : '#3B82F6',
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'center',
+                                        }}>
+                                          <Plane size={14} style={{ color: 'white' }} />
+                                        </div>
+                                        <div>
+                                          <div style={{ fontSize: '12px', fontWeight: '600', color: '#1A1A1A' }}>{flight.airline}</div>
+                                          <div style={{ fontSize: '10px', color: 'rgba(0,0,0,0.5)' }}>
+                                            {flight.depart} → {flight.arrive} · {flight.duration}
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div style={{ textAlign: 'right' }}>
+                                        <div style={{ fontSize: '13px', fontWeight: '700', color: '#1A1A1A' }}>{flight.price}</div>
+                                        <div style={{ fontSize: '9px', color: `rgb(${brandRgb})`, fontWeight: '500' }}>Direct</div>
+                                      </div>
+                                    </motion.div>
+                                  ))}
+                                </motion.div>
+
+                                {/* AI-Picked Stays */}
+                                <motion.div
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: 0.18 }}
+                                  style={{
+                                    marginBottom: '12px',
+                                    padding: '14px',
+                                    background: '#FFFFFF',
+                                    borderRadius: '16px',
+                                    border: '1px solid rgba(0,0,0,0.06)',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                                  }}
+                                >
+                                  <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    marginBottom: '12px',
+                                  }}>
+                                    <div style={{
+                                      fontSize: '11px',
+                                      fontWeight: '600',
+                                      color: `rgb(${brandRgb})`,
+                                      textTransform: 'uppercase',
+                                      letterSpacing: '0.5px',
+                                    }}>AI-Picked Stays</div>
+                                    <div style={{
+                                      fontSize: '10px',
+                                      color: 'rgba(0,0,0,0.5)',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '4px',
+                                    }}>
+                                      <Sparkles size={10} />
+                                      Top Rated
+                                    </div>
+                                  </div>
+
+                                  {[
+                                    { name: 'Oberoi Amarvilas', stars: 5, price: '₹28,000', location: 'Taj view rooms' },
+                                    { name: 'ITC Mughal', stars: 5, price: '₹15,500', location: '5 min from Taj' },
+                                  ].map((hotel, i) => (
+                                    <motion.div
+                                      key={hotel.name}
+                                      initial={{ opacity: 0, x: -10 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: 0.25 + i * 0.08 }}
+                                      style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '12px',
+                                        padding: '10px',
+                                        background: i === 0 ? `rgba(${brandRgb}, 0.06)` : 'rgba(0,0,0,0.02)',
+                                        borderRadius: '10px',
+                                        marginBottom: i === 0 ? '8px' : '0',
+                                        border: i === 0 ? `1px solid rgba(${brandRgb}, 0.15)` : '1px solid transparent',
+                                      }}
+                                    >
+                                      <div style={{
+                                        width: '44px',
+                                        height: '44px',
+                                        borderRadius: '10px',
+                                        background: 'linear-gradient(135deg, #F3E8FF, #E9D5FF)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        fontSize: '18px',
+                                      }}>
+                                        🏨
+                                      </div>
+                                      <div style={{ flex: 1 }}>
+                                        <div style={{ fontSize: '12px', fontWeight: '600', color: '#1A1A1A', marginBottom: '2px' }}>{hotel.name}</div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                          <div style={{ display: 'flex', gap: '1px' }}>
+                                            {[...Array(hotel.stars)].map((_, s) => (
+                                              <span key={s} style={{ fontSize: '8px', color: '#F59E0B' }}>★</span>
+                                            ))}
+                                          </div>
+                                          <span style={{ fontSize: '10px', color: 'rgba(0,0,0,0.5)' }}>· {hotel.location}</span>
+                                        </div>
+                                      </div>
+                                      <div style={{ textAlign: 'right' }}>
+                                        <div style={{ fontSize: '12px', fontWeight: '700', color: '#1A1A1A' }}>{hotel.price}</div>
+                                        <div style={{ fontSize: '9px', color: 'rgba(0,0,0,0.4)' }}>/night</div>
+                                      </div>
+                                    </motion.div>
+                                  ))}
+                                </motion.div>
+
                                 {/* AI Itinerary */}
                                 <motion.div
                                   initial={{ opacity: 0, y: 10 }}
@@ -6237,9 +6407,9 @@ export function AirIndiaWork() {
                                   </div>
 
                                   {[
-                                    { day: 1, title: 'Arrive & Explore Old City', time: '9:00 AM' },
-                                    { day: 2, title: 'Sunrise at Main Site', time: '5:30 AM' },
-                                    { day: 3, title: 'Local Markets & Culture', time: '10:00 AM' },
+                                    { day: 1, title: 'Arrive & Explore Old City', time: '9:00 AM', icon: '🏛️', cost: '₹500', duration: '4h' },
+                                    { day: 2, title: 'Sunrise at Main Site', time: '5:30 AM', icon: '🌅', cost: '₹1,100', duration: '6h' },
+                                    { day: 3, title: 'Local Markets & Culture', time: '10:00 AM', icon: '🛍️', cost: '₹2,000', duration: '5h' },
                                   ].map((item, i) => (
                                     <motion.div
                                       key={item.day}
@@ -6259,30 +6429,42 @@ export function AirIndiaWork() {
                                       }}
                                     >
                                       <div style={{
-                                        width: '28px',
-                                        height: '28px',
+                                        width: '32px',
+                                        height: '32px',
                                         borderRadius: '8px',
-                                        background: i === 0 ? `rgb(${brandRgb})` : 'rgba(0,0,0,0.06)',
+                                        background: i === 0 ? `rgb(${brandRgb})` : 'rgba(0,0,0,0.04)',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        fontSize: '12px',
-                                        fontWeight: '700',
-                                        color: i === 0 ? 'white' : 'rgba(0,0,0,0.6)',
+                                        fontSize: '14px',
                                       }}>
-                                        {item.day}
+                                        {item.icon}
                                       </div>
                                       <div style={{ flex: 1 }}>
                                         <div style={{
                                           fontSize: '12px',
                                           fontWeight: '600',
                                           color: '#1A1A1A',
-                                          marginBottom: '2px',
+                                          marginBottom: '3px',
                                         }}>{item.title}</div>
                                         <div style={{
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          gap: '8px',
                                           fontSize: '10px',
                                           color: 'rgba(0,0,0,0.5)',
-                                        }}>{item.time}</div>
+                                        }}>
+                                          <span>{item.time}</span>
+                                          <span>·</span>
+                                          <span>{item.duration}</span>
+                                        </div>
+                                      </div>
+                                      <div style={{
+                                        fontSize: '11px',
+                                        fontWeight: '600',
+                                        color: i === 0 ? `rgb(${brandRgb})` : 'rgba(0,0,0,0.6)',
+                                      }}>
+                                        {item.cost}
                                       </div>
                                     </motion.div>
                                   ))}
@@ -6294,6 +6476,72 @@ export function AirIndiaWork() {
                                     padding: '8px',
                                   }}>
                                     + 4 more days...
+                                  </div>
+                                </motion.div>
+
+                                {/* Quick Tips */}
+                                <motion.div
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: 0.35 }}
+                                  style={{
+                                    marginBottom: '12px',
+                                    padding: '14px',
+                                    background: '#FFFFFF',
+                                    borderRadius: '16px',
+                                    border: '1px solid rgba(0,0,0,0.06)',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                                  }}
+                                >
+                                  <div style={{
+                                    fontSize: '11px',
+                                    fontWeight: '600',
+                                    color: `rgb(${brandRgb})`,
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px',
+                                    marginBottom: '12px',
+                                  }}>Quick Tips</div>
+
+                                  <div style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: '1fr 1fr',
+                                    gap: '10px',
+                                  }}>
+                                    {[
+                                      { label: 'Best Time', value: 'Oct - Mar', icon: '📅' },
+                                      { label: 'Visa', value: 'e-Visa available', icon: '📋' },
+                                      { label: 'Currency', value: 'INR (₹)', icon: '💱' },
+                                      { label: 'Tip', value: 'Remove shoes at monuments', icon: '👟' },
+                                    ].map((tip, i) => (
+                                      <motion.div
+                                        key={tip.label}
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ delay: 0.4 + i * 0.05 }}
+                                        style={{
+                                          padding: '10px',
+                                          background: 'rgba(0,0,0,0.02)',
+                                          borderRadius: '10px',
+                                          border: '1px solid rgba(0,0,0,0.04)',
+                                        }}
+                                      >
+                                        <div style={{
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          gap: '6px',
+                                          marginBottom: '4px',
+                                        }}>
+                                          <span style={{ fontSize: '12px' }}>{tip.icon}</span>
+                                          <span style={{ fontSize: '9px', color: 'rgba(0,0,0,0.5)', textTransform: 'uppercase', letterSpacing: '0.3px' }}>{tip.label}</span>
+                                        </div>
+                                        <div style={{
+                                          fontSize: '11px',
+                                          fontWeight: '600',
+                                          color: '#1A1A1A',
+                                          lineHeight: '1.3',
+                                        }}>{tip.value}</div>
+                                      </motion.div>
+                                    ))}
                                   </div>
                                 </motion.div>
 
