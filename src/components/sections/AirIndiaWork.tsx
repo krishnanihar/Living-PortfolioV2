@@ -5823,12 +5823,12 @@ export function AirIndiaWork() {
                                   width: '48px',
                                   height: '48px',
                                   borderRadius: '14px',
-                                  background: `rgb(${project.color})`,
+                                  background: `rgb(${brandRgb})`,
                                   display: 'flex',
                                   alignItems: 'center',
                                   justifyContent: 'center',
                                   margin: '0 auto 12px',
-                                  boxShadow: `0 8px 24px rgba(${project.color}, 0.3)`,
+                                  boxShadow: `0 8px 24px rgba(${brandRgb}, 0.3)`,
                                 }}>
                                   <Plane size={22} style={{ color: 'white' }} />
                                 </div>
@@ -5952,7 +5952,7 @@ export function AirIndiaWork() {
                                 borderRadius: '12px',
                                 flexShrink: 0,
                               }}>
-                                <Sparkles size={14} style={{ color: `rgb(${project.color})` }} />
+                                <Sparkles size={14} style={{ color: `rgb(${brandRgb})` }} />
                                 <span style={{
                                   fontSize: '11px',
                                   color: 'rgba(0,0,0,0.5)',
@@ -5980,7 +5980,7 @@ export function AirIndiaWork() {
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 padding: '40px 20px',
-                                background: `linear-gradient(180deg, rgba(${project.color}, 0.1) 0%, transparent 50%)`,
+                                background: `linear-gradient(180deg, rgba(${brandRgb}, 0.1) 0%, transparent 50%)`,
                               }}
                             >
                               {/* Airplane Animation */}
@@ -5998,7 +5998,7 @@ export function AirIndiaWork() {
                                   marginBottom: '24px',
                                 }}
                               >
-                                <Plane size={48} style={{ color: `rgb(${project.color})` }} />
+                                <Plane size={48} style={{ color: `rgb(${brandRgb})` }} />
                               </motion.div>
 
                               <motion.div
@@ -6043,7 +6043,7 @@ export function AirIndiaWork() {
                                   transition={{ duration: 1.5, ease: 'easeOut' }}
                                   style={{
                                     height: '100%',
-                                    background: `rgb(${project.color})`,
+                                    background: `rgb(${brandRgb})`,
                                     borderRadius: '2px',
                                   }}
                                 />
@@ -6188,7 +6188,7 @@ export function AirIndiaWork() {
                                   <div style={{
                                     fontSize: '11px',
                                     fontWeight: '600',
-                                    color: `rgb(${project.color})`,
+                                    color: `rgb(${brandRgb})`,
                                     marginBottom: '8px',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.5px',
@@ -6251,10 +6251,10 @@ export function AirIndiaWork() {
                                         alignItems: 'center',
                                         gap: '12px',
                                         padding: '10px',
-                                        background: i === 0 ? `rgba(${project.color}, 0.08)` : '#FFFFFF',
+                                        background: i === 0 ? `rgba(${brandRgb}, 0.08)` : '#FFFFFF',
                                         borderRadius: '10px',
                                         marginBottom: '8px',
-                                        border: i === 0 ? `1px solid rgba(${project.color}, 0.2)` : '1px solid rgba(0,0,0,0.06)',
+                                        border: i === 0 ? `1px solid rgba(${brandRgb}, 0.2)` : '1px solid rgba(0,0,0,0.06)',
                                         boxShadow: i === 0 ? 'none' : '0 1px 4px rgba(0,0,0,0.04)',
                                       }}
                                     >
@@ -6262,7 +6262,7 @@ export function AirIndiaWork() {
                                         width: '28px',
                                         height: '28px',
                                         borderRadius: '8px',
-                                        background: i === 0 ? `rgb(${project.color})` : 'rgba(0,0,0,0.06)',
+                                        background: i === 0 ? `rgb(${brandRgb})` : 'rgba(0,0,0,0.06)',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
@@ -6312,14 +6312,14 @@ export function AirIndiaWork() {
                                     width: '100%',
                                     padding: '14px',
                                     borderRadius: '14px',
-                                    background: `rgb(${project.color})`,
+                                    background: `rgb(${brandRgb})`,
                                     border: 'none',
                                     cursor: 'pointer',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     gap: '8px',
-                                    boxShadow: `0 8px 24px rgba(${project.color}, 0.3)`,
+                                    boxShadow: `0 8px 24px rgba(${brandRgb}, 0.3)`,
                                   }}
                                 >
                                   <Plane size={16} style={{ color: 'white' }} />
