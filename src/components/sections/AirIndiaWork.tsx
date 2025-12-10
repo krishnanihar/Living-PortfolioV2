@@ -503,6 +503,8 @@ export function AirIndiaWork() {
   const [displayedQuery, setDisplayedQuery] = useState('');
   const [aiExplorerScreen, setAiExplorerScreen] = useState<'home' | 'loading' | 'results'>('home');
   const [selectedDestination, setSelectedDestination] = useState<{ name: string; location: string; temp: string; image: string } | null>(null);
+  const homeScreenRef = useRef<HTMLDivElement>(null);
+  const resultsScreenRef = useRef<HTMLDivElement>(null);
 
   // Card 3: MCP Handoff states
   const [mcpPhase, setMcpPhase] = useState<'idle' | 'design' | 'server' | 'agent' | 'output'>('idle');
@@ -5785,10 +5787,17 @@ export function AirIndiaWork() {
                           {aiExplorerScreen === 'home' && (
                             <motion.div
                               key="home"
+                              ref={homeScreenRef}
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               exit={{ opacity: 0, x: -20 }}
                               transition={{ duration: 0.3 }}
+                              onWheel={(e) => {
+                                e.stopPropagation();
+                                if (homeScreenRef.current) {
+                                  homeScreenRef.current.scrollTop += e.deltaY;
+                                }
+                              }}
                               style={{
                                 position: 'absolute',
                                 top: 0,
@@ -6060,10 +6069,17 @@ export function AirIndiaWork() {
                           {aiExplorerScreen === 'results' && selectedDestination && (
                             <motion.div
                               key="results"
+                              ref={resultsScreenRef}
                               initial={{ opacity: 0, x: 20 }}
                               animate={{ opacity: 1, x: 0 }}
                               exit={{ opacity: 0 }}
                               transition={{ duration: 0.4 }}
+                              onWheel={(e) => {
+                                e.stopPropagation();
+                                if (resultsScreenRef.current) {
+                                  resultsScreenRef.current.scrollTop += e.deltaY;
+                                }
+                              }}
                               style={{
                                 position: 'absolute',
                                 top: 0,
