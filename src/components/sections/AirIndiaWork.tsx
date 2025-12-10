@@ -5830,7 +5830,7 @@ export function AirIndiaWork() {
                                   margin: '0 auto 12px',
                                   boxShadow: `0 8px 24px rgba(${project.color}, 0.3)`,
                                 }}>
-                                  <span style={{ fontSize: '22px' }}>✈️</span>
+                                  <Plane size={22} style={{ color: 'white' }} />
                                 </div>
                                 <h3 style={{
                                   fontSize: '18px',
@@ -5995,11 +5995,10 @@ export function AirIndiaWork() {
                                   ease: 'easeInOut',
                                 }}
                                 style={{
-                                  fontSize: '48px',
                                   marginBottom: '24px',
                                 }}
                               >
-                                ✈️
+                                <Plane size={48} style={{ color: `rgb(${project.color})` }} />
                               </motion.div>
 
                               <motion.div
@@ -6147,7 +6146,10 @@ export function AirIndiaWork() {
                                   gap: '6px',
                                   boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                                 }}>
-                                  <span style={{ fontSize: '14px' }}>☀️</span>
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <circle cx="12" cy="12" r="4"/>
+                                    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                                  </svg>
                                   <span style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: '500' }}>
                                     {selectedDestination.temp}
                                   </span>
@@ -6356,7 +6358,7 @@ export function AirIndiaWork() {
                         gap: '12px',
                       }}>
                         <a
-                          href="https://apps.apple.com/app/air-india/id427274498"
+                          href="https://apps.apple.com/in/app/air-india-book-flight-tickets/id932302964"
                           target="_blank"
                           rel="noopener noreferrer"
                           style={{
@@ -6381,7 +6383,7 @@ export function AirIndiaWork() {
                           </div>
                         </a>
                         <a
-                          href="https://play.google.com/store/apps/details?id=com.airindia.aarogya"
+                          href="https://play.google.com/store/apps/details?id=com.bets.airindia.ui"
                           target="_blank"
                           rel="noopener noreferrer"
                           style={{
