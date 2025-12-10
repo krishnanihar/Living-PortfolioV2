@@ -197,13 +197,99 @@ const IOS_GLASS = {
   }
 };
 
-// Spring Animation Configs - Snappy and fluid
+// Spring Animation Configs - Apple WWDC 2023 "Animate with Springs" values
 const SPRING_CONFIG = {
+  // Existing configs (kept for backwards compatibility)
   screen: { type: 'spring' as const, stiffness: 400, damping: 35, mass: 0.8 },
   button: { type: 'spring' as const, stiffness: 500, damping: 25 },
   card: { type: 'spring' as const, stiffness: 300, damping: 28 },
   smooth: { type: 'spring' as const, stiffness: 200, damping: 25 },
-  elastic: { type: 'spring' as const, stiffness: 150, damping: 12, mass: 1 }
+  elastic: { type: 'spring' as const, stiffness: 150, damping: 12, mass: 1 },
+
+  // iOS-authentic springs based on Apple's WWDC recommendations
+  bouncy: { type: 'spring' as const, bounce: 0.25, duration: 0.5 },      // Playful interactions
+  snappy: { type: 'spring' as const, bounce: 0.1, duration: 0.3 },       // Buttons, quick feedback
+  fluid: { type: 'spring' as const, stiffness: 400, damping: 30, mass: 1 }, // Gesture-driven
+  navigation: { type: 'spring' as const, stiffness: 300, damping: 30, mass: 0.8 }, // Screen transitions
+  rubberBand: { type: 'spring' as const, stiffness: 300, damping: 30 }   // Elastic overscroll
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// iOS HAPTIC FEEDBACK SYSTEM
+// Simulates iOS haptic patterns using the Vibration API
+// ═══════════════════════════════════════════════════════════════════════════════
+const triggerHaptic = (type: 'light' | 'medium' | 'heavy' | 'selection' | 'success' | 'warning' | 'error') => {
+  if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+    const patterns: Record<string, number[]> = {
+      light: [10],           // UIImpactFeedbackGenerator.light
+      medium: [20],          // UIImpactFeedbackGenerator.medium
+      heavy: [30],           // UIImpactFeedbackGenerator.heavy
+      selection: [5],        // UISelectionFeedbackGenerator
+      success: [10, 50, 10], // UINotificationFeedbackGenerator.success
+      warning: [20, 40, 20], // UINotificationFeedbackGenerator.warning
+      error: [30, 50, 30, 50, 30] // UINotificationFeedbackGenerator.error
+    };
+    try {
+      navigator.vibrate(patterns[type] || [10]);
+    } catch {
+      // Silently fail if vibration not supported
+    }
+  }
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// iOS RUBBER BANDING FUNCTION
+// Authentic iOS elastic overscroll effect
+// Based on: https://holko.pl/2014/07/06/inertia-bouncing-rubber-banding-uikit-dynamics/
+// ═══════════════════════════════════════════════════════════════════════════════
+const rubberBand = (offset: number, dimension: number, coefficient: number = 0.55): number => {
+  // iOS rubber band formula: result = (offset * dimension * c) / (dimension + c * offset)
+  // As offset → ∞, result → dimension (creates max stretch limit)
+  const absOffset = Math.abs(offset);
+  const result = (absOffset * dimension * coefficient) / (dimension + coefficient * absOffset);
+  return offset < 0 ? -result : result;
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// iOS LONG-PRESS HOOK
+// Detects long press gesture with haptic feedback (like iOS Context Menus)
+// ═══════════════════════════════════════════════════════════════════════════════
+const useLongPress = (
+  callback: () => void,
+  options: { duration?: number; onStart?: () => void; onCancel?: () => void } = {}
+) => {
+  const { duration = 500, onStart, onCancel } = options;
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const isPressed = useRef(false);
+
+  const start = () => {
+    isPressed.current = true;
+    onStart?.();
+    timerRef.current = setTimeout(() => {
+      if (isPressed.current) {
+        triggerHaptic('medium'); // iOS-style haptic when context menu appears
+        callback();
+      }
+    }, duration);
+  };
+
+  const cancel = () => {
+    isPressed.current = false;
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    onCancel?.();
+  };
+
+  return {
+    onMouseDown: start,
+    onMouseUp: cancel,
+    onMouseLeave: cancel,
+    onTouchStart: start,
+    onTouchEnd: cancel,
+    onTouchCancel: cancel
+  };
 };
 
 // Confetti particle for checkbox celebrations
@@ -228,8 +314,17 @@ export function PsoriAssistPhoneMockup() {
   const [confetti, setConfetti] = useState<ConfettiParticle[]>([]);
   const [pullToRefresh, setPullToRefresh] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [pullThresholdCrossed, setPullThresholdCrossed] = useState(false); // iOS haptic trigger
   const screenContainerRef = useRef<HTMLDivElement>(null);
   const dragY = useMotionValue(0);
+
+  // iOS Pull-to-Refresh Constants
+  const PULL_THRESHOLD = 60; // iOS standard threshold (was 80px)
+  const PULL_MAX = 100;
+
+  // Interactive swipe feedback state
+  const [swipeProgress, setSwipeProgress] = useState(0); // -1 to 1, negative = left, positive = right
+  const SWIPE_THRESHOLD = 100; // px threshold for screen change
 
   // PsA/PEST Screening State
   const [pestStep, setPestStep] = useState(0);
@@ -249,12 +344,22 @@ export function PsoriAssistPhoneMockup() {
   // Educational Library State
   const [learnCategory, setLearnCategory] = useState<string>('all');
 
+  // iOS Context Menu State
+  const [contextMenu, setContextMenu] = useState<{
+    visible: boolean;
+    x: number;
+    y: number;
+    type: 'medication' | 'card' | null;
+    data?: any;
+  }>({ visible: false, x: 0, y: 0, type: null });
+
   // Detect reduced motion preference
   const prefersReducedMotion = typeof window !== 'undefined'
     ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
     : false;
 
   const handleCapture = () => {
+    triggerHaptic('medium'); // iOS camera shutter haptic
     setIsCapturing(true);
     setTimeout(() => {
       setIsCapturing(false);
@@ -262,6 +367,7 @@ export function PsoriAssistPhoneMockup() {
       setTimeout(() => {
         setIsProcessing(false);
         setShowPasiResult(true);
+        triggerHaptic('success'); // Success haptic when processing complete
         setActiveScreen('pasi');
       }, 2000);
     }, 500);
@@ -271,6 +377,13 @@ export function PsoriAssistPhoneMockup() {
     const newChecked = [...medicationChecked];
     newChecked[index] = !newChecked[index];
     setMedicationChecked(newChecked);
+
+    // iOS haptic feedback
+    if (newChecked[index]) {
+      triggerHaptic('success'); // Success haptic when checking off medication
+    } else {
+      triggerHaptic('selection'); // Light haptic when unchecking
+    }
 
     // Confetti celebration when checking off
     if (newChecked[index] && !prefersReducedMotion) {
@@ -315,30 +428,65 @@ export function PsoriAssistPhoneMockup() {
     }, 2000); // Longer duration for better celebration
   };
 
-  // Swipe gesture handling
+  // Swipe gesture handling with iOS haptic feedback
   const handleDragEnd = (_: any, info: PanInfo) => {
     const screens: Screen[] = ['home', 'photo', 'triggers', 'settings'];
     const currentIndex = screens.indexOf(activeScreen);
 
-    if (Math.abs(info.offset.x) > 100) {
+    if (Math.abs(info.offset.x) > SWIPE_THRESHOLD) {
       if (info.offset.x < 0 && currentIndex < screens.length - 1) {
+        triggerHaptic('light'); // iOS haptic on screen transition
         setActiveScreen(screens[currentIndex + 1]);
       } else if (info.offset.x > 0 && currentIndex > 0) {
+        triggerHaptic('light'); // iOS haptic on screen transition
         setActiveScreen(screens[currentIndex - 1]);
       }
     }
+    // Reset swipe progress
+    setSwipeProgress(0);
   };
 
-  // Pull-to-refresh handling
+  // Track horizontal swipe progress for visual feedback
+  const handleHorizontalDrag = (_: any, info: PanInfo) => {
+    if (activeScreen !== 'home') {
+      // Calculate swipe progress (-1 to 1)
+      const progress = Math.max(-1, Math.min(1, info.offset.x / (SWIPE_THRESHOLD * 2)));
+      setSwipeProgress(progress);
+    }
+  };
+
+  // Pull-to-refresh handling with iOS-authentic behavior
   const handlePullDragEnd = (_: any, info: PanInfo) => {
-    if (info.offset.y > 80 && activeScreen === 'home') {
+    if (info.offset.y >= PULL_THRESHOLD && activeScreen === 'home') {
+      // Threshold reached - trigger refresh
       setIsRefreshing(true);
+      triggerHaptic('success'); // iOS success haptic on refresh start
       setTimeout(() => {
         setIsRefreshing(false);
         setPullToRefresh(0);
+        setPullThresholdCrossed(false);
       }, 1500);
     } else {
+      // Below threshold - spring back
       setPullToRefresh(0);
+      setPullThresholdCrossed(false);
+    }
+  };
+
+  // Handle pull drag with haptic feedback at threshold
+  const handlePullDrag = (_: any, info: PanInfo) => {
+    if (activeScreen === 'home' && info.offset.y > 0) {
+      const pullAmount = Math.min(info.offset.y, PULL_MAX);
+      setPullToRefresh(pullAmount);
+
+      // Trigger haptic when crossing threshold (once per gesture)
+      if (pullAmount >= PULL_THRESHOLD && !pullThresholdCrossed) {
+        setPullThresholdCrossed(true);
+        triggerHaptic('medium'); // iOS medium impact at "release to refresh" point
+      } else if (pullAmount < PULL_THRESHOLD && pullThresholdCrossed) {
+        setPullThresholdCrossed(false);
+        triggerHaptic('light'); // Light haptic when dropping below threshold
+      }
     }
   };
 
@@ -440,9 +588,11 @@ export function PsoriAssistPhoneMockup() {
             drag={activeScreen === 'home' ? 'y' : 'x'}
             dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
             dragElastic={activeScreen === 'home' ? { top: 0.3, bottom: 0 } : 0.2}
-            onDrag={(_, info) => {
-              if (activeScreen === 'home' && info.offset.y > 0) {
-                setPullToRefresh(Math.min(info.offset.y, 100));
+            onDrag={(e, info) => {
+              if (activeScreen === 'home') {
+                handlePullDrag(e, info);
+              } else {
+                handleHorizontalDrag(e, info);
               }
             }}
             onDragEnd={activeScreen === 'home' ? handlePullDragEnd : handleDragEnd}
@@ -464,32 +614,152 @@ export function PsoriAssistPhoneMockup() {
               WebkitOverflowScrolling: 'touch'
             } as React.CSSProperties}
           >
-            {/* Pull-to-Refresh Indicator */}
+            {/* Pull-to-Refresh Indicator - iOS-authentic with spring animation */}
             {activeScreen === 'home' && pullToRefresh > 0 && (
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: pullToRefresh / 100 }}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{
+                  opacity: Math.min(pullToRefresh / PULL_THRESHOLD, 1),
+                  y: 0,
+                  scale: pullThresholdCrossed ? 1.2 : 0.8 + (pullToRefresh / PULL_MAX) * 0.4
+                }}
+                exit={{ opacity: 0, y: -10, scale: 0.8 }}
+                transition={SPRING_CONFIG.bouncy}
                 style={{
                   position: 'absolute',
                   top: '12px',
                   left: '50%',
                   transform: 'translateX(-50%)',
-                  zIndex: 10
+                  zIndex: 10,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '4px'
                 }}
               >
                 <motion.div
                   animate={{
-                    rotate: isRefreshing ? 360 : 0
+                    rotate: isRefreshing ? 360 : pullToRefresh * 3.6, // Rotate as you pull
+                    scale: pullThresholdCrossed ? [1, 1.1, 1] : 1
                   }}
-                  transition={{
-                    duration: 1,
-                    repeat: isRefreshing ? Infinity : 0,
+                  transition={isRefreshing ? {
+                    duration: 0.8,
+                    repeat: Infinity,
                     ease: 'linear'
+                  } : SPRING_CONFIG.snappy}
+                  style={{
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: '50%',
+                    background: pullThresholdCrossed
+                      ? `linear-gradient(135deg, ${IOS_COLORS.systemBlue}40, ${IOS_COLORS.systemBlue}20)`
+                      : 'rgba(255,255,255,0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backdropFilter: 'blur(10px)',
+                    border: `1px solid ${pullThresholdCrossed ? IOS_COLORS.systemBlue + '60' : 'rgba(255,255,255,0.2)'}`
                   }}
                 >
-                  <Sparkles size={24} color={IOS_COLORS.systemBlue} />
+                  <Sparkles
+                    size={20}
+                    color={pullThresholdCrossed ? IOS_COLORS.systemBlue : IOS_COLORS.tertiaryLabel}
+                  />
                 </motion.div>
+                {/* Release to refresh text */}
+                {pullThresholdCrossed && !isRefreshing && (
+                  <motion.span
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    style={{
+                      fontSize: '11px',
+                      fontWeight: '600',
+                      color: IOS_COLORS.systemBlue,
+                      letterSpacing: '0.3px'
+                    }}
+                  >
+                    Release to refresh
+                  </motion.span>
+                )}
+                {isRefreshing && (
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    style={{
+                      fontSize: '11px',
+                      fontWeight: '600',
+                      color: IOS_COLORS.secondaryLabel,
+                      letterSpacing: '0.3px'
+                    }}
+                  >
+                    Refreshing...
+                  </motion.span>
+                )}
               </motion.div>
+            )}
+
+            {/* iOS-style Edge Swipe Indicators */}
+            {activeScreen !== 'home' && Math.abs(swipeProgress) > 0.05 && (
+              <>
+                {/* Left edge indicator (back gesture) */}
+                {swipeProgress > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{
+                      opacity: Math.min(swipeProgress * 2, 0.8),
+                      x: 0,
+                      scale: 0.9 + swipeProgress * 0.2
+                    }}
+                    style={{
+                      position: 'absolute',
+                      left: '8px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      zIndex: 20,
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '50%',
+                      background: `linear-gradient(135deg, ${IOS_COLORS.systemBlue}40, ${IOS_COLORS.systemBlue}20)`,
+                      backdropFilter: 'blur(10px)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      border: `1px solid ${IOS_COLORS.systemBlue}40`
+                    }}
+                  >
+                    <ChevronLeft size={18} color={IOS_COLORS.systemBlue} />
+                  </motion.div>
+                )}
+                {/* Right edge indicator (forward gesture) */}
+                {swipeProgress < 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{
+                      opacity: Math.min(Math.abs(swipeProgress) * 2, 0.8),
+                      x: 0,
+                      scale: 0.9 + Math.abs(swipeProgress) * 0.2
+                    }}
+                    style={{
+                      position: 'absolute',
+                      right: '8px',
+                      top: '50%',
+                      transform: 'translateY(-50%) rotate(180deg)',
+                      zIndex: 20,
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '50%',
+                      background: `linear-gradient(135deg, ${IOS_COLORS.systemBlue}40, ${IOS_COLORS.systemBlue}20)`,
+                      backdropFilter: 'blur(10px)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      border: `1px solid ${IOS_COLORS.systemBlue}40`
+                    }}
+                  >
+                    <ChevronLeft size={18} color={IOS_COLORS.systemBlue} />
+                  </motion.div>
+                )}
+              </>
             )}
 
             <AnimatePresence mode="wait">
@@ -524,6 +794,7 @@ export function PsoriAssistPhoneMockup() {
                   onCheck={handleMedicationCheck}
                   streak={streak}
                   prefersReducedMotion={prefersReducedMotion}
+                  onLongPress={() => setContextMenu({ visible: true, x: 0, y: 0, type: 'medication' })}
                 />
               )}
               {activeScreen === 'mental' && (
@@ -642,6 +913,100 @@ export function PsoriAssistPhoneMockup() {
               })}
             </AnimatePresence>
           </div>
+
+          {/* iOS Context Menu Overlay */}
+          <AnimatePresence>
+            {contextMenu.visible && (
+              <>
+                {/* Backdrop blur */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setContextMenu({ ...contextMenu, visible: false })}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'rgba(0,0,0,0.4)',
+                    backdropFilter: 'blur(8px)',
+                    zIndex: 200
+                  }}
+                />
+                {/* Context Menu */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: 5 }}
+                  transition={SPRING_CONFIG.snappy}
+                  style={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 201,
+                    minWidth: '220px',
+                    ...IOS_GLASS.floating,
+                    borderRadius: '14px',
+                    overflow: 'hidden'
+                  }}
+                >
+                  {/* Menu Header */}
+                  <div style={{
+                    padding: '12px 16px',
+                    borderBottom: `1px solid ${IOS_COLORS.separator}`,
+                    textAlign: 'center'
+                  }}>
+                    <span style={{
+                      fontSize: '13px',
+                      fontWeight: '600',
+                      color: IOS_COLORS.secondaryLabel
+                    }}>
+                      Quick Actions
+                    </span>
+                  </div>
+
+                  {/* Menu Items */}
+                  {[
+                    { icon: '✏️', label: 'Edit', action: () => {} },
+                    { icon: '🔔', label: 'Set Reminder', action: () => {} },
+                    { icon: '📊', label: 'View History', action: () => {} },
+                    { icon: '🗑️', label: 'Delete', destructive: true, action: () => {} }
+                  ].map((item, i) => (
+                    <motion.button
+                      key={item.label}
+                      onClick={() => {
+                        triggerHaptic('selection');
+                        item.action();
+                        setContextMenu({ ...contextMenu, visible: false });
+                      }}
+                      whileTap={{ scale: 0.98, backgroundColor: IOS_COLORS.tertiarySystemFill }}
+                      style={{
+                        width: '100%',
+                        padding: '14px 16px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        background: 'transparent',
+                        border: 'none',
+                        borderBottom: i < 3 ? `1px solid ${IOS_COLORS.separator}` : 'none',
+                        cursor: 'pointer',
+                        textAlign: 'left'
+                      }}
+                    >
+                      <span style={{ fontSize: '18px' }}>{item.icon}</span>
+                      <span style={{
+                        fontSize: '16px',
+                        fontWeight: '500',
+                        color: item.destructive ? IOS_COLORS.systemRed : IOS_COLORS.label
+                      }}>
+                        {item.label}
+                      </span>
+                    </motion.button>
+                  ))}
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
 
           {/* Tab Bar - iOS 26 Floating Style */}
           <div style={{
@@ -1629,14 +1994,21 @@ function MedicationScreen({
   medicationChecked,
   onCheck,
   streak,
-  prefersReducedMotion
+  prefersReducedMotion,
+  onLongPress
 }: {
   setActiveScreen: (s: Screen) => void;
   medicationChecked: boolean[];
   onCheck: (i: number, e: React.MouseEvent) => void;
   streak: number;
   prefersReducedMotion: boolean;
+  onLongPress?: () => void;
 }) {
+  // Long-press hook for context menu
+  const longPressHandlers = useLongPress(
+    () => onLongPress?.(),
+    { duration: 500 }
+  );
   return (
     <motion.div
       key="meds"
@@ -1716,12 +2088,13 @@ function MedicationScreen({
           ].map((med, i) => (
             <motion.div
               key={i}
-              whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
+              whileTap={prefersReducedMotion ? {} : { scale: 0.96, y: 1 }}
+              {...longPressHandlers}
               style={{
                 padding: '14px',
                 borderRadius: '14px',
                 background: IOS_GLASS.card.background,
-          backdropFilter: IOS_GLASS.card.backdropFilter,
+                backdropFilter: IOS_GLASS.card.backdropFilter,
                 borderLeft: medicationChecked[med.index]
                   ? `4px solid ${IOS_COLORS.systemGreen}`
                   : `4px solid ${IOS_COLORS.separator}`,
@@ -1729,8 +2102,10 @@ function MedicationScreen({
                 display: 'flex',
                 alignItems: 'center',
                 gap: '12px',
-                cursor: 'pointer'
-              }}
+                cursor: 'pointer',
+                userSelect: 'none',
+                WebkitUserSelect: 'none'
+              } as React.CSSProperties}
               onClick={(e) => onCheck(med.index, e)}
             >
               <motion.div
@@ -4351,7 +4726,12 @@ function BackButton({ onClick }: { onClick: () => void }) {
     <motion.button
       onClick={onClick}
       aria-label="Go back"
-      whileTap={{ scale: 0.96, transition: SPRING_CONFIG.button }}
+      onTapStart={() => triggerHaptic('light')} // iOS light haptic on press
+      whileTap={{
+        scale: 0.94,
+        y: 1, // Subtle press-down effect
+        transition: SPRING_CONFIG.snappy
+      }}
       whileHover={{ scale: 1.02, transition: SPRING_CONFIG.smooth }}
       style={{
         minWidth: '44px',
@@ -4390,11 +4770,17 @@ function QuickActionButton({
   return (
     <motion.button
       aria-label={label}
+      onTapStart={() => triggerHaptic('light')} // iOS light haptic on press
       whileHover={{
         scale: 1.03,
         boxShadow: `0 0 20px ${color}40, ${IOS_GLASS.card.boxShadow}`
       }}
-      whileTap={{ scale: 0.96 }}
+      whileTap={{
+        scale: 0.94,
+        y: 2, // Press-down depth effect
+        boxShadow: `0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)`, // Reduced shadow when pressed
+        transition: SPRING_CONFIG.snappy
+      }}
       onClick={onClick}
       style={{
         padding: '14px 8px',
@@ -4466,11 +4852,14 @@ function TabBarItem({
 }) {
   return (
     <motion.button
-      onClick={onClick}
+      onClick={() => {
+        if (!active) triggerHaptic('selection'); // iOS selection haptic when switching tabs
+        onClick();
+      }}
       aria-label={`${label} tab${active ? ', selected' : ''}`}
       aria-current={active ? 'page' : undefined}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileHover={{ scale: 1.05, transition: SPRING_CONFIG.snappy }}
+      whileTap={{ scale: 0.92, transition: SPRING_CONFIG.snappy }}
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -4483,16 +4872,36 @@ function TabBarItem({
         minWidth: '64px',
         borderRadius: '16px',
         outline: 'none',
-        transition: 'background 0.2s ease, box-shadow 0.2s ease'
+        transition: 'background 0.2s ease, box-shadow 0.2s ease',
+        position: 'relative'
       }}
       onFocus={(e) => e.currentTarget.style.boxShadow = `0 0 0 3px ${IOS_COLORS.systemBlue}60`}
       onBlur={(e) => e.currentTarget.style.boxShadow = 'none'}
     >
-      <Icon
-        size={22}
-        color={active ? IOS_COLORS.systemBlue : IOS_COLORS.tertiaryLabel}
-        aria-hidden="true"
-      />
+      {/* Active indicator pill with layoutId for smooth transition */}
+      {active && (
+        <motion.div
+          layoutId="tabIndicator"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'rgba(10, 132, 255, 0.15)',
+            borderRadius: '16px',
+            zIndex: -1
+          }}
+          transition={SPRING_CONFIG.snappy}
+        />
+      )}
+      <motion.div
+        animate={{ scale: active ? [1, 1.15, 1] : 1 }}
+        transition={active ? { duration: 0.3, ease: 'easeOut' } : {}}
+      >
+        <Icon
+          size={22}
+          color={active ? IOS_COLORS.systemBlue : IOS_COLORS.tertiaryLabel}
+          aria-hidden="true"
+        />
+      </motion.div>
       <span style={{
         fontSize: '10px',
         fontWeight: '600',
