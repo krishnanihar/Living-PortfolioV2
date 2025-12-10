@@ -5790,8 +5790,11 @@ export function AirIndiaWork() {
                               exit={{ opacity: 0, x: -20 }}
                               transition={{ duration: 0.3 }}
                               style={{
-                                width: '100%',
-                                height: '100%',
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
                                 display: 'flex',
                                 flexDirection: 'column',
                                 padding: '60px 20px 20px',
@@ -5952,8 +5955,11 @@ export function AirIndiaWork() {
                               exit={{ opacity: 0 }}
                               transition={{ duration: 0.3 }}
                               style={{
-                                width: '100%',
-                                height: '100%',
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
@@ -6053,8 +6059,11 @@ export function AirIndiaWork() {
                               exit={{ opacity: 0 }}
                               transition={{ duration: 0.4 }}
                               style={{
-                                width: '100%',
-                                height: '100%',
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
                                 overflowY: 'auto',
                                 overflowX: 'hidden',
                               }}

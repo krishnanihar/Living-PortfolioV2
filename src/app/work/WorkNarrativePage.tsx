@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef, Suspense } from 'react';
+import React, { useEffect, useState, useRef, Suspense, useCallback } from 'react';
 import { WorkPageLayout } from '@/components/narrative-work/WorkPageLayout';
 import { NarrativeWorkHero } from '@/components/narrative-work/NarrativeWorkHero';
 import { JourneyOverview } from '@/components/narrative-work/JourneyOverview';
@@ -8,7 +8,7 @@ import { AirIndiaHeroCard } from '@/components/narrative-work/AirIndiaHeroCard';
 import { type ImpactCard } from '@/components/narrative-work/ImpactBentoGrid';
 import { ResearchShowcase } from '@/components/narrative-work/ResearchShowcase';
 import { ActTransition } from '@/components/narrative-work/ActTransition';
-import { motion } from 'framer-motion';
+import { motion, LayoutGroup } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, ChevronDown } from 'lucide-react';
@@ -30,9 +30,11 @@ export function WorkNarrativePage() {
   const [researchInView, setResearchInView] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [debouncedHoveredCard, setDebouncedHoveredCard] = useState<number | null>(null);
   const [ripplePosition, setRipplePosition] = useState<{ x: number; y: number } | null>(null);
   const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const researchSectionRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
 
@@ -105,6 +107,33 @@ export function WorkNarrativePage() {
     carousel.addEventListener('scroll', handleScroll);
     return () => carousel.removeEventListener('scroll', handleScroll);
   }, [isMobile]);
+
+  // Debounced hover handler to prevent grid transition interruption
+  // Uses two states: hoveredCard (immediate) for card content, debouncedHoveredCard (delayed) for grid template
+  const handleCardHover = useCallback((cardId: number | null) => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+
+    if (cardId !== null) {
+      setHoveredCard(cardId); // Immediate for card content changes
+      hoverTimeoutRef.current = setTimeout(() => {
+        setDebouncedHoveredCard(cardId); // Delayed for grid template (prevents mid-transition interruption)
+      }, 50);
+    } else {
+      setHoveredCard(null);
+      setDebouncedHoveredCard(null);
+    }
+  }, []);
+
+  // Cleanup hover timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Impact Cards with expanded content
   const impactCards = [
@@ -225,11 +254,12 @@ export function WorkNarrativePage() {
         {/* Desktop: Bento Grid */}
         {!isMobile && (() => {
           // Grid template control - card stays in place, grid resizes around it
+          // Uses debouncedHoveredCard to prevent mid-transition interruptions
           const getGridTemplate = () => {
-            if (!hoveredCard) {
+            if (!debouncedHoveredCard) {
               return { cols: '1fr 1fr 1fr', rows: '1fr 1fr' };
             }
-            const index = impactCards.findIndex(c => c.id === hoveredCard);
+            const index = impactCards.findIndex(c => c.id === debouncedHoveredCard);
             const col = index % 3;
             const row = Math.floor(index / 3);
             // Expand hovered column, shrink others
@@ -241,23 +271,40 @@ export function WorkNarrativePage() {
           const { cols, rows } = getGridTemplate();
 
           return (
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: cols,
-              gridTemplateRows: rows,
-              gap: '1.5rem',
-              transition: 'grid-template-columns 0.5s cubic-bezier(0.32, 0.72, 0, 1), grid-template-rows 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
-            }}>
+            <LayoutGroup>
+              <motion.div
+                layout
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: cols,
+                  gridTemplateRows: rows,
+                  gap: '1.5rem',
+                }}
+                transition={{
+                  layout: {
+                    duration: 0.5,
+                    ease: [0.32, 0.72, 0, 1],
+                  }
+                }}
+              >
               {impactCards.map((card) => {
                 const isHovered = hoveredCard === card.id;
 
                 return (
                   <motion.div
                     key={card.id}
-                    onHoverStart={() => setHoveredCard(card.id)}
+                    layout
+                    layoutId={`impact-card-${card.id}`}
+                    onHoverStart={() => handleCardHover(card.id)}
                     onHoverEnd={() => {
-                      setHoveredCard(null);
+                      handleCardHover(null);
                       setRipplePosition(null);
+                    }}
+                    transition={{
+                      layout: {
+                        duration: 0.4,
+                        ease: [0.32, 0.72, 0, 1],
+                      }
                     }}
                     onClick={(e) => {
                       const rect = e.currentTarget.getBoundingClientRect();
@@ -462,7 +509,8 @@ export function WorkNarrativePage() {
 
               {/* CTA Card - View Full Case Study */}
               <CTACard isMobile={false} inView={inView} />
-            </div>
+              </motion.div>
+            </LayoutGroup>
           );
         })()}
 
