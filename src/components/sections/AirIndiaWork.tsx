@@ -5812,6 +5812,7 @@ export function AirIndiaWork() {
                                 WebkitOverflowScrolling: 'touch',
                                 touchAction: 'pan-y',
                                 overscrollBehavior: 'contain',
+                                borderRadius: '36px',
                               }}
                             >
                               {/* Header */}
@@ -5981,6 +5982,7 @@ export function AirIndiaWork() {
                                 justifyContent: 'center',
                                 padding: '40px 20px',
                                 background: `linear-gradient(180deg, rgba(${brandRgb}, 0.1) 0%, transparent 50%)`,
+                                borderRadius: '36px',
                               }}
                             >
                               {/* Airplane Animation */}
@@ -6090,6 +6092,7 @@ export function AirIndiaWork() {
                                 WebkitOverflowScrolling: 'touch',
                                 touchAction: 'pan-y',
                                 overscrollBehavior: 'contain',
+                                borderRadius: '36px',
                               }}
                             >
                               {/* Hero Image */}
