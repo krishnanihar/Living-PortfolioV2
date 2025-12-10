@@ -298,75 +298,90 @@ const IOS_GLASS = {
   }
 };
 
-// Light Mode Liquid Glass System - iOS secondarySystemBackground for visible contrast
+// Light Mode Liquid Glass System - iOS 18/26 style with true translucency
 const IOS_GLASS_LIGHT = {
   card: {
-    background: '#F2F2F7',  // iOS secondarySystemBackground - visible on white
+    background: 'linear-gradient(135deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.78) 100%)',
     backdropFilter: 'blur(40px) saturate(180%)',
-    border: '1px solid rgba(0, 0, 0, 0.04)',
+    border: '1px solid rgba(255, 255, 255, 0.5)',
     borderRadius: '24px',
     boxShadow: `
-      0 1px 3px rgba(0, 0, 0, 0.06),
-      0 4px 12px rgba(0, 0, 0, 0.03)
+      0 8px 32px rgba(0, 0, 0, 0.06),
+      0 2px 8px rgba(0, 0, 0, 0.03),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.02)
     `
   },
 
   cardSubtle: {
-    background: 'rgba(242, 242, 247, 0.8)',  // Semi-transparent F2F2F7
+    background: 'rgba(255, 255, 255, 0.7)',
     backdropFilter: 'blur(30px) saturate(160%)',
-    border: '1px solid rgba(0, 0, 0, 0.03)',
+    border: '1px solid rgba(255, 255, 255, 0.4)',
     borderRadius: '20px',
-    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.04)'
+    boxShadow: `
+      0 4px 16px rgba(0, 0, 0, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8)
+    `
   },
 
   floating: {
-    background: 'rgba(255, 255, 255, 0.95)',
+    background: 'rgba(255, 255, 255, 0.8)',
     backdropFilter: 'blur(50px) saturate(200%)',
-    border: '1px solid rgba(0, 0, 0, 0.04)',
+    border: '1px solid rgba(255, 255, 255, 0.5)',
     borderRadius: '28px',
     boxShadow: `
-      0 2px 8px rgba(0, 0, 0, 0.06),
-      0 8px 24px rgba(0, 0, 0, 0.04)
+      0 12px 40px rgba(0, 0, 0, 0.08),
+      0 4px 12px rgba(0, 0, 0, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95)
     `
   },
 
   interactive: {
-    background: 'rgba(0, 0, 0, 0.06)',
+    background: 'rgba(255, 255, 255, 0.65)',
     backdropFilter: 'blur(20px) saturate(160%)',
-    border: '1px solid rgba(0, 0, 0, 0.08)',
+    border: '1px solid rgba(255, 255, 255, 0.4)',
     borderRadius: '16px',
-    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.06)'
+    boxShadow: `
+      0 4px 16px rgba(0, 0, 0, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8)
+    `
   },
 
   pill: {
-    background: 'rgba(0, 0, 0, 0.06)',
+    background: 'rgba(255, 255, 255, 0.6)',
     backdropFilter: 'blur(10px)',
-    border: '1px solid rgba(0, 0, 0, 0.06)',
+    border: '1px solid rgba(255, 255, 255, 0.3)',
     borderRadius: '100px'
   },
 
   statusBar: {
-    background: 'transparent',
-    backdropFilter: 'blur(20px) saturate(160%)'
+    background: 'rgba(255, 255, 255, 0.5)',
+    backdropFilter: 'blur(20px) saturate(180%)'
   },
 
   tabBar: {
-    background: 'rgba(249, 249, 249, 0.94)',
-    backdropFilter: 'blur(50px) saturate(180%)'
+    background: 'rgba(255, 255, 255, 0.75)',
+    backdropFilter: 'blur(50px) saturate(200%)'
   },
 
   brandBlueGlass: {
-    background: 'linear-gradient(135deg, rgba(0,122,255,0.12) 0%, rgba(0,122,255,0.04) 100%)',
+    background: 'linear-gradient(135deg, rgba(0,122,255,0.15) 0%, rgba(0,122,255,0.05) 100%)',
     backdropFilter: 'blur(40px) saturate(180%)',
-    border: '1px solid rgba(0,122,255,0.15)',
-    boxShadow: '0 4px 16px rgba(0,122,255,0.08)'
+    border: '1px solid rgba(0,122,255,0.2)',
+    boxShadow: `
+      0 8px 32px rgba(0,122,255,0.1),
+      inset 0 1px 0 rgba(255,255,255,0.8)
+    `
   },
 
   brandGreenGlass: {
-    background: 'linear-gradient(135deg, rgba(52,199,89,0.12) 0%, rgba(52,199,89,0.04) 100%)',
+    background: 'linear-gradient(135deg, rgba(52,199,89,0.15) 0%, rgba(52,199,89,0.05) 100%)',
     backdropFilter: 'blur(40px) saturate(180%)',
-    border: '1px solid rgba(52,199,89,0.15)',
-    boxShadow: '0 4px 16px rgba(52,199,89,0.08)'
+    border: '1px solid rgba(52,199,89,0.2)',
+    boxShadow: `
+      0 8px 32px rgba(52,199,89,0.1),
+      inset 0 1px 0 rgba(255,255,255,0.8)
+    `
   }
 };
 
@@ -799,7 +814,7 @@ export function PsoriAssistPhoneMockup() {
           width: '100%',
           height: '100%',
           background: effectiveTheme === 'light'
-            ? colors.systemBackground
+            ? 'linear-gradient(180deg, #E8E8ED 0%, #F2F2F7 25%, #FFFFFF 50%, #F8F8FC 75%, #E8E8ED 100%)'
             : 'radial-gradient(ellipse at top center, #0a0a14 0%, #000000 60%)',
           borderRadius: '48px',
           overflow: 'hidden',
@@ -1338,24 +1353,28 @@ export function PsoriAssistPhoneMockup() {
               label="Home"
               active={activeScreen === 'home'}
               onClick={() => setActiveScreen('home')}
+              colors={colors}
             />
             <TabBarItem
               icon={Camera}
               label="Track"
               active={activeScreen === 'photo'}
               onClick={() => setActiveScreen('photo')}
+              colors={colors}
             />
             <TabBarItem
               icon={Activity}
               label="Insights"
               active={activeScreen === 'triggers'}
               onClick={() => setActiveScreen('triggers')}
+              colors={colors}
             />
             <TabBarItem
               icon={Settings}
               label="More"
               active={activeScreen === 'settings'}
               onClick={() => setActiveScreen('settings')}
+              colors={colors}
             />
           </div>
         </div>
