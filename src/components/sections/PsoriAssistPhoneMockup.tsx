@@ -337,20 +337,20 @@ const IOS_GLASS_LIGHT = {
   },
 
   interactive: {
-    background: 'rgba(255, 255, 255, 0.65)',
+    background: 'rgba(120, 120, 128, 0.12)',  // iOS systemFill gray - visible on white
     backdropFilter: 'blur(20px) saturate(160%)',
-    border: '1px solid rgba(255, 255, 255, 0.4)',
+    border: '1px solid rgba(120, 120, 128, 0.16)',
     borderRadius: '16px',
     boxShadow: `
-      0 4px 16px rgba(0, 0, 0, 0.04),
-      inset 0 1px 0 rgba(255, 255, 255, 0.8)
+      0 2px 8px rgba(0, 0, 0, 0.06),
+      inset 0 0.5px 0 rgba(255, 255, 255, 0.8)
     `
   },
 
   pill: {
-    background: 'rgba(255, 255, 255, 0.6)',
+    background: 'rgba(120, 120, 128, 0.08)',  // iOS systemFill gray
     backdropFilter: 'blur(10px)',
-    border: '1px solid rgba(255, 255, 255, 0.3)',
+    border: '1px solid rgba(120, 120, 128, 0.1)',
     borderRadius: '100px'
   },
 
@@ -5164,7 +5164,7 @@ function QuickActionButton({
       onTapStart={() => triggerHaptic('light')} // iOS light haptic on press
       whileHover={{
         scale: 1.03,
-        boxShadow: `0 0 20px ${color}40, ${glass.card.boxShadow}`
+        boxShadow: `0 0 20px ${color}40, ${glass.interactive.boxShadow}`
       }}
       whileTap={{
         scale: 0.94,
@@ -5178,23 +5178,23 @@ function QuickActionButton({
         minHeight: '80px',
         minWidth: '80px',
         borderRadius: '20px',
-        background: glass.card.background,
-        backdropFilter: glass.card.backdropFilter,
-        border: glass.card.border,
+        background: glass.interactive.background,
+        backdropFilter: glass.interactive.backdropFilter,
+        border: glass.interactive.border,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         gap: '8px',
         cursor: 'pointer',
-        boxShadow: glass.card.boxShadow,
+        boxShadow: glass.interactive.boxShadow,
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
         outline: 'none',
         position: 'relative',
         overflow: 'hidden'
       } as React.CSSProperties}
-      onFocus={(e) => e.currentTarget.style.boxShadow = `0 0 0 3px ${color}60, ${glass.card.boxShadow}`}
-      onBlur={(e) => e.currentTarget.style.boxShadow = glass.card.boxShadow}
+      onFocus={(e) => e.currentTarget.style.boxShadow = `0 0 0 3px ${color}60, ${glass.interactive.boxShadow}`}
+      onBlur={(e) => e.currentTarget.style.boxShadow = glass.interactive.boxShadow}
     >
       {/* Accent glow */}
       <div style={{
