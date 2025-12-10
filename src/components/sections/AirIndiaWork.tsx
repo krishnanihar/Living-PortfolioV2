@@ -8339,44 +8339,7 @@ export function AirIndiaWork() {
                       </div>
                     </div>
                     </>
-                  ) : (
-                    /* Default Image Placeholder for other cards */
-                    <div style={{
-                      width: '100%',
-                      aspectRatio: '16 / 9',
-                      borderRadius: '16px',
-                      background: `linear-gradient(135deg, rgba(${project.color}, 0.08), var(--glass-06))`,
-                      border: `2px dashed rgba(${project.color}, 0.25)`,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '0.75rem',
-                      position: 'relative',
-                      overflow: 'hidden',
-                    }}>
-                      <div style={{
-                        position: 'absolute',
-                        inset: 0,
-                        background: `radial-gradient(ellipse at center, rgba(${project.color}, 0.05), transparent 70%)`,
-                        pointerEvents: 'none',
-                      }} />
-                      <Camera size={32} style={{ color: `rgba(${project.color}, 0.5)` }} />
-                      <span style={{
-                        fontSize: '0.875rem',
-                        color: 'var(--text-40)',
-                        fontWeight: '500',
-                      }}>
-                        Add {project.title} Screenshot
-                      </span>
-                      <span style={{
-                        fontSize: '0.75rem',
-                        color: 'var(--text-25)',
-                      }}>
-                        16:9 aspect ratio recommended
-                      </span>
-                    </div>
-                  )}
+                  ) : null}
                 </div>
                 {/* END LEGACY EXPANDED CONTENT */}
 
