@@ -6592,7 +6592,7 @@ export function AirIndiaWork() {
                     }}>
                       <p style={{
                         fontSize: '11px',
-                        color: 'rgba(0,0,0,0.5)',
+                        color: 'var(--text-50)',
                         marginBottom: '16px',
                         lineHeight: '1.5',
                       }}>
