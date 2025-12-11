@@ -490,8 +490,21 @@ interface ConfettiParticle {
   velocity: { x: number; y: number };
 }
 
-export function PsoriAssistPhoneMockup() {
-  const [activeScreen, setActiveScreen] = useState<Screen>('home');
+// Props for external control of the mockup (used in User Flow sections)
+interface PsoriAssistPhoneMockupProps {
+  controlledScreen?: Screen;
+  initialScreen?: Screen;
+  scale?: number;
+  showThemeToggle?: boolean;
+}
+
+export function PsoriAssistPhoneMockup({
+  controlledScreen,
+  initialScreen = 'home',
+  scale,
+  showThemeToggle = true
+}: PsoriAssistPhoneMockupProps = {}) {
+  const [activeScreen, setActiveScreen] = useState<Screen>(initialScreen);
   const [navigationSource, setNavigationSource] = useState<Screen>('home'); // Track where we navigated from
   const [photoOpacity, setPhotoOpacity] = useState(50);
   const [isCapturing, setIsCapturing] = useState(false);
@@ -559,6 +572,13 @@ export function PsoriAssistPhoneMockup() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Sync controlled screen from parent (for User Flow demos)
+  useEffect(() => {
+    if (controlledScreen) {
+      setActiveScreen(controlledScreen);
+    }
+  }, [controlledScreen]);
 
   // Effective theme: use prototype override if set, otherwise follow site theme
   const effectiveTheme = mounted
@@ -721,8 +741,10 @@ export function PsoriAssistPhoneMockup() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '4rem 2rem',
-        position: 'relative'
+        padding: scale ? '2rem 1rem' : '4rem 2rem',
+        position: 'relative',
+        transform: scale ? `scale(${scale})` : undefined,
+        transformOrigin: 'top center'
       }}
     >
       {/* Ambient Glow Effect */}
@@ -741,44 +763,46 @@ export function PsoriAssistPhoneMockup() {
       }} />
 
       {/* Minimal Theme Toggle - Centered Above Prototype */}
-      <motion.button
-        onClick={togglePrototypeTheme}
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.95 }}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '44px',
-          height: '44px',
-          borderRadius: '50%',
-          background: 'var(--glass-08)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid var(--glass-12)',
-          cursor: 'pointer',
-          marginBottom: '1.5rem',
-          boxShadow: '0 2px 12px rgba(0,0,0,0.15)',
-          color: 'var(--text-70)',
-          zIndex: 10
-        }}
-      >
-        <motion.div
-          animate={{ rotate: effectiveTheme === 'light' ? 0 : 180 }}
-          transition={{ duration: 0.4, ease: 'easeInOut' }}
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      {showThemeToggle && (
+        <motion.button
+          onClick={togglePrototypeTheme}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.95 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '44px',
+            height: '44px',
+            borderRadius: '50%',
+            background: 'var(--glass-08)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid var(--glass-12)',
+            cursor: 'pointer',
+            marginBottom: '1.5rem',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.15)',
+            color: 'var(--text-70)',
+            zIndex: 10
+          }}
         >
-          {effectiveTheme === 'light' ? (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="5"/>
-              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-            </svg>
-          ) : (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-            </svg>
-          )}
-        </motion.div>
-      </motion.button>
+          <motion.div
+            animate={{ rotate: effectiveTheme === 'light' ? 0 : 180 }}
+            transition={{ duration: 0.4, ease: 'easeInOut' }}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
+            {effectiveTheme === 'light' ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="5"/>
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            )}
+          </motion.div>
+        </motion.button>
+      )}
 
       {/* iPhone 14 Pro Mockup Frame */}
       <div

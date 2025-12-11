@@ -40,6 +40,190 @@ import {
 import { PsoriAssistPhoneMockup } from '@/components/sections/PsoriAssistPhoneMockup';
 import { GhostOverlayDemo, SmartReminderDemo, PASIScoringDemo } from '@/components/sections/PsoriAssistInteractivePrototypes';
 
+// Screen type matching PsoriAssistPhoneMockup
+type Screen = 'home' | 'photo' | 'pasi' | 'meds' | 'mental' | 'triggers' | 'report' | 'settings' | 'pest' | 'flare' | 'reminders' | 'learn' | 'community';
+
+// Step data with screen mappings for user flow sections
+interface FlowStep {
+  step: number;
+  action: string;
+  result: string;
+  screen: Screen;
+}
+
+const PHOTO_CAPTURE_STEPS: FlowStep[] = [
+  { step: 1, action: 'User taps "Take Photo"', result: 'Quick action on home screen', screen: 'home' },
+  { step: 2, action: 'Selects body part', result: 'Body area selection appears', screen: 'photo' },
+  { step: 3, action: 'Ghost overlay appears', result: 'Previous photo at 50% opacity', screen: 'photo' },
+  { step: 4, action: 'Aligns and captures', result: 'Haptic feedback confirms', screen: 'photo' },
+  { step: 5, action: 'Adds optional notes', result: 'Context for the photo', screen: 'photo' },
+  { step: 6, action: 'PASI analysis starts', result: 'AI scoring in 2-5 min', screen: 'pasi' },
+];
+
+const MEDICATION_REMINDER_STEPS: FlowStep[] = [
+  { step: 1, action: 'Push notification arrives', result: '"Time for morning cream!"', screen: 'home' },
+  { step: 2, action: 'Opens Medication screen', result: 'Today\'s checklist visible', screen: 'meds' },
+  { step: 3, action: 'Taps checkmark', result: 'Satisfying animation + confetti', screen: 'meds' },
+  { step: 4, action: 'All items checked', result: 'Streak updates with celebration', screen: 'meds' },
+];
+
+const FLARE_ALERT_STEPS: FlowStep[] = [
+  { step: 1, action: 'ML detects high risk', result: 'Pattern analysis triggered', screen: 'home' },
+  { step: 2, action: 'Alert notification', result: '⚠️ High flare-up risk', screen: 'flare' },
+  { step: 3, action: 'Risk breakdown shown', result: 'Contributing factors listed', screen: 'flare' },
+  { step: 4, action: 'Mitigation tips', result: 'Actionable recommendations', screen: 'flare' },
+];
+
+// Step Carousel Component
+interface StepCarouselProps {
+  steps: FlowStep[];
+  currentStep: number;
+  setCurrentStep: (step: number) => void;
+  color: string;
+  isMobile: boolean;
+}
+
+const StepCarousel = ({ steps, currentStep, setCurrentStep, color, isMobile }: StepCarouselProps) => (
+  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem', marginTop: '1.5rem' }}>
+    {/* Step Pills */}
+    <div style={{
+      display: 'flex',
+      gap: isMobile ? '6px' : '8px',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+    }}>
+      {steps.map((step, i) => (
+        <motion.button
+          key={i}
+          onClick={() => setCurrentStep(i)}
+          style={{
+            padding: isMobile ? '6px 12px' : '8px 16px',
+            borderRadius: '20px',
+            background: i === currentStep
+              ? `rgba(${color}, 0.2)`
+              : 'var(--glass-05)',
+            border: i === currentStep
+              ? `2px solid rgb(${color})`
+              : '1px solid var(--border-primary)',
+            color: i === currentStep
+              ? `rgb(${color})`
+              : 'var(--text-60)',
+            cursor: 'pointer',
+            fontSize: isMobile ? '0.75rem' : '0.85rem',
+            fontWeight: i === currentStep ? 600 : 400,
+            transition: 'all 0.2s ease',
+          }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          {isMobile ? i + 1 : `Step ${step.step}`}
+        </motion.button>
+      ))}
+    </div>
+
+    {/* Current Step Description */}
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={currentStep}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.2 }}
+        style={{ textAlign: 'center', maxWidth: '400px' }}
+      >
+        <p style={{
+          color: 'var(--text-90)',
+          fontWeight: 500,
+          fontSize: isMobile ? '0.95rem' : '1rem',
+          marginBottom: '0.35rem',
+        }}>
+          {steps[currentStep].action}
+        </p>
+        <p style={{
+          color: `rgb(${color})`,
+          fontSize: isMobile ? '0.85rem' : '0.9rem',
+        }}>
+          → {steps[currentStep].result}
+        </p>
+      </motion.div>
+    </AnimatePresence>
+  </div>
+);
+
+// User Flow Section Component
+interface UserFlowSectionProps {
+  title: string;
+  description: string;
+  color: string;
+  steps: FlowStep[];
+  isMobile: boolean;
+}
+
+const UserFlowSection = ({ title, description, color, steps, isMobile }: UserFlowSectionProps) => {
+  const [currentStep, setCurrentStep] = useState(0);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      style={{
+        padding: isMobile ? '2rem 1.25rem' : '2.5rem 2rem',
+        borderRadius: 24,
+        backgroundColor: `rgba(${color}, 0.03)`,
+        border: `1px solid rgba(${color}, 0.15)`,
+        marginBottom: '1.5rem',
+      }}
+    >
+      {/* Section Header */}
+      <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+        <h3 style={{
+          fontSize: isMobile ? '1.25rem' : '1.5rem',
+          fontWeight: 500,
+          color: `rgb(${color})`,
+          marginBottom: '0.5rem',
+        }}>
+          {title}
+        </h3>
+        <p style={{
+          fontSize: isMobile ? '0.9rem' : '1rem',
+          color: 'var(--text-50)',
+          maxWidth: '500px',
+          margin: '0 auto',
+        }}>
+          {description}
+        </p>
+      </div>
+
+      {/* Phone Mockup Container - wrapper handles scaling to preserve layout */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        height: isMobile ? '500px' : '650px',
+      }}>
+        <div style={{
+          transform: `scale(${isMobile ? 0.52 : 0.68})`,
+          transformOrigin: 'top center',
+        }}>
+          <PsoriAssistPhoneMockup
+            controlledScreen={steps[currentStep].screen}
+            showThemeToggle={false}
+          />
+        </div>
+      </div>
+
+      {/* Step Carousel */}
+      <StepCarousel
+        steps={steps}
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+        color={color}
+        isMobile={isMobile}
+      />
+    </motion.div>
+  );
+};
+
 export function PsoriAssistCase() {
   const [isMobile, setIsMobile] = useState(false);
   const [expandedTimeline, setExpandedTimeline] = useState<string | null>(null);
@@ -1395,7 +1579,7 @@ export function PsoriAssistCase() {
         </div>
       </SnapSection>
 
-      {/* ===== SECTION 12: USER FLOWS ===== */}
+      {/* ===== SECTION 12: USER FLOWS WITH INTERACTIVE PROTOTYPES ===== */}
       <SnapSection id="flows">
         <div style={{ maxWidth: 1100, width: '100%' }}>
           <motion.h2
@@ -1421,81 +1605,35 @@ export function PsoriAssistCase() {
               marginBottom: '2.5rem',
             }}
           >
-            Critical interaction patterns designed for minimal friction
+            Click through each step to see the prototype in action
           </motion.p>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            {userFlows.map((flow, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.15 }}
-                style={{
-                  padding: '1.5rem',
-                  borderRadius: 20,
-                  background: 'var(--glass-03)',
-                  border: '1px solid var(--border-primary)',
-                }}
-              >
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 500, color: `rgb(${flow.color})`, marginBottom: '1.25rem' }}>
-                  {flow.title}
-                </h3>
-                <div style={{ position: 'relative', paddingLeft: '2rem' }}>
-                  {/* Vertical line */}
-                  <div style={{
-                    position: 'absolute',
-                    left: 12,
-                    top: 0,
-                    bottom: 0,
-                    width: 2,
-                    background: `rgba(${flow.color}, 0.2)`,
-                  }} />
-                  {flow.steps.map((s, j) => (
-                    <div
-                      key={j}
-                      style={{
-                        display: 'flex',
-                        gap: '1rem',
-                        marginBottom: j < flow.steps.length - 1 ? '1rem' : 0,
-                        position: 'relative',
-                      }}
-                    >
-                      <div style={{
-                        width: 28,
-                        height: 28,
-                        borderRadius: '50%',
-                        background: `rgba(${flow.color}, 0.15)`,
-                        border: `2px solid rgb(${flow.color})`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '0.75rem',
-                        fontWeight: 500,
-                        color: `rgb(${flow.color})`,
-                        flexShrink: 0,
-                        zIndex: 1,
-                        marginLeft: '-14px',
-                      }}>
-                        {s.step}
-                      </div>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-80)', marginBottom: '0.25rem' }}>
-                          {s.action}
-                        </div>
-                        <div style={{
-                          fontSize: '0.8rem',
-                          color: 'var(--text-50)',
-                        }}>
-                          → {s.result}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          {/* Photo Capture Flow */}
+          <UserFlowSection
+            title="Photo Capture Flow"
+            description="AI-powered ghost overlay for consistent tracking"
+            color="74, 144, 226"
+            steps={PHOTO_CAPTURE_STEPS}
+            isMobile={isMobile}
+          />
+
+          {/* Medication Reminder Flow */}
+          <UserFlowSection
+            title="Medication Reminder"
+            description="Gamified adherence tracking with celebrations"
+            color="80, 200, 120"
+            steps={MEDICATION_REMINDER_STEPS}
+            isMobile={isMobile}
+          />
+
+          {/* Predictive Flare-Up Flow */}
+          <UserFlowSection
+            title="Predictive Flare-Up Alert"
+            description="ML-powered early warning system"
+            color="251, 191, 36"
+            steps={FLARE_ALERT_STEPS}
+            isMobile={isMobile}
+          />
         </div>
       </SnapSection>
 

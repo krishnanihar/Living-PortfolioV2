@@ -27,6 +27,48 @@ import {
   ProgressiveCounter,
   ProgressiveStatsGrid,
 } from '@/components/ui/ProgressiveDataReveal';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Screen type matching PsoriAssistPhoneMockup
+type Screen = 'home' | 'photo' | 'pasi' | 'meds' | 'mental' | 'triggers' | 'report' | 'settings' | 'pest' | 'flare' | 'reminders' | 'learn' | 'community';
+
+// Step data for user flow sections
+interface FlowStep {
+  step: number;
+  action: string;
+  result: string;
+  screen: Screen;
+}
+
+const PHOTO_CAPTURE_STEPS: FlowStep[] = [
+  { step: 1, action: 'User taps "Take Photo"', result: 'Quick action button on home screen', screen: 'home' },
+  { step: 2, action: 'Selects body part', result: 'Body part selection appears', screen: 'photo' },
+  { step: 3, action: 'Ghost overlay appears', result: 'Previous photo at 50% opacity for alignment', screen: 'photo' },
+  { step: 4, action: 'Adjusts opacity slider', result: 'Fine-tune ghost visibility (20-80%)', screen: 'photo' },
+  { step: 5, action: 'Aligns and captures', result: 'Haptic feedback confirms capture', screen: 'photo' },
+  { step: 6, action: 'Reviews preview', result: '"Looks good? Add notes or retake"', screen: 'photo' },
+  { step: 7, action: 'Adds notes', result: 'Context like "After beach weekend"', screen: 'photo' },
+  { step: 8, action: 'Confirms upload', result: 'Progress indicator shows upload', screen: 'pasi' },
+  { step: 9, action: 'Analysis ready', result: 'PASI score calculated in 2-5 min', screen: 'pasi' }
+];
+
+const MEDICATION_REMINDER_STEPS: FlowStep[] = [
+  { step: 1, action: 'Push notification arrives', result: '"Time for morning cream!"', screen: 'home' },
+  { step: 2, action: 'Opens Medication screen', result: 'Today\'s checklist visible', screen: 'meds' },
+  { step: 3, action: 'Views application list', result: 'Body parts needing treatment', screen: 'meds' },
+  { step: 4, action: 'Taps checkmark', result: 'Satisfying animation + confetti', screen: 'meds' },
+  { step: 5, action: 'All items checked', result: 'Streak updates with celebration', screen: 'meds' },
+  { step: 6, action: 'Milestone reached', result: 'Achievement badge unlocked!', screen: 'meds' }
+];
+
+const FLARE_ALERT_STEPS: FlowStep[] = [
+  { step: 1, action: 'ML detects high risk', result: 'Pattern analysis triggered', screen: 'home' },
+  { step: 2, action: 'Alert notification', result: '⚠️ "High flare-up risk detected"', screen: 'flare' },
+  { step: 3, action: 'Risk thermometer', result: '70% probability displayed', screen: 'flare' },
+  { step: 4, action: 'Contributing factors', result: 'Weather, missed meds, stress', screen: 'flare' },
+  { step: 5, action: 'Mitigation tips', result: 'Actionable recommendations shown', screen: 'flare' },
+  { step: 6, action: 'Take action', result: 'Share with provider or dismiss', screen: 'flare' }
+];
 
 interface StatItem {
   value: string;
@@ -67,6 +109,152 @@ interface TestingRound {
   keyFinding: string;
   iteration: string;
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// USER FLOW SECTION COMPONENTS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+interface StepCarouselProps {
+  steps: FlowStep[];
+  currentStep: number;
+  setCurrentStep: (step: number) => void;
+  color: string;
+  isMobile: boolean;
+}
+
+const StepCarousel = ({ steps, currentStep, setCurrentStep, color, isMobile }: StepCarouselProps) => (
+  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem', marginTop: '2rem' }}>
+    {/* Step Pills */}
+    <div style={{
+      display: 'flex',
+      gap: isMobile ? '6px' : '8px',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+      maxWidth: isMobile ? '100%' : '800px'
+    }}>
+      {steps.map((step, i) => (
+        <motion.button
+          key={i}
+          onClick={() => setCurrentStep(i)}
+          style={{
+            padding: isMobile ? '6px 12px' : '10px 18px',
+            borderRadius: '24px',
+            background: i === currentStep
+              ? `rgba(${color}, 0.2)`
+              : 'rgba(255,255,255,0.05)',
+            border: i === currentStep
+              ? `2px solid rgb(${color})`
+              : '1px solid rgba(255,255,255,0.15)',
+            color: i === currentStep
+              ? `rgb(${color})`
+              : 'rgba(255,255,255,0.6)',
+            cursor: 'pointer',
+            fontSize: isMobile ? '0.75rem' : '0.875rem',
+            fontWeight: i === currentStep ? 600 : 400,
+            transition: 'all 0.2s ease'
+          }}
+          whileHover={{ scale: 1.05, backgroundColor: `rgba(${color}, 0.1)` }}
+          whileTap={{ scale: 0.95 }}
+        >
+          {isMobile ? i + 1 : `Step ${step.step}`}
+        </motion.button>
+      ))}
+    </div>
+
+    {/* Current Step Description */}
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={currentStep}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.2 }}
+        style={{ textAlign: 'center', maxWidth: '500px', padding: '0 1rem' }}
+      >
+        <p style={{
+          color: 'rgba(255,255,255,0.95)',
+          fontWeight: 500,
+          fontSize: isMobile ? '1rem' : '1.125rem',
+          marginBottom: '0.5rem'
+        }}>
+          {steps[currentStep].action}
+        </p>
+        <p style={{
+          color: `rgb(${color})`,
+          fontSize: isMobile ? '0.875rem' : '0.95rem',
+          opacity: 0.9
+        }}>
+          → {steps[currentStep].result}
+        </p>
+      </motion.div>
+    </AnimatePresence>
+  </div>
+);
+
+interface UserFlowSectionProps {
+  title: string;
+  description: string;
+  color: string;
+  steps: FlowStep[];
+  isMobile: boolean;
+}
+
+const UserFlowSection = ({ title, description, color, steps, isMobile }: UserFlowSectionProps) => {
+  const [currentStep, setCurrentStep] = useState(0);
+
+  return (
+    <div style={{
+      padding: isMobile ? '3rem 1.5rem' : '5rem 3rem',
+      borderRadius: '32px',
+      backgroundColor: `rgba(${color}, 0.03)`,
+      border: `1px solid rgba(${color}, 0.15)`,
+      marginBottom: '3rem'
+    }}>
+      {/* Section Header */}
+      <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+        <h3 style={{
+          fontSize: isMobile ? '1.75rem' : '2.25rem',
+          fontWeight: 500,
+          color: `rgb(${color})`,
+          marginBottom: '0.75rem'
+        }}>
+          {title}
+        </h3>
+        <p style={{
+          fontSize: isMobile ? '1rem' : '1.125rem',
+          color: 'rgba(255,255,255,0.6)',
+          maxWidth: '600px',
+          margin: '0 auto'
+        }}>
+          {description}
+        </p>
+      </div>
+
+      {/* Phone Mockup Container */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        maxHeight: isMobile ? '500px' : '700px'
+      }}>
+        <PsoriAssistPhoneMockup
+          controlledScreen={steps[currentStep].screen}
+          scale={isMobile ? 0.55 : 0.7}
+          showThemeToggle={false}
+        />
+      </div>
+
+      {/* Step Carousel */}
+      <StepCarousel
+        steps={steps}
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+        color={color}
+        isMobile={isMobile}
+      />
+    </div>
+  );
+};
 
 export function PsoriAssistWork() {
   const [inView, setInView] = useState(false);
@@ -3071,14 +3259,14 @@ export function PsoriAssistWork() {
         </div>
       </div>
 
-      {/* User Flows */}
+      {/* User Flows with Interactive Prototypes */}
       <div id="flows" style={{ maxWidth: '1400px', margin: '0 auto 6rem' }}>
         <h2 style={{
           fontSize: isMobile ? '2rem' : '3rem',
           fontWeight: '500',
           letterSpacing: '0.01em',
           lineHeight: '1.3',
-          marginBottom: '1.5rem',
+          marginBottom: '1rem',
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.95)'
         }}>
@@ -3088,143 +3276,39 @@ export function PsoriAssistWork() {
           fontSize: '1.125rem',
           color: 'rgba(255, 255, 255, 0.6)',
           textAlign: 'center',
-          marginBottom: '3rem',
+          marginBottom: '4rem',
           maxWidth: '700px',
-          margin: '0 auto 3rem'
+          margin: '0 auto 4rem'
         }}>
-          Critical interaction patterns designed for minimal friction
+          Click through each step to see the prototype in action
         </p>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr',
-          gap: '3rem'
-        }}>
-          {[
-            {
-              title: 'Photo Capture Flow',
-              color: '74, 144, 226',
-              steps: [
-                { step: 1, action: 'User taps "Take Photo"', result: 'Body part selection screen appears' },
-                { step: 2, action: 'Selects "Left Arm"', result: 'Camera modal opens with ghost overlay' },
-                { step: 3, action: 'Ghost overlay appears at 50% opacity', result: 'Alignment guides (3x3 grid) help positioning' },
-                { step: 4, action: 'User adjusts opacity slider (20-80%)', result: 'Ghost visibility optimized for alignment' },
-                { step: 5, action: 'Aligns arm with ghost, taps Capture', result: 'Haptic feedback (success vibration)' },
-                { step: 6, action: 'Confirmation screen shows preview', result: '"Looks good? Add notes or retake"' },
-                { step: 7, action: 'Adds note: "After beach weekend, slight redness"', result: 'Taps "Confirm"' },
-                { step: 8, action: 'Upload progress indicator', result: 'Success toast: "PASI analysis in 2-5 min"' },
-                { step: 9, action: 'Wait 2-5 minutes', result: 'Push notification when analysis ready' }
-              ]
-            },
-            {
-              title: 'Medication Reminder Response',
-              color: '80, 200, 120',
-              steps: [
-                { step: 1, action: 'Push notification: "Time for morning cream!"', result: 'User taps notification' },
-                { step: 2, action: 'App opens to Medication screen', result: 'Checklist shows applications needed' },
-                { step: 3, action: 'List: "Calcipotriol - Left arm, right arm, trunk"', result: 'User taps checkmark for each' },
-                { step: 4, action: 'Taps checkmark', result: 'Animation: Checkmark expands, green, confetti' },
-                { step: 5, action: 'All items checked', result: 'Streak updates: "7 days in a row! 🔥"' },
-                { step: 6, action: 'If milestone (30 days)', result: 'Celebration modal with achievement badge' }
-              ]
-            },
-            {
-              title: 'Predictive Flare-Up Alert',
-              color: '251, 191, 36',
-              steps: [
-                { step: 1, action: 'ML model detects high risk', result: 'Push: "⚠️ High flare-up risk detected"' },
-                { step: 2, action: 'User taps notification', result: 'Risk Explanation screen opens' },
-                { step: 3, action: 'Thermometer shows risk level', result: '70% probability displayed' },
-                { step: 4, action: 'Contributing factors listed', result: 'Cold weather, missed applications, elevated stress' },
-                { step: 5, action: 'Mitigation suggestions shown', result: 'Increase topicals 2x, humidifier, stress management' },
-                { step: 6, action: 'Option to share with provider or dismiss', result: 'User chooses action' }
-              ]
-            }
-          ].map((flow, i) => (
-            <div
-              key={i}
-              style={{
-                padding: isMobile ? '2rem 1.5rem' : '2.5rem 2rem',
-                borderRadius: '24px',
-                backgroundColor: `rgba(${flow.color}, 0.03)`,
-                border: `1px solid rgba(${flow.color}, 0.2)`
-              }}
-            >
-              <h3 style={{
-                fontSize: '1.5rem',
-          fontWeight: '500',
-          letterSpacing: '0.005em',
-          marginBottom: '2rem',
-                color: `rgb(${flow.color})`
-              }}>
-                {flow.title}
-              </h3>
-              <div style={{ position: 'relative' }}>
-                {/* Vertical line */}
-                <div style={{
-                  position: 'absolute',
-                  left: '24px',
-                  top: 0,
-                  bottom: 0,
-                  width: '2px',
-                  backgroundColor: `rgba(${flow.color}, 0.2)`
-                }} />
+        {/* Photo Capture Flow */}
+        <UserFlowSection
+          title="Photo Capture Flow"
+          description="Consistent photo tracking with AI-powered ghost overlay alignment"
+          color="74, 144, 226"
+          steps={PHOTO_CAPTURE_STEPS}
+          isMobile={isMobile}
+        />
 
-                {flow.steps.map((s, j) => (
-                  <div
-                    key={j}
-                    style={{
-                      display: 'flex',
-                      gap: '1.5rem',
-                      marginBottom: j < flow.steps.length - 1 ? '2rem' : 0,
-                      position: 'relative'
-                    }}
-                  >
-                    {/* Step number */}
-                    <div style={{
-                      width: '48px',
-                      height: '48px',
-                      borderRadius: '50%',
-                      backgroundColor: `rgba(${flow.color}, 0.15)`,
-                      border: `2px solid rgb(${flow.color})`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '1rem',
-                      fontWeight: '500',
-                      color: `rgb(${flow.color})`,
-                      flexShrink: 0,
-                      zIndex: 1
-                    }}>
-                      {s.step}
-                    </div>
+        {/* Medication Reminder Flow */}
+        <UserFlowSection
+          title="Medication Reminder"
+          description="Gamified adherence tracking with streak celebrations"
+          color="80, 200, 120"
+          steps={MEDICATION_REMINDER_STEPS}
+          isMobile={isMobile}
+        />
 
-                    {/* Step content */}
-                    <div style={{ flex: 1, paddingTop: '0.5rem' }}>
-                      <div style={{
-                        fontSize: '1rem',
-                        fontWeight: '500',
-                        color: 'rgba(255, 255, 255, 0.9)',
-                        marginBottom: '0.5rem'
-                      }}>
-                        {s.action}
-                      </div>
-                      <div style={{
-                        fontSize: '0.9rem',
-                        color: 'rgba(255, 255, 255, 0.6)',
-                        lineHeight: '1.6',
-                        paddingLeft: '1rem',
-                        borderLeft: `2px solid rgba(${flow.color}, 0.3)`
-                      }}>
-                        → {s.result}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* Predictive Flare-Up Flow */}
+        <UserFlowSection
+          title="Predictive Flare-Up Alert"
+          description="ML-powered early warning system with actionable insights"
+          color="251, 191, 36"
+          steps={FLARE_ALERT_STEPS}
+          isMobile={isMobile}
+        />
       </div>
 
       {/* Technical Architecture */}
