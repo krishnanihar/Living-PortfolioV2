@@ -25,7 +25,6 @@ import {
   Layers,
   Cpu,
   Users,
-  User,
   Search,
   GitBranch,
   BarChart3,
@@ -42,14 +41,6 @@ import {
   Camera,
   Server,
   Cloud,
-  Wrench,
-  Film,
-  Tv,
-  Music,
-  Gamepad2,
-  FileText,
-  Brain,
-  Check,
   type LucideIcon
 } from 'lucide-react';
 
@@ -163,7 +154,7 @@ const awards: Award[] = [
 
 const projects: Project[] = [
   {
-    id: 1,
+    id: 2,
     label: '01',
     title: 'Design System & Tokenisation',
     subtitle: 'Token architecture for four merging airlines',
@@ -181,7 +172,7 @@ const projects: Project[] = [
     role: 'LEAD DESIGNER'
   },
   {
-    id: 2,
+    id: 1,
     label: '02',
     title: 'Pixel Radar',
     subtitle: 'Figma plugin for automated design consistency',
@@ -201,6 +192,42 @@ const projects: Project[] = [
   {
     id: 3,
     label: '03',
+    title: 'Search with AI',
+    subtitle: 'AI-native search using natural language',
+    description: '3rd place at Battle of the Apps 2024.',
+    longDescription: 'While the organization modernized basics, I was designing for what comes next. Search with AI—an AI-native search experience using natural language understanding—rethinks how passengers interact with an airline.\n\nThis feature helped Air India reach 3rd place at the Battle of the Airline Apps 2024 (World Aviation Festival), competing against Lufthansa, Emirates, and Qatar Airways.',
+    imagePlaceholder: 'AI Search Interface Mockup',
+    stats: [
+      { value: '3rd', label: 'Battle of Apps' },
+      { value: 'NLU', label: 'Powered' },
+      { value: 'WAF', label: '2024' }
+    ],
+    icon: Search,
+    color: '139, 92, 246',
+    category: 'AI',
+    role: 'LEAD DESIGNER'
+  },
+  {
+    id: 4,
+    label: '04',
+    title: 'MCP Handoff',
+    subtitle: 'Model Context Protocol for design-dev workflow',
+    description: 'Structured, reliable, modern handoff.',
+    longDescription: 'Design systems only matter if engineering implements them accurately. Handoff at Air India was fragmented—Figma links in Slack threads, specs that didn\'t match builds, endless back-and-forth.\n\nI implemented a design-dev handoff workflow using Model Context Protocol—bridging design and engineering through AI-assisted tooling. The kind of workflow a transformed airline should have, not the duct-tape process we inherited.',
+    imagePlaceholder: 'MCP Workflow Diagram',
+    stats: [
+      { value: 'MCP', label: 'Protocol' },
+      { value: '0', label: 'Slack Chaos' },
+      { value: 'AI', label: 'Assisted' }
+    ],
+    icon: GitBranch,
+    color: '16, 185, 129',
+    category: 'AI',
+    role: 'LEAD DESIGNER'
+  },
+  {
+    id: 5,
+    label: '05',
     title: 'IFE System Design',
     subtitle: 'In-flight entertainment at 35,000 feet',
     description: 'Typography at distance, touch during turbulence, zero onboarding.',
@@ -217,8 +244,8 @@ const projects: Project[] = [
     role: 'LEAD DESIGNER'
   },
   {
-    id: 4,
-    label: '04',
+    id: 6,
+    label: '06',
     title: 'NPS Feedback System',
     subtitle: 'Turning feedback into strategic input',
     description: 'Audited and redesigned feedback collection flows.',
@@ -235,8 +262,26 @@ const projects: Project[] = [
     role: 'INITIATOR'
   },
   {
-    id: 5,
-    label: '05',
+    id: 7,
+    label: '07',
+    title: 'Competitor Analysis',
+    subtitle: 'Research framework for world-class benchmarking',
+    description: 'Analyzing 15+ airline and travel apps.',
+    longDescription: 'You can\'t build a world-class airline experience without understanding what world-class looks like. I created a comprehensive research methodology analyzing 15+ airline and travel apps.\n\nThe framework became an ongoing reference for team decisions—a shared lens for evaluating design choices against industry best practices and emerging patterns.',
+    imagePlaceholder: 'Competitor Research Framework',
+    stats: [
+      { value: '15+', label: 'Apps Analyzed' },
+      { value: 'Ongoing', label: 'Reference' },
+      { value: 'Team', label: 'Resource' }
+    ],
+    icon: Compass,
+    color: '14, 165, 233',
+    category: 'RESEARCH',
+    role: 'LEAD DESIGNER'
+  },
+  {
+    id: 8,
+    label: '08',
     title: 'Liftoff Program',
     subtitle: 'Team upskilling and culture building',
     description: 'Built collaborative culture without waiting for HR.',
@@ -253,8 +298,8 @@ const projects: Project[] = [
     role: 'INITIATOR'
   },
   {
-    id: 6,
-    label: '06',
+    id: 9,
+    label: '09',
     title: 'Microsoft Hackathon',
     subtitle: 'AI-powered customer experience solution',
     description: 'Partnered with Microsoft, built working concept.',
@@ -270,36 +315,68 @@ const projects: Project[] = [
     category: 'HACKATHON',
     role: 'TEAM OF 3'
   },
+  {
+    id: 10,
+    label: '10',
+    title: 'Internal Hackathon',
+    subtitle: 'Full platform shipped in 24 hours',
+    description: 'Research, design, code, ship — in a single day.',
+    longDescription: 'Researched Firebase Studio, then designed and built an AI-powered internal platform for time tracking, resource allocation, and work management—in a single day.\n\nEnd-to-end: research, design, code, ship. Solved an operational pain point the organization hadn\'t prioritized. Two different hackathons, two wins. Same pattern: see a gap, build the solution, ship fast.',
+    imagePlaceholder: 'Platform Screenshots',
+    stats: [
+      { value: 'Winner', label: 'Internal' },
+      { value: '24hrs', label: 'Shipped' },
+      { value: 'E2E', label: 'Execution' }
+    ],
+    icon: Rocket,
+    color: '218, 14, 41',
+    category: 'HACKATHON',
+    role: 'TEAM OF 3'
+  }
 ];
 
 const differentiators: Differentiator[] = [
   {
     id: 1,
     title: 'Builder Mindset',
-    description: 'Pixel Radar: 450+ daily users. Built solo.',
+    description: 'Ships tools, not just designs. Pixel Radar, hackathons, MCP.',
     icon: Zap,
     color: '218, 14, 41'
   },
   {
     id: 2,
-    title: 'AI-Native Design',
-    description: 'Microsoft Hackathon winner. Azure AI, LLMs.',
+    title: 'AI-Native Thinking',
+    description: 'Designing for AI before playbooks existed.',
     icon: Cpu,
     color: '139, 92, 246'
   },
   {
     id: 3,
-    title: 'Systems Thinking',
-    description: 'Unified 4 airlines into one design language.',
+    title: 'Systems from Chaos',
+    description: 'Token architecture from undocumented screens.',
     icon: Layers,
     color: '99, 102, 241'
   },
   {
     id: 4,
-    title: 'Leadership',
-    description: 'Liftoff Program: 12 mentees, 89% completion.',
-    icon: Users,
+    title: 'Technical Depth',
+    description: '5000 lines in 48 hours. Full-stack execution.',
+    icon: GitBranch,
+    color: '16, 185, 129'
+  },
+  {
+    id: 5,
+    title: 'Written Communication',
+    description: 'Works async, documents clearly, builds programs.',
+    icon: MessageSquare,
     color: '251, 191, 36'
+  },
+  {
+    id: 6,
+    title: 'Ambiguity Tolerance',
+    description: 'Four airlines merging. Startup speed in enterprise.',
+    icon: Compass,
+    color: '236, 72, 153'
   }
 ];
 
@@ -441,12 +518,24 @@ export function AirIndiaWork() {
   // Card 3: MCP Handoff states
   const [mcpPhase, setMcpPhase] = useState<'idle' | 'design' | 'server' | 'agent' | 'output'>('idle');
 
+  // Card 4: IFE System states
+  const [activeIFETab, setActiveIFETab] = useState<string>('movies');
+
   // Card 5: NPS Feedback states
   const [npsPhase, setNpsPhase] = useState<'idle' | 'score' | 'gauge' | 'bars' | 'complete'>('idle');
   const [npsScore, setNpsScore] = useState(0);
 
   // Card 6: Competitor Analysis states
   const [competitorHoveredRow, setCompetitorHoveredRow] = useState<number | null>(null);
+
+  // Card 7: Liftoff Program states
+  const [liftoffWeek, setLiftoffWeek] = useState(4);
+
+  // Card 8: Microsoft Hackathon states
+  const [hackathonFeedIndex, setHackathonFeedIndex] = useState(0);
+
+  // Card 9: Internal Hackathon states
+  const [sprintPhase, setSprintPhase] = useState<'idea' | 'design' | 'build' | 'test' | 'ship'>('build');
 
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -1246,15 +1335,153 @@ export function AirIndiaWork() {
                 );
               }
 
-              // IFE System Design (index 2) - Interactive Seatback Mini Screen
+              // Card 2: Search with AI - NLU Query Mini Pipeline
               if (index === 2) {
-                const ifeTabs = [
-                  { icon: Film, label: 'Movies' },
-                  { icon: Tv, label: 'TV' },
-                  { icon: Music, label: 'Music' },
-                  { icon: Gamepad2, label: 'Games' },
-                  { icon: Plane, label: 'Flight' },
-                ];
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    position: 'relative',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    {/* Search bar */}
+                    <div style={{
+                      padding: '8px 12px',
+                      borderRadius: '20px',
+                      background: 'var(--glass-10)',
+                      border: `1px solid rgba(${project.color}, ${isHovered ? 0.4 : 0.2})`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      marginBottom: '10px',
+                      transform: isHovered ? 'scale(1.02)' : 'scale(1)',
+                      transition: 'all 0.3s ease',
+                    }}>
+                      <Search size={12} style={{ color: `rgb(${project.color})` }} />
+                      <span style={{
+                        fontSize: '9px',
+                        color: 'var(--text-50)',
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                      }}>flights to Delhi...</span>
+                    </div>
+                    {/* Pipeline stages */}
+                    <div style={{ display: 'flex', gap: '4px', justifyContent: 'center' }}>
+                      {['T', 'E', 'I', 'C', 'R'].map((label, i) => (
+                        <div key={i} style={{
+                          width: '24px',
+                          height: '24px',
+                          borderRadius: '6px',
+                          background: isHovered ? `rgba(${project.color}, ${0.3 - i * 0.04})` : 'var(--glass-08)',
+                          border: `1px solid rgba(${project.color}, ${isHovered ? 0.4 : 0.15})`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '8px',
+                          fontWeight: '600',
+                          color: isHovered ? `rgb(${project.color})` : 'var(--text-40)',
+                          transition: `all 0.3s ease ${i * 0.05}s`,
+                          transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
+                        }}>
+                          {label}
+                        </div>
+                      ))}
+                    </div>
+                    {/* Result indicator */}
+                    <div style={{
+                      marginTop: '8px',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      gap: '6px',
+                    }}>
+                      {[1, 2, 3].map((_, i) => (
+                        <div key={i} style={{
+                          width: '32px',
+                          height: '6px',
+                          borderRadius: '3px',
+                          background: isHovered ? `rgba(${project.color}, ${0.5 - i * 0.1})` : 'var(--glass-10)',
+                          transition: `all 0.4s ease ${0.2 + i * 0.1}s`,
+                        }} />
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+
+              // Card 3: MCP Handoff - Design-to-Code Mini Bridge
+              if (index === 3) {
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    position: 'relative',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    {/* Pipeline nodes */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                      {[
+                        { icon: '◇', label: 'FIG' },
+                        { icon: '⚡', label: 'MCP' },
+                        { icon: '◉', label: 'AI' },
+                        { icon: '<>', label: 'CODE' },
+                      ].map((node, i) => (
+                        <div key={i} style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '4px',
+                        }}>
+                          <div style={{
+                            width: '28px',
+                            height: '28px',
+                            borderRadius: '8px',
+                            background: isHovered ? `rgba(${project.color}, ${0.3 - i * 0.05})` : 'var(--glass-10)',
+                            border: `1px solid rgba(${project.color}, ${isHovered ? 0.5 : 0.2})`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '12px',
+                            transition: `all 0.3s ease ${i * 0.1}s`,
+                            transform: isHovered ? 'scale(1.1)' : 'scale(1)',
+                            boxShadow: isHovered ? `0 0 15px rgba(${project.color}, 0.3)` : 'none',
+                          }}>
+                            {node.icon}
+                          </div>
+                          <span style={{ fontSize: '7px', color: 'var(--text-40)', fontWeight: '500' }}>{node.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {/* Connection line with animation */}
+                    <svg style={{ position: 'absolute', top: '20px', left: '20px', width: '120px', height: '10px', overflow: 'visible' }}>
+                      <line x1="0" y1="5" x2="120" y2="5"
+                        stroke={`rgba(${project.color}, ${isHovered ? 0.4 : 0.15})`}
+                        strokeWidth="2"
+                        strokeDasharray={isHovered ? "4 2" : "2 2"}
+                        style={{ transition: 'all 0.3s ease' }}
+                      />
+                    </svg>
+                    {/* Code output preview */}
+                    <div style={{
+                      padding: '6px 10px',
+                      borderRadius: '6px',
+                      background: 'var(--glass-08)',
+                      border: `1px solid rgba(${project.color}, 0.15)`,
+                      fontFamily: 'monospace',
+                      fontSize: '8px',
+                      color: isHovered ? `rgb(${project.color})` : 'var(--text-40)',
+                      transition: 'all 0.3s ease',
+                    }}>
+                      {`<Button variant="primary" />`}
+                    </div>
+                  </div>
+                );
+              }
+
+              // IFE (index 4) - Interactive Seatback Mini Screen
+              if (index === 4) {
+                const ifeTabs = ['🎬', '📺', '🎵', '🎮', '✈️'];
                 return (
                   <div style={{
                     width: '160px',
@@ -1277,7 +1504,7 @@ export function AirIndiaWork() {
                       transition: 'all 0.4s ease',
                       overflow: 'hidden',
                     }}>
-                      {/* Tab bar with SVG icons */}
+                      {/* Tab bar */}
                       <div style={{
                         display: 'flex',
                         gap: '2px',
@@ -1286,24 +1513,20 @@ export function AirIndiaWork() {
                         borderRadius: '4px',
                         padding: '2px',
                       }}>
-                        {ifeTabs.map((tab, i) => {
-                          const TabIcon = tab.icon;
-                          return (
-                            <div key={i} style={{
-                              flex: 1,
-                              padding: '4px 0',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              borderRadius: '3px',
-                              background: i === 0 ? `rgba(${project.color}, ${isHovered ? 0.5 : 0.3})` : 'transparent',
-                              transition: `all 0.3s ease ${i * 0.05}s`,
-                              transform: isHovered && i === 0 ? 'scale(1.1)' : 'scale(1)',
-                            }}>
-                              <TabIcon size={10} style={{ color: i === 0 ? 'white' : 'var(--text-40)' }} />
-                            </div>
-                          );
-                        })}
+                        {ifeTabs.map((tab, i) => (
+                          <div key={i} style={{
+                            flex: 1,
+                            padding: '3px 0',
+                            fontSize: '8px',
+                            textAlign: 'center',
+                            borderRadius: '3px',
+                            background: i === 0 ? `rgba(${project.color}, ${isHovered ? 0.5 : 0.3})` : 'transparent',
+                            transition: `all 0.3s ease ${i * 0.05}s`,
+                            transform: isHovered && i === 0 ? 'scale(1.1)' : 'scale(1)',
+                          }}>
+                            {tab}
+                          </div>
+                        ))}
                       </div>
                       {/* Content grid - movie thumbnails */}
                       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '3px', marginBottom: '6px' }}>
@@ -1367,8 +1590,8 @@ export function AirIndiaWork() {
                 );
               }
 
-              // NPS Feedback System (index 3) - Mini Gauge Dashboard
-              if (index === 3) {
+              // Card 5: NPS Feedback - Mini Gauge Dashboard
+              if (index === 5) {
                 return (
                   <div style={{
                     width: '160px',
@@ -1464,8 +1687,92 @@ export function AirIndiaWork() {
                 );
               }
 
-              // Liftoff Program (index 4) - Learning Path Timeline
-              if (index === 4) {
+              // Card 6: Competitor Analysis - Mini Feature Matrix
+              if (index === 6) {
+                const features = ['UX', 'App', 'IFE', 'Web'];
+                const airlines = [
+                  { name: 'AI', scores: [4, 5, 5, 4] },
+                  { name: 'EK', scores: [5, 4, 5, 5] },
+                  { name: 'SQ', scores: [5, 5, 4, 5] },
+                ];
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    {/* Matrix header */}
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: '24px repeat(4, 1fr)',
+                      gap: '2px',
+                      marginBottom: '4px',
+                    }}>
+                      <div />
+                      {features.map((f, i) => (
+                        <div key={i} style={{
+                          fontSize: '7px',
+                          color: 'var(--text-40)',
+                          textAlign: 'center',
+                          fontWeight: '500',
+                        }}>{f}</div>
+                      ))}
+                    </div>
+                    {/* Matrix rows */}
+                    {airlines.map((airline, ai) => (
+                      <div key={ai} style={{
+                        display: 'grid',
+                        gridTemplateColumns: '24px repeat(4, 1fr)',
+                        gap: '2px',
+                        marginBottom: '3px',
+                        padding: '3px 0',
+                        background: ai === 0 ? `rgba(${project.color}, ${isHovered ? 0.15 : 0.08})` : 'transparent',
+                        borderRadius: '4px',
+                        transition: `all 0.3s ease ${ai * 0.1}s`,
+                      }}>
+                        <div style={{
+                          fontSize: '7px',
+                          fontWeight: '600',
+                          color: ai === 0 ? `rgb(${project.color})` : 'var(--text-50)',
+                        }}>{airline.name}</div>
+                        {airline.scores.map((score, si) => (
+                          <div key={si} style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            gap: '1px',
+                          }}>
+                            {[1, 2, 3, 4, 5].map((dot) => (
+                              <div key={dot} style={{
+                                width: '4px',
+                                height: '4px',
+                                borderRadius: '50%',
+                                background: dot <= score
+                                  ? (ai === 0 ? `rgb(${project.color})` : dot <= 3 ? '#FF9F0A' : '#30D158')
+                                  : 'var(--glass-15)',
+                                transition: `all 0.3s ease ${(ai * 4 + si) * 0.03}s`,
+                                transform: isHovered && dot <= score ? 'scale(1.2)' : 'scale(1)',
+                              }} />
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                    {/* Stats footer */}
+                    <div style={{
+                      marginTop: '6px',
+                      fontSize: '6px',
+                      color: 'var(--text-30)',
+                      textAlign: 'center',
+                    }}>
+                      15+ apps · 47 features
+                    </div>
+                  </div>
+                );
+              }
+
+              // Card 7: Liftoff Program - Learning Path Timeline
+              if (index === 7) {
                 const weeks = [1, 2, 3, 4, 5, 6];
                 const currentWeek = 4;
                 return (
@@ -1522,7 +1829,7 @@ export function AirIndiaWork() {
                                 justifyContent: 'center',
                               }}>
                                 {isCompleted && (
-                                  <Check size={8} style={{ color: 'white' }} />
+                                  <span style={{ fontSize: '8px', color: 'white' }}>✓</span>
                                 )}
                               </div>
                               <span style={{
@@ -1563,8 +1870,13 @@ export function AirIndiaWork() {
                 );
               }
 
-              // Microsoft Hackathon (index 5) - Azure AI Pipeline Mini
-              if (index === 5) {
+              // Card 8: Microsoft Hackathon - Azure AI Pipeline Mini
+              if (index === 8) {
+                const sentiments = [
+                  { text: 'Great!', emoji: '😊', score: 0.92 },
+                  { text: 'Okay', emoji: '😐', score: 0.45 },
+                  { text: 'Love it', emoji: '😊', score: 0.89 },
+                ];
                 return (
                   <div style={{
                     width: '160px',
@@ -1572,67 +1884,65 @@ export function AirIndiaWork() {
                     opacity: isHovered ? 1 : 0.7,
                     transition: 'all 0.5s ease',
                   }}>
-                    {/* Pipeline nodes with SVG icons */}
+                    {/* Pipeline nodes */}
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                       {[
-                        { label: 'INPUT', icon: FileText },
-                        { label: 'AZURE', icon: Brain },
-                        { label: 'OUTPUT', icon: BarChart3 },
-                      ].map((node, i) => {
-                        const NodeIcon = node.icon;
-                        return (
-                          <div key={i} style={{ position: 'relative' }}>
+                        { label: 'INPUT', icon: '📝' },
+                        { label: 'AZURE', icon: '🧠' },
+                        { label: 'OUTPUT', icon: '📊' },
+                      ].map((node, i) => (
+                        <div key={i} style={{ position: 'relative' }}>
+                          <div style={{
+                            width: '36px',
+                            height: '36px',
+                            borderRadius: '10px',
+                            background: i === 1
+                              ? `linear-gradient(135deg, rgba(${project.color}, 0.4), rgba(${project.color}, 0.2))`
+                              : 'var(--glass-10)',
+                            border: `1px solid rgba(${project.color}, ${isHovered ? 0.4 : 0.2})`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '14px',
+                            transition: `all 0.3s ease ${i * 0.15}s`,
+                            transform: isHovered ? 'scale(1.1)' : 'scale(1)',
+                            boxShadow: isHovered && i === 1 ? `0 0 20px rgba(${project.color}, 0.4)` : 'none',
+                          }}>
+                            {node.icon}
+                          </div>
+                          <div style={{
+                            position: 'absolute',
+                            top: '100%',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            fontSize: '5px',
+                            color: 'var(--text-30)',
+                            marginTop: '2px',
+                            whiteSpace: 'nowrap',
+                          }}>{node.label}</div>
+                          {/* Connection arrow */}
+                          {i < 2 && (
                             <div style={{
-                              width: '36px',
-                              height: '36px',
-                              borderRadius: '10px',
-                              background: i === 1
-                                ? `linear-gradient(135deg, rgba(${project.color}, 0.4), rgba(${project.color}, 0.2))`
-                                : 'var(--glass-10)',
-                              border: `1px solid rgba(${project.color}, ${isHovered ? 0.4 : 0.2})`,
+                              position: 'absolute',
+                              top: '50%',
+                              left: '100%',
+                              transform: 'translateY(-50%)',
+                              width: '14px',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
-                              transition: `all 0.3s ease ${i * 0.15}s`,
-                              transform: isHovered ? 'scale(1.1)' : 'scale(1)',
-                              boxShadow: isHovered && i === 1 ? `0 0 20px rgba(${project.color}, 0.4)` : 'none',
                             }}>
-                              <NodeIcon size={16} style={{ color: i === 1 ? `rgb(${project.color})` : 'var(--text-50)' }} />
+                              <span style={{
+                                fontSize: '8px',
+                                color: `rgba(${project.color}, ${isHovered ? 0.8 : 0.4})`,
+                                transition: 'color 0.3s ease',
+                              }}>→</span>
                             </div>
-                            <div style={{
-                              position: 'absolute',
-                              top: '100%',
-                              left: '50%',
-                              transform: 'translateX(-50%)',
-                              fontSize: '5px',
-                              color: 'var(--text-30)',
-                              marginTop: '2px',
-                              whiteSpace: 'nowrap',
-                            }}>{node.label}</div>
-                            {/* Connection arrow */}
-                            {i < 2 && (
-                              <div style={{
-                                position: 'absolute',
-                                top: '50%',
-                                left: '100%',
-                                transform: 'translateY(-50%)',
-                                width: '14px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                              }}>
-                                <span style={{
-                                  fontSize: '8px',
-                                  color: `rgba(${project.color}, ${isHovered ? 0.8 : 0.4})`,
-                                  transition: 'color 0.3s ease',
-                                }}>&#8594;</span>
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
+                          )}
+                        </div>
+                      ))}
                     </div>
-                    {/* Live feed with score indicators */}
+                    {/* Live feed */}
                     <div style={{
                       marginTop: '12px',
                       padding: '6px 8px',
@@ -1640,10 +1950,7 @@ export function AirIndiaWork() {
                       background: 'var(--glass-08)',
                       border: '1px solid var(--glass-10)',
                     }}>
-                      {[
-                        { text: 'Great service!', score: 0.92, positive: true },
-                        { text: 'Could improve', score: 0.45, positive: false },
-                      ].map((item, i) => (
+                      {sentiments.slice(0, 2).map((item, i) => (
                         <div key={i} style={{
                           display: 'flex',
                           alignItems: 'center',
@@ -1655,20 +1962,15 @@ export function AirIndiaWork() {
                         }}>
                           <span style={{ color: 'var(--text-40)' }}>&quot;{item.text}&quot;</span>
                           <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-                            <span style={{
-                              width: '6px',
-                              height: '6px',
-                              borderRadius: '50%',
-                              background: item.positive ? '#30D158' : '#FF9F0A',
-                            }} />
-                            <span style={{ color: item.positive ? '#30D158' : '#FF9F0A' }}>
+                            <span>{item.emoji}</span>
+                            <span style={{ color: item.score > 0.7 ? '#30D158' : '#FF9F0A' }}>
                               {item.score.toFixed(2)}
                             </span>
                           </span>
                         </div>
                       ))}
                     </div>
-                    {/* Award badge with SVG icon */}
+                    {/* Award badge */}
                     <div style={{
                       position: 'absolute',
                       bottom: '-8px',
@@ -1679,7 +1981,110 @@ export function AirIndiaWork() {
                       alignItems: 'center',
                       gap: '3px',
                     }}>
-                      <Trophy size={10} /> 2nd Prize
+                      🏆 1st Place
+                    </div>
+                  </div>
+                );
+              }
+
+              // Card 9: Internal Hackathon - Sprint Timeline Mini
+              if (index === 9) {
+                const phases = [
+                  { name: 'IDEA', hours: 2, done: true },
+                  { name: 'DESIGN', hours: 4, done: true },
+                  { name: 'BUILD', hours: 12, done: true },
+                  { name: 'TEST', hours: 4, done: false },
+                  { name: 'SHIP', hours: 2, done: false },
+                ];
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                  }}>
+                    {/* 24-HOUR header */}
+                    <div style={{
+                      fontSize: '7px',
+                      fontWeight: '700',
+                      color: `rgb(${project.color})`,
+                      marginBottom: '6px',
+                      letterSpacing: '0.5px',
+                    }}>24-HOUR SPRINT</div>
+                    {/* Phase timeline */}
+                    <div style={{ display: 'flex', gap: '2px', marginBottom: '8px' }}>
+                      {phases.map((phase, i) => (
+                        <div key={i} style={{
+                          flex: phase.hours,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '3px',
+                        }}>
+                          <div style={{
+                            width: '100%',
+                            height: '16px',
+                            borderRadius: '3px',
+                            background: phase.done
+                              ? `rgba(${project.color}, ${isHovered ? 0.5 : 0.3})`
+                              : 'var(--glass-10)',
+                            border: `1px solid rgba(${project.color}, ${phase.done ? 0.4 : 0.1})`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transition: `all 0.3s ease ${i * 0.08}s`,
+                            transform: isHovered && phase.done ? 'scaleY(1.1)' : 'scaleY(1)',
+                          }}>
+                            {phase.done && (
+                              <span style={{ fontSize: '8px', color: 'white' }}>✓</span>
+                            )}
+                          </div>
+                          <span style={{
+                            fontSize: '5px',
+                            color: phase.done ? `rgb(${project.color})` : 'var(--text-30)',
+                            fontWeight: phase.done ? '600' : '400',
+                          }}>{phase.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {/* Timer bar */}
+                    <div style={{
+                      padding: '6px 8px',
+                      borderRadius: '6px',
+                      background: 'var(--glass-08)',
+                      border: '1px solid var(--glass-10)',
+                    }}>
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: '4px',
+                      }}>
+                        <span style={{ fontSize: '7px', color: 'var(--text-40)' }}>Progress</span>
+                        <span style={{ fontSize: '8px', fontWeight: '600', color: `rgb(${project.color})` }}>18:32</span>
+                      </div>
+                      <div style={{ height: '4px', borderRadius: '2px', background: 'var(--glass-10)', overflow: 'hidden' }}>
+                        <div style={{
+                          width: isHovered ? '75%' : '40%',
+                          height: '100%',
+                          borderRadius: '2px',
+                          background: `linear-gradient(90deg, rgb(${project.color}), rgba(${project.color}, 0.6))`,
+                          transition: 'width 0.6s ease',
+                        }} />
+                      </div>
+                    </div>
+                    {/* Award badge */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '-8px',
+                      right: '0',
+                      fontSize: '7px',
+                      color: `rgb(${project.color})`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '3px',
+                    }}>
+                      🏆 Winner
                     </div>
                   </div>
                 );
@@ -3792,50 +4197,45 @@ export function AirIndiaWork() {
                       }}
                     >
                       {/* Index Badge */}
-                      <motion.span
+                      <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.1 }}
                         style={{
-                          fontSize: '0.75rem',
-                          fontWeight: '500',
-                          letterSpacing: '0.15em',
-                          color: `rgb(${project.color})`,
-                          textTransform: 'uppercase',
-                        }}
-                      >
-                        {String(index + 1).padStart(2, '0')} — {project.category}
-                      </motion.span>
-
-                      {/* Role Badge */}
-                      <motion.span
-                        initial={{ opacity: 0, x: -10 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: 0.12 }}
-                        style={{
-                          display: 'inline-flex',
+                          display: 'flex',
                           alignItems: 'center',
-                          gap: '6px',
-                          padding: '6px 12px',
-                          borderRadius: '20px',
-                          background: `rgba(${project.color}, 0.1)`,
-                          border: `1px solid rgba(${project.color}, 0.2)`,
-                          fontSize: '0.6875rem',
-                          fontWeight: '600',
-                          letterSpacing: '0.05em',
-                          color: `rgb(${project.color})`,
-                          textTransform: 'uppercase',
-                          marginTop: '8px',
+                          gap: '0.75rem',
+                          flexWrap: 'wrap',
                         }}
                       >
-                        {project.role === 'SOLE BUILDER' && <Wrench size={12} style={{ marginRight: '4px' }} />}
-                        {project.role === 'LEAD DESIGNER' && <User size={12} style={{ marginRight: '4px' }} />}
-                        {project.role === 'INITIATOR' && <Target size={12} style={{ marginRight: '4px' }} />}
-                        {project.role === 'TEAM OF 3' && <Users size={12} style={{ marginRight: '4px' }} />}
-                        {project.role}
-                      </motion.span>
+                        <span
+                          style={{
+                            fontSize: '0.75rem',
+                            fontWeight: '500',
+                            letterSpacing: '0.15em',
+                            color: `rgb(${project.color})`,
+                            textTransform: 'uppercase',
+                          }}
+                        >
+                          {String(index + 1).padStart(2, '0')} — {project.category}
+                        </span>
+                        <span
+                          style={{
+                            padding: '4px 10px',
+                            borderRadius: '12px',
+                            background: `rgba(${project.color}, 0.1)`,
+                            border: `1px solid rgba(${project.color}, 0.2)`,
+                            fontSize: '0.625rem',
+                            fontWeight: '600',
+                            letterSpacing: '0.05em',
+                            color: `rgb(${project.color})`,
+                            textTransform: 'uppercase',
+                          }}
+                        >
+                          {project.role}
+                        </span>
+                      </motion.div>
 
                       {/* Title */}
                       <motion.h3
@@ -9188,13 +9588,11 @@ export function AirIndiaWork() {
           </h2>
         </div>
 
-        {/* Differentiators Grid - 2x2 layout */}
+        {/* Differentiators Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
+          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
           gap: 'clamp(1.5rem, 3vw, 2.5rem)',
-          maxWidth: '700px',
-          margin: '0 auto',
         }}>
           {differentiators.map((diff, index) => {
             const Icon = diff.icon;
