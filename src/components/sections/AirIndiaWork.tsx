@@ -6992,6 +6992,31 @@ export function AirIndiaWork() {
                           </div>
                         ))}
                       </div>
+
+                      {/* Learn More Link */}
+                      <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                        <a
+                          href="https://www.airindia.com/in/en/experience/in-air/whats-on-my-ai/inflight-entertainment.html"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            fontSize: '12px',
+                            color: `rgb(${project.color})`,
+                            textDecoration: 'none',
+                            padding: '8px 16px',
+                            borderRadius: '20px',
+                            background: `rgba(${project.color}, 0.1)`,
+                            border: `1px solid rgba(${project.color}, 0.2)`,
+                            transition: 'all 0.2s ease',
+                          }}
+                        >
+                          Learn more about Air India IFE
+                          <span style={{ fontSize: '14px' }}>→</span>
+                        </a>
+                      </div>
                     </div>
                     </>
                   ) : index === 5 ? (

@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ChevronUp, ExternalLink, Smartphone, Camera, Clock, Activity, Brain, Heart, Users, Zap, CheckCircle } from 'lucide-react';
+import { ChevronDown, ChevronUp, ExternalLink, Smartphone, Camera, Clock, Activity, Brain, Heart, Users, Zap, CheckCircle, Play, Pause, RotateCcw } from 'lucide-react';
 import { SnapSection } from './ui/SnapSection';
 import { ExpandableCard } from './ui/ExpandableCard';
 import { AccordionGroup, CollapsibleSection } from './ui/AccordionGroup';
@@ -43,124 +43,166 @@ import { GhostOverlayDemo, SmartReminderDemo, PASIScoringDemo } from '@/componen
 // Screen type matching PsoriAssistPhoneMockup
 type Screen = 'home' | 'photo' | 'pasi' | 'meds' | 'mental' | 'triggers' | 'report' | 'settings' | 'pest' | 'flare' | 'reminders' | 'learn' | 'community';
 
-// Step data with screen mappings for user flow sections
-interface FlowStep {
-  step: number;
-  action: string;
-  result: string;
+// Flow step with description for auto-play
+interface AutoPlayStep {
   screen: Screen;
-}
-
-const PHOTO_CAPTURE_STEPS: FlowStep[] = [
-  { step: 1, action: 'User taps "Take Photo"', result: 'Quick action on home screen', screen: 'home' },
-  { step: 2, action: 'Selects body part', result: 'Body area selection appears', screen: 'photo' },
-  { step: 3, action: 'Ghost overlay appears', result: 'Previous photo at 50% opacity', screen: 'photo' },
-  { step: 4, action: 'Aligns and captures', result: 'Haptic feedback confirms', screen: 'photo' },
-  { step: 5, action: 'Adds optional notes', result: 'Context for the photo', screen: 'photo' },
-  { step: 6, action: 'PASI analysis starts', result: 'AI scoring in 2-5 min', screen: 'pasi' },
-];
-
-const MEDICATION_REMINDER_STEPS: FlowStep[] = [
-  { step: 1, action: 'Push notification arrives', result: '"Time for morning cream!"', screen: 'home' },
-  { step: 2, action: 'Opens Medication screen', result: 'Today\'s checklist visible', screen: 'meds' },
-  { step: 3, action: 'Taps checkmark', result: 'Satisfying animation + confetti', screen: 'meds' },
-  { step: 4, action: 'All items checked', result: 'Streak updates with celebration', screen: 'meds' },
-];
-
-const FLARE_ALERT_STEPS: FlowStep[] = [
-  { step: 1, action: 'ML detects high risk', result: 'Pattern analysis triggered', screen: 'home' },
-  { step: 2, action: 'Alert notification', result: '⚠️ High flare-up risk', screen: 'flare' },
-  { step: 3, action: 'Risk breakdown shown', result: 'Contributing factors listed', screen: 'flare' },
-  { step: 4, action: 'Mitigation tips', result: 'Actionable recommendations', screen: 'flare' },
-];
-
-// Step Carousel Component
-interface StepCarouselProps {
-  steps: FlowStep[];
-  currentStep: number;
-  setCurrentStep: (step: number) => void;
-  color: string;
-  isMobile: boolean;
-}
-
-const StepCarousel = ({ steps, currentStep, setCurrentStep, color, isMobile }: StepCarouselProps) => (
-  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem', marginTop: '1.5rem' }}>
-    {/* Step Pills */}
-    <div style={{
-      display: 'flex',
-      gap: isMobile ? '6px' : '8px',
-      flexWrap: 'wrap',
-      justifyContent: 'center',
-    }}>
-      {steps.map((step, i) => (
-        <motion.button
-          key={i}
-          onClick={() => setCurrentStep(i)}
-          style={{
-            padding: isMobile ? '6px 12px' : '8px 16px',
-            borderRadius: '20px',
-            background: i === currentStep
-              ? `rgba(${color}, 0.2)`
-              : 'var(--glass-05)',
-            border: i === currentStep
-              ? `2px solid rgb(${color})`
-              : '1px solid var(--border-primary)',
-            color: i === currentStep
-              ? `rgb(${color})`
-              : 'var(--text-60)',
-            cursor: 'pointer',
-            fontSize: isMobile ? '0.75rem' : '0.85rem',
-            fontWeight: i === currentStep ? 600 : 400,
-            transition: 'all 0.2s ease',
-          }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          {isMobile ? i + 1 : `Step ${step.step}`}
-        </motion.button>
-      ))}
-    </div>
-
-    {/* Current Step Description */}
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={currentStep}
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.2 }}
-        style={{ textAlign: 'center', maxWidth: '400px' }}
-      >
-        <p style={{
-          color: 'var(--text-90)',
-          fontWeight: 500,
-          fontSize: isMobile ? '0.95rem' : '1rem',
-          marginBottom: '0.35rem',
-        }}>
-          {steps[currentStep].action}
-        </p>
-        <p style={{
-          color: `rgb(${color})`,
-          fontSize: isMobile ? '0.85rem' : '0.9rem',
-        }}>
-          → {steps[currentStep].result}
-        </p>
-      </motion.div>
-    </AnimatePresence>
-  </div>
-);
-
-// User Flow Section Component
-interface UserFlowSectionProps {
-  title: string;
+  label: string;
   description: string;
+}
+
+// Flow data structure
+interface FlowData {
+  title: string;
   color: string;
-  steps: FlowStep[];
+  steps: AutoPlayStep[];
+}
+
+// Photo Capture Flow with rich descriptions
+const PHOTO_CAPTURE_FLOW: FlowData = {
+  title: 'Photo Capture Flow',
+  color: '74, 144, 226',
+  steps: [
+    {
+      screen: 'home',
+      label: 'User taps "Take Photo"',
+      description: `Quick actions on the home screen provide one-tap access to the most common tasks. The "Take Photo" button is prominently placed because consistent photo documentation is the foundation of effective psoriasis tracking.`
+    },
+    {
+      screen: 'photo',
+      label: 'Selects body part',
+      description: `The body part selector ensures photos are organized by region—left arm, right arm, trunk, scalp, and more. This organization enables meaningful comparisons over time and helps the AI analyze each area's progression independently.`
+    },
+    {
+      screen: 'photo',
+      label: 'Ghost overlay appears',
+      description: `The ghost overlay shows your previous photo at 50% opacity. This solves the #1 frustration patients reported: inconsistent angles making progress impossible to track. Now you can align perfectly every time.`
+    },
+    {
+      screen: 'photo',
+      label: 'Aligns and captures',
+      description: `With the ghost overlay as your guide, position your camera to match the previous photo. Haptic feedback confirms the capture, and the app automatically saves metadata like lighting conditions and timestamp.`
+    },
+    {
+      screen: 'photo',
+      label: 'Adds optional notes',
+      description: `Context matters. Adding notes like "after beach weekend" or "started new medication" helps you and your dermatologist understand what factors might be affecting your skin condition.`
+    },
+    {
+      screen: 'pasi',
+      label: 'PASI analysis begins',
+      description: `Your photo is securely uploaded for AI-powered PASI scoring. Within 2-5 minutes, you'll receive a clinical-grade severity assessment—the same metric dermatologists use, now available instantly on your phone.`
+    },
+  ]
+};
+
+// Medication Reminder Flow with rich descriptions
+const MEDICATION_REMINDER_FLOW: FlowData = {
+  title: 'Medication Reminder',
+  color: '80, 200, 120',
+  steps: [
+    {
+      screen: 'home',
+      label: 'Push notification arrives',
+      description: `Smart notifications arrive at the optimal time based on your routine. Research shows topical medication adherence drops to 30% within weeks—our reminder system is designed to break that cycle.`
+    },
+    {
+      screen: 'meds',
+      label: 'Opens Medication screen',
+      description: `The medication screen shows today's applications at a glance. Each body region that needs treatment is listed clearly, with visual indicators showing what's done and what's remaining.`
+    },
+    {
+      screen: 'meds',
+      label: 'Taps checkmark',
+      description: `Marking an application complete triggers a satisfying animation and confetti burst. This isn't just for fun—behavioral psychology research shows these micro-rewards increase habit formation by 40%.`
+    },
+    {
+      screen: 'meds',
+      label: 'Streak celebration',
+      description: `Completing all applications updates your streak counter. Milestone achievements at 7, 14, and 30 days unlock badges and celebrations, transforming medication adherence from a chore into a rewarding daily habit.`
+    },
+  ]
+};
+
+// Flare Alert Flow with rich descriptions
+const FLARE_ALERT_FLOW: FlowData = {
+  title: 'Predictive Flare-Up Alert',
+  color: '251, 191, 36',
+  steps: [
+    {
+      screen: 'home',
+      label: 'ML detects high risk',
+      description: `Our machine learning model continuously analyzes your data—photo history, medication adherence, weather patterns, and stress indicators—to identify early warning signs of an approaching flare-up.`
+    },
+    {
+      screen: 'flare',
+      label: 'Alert notification',
+      description: `When risk exceeds the threshold, you receive a proactive alert. Unlike reactive care that starts after symptoms appear, this early warning gives you 3-5 days to take preventive action.`
+    },
+    {
+      screen: 'flare',
+      label: 'Risk factors explained',
+      description: `The alert breaks down contributing factors: cold weather incoming, two missed medication applications, elevated stress from calendar analysis. Understanding the "why" empowers you to address root causes.`
+    },
+    {
+      screen: 'flare',
+      label: 'Mitigation suggestions',
+      description: `Actionable recommendations tailored to your specific risk factors: increase moisturizer application, use a humidifier, or practice the guided breathing exercises. You can also share this report directly with your dermatologist.`
+    },
+  ]
+};
+
+// Auto-Play Flow Section Component
+interface AutoPlayFlowSectionProps {
+  flow: FlowData;
   isMobile: boolean;
 }
 
-const UserFlowSection = ({ title, description, color, steps, isMobile }: UserFlowSectionProps) => {
+const AutoPlayFlowSection = ({ flow, isMobile }: AutoPlayFlowSectionProps) => {
+  const [isPlaying, setIsPlaying] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+  const [isComplete, setIsComplete] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Auto-advance logic (3 seconds per step, stops at end)
+  useEffect(() => {
+    if (isPlaying && !isComplete) {
+      intervalRef.current = setInterval(() => {
+        setCurrentStep(prev => {
+          if (prev >= flow.steps.length - 1) {
+            // Stop at end
+            setIsPlaying(false);
+            setIsComplete(true);
+            return prev;
+          }
+          return prev + 1;
+        });
+      }, 3000);
+    }
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [isPlaying, isComplete, flow.steps.length]);
+
+  const handlePlayClick = () => {
+    if (isComplete) {
+      // Reset and play again
+      setCurrentStep(0);
+      setIsComplete(false);
+      setIsPlaying(true);
+    } else {
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  // Button states: "Play Demo" | "Pause" | "Play Again"
+  const getButtonState = () => {
+    if (isComplete) return { icon: 'replay', text: 'Play Again' };
+    if (isPlaying) return { icon: 'pause', text: 'Pause' };
+    return { icon: 'play', text: 'Play Demo' };
+  };
+
+  const buttonState = getButtonState();
 
   return (
     <motion.div
@@ -170,32 +212,44 @@ const UserFlowSection = ({ title, description, color, steps, isMobile }: UserFlo
       style={{
         padding: isMobile ? '2rem 1.25rem' : '2.5rem 2rem',
         borderRadius: 24,
-        backgroundColor: `rgba(${color}, 0.03)`,
-        border: `1px solid rgba(${color}, 0.15)`,
-        marginBottom: '1.5rem',
+        backgroundColor: `rgba(${flow.color}, 0.03)`,
+        border: `1px solid rgba(${flow.color}, 0.15)`,
+        marginBottom: '2rem',
       }}
     >
-      {/* Section Header */}
-      <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-        <h3 style={{
-          fontSize: isMobile ? '1.25rem' : '1.5rem',
-          fontWeight: 500,
-          color: `rgb(${color})`,
-          marginBottom: '0.5rem',
-        }}>
-          {title}
-        </h3>
-        <p style={{
-          fontSize: isMobile ? '0.9rem' : '1rem',
-          color: 'var(--text-50)',
-          maxWidth: '500px',
-          margin: '0 auto',
-        }}>
-          {description}
-        </p>
-      </div>
+      {/* Title */}
+      <h3 style={{
+        fontSize: isMobile ? '1.5rem' : '1.75rem',
+        fontWeight: 500,
+        color: `rgb(${flow.color})`,
+        textAlign: 'center',
+        marginBottom: '1.5rem',
+      }}>
+        {flow.title}
+      </h3>
 
-      {/* Phone Mockup Container - wrapper handles scaling to preserve layout */}
+      {/* Dynamic Description (changes per step with animation) */}
+      <AnimatePresence mode="wait">
+        <motion.p
+          key={currentStep}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.3 }}
+          style={{
+            maxWidth: '650px',
+            margin: '0 auto 2rem',
+            lineHeight: 1.7,
+            color: 'var(--text-70)',
+            textAlign: 'center',
+            fontSize: isMobile ? '0.95rem' : '1.05rem',
+          }}
+        >
+          {flow.steps[currentStep].description}
+        </motion.p>
+      </AnimatePresence>
+
+      {/* Phone Mockup (non-interactive display) */}
       <div style={{
         display: 'flex',
         justifyContent: 'center',
@@ -206,20 +260,68 @@ const UserFlowSection = ({ title, description, color, steps, isMobile }: UserFlo
           transformOrigin: 'top center',
         }}>
           <PsoriAssistPhoneMockup
-            controlledScreen={steps[currentStep].screen}
+            controlledScreen={flow.steps[currentStep].screen}
             showThemeToggle={false}
           />
         </div>
       </div>
 
-      {/* Step Carousel */}
-      <StepCarousel
-        steps={steps}
-        currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
-        color={color}
-        isMobile={isMobile}
-      />
+      {/* Play/Pause/Replay Button */}
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+        <motion.button
+          onClick={handlePlayClick}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            padding: '0.75rem 1.5rem',
+            borderRadius: '100px',
+            background: `rgba(${flow.color}, 0.15)`,
+            border: `2px solid rgb(${flow.color})`,
+            color: `rgb(${flow.color})`,
+            fontSize: '1rem',
+            fontWeight: 600,
+            cursor: 'pointer',
+          }}
+        >
+          {/* Icon: Play / Pause / Replay */}
+          {buttonState.icon === 'play' && <Play size={20} fill={`rgb(${flow.color})`} />}
+          {buttonState.icon === 'pause' && <Pause size={20} fill={`rgb(${flow.color})`} />}
+          {buttonState.icon === 'replay' && <RotateCcw size={20} />}
+          {buttonState.text}
+        </motion.button>
+      </div>
+
+      {/* Progress Bar with Step Counter */}
+      <div style={{ maxWidth: '400px', margin: '0 auto' }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: '0.5rem',
+          fontSize: '0.85rem',
+          color: 'var(--text-60)',
+        }}>
+          <span>Step {currentStep + 1} of {flow.steps.length}</span>
+          <span>{flow.steps[currentStep].label}</span>
+        </div>
+        <div style={{
+          height: '4px',
+          borderRadius: '2px',
+          background: 'var(--glass-10)',
+        }}>
+          <motion.div
+            style={{
+              height: '100%',
+              borderRadius: '2px',
+              background: `rgb(${flow.color})`,
+            }}
+            animate={{ width: `${((currentStep + 1) / flow.steps.length) * 100}%` }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
+      </div>
     </motion.div>
   );
 };
@@ -1605,35 +1707,17 @@ export function PsoriAssistCase() {
               marginBottom: '2.5rem',
             }}
           >
-            Click through each step to see the prototype in action
+            Watch each feature in action
           </motion.p>
 
           {/* Photo Capture Flow */}
-          <UserFlowSection
-            title="Photo Capture Flow"
-            description="AI-powered ghost overlay for consistent tracking"
-            color="74, 144, 226"
-            steps={PHOTO_CAPTURE_STEPS}
-            isMobile={isMobile}
-          />
+          <AutoPlayFlowSection flow={PHOTO_CAPTURE_FLOW} isMobile={isMobile} />
 
           {/* Medication Reminder Flow */}
-          <UserFlowSection
-            title="Medication Reminder"
-            description="Gamified adherence tracking with celebrations"
-            color="80, 200, 120"
-            steps={MEDICATION_REMINDER_STEPS}
-            isMobile={isMobile}
-          />
+          <AutoPlayFlowSection flow={MEDICATION_REMINDER_FLOW} isMobile={isMobile} />
 
           {/* Predictive Flare-Up Flow */}
-          <UserFlowSection
-            title="Predictive Flare-Up Alert"
-            description="ML-powered early warning system"
-            color="251, 191, 36"
-            steps={FLARE_ALERT_STEPS}
-            isMobile={isMobile}
-          />
+          <AutoPlayFlowSection flow={FLARE_ALERT_FLOW} isMobile={isMobile} />
         </div>
       </SnapSection>
 
