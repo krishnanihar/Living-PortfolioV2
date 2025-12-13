@@ -8,6 +8,7 @@ import { AirIndiaHeroCard } from '@/components/narrative-work/AirIndiaHeroCard';
 import { PsoriAssistHeroCard } from '@/components/narrative-work/PsoriAssistHeroCard';
 import { MetamorphicHeroCard } from '@/components/narrative-work/MetamorphicHeroCard';
 import { LatentSpaceHeroCard } from '@/components/narrative-work/LatentSpaceHeroCard';
+import { MicroVisualization } from '@/components/narrative-work/MicroVisualizations';
 import { type ImpactCard } from '@/components/narrative-work/ImpactBentoGrid';
 import { ResearchShowcase } from '@/components/narrative-work/ResearchShowcase';
 import { ActTransition } from '@/components/narrative-work/ActTransition';
@@ -718,7 +719,7 @@ export function WorkNarrativePage() {
                       </div>
                     </div>
 
-                    {/* Right Column - Image Placeholder (shown when expanded) */}
+                    {/* Right Column - Micro Visualization (shown when expanded) */}
                     {isHovered && (
                       <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -731,28 +732,25 @@ export function WorkNarrativePage() {
                           gap: '0.75rem',
                         }}
                       >
-                        {/* Main Image Placeholder */}
+                        {/* Main Visualization */}
                         <div style={{
                           flex: '1',
                           borderRadius: '12px',
                           background: `linear-gradient(135deg, rgba(${card.color}, 0.1), rgba(${card.color}, 0.05))`,
-                          border: `1px dashed rgba(${card.color}, 0.3)`,
+                          border: `1px solid rgba(${card.color}, 0.2)`,
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           minHeight: '120px',
+                          padding: '1rem',
                         }}>
-                          <div style={{
-                            textAlign: 'center',
-                            color: `rgba(${card.color}, 0.5)`,
-                          }}>
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                              <circle cx="8.5" cy="8.5" r="1.5"/>
-                              <polyline points="21 15 16 10 5 21"/>
-                            </svg>
-                            <p style={{ fontSize: '0.6875rem', marginTop: '0.5rem' }}>Preview</p>
-                          </div>
+                          <MicroVisualization
+                            cardId={card.id}
+                            projectId="air-india"
+                            color={card.color}
+                            isHovered={isHovered}
+                            size="main"
+                          />
                         </div>
 
                         {/* Secondary Thumbnails */}
@@ -760,17 +758,29 @@ export function WorkNarrativePage() {
                           display: 'flex',
                           gap: '0.5rem',
                         }}>
-                          {[1, 2].map((i) => (
+                          {[1, 2].map((thumbIndex) => (
                             <div
-                              key={i}
+                              key={thumbIndex}
                               style={{
                                 flex: '1',
                                 height: '48px',
                                 borderRadius: '8px',
                                 background: `rgba(${card.color}, 0.08)`,
-                                border: `1px dashed rgba(${card.color}, 0.2)`,
+                                border: `1px solid rgba(${card.color}, 0.15)`,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                padding: '0.25rem',
                               }}
-                            />
+                            >
+                              <MicroVisualization
+                                cardId={card.id}
+                                projectId="air-india"
+                                color={card.color}
+                                isHovered={isHovered}
+                                size="thumbnail"
+                              />
+                            </div>
                           ))}
                         </div>
                       </motion.div>
@@ -1050,30 +1060,42 @@ export function WorkNarrativePage() {
                               flex: 1,
                               borderRadius: '12px',
                               background: `linear-gradient(135deg, rgba(${card.color}, 0.1), rgba(${card.color}, 0.05))`,
-                              border: `1px dashed rgba(${card.color}, 0.3)`,
+                              border: `1px solid rgba(${card.color}, 0.2)`,
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
                               minHeight: '120px',
+                              padding: '1rem',
                             }}>
-                              <div style={{ textAlign: 'center', color: `rgba(${card.color}, 0.5)` }}>
-                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                  <circle cx="8.5" cy="8.5" r="1.5"/>
-                                  <polyline points="21 15 16 10 5 21"/>
-                                </svg>
-                                <p style={{ fontSize: '0.6875rem', marginTop: '0.5rem' }}>Preview</p>
-                              </div>
+                              <MicroVisualization
+                                cardId={card.id}
+                                projectId="psoriassist"
+                                color={card.color}
+                                isHovered={isHovered}
+                                size="main"
+                              />
                             </div>
                             <div style={{ display: 'flex', gap: '0.5rem' }}>
-                              {[1, 2].map((i) => (
-                                <div key={i} style={{
+                              {[1, 2].map((thumbIndex) => (
+                                <div key={thumbIndex} style={{
                                   flex: 1,
                                   height: '48px',
                                   borderRadius: '8px',
                                   background: `rgba(${card.color}, 0.08)`,
-                                  border: `1px dashed rgba(${card.color}, 0.2)`,
-                                }} />
+                                  border: `1px solid rgba(${card.color}, 0.15)`,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  padding: '0.25rem',
+                                }}>
+                                  <MicroVisualization
+                                    cardId={card.id}
+                                    projectId="psoriassist"
+                                    color={card.color}
+                                    isHovered={isHovered}
+                                    size="thumbnail"
+                                  />
+                                </div>
                               ))}
                             </div>
                           </motion.div>
@@ -1332,30 +1354,42 @@ export function WorkNarrativePage() {
                               flex: 1,
                               borderRadius: '12px',
                               background: `linear-gradient(135deg, rgba(${card.color}, 0.1), rgba(${card.color}, 0.05))`,
-                              border: `1px dashed rgba(${card.color}, 0.3)`,
+                              border: `1px solid rgba(${card.color}, 0.2)`,
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
                               minHeight: '120px',
+                              padding: '1rem',
                             }}>
-                              <div style={{ textAlign: 'center', color: `rgba(${card.color}, 0.5)` }}>
-                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                  <circle cx="8.5" cy="8.5" r="1.5"/>
-                                  <polyline points="21 15 16 10 5 21"/>
-                                </svg>
-                                <p style={{ fontSize: '0.6875rem', marginTop: '0.5rem' }}>Preview</p>
-                              </div>
+                              <MicroVisualization
+                                cardId={card.id}
+                                projectId="metamorphic"
+                                color={card.color}
+                                isHovered={isHovered}
+                                size="main"
+                              />
                             </div>
                             <div style={{ display: 'flex', gap: '0.5rem' }}>
-                              {[1, 2].map((i) => (
-                                <div key={i} style={{
+                              {[1, 2].map((thumbIndex) => (
+                                <div key={thumbIndex} style={{
                                   flex: 1,
                                   height: '48px',
                                   borderRadius: '8px',
                                   background: `rgba(${card.color}, 0.08)`,
-                                  border: `1px dashed rgba(${card.color}, 0.2)`,
-                                }} />
+                                  border: `1px solid rgba(${card.color}, 0.15)`,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  padding: '0.25rem',
+                                }}>
+                                  <MicroVisualization
+                                    cardId={card.id}
+                                    projectId="metamorphic"
+                                    color={card.color}
+                                    isHovered={isHovered}
+                                    size="thumbnail"
+                                  />
+                                </div>
                               ))}
                             </div>
                           </motion.div>
@@ -1614,30 +1648,42 @@ export function WorkNarrativePage() {
                               flex: 1,
                               borderRadius: '12px',
                               background: `linear-gradient(135deg, rgba(${card.color}, 0.1), rgba(${card.color}, 0.05))`,
-                              border: `1px dashed rgba(${card.color}, 0.3)`,
+                              border: `1px solid rgba(${card.color}, 0.2)`,
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
                               minHeight: '120px',
+                              padding: '1rem',
                             }}>
-                              <div style={{ textAlign: 'center', color: `rgba(${card.color}, 0.5)` }}>
-                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                  <circle cx="8.5" cy="8.5" r="1.5"/>
-                                  <polyline points="21 15 16 10 5 21"/>
-                                </svg>
-                                <p style={{ fontSize: '0.6875rem', marginTop: '0.5rem' }}>Preview</p>
-                              </div>
+                              <MicroVisualization
+                                cardId={card.id}
+                                projectId="latent-space"
+                                color={card.color}
+                                isHovered={isHovered}
+                                size="main"
+                              />
                             </div>
                             <div style={{ display: 'flex', gap: '0.5rem' }}>
-                              {[1, 2].map((i) => (
-                                <div key={i} style={{
+                              {[1, 2].map((thumbIndex) => (
+                                <div key={thumbIndex} style={{
                                   flex: 1,
                                   height: '48px',
                                   borderRadius: '8px',
                                   background: `rgba(${card.color}, 0.08)`,
-                                  border: `1px dashed rgba(${card.color}, 0.2)`,
-                                }} />
+                                  border: `1px solid rgba(${card.color}, 0.15)`,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  padding: '0.25rem',
+                                }}>
+                                  <MicroVisualization
+                                    cardId={card.id}
+                                    projectId="latent-space"
+                                    color={card.color}
+                                    isHovered={isHovered}
+                                    size="thumbnail"
+                                  />
+                                </div>
                               ))}
                             </div>
                           </motion.div>
