@@ -6669,63 +6669,128 @@ export function AirIndiaWork() {
                       background: 'var(--glass-06)',
                       border: `1px solid rgba(${project.color}, 0.2)`,
                     }}>
+                      {/* Impact Header */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginBottom: '24px',
+                        paddingBottom: '20px',
+                        borderBottom: '1px solid var(--glass-10)',
+                      }}>
+                        <div>
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                            marginBottom: '8px',
+                          }}>
+                            <span style={{
+                              padding: '4px 10px',
+                              borderRadius: '6px',
+                              background: `rgba(${project.color}, 0.15)`,
+                              fontSize: '9px',
+                              fontWeight: '700',
+                              color: `rgb(${project.color})`,
+                              letterSpacing: '0.1em',
+                            }}>EARLY ADOPTER</span>
+                            <span style={{
+                              fontSize: '10px',
+                              color: 'var(--text-40)',
+                            }}>Implemented Q1 2025</span>
+                          </div>
+                          <div style={{
+                            fontSize: '14px',
+                            fontWeight: '600',
+                            color: 'var(--text-90)',
+                          }}>Bridging Design-Engineering Handoff with MCP</div>
+                        </div>
+
+                        {/* Impact Metrics */}
+                        <div style={{ display: 'flex', gap: '20px' }}>
+                          {[
+                            { value: '3x', label: 'Faster' },
+                            { value: '75%', label: 'Accuracy' },
+                            { value: '0', label: 'Manual Docs' },
+                          ].map((stat) => (
+                            <div key={stat.label} style={{ textAlign: 'center' }}>
+                              <div style={{
+                                fontSize: '20px',
+                                fontWeight: '700',
+                                color: `rgb(${project.color})`,
+                                lineHeight: 1,
+                              }}>{stat.value}</div>
+                              <div style={{
+                                fontSize: '9px',
+                                color: 'var(--text-40)',
+                                marginTop: '4px',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
+                              }}>{stat.label}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
                       {/* Pipeline Stages */}
                       <div style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(4, 1fr)',
+                        gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
                         gap: '16px',
                         marginBottom: '24px',
                         position: 'relative',
                       }}>
-                        {/* Connection Lines SVG */}
-                        <svg style={{
-                          position: 'absolute',
-                          top: '50px',
-                          left: '12.5%',
-                          width: '75%',
-                          height: '4px',
-                          zIndex: 0,
-                        }}>
-                          <line x1="0" y1="2" x2="100%" y2="2"
-                            stroke={`rgba(${project.color}, 0.3)`}
-                            strokeWidth="2"
-                            strokeDasharray="8 4"
-                            style={{
-                              animation: mcpPhase !== 'idle' ? 'flowLine 1.5s linear infinite' : 'none',
-                            }}
-                          />
-                        </svg>
+                        {/* Connection Lines SVG - hidden on mobile */}
+                        {!isMobile && (
+                          <svg style={{
+                            position: 'absolute',
+                            top: '50px',
+                            left: '12.5%',
+                            width: '75%',
+                            height: '4px',
+                            zIndex: 0,
+                          }}>
+                            <line x1="0" y1="2" x2="100%" y2="2"
+                              stroke={`rgba(${project.color}, 0.3)`}
+                              strokeWidth="2"
+                              strokeDasharray="8 4"
+                              style={{
+                                animation: mcpPhase !== 'idle' ? 'flowLine 1.5s linear infinite' : 'none',
+                              }}
+                            />
+                          </svg>
+                        )}
 
                         {[
                           {
                             icon: '◇',
                             title: 'FIGMA DESIGN',
-                            items: ['Frame', 'Button', 'Card', 'Input'],
+                            items: ['Components', 'Variables', 'Styles', 'Tokens'],
                             phase: 'design',
                             color: '#A259FF'
                           },
                           {
                             icon: '⚡',
                             title: 'MCP SERVER',
-                            items: ['get_code()', 'get_variables()', 'get_metadata()'],
+                            items: ['get_design_context()', 'get_variables()', 'get_code_connect()'],
                             phase: 'server',
                             color: '#0D99FF'
                           },
                           {
                             icon: '◉',
                             title: 'AI AGENT',
-                            items: ['Claude', 'Cursor', 'Copilot'],
+                            items: ['Claude 4.5', 'Cursor', 'VS Code'],
                             phase: 'agent',
                             color: '#30D158'
                           },
                           {
-                            icon: '<>',
+                            icon: '</>',
                             title: 'CODE OUTPUT',
-                            items: ['<Button />', 'variant="primary"', 'tokens applied'],
+                            items: ['<Button />', 'Tokens Applied', 'Zero Translation'],
                             phase: 'output',
                             color: '#FF9F0A'
                           },
-                        ].map((stage, idx) => (
+                        ].map((stage) => (
                           <div key={stage.title} style={{
                             padding: '20px',
                             borderRadius: '12px',
@@ -6775,6 +6840,29 @@ export function AirIndiaWork() {
                         ))}
                       </div>
 
+                      {/* Industry Adoption */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '24px',
+                        marginBottom: '20px',
+                        padding: '12px 0',
+                      }}>
+                        <span style={{ fontSize: '10px', color: 'var(--text-30)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Adopted by</span>
+                        {['Anthropic', 'OpenAI', 'Figma', 'Cursor'].map((company) => (
+                          <span key={company} style={{
+                            fontSize: '11px',
+                            fontWeight: '600',
+                            color: 'var(--text-50)',
+                            padding: '4px 10px',
+                            borderRadius: '6px',
+                            background: 'var(--glass-04)',
+                            border: '1px solid var(--glass-08)',
+                          }}>{company}</span>
+                        ))}
+                      </div>
+
                       {/* Live Context Stream */}
                       <div style={{
                         padding: '16px',
@@ -6784,27 +6872,60 @@ export function AirIndiaWork() {
                         marginBottom: '16px',
                       }}>
                         <div style={{
-                          fontSize: '9px',
-                          fontWeight: '600',
-                          color: '#30D158',
-                          marginBottom: '8px',
-                          letterSpacing: '0.15em',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginBottom: '10px',
                         }}>
-                          LIVE CONTEXT STREAM
+                          <div style={{
+                            fontSize: '9px',
+                            fontWeight: '600',
+                            color: '#30D158',
+                            letterSpacing: '0.15em',
+                          }}>
+                            LIVE CONTEXT STREAM
+                          </div>
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                          }}>
+                            <span style={{
+                              width: '6px',
+                              height: '6px',
+                              borderRadius: '50%',
+                              background: mcpPhase !== 'idle' ? '#30D158' : 'var(--glass-30)',
+                              animation: mcpPhase !== 'idle' ? 'statusPulse 1s ease infinite' : 'none',
+                            }} />
+                            <span style={{ fontSize: '9px', color: 'var(--text-40)' }}>
+                              {mcpPhase !== 'idle' ? 'Streaming...' : 'Ready'}
+                            </span>
+                          </div>
                         </div>
-                        <div style={{
+                        <pre style={{
                           fontFamily: 'SF Mono, Monaco, monospace',
-                          fontSize: '11px',
+                          fontSize: '10px',
                           color: '#30D158',
-                          opacity: mcpPhase !== 'idle' ? 1 : 0.5,
+                          opacity: mcpPhase !== 'idle' ? 1 : 0.6,
                           transition: 'opacity 0.3s ease',
+                          margin: 0,
+                          lineHeight: 1.5,
+                          whiteSpace: 'pre-wrap',
                         }}>
-                          {`{ "component": "Button", "variant": "primary", "tokens": ["color.brand", "radius.md"] }`}
-                        </div>
+{`{
+  "component": "Button",
+  "variant": "primary",
+  "tokens": {
+    "color": "var(--brand-red)",
+    "radius": "var(--radius-md)"
+  },
+  "codeConnect": "src/ui/Button.tsx"
+}`}
+                        </pre>
                       </div>
 
-                      {/* Action Button */}
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      {/* Action Button & Impact Statement */}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
                         <button
                           onClick={() => {
                             if (mcpPhase !== 'idle') return;
@@ -6836,11 +6957,11 @@ export function AirIndiaWork() {
                             background: mcpPhase === 'idle' ? 'white' : `rgb(${project.color})`,
                             animation: mcpPhase !== 'idle' ? 'statusPulse 1s ease infinite' : 'none',
                           }} />
-                          {mcpPhase === 'idle' ? 'Trigger Handoff' : 'Streaming Context...'}
+                          {mcpPhase === 'idle' ? 'Watch Pipeline Demo' : 'Streaming Context...'}
                         </button>
 
-                        <div style={{ fontSize: '11px', color: 'var(--text-40)' }}>
-                          Model Context Protocol • Anthropic Integration
+                        <div style={{ fontSize: '11px', color: 'var(--text-50)', maxWidth: '300px', textAlign: 'right' }}>
+                          Reduced design-to-code cycle from <span style={{ color: `rgb(${project.color})`, fontWeight: '600' }}>days to hours</span>
                         </div>
                       </div>
                     </div>
