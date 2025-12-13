@@ -7997,113 +7997,28 @@ export function AirIndiaWork() {
                     </div>
                     </>
                   ) : index === 4 ? (
-                    /* Card 4: IFE System Design - Seatback Experience Visualization */
+                    /* Card 4: IFE System Design - Real IFE Image */
                     <>
                     <div style={{
                       width: '100%',
                       maxWidth: '900px',
                       margin: '0 auto',
                     }}>
-                      {/* Screen Mockup */}
+                      {/* IFE Image */}
                       <div style={{
-                        padding: '20px',
                         borderRadius: '20px',
-                        background: '#1A1A1A',
-                        border: '4px solid #2C2C2C',
-                        boxShadow: 'inset 0 0 40px rgba(0,0,0,0.5)',
-                        marginBottom: '16px',
+                        overflow: 'hidden',
+                        border: '1px solid var(--glass-15)',
+                        boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
+                        marginBottom: '24px',
                       }}>
-                        <div style={{
-                          borderRadius: '12px',
-                          overflow: 'hidden',
-                          background: 'linear-gradient(180deg, #0A0A0A 0%, #1A1A1A 100%)',
-                        }}>
-                          {/* Navigation Tabs */}
-                          <div style={{
-                            display: 'flex',
-                            background: 'rgba(255,255,255,0.05)',
-                            padding: '10px',
-                            gap: '6px',
-                          }}>
-                            {['Movies', 'TV Shows', 'Music', 'Games', 'Flight Info'].map(tab => (
-                              <button
-                                key={tab}
-                                onClick={() => setActiveIFETab(tab.toLowerCase().replace(' ', ''))}
-                                style={{
-                                  background: activeIFETab === tab.toLowerCase().replace(' ', '') ? `rgb(${project.color})` : 'transparent',
-                                  color: 'white',
-                                  border: 'none',
-                                  padding: '8px 16px',
-                                  borderRadius: '6px',
-                                  fontSize: '12px',
-                                  fontWeight: '600',
-                                  cursor: 'pointer',
-                                  transition: 'all 0.2s ease',
-                                }}
-                              >
-                                {tab}
-                              </button>
-                            ))}
-                          </div>
-
-                          {/* Content Grid */}
-                          <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(4, 1fr)',
-                            gap: '12px',
-                            padding: '20px',
-                          }}>
-                            {['Featured', 'Action', 'Drama', 'Comedy'].map((genre, i) => (
-                              <div key={genre} style={{
-                                aspectRatio: '2/3',
-                                borderRadius: '8px',
-                                background: `linear-gradient(135deg, rgba(${project.color}, ${0.3 - i * 0.05}), rgba(${project.color}, 0.1))`,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: '8px',
-                                border: '1px solid rgba(255,255,255,0.1)',
-                              }}>
-                                <span style={{ fontSize: '24px' }}>🎬</span>
-                                <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.7)' }}>{genre}</span>
-                              </div>
-                            ))}
-                          </div>
-
-                          {/* Now Playing Bar */}
-                          <div style={{
-                            background: 'rgba(0,0,0,0.8)',
-                            padding: '14px 20px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '16px',
-                          }}>
-                            <div style={{
-                              width: '36px',
-                              height: '36px',
-                              borderRadius: '50%',
-                              background: `rgb(${project.color})`,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                            }}>
-                              <div style={{ width: 0, height: 0, borderTop: '8px solid transparent', borderBottom: '8px solid transparent', borderLeft: '12px solid white', marginLeft: '3px' }} />
-                            </div>
-                            <div style={{ flex: 1 }}>
-                              <div style={{ fontSize: '13px', fontWeight: '600', color: 'white', marginBottom: '6px' }}>Now Playing: Pathaan</div>
-                              <div style={{ height: '4px', background: 'rgba(255,255,255,0.2)', borderRadius: '2px' }}>
-                                <div style={{ width: '45%', height: '100%', background: `rgb(${project.color})`, borderRadius: '2px' }} />
-                              </div>
-                            </div>
-                            <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.6)' }}>1:23:45</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Seat Info */}
-                      <div style={{ textAlign: 'center', marginBottom: '20px', fontSize: '12px', color: 'var(--text-40)' }}>
-                        SEAT 12A · Economy Class
+                        <Image
+                          src="/images/air-india/IFE.png"
+                          alt="Passenger using Air India In-Flight Entertainment system"
+                          width={900}
+                          height={600}
+                          style={{ width: '100%', height: 'auto', display: 'block' }}
+                        />
                       </div>
 
                       {/* Design Constraint Badges */}
@@ -8526,77 +8441,28 @@ export function AirIndiaWork() {
                     </div>
                     </>
                   ) : index === 8 ? (
-                    /* Card 8: Microsoft Hackathon - Azure AI Sentiment Pipeline Visualization */
+                    /* Card 8: Microsoft Hackathon - Certificate Image */
                     <>
                     <div style={{
                       width: '100%',
-                      maxWidth: '900px',
+                      maxWidth: '500px',
                       margin: '0 auto',
-                      padding: '24px',
-                      borderRadius: '16px',
-                      background: 'var(--glass-06)',
-                      border: `1px solid rgba(${project.color}, 0.2)`,
                     }}>
-                      {/* Pipeline */}
+                      {/* Certificate Image */}
                       <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(3, 1fr)',
-                        gap: '16px',
-                        marginBottom: '24px',
-                      }}>
-                        {[
-                          { title: 'INPUT', content: '"Great product!"', icon: '📝' },
-                          { title: 'AZURE COGNITIVE', content: 'Sentiment Analysis', icon: '🧠' },
-                          { title: 'OUTPUT', content: '😊 0.92 Positive', icon: '✨' },
-                        ].map((stage, idx) => (
-                          <div key={stage.title} style={{
-                            padding: '20px',
-                            borderRadius: '12px',
-                            background: 'var(--glass-08)',
-                            border: '1px solid var(--glass-15)',
-                            textAlign: 'center',
-                          }}>
-                            <div style={{ fontSize: '24px', marginBottom: '8px' }}>{stage.icon}</div>
-                            <div style={{ fontSize: '10px', color: `rgb(${project.color})`, fontWeight: '600', letterSpacing: '0.1em', marginBottom: '8px' }}>
-                              {stage.title}
-                            </div>
-                            <div style={{ fontSize: '12px', color: 'var(--text-70)' }}>{stage.content}</div>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Live Feed */}
-                      <div style={{
-                        padding: '16px',
-                        borderRadius: '10px',
-                        background: '#0D0D0D',
+                        borderRadius: '16px',
+                        overflow: 'hidden',
                         border: '1px solid var(--glass-15)',
+                        boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
                         marginBottom: '20px',
                       }}>
-                        <div style={{ fontSize: '9px', fontWeight: '600', color: '#30D158', marginBottom: '12px', letterSpacing: '0.15em' }}>
-                          LIVE SENTIMENT FEED
-                        </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                          {[
-                            { text: '"Love this product!"', emoji: '😊', score: 0.95 },
-                            { text: '"Could be better"', emoji: '😐', score: 0.45 },
-                            { text: '"Amazing work!"', emoji: '😊', score: 0.89 },
-                          ].map((item, idx) => (
-                            <div key={idx} style={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'center',
-                              padding: '8px 12px',
-                              borderRadius: '6px',
-                              background: 'var(--glass-06)',
-                              opacity: idx <= hackathonFeedIndex ? 1 : 0.3,
-                              transition: 'opacity 0.3s ease',
-                            }}>
-                              <span style={{ fontSize: '11px', color: 'var(--text-60)' }}>{item.text}</span>
-                              <span style={{ fontSize: '12px' }}>{item.emoji} {item.score.toFixed(2)}</span>
-                            </div>
-                          ))}
-                        </div>
+                        <Image
+                          src="/images/air-india/microsoft.jpeg"
+                          alt="Microsoft | Air India Hackathon Winner Certificate - 2nd Prize"
+                          width={500}
+                          height={667}
+                          style={{ width: '100%', height: 'auto', display: 'block' }}
+                        />
                       </div>
 
                       {/* Award Badge */}
@@ -8605,6 +8471,7 @@ export function AirIndiaWork() {
                         alignItems: 'center',
                         justifyContent: 'center',
                         gap: '16px',
+                        flexWrap: 'wrap',
                       }}>
                         <div style={{
                           padding: '10px 20px',
@@ -8616,125 +8483,35 @@ export function AirIndiaWork() {
                           gap: '8px',
                         }}>
                           <Trophy size={16} style={{ color: `rgb(${project.color})` }} />
-                          <span style={{ fontSize: '12px', fontWeight: '600', color: `rgb(${project.color})` }}>1st Place</span>
+                          <span style={{ fontSize: '12px', fontWeight: '600', color: `rgb(${project.color})` }}>2nd Prize</span>
                         </div>
-                        <span style={{ fontSize: '11px', color: 'var(--text-40)' }}>48hr Build • Azure AI Services</span>
+                        <span style={{ fontSize: '11px', color: 'var(--text-40)' }}>Aug 2025 • Microsoft Azure AI</span>
                       </div>
                     </div>
                     </>
                   ) : index === 9 ? (
-                    /* Card 9: Internal Hackathon - Sprint Timeline Visualization */
+                    /* Card 9: Internal Hackathon - Team Photo */
                     <>
                     <div style={{
                       width: '100%',
-                      maxWidth: '900px',
+                      maxWidth: '800px',
                       margin: '0 auto',
-                      padding: '24px',
-                      borderRadius: '16px',
-                      background: 'var(--glass-06)',
-                      border: `1px solid rgba(${project.color}, 0.2)`,
                     }}>
-                      {/* Sprint Timeline */}
+                      {/* Team Photo */}
                       <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginBottom: '24px',
-                        position: 'relative',
-                      }}>
-                        {/* Connection Line */}
-                        <div style={{
-                          position: 'absolute',
-                          top: '20px',
-                          left: '10%',
-                          width: '80%',
-                          height: '3px',
-                          background: 'var(--glass-15)',
-                        }}>
-                          <div style={{
-                            width: `${(['idea', 'design', 'build', 'test', 'ship'].indexOf(sprintPhase) + 1) * 25}%`,
-                            height: '100%',
-                            background: `rgb(${project.color})`,
-                            transition: 'width 0.5s ease',
-                          }} />
-                        </div>
-
-                        {[
-                          { phase: 'idea', label: 'IDEA', time: '2hr' },
-                          { phase: 'design', label: 'DESIGN', time: '4hr' },
-                          { phase: 'build', label: 'BUILD', time: '12hr' },
-                          { phase: 'test', label: 'TEST', time: '4hr' },
-                          { phase: 'ship', label: 'SHIP', time: '2hr' },
-                        ].map((stage, idx) => {
-                          const phaseOrder = ['idea', 'design', 'build', 'test', 'ship'];
-                          const currentIdx = phaseOrder.indexOf(sprintPhase);
-                          const stageIdx = phaseOrder.indexOf(stage.phase);
-                          const isComplete = stageIdx < currentIdx;
-                          const isCurrent = stage.phase === sprintPhase;
-
-                          return (
-                            <div
-                              key={stage.phase}
-                              onClick={() => setSprintPhase(stage.phase as typeof sprintPhase)}
-                              style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                gap: '8px',
-                                cursor: 'pointer',
-                                position: 'relative',
-                                zIndex: 1,
-                              }}
-                            >
-                              <div style={{
-                                width: '40px',
-                                height: '40px',
-                                borderRadius: '50%',
-                                background: isComplete || isCurrent ? `rgb(${project.color})` : 'var(--glass-20)',
-                                border: isCurrent ? '3px solid white' : '2px solid var(--glass-30)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '14px',
-                                transition: 'all 0.3s ease',
-                                boxShadow: isCurrent ? `0 0 25px rgba(${project.color}, 0.6)` : 'none',
-                              }}>
-                                {isComplete ? '✓' : isCurrent ? '●' : '○'}
-                              </div>
-                              <span style={{
-                                fontSize: '10px',
-                                fontWeight: '700',
-                                color: isCurrent ? `rgb(${project.color})` : 'var(--text-50)',
-                                letterSpacing: '0.05em',
-                              }}>
-                                {stage.label}
-                              </span>
-                              <span style={{ fontSize: '9px', color: 'var(--text-30)' }}>{stage.time}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-
-                      {/* Progress Bar */}
-                      <div style={{
-                        padding: '16px 20px',
-                        borderRadius: '12px',
-                        background: 'var(--glass-08)',
+                        borderRadius: '16px',
+                        overflow: 'hidden',
                         border: '1px solid var(--glass-15)',
+                        boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
                         marginBottom: '20px',
                       }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                          <span style={{ fontSize: '11px', color: 'var(--text-50)' }}>Sprint Progress</span>
-                          <span style={{ fontSize: '11px', color: `rgb(${project.color})`, fontWeight: '600' }}>18:32:45 remaining</span>
-                        </div>
-                        <div style={{ height: '12px', background: 'var(--glass-10)', borderRadius: '6px', overflow: 'hidden' }}>
-                          <div style={{
-                            width: '75%',
-                            height: '100%',
-                            background: `linear-gradient(90deg, rgb(${project.color}), rgba(${project.color}, 0.6))`,
-                            borderRadius: '6px',
-                          }} />
-                        </div>
+                        <Image
+                          src="/images/air-india/internal_hackathon.jpeg"
+                          alt="Internal Hackathon Winner - Team receiving certificate"
+                          width={800}
+                          height={600}
+                          style={{ width: '100%', height: 'auto', display: 'block' }}
+                        />
                       </div>
 
                       {/* Team & Tech */}
@@ -8757,9 +8534,7 @@ export function AirIndiaWork() {
                           <Trophy size={16} style={{ color: `rgb(${project.color})` }} />
                           <span style={{ fontSize: '12px', fontWeight: '600', color: `rgb(${project.color})` }}>Winner</span>
                         </div>
-                        <span style={{ fontSize: '11px', color: 'var(--text-40)' }}>Team: 4 designers</span>
-                        <span style={{ fontSize: '11px', color: 'var(--text-40)' }}>Tech: React + Figma API</span>
-                        <span style={{ fontSize: '11px', color: '#30D158', fontWeight: '500' }}>Shipped to Production ✓</span>
+                        <span style={{ fontSize: '11px', color: 'var(--text-40)' }}>24hr Build • Firebase Studio</span>
                       </div>
                     </div>
                     </>
