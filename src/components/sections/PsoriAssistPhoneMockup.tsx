@@ -2179,7 +2179,6 @@ function PasiResultScreen({
         borderRadius: '16px',
         background: glass.card.background,
           backdropFilter: glass.card.backdropFilter,
-        borderLeft: `4px solid ${colors.systemGreen}`,
         marginBottom: '12px',
         textAlign: 'center',
         boxShadow: glass.card.boxShadow
@@ -2418,7 +2417,6 @@ function MedicationScreen({
         borderRadius: '16px',
         background: glass.card.background,
           backdropFilter: glass.card.backdropFilter,
-        borderLeft: `4px solid ${colors.systemGreen}`,
         marginBottom: '16px',
         textAlign: 'center',
         boxShadow: glass.card.boxShadow
@@ -2476,9 +2474,6 @@ function MedicationScreen({
                 borderRadius: '14px',
                 background: glass.card.background,
                 backdropFilter: glass.card.backdropFilter,
-                borderLeft: medicationChecked[med.index]
-                  ? `4px solid ${colors.systemGreen}`
-                  : `4px solid ${colors.separator}`,
                 boxShadow: glass.card.boxShadow,
                 display: 'flex',
                 alignItems: 'center',
@@ -2642,7 +2637,6 @@ function MentalHealthScreen({ setActiveScreen, colors, glass, shadows, brandColo
         borderRadius: '16px',
         background: glass.card.background,
           backdropFilter: glass.card.backdropFilter,
-        borderLeft: `4px solid ${colors.systemPink}`,
         marginBottom: '16px',
         textAlign: 'center',
         boxShadow: glass.card.boxShadow
@@ -2781,7 +2775,6 @@ function MentalHealthScreen({ setActiveScreen, colors, glass, shadows, brandColo
             borderRadius: '12px',
             background: glass.card.background,
           backdropFilter: glass.card.backdropFilter,
-            borderLeft: `4px solid ${colors.systemBlue}`,
             display: 'flex',
             alignItems: 'flex-start',
             gap: '10px',
@@ -2922,7 +2915,6 @@ function TriggerScreen({ setActiveScreen, colors, glass, shadows, brandColors }:
         borderRadius: '16px',
         background: glass.card.background,
           backdropFilter: glass.card.backdropFilter,
-        borderLeft: `4px solid ${colors.systemPurple}`,
         boxShadow: glass.card.boxShadow
       }}>
         <div style={{
@@ -3022,7 +3014,6 @@ function ReportScreen({ setActiveScreen, colors, glass, shadows, brandColors }: 
         borderRadius: '16px',
         background: glass.card.background,
           backdropFilter: glass.card.backdropFilter,
-        borderLeft: `4px solid ${colors.systemBlue}`,
         boxShadow: glass.card.boxShadow,
         marginBottom: '20px'
       }}>
@@ -3336,7 +3327,6 @@ function PESTScreen({
               borderRadius: '16px',
               background: glass.card.background,
               backdropFilter: glass.card.backdropFilter,
-              borderLeft: `4px solid ${colors.systemRed}`,
               marginBottom: '16px',
               boxShadow: glass.card.boxShadow
             }}
@@ -3488,7 +3478,6 @@ function PESTScreen({
               borderRadius: '20px',
               background: glass.card.background,
               backdropFilter: glass.card.backdropFilter,
-              borderLeft: `4px solid ${isPositive ? colors.systemRed : colors.systemGreen}`,
               marginBottom: '16px',
               textAlign: 'center',
               boxShadow: glass.card.boxShadow
@@ -3692,7 +3681,6 @@ function FlareAlertScreen({
           borderRadius: '20px',
           background: glass.card.background,
           backdropFilter: glass.card.backdropFilter,
-          borderLeft: `4px solid ${riskColor}`,
           marginBottom: '16px',
           textAlign: 'center',
           boxShadow: glass.card.boxShadow
@@ -3822,7 +3810,6 @@ function FlareAlertScreen({
           borderRadius: '16px',
           background: glass.card.background,
           backdropFilter: glass.card.backdropFilter,
-          borderLeft: `4px solid ${colors.systemGreen}`,
           boxShadow: glass.card.boxShadow
         }}>
           {FLARE_ACTIONS.map((action, i) => (
@@ -4064,7 +4051,6 @@ function EnhancedMentalHealthScreen({
                 borderRadius: '16px',
                 background: glass.card.background,
                 backdropFilter: glass.card.backdropFilter,
-                borderLeft: `4px solid ${colors.systemPink}`,
                 border: 'none',
                 textAlign: 'left',
                 cursor: 'pointer',
@@ -4097,7 +4083,6 @@ function EnhancedMentalHealthScreen({
                 borderRadius: '16px',
                 background: glass.card.background,
                 backdropFilter: glass.card.backdropFilter,
-                borderLeft: `4px solid ${colors.systemBlue}`,
                 border: 'none',
                 textAlign: 'left',
                 cursor: 'pointer',
@@ -4281,7 +4266,6 @@ function EnhancedMentalHealthScreen({
               borderRadius: '20px',
               background: glass.card.background,
               backdropFilter: glass.card.backdropFilter,
-              borderLeft: `4px solid ${getSeverity().color}`,
               marginBottom: '16px',
               textAlign: 'center',
               boxShadow: glass.card.boxShadow
@@ -4360,7 +4344,6 @@ function EnhancedMentalHealthScreen({
                 padding: '16px',
                 borderRadius: '16px',
                 backgroundColor: `${colors.systemRed}15`,
-                borderLeft: `4px solid ${colors.systemRed}`,
                 marginBottom: '16px'
               }}
             >
@@ -4548,7 +4531,6 @@ function SmartRemindersScreen({
           borderRadius: '16px',
           background: glass.card.background,
           backdropFilter: glass.card.backdropFilter,
-          borderLeft: `4px solid ${colors.systemGreen}`,
           marginBottom: '20px',
           boxShadow: glass.card.boxShadow
         }}
@@ -4866,7 +4848,6 @@ function EducationalScreen({
               borderRadius: '16px',
               background: glass.card.background,
               backdropFilter: glass.card.backdropFilter,
-              borderLeft: `4px solid ${item.color}`,
               boxShadow: glass.card.boxShadow,
               display: 'flex',
               alignItems: 'center',
