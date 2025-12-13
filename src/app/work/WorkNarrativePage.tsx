@@ -752,37 +752,6 @@ export function WorkNarrativePage() {
                             size="main"
                           />
                         </div>
-
-                        {/* Secondary Thumbnails */}
-                        <div style={{
-                          display: 'flex',
-                          gap: '0.5rem',
-                        }}>
-                          {[1, 2].map((thumbIndex) => (
-                            <div
-                              key={thumbIndex}
-                              style={{
-                                flex: '1',
-                                height: '48px',
-                                borderRadius: '8px',
-                                background: `rgba(${card.color}, 0.08)`,
-                                border: `1px solid rgba(${card.color}, 0.15)`,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                padding: '0.25rem',
-                              }}
-                            >
-                              <MicroVisualization
-                                cardId={card.id}
-                                projectId="air-india"
-                                color={card.color}
-                                isHovered={isHovered}
-                                size="thumbnail"
-                              />
-                            </div>
-                          ))}
-                        </div>
                       </motion.div>
                     )}
                   </div>
@@ -1075,29 +1044,6 @@ export function WorkNarrativePage() {
                                 size="main"
                               />
                             </div>
-                            <div style={{ display: 'flex', gap: '0.5rem' }}>
-                              {[1, 2].map((thumbIndex) => (
-                                <div key={thumbIndex} style={{
-                                  flex: 1,
-                                  height: '48px',
-                                  borderRadius: '8px',
-                                  background: `rgba(${card.color}, 0.08)`,
-                                  border: `1px solid rgba(${card.color}, 0.15)`,
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  padding: '0.25rem',
-                                }}>
-                                  <MicroVisualization
-                                    cardId={card.id}
-                                    projectId="psoriassist"
-                                    color={card.color}
-                                    isHovered={isHovered}
-                                    size="thumbnail"
-                                  />
-                                </div>
-                              ))}
-                            </div>
                           </motion.div>
                         )}
                       </div>
@@ -1369,29 +1315,6 @@ export function WorkNarrativePage() {
                                 size="main"
                               />
                             </div>
-                            <div style={{ display: 'flex', gap: '0.5rem' }}>
-                              {[1, 2].map((thumbIndex) => (
-                                <div key={thumbIndex} style={{
-                                  flex: 1,
-                                  height: '48px',
-                                  borderRadius: '8px',
-                                  background: `rgba(${card.color}, 0.08)`,
-                                  border: `1px solid rgba(${card.color}, 0.15)`,
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  padding: '0.25rem',
-                                }}>
-                                  <MicroVisualization
-                                    cardId={card.id}
-                                    projectId="metamorphic"
-                                    color={card.color}
-                                    isHovered={isHovered}
-                                    size="thumbnail"
-                                  />
-                                </div>
-                              ))}
-                            </div>
                           </motion.div>
                         )}
                       </div>
@@ -1662,29 +1585,6 @@ export function WorkNarrativePage() {
                                 isHovered={isHovered}
                                 size="main"
                               />
-                            </div>
-                            <div style={{ display: 'flex', gap: '0.5rem' }}>
-                              {[1, 2].map((thumbIndex) => (
-                                <div key={thumbIndex} style={{
-                                  flex: 1,
-                                  height: '48px',
-                                  borderRadius: '8px',
-                                  background: `rgba(${card.color}, 0.08)`,
-                                  border: `1px solid rgba(${card.color}, 0.15)`,
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  padding: '0.25rem',
-                                }}>
-                                  <MicroVisualization
-                                    cardId={card.id}
-                                    projectId="latent-space"
-                                    color={card.color}
-                                    isHovered={isHovered}
-                                    size="thumbnail"
-                                  />
-                                </div>
-                              ))}
                             </div>
                           </motion.div>
                         )}
