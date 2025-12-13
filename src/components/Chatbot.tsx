@@ -219,6 +219,8 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
   const [showIntentPrompt, setShowIntentPrompt] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(false);
+  const [dynamicSuggestions, setDynamicSuggestions] = useState<string[]>([]);
+  const [isStreaming, setIsStreaming] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
@@ -373,12 +375,32 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
     }
   }, []);
 
+  // Helper to parse suggestions from response
+  const parseSuggestions = (text: string): { cleanText: string; suggestions: string[] } => {
+    const suggestionsMatch = text.match(/\[SUGGESTIONS\]([\s\S]*?)\[\/SUGGESTIONS\]/);
+    if (suggestionsMatch) {
+      const suggestions = suggestionsMatch[1]
+        .split('\n')
+        .filter(s => s.trim().startsWith('-'))
+        .map(s => s.replace(/^-\s*/, '').trim())
+        .filter(s => s.length > 0)
+        .slice(0, 3);
+
+      const cleanText = text.replace(/\[SUGGESTIONS\][\s\S]*?\[\/SUGGESTIONS\]/, '').trim();
+      return { cleanText, suggestions };
+    }
+    return { cleanText: text, suggestions: [] };
+  };
+
   const handleSendMessage = async (messageText?: string) => {
     const textToSend = messageText || inputValue.trim();
     if (!textToSend || isLoading) return;
 
     // Play send sound
     playSound('send');
+
+    // Clear previous suggestions
+    setDynamicSuggestions([]);
 
     const userMessage: ChatMessage = {
       id: `user-${Date.now()}`,
@@ -390,6 +412,17 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
     setMessages(prev => [...prev, userMessage]);
     if (!messageText) setInputValue('');
     setIsLoading(true);
+    setIsStreaming(true);
+
+    // Create placeholder for AI message
+    const aiMessageId = `ai-${Date.now()}`;
+    const aiMessage: ChatMessage = {
+      id: aiMessageId,
+      content: '',
+      isUser: false,
+      timestamp: Date.now(),
+    };
+    setMessages(prev => [...prev, aiMessage]);
 
     try {
       const response = await fetch('/api/chat', {
@@ -407,32 +440,61 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
         throw new Error('Failed to get response');
       }
 
-      const data = await response.json();
+      // Handle streaming response
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error('No response body');
+      }
 
-      // Play receive sound
+      const decoder = new TextDecoder();
+      let fullText = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        fullText += chunk;
+
+        // Update message content as chunks arrive (hide suggestions block during streaming)
+        const displayText = fullText.replace(/\[SUGGESTIONS\][\s\S]*$/, '').trim();
+        setMessages(prev => prev.map(msg =>
+          msg.id === aiMessageId
+            ? { ...msg, content: displayText }
+            : msg
+        ));
+      }
+
+      // Parse suggestions from complete response
+      const { cleanText, suggestions } = parseSuggestions(fullText);
+
+      // Final update with clean text (without suggestions block)
+      setMessages(prev => prev.map(msg =>
+        msg.id === aiMessageId
+          ? { ...msg, content: cleanText }
+          : msg
+      ));
+
+      // Set dynamic suggestions
+      if (suggestions.length > 0) {
+        setDynamicSuggestions(suggestions);
+      }
+
+      // Play receive sound after streaming completes
       playSound('receive');
 
-      const aiMessage: ChatMessage = {
-        id: `ai-${Date.now()}`,
-        content: data.message || data.response || "I'm here to help! Could you rephrase that?",
-        isUser: false,
-        timestamp: Date.now(),
-      };
-
-      setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
       console.error('Chat error:', error);
 
-      const errorMessage: ChatMessage = {
-        id: `error-${Date.now()}`,
-        content: "I'm experiencing some technical difficulties, but I'm still here! Try asking me something else or check back in a moment.",
-        isUser: false,
-        timestamp: Date.now(),
-      };
-
-      setMessages(prev => [...prev, errorMessage]);
+      // Update the placeholder message with error
+      setMessages(prev => prev.map(msg =>
+        msg.id === aiMessageId
+          ? { ...msg, content: "I'm experiencing some technical difficulties, but I'm still here! Try asking me something else or check back in a moment." }
+          : msg
+      ));
     } finally {
       setIsLoading(false);
+      setIsStreaming(false);
     }
   };
 
@@ -783,8 +845,67 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
                   </div>
                 )}
 
-                {/* Typing Indicator */}
-                {isLoading && <TypingIndicator />}
+                {/* Typing Indicator - only show when loading and not streaming yet */}
+                {isLoading && !isStreaming && <TypingIndicator />}
+
+                {/* Dynamic Suggestions */}
+                {dynamicSuggestions.length > 0 && !isLoading && (
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.5rem',
+                    marginTop: '0.75rem',
+                    opacity: 0,
+                    animation: 'messageSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards',
+                  }}>
+                    <p style={{
+                      fontSize: '0.7rem',
+                      color: 'var(--text-muted)',
+                      fontWeight: '400',
+                    }}>
+                      You might also ask:
+                    </p>
+                    <div style={{
+                      display: 'flex',
+                      gap: '0.5rem',
+                      flexWrap: 'wrap',
+                    }}>
+                      {dynamicSuggestions.map((suggestion, i) => (
+                        <button
+                          key={i}
+                          onClick={() => {
+                            setDynamicSuggestions([]);
+                            handleSendMessage(suggestion);
+                          }}
+                          style={{
+                            padding: '0.5rem 0.75rem',
+                            background: 'var(--glass-05)',
+                            border: '1px solid var(--glass-10)',
+                            borderRadius: '16px',
+                            color: 'var(--text-70)',
+                            fontSize: '0.75rem',
+                            fontWeight: '400',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                            textAlign: 'left',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(218, 14, 41, 0.08)';
+                            e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.2)';
+                            e.currentTarget.style.color = 'var(--text-primary)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'var(--glass-05)';
+                            e.currentTarget.style.borderColor = 'var(--glass-10)';
+                            e.currentTarget.style.color = 'var(--text-70)';
+                          }}
+                        >
+                          {suggestion}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div ref={messagesEndRef} />
               </div>

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { retryWithBackoff } from '@/lib/gemini-retry';
 import { handleGeminiError } from '@/lib/gemini-errors';
 
 export const runtime = 'nodejs';
@@ -35,6 +34,15 @@ Personality:
 - Be concise but informative
 
 Remember: You're representing Nihar's portfolio. Be professional yet personable.
+
+IMPORTANT: At the end of EVERY response, you MUST include exactly 3 follow-up suggestions that the user might want to ask next. Format them exactly like this:
+[SUGGESTIONS]
+- First follow-up question
+- Second follow-up question
+- Third follow-up question
+[/SUGGESTIONS]
+
+These suggestions should be contextually relevant to what you just discussed.
 `;
 
 export async function POST(request: NextRequest) {
@@ -43,12 +51,13 @@ export async function POST(request: NextRequest) {
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey || apiKey === 'your_api_key_here') {
-      return NextResponse.json(
+      // Return non-streaming error for API key issue
+      return new Response(
+        "Hi! The AI chat is currently being set up. In the meantime, feel free to explore the portfolio or reach out via the contact page!",
         {
-          message: "Hi! The AI chat is currently being set up. In the meantime, feel free to explore the portfolio or reach out via the contact page!",
-          error: 'API_KEY_NOT_CONFIGURED'
-        },
-        { status: 200 }
+          status: 200,
+          headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+        }
       );
     }
 
@@ -82,27 +91,39 @@ export async function POST(request: NextRequest) {
     // Track generation time
     const startTime = Date.now();
 
-    // Use retry logic for rate limit handling
-    const result = await retryWithBackoff(
-      () => model.generateContent(fullPrompt),
-      {
-        maxRetries: 3,
-        onRetry: (attempt, error) => {
-          console.log(`[Chat] Retry attempt ${attempt}:`, error?.status);
-        },
-      }
-    );
+    // Use streaming for real-time response
+    const result = await model.generateContentStream(fullPrompt);
 
-    console.log('[Chat] Generation time:', Date.now() - startTime, 'ms');
-    const response = await result.response;
-    const text = response.text();
-
-    return NextResponse.json({
-      message: text,
-      timestamp: Date.now(),
+    // Create a ReadableStream to stream the response
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of result.stream) {
+            const text = chunk.text();
+            if (text) {
+              controller.enqueue(encoder.encode(text));
+            }
+          }
+          console.log('[Chat] Streaming complete, generation time:', Date.now() - startTime, 'ms');
+          controller.close();
+        } catch (streamError) {
+          console.error('[Chat] Stream error:', streamError);
+          controller.error(streamError);
+        }
+      },
     });
 
-  } catch (error: any) {
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
+    });
+
+  } catch (error: unknown) {
+    console.error('[Chat] Error:', error);
     const errorResponse = handleGeminiError(error, 'Chat');
 
     // Return user-friendly messages for chat context
@@ -113,12 +134,13 @@ export async function POST(request: NextRequest) {
       UNKNOWN_ERROR: "I'm having trouble connecting right now. Feel free to explore the portfolio or contact via the contact page!",
     };
 
-    return NextResponse.json(
+    // Return as plain text for consistency with streaming
+    return new Response(
+      friendlyMessages[errorResponse.error] || friendlyMessages.UNKNOWN_ERROR,
       {
-        message: friendlyMessages[errorResponse.error] || friendlyMessages.UNKNOWN_ERROR,
-        error: errorResponse.error,
-      },
-      { status: 200 }
+        status: 200,
+        headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+      }
     );
   }
 }
