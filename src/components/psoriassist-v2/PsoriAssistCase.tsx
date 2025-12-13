@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ChevronUp, ExternalLink, Smartphone, Camera, Clock, Activity, Brain, Heart, Users, Zap, CheckCircle, Play, Pause, RotateCcw } from 'lucide-react';
+import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, ExternalLink, Smartphone, Camera, Clock, Activity, Brain, Heart, Users, Zap, CheckCircle, Play, Pause, RotateCcw } from 'lucide-react';
 import { SnapSection } from './ui/SnapSection';
 import { ExpandableCard } from './ui/ExpandableCard';
 import { AccordionGroup, CollapsibleSection } from './ui/AccordionGroup';
@@ -220,6 +220,23 @@ const AutoPlayFlowSection = ({ flow, isMobile }: AutoPlayFlowSectionProps) => {
     }
   };
 
+  // Navigation handlers
+  const goToPrevStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(prev => prev - 1);
+      setIsComplete(false);
+    }
+  };
+
+  const goToNextStep = () => {
+    if (currentStep < flow.steps.length - 1) {
+      setCurrentStep(prev => prev + 1);
+    } else {
+      setIsComplete(true);
+      setIsPlaying(false);
+    }
+  };
+
   // Button states: "Play Demo" | "Pause" | "Play Again"
   const getButtonState = () => {
     if (isComplete) return { icon: 'replay', text: 'Play Again' };
@@ -292,8 +309,36 @@ const AutoPlayFlowSection = ({ flow, isMobile }: AutoPlayFlowSectionProps) => {
         </div>
       </div>
 
-      {/* Play/Pause/Replay Button */}
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+      {/* Controls: Prev Arrow | Play/Pause | Next Arrow */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '1rem',
+        marginBottom: '1.5rem'
+      }}>
+        {/* Previous Step Arrow */}
+        <motion.button
+          onClick={goToPrevStep}
+          whileHover={{ scale: currentStep === 0 ? 1 : 1.1 }}
+          whileTap={{ scale: currentStep === 0 ? 1 : 0.9 }}
+          style={{
+            width: '44px',
+            height: '44px',
+            borderRadius: '50%',
+            background: currentStep === 0 ? 'var(--glass-05)' : `rgba(${flow.color}, 0.15)`,
+            border: `2px solid ${currentStep === 0 ? 'var(--glass-15)' : `rgb(${flow.color})`}`,
+            color: currentStep === 0 ? 'var(--text-30)' : `rgb(${flow.color})`,
+            cursor: currentStep === 0 ? 'not-allowed' : 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <ChevronLeft size={24} />
+        </motion.button>
+
+        {/* Play/Pause Button - Icon only when playing */}
         <motion.button
           onClick={handlePlayClick}
           whileHover={{ scale: 1.05 }}
@@ -301,8 +346,11 @@ const AutoPlayFlowSection = ({ flow, isMobile }: AutoPlayFlowSectionProps) => {
           style={{
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
             gap: '0.5rem',
-            padding: '0.75rem 1.5rem',
+            padding: isPlaying ? '0.75rem' : '0.75rem 1.5rem',
+            minWidth: isPlaying ? '48px' : 'auto',
+            height: '48px',
             borderRadius: '100px',
             background: `rgba(${flow.color}, 0.15)`,
             border: `2px solid rgb(${flow.color})`,
@@ -312,11 +360,40 @@ const AutoPlayFlowSection = ({ flow, isMobile }: AutoPlayFlowSectionProps) => {
             cursor: 'pointer',
           }}
         >
-          {/* Icon: Play / Pause / Replay */}
-          {buttonState.icon === 'play' && <Play size={20} fill={`rgb(${flow.color})`} />}
-          {buttonState.icon === 'pause' && <Pause size={20} fill={`rgb(${flow.color})`} />}
-          {buttonState.icon === 'replay' && <RotateCcw size={20} />}
-          {buttonState.text}
+          {isPlaying ? (
+            <Pause size={20} fill={`rgb(${flow.color})`} />
+          ) : isComplete ? (
+            <>
+              <RotateCcw size={20} />
+              Play Again
+            </>
+          ) : (
+            <>
+              <Play size={20} fill={`rgb(${flow.color})`} />
+              Play Demo
+            </>
+          )}
+        </motion.button>
+
+        {/* Next Step Arrow */}
+        <motion.button
+          onClick={goToNextStep}
+          whileHover={{ scale: (currentStep === flow.steps.length - 1 && isComplete) ? 1 : 1.1 }}
+          whileTap={{ scale: (currentStep === flow.steps.length - 1 && isComplete) ? 1 : 0.9 }}
+          style={{
+            width: '44px',
+            height: '44px',
+            borderRadius: '50%',
+            background: (currentStep === flow.steps.length - 1 && isComplete) ? 'var(--glass-05)' : `rgba(${flow.color}, 0.15)`,
+            border: `2px solid ${(currentStep === flow.steps.length - 1 && isComplete) ? 'var(--glass-15)' : `rgb(${flow.color})`}`,
+            color: (currentStep === flow.steps.length - 1 && isComplete) ? 'var(--text-30)' : `rgb(${flow.color})`,
+            cursor: (currentStep === flow.steps.length - 1 && isComplete) ? 'not-allowed' : 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <ChevronRight size={24} />
         </motion.button>
       </div>
 
