@@ -39,6 +39,8 @@ import {
   Smartphone,
   MessageSquare,
   Camera,
+  Server,
+  Cloud,
   type LucideIcon
 } from 'lucide-react';
 
@@ -7286,6 +7288,141 @@ export function AirIndiaWork() {
                             </div>
                           </div>
                         ))}
+                      </div>
+
+                      {/* Technical Scale Section */}
+                      <div style={{
+                        marginTop: '28px',
+                        paddingTop: '24px',
+                        borderTop: '1px solid var(--glass-10)',
+                      }}>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '8px',
+                          marginBottom: '20px',
+                        }}>
+                          <Server size={14} style={{ color: 'var(--text-40)' }} />
+                          <span style={{ fontSize: '10px', color: 'var(--text-40)', letterSpacing: '0.15em', fontWeight: '600' }}>
+                            DIGITAL TRANSFORMATION SCALE
+                          </span>
+                        </div>
+
+                        <div style={{
+                          display: 'grid',
+                          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+                          gap: '16px',
+                        }}>
+                          {/* $200M Investment */}
+                          <div style={{
+                            padding: '20px 16px',
+                            borderRadius: '12px',
+                            background: 'linear-gradient(135deg, rgba(48, 209, 88, 0.08) 0%, rgba(48, 209, 88, 0.02) 100%)',
+                            border: '1px solid rgba(48, 209, 88, 0.15)',
+                            textAlign: 'center',
+                          }}>
+                            <div style={{
+                              fontSize: '28px',
+                              fontWeight: '700',
+                              color: '#30D158',
+                              lineHeight: 1,
+                              marginBottom: '4px',
+                            }}>
+                              $200M
+                            </div>
+                            <div style={{ fontSize: '10px', color: 'var(--text-50)', lineHeight: 1.4 }}>
+                              Investment in<br />digital systems
+                            </div>
+                          </div>
+
+                          {/* 140 IT Systems */}
+                          <div style={{
+                            padding: '20px 16px',
+                            borderRadius: '12px',
+                            background: 'linear-gradient(135deg, rgba(13, 153, 255, 0.08) 0%, rgba(13, 153, 255, 0.02) 100%)',
+                            border: '1px solid rgba(13, 153, 255, 0.15)',
+                            textAlign: 'center',
+                          }}>
+                            <div style={{
+                              fontSize: '28px',
+                              fontWeight: '700',
+                              color: '#0D99FF',
+                              lineHeight: 1,
+                              marginBottom: '4px',
+                            }}>
+                              140
+                            </div>
+                            <div style={{ fontSize: '10px', color: 'var(--text-50)', lineHeight: 1.4 }}>
+                              Legacy IT systems<br />replaced
+                            </div>
+                          </div>
+
+                          {/* Cloud-Only */}
+                          <div style={{
+                            padding: '20px 16px',
+                            borderRadius: '12px',
+                            background: 'linear-gradient(135deg, rgba(175, 82, 222, 0.08) 0%, rgba(175, 82, 222, 0.02) 100%)',
+                            border: '1px solid rgba(175, 82, 222, 0.15)',
+                            textAlign: 'center',
+                          }}>
+                            <div style={{
+                              fontSize: '28px',
+                              fontWeight: '700',
+                              color: '#AF52DE',
+                              lineHeight: 1,
+                              marginBottom: '4px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '4px',
+                            }}>
+                              <Cloud size={22} />
+                            </div>
+                            <div style={{ fontSize: '10px', color: 'var(--text-50)', lineHeight: 1.4 }}>
+                              Cloud-only infra<br />(industry first)
+                            </div>
+                          </div>
+
+                          {/* Cost Savings */}
+                          <div style={{
+                            padding: '20px 16px',
+                            borderRadius: '12px',
+                            background: 'linear-gradient(135deg, rgba(255, 159, 10, 0.08) 0%, rgba(255, 159, 10, 0.02) 100%)',
+                            border: '1px solid rgba(255, 159, 10, 0.15)',
+                            textAlign: 'center',
+                          }}>
+                            <div style={{
+                              fontSize: '28px',
+                              fontWeight: '700',
+                              color: '#FF9F0A',
+                              lineHeight: 1,
+                              marginBottom: '4px',
+                            }}>
+                              ~$1M
+                            </div>
+                            <div style={{ fontSize: '10px', color: 'var(--text-50)', lineHeight: 1.4 }}>
+                              Annual savings<br />from consolidation
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Timeline context */}
+                        <div style={{
+                          marginTop: '16px',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          gap: '8px',
+                          fontSize: '10px',
+                          color: 'var(--text-30)',
+                        }}>
+                          <span>Vihaan.AI Program</span>
+                          <span>•</span>
+                          <span>2022-2025</span>
+                          <span>•</span>
+                          <span>4 airlines consolidated</span>
+                        </div>
                       </div>
                     </div>
                     </>
