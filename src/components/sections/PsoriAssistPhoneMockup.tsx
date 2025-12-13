@@ -13,6 +13,26 @@ import {
 
 type Screen = 'home' | 'photo' | 'pasi' | 'meds' | 'mental' | 'triggers' | 'report' | 'settings' | 'pest' | 'flare' | 'reminders' | 'learn' | 'community';
 
+// Sub-states for visual variations within each screen (used in User Flow demos)
+type SubState =
+  // Photo screen sub-states
+  | 'selection'   // Body part picker overlay
+  | 'camera'      // Default camera view
+  | 'ghost'       // Ghost overlay at 50% opacity
+  | 'capture'     // Flash animation
+  | 'notes'       // Notes input visible
+  // Meds screen sub-states
+  | 'list'        // Default checklist
+  | 'checking'    // Checkmark animation in progress
+  | 'checked'     // Item checked with confetti
+  | 'streak'      // Streak celebration
+  // Flare screen sub-states
+  | 'alert'       // Alert banner visible
+  | 'thermometer' // Risk thermometer highlighted
+  | 'factors'     // Contributing factors highlighted
+  | 'actions'     // Action buttons highlighted
+  | null;
+
 // Theme prop types for passing dynamic colors to screen components
 type ThemeColors = typeof IOS_COLORS;
 type ThemeGlass = typeof IOS_GLASS;
@@ -493,6 +513,7 @@ interface ConfettiParticle {
 // Props for external control of the mockup (used in User Flow sections)
 interface PsoriAssistPhoneMockupProps {
   controlledScreen?: Screen;
+  controlledSubState?: SubState;  // Controls visual sub-state within a screen
   initialScreen?: Screen;
   scale?: number;
   showThemeToggle?: boolean;
@@ -500,11 +521,13 @@ interface PsoriAssistPhoneMockupProps {
 
 export function PsoriAssistPhoneMockup({
   controlledScreen,
+  controlledSubState,
   initialScreen = 'home',
   scale,
   showThemeToggle = true
 }: PsoriAssistPhoneMockupProps = {}) {
   const [activeScreen, setActiveScreen] = useState<Screen>(initialScreen);
+  const [activeSubState, setActiveSubState] = useState<SubState>(null);  // Visual sub-state for demos
   const [navigationSource, setNavigationSource] = useState<Screen>('home'); // Track where we navigated from
   const [photoOpacity, setPhotoOpacity] = useState(50);
   const [isCapturing, setIsCapturing] = useState(false);
@@ -579,6 +602,11 @@ export function PsoriAssistPhoneMockup({
       setActiveScreen(controlledScreen);
     }
   }, [controlledScreen]);
+
+  // Sync controlled sub-state from parent (for User Flow demos)
+  useEffect(() => {
+    setActiveSubState(controlledSubState ?? null);
+  }, [controlledSubState]);
 
   // Effective theme: use prototype override if set, otherwise follow site theme
   const effectiveTheme = mounted
@@ -1086,6 +1114,7 @@ export function PsoriAssistPhoneMockup({
                   onCapture={handleCapture}
                   isCapturing={isCapturing}
                   isProcessing={isProcessing}
+                  subState={activeSubState}
                   colors={colors}
                   glass={glass}
                   shadows={shadows}
@@ -1111,6 +1140,7 @@ export function PsoriAssistPhoneMockup({
                   streak={streak}
                   prefersReducedMotion={prefersReducedMotion}
                   onLongPress={() => setContextMenu({ visible: true, x: 0, y: 0, type: 'medication' })}
+                  subState={activeSubState}
                   colors={colors}
                   glass={glass}
                   shadows={shadows}
@@ -1158,6 +1188,7 @@ export function PsoriAssistPhoneMockup({
                   setActiveScreen={setActiveScreen}
                   navigationSource={navigationSource}
                   prefersReducedMotion={prefersReducedMotion}
+                  subState={activeSubState}
                   colors={colors}
                   glass={glass}
                   shadows={shadows}
@@ -1843,6 +1874,7 @@ function PhotoScreen({
   onCapture,
   isCapturing,
   isProcessing,
+  subState,
   colors,
   glass,
   shadows,
@@ -1854,7 +1886,13 @@ function PhotoScreen({
   onCapture: () => void;
   isCapturing: boolean;
   isProcessing: boolean;
+  subState?: SubState;
 } & ScreenThemeProps) {
+  // Sub-state visual controls
+  const showSelection = subState === 'selection';
+  const showGhost = subState === 'ghost' || subState === 'capture';
+  const showCapture = subState === 'capture';
+  const showNotes = subState === 'notes';
   return (
     <motion.div
       key="photo"
@@ -1977,12 +2015,139 @@ function PhotoScreen({
           </div>
         ) : (
           <>
-            {/* Ghost Overlay */}
+            {/* ===== SUB-STATE OVERLAYS ===== */}
+
+            {/* Body Part Selection Overlay */}
+            <AnimatePresence>
+              {showSelection && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'rgba(0,0,0,0.85)',
+                    zIndex: 100,
+                    padding: '20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '8px'
+                  }}
+                >
+                  <p style={{
+                    color: 'rgba(255,255,255,0.7)',
+                    fontSize: '13px',
+                    textAlign: 'center',
+                    marginBottom: '8px'
+                  }}>
+                    Select Body Region
+                  </p>
+                  {['Left Arm', 'Right Arm', 'Trunk', 'Scalp', 'Legs'].map((part, idx) => (
+                    <motion.div
+                      key={part}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.05 }}
+                      style={{
+                        padding: '14px 16px',
+                        background: idx === 0 ? `rgba(74, 144, 226, 0.2)` : glass.card.background,
+                        borderRadius: '12px',
+                        border: idx === 0 ? '2px solid rgba(74, 144, 226, 0.5)' : `1px solid ${colors.separator}`,
+                        color: idx === 0 ? colors.systemBlue : 'rgba(255,255,255,0.9)',
+                        fontSize: '15px',
+                        fontWeight: idx === 0 ? '600' : '400'
+                      }}
+                    >
+                      {part}
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Capture Flash Effect */}
+            <AnimatePresence>
+              {showCapture && (
+                <motion.div
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: 0 }}
+                  transition={{ duration: 0.4 }}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'white',
+                    zIndex: 200
+                  }}
+                />
+              )}
+            </AnimatePresence>
+
+            {/* Notes Input Overlay */}
+            <AnimatePresence>
+              {showNotes && (
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 50 }}
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    background: glass.card.background,
+                    backdropFilter: 'blur(20px)',
+                    padding: '20px',
+                    borderTopLeftRadius: '20px',
+                    borderTopRightRadius: '20px',
+                    zIndex: 150
+                  }}
+                >
+                  <p style={{
+                    color: colors.label,
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    marginBottom: '12px'
+                  }}>
+                    Add Notes (optional)
+                  </p>
+                  <div style={{
+                    background: colors.tertiarySystemFill,
+                    borderRadius: '10px',
+                    padding: '12px',
+                    marginBottom: '12px'
+                  }}>
+                    <p style={{ color: colors.tertiaryLabel, fontSize: '14px' }}>
+                      After beach weekend, noticed improvement...
+                    </p>
+                  </div>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    gap: '12px'
+                  }}>
+                    <div style={{
+                      padding: '8px 16px',
+                      borderRadius: '8px',
+                      background: colors.systemBlue,
+                      color: 'white',
+                      fontSize: '14px',
+                      fontWeight: '600'
+                    }}>
+                      Save Photo
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Ghost Overlay - enhanced when subState is 'ghost' */}
             <div style={{
               position: 'absolute',
               inset: 0,
               background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(236, 72, 153, 0.2))',
-              opacity: photoOpacity / 100
+              opacity: showGhost ? 0.6 : (photoOpacity / 100),
+              transition: 'opacity 0.3s ease'
             }}>
               <div style={{
                 position: 'absolute',
@@ -2372,6 +2537,7 @@ function MedicationScreen({
   streak,
   prefersReducedMotion,
   onLongPress,
+  subState,
   colors,
   glass,
   shadows,
@@ -2383,12 +2549,19 @@ function MedicationScreen({
   streak: number;
   prefersReducedMotion: boolean;
   onLongPress?: () => void;
+  subState?: SubState;
 } & ScreenThemeProps) {
   // Long-press hook for context menu
   const longPressHandlers = useLongPress(
     () => onLongPress?.(),
     { duration: 500 }
   );
+
+  // Sub-state visual controls
+  const showChecking = subState === 'checking';
+  const showChecked = subState === 'checked';
+  const showStreak = subState === 'streak';
+
   return (
     <motion.div
       key="meds"
@@ -2604,6 +2777,127 @@ function MedicationScreen({
           89% adherence rate • Your consistency is inspiring! 💚
         </div>
       </div>
+
+      {/* ===== SUB-STATE OVERLAYS ===== */}
+
+      {/* Checking Animation Overlay */}
+      <AnimatePresence>
+        {showChecking && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'absolute',
+              top: '180px',
+              left: '16px',
+              right: '16px',
+              padding: '16px',
+              borderRadius: '16px',
+              background: `rgba(48, 209, 88, 0.15)`,
+              border: `2px solid ${colors.systemGreen}`,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              zIndex: 100
+            }}
+          >
+            <motion.div
+              animate={{ scale: [1, 1.3, 1] }}
+              transition={{ duration: 0.5, repeat: Infinity }}
+              style={{
+                width: '28px',
+                height: '28px',
+                borderRadius: '50%',
+                background: colors.systemGreen,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <Check size={18} color="white" />
+            </motion.div>
+            <span style={{ color: colors.label, fontWeight: '600' }}>Marking as taken...</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Checked with Confetti Overlay */}
+      <AnimatePresence>
+        {showChecked && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'absolute',
+              top: '180px',
+              left: '16px',
+              right: '16px',
+              padding: '20px',
+              borderRadius: '16px',
+              background: glass.card.background,
+              backdropFilter: 'blur(20px)',
+              border: `2px solid ${colors.systemGreen}`,
+              textAlign: 'center',
+              zIndex: 100
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1, rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 0.5 }}
+              style={{ fontSize: '40px', marginBottom: '8px' }}
+            >
+              🎉
+            </motion.div>
+            <p style={{ color: colors.systemGreen, fontWeight: '700', fontSize: '17px', marginBottom: '4px' }}>
+              Medication taken!
+            </p>
+            <p style={{ color: colors.secondaryLabel, fontSize: '14px' }}>
+              Keep up the great work
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Streak Celebration Overlay */}
+      <AnimatePresence>
+        {showStreak && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              padding: '32px 48px',
+              borderRadius: '24px',
+              background: 'linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 140, 0, 0.2))',
+              backdropFilter: 'blur(20px)',
+              border: '2px solid rgba(255, 215, 0, 0.5)',
+              textAlign: 'center',
+              zIndex: 200
+            }}
+          >
+            <motion.div
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 0.5, repeat: Infinity }}
+              style={{ fontSize: '56px', marginBottom: '12px' }}
+            >
+              🔥
+            </motion.div>
+            <p style={{ color: '#FFD700', fontWeight: '800', fontSize: '24px', marginBottom: '8px' }}>
+              14-Day Streak!
+            </p>
+            <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '15px' }}>
+              You're crushing it! Keep going!
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
@@ -3637,6 +3931,7 @@ function FlareAlertScreen({
   setActiveScreen,
   navigationSource,
   prefersReducedMotion,
+  subState,
   colors,
   glass,
   shadows,
@@ -3645,10 +3940,16 @@ function FlareAlertScreen({
   setActiveScreen: (s: Screen) => void;
   navigationSource: Screen;
   prefersReducedMotion: boolean;
+  subState?: SubState;
 } & ScreenThemeProps) {
   const flareProbability = 70;
   const riskLevel = flareProbability >= 70 ? 'HIGH' : flareProbability >= 40 ? 'MODERATE' : 'LOW';
   const riskColor = flareProbability >= 70 ? colors.systemRed : flareProbability >= 40 ? colors.systemYellow : colors.systemGreen;
+
+  // Sub-state visual controls
+  const highlightThermometer = subState === 'thermometer';
+  const highlightFactors = subState === 'factors';
+  const highlightActions = subState === 'actions';
 
   return (
     <motion.div
@@ -3671,10 +3972,16 @@ function FlareAlertScreen({
         </h2>
       </div>
 
-      {/* Main Alert Card */}
+      {/* Main Alert Card (Thermometer) */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
+        animate={{
+          opacity: 1,
+          scale: highlightThermometer ? 1.02 : 1,
+          boxShadow: highlightThermometer
+            ? `0 0 24px ${riskColor}40, ${glass.card.boxShadow}`
+            : glass.card.boxShadow
+        }}
         transition={{ delay: 0.1 }}
         style={{
           padding: '24px',
@@ -3683,7 +3990,7 @@ function FlareAlertScreen({
           backdropFilter: glass.card.backdropFilter,
           marginBottom: '16px',
           textAlign: 'center',
-          boxShadow: glass.card.boxShadow
+          border: highlightThermometer ? `2px solid ${riskColor}` : 'none'
         }}
       >
         <div style={{
@@ -3748,7 +4055,20 @@ function FlareAlertScreen({
       </motion.div>
 
       {/* Contributing Factors */}
-      <div style={{ marginBottom: '16px' }}>
+      <motion.div
+        animate={{
+          scale: highlightFactors ? 1.02 : 1,
+          opacity: highlightFactors ? 1 : (highlightThermometer || highlightActions) ? 0.7 : 1
+        }}
+        style={{
+          marginBottom: '16px',
+          padding: highlightFactors ? '12px' : '0',
+          borderRadius: '16px',
+          background: highlightFactors ? 'rgba(251, 191, 36, 0.1)' : 'transparent',
+          border: highlightFactors ? '2px solid rgba(251, 191, 36, 0.5)' : 'none',
+          transition: 'all 0.3s ease'
+        }}
+      >
         <h3 style={{
           fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
           fontWeight: IOS_TYPOGRAPHY.headline.weight,
@@ -3793,9 +4113,23 @@ function FlareAlertScreen({
             </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
-      {/* Suggested Actions */}
+      {/* Suggested Actions + Action Buttons Container */}
+      <motion.div
+        animate={{
+          scale: highlightActions ? 1.02 : 1,
+          opacity: highlightActions ? 1 : (highlightThermometer || highlightFactors) ? 0.7 : 1
+        }}
+        style={{
+          marginBottom: '16px',
+          padding: highlightActions ? '12px' : '0',
+          borderRadius: '16px',
+          background: highlightActions ? 'rgba(48, 209, 88, 0.1)' : 'transparent',
+          border: highlightActions ? `2px solid ${colors.systemGreen}` : 'none',
+          transition: 'all 0.3s ease'
+        }}
+      >
       <div style={{ marginBottom: '16px' }}>
         <h3 style={{
           fontSize: `${IOS_TYPOGRAPHY.headline.size}px`,
@@ -3876,6 +4210,7 @@ function FlareAlertScreen({
           Dismiss
         </motion.button>
       </div>
+      </motion.div>
 
       {/* Model Info */}
       <div style={{

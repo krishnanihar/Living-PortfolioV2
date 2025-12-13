@@ -43,9 +43,20 @@ import { GhostOverlayDemo, SmartReminderDemo, PASIScoringDemo } from '@/componen
 // Screen type matching PsoriAssistPhoneMockup
 type Screen = 'home' | 'photo' | 'pasi' | 'meds' | 'mental' | 'triggers' | 'report' | 'settings' | 'pest' | 'flare' | 'reminders' | 'learn' | 'community';
 
+// SubState type matching PsoriAssistPhoneMockup
+type SubState =
+  // Photo screen sub-states
+  | 'selection' | 'camera' | 'ghost' | 'capture' | 'notes'
+  // Meds screen sub-states
+  | 'list' | 'checking' | 'checked' | 'streak'
+  // Flare screen sub-states
+  | 'alert' | 'thermometer' | 'factors' | 'actions'
+  | null;
+
 // Flow step with description for auto-play
 interface AutoPlayStep {
   screen: Screen;
+  subState?: SubState;  // Visual sub-state within the screen
   label: string;
   description: string;
 }
@@ -64,31 +75,37 @@ const PHOTO_CAPTURE_FLOW: FlowData = {
   steps: [
     {
       screen: 'home',
+      subState: null,
       label: 'User taps "Take Photo"',
       description: `Quick actions on the home screen provide one-tap access to the most common tasks. The "Take Photo" button is prominently placed because consistent photo documentation is the foundation of effective psoriasis tracking.`
     },
     {
       screen: 'photo',
+      subState: 'selection',
       label: 'Selects body part',
       description: `The body part selector ensures photos are organized by region—left arm, right arm, trunk, scalp, and more. This organization enables meaningful comparisons over time and helps the AI analyze each area's progression independently.`
     },
     {
       screen: 'photo',
+      subState: 'ghost',
       label: 'Ghost overlay appears',
       description: `The ghost overlay shows your previous photo at 50% opacity. This solves the #1 frustration patients reported: inconsistent angles making progress impossible to track. Now you can align perfectly every time.`
     },
     {
       screen: 'photo',
+      subState: 'capture',
       label: 'Aligns and captures',
       description: `With the ghost overlay as your guide, position your camera to match the previous photo. Haptic feedback confirms the capture, and the app automatically saves metadata like lighting conditions and timestamp.`
     },
     {
       screen: 'photo',
+      subState: 'notes',
       label: 'Adds optional notes',
       description: `Context matters. Adding notes like "after beach weekend" or "started new medication" helps you and your dermatologist understand what factors might be affecting your skin condition.`
     },
     {
       screen: 'pasi',
+      subState: null,
       label: 'PASI analysis begins',
       description: `Your photo is securely uploaded for AI-powered PASI scoring. Within 2-5 minutes, you'll receive a clinical-grade severity assessment—the same metric dermatologists use, now available instantly on your phone.`
     },
@@ -102,21 +119,25 @@ const MEDICATION_REMINDER_FLOW: FlowData = {
   steps: [
     {
       screen: 'home',
+      subState: null,
       label: 'Push notification arrives',
       description: `Smart notifications arrive at the optimal time based on your routine. Research shows topical medication adherence drops to 30% within weeks—our reminder system is designed to break that cycle.`
     },
     {
       screen: 'meds',
+      subState: 'list',
       label: 'Opens Medication screen',
       description: `The medication screen shows today's applications at a glance. Each body region that needs treatment is listed clearly, with visual indicators showing what's done and what's remaining.`
     },
     {
       screen: 'meds',
+      subState: 'checked',
       label: 'Taps checkmark',
       description: `Marking an application complete triggers a satisfying animation and confetti burst. This isn't just for fun—behavioral psychology research shows these micro-rewards increase habit formation by 40%.`
     },
     {
       screen: 'meds',
+      subState: 'streak',
       label: 'Streak celebration',
       description: `Completing all applications updates your streak counter. Milestone achievements at 7, 14, and 30 days unlock badges and celebrations, transforming medication adherence from a chore into a rewarding daily habit.`
     },
@@ -130,21 +151,25 @@ const FLARE_ALERT_FLOW: FlowData = {
   steps: [
     {
       screen: 'home',
+      subState: null,
       label: 'ML detects high risk',
       description: `Our machine learning model continuously analyzes your data—photo history, medication adherence, weather patterns, and stress indicators—to identify early warning signs of an approaching flare-up.`
     },
     {
       screen: 'flare',
+      subState: 'thermometer',
       label: 'Alert notification',
       description: `When risk exceeds the threshold, you receive a proactive alert. Unlike reactive care that starts after symptoms appear, this early warning gives you 3-5 days to take preventive action.`
     },
     {
       screen: 'flare',
+      subState: 'factors',
       label: 'Risk factors explained',
       description: `The alert breaks down contributing factors: cold weather incoming, two missed medication applications, elevated stress from calendar analysis. Understanding the "why" empowers you to address root causes.`
     },
     {
       screen: 'flare',
+      subState: 'actions',
       label: 'Mitigation suggestions',
       description: `Actionable recommendations tailored to your specific risk factors: increase moisturizer application, use a humidifier, or practice the guided breathing exercises. You can also share this report directly with your dermatologist.`
     },
@@ -261,6 +286,7 @@ const AutoPlayFlowSection = ({ flow, isMobile }: AutoPlayFlowSectionProps) => {
         }}>
           <PsoriAssistPhoneMockup
             controlledScreen={flow.steps[currentStep].screen}
+            controlledSubState={flow.steps[currentStep].subState}
             showThemeToggle={false}
           />
         </div>
