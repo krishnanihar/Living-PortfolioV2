@@ -75,6 +75,7 @@ interface Project {
   icon: LucideIcon;
   color: string;
   category: string;
+  role: string;
 }
 
 interface OtherProject {
@@ -153,7 +154,7 @@ const awards: Award[] = [
 
 const projects: Project[] = [
   {
-    id: 2,
+    id: 1,
     label: '01',
     title: 'Design System & Tokenisation',
     subtitle: 'Token architecture for four merging airlines',
@@ -167,10 +168,11 @@ const projects: Project[] = [
     ],
     icon: Layers,
     color: '99, 102, 241',
-    category: 'SYSTEM'
+    category: 'SYSTEM',
+    role: 'LEAD DESIGNER'
   },
   {
-    id: 1,
+    id: 2,
     label: '02',
     title: 'Pixel Radar',
     subtitle: 'Figma plugin for automated design consistency',
@@ -184,45 +186,12 @@ const projects: Project[] = [
     ],
     icon: Target,
     color: '218, 14, 41',
-    category: 'TOOL'
+    category: 'TOOL',
+    role: 'SOLE BUILDER'
   },
   {
     id: 3,
     label: '03',
-    title: 'Search with AI',
-    subtitle: 'AI-native search using natural language',
-    description: '3rd place at Battle of the Apps 2024.',
-    longDescription: 'While the organization modernized basics, I was designing for what comes next. Search with AI—an AI-native search experience using natural language understanding—rethinks how passengers interact with an airline.\n\nThis feature helped Air India reach 3rd place at the Battle of the Airline Apps 2024 (World Aviation Festival), competing against Lufthansa, Emirates, and Qatar Airways.',
-    imagePlaceholder: 'AI Search Interface Mockup',
-    stats: [
-      { value: '3rd', label: 'Battle of Apps' },
-      { value: 'NLU', label: 'Powered' },
-      { value: 'WAF', label: '2024' }
-    ],
-    icon: Search,
-    color: '139, 92, 246',
-    category: 'AI'
-  },
-  {
-    id: 4,
-    label: '04',
-    title: 'MCP Handoff',
-    subtitle: 'Model Context Protocol for design-dev workflow',
-    description: 'Structured, reliable, modern handoff.',
-    longDescription: 'Design systems only matter if engineering implements them accurately. Handoff at Air India was fragmented—Figma links in Slack threads, specs that didn\'t match builds, endless back-and-forth.\n\nI implemented a design-dev handoff workflow using Model Context Protocol—bridging design and engineering through AI-assisted tooling. The kind of workflow a transformed airline should have, not the duct-tape process we inherited.',
-    imagePlaceholder: 'MCP Workflow Diagram',
-    stats: [
-      { value: 'MCP', label: 'Protocol' },
-      { value: '0', label: 'Slack Chaos' },
-      { value: 'AI', label: 'Assisted' }
-    ],
-    icon: GitBranch,
-    color: '16, 185, 129',
-    category: 'AI'
-  },
-  {
-    id: 5,
-    label: '05',
     title: 'IFE System Design',
     subtitle: 'In-flight entertainment at 35,000 feet',
     description: 'Typography at distance, touch during turbulence, zero onboarding.',
@@ -235,11 +204,12 @@ const projects: Project[] = [
     ],
     icon: Monitor,
     color: '251, 146, 60',
-    category: 'IFE'
+    category: 'IFE',
+    role: 'LEAD DESIGNER'
   },
   {
-    id: 6,
-    label: '06',
+    id: 4,
+    label: '04',
     title: 'NPS Feedback System',
     subtitle: 'Turning feedback into strategic input',
     description: 'Audited and redesigned feedback collection flows.',
@@ -252,28 +222,12 @@ const projects: Project[] = [
     ],
     icon: BarChart3,
     color: '236, 72, 153',
-    category: 'RESEARCH'
+    category: 'RESEARCH',
+    role: 'INITIATOR'
   },
   {
-    id: 7,
-    label: '07',
-    title: 'Competitor Analysis',
-    subtitle: 'Research framework for world-class benchmarking',
-    description: 'Analyzing 15+ airline and travel apps.',
-    longDescription: 'You can\'t build a world-class airline experience without understanding what world-class looks like. I created a comprehensive research methodology analyzing 15+ airline and travel apps.\n\nThe framework became an ongoing reference for team decisions—a shared lens for evaluating design choices against industry best practices and emerging patterns.',
-    imagePlaceholder: 'Competitor Research Framework',
-    stats: [
-      { value: '15+', label: 'Apps Analyzed' },
-      { value: 'Ongoing', label: 'Reference' },
-      { value: 'Team', label: 'Resource' }
-    ],
-    icon: Compass,
-    color: '14, 165, 233',
-    category: 'RESEARCH'
-  },
-  {
-    id: 8,
-    label: '08',
+    id: 5,
+    label: '05',
     title: 'Liftoff Program',
     subtitle: 'Team upskilling and culture building',
     description: 'Built collaborative culture without waiting for HR.',
@@ -286,11 +240,12 @@ const projects: Project[] = [
     ],
     icon: Users,
     color: '251, 191, 36',
-    category: 'CULTURE'
+    category: 'CULTURE',
+    role: 'INITIATOR'
   },
   {
-    id: 9,
-    label: '09',
+    id: 6,
+    label: '06',
     title: 'Microsoft Hackathon',
     subtitle: 'AI-powered customer experience solution',
     description: 'Partnered with Microsoft, built working concept.',
@@ -303,69 +258,39 @@ const projects: Project[] = [
     ],
     icon: Zap,
     color: '99, 102, 241',
-    category: 'HACKATHON'
+    category: 'HACKATHON',
+    role: 'TEAM OF 3'
   },
-  {
-    id: 10,
-    label: '10',
-    title: 'Internal Hackathon',
-    subtitle: 'Full platform shipped in 24 hours',
-    description: 'Research, design, code, ship — in a single day.',
-    longDescription: 'Researched Firebase Studio, then designed and built an AI-powered internal platform for time tracking, resource allocation, and work management—in a single day.\n\nEnd-to-end: research, design, code, ship. Solved an operational pain point the organization hadn\'t prioritized. Two different hackathons, two wins. Same pattern: see a gap, build the solution, ship fast.',
-    imagePlaceholder: 'Platform Screenshots',
-    stats: [
-      { value: 'Winner', label: 'Internal' },
-      { value: '24hrs', label: 'Shipped' },
-      { value: 'E2E', label: 'Execution' }
-    ],
-    icon: Rocket,
-    color: '218, 14, 41',
-    category: 'HACKATHON'
-  }
 ];
 
 const differentiators: Differentiator[] = [
   {
     id: 1,
     title: 'Builder Mindset',
-    description: 'Ships tools, not just designs. Pixel Radar, hackathons, MCP.',
+    description: 'Pixel Radar: 450+ daily users. Built solo.',
     icon: Zap,
     color: '218, 14, 41'
   },
   {
     id: 2,
-    title: 'AI-Native Thinking',
-    description: 'Designing for AI before playbooks existed.',
+    title: 'AI-Native Design',
+    description: 'Microsoft Hackathon winner. Azure AI, LLMs.',
     icon: Cpu,
     color: '139, 92, 246'
   },
   {
     id: 3,
-    title: 'Systems from Chaos',
-    description: 'Token architecture from undocumented screens.',
+    title: 'Systems Thinking',
+    description: 'Unified 4 airlines into one design language.',
     icon: Layers,
     color: '99, 102, 241'
   },
   {
     id: 4,
-    title: 'Technical Depth',
-    description: '5000 lines in 48 hours. Full-stack execution.',
-    icon: GitBranch,
-    color: '16, 185, 129'
-  },
-  {
-    id: 5,
-    title: 'Written Communication',
-    description: 'Works async, documents clearly, builds programs.',
-    icon: MessageSquare,
+    title: 'Leadership',
+    description: 'Liftoff Program: 12 mentees, 89% completion.',
+    icon: Users,
     color: '251, 191, 36'
-  },
-  {
-    id: 6,
-    title: 'Ambiguity Tolerance',
-    description: 'Four airlines merging. Startup speed in enterprise.',
-    icon: Compass,
-    color: '236, 72, 153'
   }
 ];
 
@@ -511,24 +436,12 @@ export function AirIndiaWork() {
   // Card 3: MCP Handoff states
   const [mcpPhase, setMcpPhase] = useState<'idle' | 'design' | 'server' | 'agent' | 'output'>('idle');
 
-  // Card 4: IFE System states
-  const [activeIFETab, setActiveIFETab] = useState<string>('movies');
-
   // Card 5: NPS Feedback states
   const [npsPhase, setNpsPhase] = useState<'idle' | 'score' | 'gauge' | 'bars' | 'complete'>('idle');
   const [npsScore, setNpsScore] = useState(0);
 
   // Card 6: Competitor Analysis states
   const [competitorHoveredRow, setCompetitorHoveredRow] = useState<number | null>(null);
-
-  // Card 7: Liftoff Program states
-  const [liftoffWeek, setLiftoffWeek] = useState(4);
-
-  // Card 8: Microsoft Hackathon states
-  const [hackathonFeedIndex, setHackathonFeedIndex] = useState(0);
-
-  // Card 9: Internal Hackathon states
-  const [sprintPhase, setSprintPhase] = useState<'idea' | 'design' | 'build' | 'test' | 'ship'>('build');
 
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -4204,6 +4117,35 @@ export function AirIndiaWork() {
                         }}
                       >
                         {String(index + 1).padStart(2, '0')} — {project.category}
+                      </motion.span>
+
+                      {/* Role Badge */}
+                      <motion.span
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.12 }}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          padding: '6px 12px',
+                          borderRadius: '20px',
+                          background: `rgba(${project.color}, 0.1)`,
+                          border: `1px solid rgba(${project.color}, 0.2)`,
+                          fontSize: '0.6875rem',
+                          fontWeight: '600',
+                          letterSpacing: '0.05em',
+                          color: `rgb(${project.color})`,
+                          textTransform: 'uppercase',
+                          marginTop: '8px',
+                        }}
+                      >
+                        {project.role === 'SOLE BUILDER' && '🔧'}
+                        {project.role === 'LEAD DESIGNER' && '👤'}
+                        {project.role === 'INITIATOR' && '🎯'}
+                        {project.role === 'TEAM OF 3' && '🏆'}
+                        {project.role}
                       </motion.span>
 
                       {/* Title */}
@@ -8095,11 +8037,13 @@ export function AirIndiaWork() {
           </h2>
         </div>
 
-        {/* Differentiators Grid */}
+        {/* Differentiators Grid - 2x2 layout */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
+          gridTemplateColumns: 'repeat(2, 1fr)',
           gap: 'clamp(1.5rem, 3vw, 2.5rem)',
+          maxWidth: '700px',
+          margin: '0 auto',
         }}>
           {differentiators.map((diff, index) => {
             const Icon = diff.icon;
