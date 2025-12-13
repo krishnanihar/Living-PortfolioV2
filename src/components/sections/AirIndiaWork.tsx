@@ -7020,186 +7020,272 @@ export function AirIndiaWork() {
                     </div>
                     </>
                   ) : index === 5 ? (
-                    /* Card 5: NPS Feedback System - Sentiment Dashboard Visualization */
+                    /* Card 5: NPS Feedback System - Vihaan.AI Transformation Journey */
                     <>
                     <div style={{
                       width: '100%',
                       maxWidth: '1000px',
                       margin: '0 auto',
-                      padding: '24px',
-                      borderRadius: '16px',
-                      background: 'var(--glass-06)',
-                      border: `1px solid rgba(${project.color}, 0.2)`,
                     }}>
+                      {/* Section 1: Vihaan.AI Transformation Timeline */}
                       <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: isMobile ? '1fr' : '200px 1fr 1fr',
-                        gap: '24px',
-                        marginBottom: '24px',
+                        padding: '24px',
+                        borderRadius: '16px',
+                        background: 'var(--glass-06)',
+                        border: `1px solid rgba(${project.color}, 0.2)`,
+                        marginBottom: '20px',
                       }}>
-                        {/* Score Card */}
                         <div style={{
-                          padding: '24px',
-                          borderRadius: '16px',
-                          background: 'var(--glass-08)',
-                          border: '1px solid var(--glass-15)',
-                          textAlign: 'center',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          marginBottom: '20px',
                         }}>
-                          <div style={{ fontSize: '11px', color: 'var(--text-40)', marginBottom: '8px', letterSpacing: '0.1em' }}>NPS SCORE</div>
+                          <span style={{ fontSize: '10px', fontWeight: '600', color: `rgb(${project.color})`, letterSpacing: '0.15em' }}>
+                            VIHAAN.AI TRANSFORMATION
+                          </span>
+                          <div style={{ flex: 1, height: '1px', background: `rgba(${project.color}, 0.3)` }} />
+                        </div>
+
+                        {/* Timeline */}
+                        <div style={{ position: 'relative', padding: '20px 0' }}>
+                          {/* Progress Line */}
                           <div style={{
-                            fontSize: '48px',
-                            fontWeight: '700',
-                            color: '#30D158',
-                            lineHeight: 1,
+                            position: 'absolute',
+                            top: '35px',
+                            left: isMobile ? '20px' : '10%',
+                            width: isMobile ? '4px' : '80%',
+                            height: isMobile ? 'calc(100% - 70px)' : '4px',
+                            background: 'var(--glass-15)',
+                            borderRadius: '2px',
                           }}>
-                            +{npsPhase === 'complete' || npsPhase === 'idle' ? 67 : npsScore}
+                            <div style={{
+                              width: isMobile ? '100%' : '100%',
+                              height: isMobile ? '100%' : '100%',
+                              background: `linear-gradient(${isMobile ? '180deg' : '90deg'}, rgb(${project.color}), #8B5CF6, #3B82F6)`,
+                              borderRadius: '2px',
+                            }} />
                           </div>
-                          <div style={{ fontSize: '11px', color: 'var(--text-50)', marginTop: '8px' }}>Excellent</div>
-                        </div>
 
-                        {/* Gauge */}
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <svg viewBox="0 0 200 120" style={{ width: '200px', height: '120px' }}>
-                            {/* Background arc */}
-                            <path
-                              d="M 20 100 A 80 80 0 0 1 180 100"
-                              fill="none"
-                              stroke="rgba(255,255,255,0.1)"
-                              strokeWidth="12"
-                              strokeLinecap="round"
-                            />
-                            {/* Red segment (Detractors) */}
-                            <path
-                              d="M 20 100 A 80 80 0 0 1 60 35"
-                              fill="none"
-                              stroke="#EF4444"
-                              strokeWidth="12"
-                              strokeLinecap="round"
-                            />
-                            {/* Yellow segment (Passives) */}
-                            <path
-                              d="M 60 35 A 80 80 0 0 1 140 35"
-                              fill="none"
-                              stroke="#F59E0B"
-                              strokeWidth="12"
-                            />
-                            {/* Green segment (Promoters) */}
-                            <path
-                              d="M 140 35 A 80 80 0 0 1 180 100"
-                              fill="none"
-                              stroke="#30D158"
-                              strokeWidth="12"
-                              strokeLinecap="round"
-                            />
-                            {/* Needle */}
-                            <line
-                              x1="100" y1="100"
-                              x2="100" y2="35"
-                              stroke="white"
-                              strokeWidth="3"
-                              strokeLinecap="round"
-                              style={{
-                                transformOrigin: '100px 100px',
-                                transform: `rotate(${(npsPhase === 'complete' || npsPhase === 'idle' ? 67 : npsScore) * 0.9 + 15}deg)`,
-                                transition: 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)',
-                              }}
-                            />
-                            <circle cx="100" cy="100" r="6" fill="white" />
-                          </svg>
-                        </div>
-
-                        {/* Distribution */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', justifyContent: 'center' }}>
-                          {[
-                            { label: 'Promoters (9-10)', percent: 72, color: '#30D158' },
-                            { label: 'Passives (7-8)', percent: 18, color: '#F59E0B' },
-                            { label: 'Detractors (0-6)', percent: 10, color: '#EF4444' },
-                          ].map((seg, i) => (
-                            <div key={seg.label}>
-                              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                                <span style={{ fontSize: '11px', color: 'var(--text-60)' }}>{seg.label}</span>
-                                <span style={{ fontSize: '11px', color: seg.color, fontWeight: '600' }}>{seg.percent}%</span>
-                              </div>
-                              <div style={{ height: '8px', background: 'var(--glass-10)', borderRadius: '4px', overflow: 'hidden' }}>
+                          {/* Milestones */}
+                          <div style={{
+                            display: 'flex',
+                            flexDirection: isMobile ? 'column' : 'row',
+                            justifyContent: 'space-between',
+                            gap: isMobile ? '24px' : '0',
+                            position: 'relative',
+                            zIndex: 1,
+                          }}>
+                            {[
+                              { date: 'JAN 2022', title: 'Tata Acquisition', subtitle: '63% OTP', phase: 'START' },
+                              { date: 'SEP 2022', title: 'Vihaan.AI Launch', subtitle: '5-Year Plan', phase: 'TAXI' },
+                              { date: 'MAR 2023', title: 'Digital NPS Live', subtitle: '140K+ responses', phase: 'TAKE OFF' },
+                              { date: '2024', title: 'Phase 2 Complete', subtitle: '4 Airlines Merged', phase: 'TAKE OFF' },
+                              { date: '2025', title: 'APEX Four Star', subtitle: '"Most Improved"', phase: 'CLIMB' },
+                            ].map((milestone, i) => (
+                              <div key={milestone.date} style={{
+                                display: 'flex',
+                                flexDirection: isMobile ? 'row' : 'column',
+                                alignItems: isMobile ? 'flex-start' : 'center',
+                                gap: isMobile ? '16px' : '8px',
+                                textAlign: isMobile ? 'left' : 'center',
+                                flex: isMobile ? 'none' : 1,
+                              }}>
+                                {/* Node */}
                                 <div style={{
-                                  width: npsPhase === 'complete' || npsPhase === 'idle' ? `${seg.percent}%` : '0%',
-                                  height: '100%',
-                                  background: seg.color,
-                                  borderRadius: '4px',
-                                  transition: `width 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${i * 0.2}s`,
-                                }} />
+                                  width: '24px',
+                                  height: '24px',
+                                  borderRadius: '50%',
+                                  background: i === 4 ? '#30D158' : `rgb(${project.color})`,
+                                  border: '3px solid var(--glass-06)',
+                                  boxShadow: `0 0 20px rgba(${project.color}, 0.4)`,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  flexShrink: 0,
+                                }}>
+                                  {i === 4 && <span style={{ fontSize: '10px' }}>✓</span>}
+                                </div>
+                                <div>
+                                  <div style={{ fontSize: '9px', color: `rgb(${project.color})`, fontWeight: '600', letterSpacing: '0.1em', marginBottom: '2px' }}>
+                                    {milestone.date}
+                                  </div>
+                                  <div style={{ fontSize: '11px', fontWeight: '600', color: 'var(--text-90)', marginBottom: '2px' }}>
+                                    {milestone.title}
+                                  </div>
+                                  <div style={{ fontSize: '10px', color: 'var(--text-50)' }}>
+                                    {milestone.subtitle}
+                                  </div>
+                                </div>
                               </div>
+                            ))}
+                          </div>
+
+                          {/* Phase Labels */}
+                          {!isMobile && (
+                            <div style={{
+                              display: 'flex',
+                              justifyContent: 'space-around',
+                              marginTop: '16px',
+                              paddingTop: '12px',
+                              borderTop: '1px solid var(--glass-10)',
+                            }}>
+                              {['TAXI', 'TAKE OFF', 'CLIMB'].map((phase, i) => (
+                                <span key={phase} style={{
+                                  fontSize: '9px',
+                                  fontWeight: '700',
+                                  color: i === 2 ? '#30D158' : 'var(--text-40)',
+                                  letterSpacing: '0.15em',
+                                  padding: '4px 12px',
+                                  borderRadius: '10px',
+                                  background: i === 2 ? 'rgba(48, 209, 88, 0.15)' : 'var(--glass-06)',
+                                }}>
+                                  {phase}
+                                </span>
+                              ))}
                             </div>
-                          ))}
+                          )}
                         </div>
                       </div>
 
-                      {/* Stat Cards */}
-                      <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '20px' }}>
+                      {/* Section 2: NPS Score Hero */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+                        gap: '20px',
+                        marginBottom: '20px',
+                      }}>
+                        {/* +40 Points Card */}
+                        <div style={{
+                          padding: '32px',
+                          borderRadius: '16px',
+                          background: 'linear-gradient(135deg, rgba(48, 209, 88, 0.15), var(--glass-06))',
+                          border: '1px solid rgba(48, 209, 88, 0.3)',
+                          textAlign: 'center',
+                        }}>
+                          <div style={{ fontSize: '10px', color: '#30D158', fontWeight: '600', letterSpacing: '0.15em', marginBottom: '12px' }}>
+                            NPS IMPROVEMENT
+                          </div>
+                          <div style={{
+                            fontSize: '64px',
+                            fontWeight: '700',
+                            color: '#30D158',
+                            lineHeight: 1,
+                            textShadow: '0 0 40px rgba(48, 209, 88, 0.5)',
+                          }}>
+                            +40
+                          </div>
+                          <div style={{ fontSize: '14px', color: 'var(--text-70)', marginTop: '8px' }}>
+                            points since Tata acquisition
+                          </div>
+                          <div style={{
+                            marginTop: '16px',
+                            padding: '8px 16px',
+                            borderRadius: '20px',
+                            background: 'rgba(48, 209, 88, 0.2)',
+                            display: 'inline-block',
+                          }}>
+                            <span style={{ fontSize: '11px', color: '#30D158', fontWeight: '600' }}>
+                              A350 Fleet: NPS 56 (World-Class)
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Gauge Visualization */}
+                        <div style={{
+                          padding: '24px',
+                          borderRadius: '16px',
+                          background: 'var(--glass-06)',
+                          border: '1px solid var(--glass-15)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                          <svg viewBox="0 0 200 120" style={{ width: '180px', height: '110px' }}>
+                            {/* Background arc */}
+                            <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="var(--glass-15)" strokeWidth="12" strokeLinecap="round" />
+                            {/* Colored segments */}
+                            <path d="M 20 100 A 80 80 0 0 1 60 35" fill="none" stroke="#EF4444" strokeWidth="12" strokeLinecap="round" />
+                            <path d="M 60 35 A 80 80 0 0 1 140 35" fill="none" stroke="#F59E0B" strokeWidth="12" />
+                            <path d="M 140 35 A 80 80 0 0 1 180 100" fill="none" stroke="#30D158" strokeWidth="12" strokeLinecap="round" />
+                            {/* Needle pointing to excellent zone */}
+                            <line x1="100" y1="100" x2="100" y2="35" stroke="white" strokeWidth="3" strokeLinecap="round"
+                              style={{ transformOrigin: '100px 100px', transform: 'rotate(75deg)' }} />
+                            <circle cx="100" cy="100" r="6" fill="white" />
+                          </svg>
+                          <div style={{ fontSize: '11px', color: 'var(--text-50)', marginTop: '8px' }}>
+                            Upper Four Star Category
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Section 3: Impact Metrics Grid */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+                        gap: '12px',
+                        marginBottom: '20px',
+                      }}>
                         {[
-                          { icon: '📈', value: '+12%', label: 'YoY Growth' },
-                          { icon: '💬', value: '2.4K', label: 'Responses' },
-                          { icon: '⏱', value: '24hr', label: 'Avg Response' },
-                          { icon: '🎯', value: '78%', label: 'Action Rate' },
-                        ].map((stat) => (
-                          <div key={stat.label} style={{
-                            padding: '12px 20px',
-                            borderRadius: '10px',
-                            background: 'var(--glass-04)',
-                            border: '1px solid var(--glass-10)',
+                          { icon: '📊', value: '140K+', label: 'Feedback responses', sublabel: 'in 3 months' },
+                          { icon: '⏱️', value: '63% → 87%', label: 'On-Time Performance', sublabel: 'transformation' },
+                          { icon: '⭐', value: '4.7★', label: 'App Store Rating', sublabel: 'Best Indian Airline' },
+                          { icon: '🔄', value: 'Paper → Digital', label: 'Feedback System', sublabel: 'modernization' },
+                        ].map((metric) => (
+                          <div key={metric.label} style={{
+                            padding: '20px 16px',
+                            borderRadius: '12px',
+                            background: 'var(--glass-06)',
+                            border: '1px solid var(--glass-15)',
                             textAlign: 'center',
                           }}>
-                            <span style={{ fontSize: '14px' }}>{stat.icon}</span>
-                            <div style={{ fontSize: '16px', fontWeight: '700', color: `rgb(${project.color})` }}>{stat.value}</div>
-                            <div style={{ fontSize: '9px', color: 'var(--text-40)' }}>{stat.label}</div>
+                            <span style={{ fontSize: '20px' }}>{metric.icon}</span>
+                            <div style={{
+                              fontSize: metric.value.length > 8 ? '14px' : '18px',
+                              fontWeight: '700',
+                              color: `rgb(${project.color})`,
+                              marginTop: '8px',
+                            }}>
+                              {metric.value}
+                            </div>
+                            <div style={{ fontSize: '10px', color: 'var(--text-70)', marginTop: '4px' }}>
+                              {metric.label}
+                            </div>
+                            <div style={{ fontSize: '9px', color: 'var(--text-40)' }}>
+                              {metric.sublabel}
+                            </div>
                           </div>
                         ))}
                       </div>
 
-                      {/* Action Button */}
-                      <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <button
-                          onClick={() => {
-                            if (npsPhase !== 'idle') return;
-                            setNpsPhase('score');
-                            setNpsScore(0);
-                            const scoreInterval = setInterval(() => {
-                              setNpsScore(prev => {
-                                if (prev >= 67) {
-                                  clearInterval(scoreInterval);
-                                  setNpsPhase('gauge');
-                                  setTimeout(() => setNpsPhase('bars'), 500);
-                                  setTimeout(() => setNpsPhase('complete'), 1500);
-                                  setTimeout(() => setNpsPhase('idle'), 3000);
-                                  return 67;
-                                }
-                                return prev + 3;
-                              });
-                            }, 30);
-                          }}
-                          style={{
-                            padding: '10px 20px',
-                            borderRadius: '10px',
-                            background: npsPhase === 'idle' ? `rgb(${project.color})` : 'var(--glass-15)',
-                            border: 'none',
-                            fontSize: '12px',
-                            fontWeight: '600',
-                            color: npsPhase === 'idle' ? 'white' : 'var(--text-60)',
-                            cursor: npsPhase === 'idle' ? 'pointer' : 'default',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                          }}
-                        >
-                          <span style={{
-                            width: '6px',
-                            height: '6px',
-                            borderRadius: '50%',
-                            background: npsPhase === 'idle' ? 'white' : '#30D158',
-                            animation: npsPhase !== 'idle' && npsPhase !== 'complete' ? 'statusPulse 1s ease infinite' : 'none',
-                          }} />
-                          {npsPhase === 'idle' ? 'Refresh Dashboard' : npsPhase === 'complete' ? 'Data Updated ✓' : 'Loading...'}
-                        </button>
+                      {/* Section 4: Industry Recognition Bar */}
+                      <div style={{
+                        display: 'flex',
+                        gap: '12px',
+                        justifyContent: 'center',
+                        flexWrap: 'wrap',
+                      }}>
+                        {[
+                          { award: 'APEX 2025', detail: 'Most Improved Airline', color: '#30D158' },
+                          { award: 'Gold Stevie 2024', detail: 'Mobile App Innovation', color: '#F59E0B' },
+                          { award: 'Upper Four Star', detail: 'NPS 50+ Category', color: '#8B5CF6' },
+                        ].map((badge) => (
+                          <div key={badge.award} style={{
+                            padding: '12px 20px',
+                            borderRadius: '12px',
+                            background: `rgba(${badge.color === '#30D158' ? '48, 209, 88' : badge.color === '#F59E0B' ? '245, 158, 11' : '139, 92, 246'}, 0.1)`,
+                            border: `1px solid ${badge.color}30`,
+                            textAlign: 'center',
+                          }}>
+                            <div style={{ fontSize: '11px', fontWeight: '700', color: badge.color }}>
+                              {badge.award}
+                            </div>
+                            <div style={{ fontSize: '9px', color: 'var(--text-50)', marginTop: '2px' }}>
+                              {badge.detail}
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
                     </>
