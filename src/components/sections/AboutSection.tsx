@@ -121,7 +121,7 @@ export function AboutSection() {
       label: 'ISB',
       id: 'isb-2022',
       detail: 'Internship at ISB Digital Learning - exploring how education scales through digital platforms. Applied systems thinking to learning experiences.',
-      logoFile: 'ISB.png',
+      logoFile: 'ISB.jpeg',
       organization: 'Indian School of Business'
     },
     {

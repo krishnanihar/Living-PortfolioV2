@@ -276,7 +276,7 @@ export const timelineMilestones: TimelineMilestone[] = [
     lesson: 'Great UX is a business strategy in disguise.',
     tags: ['Product Strategy', 'Business Design', 'Metrics'],
     icon: 'Brain',
-    logoFile: 'ISB.png',
+    logoFile: 'ISB.jpeg',
     organization: 'Indian School of Business',
     side: 'right',
     brandColor: '#8B5CF6',

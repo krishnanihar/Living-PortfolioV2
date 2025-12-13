@@ -195,7 +195,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
       label: 'ISB',
       id: 'isb-2022',
       detail: 'Strategic Management Program at Indian School of Business, blending design thinking with business strategy.',
-      logoFile: 'ISB.png',
+      logoFile: 'ISB.jpeg',
       organization: 'ISB Hyderabad'
     },
     {
@@ -1757,7 +1757,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
               >
                 {[
                   { file: 'nid.svg', alt: 'NID' },
-                  { file: 'ISB.png', alt: 'ISB' },
+                  { file: 'ISB.jpeg', alt: 'ISB' },
                   { file: 'infosys.svg', alt: 'Infosys' },
                   { file: 'air-india.svg', alt: 'Air India' }
                 ].map((logo) => (
