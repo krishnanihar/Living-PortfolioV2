@@ -162,7 +162,7 @@ export function NarrativeWorkHero() {
               { organization: 'Infosys', timeframe: '2020', logo: 'infosys.svg' },
               { organization: 'National Institute of Design', timeframe: '2021 - 2023', logo: 'nid.svg' },
               { organization: 'Air India', timeframe: '2024 - Present', logo: 'air-india.svg' },
-              { organization: 'Indian School of Business', timeframe: '2023', logo: 'ISB.svg' },
+              { organization: 'Indian School of Business', timeframe: '2023', logo: 'ISB.png' },
             ].map((org, index) => (
               <div
                 key={index}

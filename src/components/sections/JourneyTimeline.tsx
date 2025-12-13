@@ -600,8 +600,8 @@ export function JourneyTimeline() {
                             backdropFilter: 'blur(40px) saturate(150%)',
                             WebkitBackdropFilter: 'blur(40px) saturate(150%)',
                             border: resolvedTheme === 'light'
-                              ? `2px solid rgba(0, 0, 0, ${milestone.logoFile === 'JNAFAU.svg' ? '0.12' : '0.10'})`
-                              : `2px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.svg' ? '0.12' : '0.10'})`,
+                              ? `2px solid rgba(0, 0, 0, ${milestone.logoFile === 'JNAFAU.png' ? '0.12' : '0.10'})`
+                              : `2px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.png' ? '0.12' : '0.10'})`,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -968,8 +968,8 @@ export function JourneyTimeline() {
                             backdropFilter: 'blur(40px) saturate(150%)',
                             WebkitBackdropFilter: 'blur(40px) saturate(150%)',
                             border: resolvedTheme === 'light'
-                              ? `2px solid rgba(0, 0, 0, ${milestone.logoFile === 'JNAFAU.svg' ? '0.12' : '0.10'})`
-                              : `2px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.svg' ? '0.12' : '0.10'})`,
+                              ? `2px solid rgba(0, 0, 0, ${milestone.logoFile === 'JNAFAU.png' ? '0.12' : '0.10'})`
+                              : `2px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.png' ? '0.12' : '0.10'})`,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',

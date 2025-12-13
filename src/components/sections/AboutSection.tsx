@@ -97,7 +97,7 @@ export function AboutSection() {
       label: 'BFA',
       id: 'undergrad-2018',
       detail: 'Bachelor of Fine Arts - learned the language of visual design. Typography, composition, color theory. The foundation of seeing design as a system, not decoration.',
-      logoFile: 'JNAFAU.svg',
+      logoFile: 'JNAFAU.png',
       organization: 'JNAFAU'
     },
     {
@@ -121,7 +121,7 @@ export function AboutSection() {
       label: 'ISB',
       id: 'isb-2022',
       detail: 'Internship at ISB Digital Learning - exploring how education scales through digital platforms. Applied systems thinking to learning experiences.',
-      logoFile: 'ISB.svg',
+      logoFile: 'ISB.png',
       organization: 'Indian School of Business'
     },
     {
@@ -584,8 +584,8 @@ export function AboutSection() {
                           <Image
                             src={`/logos/${milestone.logoFile}`}
                             alt={milestone.organization || milestone.label}
-                            width={milestone.logoFile === 'JNAFAU.svg' ? 112 : 62}
-                            height={milestone.logoFile === 'JNAFAU.svg' ? 112 : 62}
+                            width={milestone.logoFile === 'JNAFAU.png' ? 112 : 62}
+                            height={milestone.logoFile === 'JNAFAU.png' ? 112 : 62}
                             style={{
                               objectFit: 'contain',
                               width: '100%',

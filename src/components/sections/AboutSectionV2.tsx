@@ -195,7 +195,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
       label: 'ISB',
       id: 'isb-2022',
       detail: 'Strategic Management Program at Indian School of Business, blending design thinking with business strategy.',
-      logoFile: 'ISB.svg',
+      logoFile: 'ISB.png',
       organization: 'ISB Hyderabad'
     },
     {
@@ -219,7 +219,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
       label: 'BFA',
       id: 'undergrad-2018',
       detail: 'Bachelor of Fine Arts in Communication Design from JNAFAU, exploring the intersection of art and interaction.',
-      logoFile: 'JNAFAU.svg',
+      logoFile: 'JNAFAU.png',
       organization: 'JNAFAU'
     },
     {
@@ -1757,7 +1757,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
               >
                 {[
                   { file: 'nid.svg', alt: 'NID' },
-                  { file: 'ISB.svg', alt: 'ISB' },
+                  { file: 'ISB.png', alt: 'ISB' },
                   { file: 'infosys.svg', alt: 'Infosys' },
                   { file: 'air-india.svg', alt: 'Air India' }
                 ].map((logo) => (

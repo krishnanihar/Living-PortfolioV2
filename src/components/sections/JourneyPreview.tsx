@@ -55,7 +55,7 @@ export default function JourneyPreview() {
       color: '#7C3AED',
       organization: 'Srishti Manipal',
       status: 'Education',
-      logoFile: 'JNAFAU.svg'
+      logoFile: 'JNAFAU.png'
     },
     {
       year: '2021',
@@ -440,13 +440,13 @@ export default function JourneyPreview() {
                       borderRadius: '20px',
                       background: milestone.logoFile
                         ? (resolvedTheme === 'light'
-                          ? (milestone.logoFile === 'JNAFAU.svg' ? 'rgba(0, 0, 0, 0.08)' : 'rgba(0, 0, 0, 0.05)')
-                          : (milestone.logoFile === 'JNAFAU.svg' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.10)'))
+                          ? (milestone.logoFile === 'JNAFAU.png' ? 'rgba(0, 0, 0, 0.08)' : 'rgba(0, 0, 0, 0.05)')
+                          : (milestone.logoFile === 'JNAFAU.png' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.10)'))
                         : `${milestone.color}15`,
                       border: milestone.logoFile
                         ? (resolvedTheme === 'light'
-                          ? `1px solid rgba(0, 0, 0, ${milestone.logoFile === 'JNAFAU.svg' ? '0.15' : '0.12'})`
-                          : `1px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.svg' ? '0.20' : '0.18'})`)
+                          ? `1px solid rgba(0, 0, 0, ${milestone.logoFile === 'JNAFAU.png' ? '0.15' : '0.12'})`
+                          : `1px solid rgba(255, 255, 255, ${milestone.logoFile === 'JNAFAU.png' ? '0.20' : '0.18'})`)
                         : `1px solid ${milestone.color}40`,
                       display: 'flex',
                       alignItems: 'center',
@@ -457,10 +457,10 @@ export default function JourneyPreview() {
                       backdropFilter: milestone.logoFile ? 'blur(20px) saturate(140%)' : 'none',
                       boxShadow: milestone.logoFile
                         ? (resolvedTheme === 'light'
-                          ? (milestone.logoFile === 'JNAFAU.svg'
+                          ? (milestone.logoFile === 'JNAFAU.png'
                             ? 'inset 0 0 0 1px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.08)'
                             : '0 4px 16px rgba(0, 0, 0, 0.08)')
-                          : (milestone.logoFile === 'JNAFAU.svg'
+                          : (milestone.logoFile === 'JNAFAU.png'
                             ? 'inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.2)'
                             : '0 4px 16px rgba(0, 0, 0, 0.2)'))
                         : 'none',
