@@ -8458,103 +8458,28 @@ export function AirIndiaWork() {
                     </div>
                     </>
                   ) : index === 7 ? (
-                    /* Card 7: Liftoff Program - Learning Path Timeline Visualization */
+                    /* Card 7: Liftoff Program - Team Workshop Image */
                     <>
                     <div style={{
                       width: '100%',
                       maxWidth: '900px',
                       margin: '0 auto',
-                      padding: '24px',
-                      borderRadius: '16px',
-                      background: 'var(--glass-06)',
-                      border: `1px solid rgba(${project.color}, 0.2)`,
                     }}>
-                      {/* Timeline */}
+                      {/* Liftoff Image */}
                       <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginBottom: '32px',
-                        position: 'relative',
-                      }}>
-                        {/* Connection Line */}
-                        <div style={{
-                          position: 'absolute',
-                          top: '50%',
-                          left: '5%',
-                          width: '90%',
-                          height: '2px',
-                          background: 'var(--glass-15)',
-                          transform: 'translateY(-50%)',
-                        }}>
-                          <div style={{
-                            width: `${(liftoffWeek / 6) * 100}%`,
-                            height: '100%',
-                            background: `rgb(${project.color})`,
-                            transition: 'width 0.5s ease',
-                          }} />
-                        </div>
-
-                        {[1, 2, 3, 4, 5, 6].map(week => (
-                          <div
-                            key={week}
-                            onClick={() => setLiftoffWeek(week)}
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'column',
-                              alignItems: 'center',
-                              gap: '8px',
-                              cursor: 'pointer',
-                              position: 'relative',
-                              zIndex: 1,
-                            }}
-                          >
-                            <div style={{
-                              width: '24px',
-                              height: '24px',
-                              borderRadius: '50%',
-                              background: week <= liftoffWeek ? `rgb(${project.color})` : 'var(--glass-20)',
-                              border: week === liftoffWeek ? `3px solid white` : '2px solid var(--glass-30)',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              transition: 'all 0.3s ease',
-                              boxShadow: week === liftoffWeek ? `0 0 20px rgba(${project.color}, 0.5)` : 'none',
-                            }}>
-                              {week < liftoffWeek && <CheckCircle size={12} color="white" />}
-                            </div>
-                            <span style={{
-                              fontSize: '10px',
-                              color: week === liftoffWeek ? `rgb(${project.color})` : 'var(--text-40)',
-                              fontWeight: week === liftoffWeek ? '600' : '400',
-                            }}>
-                              Week {week}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Current Module */}
-                      <div style={{
-                        padding: '20px',
-                        borderRadius: '12px',
-                        background: 'var(--glass-08)',
-                        border: `1px solid rgba(${project.color}, 0.3)`,
+                        borderRadius: '20px',
+                        overflow: 'hidden',
+                        border: '1px solid var(--glass-15)',
+                        boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
                         marginBottom: '24px',
                       }}>
-                        <div style={{ fontSize: '10px', color: 'var(--text-40)', marginBottom: '8px', letterSpacing: '0.1em' }}>CURRENT MODULE</div>
-                        <div style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-90)', marginBottom: '12px' }}>
-                          {['Onboarding', 'Design Principles', 'Component Systems', 'Design Systems', 'Advanced Patterns', 'Capstone'][liftoffWeek - 1]}
-                        </div>
-                        <div style={{ height: '8px', background: 'var(--glass-10)', borderRadius: '4px', overflow: 'hidden', marginBottom: '8px' }}>
-                          <div style={{
-                            width: '75%',
-                            height: '100%',
-                            background: `linear-gradient(90deg, rgb(${project.color}), rgba(${project.color}, 0.6))`,
-                            borderRadius: '4px',
-                          }} />
-                        </div>
-                        <div style={{ fontSize: '11px', color: 'var(--text-50)' }}>3 of 4 workshops completed</div>
+                        <Image
+                          src="/images/air-india/liftoff.png"
+                          alt="Liftoff Program - Design team workshop session"
+                          width={900}
+                          height={600}
+                          style={{ width: '100%', height: 'auto', display: 'block' }}
+                        />
                       </div>
 
                       {/* Stats */}
