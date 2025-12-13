@@ -6740,27 +6740,6 @@ export function AirIndiaWork() {
                         marginBottom: '24px',
                         position: 'relative',
                       }}>
-                        {/* Connection Lines SVG - hidden on mobile */}
-                        {!isMobile && (
-                          <svg style={{
-                            position: 'absolute',
-                            top: '50px',
-                            left: '12.5%',
-                            width: '75%',
-                            height: '4px',
-                            zIndex: 0,
-                          }}>
-                            <line x1="0" y1="2" x2="100%" y2="2"
-                              stroke={`rgba(${project.color}, 0.3)`}
-                              strokeWidth="2"
-                              strokeDasharray="8 4"
-                              style={{
-                                animation: mcpPhase !== 'idle' ? 'flowLine 1.5s linear infinite' : 'none',
-                              }}
-                            />
-                          </svg>
-                        )}
-
                         {[
                           {
                             icon: '◇',
