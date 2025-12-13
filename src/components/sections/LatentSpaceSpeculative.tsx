@@ -18,6 +18,10 @@ import { NarrativeProgressIndicator, NarrativeProgressBar } from '@/components/u
 import { FirstPersonMoments, NarrativeWhispers } from '@/components/sections/FirstPersonMoments';
 import { DreamRecorderPrototype } from '@/components/sections/DreamRecorderPrototype';
 import { useNarrativeProgress } from '@/hooks/useNarrativeProgress';
+import { UnifiedNarrativeProvider } from '@/hooks/useUnifiedNarrativeContext';
+import { OneirosTransitionSection } from '@/components/sections/OneirosTransitionSection';
+import { OneirosReflectionSection } from '@/components/sections/OneirosReflectionSection';
+import { OneirosPortal } from '@/components/sections/OneirosPortal';
 import {
   ChevronDown,
   ChevronRight,
@@ -139,8 +143,9 @@ export default function LatentSpaceSpeculative() {
   }, []);
 
   return (
-    <main style={baseStyles.main}>
-      {/* Narrative-Aware Environmental Layers */}
+    <UnifiedNarrativeProvider>
+      <main style={baseStyles.main}>
+        {/* Narrative-Aware Environmental Layers */}
       <ConsciousnessOrbs count={6} />
       <NarrativeWhispers />
       <FirstPersonMoments />
@@ -314,6 +319,18 @@ export default function LatentSpaceSpeculative() {
 
       <SectionDivider />
 
+      {/* === ACT III: RESOLUTION - Oneiros Palace Integration === */}
+      {/* From Concept to Experience - Portal to 3D */}
+      <OneirosTransitionSection />
+
+      {/* Oneiros Portal - Full-screen 3D overlay when active */}
+      <OneirosPortal />
+
+      {/* Reflection after exiting 3D experience */}
+      <OneirosReflectionSection />
+
+      <SectionDivider />
+
       {/* Six Pillars */}
       <SixPillarsSection />
 
@@ -327,9 +344,10 @@ export default function LatentSpaceSpeculative() {
       {/* More Projects */}
       <MoreProjectsSection />
 
-      {/* Footer */}
-      <FooterSection />
-    </main>
+        {/* Footer */}
+        <FooterSection />
+      </main>
+    </UnifiedNarrativeProvider>
   );
 }
 

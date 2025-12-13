@@ -17,8 +17,12 @@ const EXAMPLE_DREAMS = [
   "I'm running through a forest that keeps shifting. Trees become corridors, paths fold back on themselves. I'm chasing something, or being chased - I can't tell which.",
 ];
 
-export function DreamInput() {
-  const { state, analyzeDreams, enterPalace } = useDreamAnalysis();
+interface DreamInputProps {
+  embedded?: boolean; // When true, renders inline instead of fixed overlay
+}
+
+export function DreamInput({ embedded = false }: DreamInputProps) {
+  const { state, analyzeDreams, enterPalace, completeNarrative } = useDreamAnalysis();
   const [dreams, setDreams] = useState('');
 
   const charCount = dreams.trim().length;
@@ -43,9 +47,18 @@ export function DreamInput() {
     enterPalace();
   };
 
-  return (
-    <div
-      style={{
+  // Container styles based on embedded mode
+  const containerStyle: React.CSSProperties = embedded
+    ? {
+        // Embedded mode - inline within scroll
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '0',
+      }
+    : {
+        // Full-screen overlay mode
         position: 'fixed',
         inset: 0,
         display: 'flex',
@@ -56,17 +69,21 @@ export function DreamInput() {
         backgroundColor: '#0A0A0A',
         zIndex: 50,
         overflow: 'auto',
-      }}
-    >
-      {/* Background gradient */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'radial-gradient(ellipse at center, rgba(139, 92, 246, 0.1) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }}
-      />
+      };
+
+  return (
+    <div style={containerStyle}>
+      {/* Background gradient - only in non-embedded mode */}
+      {!embedded && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'radial-gradient(ellipse at center, rgba(139, 92, 246, 0.1) 0%, transparent 70%)',
+            pointerEvents: 'none',
+          }}
+        />
+      )}
 
       <div
         style={{

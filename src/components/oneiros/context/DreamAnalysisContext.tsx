@@ -16,6 +16,12 @@ import type {
 } from '@/types/oneiros';
 import { generateRoomsFromAnalysis, getDefaultEntranceRoom } from '../generators/DreamRoomGenerator';
 
+// Check if user has seen narrative before (localStorage)
+function getInitialEntryMode(): 'informed' | 'skip' | 'returning' {
+  if (typeof window === 'undefined') return 'informed';
+  return localStorage.getItem('oneiros-seen-narrative') ? 'returning' : 'informed';
+}
+
 // Initial state
 const initialState: DreamAnalysisState = {
   rawDreams: '',
@@ -25,6 +31,10 @@ const initialState: DreamAnalysisState = {
   isAnalyzing: false,
   hasEnteredPalace: false,
   error: null,
+  // Narrative state
+  hasCompletedNarrative: false,
+  narrativeProgress: 0,
+  entryMode: 'informed',
 };
 
 // Reducer for state management
@@ -65,6 +75,35 @@ function dreamAnalysisReducer(
 
     case 'RESET':
       return initialState;
+
+    case 'COMPLETE_NARRATIVE':
+      // Mark narrative as seen in localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('oneiros-seen-narrative', 'true');
+      }
+      return {
+        ...state,
+        hasCompletedNarrative: true,
+        entryMode: 'informed',
+      };
+
+    case 'SET_NARRATIVE_PROGRESS':
+      return { ...state, narrativeProgress: action.payload };
+
+    case 'SET_ENTRY_MODE':
+      return { ...state, entryMode: action.payload };
+
+    case 'SKIP_NARRATIVE':
+      return {
+        ...state,
+        hasCompletedNarrative: true,
+        hasEnteredPalace: true,
+        entryMode: 'skip',
+        // Provide default entrance room when skipping
+        generatedRooms: state.generatedRooms.length > 0
+          ? state.generatedRooms
+          : [getDefaultEntranceRoom()],
+      };
 
     default:
       return state;
@@ -139,12 +178,30 @@ export function DreamAnalysisProvider({ children }: { children: React.ReactNode 
     dispatch({ type: 'RESET' });
   }, []);
 
+  // Complete narrative (user scrolled through)
+  const completeNarrative = useCallback(() => {
+    dispatch({ type: 'COMPLETE_NARRATIVE' });
+  }, []);
+
+  // Update narrative progress
+  const setNarrativeProgress = useCallback((progress: number) => {
+    dispatch({ type: 'SET_NARRATIVE_PROGRESS', payload: progress });
+  }, []);
+
+  // Skip narrative (user chose to skip)
+  const skipNarrative = useCallback(() => {
+    dispatch({ type: 'SKIP_NARRATIVE' });
+  }, []);
+
   const value: DreamAnalysisContextValue = {
     state,
     analyzeDreams,
     enterPalace,
     setCurrentRoom,
     reset,
+    completeNarrative,
+    setNarrativeProgress,
+    skipNarrative,
   };
 
   return (

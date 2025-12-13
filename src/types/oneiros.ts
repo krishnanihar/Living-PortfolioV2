@@ -58,6 +58,11 @@ export interface GeneratedRoom {
 }
 
 /**
+ * Entry mode - how user entered the palace
+ */
+export type EntryMode = 'informed' | 'skip' | 'returning';
+
+/**
  * State for dream analysis context
  */
 export interface DreamAnalysisState {
@@ -75,6 +80,11 @@ export interface DreamAnalysisState {
   isAnalyzing: boolean;
   hasEnteredPalace: boolean;
   error: string | null;
+
+  // Narrative layer state
+  hasCompletedNarrative: boolean;
+  narrativeProgress: number; // 0-1
+  entryMode: EntryMode;
 }
 
 /**
@@ -87,7 +97,11 @@ export type DreamAnalysisAction =
   | { type: 'ANALYSIS_ERROR'; payload: string }
   | { type: 'ENTER_PALACE' }
   | { type: 'SET_CURRENT_ROOM'; payload: number }
-  | { type: 'RESET' };
+  | { type: 'RESET' }
+  | { type: 'COMPLETE_NARRATIVE' }
+  | { type: 'SET_NARRATIVE_PROGRESS'; payload: number }
+  | { type: 'SET_ENTRY_MODE'; payload: EntryMode }
+  | { type: 'SKIP_NARRATIVE' };
 
 /**
  * Context value exposed to components
@@ -98,4 +112,7 @@ export interface DreamAnalysisContextValue {
   enterPalace: () => void;
   setCurrentRoom: (index: number) => void;
   reset: () => void;
+  completeNarrative: () => void;
+  setNarrativeProgress: (progress: number) => void;
+  skipNarrative: () => void;
 }
