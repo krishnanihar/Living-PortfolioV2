@@ -180,10 +180,10 @@ const projects: Project[] = [
     title: 'Pixel Radar',
     subtitle: 'Figma plugin for automated design consistency',
     description: 'Built it myself when no tools existed.',
-    longDescription: 'When there\'s no design system, every screen is an island. Designers were making isolated decisions. Engineers were interpreting specs differently. Reviews caught inconsistencies too late—if at all.\n\nSo I built Pixel Radar—a Figma plugin that automates consistency checks. What started as a personal workflow fix became infrastructure serving 450+ daily users, cutting design review time by 30%. It solved a problem the organization didn\'t have budget or bandwidth to address through official channels.',
+    longDescription: 'When there\'s no design system, every screen is an island. Designers were making isolated decisions. Engineers were interpreting specs differently. Reviews caught inconsistencies too late—if at all.\n\nSo I built Pixel Radar—a Figma plugin that automates consistency checks. What started as a personal workflow fix became infrastructure serving 10M+ users annually, cutting design review time by 30%. It solved a problem the organization didn\'t have budget or bandwidth to address through official channels.',
     imagePlaceholder: 'Pixel Radar Plugin Interface',
     stats: [
-      { value: '450+', label: 'Daily Users' },
+      { value: '10M+', label: 'Users Annually' },
       { value: '30%', label: 'Faster Reviews' },
       { value: 'Active', label: 'Production Use' }
     ],
@@ -450,7 +450,7 @@ const actConfig: Record<1 | 2 | 3, ActConfig> = {
 
 const narrativeTransitions = {
   intro: "What follows is not a list of projects. It's the story of how one designer helped transform India's flag carrier—from inherited chaos to award-winning excellence.",
-  act1to2: "With design infrastructure in place and tools serving 450+ daily users, the foundation was set. It was time to build the products that would win awards.",
+  act1to2: "With design infrastructure in place and tools serving 10M+ users annually, the foundation was set. It was time to build the products that would win awards.",
   act2to3: "Four awards. Three platforms redesigned. AI-native features in production. But transformation isn't just about shipping products. It's about changing how people work.",
 };
 
@@ -1001,7 +1001,7 @@ export function AirIndiaWork() {
           >
             {[
               { value: '4', label: 'Airlines Merged' },
-              { value: '450+', label: 'Daily Users' },
+              { value: '10M+', label: 'Users Annually' },
             ].map((stat, i) => (
               <div key={i} style={{ textAlign: 'center' }}>
                 <div style={{
@@ -1313,8 +1313,8 @@ export function AirIndiaWork() {
                       transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                       boxShadow: isHovered ? '0 15px 30px rgba(218,14,41,0.2)' : 'none',
                     }}>
-                      <div style={{ fontSize: '0.688rem', color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Daily Active Users</div>
-                      <div style={{ fontSize: '2rem', fontWeight: '700', color: 'rgb(218,14,41)', lineHeight: 1 }}>450+</div>
+                      <div style={{ fontSize: '0.688rem', color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Users Annually</div>
+                      <div style={{ fontSize: '2rem', fontWeight: '700', color: 'rgb(218,14,41)', lineHeight: 1 }}>10M+</div>
                     </div>
                     {/* Progress bar */}
                     <div style={{
