@@ -8780,17 +8780,21 @@ export function AirIndiaWork() {
               paddingTop: '1rem',
               borderTop: '1px solid var(--glass-08)',
             }}>
-              {/* Placeholder Avatar */}
+              {/* Ranju Avatar */}
               <div style={{
                 width: '48px',
                 height: '48px',
                 borderRadius: '50%',
-                background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.2), rgba(99, 102, 241, 0.2))',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                overflow: 'hidden',
+                border: '2px solid var(--glass-15)',
               }}>
-                <Users size={20} style={{ color: 'var(--text-tertiary)' }} />
+                <Image
+                  src="/images/air-india/ranju.jpeg"
+                  alt="Ranju"
+                  width={48}
+                  height={48}
+                  style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                />
               </div>
 
               <div style={{ flex: 1 }}>
@@ -8886,17 +8890,21 @@ export function AirIndiaWork() {
               paddingTop: '1rem',
               borderTop: '1px solid var(--glass-08)',
             }}>
-              {/* Placeholder Avatar */}
+              {/* Lijo Avatar */}
               <div style={{
                 width: '48px',
                 height: '48px',
                 borderRadius: '50%',
-                background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2))',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                overflow: 'hidden',
+                border: '2px solid var(--glass-15)',
               }}>
-                <Users size={20} style={{ color: 'var(--text-tertiary)' }} />
+                <Image
+                  src="/images/air-india/lijo.jpeg"
+                  alt="Lijo Joseph"
+                  width={48}
+                  height={48}
+                  style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                />
               </div>
 
               <div style={{ flex: 1 }}>
