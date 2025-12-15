@@ -8800,13 +8800,13 @@ export function AirIndiaWork() {
                   color: 'var(--text-primary)',
                   marginBottom: '0.125rem',
                 }}>
-                  Name Placeholder
+                  Ranju
                 </div>
                 <div style={{
                   fontSize: '0.813rem',
                   color: 'var(--text-muted)',
                 }}>
-                  Role, Air India
+                  Senior Manager - Design, Air India
                 </div>
               </div>
 
@@ -8906,13 +8906,13 @@ export function AirIndiaWork() {
                   color: 'var(--text-primary)',
                   marginBottom: '0.125rem',
                 }}>
-                  Name Placeholder
+                  Lijo Joseph
                 </div>
                 <div style={{
                   fontSize: '0.813rem',
                   color: 'var(--text-muted)',
                 }}>
-                  Role, Air India
+                  Associate Vice President - Design, Air India
                 </div>
               </div>
 
