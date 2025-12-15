@@ -13,9 +13,6 @@ if (typeof window !== 'undefined') {
 }
 import { DreamFragmentGenerator } from '@/components/ui/DreamFragmentGenerator';
 import { PatternAnalyzer } from '@/components/ui/PatternAnalyzer';
-import { ConsciousnessOrbs } from '@/components/effects/ConsciousnessParticles';
-import { NarrativeProgressIndicator, NarrativeProgressBar } from '@/components/ui/NarrativeProgressIndicator';
-import { FirstPersonMoments, NarrativeWhispers } from '@/components/sections/FirstPersonMoments';
 import { DreamRecorderPrototype } from '@/components/sections/DreamRecorderPrototype';
 import { useNarrativeProgress } from '@/hooks/useNarrativeProgress';
 import { UnifiedNarrativeProvider } from '@/hooks/useUnifiedNarrativeContext';
@@ -88,7 +85,7 @@ const baseStyles = {
   },
   section: {
     position: 'relative' as const,
-    padding: '5rem 1rem',
+    padding: 'var(--space-section-md) 1rem',
     maxWidth: '1400px',
     margin: '0 auto',
   },
@@ -122,7 +119,7 @@ function SectionDivider() {
         width: '100%',
         height: '1px',
         background: `linear-gradient(90deg, transparent, ${narrativeState.color.primary.replace('0.8', '0.3')}, ${narrativeState.color.secondary.replace('0.8', '0.3')}, transparent)`,
-        margin: '6rem 0',
+        margin: 'var(--space-section-sm) 0',
         transition: 'background 1s ease',
       }}
       initial={{ scaleX: 0 }}
@@ -130,6 +127,45 @@ function SectionDivider() {
       viewport={{ once: true }}
       transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
     />
+  );
+}
+
+// Act Divider - Larger breathing room between narrative acts
+function ActDivider({ label }: { label: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 1.2 }}
+      style={{
+        margin: 'var(--space-section-lg) 0',
+        textAlign: 'center' as const,
+        position: 'relative',
+      }}
+    >
+      <div style={{
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '100%',
+        maxWidth: '400px',
+        height: '1px',
+        background: 'linear-gradient(90deg, transparent, var(--text-08), transparent)',
+      }} />
+      <span
+        className="text-micro"
+        style={{
+          background: 'var(--background)',
+          padding: '0 1.5rem',
+          color: 'var(--text-30)',
+          position: 'relative',
+        }}
+      >
+        {label}
+      </span>
+    </motion.div>
   );
 }
 
@@ -145,32 +181,6 @@ export default function LatentSpaceSpeculative() {
   return (
     <UnifiedNarrativeProvider>
       <main style={baseStyles.main}>
-        {/* Narrative-Aware Environmental Layers */}
-      <ConsciousnessOrbs count={6} />
-      <NarrativeWhispers />
-      <FirstPersonMoments />
-
-      {/* Narrative Progress Indicators */}
-      <NarrativeProgressIndicator position="right" />
-      <div className="md:hidden">
-        <NarrativeProgressBar />
-      </div>
-
-      {/* Dynamic Background gradient overlay - changes with narrative act */}
-      <div style={{
-        position: 'fixed',
-        inset: 0,
-        opacity: 0.3,
-        pointerEvents: 'none',
-        transition: 'background 2s ease',
-      }}>
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          background: `linear-gradient(135deg, ${narrativeState.color.atmosphere} 0%, transparent 50%, ${narrativeState.color.secondary.replace('0.8', '0.05')} 100%)`,
-        }} />
-      </div>
-
       {/* Hero Section */}
       <HeroSection isLoaded={isLoaded} />
 
@@ -188,7 +198,7 @@ export default function LatentSpaceSpeculative() {
 
       {/* Dream Fragment Generator - AI-Powered */}
       <section style={baseStyles.section}>
-        <div style={{ textAlign: 'center' as const, marginBottom: '4rem' }}>
+        <div style={{ textAlign: 'center' as const, marginBottom: 'var(--gap-card-lg)' }}>
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -206,14 +216,7 @@ export default function LatentSpaceSpeculative() {
                 Generative AI Prototype
               </span>
             </motion.div>
-            <motion.h2 variants={fadeInUp} style={{
-              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-              fontWeight: '300',
-              letterSpacing: '-0.02em',
-              lineHeight: '1.1',
-              color: 'var(--text-primary)',
-              marginBottom: '1rem',
-            }}>
+            <motion.h2 variants={fadeInUp} className="text-heading" style={{ fontWeight: '300', color: 'var(--text-primary)', marginBottom: '1rem' }}>
               Generate Dream Fragments with AI
             </motion.h2>
             <motion.p variants={fadeInUp} style={{
@@ -247,7 +250,7 @@ export default function LatentSpaceSpeculative() {
 
       {/* Pattern Analyzer - AI-Powered */}
       <section style={baseStyles.section}>
-        <div style={{ textAlign: 'center' as const, marginBottom: '4rem' }}>
+        <div style={{ textAlign: 'center' as const, marginBottom: 'var(--gap-card-lg)' }}>
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -265,14 +268,7 @@ export default function LatentSpaceSpeculative() {
                 Pattern Recognition AI
               </span>
             </motion.div>
-            <motion.h2 variants={fadeInUp} style={{
-              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-              fontWeight: '300',
-              letterSpacing: '-0.02em',
-              lineHeight: '1.1',
-              color: 'var(--text-primary)',
-              marginBottom: '1rem',
-            }}>
+            <motion.h2 variants={fadeInUp} className="text-heading" style={{ fontWeight: '300', color: 'var(--text-primary)', marginBottom: '1rem' }}>
               Discover Hidden Patterns in Your Dreams
             </motion.h2>
             <motion.p variants={fadeInUp} style={{
@@ -297,7 +293,7 @@ export default function LatentSpaceSpeculative() {
         </motion.div>
       </section>
 
-      <SectionDivider />
+      <ActDivider label="Act II: Complication" />
 
       {/* System Architecture Visualization */}
       <SystemArchitectureSection />
@@ -317,7 +313,7 @@ export default function LatentSpaceSpeculative() {
       {/* Interface Speculation */}
       <InterfaceSpeculationSection />
 
-      <SectionDivider />
+      <ActDivider label="Act III: Resolution" />
 
       {/* === ACT III: RESOLUTION - Oneiros Palace Integration === */}
       {/* From Concept to Experience - Portal to 3D */}
@@ -534,7 +530,7 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 20 }}
             transition={{ delay: 0.8, duration: 0.8 }}
-            style={{ marginBottom: '4rem' }}
+            style={{ marginBottom: 'var(--gap-card-lg)' }}
           >
             <p style={{
               fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
@@ -630,7 +626,7 @@ const [expandedCard, setExpandedCard] = useState<number | null>(null);
 
   return (
     <section style={baseStyles.section}>
-      <div style={{ textAlign: 'center' as const, marginBottom: '4rem' }}>
+      <div style={{ textAlign: 'center' as const, marginBottom: 'var(--gap-card-lg)' }}>
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -638,23 +634,12 @@ const [expandedCard, setExpandedCard] = useState<number | null>(null);
           variants={stagger}
         >
           <motion.div variants={fadeInUp} style={{ marginBottom: '1rem' }}>
-            <span style={{
-              fontSize: '0.75rem',
-              fontWeight: '500',
-              letterSpacing: '0.3em',
-              textTransform: 'uppercase' as const,
-              color: 'var(--text-50)',
-            }}>
+            <span className="text-micro" style={{ color: 'var(--text-50)' }}>
               Critical Questions
             </span>
           </motion.div>
-          <motion.h2 variants={fadeInUp} style={{
-            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-            fontWeight: '300',
-            letterSpacing: '-0.02em',
-            lineHeight: '1.1',
-            color: 'var(--text-primary)',
-          }}>
+          <motion.h2 variants={fadeInUp} className="text-heading"
+          style={{ fontWeight: '300', color: 'var(--text-primary)' }}>
             What should we ask before consciousness becomes data?
           </motion.h2>
         </motion.div>
@@ -663,7 +648,7 @@ const [expandedCard, setExpandedCard] = useState<number | null>(null);
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-        gap: '2rem',
+        gap: 'var(--gap-card-md)',
       }}>
         {researchAreas.map((area, index) => {
           const isHovered = hoveredCard === index;
@@ -810,7 +795,7 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
       ...baseStyles.section,
       background: 'linear-gradient(180deg, transparent 0%, rgba(147, 51, 234, 0.02) 50%, transparent 100%)',
     }}>
-      <div style={{ textAlign: 'center' as const, marginBottom: '5rem' }}>
+      <div style={{ textAlign: 'center' as const, marginBottom: 'var(--gap-card-lg)' }}>
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -818,21 +803,12 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
           variants={stagger}
         >
           <motion.div variants={fadeInUp} style={{ marginBottom: '1rem' }}>
-            <span style={{
-              fontSize: '0.75rem',
-              fontWeight: '500',
-              letterSpacing: '0.3em',
-              textTransform: 'uppercase' as const,
-              color: 'var(--text-50)',
-            }}>
+            <span className="text-micro" style={{ color: 'var(--text-50)' }}>
               Narrative Arc
             </span>
           </motion.div>
           <motion.h2 variants={fadeInUp} style={{
-            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
             fontWeight: '300',
-            letterSpacing: '-0.02em',
-            lineHeight: '1.1',
             color: 'var(--text-primary)',
             marginBottom: '1.5rem',
           }}>
@@ -850,7 +826,7 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
         </motion.div>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column' as const, gap: '2rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column' as const, gap: '0.75rem' }}>
         {chapters.map((chapter, index) => (
           <motion.div
             key={index}
@@ -863,7 +839,7 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
               onClick={() => setExpandedChapter(expandedChapter === index ? null : index)}
               style={{
                 ...glassCardStyles,
-                padding: '2.5rem',
+                padding: '1.25rem 1.5rem',
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
                 ...(expandedChapter === index ? {
@@ -877,11 +853,11 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
                   <div style={{
                     display: 'flex',
                     alignItems: 'baseline',
-                    gap: '2rem',
-                    marginBottom: '1rem',
+                    gap: '1rem',
+                    marginBottom: '0.5rem',
                   }}>
                     <span style={{
-                      fontSize: '3rem',
+                      fontSize: '1.5rem',
                       fontWeight: '200',
                       color: 'var(--text-40)',
                     }}>
@@ -889,17 +865,17 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
                     </span>
                     <div>
                       <h3 style={{
-                        fontSize: '1.5rem',
-                        fontWeight: '300',
+                        fontSize: '1.125rem',
+                        fontWeight: '400',
                         color: 'var(--text-90)',
-                        marginBottom: '0.5rem',
+                        marginBottom: '0.25rem',
                       }}>
                         {chapter.title}
                       </h3>
                       <p style={{
-                        fontSize: '1.125rem',
+                        fontSize: '0.875rem',
                         fontWeight: '300',
-                        color: 'var(--text-70)',
+                        color: 'var(--text-60)',
                       }}>
                         {chapter.question}
                       </p>
@@ -907,9 +883,9 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
                   </div>
                 </div>
                 <ChevronRight
-                  size={24}
+                  size={18}
                   style={{
-                    color: 'var(--text-50)',
+                    color: 'var(--text-40)',
                     transition: 'transform 0.3s ease',
                     transform: expandedChapter === index ? 'rotate(90deg)' : 'rotate(0deg)',
                   }}
@@ -992,7 +968,7 @@ const [activeTab, setActiveTab] = useState('stages');
 
   return (
     <section style={baseStyles.section}>
-      <div style={{ textAlign: 'center' as const, marginBottom: '5rem' }}>
+      <div style={{ textAlign: 'center' as const, marginBottom: 'var(--gap-card-lg)' }}>
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -1000,21 +976,12 @@ const [activeTab, setActiveTab] = useState('stages');
           variants={stagger}
         >
           <motion.div variants={fadeInUp} style={{ marginBottom: '1rem' }}>
-            <span style={{
-              fontSize: '0.75rem',
-              fontWeight: '500',
-              letterSpacing: '0.3em',
-              textTransform: 'uppercase' as const,
-              color: 'var(--text-50)',
-            }}>
+            <span className="text-micro" style={{ color: 'var(--text-50)' }}>
               Speculative Science
             </span>
           </motion.div>
           <motion.h2 variants={fadeInUp} style={{
-            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
             fontWeight: '300',
-            letterSpacing: '-0.02em',
-            lineHeight: '1.1',
             color: 'var(--text-primary)',
             marginBottom: '1.5rem',
           }}>
@@ -1175,7 +1142,7 @@ const [hoveredStage, setHoveredStage] = useState<number | null>(null);
       style={{
         display: 'grid',
         gridTemplateColumns: '1fr',
-        gap: '2rem',
+        gap: 'var(--gap-card-md)',
       }}
     >
       <div>
@@ -1311,7 +1278,7 @@ const waves = [
       style={{
         display: 'grid',
         gridTemplateColumns: '1fr',
-        gap: '2rem',
+        gap: 'var(--gap-card-md)',
       }}
     >
       <div>
@@ -1462,7 +1429,7 @@ const detectionMethods = [
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-        gap: '1.5rem',
+        gap: 'var(--gap-card-sm)',
       }}>
         {detectionMethods.map((method, index) => {
           const Icon = method.icon;
@@ -1600,7 +1567,7 @@ const processingStages = [
                 padding: '1.5rem',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '2rem',
+                gap: 'var(--gap-card-md)',
                 position: 'relative' as const,
               }}
             >
@@ -1736,7 +1703,7 @@ const pillars = [
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div style={{ textAlign: 'center' as const, marginBottom: '5rem' }}>
+      <div style={{ textAlign: 'center' as const, marginBottom: 'var(--gap-card-lg)' }}>
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -1744,21 +1711,12 @@ const pillars = [
           variants={stagger}
         >
           <motion.div variants={fadeInUp} style={{ marginBottom: '1rem' }}>
-            <span style={{
-              fontSize: '0.75rem',
-              fontWeight: '500',
-              letterSpacing: '0.3em',
-              textTransform: 'uppercase' as const,
-              color: 'var(--text-50)',
-            }}>
+            <span className="text-micro" style={{ color: 'var(--text-50)' }}>
               Critical Pillars
             </span>
           </motion.div>
           <motion.h2 variants={fadeInUp} style={{
-            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
             fontWeight: '300',
-            letterSpacing: '-0.02em',
-            lineHeight: '1.1',
             color: 'var(--text-primary)',
             marginBottom: '1.5rem',
           }}>
@@ -1780,8 +1738,8 @@ const pillars = [
       <div style={{
         display: 'grid',
         gridTemplateColumns: '1fr',
-        gap: '4rem',
-        marginBottom: '4rem',
+        gap: 'var(--gap-card-lg)',
+        marginBottom: 'var(--gap-card-lg)',
       }}>
         {/* Active Concept */}
         <motion.div
@@ -1871,6 +1829,7 @@ function SystemArchitectureSection() {
 const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [dataFlowActive, setDataFlowActive] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [expandedLayer, setExpandedLayer] = useState<number | null>(null);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -2039,7 +1998,7 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
       ...baseStyles.section,
       background: 'linear-gradient(180deg, transparent 0%, rgba(147, 51, 234, 0.01) 50%, transparent 100%)',
     }}>
-      <div style={{ textAlign: 'center' as const, marginBottom: '5rem' }}>
+      <div style={{ textAlign: 'center' as const, marginBottom: 'var(--gap-card-lg)' }}>
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -2047,21 +2006,12 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
           variants={stagger}
         >
           <motion.div variants={fadeInUp} style={{ marginBottom: '1rem' }}>
-            <span style={{
-              fontSize: '0.75rem',
-              fontWeight: '500',
-              letterSpacing: '0.3em',
-              textTransform: 'uppercase' as const,
-              color: 'var(--text-50)',
-            }}>
+            <span className="text-micro" style={{ color: 'var(--text-50)' }}>
               System Architecture
             </span>
           </motion.div>
           <motion.h2 variants={fadeInUp} style={{
-            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
             fontWeight: '300',
-            letterSpacing: '-0.02em',
-            lineHeight: '1.1',
             color: 'var(--text-primary)',
             marginBottom: '1.5rem',
           }}>
@@ -2083,41 +2033,79 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
       <div style={{
         display: 'grid',
         gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))',
-        gap: '2rem',
+        gap: 'var(--gap-card-md)',
         marginBottom: '3rem',
         position: 'relative',
       }}>
         {architectureLayers.map((layer, layerIndex) => (
           <div key={layer.name} style={{ position: 'relative' }}>
-            {/* Layer Header */}
-            <div style={{
-              textAlign: 'center' as const,
-              marginBottom: '1.5rem',
-            }}>
-              <h3 style={{
-                fontSize: '1rem',
-                fontWeight: '300',
-                color: layer.color,
-                marginBottom: '0.5rem',
-                letterSpacing: '0.05em',
-              }}>
-                {layer.name}
-              </h3>
+            {/* Layer Header - Clickable for progressive disclosure */}
+            <motion.button
+              onClick={() => setExpandedLayer(expandedLayer === layerIndex ? null : layerIndex)}
+              style={{
+                width: '100%',
+                textAlign: 'center' as const,
+                marginBottom: expandedLayer === layerIndex ? '1.5rem' : '0.5rem',
+                cursor: 'pointer',
+                background: 'transparent',
+                border: 'none',
+                padding: '0.75rem',
+                borderRadius: '12px',
+                transition: 'all 0.3s ease',
+              }}
+              whileHover={{ background: 'var(--glass-04)' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                <h3 style={{
+                  fontSize: '1rem',
+                  fontWeight: '300',
+                  color: layer.color,
+                  marginBottom: '0',
+                  letterSpacing: '0.05em',
+                }}>
+                  {layer.name}
+                </h3>
+                <ChevronDown
+                  size={16}
+                  style={{
+                    color: layer.color,
+                    transform: expandedLayer === layerIndex ? 'rotate(180deg)' : 'rotate(0deg)',
+                    transition: 'transform 0.3s ease',
+                  }}
+                />
+              </div>
               <div style={{
                 height: '2px',
                 background: layer.color,
-                margin: '0 auto',
-                width: '60%',
+                margin: '0.5rem auto 0',
+                width: expandedLayer === layerIndex ? '80%' : '60%',
                 borderRadius: '1px',
+                transition: 'width 0.3s ease',
               }} />
-            </div>
+              <p style={{
+                fontSize: '0.75rem',
+                color: 'var(--text-50)',
+                marginTop: '0.5rem',
+              }}>
+                {layer.components.length} components • Click to {expandedLayer === layerIndex ? 'collapse' : 'expand'}
+              </p>
+            </motion.button>
 
-            {/* Layer Components */}
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column' as const,
-              gap: '1rem',
-            }}>
+            {/* Layer Components - Progressive disclosure */}
+            <AnimatePresence>
+              {expandedLayer === layerIndex && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column' as const,
+                    gap: '1rem',
+                    overflow: 'hidden',
+                  }}
+                >
               {layer.components.map((component, componentIndex) => (
                 <motion.div
                   key={component.id}
@@ -2268,7 +2256,9 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
                   </AnimatePresence>
                 </motion.div>
               ))}
-            </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         ))}
       </div>
@@ -2291,7 +2281,7 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
             <div style={{
               display: 'grid',
               gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)',
-              gap: '2rem',
+              gap: 'var(--gap-card-md)',
               textAlign: 'center' as const,
             }}>
               <div>
@@ -2507,7 +2497,7 @@ const [activePrototype, setActivePrototype] = useState('recorder');
 
   return (
     <section style={baseStyles.section}>
-      <div style={{ textAlign: 'center' as const, marginBottom: '5rem' }}>
+      <div style={{ textAlign: 'center' as const, marginBottom: 'var(--gap-card-lg)' }}>
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -2515,21 +2505,12 @@ const [activePrototype, setActivePrototype] = useState('recorder');
           variants={stagger}
         >
           <motion.div variants={fadeInUp} style={{ marginBottom: '1rem' }}>
-            <span style={{
-              fontSize: '0.75rem',
-              fontWeight: '500',
-              letterSpacing: '0.3em',
-              textTransform: 'uppercase' as const,
-              color: 'var(--text-50)',
-            }}>
+            <span className="text-micro" style={{ color: 'var(--text-50)' }}>
               Interactive Prototypes
             </span>
           </motion.div>
           <motion.h2 variants={fadeInUp} style={{
-            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
             fontWeight: '300',
-            letterSpacing: '-0.02em',
-            lineHeight: '1.1',
             color: 'var(--text-primary)',
             marginBottom: '1.5rem',
           }}>
@@ -2895,7 +2876,7 @@ const [activePrototype, setActivePrototype] = useState('recorder');
               <div style={{
                 display: 'flex',
                 justifyContent: 'center',
-                gap: '1.5rem',
+                gap: 'var(--gap-card-sm)',
                 flexWrap: 'wrap' as const,
                 fontSize: '0.75rem',
               }}>
@@ -2949,7 +2930,7 @@ const [activePrototype, setActivePrototype] = useState('recorder');
               <div style={{
                 display: 'flex',
                 flexDirection: 'column' as const,
-                gap: '1.5rem',
+                gap: 'var(--gap-card-sm)',
               }}>
                 {[
                   { theme: 'Flying/Floating', frequency: 87, count: 26, color: 'rgba(147, 51, 234, 0.6)' },
@@ -3073,7 +3054,7 @@ const [activeQuestion, setActiveQuestion] = useState(0);
       paddingTop: '8rem',
       paddingBottom: '8rem',
     }}>
-      <div style={{ textAlign: 'center' as const, marginBottom: '5rem' }}>
+      <div style={{ textAlign: 'center' as const, marginBottom: 'var(--gap-card-lg)' }}>
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -3081,13 +3062,7 @@ const [activeQuestion, setActiveQuestion] = useState(0);
           variants={stagger}
         >
           <motion.div variants={fadeInUp} style={{ marginBottom: '1rem' }}>
-            <span style={{
-              fontSize: '0.75rem',
-              fontWeight: '500',
-              letterSpacing: '0.3em',
-              textTransform: 'uppercase' as const,
-              color: 'var(--text-50)',
-            }}>
+            <span className="text-micro" style={{ color: 'var(--text-50)' }}>
               Speculative Futures
             </span>
           </motion.div>
@@ -3115,7 +3090,7 @@ const [activeQuestion, setActiveQuestion] = useState(0);
 
       {/* Video Placeholder */}
       <div style={{
-        marginBottom: '6rem',
+        marginBottom: 'var(--gap-card-lg)',
         display: 'flex',
         justifyContent: 'center',
       }}>
@@ -3186,7 +3161,7 @@ const [activeQuestion, setActiveQuestion] = useState(0);
       <div style={{
         display: 'grid',
         gridTemplateColumns: '1fr',
-        gap: '3rem',
+        gap: 'var(--gap-card-md)',
         maxWidth: '1000px',
         margin: '0 auto',
       }}>
@@ -3375,7 +3350,7 @@ const [currentScreen, setCurrentScreen] = useState(0);
       ...baseStyles.section,
       background: 'linear-gradient(180deg, transparent 0%, rgba(14, 165, 233, 0.02) 50%, transparent 100%)',
     }}>
-      <div style={{ textAlign: 'center' as const, marginBottom: '5rem' }}>
+      <div style={{ textAlign: 'center' as const, marginBottom: 'var(--gap-card-lg)' }}>
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -3383,21 +3358,12 @@ const [currentScreen, setCurrentScreen] = useState(0);
           variants={stagger}
         >
           <motion.div variants={fadeInUp} style={{ marginBottom: '1rem' }}>
-            <span style={{
-              fontSize: '0.75rem',
-              fontWeight: '500',
-              letterSpacing: '0.3em',
-              textTransform: 'uppercase' as const,
-              color: 'var(--text-50)',
-            }}>
+            <span className="text-micro" style={{ color: 'var(--text-50)' }}>
               Interface Speculation
             </span>
           </motion.div>
           <motion.h2 variants={fadeInUp} style={{
-            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
             fontWeight: '300',
-            letterSpacing: '-0.02em',
-            lineHeight: '1.1',
             color: 'var(--text-primary)',
             marginBottom: '1.5rem',
           }}>
@@ -3418,7 +3384,7 @@ const [currentScreen, setCurrentScreen] = useState(0);
       <div style={{
         display: 'grid',
         gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(400px, 1fr))',
-        gap: '4rem',
+        gap: 'var(--gap-card-lg)',
         alignItems: 'center',
       }}>
         {/* Phone Mockup */}
@@ -3612,7 +3578,7 @@ const [currentScreen, setCurrentScreen] = useState(0);
           <div style={{
             display: 'flex',
             flexDirection: 'column' as const,
-            gap: '1.5rem',
+            gap: 'var(--gap-card-sm)',
           }}>
             {designPrinciples.map((principle, index) => {
               const Icon = principle.icon;
@@ -3781,7 +3747,7 @@ const [activeQuestioner, setActiveQuestioner] = useState(0);
       paddingTop: '8rem',
       paddingBottom: '8rem',
     }}>
-      <div style={{ textAlign: 'center' as const, marginBottom: '6rem' }}>
+      <div style={{ textAlign: 'center' as const, marginBottom: 'var(--gap-card-lg)' }}>
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -3789,13 +3755,7 @@ const [activeQuestioner, setActiveQuestioner] = useState(0);
           variants={stagger}
         >
           <motion.div variants={fadeInUp} style={{ marginBottom: '1rem' }}>
-            <span style={{
-              fontSize: '0.75rem',
-              fontWeight: '500',
-              letterSpacing: '0.3em',
-              textTransform: 'uppercase' as const,
-              color: 'var(--text-50)',
-            }}>
+            <span className="text-micro" style={{ color: 'var(--text-50)' }}>
               Critical Voices
             </span>
           </motion.div>
@@ -3825,8 +3785,8 @@ const [activeQuestioner, setActiveQuestioner] = useState(0);
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-        gap: '2rem',
-        marginBottom: '4rem',
+        gap: 'var(--gap-card-md)',
+        marginBottom: 'var(--gap-card-lg)',
       }}>
         {questioners.map((questioner, index) => (
           <motion.div
@@ -4064,7 +4024,7 @@ const [hoveredProject, setHoveredProject] = useState<number | null>(null);
       <div style={{
         display: 'grid',
         gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(320px, 1fr))',
-        gap: '1.5rem',
+        gap: 'var(--gap-card-sm)',
       }}>
         {otherProjects.map((project) => {
           const Icon = project.icon;
