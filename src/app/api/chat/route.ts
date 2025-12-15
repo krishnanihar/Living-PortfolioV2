@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { handleGeminiError } from '@/lib/gemini-errors';
 
-export const runtime = 'edge'; // Edge runtime enables true streaming (nodejs buffers)
+export const runtime = 'nodejs';
+export const maxDuration = 30; // Vercel function timeout
 
 const PORTFOLIO_CONTEXT = `
 You are an AI assistant for Krishna Nihar's portfolio website. You help visitors understand his work, design philosophy, and experience.
@@ -115,10 +116,9 @@ export async function POST(request: NextRequest) {
 
     return new Response(stream, {
       headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache, no-transform',
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-cache',
         'Connection': 'keep-alive',
-        'X-Accel-Buffering': 'no', // Disable nginx buffering
       },
     });
 
