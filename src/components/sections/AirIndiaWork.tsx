@@ -5860,21 +5860,15 @@ export function AirIndiaWork() {
                                 marginBottom: '32px',
                               }}>
                                 <div style={{
-                                  width: '48px',
-                                  height: '48px',
-                                  borderRadius: '14px',
-                                  background: `rgb(${brandRgb})`,
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
+                                  width: '64px',
+                                  height: '64px',
                                   margin: '0 auto 12px',
-                                  boxShadow: `0 8px 24px rgba(${brandRgb}, 0.3)`,
                                 }}>
                                   <Image
                                     src="/logos/air-india.svg"
                                     alt="Air India"
-                                    width={24}
-                                    height={24}
+                                    width={64}
+                                    height={64}
                                     style={{ objectFit: 'contain' }}
                                   />
                                 </div>
