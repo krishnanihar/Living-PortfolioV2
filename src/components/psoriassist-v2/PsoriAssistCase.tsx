@@ -8,6 +8,8 @@ import { ExpandableCard } from './ui/ExpandableCard';
 import { AccordionGroup, CollapsibleSection } from './ui/AccordionGroup';
 import { InteractiveSwatchPicker, InteractiveTypography } from './ui/InteractiveSwatchPicker';
 import { TransformingColorPalette } from './ui/TransformingColorPalette';
+import { TokenHierarchyDiagram } from './ui/TokenHierarchyDiagram';
+import { ThemeSwitchVisualization } from './ui/ThemeSwitchVisualization';
 import {
   heroStats,
   genesisTimeline,
@@ -1768,6 +1770,22 @@ export function PsoriAssistCase() {
                 weight: parseInt(String(t.weight)),
               }))}
             />
+          </div>
+
+          {/* Token Architecture - Three-tier system */}
+          <div style={{ marginTop: '2.5rem', marginBottom: '2.5rem' }}>
+            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '0.5rem' }}>
+              Token Architecture
+            </h3>
+            <TokenHierarchyDiagram />
+          </div>
+
+          {/* Adaptive Theming - Light/Dark mode */}
+          <div style={{ marginBottom: '2rem' }}>
+            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '0.5rem' }}>
+              Adaptive Theming
+            </h3>
+            <ThemeSwitchVisualization />
           </div>
         </div>
       </SnapSection>
