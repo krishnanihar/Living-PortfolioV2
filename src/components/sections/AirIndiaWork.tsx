@@ -8811,7 +8811,7 @@ export function AirIndiaWork() {
               </div>
 
               <a
-                href="https://linkedin.com/in/placeholder1"
+                href="https://www.linkedin.com/in/ranjutoonz/"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -8917,7 +8917,7 @@ export function AirIndiaWork() {
               </div>
 
               <a
-                href="https://linkedin.com/in/placeholder2"
+                href="https://www.linkedin.com/in/lijostevejoseph/"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
