@@ -335,6 +335,24 @@ const projects: Project[] = [
     color: '218, 14, 41',
     category: 'HACKATHON',
     role: 'TEAM OF 3'
+  },
+  {
+    id: 11,
+    label: '11',
+    title: 'Off the Record',
+    subtitle: 'Old-school vibes, real-time ties',
+    description: 'The best connections are built when we slow down.',
+    longDescription: 'The designLAB core branding team brainstormed ways to bring our design team closer and grow together. What started as a simple discussion turned into Off the Record—an unscripted, laughter-filled series with a rotating theme.\n\nFor the first edition: Retro Cinema. A carefully crafted poster, vintage movie tickets, a director\'s clapboard, a prompt generator, popcorn, and movie passes for winners. The real magic? Seeing everyone step into character, dress the part, and embrace the theme.',
+    imagePlaceholder: 'Off the Record Event Photos',
+    stats: [
+      { value: 'Retro', label: 'Cinema Theme' },
+      { value: '1st', label: 'Edition' },
+      { value: 'Team', label: 'Bonding' }
+    ],
+    icon: Heart,
+    color: '139, 92, 246',
+    category: 'CULTURE',
+    role: 'INITIATOR'
   }
 ];
 
@@ -444,7 +462,7 @@ const actConfig: Record<1 | 2 | 3, ActConfig> = {
     name: 'Scaling Impact',
     color: '251, 191, 36', // Gold
     quote: "Products ship. But lasting change requires transforming the people building them.",
-    projects: [6, 7, 8, 9], // Competitor, Liftoff, MS Hackathon, Internal Hackathon
+    projects: [6, 7, 8, 9, 10], // Competitor, Liftoff, MS Hackathon, Internal Hackathon, Off the Record
   },
 };
 
@@ -2092,6 +2110,107 @@ export function AirIndiaWork() {
                       gap: '3px',
                     }}>
                       🏆 Winner
+                    </div>
+                  </div>
+                );
+              }
+
+              // Card 10: Off the Record - Retro Cinema Theme
+              if (index === 10) {
+                return (
+                  <div style={{
+                    width: '160px',
+                    height: '100px',
+                    opacity: isHovered ? 1 : 0.7,
+                    transition: 'all 0.5s ease',
+                    position: 'relative',
+                  }}>
+                    {/* Film strip decoration */}
+                    <div style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: '8px',
+                      background: '#1A1A1A',
+                      display: 'flex',
+                      justifyContent: 'space-around',
+                      alignItems: 'center',
+                    }}>
+                      {[...Array(8)].map((_, i) => (
+                        <div key={i} style={{
+                          width: '6px',
+                          height: '4px',
+                          background: 'var(--glass-30)',
+                          borderRadius: '1px',
+                        }} />
+                      ))}
+                    </div>
+                    {/* Main content */}
+                    <div style={{
+                      paddingTop: '14px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '8px',
+                    }}>
+                      {/* Ticket stub */}
+                      <div style={{
+                        padding: '8px 12px',
+                        borderRadius: '8px',
+                        background: `linear-gradient(135deg, rgba(${project.color}, 0.2), rgba(${project.color}, 0.1))`,
+                        border: `1px dashed rgba(${project.color}, 0.4)`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}>
+                        <div>
+                          <div style={{ fontSize: '8px', fontWeight: '700', color: `rgb(${project.color})` }}>ADMIT ONE</div>
+                          <div style={{ fontSize: '6px', color: 'var(--text-40)' }}>Retro Cinema Night</div>
+                        </div>
+                        <div style={{
+                          width: '20px',
+                          height: '20px',
+                          borderRadius: '4px',
+                          background: `rgba(${project.color}, 0.3)`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '10px',
+                        }}>🎬</div>
+                      </div>
+                      {/* Theme badges */}
+                      <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                        {['🎞️ Vintage', '🍿 Popcorn', '🎭 Dress Up'].map((tag) => (
+                          <span key={tag} style={{
+                            padding: '3px 6px',
+                            borderRadius: '4px',
+                            background: 'var(--glass-08)',
+                            fontSize: '6px',
+                            color: 'var(--text-50)',
+                          }}>{tag}</span>
+                        ))}
+                      </div>
+                    </div>
+                    {/* Film strip bottom */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: '8px',
+                      background: '#1A1A1A',
+                      display: 'flex',
+                      justifyContent: 'space-around',
+                      alignItems: 'center',
+                    }}>
+                      {[...Array(8)].map((_, i) => (
+                        <div key={i} style={{
+                          width: '6px',
+                          height: '4px',
+                          background: 'var(--glass-30)',
+                          borderRadius: '1px',
+                        }} />
+                      ))}
                     </div>
                   </div>
                 );
@@ -7875,6 +7994,94 @@ export function AirIndiaWork() {
                           <span style={{ fontSize: '12px', fontWeight: '600', color: `rgb(${project.color})` }}>Winner</span>
                         </div>
                         <span style={{ fontSize: '11px', color: 'var(--text-40)' }}>24hr Build • Firebase Studio</span>
+                      </div>
+                    </div>
+                    </>
+                  ) : index === 10 ? (
+                    /* Card 10: Off the Record - Photo Gallery */
+                    <>
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '1000px',
+                      margin: '0 auto',
+                    }}>
+                      {/* Header */}
+                      <div style={{
+                        textAlign: 'center',
+                        marginBottom: '24px',
+                      }}>
+                        <div style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          padding: '8px 16px',
+                          borderRadius: '20px',
+                          background: `rgba(${project.color}, 0.1)`,
+                          border: `1px solid rgba(${project.color}, 0.2)`,
+                          marginBottom: '12px',
+                        }}>
+                          <span style={{ fontSize: '14px' }}>🎬</span>
+                          <span style={{ fontSize: '11px', fontWeight: '600', color: `rgb(${project.color})` }}>
+                            EDITION 01: RETRO CINEMA
+                          </span>
+                        </div>
+                        <p style={{
+                          fontSize: '13px',
+                          color: 'var(--text-50)',
+                          maxWidth: '500px',
+                          margin: '0 auto',
+                          lineHeight: 1.6,
+                        }}>
+                          Vintage movie tickets, a director&apos;s clapboard, popcorn, and movie passes for the winners.
+                        </p>
+                      </div>
+
+                      {/* Photo Grid - 3 images */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+                        gap: '16px',
+                        marginBottom: '24px',
+                      }}>
+                        {[
+                          { src: '/images/air-india/offtherecord.jpeg', alt: 'Off the Record - Retro Cinema Event' },
+                          { src: '/images/air-india/offtherecord2.jpeg', alt: 'Team bonding at Retro Cinema' },
+                          { src: '/images/air-india/offtherecord3.jpeg', alt: 'Retro Cinema theme setup' },
+                        ].map((img, i) => (
+                          <div key={i} style={{
+                            borderRadius: '12px',
+                            overflow: 'hidden',
+                            border: '1px solid var(--glass-15)',
+                            boxShadow: '0 10px 40px rgba(0,0,0,0.3)',
+                            aspectRatio: '4/3',
+                          }}>
+                            <Image
+                              src={img.src}
+                              alt={img.alt}
+                              width={400}
+                              height={300}
+                              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                            />
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Quote */}
+                      <div style={{
+                        textAlign: 'center',
+                        padding: '20px',
+                        borderRadius: '12px',
+                        background: 'var(--glass-04)',
+                        border: '1px solid var(--glass-10)',
+                      }}>
+                        <p style={{
+                          fontSize: '14px',
+                          fontStyle: 'italic',
+                          color: 'var(--text-60)',
+                          margin: 0,
+                        }}>
+                          &quot;The real magic? Seeing everyone step into character, dress the part, and embrace the theme.&quot;
+                        </p>
                       </div>
                     </div>
                     </>
