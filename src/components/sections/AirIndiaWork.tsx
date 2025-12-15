@@ -5867,7 +5867,13 @@ export function AirIndiaWork() {
                                   margin: '0 auto 12px',
                                   boxShadow: `0 8px 24px rgba(${brandRgb}, 0.3)`,
                                 }}>
-                                  <Plane size={22} style={{ color: 'white' }} />
+                                  <Image
+                                    src="/logos/air-india.svg"
+                                    alt="Air India"
+                                    width={24}
+                                    height={24}
+                                    style={{ objectFit: 'contain' }}
+                                  />
                                 </div>
                                 <h3 style={{
                                   fontSize: '18px',
