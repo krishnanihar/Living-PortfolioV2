@@ -85,7 +85,8 @@ function generateBezierPath(bezier: number[]): string {
 
 export function MotionTimingLab() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.3 });
+  // Remove once: true so it can re-check when parent becomes visible
+  const isInView = useInView(containerRef, { amount: 0.2 });
   const [selectedEasing, setSelectedEasing] = useState<string>('premium');
   const [selectedDuration, setSelectedDuration] = useState<number>(300);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -151,7 +152,8 @@ export function MotionTimingLab() {
               width={200}
               height={150}
               initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.4 }}
               style={{
                 background: 'var(--glass-05)',

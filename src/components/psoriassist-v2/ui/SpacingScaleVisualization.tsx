@@ -45,7 +45,8 @@ export function SpacingScaleVisualization({
   autoPlayInterval = 2000,
 }: SpacingScaleVisualizationProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.3 });
+  // Remove once: true so it can re-check when parent becomes visible
+  const isInView = useInView(containerRef, { amount: 0.2 });
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
@@ -133,7 +134,8 @@ export function SpacingScaleVisualization({
               <motion.div
                 key={space.token}
                 initial={{ opacity: 0, x: -20 }}
-                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
                 onMouseEnter={() => handleHover(index)}
                 onMouseLeave={() => handleHover(null)}
@@ -173,7 +175,8 @@ export function SpacingScaleVisualization({
                     overflow: 'hidden',
                   }}
                   initial={{ width: 0 }}
-                  animate={isInView ? { width: Math.max(barWidth, 4) } : { width: 0 }}
+                  whileInView={{ width: Math.max(barWidth, 4) }}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.05 + 0.2 }}
                 >
                   {/* Shimmer effect when active */}
@@ -249,7 +252,8 @@ export function SpacingScaleVisualization({
         {/* Accessibility note */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.8 }}
           style={{
             marginTop: '1.25rem',

@@ -73,7 +73,8 @@ const backgrounds = [
 
 export function GlassmorphismPlayground() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.3 });
+  // Remove once: true so it can re-check when parent becomes visible
+  const isInView = useInView(containerRef, { amount: 0.2 });
 
   // Glass settings
   const [blur, setBlur] = useState(20);
@@ -125,7 +126,8 @@ background: rgba(255, 255, 255, ${opacity / 100});
         {/* Preview area */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.4 }}
           style={{
             position: 'relative',
@@ -427,7 +429,8 @@ background: rgba(255, 255, 255, ${(opacity / 100).toFixed(2)});
         {/* Healthcare note */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.4 }}
           style={{
             marginTop: '1rem',

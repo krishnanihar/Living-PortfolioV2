@@ -37,7 +37,8 @@ export function RadiusShowcase({
   autoPlayInterval = 2500,
 }: RadiusShowcaseProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.3 });
+  // Remove once: true so it can re-check when parent becomes visible
+  const isInView = useInView(containerRef, { amount: 0.2 });
   const [selectedId, setSelectedId] = useState<string>('lg');
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
@@ -134,7 +135,8 @@ export function RadiusShowcase({
               <motion.button
                 key={radius.id}
                 initial={{ opacity: 0, scale: 0.8 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: index * 0.04 }}
                 onClick={() => handleSelect(radius.id)}
                 whileHover={{ scale: 1.1 }}
@@ -341,7 +343,8 @@ export function RadiusShowcase({
         {/* Healthcare context */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.6 }}
           style={{
             marginTop: '1.25rem',
