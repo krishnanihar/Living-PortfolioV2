@@ -48,6 +48,32 @@ import {
 } from 'lucide-react';
 
 // =============================================================================
+// IMAGE OPTIMIZATION - Shimmer Placeholder
+// =============================================================================
+
+const shimmer = (w: number, h: number) => `
+<svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="g">
+      <stop stop-color="#1a1a1a" offset="20%" />
+      <stop stop-color="#2a2a2a" offset="50%" />
+      <stop stop-color="#1a1a1a" offset="70%" />
+    </linearGradient>
+  </defs>
+  <rect width="${w}" height="${h}" fill="#1a1a1a" />
+  <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
+  <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
+</svg>`;
+
+const toBase64 = (str: string) =>
+  typeof window === 'undefined'
+    ? Buffer.from(str).toString('base64')
+    : window.btoa(str);
+
+const blurDataURL = (w: number, h: number) =>
+  `data:image/svg+xml;base64,${toBase64(shimmer(w, h))}`;
+
+// =============================================================================
 // TYPE DEFINITIONS
 // =============================================================================
 
@@ -564,6 +590,49 @@ export function AirIndiaWork() {
 
   const sectionRef = useRef<HTMLDivElement>(null);
 
+  // Lazy loading refs for heavy sections
+  const projectsSectionRef = useRef<HTMLDivElement>(null);
+  const [projectsInView, setProjectsInView] = useState(false);
+  const testimonialsSectionRef = useRef<HTMLDivElement>(null);
+  const [testimonialsInView, setTestimonialsInView] = useState(false);
+
+  // Intersection observer for lazy loading
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+
+    if (projectsSectionRef.current) {
+      const projectsObserver = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setProjectsInView(true);
+            projectsObserver.disconnect();
+          }
+        },
+        { rootMargin: '200px', threshold: 0 }
+      );
+      projectsObserver.observe(projectsSectionRef.current);
+      observers.push(projectsObserver);
+    }
+
+    if (testimonialsSectionRef.current) {
+      const testimonialsObserver = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setTestimonialsInView(true);
+            testimonialsObserver.disconnect();
+          }
+        },
+        { rootMargin: '100px', threshold: 0 }
+      );
+      testimonialsObserver.observe(testimonialsSectionRef.current);
+      observers.push(testimonialsObserver);
+    }
+
+    return () => {
+      observers.forEach(obs => obs.disconnect());
+    };
+  }, []);
+
   // Handler for hover effects
   const handleCardMouseEnter = (id: number) => {
     setHoveredProject(id);
@@ -790,6 +859,8 @@ export function AirIndiaWork() {
                     alt="Sky background"
                     fill
                     priority
+                    placeholder="blur"
+                    blurDataURL={blurDataURL(1920, 1080)}
                     style={{
                       objectFit: 'cover',
                       objectPosition: 'center 40%',
@@ -813,6 +884,8 @@ export function AirIndiaWork() {
                     src="/images/home/hero-clouds.png"
                     alt="Clouds"
                     fill
+                    placeholder="blur"
+                    blurDataURL={blurDataURL(1920, 1080)}
                     style={{
                       objectFit: 'cover',
                       objectPosition: 'center 40%',
@@ -836,6 +909,8 @@ export function AirIndiaWork() {
                     src="/images/home/hero-aircraft.png"
                     alt="Air India Aircraft"
                     fill
+                    placeholder="blur"
+                    blurDataURL={blurDataURL(1920, 1080)}
                     style={{
                       objectFit: 'cover',
                       objectPosition: 'center 40%',
@@ -1216,21 +1291,45 @@ export function AirIndiaWork() {
       {/* =========================================================================
           SECTION 4: KEY PROJECTS - PREMIUM VISUAL BENTO GRID
       ========================================================================= */}
-      <section style={{
-        maxWidth: 'min(1300px, 90vw)',
-        margin: '0 auto',
-        padding: 'clamp(5rem, 10vh, 8rem) 2rem',
-        position: 'relative',
-        zIndex: 1,
-        overflow: 'visible',
-      }}>
+      <section
+        ref={projectsSectionRef}
+        style={{
+          maxWidth: 'min(1300px, 90vw)',
+          margin: '0 auto',
+          padding: 'clamp(5rem, 10vh, 8rem) 2rem',
+          position: 'relative',
+          zIndex: 1,
+          overflow: 'visible',
+        }}
+      >
         {/* Full-Screen Project Sections */}
         <div style={{
           width: '100%',
           position: 'relative',
           overflow: 'visible',
         }}>
-          {projects.map((project, index) => {
+          {/* Loading skeleton while projects section loads */}
+          {!projectsInView && (
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '3rem',
+              minHeight: '400px',
+            }}>
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  style={{
+                    height: '200px',
+                    borderRadius: '20px',
+                    background: 'var(--glass-04)',
+                    animation: 'pulse 1.5s ease-in-out infinite',
+                  }}
+                />
+              ))}
+            </div>
+          )}
+          {projectsInView && projects.map((project, index) => {
             const Icon = project.icon;
             const isHovered = hoveredProject === project.id;
             const isExpanded = true; // All sections are now full-screen
@@ -5909,12 +6008,12 @@ export function AirIndiaWork() {
 
                     {/* Mobile Phone Frame */}
                     <div style={{
-                      width: '320px',
-                      height: '680px',
+                      width: isMobile ? '280px' : '320px',
+                      height: isMobile ? '595px' : '680px',
                       margin: '0 auto',
-                      borderRadius: '44px',
+                      borderRadius: isMobile ? '38px' : '44px',
                       background: '#000',
-                      padding: '10px',
+                      padding: isMobile ? '8px' : '10px',
                       boxShadow: '0 25px 80px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1)',
                       position: 'relative',
                       overflow: 'hidden',
@@ -7126,6 +7225,8 @@ export function AirIndiaWork() {
                           alt="Passenger using Air India In-Flight Entertainment system"
                           width={900}
                           height={600}
+                          placeholder="blur"
+                          blurDataURL={blurDataURL(900, 600)}
                           style={{ width: '100%', height: 'auto', display: 'block' }}
                         />
                       </div>
@@ -7875,6 +7976,8 @@ export function AirIndiaWork() {
                           alt="Liftoff Program - Design team workshop session"
                           width={900}
                           height={600}
+                          placeholder="blur"
+                          blurDataURL={blurDataURL(900, 600)}
                           style={{ width: '100%', height: 'auto', display: 'block' }}
                         />
                       </div>
@@ -7920,6 +8023,8 @@ export function AirIndiaWork() {
                           alt="Microsoft | Air India Hackathon Winner Certificate - 2nd Prize"
                           width={500}
                           height={667}
+                          placeholder="blur"
+                          blurDataURL={blurDataURL(500, 667)}
                           style={{ width: '100%', height: 'auto', display: 'block' }}
                         />
                       </div>
@@ -7969,6 +8074,8 @@ export function AirIndiaWork() {
                           alt="Internal Hackathon Winner - Team receiving certificate"
                           width={800}
                           height={600}
+                          placeholder="blur"
+                          blurDataURL={blurDataURL(800, 600)}
                           style={{ width: '100%', height: 'auto', display: 'block' }}
                         />
                       </div>
@@ -8060,6 +8167,8 @@ export function AirIndiaWork() {
                               alt={img.alt}
                               width={400}
                               height={300}
+                              placeholder="blur"
+                              blurDataURL={blurDataURL(400, 300)}
                               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                             />
                           </div>
@@ -8588,6 +8697,278 @@ export function AirIndiaWork() {
             );
           })}
         </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 6: TESTIMONIALS
+      ========================================================================= */}
+      <section
+        ref={testimonialsSectionRef}
+        style={{
+          maxWidth: 'min(1100px, 88vw)',
+          margin: '0 auto',
+          padding: 'clamp(4rem, 8vh, 6rem) 2rem',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        {testimonialsInView ? (
+          <>
+        <div style={{
+          textAlign: 'center',
+          marginBottom: 'clamp(2.5rem, 5vh, 4rem)',
+          animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
+        }}>
+          <span style={{
+            fontSize: '0.75rem',
+            fontWeight: '500',
+            color: 'var(--text-muted)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.15em',
+          }}>
+            What Colleagues Say
+          </span>
+        </div>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+          gap: 'clamp(1.5rem, 3vw, 2rem)',
+        }}>
+          {/* Testimonial 1 */}
+          <div
+            style={{
+              padding: 'clamp(1.5rem, 3vw, 2rem)',
+              borderRadius: '20px',
+              background: 'var(--glass-04)',
+              border: '1px solid var(--glass-08)',
+              position: 'relative',
+              animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both' : 'none',
+            }}
+          >
+            {/* Quote mark */}
+            <div style={{
+              position: 'absolute',
+              top: '1rem',
+              left: '1.5rem',
+              fontSize: '3rem',
+              color: 'rgba(218, 14, 41, 0.2)',
+              fontFamily: 'Georgia, serif',
+              lineHeight: 1,
+            }}>
+              "
+            </div>
+
+            <div style={{
+              paddingTop: '1.5rem',
+              marginBottom: '1.5rem',
+            }}>
+              <p style={{
+                fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
+                color: 'var(--text-secondary)',
+                lineHeight: '1.7',
+                fontStyle: 'italic',
+              }}>
+                Placeholder testimonial about impact, collaboration, and design leadership. This will be replaced with an actual quote from a colleague or stakeholder who worked with you on the Air India transformation.
+              </p>
+            </div>
+
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem',
+              paddingTop: '1rem',
+              borderTop: '1px solid var(--glass-08)',
+            }}>
+              {/* Placeholder Avatar */}
+              <div style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.2), rgba(99, 102, 241, 0.2))',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+                <Users size={20} style={{ color: 'var(--text-tertiary)' }} />
+              </div>
+
+              <div style={{ flex: 1 }}>
+                <div style={{
+                  fontSize: '0.938rem',
+                  fontWeight: '500',
+                  color: 'var(--text-primary)',
+                  marginBottom: '0.125rem',
+                }}>
+                  Name Placeholder
+                </div>
+                <div style={{
+                  fontSize: '0.813rem',
+                  color: 'var(--text-muted)',
+                }}>
+                  Role, Air India
+                </div>
+              </div>
+
+              <a
+                href="https://linkedin.com/in/placeholder1"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '10px',
+                  background: 'var(--glass-06)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.3s ease',
+                  color: 'var(--text-tertiary)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(0, 119, 181, 0.2)';
+                  e.currentTarget.style.color = '#0077B5';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'var(--glass-06)';
+                  e.currentTarget.style.color = 'var(--text-tertiary)';
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          {/* Testimonial 2 */}
+          <div
+            style={{
+              padding: 'clamp(1.5rem, 3vw, 2rem)',
+              borderRadius: '20px',
+              background: 'var(--glass-04)',
+              border: '1px solid var(--glass-08)',
+              position: 'relative',
+              animation: inView ? 'scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both' : 'none',
+            }}
+          >
+            {/* Quote mark */}
+            <div style={{
+              position: 'absolute',
+              top: '1rem',
+              left: '1.5rem',
+              fontSize: '3rem',
+              color: 'rgba(99, 102, 241, 0.2)',
+              fontFamily: 'Georgia, serif',
+              lineHeight: 1,
+            }}>
+              "
+            </div>
+
+            <div style={{
+              paddingTop: '1.5rem',
+              marginBottom: '1.5rem',
+            }}>
+              <p style={{
+                fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
+                color: 'var(--text-secondary)',
+                lineHeight: '1.7',
+                fontStyle: 'italic',
+              }}>
+                Placeholder testimonial about technical skills, problem-solving, and building tools. This will be replaced with an actual quote highlighting your contributions to the digital transformation.
+              </p>
+            </div>
+
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem',
+              paddingTop: '1rem',
+              borderTop: '1px solid var(--glass-08)',
+            }}>
+              {/* Placeholder Avatar */}
+              <div style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2))',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+                <Users size={20} style={{ color: 'var(--text-tertiary)' }} />
+              </div>
+
+              <div style={{ flex: 1 }}>
+                <div style={{
+                  fontSize: '0.938rem',
+                  fontWeight: '500',
+                  color: 'var(--text-primary)',
+                  marginBottom: '0.125rem',
+                }}>
+                  Name Placeholder
+                </div>
+                <div style={{
+                  fontSize: '0.813rem',
+                  color: 'var(--text-muted)',
+                }}>
+                  Role, Air India
+                </div>
+              </div>
+
+              <a
+                href="https://linkedin.com/in/placeholder2"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '10px',
+                  background: 'var(--glass-06)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.3s ease',
+                  color: 'var(--text-tertiary)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(0, 119, 181, 0.2)';
+                  e.currentTarget.style.color = '#0077B5';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'var(--glass-06)';
+                  e.currentTarget.style.color = 'var(--text-tertiary)';
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+          </>
+        ) : (
+          /* Loading skeleton for testimonials */
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+            gap: 'clamp(1.5rem, 3vw, 2rem)',
+            minHeight: '200px',
+          }}>
+            {[1, 2].map((i) => (
+              <div
+                key={i}
+                style={{
+                  height: '180px',
+                  borderRadius: '20px',
+                  background: 'var(--glass-04)',
+                  animation: 'pulse 1.5s ease-in-out infinite',
+                }}
+              />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* =========================================================================
