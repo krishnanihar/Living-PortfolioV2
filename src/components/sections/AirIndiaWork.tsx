@@ -5857,18 +5857,18 @@ export function AirIndiaWork() {
                               {/* Header */}
                               <div style={{
                                 textAlign: 'center',
-                                marginBottom: '32px',
+                                marginBottom: '20px',
                               }}>
                                 <div style={{
-                                  width: '64px',
-                                  height: '64px',
-                                  margin: '0 auto 12px',
+                                  width: '48px',
+                                  height: '48px',
+                                  margin: '0 auto 8px',
                                 }}>
                                   <Image
                                     src="/logos/air-india.svg"
                                     alt="Air India"
-                                    width={64}
-                                    height={64}
+                                    width={48}
+                                    height={48}
                                     style={{ objectFit: 'contain' }}
                                   />
                                 </div>
@@ -5876,11 +5876,12 @@ export function AirIndiaWork() {
                                   fontSize: '18px',
                                   fontWeight: '700',
                                   color: '#1A1A1A',
-                                  marginBottom: '4px',
+                                  marginBottom: '2px',
                                 }}>AI Explorer</h3>
                                 <p style={{
                                   fontSize: '12px',
                                   color: 'rgba(0,0,0,0.5)',
+                                  margin: 0,
                                 }}>Your intelligent travel companion</p>
                               </div>
 
