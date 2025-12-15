@@ -295,7 +295,7 @@ export function ThemeSwitchVisualization() {
             transition={{ duration: 0.4, delay: 0.7 }}
             style={{
               display: 'inline-block',
-              background: 'rgba(180, 175, 160, 0.3)',
+              background: 'var(--glass-30)',
               border: '1px solid var(--border-primary)',
               borderRadius: 20,
               padding: '0.5rem 1rem',

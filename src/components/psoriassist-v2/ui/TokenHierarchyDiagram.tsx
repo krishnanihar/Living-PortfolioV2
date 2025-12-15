@@ -41,11 +41,12 @@ function TokenNode({
   isHighlighted?: boolean;
   onClick?: () => void;
 }) {
+  // Use CSS variables for theme-aware colors
   const bgColor = tier === 'global'
-    ? 'rgba(245, 243, 237, 0.95)'
-    : 'rgba(20, 20, 25, 0.95)';
-  const textColor = tier === 'global' ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)';
-  const subtextColor = tier === 'global' ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.5)';
+    ? 'var(--glass-08)'
+    : 'var(--glass-95)';
+  const textColor = tier === 'global' ? 'var(--text-80)' : 'var(--text-90)';
+  const subtextColor = tier === 'global' ? 'var(--text-50)' : 'var(--text-50)';
 
   return (
     <motion.div
@@ -59,7 +60,7 @@ function TokenNode({
         border: isHighlighted ? '2px solid #4A90E2' : '1px solid var(--border-primary)',
         boxShadow: isHighlighted
           ? '0 0 20px rgba(74, 144, 226, 0.3)'
-          : '0 2px 8px rgba(0,0,0,0.1)',
+          : '0 2px 8px var(--glass-10)',
         transition: 'all 0.2s ease',
         minWidth: 140,
       }}
@@ -111,11 +112,11 @@ function TokenNode({
 function SampleUICard() {
   return (
     <div style={{
-      background: 'rgba(20, 20, 30, 0.95)',
+      background: 'var(--glass-95)',
       borderRadius: 12,
       padding: '1rem',
       width: 180,
-      border: '1px solid rgba(255,255,255,0.1)',
+      border: '1px solid var(--border-primary)',
     }}>
       <div style={{
         display: 'flex',
@@ -123,14 +124,14 @@ function SampleUICard() {
         alignItems: 'center',
         marginBottom: '0.75rem',
       }}>
-        <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'rgba(255,255,255,0.9)' }}>
+        <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-90)' }}>
           PASI Score
         </span>
-        <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)' }}>⋮</span>
+        <span style={{ fontSize: '0.75rem', color: 'var(--text-40)' }}>⋮</span>
       </div>
       <div style={{
         fontSize: '0.7rem',
-        color: 'rgba(255,255,255,0.5)',
+        color: 'var(--text-50)',
         marginBottom: '0.75rem',
       }}>
         Track your skin condition
@@ -170,18 +171,19 @@ export function TokenHierarchyDiagram() {
 
       {/* Main diagram container */}
       <div style={{
-        background: 'rgba(200, 195, 188, 0.15)',
+        background: 'var(--glass-15)',
         borderRadius: 16,
         padding: '2rem',
         position: 'relative',
         overflow: 'hidden',
         minHeight: 380,
+        border: '1px solid var(--border-primary)',
       }}>
         {/* Dotted grid background */}
         <div style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.15) 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(circle, var(--text-15) 1px, transparent 1px)',
           backgroundSize: '20px 20px',
           pointerEvents: 'none',
         }} />
@@ -199,7 +201,7 @@ export function TokenHierarchyDiagram() {
           {/* Line from UI Card to Semantic Token */}
           <motion.path
             d="M 195 120 C 280 120, 280 80, 380 80"
-            stroke={highlightedPath === 'semantic' ? '#4A90E2' : 'rgba(0,0,0,0.2)'}
+            stroke={highlightedPath === 'semantic' ? '#4A90E2' : 'var(--text-20)'}
             strokeWidth={highlightedPath === 'semantic' ? 2 : 1}
             fill="none"
             initial={{ pathLength: 0 }}
@@ -210,7 +212,7 @@ export function TokenHierarchyDiagram() {
           {/* Line from Semantic to Global (calm-blue) */}
           <motion.path
             d="M 560 80 L 680 80"
-            stroke={highlightedPath === 'semantic' ? '#4A90E2' : 'rgba(0,0,0,0.2)'}
+            stroke={highlightedPath === 'semantic' ? '#4A90E2' : 'var(--text-20)'}
             strokeWidth={highlightedPath === 'semantic' ? 2 : 1}
             fill="none"
             initial={{ pathLength: 0 }}
@@ -221,7 +223,7 @@ export function TokenHierarchyDiagram() {
           {/* Arrow head for semantic */}
           <motion.polygon
             points="675,76 685,80 675,84"
-            fill={highlightedPath === 'semantic' ? '#4A90E2' : 'rgba(0,0,0,0.2)'}
+            fill={highlightedPath === 'semantic' ? '#4A90E2' : 'var(--text-20)'}
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.2, delay: 1 }}
@@ -230,7 +232,7 @@ export function TokenHierarchyDiagram() {
           {/* Line from UI Card to Component Token */}
           <motion.path
             d="M 195 180 C 280 180, 280 220, 380 220"
-            stroke={highlightedPath === 'component' ? '#50C878' : 'rgba(0,0,0,0.2)'}
+            stroke={highlightedPath === 'component' ? '#50C878' : 'var(--text-20)'}
             strokeWidth={highlightedPath === 'component' ? 2 : 1}
             fill="none"
             initial={{ pathLength: 0 }}
@@ -241,7 +243,7 @@ export function TokenHierarchyDiagram() {
           {/* Line from Component to Global (healing-green) */}
           <motion.path
             d="M 595 220 L 680 180"
-            stroke={highlightedPath === 'component' ? '#50C878' : 'rgba(0,0,0,0.2)'}
+            stroke={highlightedPath === 'component' ? '#50C878' : 'var(--text-20)'}
             strokeWidth={highlightedPath === 'component' ? 2 : 1}
             fill="none"
             initial={{ pathLength: 0 }}
@@ -252,7 +254,7 @@ export function TokenHierarchyDiagram() {
           {/* Arrow head for component */}
           <motion.polygon
             points="675,176 685,180 675,184"
-            fill={highlightedPath === 'component' ? '#50C878' : 'rgba(0,0,0,0.2)'}
+            fill={highlightedPath === 'component' ? '#50C878' : 'var(--text-20)'}
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.2, delay: 1.2 }}
@@ -281,7 +283,7 @@ export function TokenHierarchyDiagram() {
               >
                 <div style={{
                   fontSize: '0.65rem',
-                  color: 'rgba(0,0,0,0.5)',
+                  color: 'var(--text-50)',
                   marginBottom: '0.5rem',
                   display: 'flex',
                   alignItems: 'center',
@@ -291,7 +293,7 @@ export function TokenHierarchyDiagram() {
                     width: 18,
                     height: 18,
                     borderRadius: '50%',
-                    border: '1px solid rgba(0,0,0,0.3)',
+                    border: '1px solid var(--text-30)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -315,7 +317,7 @@ export function TokenHierarchyDiagram() {
               >
                 <div style={{
                   fontSize: '0.65rem',
-                  color: 'rgba(0,0,0,0.5)',
+                  color: 'var(--text-50)',
                   marginBottom: '0.5rem',
                   display: 'flex',
                   alignItems: 'center',
@@ -325,7 +327,7 @@ export function TokenHierarchyDiagram() {
                     width: 18,
                     height: 18,
                     borderRadius: '50%',
-                    border: '1px solid rgba(0,0,0,0.3)',
+                    border: '1px solid var(--text-30)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -347,7 +349,7 @@ export function TokenHierarchyDiagram() {
             <div>
               <div style={{
                 fontSize: '0.65rem',
-                color: 'rgba(0,0,0,0.5)',
+                color: 'var(--text-50)',
                 marginBottom: '0.5rem',
                 display: 'flex',
                 alignItems: 'center',
@@ -357,7 +359,7 @@ export function TokenHierarchyDiagram() {
                   width: 18,
                   height: 18,
                   borderRadius: '50%',
-                  border: '1px solid rgba(0,0,0,0.3)',
+                  border: '1px solid var(--text-30)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

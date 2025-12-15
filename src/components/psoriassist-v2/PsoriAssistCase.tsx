@@ -10,6 +10,11 @@ import { InteractiveSwatchPicker, InteractiveTypography } from './ui/Interactive
 import { TransformingColorPalette } from './ui/TransformingColorPalette';
 import { TokenHierarchyDiagram } from './ui/TokenHierarchyDiagram';
 import { ThemeSwitchVisualization } from './ui/ThemeSwitchVisualization';
+import { SpacingScaleVisualization } from './ui/SpacingScaleVisualization';
+import { ElevationSystemVisualization } from './ui/ElevationSystemVisualization';
+import { RadiusShowcase } from './ui/RadiusShowcase';
+import { MotionTimingLab } from './ui/MotionTimingLab';
+import { GlassmorphismPlayground } from './ui/GlassmorphismPlayground';
 import {
   heroStats,
   genesisTimeline,
@@ -1770,6 +1775,46 @@ export function PsoriAssistCase() {
                 weight: parseInt(String(t.weight)),
               }))}
             />
+          </div>
+
+          {/* Spacing System */}
+          <div style={{ marginTop: '2.5rem', marginBottom: '2.5rem' }}>
+            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '0.5rem' }}>
+              Spacing System
+            </h3>
+            <SpacingScaleVisualization />
+          </div>
+
+          {/* Elevation System */}
+          <div style={{ marginBottom: '2.5rem' }}>
+            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '0.5rem' }}>
+              Elevation & Depth
+            </h3>
+            <ElevationSystemVisualization />
+          </div>
+
+          {/* Border Radius */}
+          <div style={{ marginBottom: '2.5rem' }}>
+            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '0.5rem' }}>
+              Corner Radius System
+            </h3>
+            <RadiusShowcase />
+          </div>
+
+          {/* Motion System */}
+          <div style={{ marginBottom: '2.5rem' }}>
+            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '0.5rem' }}>
+              Motion & Animation
+            </h3>
+            <MotionTimingLab />
+          </div>
+
+          {/* Glassmorphism */}
+          <div style={{ marginBottom: '2.5rem' }}>
+            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '0.5rem' }}>
+              Glassmorphism Playground
+            </h3>
+            <GlassmorphismPlayground />
           </div>
 
           {/* Token Architecture - Three-tier system */}
