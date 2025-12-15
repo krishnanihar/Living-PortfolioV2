@@ -7,6 +7,7 @@ import { SnapSection } from './ui/SnapSection';
 import { ExpandableCard } from './ui/ExpandableCard';
 import { AccordionGroup, CollapsibleSection } from './ui/AccordionGroup';
 import { InteractiveSwatchPicker, InteractiveTypography } from './ui/InteractiveSwatchPicker';
+import { TransformingColorPalette } from './ui/TransformingColorPalette';
 import {
   heroStats,
   genesisTimeline,
@@ -1740,25 +1741,12 @@ export function PsoriAssistCase() {
             WCAG AA compliant · Inter typeface · Calming color palette
           </motion.p>
 
-          {/* Interactive Color Palette */}
-          <div style={{ marginBottom: '2rem' }}>
-            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '1rem' }}>
-              Color Palette
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-40)', marginLeft: '0.75rem', fontWeight: 400 }}>
-                Click to explore
-              </span>
+          {/* Transforming Color Palette */}
+          <div style={{ marginBottom: '2.5rem' }}>
+            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '0.5rem' }}>
+              Color System
             </h3>
-            <InteractiveSwatchPicker
-              colors={colorPalette.map((c, i) => ({
-                id: `color-${i}`,
-                name: c.name,
-                hex: c.hex,
-                rgb: c.rgb,
-                contrast: c.contrast,
-                use: c.use,
-              }))}
-              defaultSelectedId="color-0"
-            />
+            <TransformingColorPalette />
           </div>
 
           {/* Interactive Typography */}
