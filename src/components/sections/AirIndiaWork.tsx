@@ -41,6 +41,9 @@ import {
   Camera,
   Server,
   Cloud,
+  Ticket,
+  Clock,
+  MapPin,
   type LucideIcon
 } from 'lucide-react';
 
@@ -7260,6 +7263,124 @@ export function AirIndiaWork() {
                           <div style={{ fontSize: '11px', color: 'var(--text-50)', marginTop: '8px' }}>
                             Upper Four Star Category
                           </div>
+                        </div>
+                      </div>
+
+                      {/* Section 2.5: AI-Powered Feedback Touchpoints */}
+                      <div style={{
+                        padding: '24px',
+                        borderRadius: '16px',
+                        background: 'var(--glass-06)',
+                        border: `1px solid rgba(${project.color}, 0.2)`,
+                        marginBottom: '20px',
+                      }}>
+                        {/* Header */}
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '10px',
+                          marginBottom: '24px',
+                        }}>
+                          <span style={{ fontSize: '10px', fontWeight: '600', color: `rgb(${project.color})`, letterSpacing: '0.15em' }}>
+                            FEEDBACK TOUCHPOINTS
+                          </span>
+                          <span style={{
+                            padding: '4px 8px',
+                            borderRadius: '8px',
+                            background: 'rgba(139, 92, 246, 0.15)',
+                            fontSize: '9px',
+                            fontWeight: '600',
+                            color: '#8B5CF6',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                          }}>
+                            <Sparkles size={10} />
+                            AI-POWERED
+                          </span>
+                        </div>
+
+                        {/* Journey Flow - 5 touchpoints */}
+                        <div style={{
+                          display: 'flex',
+                          alignItems: isMobile ? 'stretch' : 'flex-start',
+                          justifyContent: 'space-between',
+                          flexDirection: isMobile ? 'column' : 'row',
+                          position: 'relative',
+                          padding: isMobile ? '0' : '0 10px',
+                          gap: isMobile ? '16px' : '0',
+                        }}>
+                          {/* Connection Line */}
+                          {!isMobile && (
+                            <div style={{
+                              position: 'absolute',
+                              top: '20px',
+                              left: '10%',
+                              width: '80%',
+                              height: '2px',
+                              background: `linear-gradient(90deg, rgb(${project.color}), #8B5CF6)`,
+                              zIndex: 0,
+                            }} />
+                          )}
+
+                          {/* Touchpoints */}
+                          {[
+                            { icon: Ticket, stage: 'Booking', platform: 'App & Web', type: 'Post-booking' },
+                            { icon: Clock, stage: 'Pre-Flight', platform: 'App', type: 'Check-in' },
+                            { icon: MapPin, stage: 'Airport', platform: 'App', type: 'Lounge & Gate' },
+                            { icon: Plane, stage: 'In-Flight', platform: 'IFE', type: 'Service quality' },
+                            { icon: Star, stage: 'Post-Flight', platform: 'App & Web', type: 'Journey review' },
+                          ].map((tp) => {
+                            const Icon = tp.icon;
+                            return (
+                              <div key={tp.stage} style={{
+                                display: 'flex',
+                                flexDirection: isMobile ? 'row' : 'column',
+                                alignItems: 'center',
+                                gap: isMobile ? '12px' : '8px',
+                                zIndex: 1,
+                                flex: 1,
+                                padding: isMobile ? '12px' : '0',
+                                background: isMobile ? 'var(--glass-04)' : 'transparent',
+                                borderRadius: isMobile ? '12px' : '0',
+                              }}>
+                                {/* Node */}
+                                <div style={{
+                                  width: '40px',
+                                  height: '40px',
+                                  borderRadius: '12px',
+                                  background: `linear-gradient(135deg, rgba(${project.color}, 0.2), rgba(139, 92, 246, 0.2))`,
+                                  border: `1px solid rgba(${project.color}, 0.4)`,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  flexShrink: 0,
+                                }}>
+                                  <Icon size={18} style={{ color: `rgb(${project.color})` }} />
+                                </div>
+                                {/* Labels */}
+                                <div style={{ textAlign: isMobile ? 'left' : 'center' }}>
+                                  <div style={{ fontSize: '11px', fontWeight: '600', color: 'var(--text-90)' }}>{tp.stage}</div>
+                                  <div style={{ fontSize: '9px', color: '#8B5CF6', fontWeight: '500' }}>{tp.platform}</div>
+                                  <div style={{ fontSize: '8px', color: 'var(--text-40)', marginTop: '2px' }}>{tp.type}</div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        {/* Footer */}
+                        <div style={{
+                          marginTop: '20px',
+                          paddingTop: '16px',
+                          borderTop: '1px solid var(--glass-10)',
+                          textAlign: 'center',
+                        }}>
+                          <p style={{ fontSize: '11px', color: 'var(--text-60)', lineHeight: 1.5, margin: 0 }}>
+                            AI-powered sentiment analysis processes feedback in real-time,<br />
+                            enabling proactive service recovery and continuous NPS improvement.
+                          </p>
                         </div>
                       </div>
 
