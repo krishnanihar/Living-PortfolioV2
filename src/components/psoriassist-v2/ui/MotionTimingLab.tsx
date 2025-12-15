@@ -153,7 +153,7 @@ export function MotionTimingLab() {
               height={150}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
+              viewport={{}}
               transition={{ duration: 0.4 }}
               style={{
                 background: 'var(--glass-05)',

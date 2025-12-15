@@ -127,7 +127,7 @@ background: rgba(255, 255, 255, ${opacity / 100});
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
+          viewport={{}}
           transition={{ duration: 0.4 }}
           style={{
             position: 'relative',
@@ -430,7 +430,7 @@ background: rgba(255, 255, 255, ${(opacity / 100).toFixed(2)});
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{}}
           transition={{ duration: 0.4, delay: 0.4 }}
           style={{
             marginTop: '1rem',
