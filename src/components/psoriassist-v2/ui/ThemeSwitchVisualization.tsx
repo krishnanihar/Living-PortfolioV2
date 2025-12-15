@@ -148,7 +148,8 @@ function SampleButton({ isDark }: { isDark: boolean }) {
 
 export function ThemeSwitchVisualization() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.3 });
+  // Remove once: true so it can re-check when parent becomes visible
+  const isInView = useInView(containerRef, { amount: 0.2 });
 
   return (
     <div ref={containerRef}>
