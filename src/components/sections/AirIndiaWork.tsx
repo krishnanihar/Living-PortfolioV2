@@ -7771,7 +7771,13 @@ export function AirIndiaWork() {
                               alignItems: 'center',
                               justifyContent: 'center',
                             }}>
-                              <span style={{ fontSize: '14px' }}>✈️</span>
+                              <Image
+                                src="/logos/air-india.svg"
+                                alt="Air India"
+                                width={20}
+                                height={20}
+                                style={{ objectFit: 'contain' }}
+                              />
                             </div>
                             <div>
                               <span style={{ fontSize: '13px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.9)' }}>AI.g</span>
