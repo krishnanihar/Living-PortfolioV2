@@ -7266,7 +7266,7 @@ export function AirIndiaWork() {
                         </div>
                       </div>
 
-                      {/* Section 2.5: AI-Powered Feedback Touchpoints */}
+                      {/* Section 2.5: Designed Feedback Capture */}
                       <div style={{
                         padding: '24px',
                         borderRadius: '16px',
@@ -7274,113 +7274,174 @@ export function AirIndiaWork() {
                         border: `1px solid rgba(${project.color}, 0.2)`,
                         marginBottom: '20px',
                       }}>
-                        {/* Header */}
-                        <div style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          gap: '10px',
-                          marginBottom: '24px',
-                        }}>
-                          <span style={{ fontSize: '10px', fontWeight: '600', color: `rgb(${project.color})`, letterSpacing: '0.15em' }}>
-                            FEEDBACK TOUCHPOINTS
-                          </span>
-                          <span style={{
-                            padding: '4px 8px',
-                            borderRadius: '8px',
-                            background: 'rgba(139, 92, 246, 0.15)',
-                            fontSize: '9px',
+                        {/* Header - Emphasize Design */}
+                        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+                          <div style={{
+                            fontSize: '10px',
                             fontWeight: '600',
-                            color: '#8B5CF6',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '4px',
+                            color: `rgb(${project.color})`,
+                            letterSpacing: '0.15em',
+                            marginBottom: '8px',
                           }}>
-                            <Sparkles size={10} />
-                            AI-POWERED
-                          </span>
+                            MY DESIGN CONTRIBUTION
+                          </div>
+                          <h4 style={{
+                            fontSize: '16px',
+                            fontWeight: '600',
+                            color: 'var(--text-90)',
+                            margin: '0 0 8px 0',
+                          }}>
+                            Designed Feedback Capture Interfaces
+                          </h4>
+                          <p style={{
+                            fontSize: '12px',
+                            color: 'var(--text-50)',
+                            margin: 0,
+                            lineHeight: 1.5,
+                          }}>
+                            Created app & web touchpoints to capture user insights<br />
+                            at strategic moments across the passenger journey
+                          </p>
                         </div>
 
-                        {/* Journey Flow - 5 touchpoints */}
+                        {/* Platform Cards */}
                         <div style={{
-                          display: 'flex',
-                          alignItems: isMobile ? 'stretch' : 'flex-start',
-                          justifyContent: 'space-between',
-                          flexDirection: isMobile ? 'column' : 'row',
-                          position: 'relative',
-                          padding: isMobile ? '0' : '0 10px',
-                          gap: isMobile ? '16px' : '0',
+                          display: 'grid',
+                          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+                          gap: '16px',
                         }}>
-                          {/* Connection Line */}
-                          {!isMobile && (
+                          {/* Mobile App Card */}
+                          <div style={{
+                            padding: '20px',
+                            borderRadius: '12px',
+                            background: 'var(--glass-04)',
+                            border: '1px solid var(--glass-10)',
+                          }}>
                             <div style={{
-                              position: 'absolute',
-                              top: '20px',
-                              left: '10%',
-                              width: '80%',
-                              height: '2px',
-                              background: `linear-gradient(90deg, rgb(${project.color}), #8B5CF6)`,
-                              zIndex: 0,
-                            }} />
-                          )}
-
-                          {/* Touchpoints */}
-                          {[
-                            { icon: Ticket, stage: 'Booking', platform: 'App & Web', type: 'Post-booking' },
-                            { icon: Clock, stage: 'Pre-Flight', platform: 'App', type: 'Check-in' },
-                            { icon: MapPin, stage: 'Airport', platform: 'App', type: 'Lounge & Gate' },
-                            { icon: Plane, stage: 'In-Flight', platform: 'IFE', type: 'Service quality' },
-                            { icon: Star, stage: 'Post-Flight', platform: 'App & Web', type: 'Journey review' },
-                          ].map((tp) => {
-                            const Icon = tp.icon;
-                            return (
-                              <div key={tp.stage} style={{
-                                display: 'flex',
-                                flexDirection: isMobile ? 'row' : 'column',
-                                alignItems: 'center',
-                                gap: isMobile ? '12px' : '8px',
-                                zIndex: 1,
-                                flex: 1,
-                                padding: isMobile ? '12px' : '0',
-                                background: isMobile ? 'var(--glass-04)' : 'transparent',
-                                borderRadius: isMobile ? '12px' : '0',
-                              }}>
-                                {/* Node */}
-                                <div style={{
-                                  width: '40px',
-                                  height: '40px',
-                                  borderRadius: '12px',
-                                  background: `linear-gradient(135deg, rgba(${project.color}, 0.2), rgba(139, 92, 246, 0.2))`,
-                                  border: `1px solid rgba(${project.color}, 0.4)`,
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '8px',
+                              marginBottom: '16px',
+                            }}>
+                              <Smartphone size={16} style={{ color: `rgb(${project.color})` }} />
+                              <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-90)' }}>
+                                Mobile App
+                              </span>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                              {['Post-booking survey', 'Check-in experience', 'Airport & lounge', 'Journey completion'].map((item) => (
+                                <div key={item} style={{
+                                  fontSize: '11px',
+                                  color: 'var(--text-60)',
                                   display: 'flex',
                                   alignItems: 'center',
-                                  justifyContent: 'center',
-                                  flexShrink: 0,
+                                  gap: '6px',
                                 }}>
-                                  <Icon size={18} style={{ color: `rgb(${project.color})` }} />
+                                  <div style={{
+                                    width: '4px',
+                                    height: '4px',
+                                    borderRadius: '50%',
+                                    background: `rgb(${project.color})`,
+                                  }} />
+                                  {item}
                                 </div>
-                                {/* Labels */}
-                                <div style={{ textAlign: isMobile ? 'left' : 'center' }}>
-                                  <div style={{ fontSize: '11px', fontWeight: '600', color: 'var(--text-90)' }}>{tp.stage}</div>
-                                  <div style={{ fontSize: '9px', color: '#8B5CF6', fontWeight: '500' }}>{tp.platform}</div>
-                                  <div style={{ fontSize: '8px', color: 'var(--text-40)', marginTop: '2px' }}>{tp.type}</div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Web Card */}
+                          <div style={{
+                            padding: '20px',
+                            borderRadius: '12px',
+                            background: 'var(--glass-04)',
+                            border: '1px solid var(--glass-10)',
+                          }}>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '8px',
+                              marginBottom: '16px',
+                            }}>
+                              <Monitor size={16} style={{ color: '#8B5CF6' }} />
+                              <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-90)' }}>
+                                Web
+                              </span>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                              {['Booking confirmation', 'Post-trip email survey', 'Complaint resolution'].map((item) => (
+                                <div key={item} style={{
+                                  fontSize: '11px',
+                                  color: 'var(--text-60)',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '6px',
+                                }}>
+                                  <div style={{
+                                    width: '4px',
+                                    height: '4px',
+                                    borderRadius: '50%',
+                                    background: '#8B5CF6',
+                                  }} />
+                                  {item}
                                 </div>
-                              </div>
-                            );
-                          })}
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* IFE Card */}
+                          <div style={{
+                            padding: '20px',
+                            borderRadius: '12px',
+                            background: 'var(--glass-04)',
+                            border: '1px solid var(--glass-10)',
+                          }}>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '8px',
+                              marginBottom: '16px',
+                            }}>
+                              <Monitor size={16} style={{ color: '#3B82F6' }} />
+                              <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-90)' }}>
+                                IFE System
+                              </span>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                              {['In-flight service rating', 'Meal feedback', 'Entertainment survey'].map((item) => (
+                                <div key={item} style={{
+                                  fontSize: '11px',
+                                  color: 'var(--text-60)',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '6px',
+                                }}>
+                                  <div style={{
+                                    width: '4px',
+                                    height: '4px',
+                                    borderRadius: '50%',
+                                    background: '#3B82F6',
+                                  }} />
+                                  {item}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         </div>
 
-                        {/* Footer */}
+                        {/* Footer - AI is secondary */}
                         <div style={{
                           marginTop: '20px',
                           paddingTop: '16px',
                           borderTop: '1px solid var(--glass-10)',
-                          textAlign: 'center',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '8px',
                         }}>
-                          <p style={{ fontSize: '11px', color: 'var(--text-60)', lineHeight: 1.5, margin: 0 }}>
-                            AI-powered sentiment analysis processes feedback in real-time,<br />
-                            enabling proactive service recovery and continuous NPS improvement.
-                          </p>
+                          <Sparkles size={12} style={{ color: '#8B5CF6' }} />
+                          <span style={{ fontSize: '11px', color: 'var(--text-50)' }}>
+                            AI-powered sentiment analysis enables real-time service recovery
+                          </span>
                         </div>
                       </div>
 
