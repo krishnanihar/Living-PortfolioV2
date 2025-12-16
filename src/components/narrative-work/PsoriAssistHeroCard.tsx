@@ -125,7 +125,7 @@ export function PsoriAssistHeroCard() {
                   style={{
                     objectFit: 'contain',
                     objectPosition: 'center',
-                    transform: 'scale(1.2)'
+                    transform: 'scale(0.9)'
                   }}
                   priority
                   quality={95}
@@ -137,22 +137,19 @@ export function PsoriAssistHeroCard() {
                 data-atropos-offset="4"
                 style={{
                   position: 'absolute',
-                  bottom: '15%',
-                  right: '8%',
-                  width: 'clamp(320px, 32vw, 420px)',
-                  background: `linear-gradient(135deg,
-                    rgba(255,255,255,0.04) 0%,
-                    rgba(255,255,255,0.02) 50%,
-                    rgba(255,255,255,0.03) 100%),
-                    rgba(0,0,0,0.65)`,
+                  bottom: isMobile ? '18%' : '15%',
+                  right: isMobile ? '5%' : '8%',
+                  width: isMobile ? '90%' : 'clamp(340px, 32vw, 420px)',
+                  background: `linear-gradient(135deg, var(--glass-04) 0%, var(--glass-02) 50%, var(--glass-03) 100%), var(--overlay-65)`,
                   backdropFilter: 'blur(40px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(40px) saturate(180%)',
                   border: '1px solid rgba(80, 200, 120, 0.2)', // Green accent
-                  borderRadius: 24,
-                  padding: '2rem',
+                  borderRadius: '24px',
+                  padding: isMobile ? '1.75rem' : '2.25rem',
                   boxShadow: `
-                    0 32px 64px rgba(0, 0, 0, 0.2),
-                    0 0 0 1px rgba(255,255,255,0.05),
-                    inset 0 1px 0 rgba(255,255,255,0.1),
+                    0 32px 64px var(--overlay-20),
+                    0 0 0 1px var(--glass-05),
+                    inset 0 1px 0 var(--glass-10),
                     0 0 80px rgba(80, 200, 120, 0.08)
                   `,
                   zIndex: 10,
