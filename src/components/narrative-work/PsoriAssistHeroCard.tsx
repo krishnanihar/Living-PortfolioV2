@@ -133,17 +133,16 @@ export function PsoriAssistHeroCard() {
                 />
               </div>
 
-              {/* Centered Content Card - Liquid Glass (Static, No Parallax) */}
+              {/* Floating Glass Panel - Bottom Right (matches Air India) */}
               <div
+                data-atropos-offset="4"
                 style={{
                   position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
+                  bottom: isMobile ? '12%' : '10%',
+                  right: isMobile ? '5%' : '6%',
                   zIndex: 10,
-                  width: '90%',
-                  maxWidth: '580px',
-                  padding: isMobile ? '2rem' : '2.5rem 3rem',
+                  width: isMobile ? '90%' : 'clamp(340px, 28vw, 420px)',
+                  padding: isMobile ? '1.75rem' : '2rem 2.5rem',
                   pointerEvents: 'auto', // CRITICAL: Enable clicking on content
                   // Theme-aware glassmorphism
                   background: `
@@ -161,7 +160,7 @@ export function PsoriAssistHeroCard() {
                     inset 0 1px 0 var(--glass-05),
                     inset 0 0 20px var(--overlay-10)
                   `,
-                  textAlign: 'center',
+                  textAlign: 'left',
                   overflow: 'hidden',
                 }}
               >
@@ -204,7 +203,6 @@ export function PsoriAssistHeroCard() {
                   flexWrap: 'wrap',
                   gap: '0.5rem',
                   marginBottom: '1.5rem',
-                  justifyContent: 'center',
                 }}>
                   {['React Native', 'Python', 'TensorFlow', 'iOS'].map(tech => (
                     <span
