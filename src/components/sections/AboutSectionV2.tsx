@@ -142,7 +142,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
       title: 'PsoriAssist',
       category: 'Healthcare AI Platform',
       description: 'AI-powered psoriasis management platform combining computer vision with clinical insights for personalized patient care',
-      image: '/images/work/psoriassist-hero.jpg',
+      image: '/images/Psori_front.png',
       brandColor: { r: 16, g: 185, b: 129 },
       year: '2024',
       metrics: [
