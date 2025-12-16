@@ -51,8 +51,9 @@ export function PsoriAssistHeroCard() {
       width: '100%',
       position: 'relative',
       overflow: 'hidden',
-      background: '#000',
+      background: 'var(--bg-primary)',
       borderRadius: '24px',
+      marginBottom: '6rem',
     }}>
       {/* Atropos Container */}
       <div
@@ -144,25 +145,25 @@ export function PsoriAssistHeroCard() {
                   width: isMobile ? '90%' : 'clamp(340px, 28vw, 420px)',
                   padding: isMobile ? '1.75rem' : '2rem 2.5rem',
                   pointerEvents: 'auto', // CRITICAL: Enable clicking on content
-                  // Stronger glassmorphism for better text readability
+                  // Theme-aware glassmorphism for better text readability
                   background: `
                     linear-gradient(135deg,
-                      rgba(255, 255, 255, 0.12) 0%,
-                      rgba(255, 255, 255, 0.08) 50%,
-                      rgba(255, 255, 255, 0.10) 100%
+                      var(--glass-12) 0%,
+                      var(--glass-08) 50%,
+                      var(--glass-10) 100%
                     ),
-                    rgba(0, 0, 0, 0.65)
+                    var(--overlay-65)
                   `,
                   backdropFilter: 'blur(40px) saturate(180%)',
                   WebkitBackdropFilter: 'blur(40px) saturate(180%)',
                   borderRadius: '32px',
-                  border: '1px solid rgba(255, 255, 255, 0.15)',
-                  // Enhanced shadows for depth
+                  border: '1px solid var(--glass-15)',
+                  // Theme-aware shadows for depth
                   boxShadow: `
-                    0 40px 80px rgba(0, 0, 0, 0.3),
-                    0 20px 40px rgba(0, 0, 0, 0.2),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                    inset 0 0 20px rgba(0, 0, 0, 0.15),
+                    0 40px 80px var(--overlay-30),
+                    0 20px 40px var(--overlay-20),
+                    inset 0 1px 0 var(--glass-10),
+                    inset 0 0 20px var(--overlay-15),
                     0 0 80px rgba(80, 200, 120, 0.08)
                   `,
                   textAlign: 'left',
@@ -174,7 +175,7 @@ export function PsoriAssistHeroCard() {
                   fontSize: '0.7rem',
                   textTransform: 'uppercase',
                   letterSpacing: '0.15em',
-                  color: 'rgba(255,255,255,0.7)',
+                  color: 'var(--text-70)',
                   marginBottom: '1rem',
                 }}>
                   Healthcare · 2024
@@ -184,7 +185,7 @@ export function PsoriAssistHeroCard() {
                 <h2 style={{
                   fontSize: '1.5rem',
                   fontWeight: 600,
-                  color: 'rgba(255,255,255,0.98)',
+                  color: 'var(--text-98)',
                   marginBottom: '0.75rem',
                   letterSpacing: '-0.02em',
                 }}>
@@ -195,7 +196,7 @@ export function PsoriAssistHeroCard() {
                 <p style={{
                   fontSize: '0.9375rem',
                   lineHeight: 1.7,
-                  color: 'rgba(255,255,255,0.85)',
+                  color: 'var(--text-85)',
                   marginBottom: '1.5rem',
                 }}>
                   AI-powered psoriasis management app with ghost overlay innovation,
@@ -215,10 +216,10 @@ export function PsoriAssistHeroCard() {
                       style={{
                         fontSize: '0.65rem',
                         padding: '0.35rem 0.75rem',
-                        background: 'rgba(255,255,255,0.10)',
-                        border: '1px solid rgba(255,255,255,0.20)',
+                        background: 'var(--glass-10)',
+                        border: '1px solid var(--glass-20)',
                         borderRadius: 12,
-                        color: 'rgba(255,255,255,0.85)',
+                        color: 'var(--text-85)',
                       }}
                     >
                       {tech}
@@ -236,7 +237,7 @@ export function PsoriAssistHeroCard() {
                     padding: '0.75rem 1.5rem',
                     fontSize: '0.8125rem',
                     fontWeight: 500,
-                    color: 'rgba(255,255,255,0.98)',
+                    color: 'var(--text-98)',
                     background: 'rgba(80, 200, 120, 0.20)', // Green accent
                     border: '1px solid rgba(80, 200, 120, 0.4)',
                     borderRadius: 12,
@@ -272,12 +273,13 @@ function MobileView() {
     <div style={{
       position: 'relative',
       height: '75vh',
-      background: '#000',
+      background: 'var(--bg-primary)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: '24px',
       overflow: 'hidden',
+      marginBottom: '6rem',
     }}>
       {/* Background */}
       <div style={{ position: 'absolute', inset: 0 }}>
@@ -313,7 +315,7 @@ function MobileView() {
         bottom: '10%',
         left: '5%',
         right: '5%',
-        background: 'rgba(0,0,0,0.75)',
+        background: 'var(--overlay-75)',
         backdropFilter: 'blur(20px)',
         border: '1px solid rgba(80, 200, 120, 0.2)',
         borderRadius: 32,
@@ -323,14 +325,14 @@ function MobileView() {
         <h3 style={{
           fontSize: '1.25rem',
           fontWeight: 600,
-          color: '#fff',
+          color: 'var(--text-98)',
           marginBottom: '0.5rem',
         }}>
           PsoriAssist
         </h3>
         <p style={{
           fontSize: '0.875rem',
-          color: 'rgba(255,255,255,0.7)',
+          color: 'var(--text-70)',
           marginBottom: '1rem',
         }}>
           AI-powered psoriasis management
@@ -341,7 +343,7 @@ function MobileView() {
             display: 'inline-block',
             padding: '0.625rem 1.25rem',
             fontSize: '0.8125rem',
-            color: '#fff',
+            color: 'var(--text-98)',
             background: 'rgba(80, 200, 120, 0.2)',
             border: '1px solid rgba(80, 200, 120, 0.4)',
             borderRadius: 12,
