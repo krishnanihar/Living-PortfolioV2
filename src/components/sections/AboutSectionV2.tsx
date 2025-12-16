@@ -311,7 +311,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                   {String(index + 1).padStart(2, '0')}
                 </div>
 
-                {/* Multi-Layer Parallax Images for Air India */}
+                {/* Multi-Layer Parallax Images */}
                 {project.id === 'air-india' ? (
                   <>
                     {/* LAYER 1: Sky Background - Furthest Back */}
@@ -398,6 +398,56 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                         zIndex: 4,
                       }}
                     />
+                  </>
+                ) : project.id === 'psoriassist' ? (
+                  <>
+                    {/* LAYER 1: Background - Furthest Back */}
+                    <div
+                      data-atropos-offset="-10"
+                      style={{
+                        position: 'absolute',
+                        inset: '-10%',
+                        zIndex: 1,
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <Image
+                        src="/images/Psori_back.png"
+                        alt=""
+                        fill
+                        style={{
+                          objectFit: 'cover',
+                          objectPosition: 'center',
+                          transform: 'scale(1.2)',
+                        }}
+                        quality={95}
+                        priority
+                      />
+                    </div>
+
+                    {/* LAYER 2: iPhone - Center */}
+                    <div
+                      data-atropos-offset="0"
+                      style={{
+                        position: 'absolute',
+                        inset: '-10%',
+                        zIndex: 2,
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <Image
+                        src="/images/Psori_front.png"
+                        alt="PsoriAssist App on iPhone"
+                        fill
+                        style={{
+                          objectFit: 'contain',
+                          objectPosition: 'center',
+                          transform: 'scale(1.2)',
+                        }}
+                        quality={95}
+                        priority
+                      />
+                    </div>
                   </>
                 ) : (
                   /* Single image for other projects */
