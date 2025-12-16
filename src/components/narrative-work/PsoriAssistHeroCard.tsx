@@ -52,6 +52,7 @@ export function PsoriAssistHeroCard() {
       position: 'relative',
       overflow: 'hidden',
       background: '#000',
+      borderRadius: '24px',
     }}>
       {/* Atropos Container */}
       <div
@@ -144,7 +145,7 @@ export function PsoriAssistHeroCard() {
                   backdropFilter: 'blur(40px) saturate(180%)',
                   WebkitBackdropFilter: 'blur(40px) saturate(180%)',
                   border: '1px solid rgba(80, 200, 120, 0.2)', // Green accent
-                  borderRadius: '24px',
+                  borderRadius: '32px',
                   padding: isMobile ? '1.75rem' : '2.25rem',
                   boxShadow: `
                     0 32px 64px var(--overlay-20),
@@ -262,6 +263,8 @@ function MobileView() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      borderRadius: '24px',
+      overflow: 'hidden',
     }}>
       {/* Background */}
       <div style={{ position: 'absolute', inset: 0 }}>
@@ -300,7 +303,7 @@ function MobileView() {
         background: 'rgba(0,0,0,0.75)',
         backdropFilter: 'blur(20px)',
         border: '1px solid rgba(80, 200, 120, 0.2)',
-        borderRadius: 16,
+        borderRadius: 32,
         padding: '1.5rem',
         zIndex: 3,
       }}>
