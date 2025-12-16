@@ -78,7 +78,7 @@ export function PsoriAssistHeroCard() {
                   lineHeight: 1,
                   pointerEvents: 'none',
                   textShadow: '0 0 150px rgba(80, 200, 120, 0.3)',
-                  zIndex: 1,
+                  zIndex: 5,
                 }}
               >
                 02
@@ -90,7 +90,7 @@ export function PsoriAssistHeroCard() {
                 style={{
                   position: 'absolute',
                   inset: '-10%',
-                  zIndex: 2,
+                  zIndex: 1,
                   overflow: 'hidden',
                 }}
               >
@@ -100,6 +100,7 @@ export function PsoriAssistHeroCard() {
                   fill
                   style={{
                     objectFit: 'cover',
+                    objectPosition: 'center',
                     transform: 'scale(1.2)'
                   }}
                   priority
@@ -113,7 +114,7 @@ export function PsoriAssistHeroCard() {
                 style={{
                   position: 'absolute',
                   inset: '-10%',
-                  zIndex: 3,
+                  zIndex: 2,
                   overflow: 'hidden',
                 }}
               >
@@ -154,7 +155,7 @@ export function PsoriAssistHeroCard() {
                     inset 0 1px 0 rgba(255,255,255,0.1),
                     0 0 80px rgba(80, 200, 120, 0.08)
                   `,
-                  zIndex: 4,
+                  zIndex: 10,
                 }}
               >
                 {/* Category Tag */}
