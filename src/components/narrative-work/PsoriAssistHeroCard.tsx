@@ -1,13 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import Atropos from 'atropos/react';
+import Atropos from 'atropos';
 import 'atropos/css';
 import Link from 'next/link';
 
 export function PsoriAssistHeroCard() {
   const [isMobile, setIsMobile] = useState(false);
+  const atroposRef = useRef<HTMLDivElement>(null);
+  const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -18,14 +20,26 @@ export function PsoriAssistHeroCard() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const atroposConfig = {
-    activeOffset: 60,
-    rotateXMax: 1,
-    rotateYMax: 1,
-    duration: 600,
-    shadow: false,
-    highlight: false,
-  };
+  // Initialize Atropos 3D effect
+  useEffect(() => {
+    if (atroposRef.current && !isMobile) {
+      atroposInstance.current = Atropos({
+        el: atroposRef.current,
+        activeOffset: 60,
+        rotateXMax: 1,
+        rotateYMax: 1,
+        shadow: false,
+        highlight: false,
+        duration: 600,
+      });
+    }
+
+    return () => {
+      if (atroposInstance.current) {
+        atroposInstance.current.destroy();
+      }
+    };
+  }, [isMobile]);
 
   if (isMobile) {
     return <MobileView />;
@@ -34,191 +48,206 @@ export function PsoriAssistHeroCard() {
   return (
     <div style={{
       height: '75vh',
-      background: '#000',
+      width: '100%',
       position: 'relative',
       overflow: 'hidden',
+      background: '#000',
     }}>
-      <Atropos {...atroposConfig}>
-        {/* Editorial Number "02" (behind everything) */}
-        <div
-          data-atropos-offset="-8"
-          style={{
-            position: 'absolute',
-            top: '15%',
-            left: '5%',
-            fontSize: 'clamp(220px, 30vw, 450px)',
-            fontWeight: 200,
-            color: 'rgba(80, 200, 120, 0.15)', // Success green
-            lineHeight: 1,
-            pointerEvents: 'none',
-            textShadow: '0 0 150px rgba(80, 200, 120, 0.3)',
-            zIndex: 1,
-          }}
-        >
-          02
-        </div>
-
-        {/* Background Layer */}
-        <div
-          data-atropos-offset="-10"
-          style={{
-            position: 'absolute',
-            inset: '-10%',
-            zIndex: 2,
-          }}
-        >
-          <Image
-            src="/images/Psori_back.png"
-            alt=""
-            fill
-            style={{
-              objectFit: 'cover',
-              transform: 'scale(1.2)'
-            }}
-            priority
-            quality={95}
-          />
-        </div>
-
-        {/* Hero iPhone Layer (center, no parallax) */}
-        <div
-          data-atropos-offset="0"
-          style={{
-            position: 'absolute',
-            inset: '-10%',
-            zIndex: 3,
-          }}
-        >
-          <Image
-            src="/images/Psori_front.png"
-            alt="PsoriAssist App on iPhone"
-            fill
-            style={{
-              objectFit: 'contain',
-              objectPosition: 'center',
-              transform: 'scale(1.2)'
-            }}
-            priority
-            quality={95}
-          />
-        </div>
-
-        {/* Floating Glass Panel (foreground) */}
-        <div
-          data-atropos-offset="4"
-          style={{
-            position: 'absolute',
-            bottom: '15%',
-            right: '8%',
-            width: 'clamp(320px, 32vw, 420px)',
-            background: `linear-gradient(135deg,
-              rgba(255,255,255,0.04) 0%,
-              rgba(255,255,255,0.02) 50%,
-              rgba(255,255,255,0.03) 100%),
-              rgba(0,0,0,0.65)`,
-            backdropFilter: 'blur(40px) saturate(180%)',
-            border: '1px solid rgba(80, 200, 120, 0.2)', // Green accent
-            borderRadius: 24,
-            padding: '2rem',
-            boxShadow: `
-              0 32px 64px rgba(0, 0, 0, 0.2),
-              0 0 0 1px rgba(255,255,255,0.05),
-              inset 0 1px 0 rgba(255,255,255,0.1),
-              0 0 80px rgba(80, 200, 120, 0.08)
-            `,
-            zIndex: 4,
-          }}
-        >
-          {/* Category Tag */}
-          <div style={{
-            fontSize: '0.7rem',
-            textTransform: 'uppercase',
-            letterSpacing: '0.15em',
-            color: 'rgba(255,255,255,0.5)',
-            marginBottom: '1rem',
-          }}>
-            Healthcare · 2024
-          </div>
-
-          {/* Project Title */}
-          <h2 style={{
-            fontSize: '1.5rem',
-            fontWeight: 600,
-            color: 'rgba(255,255,255,0.95)',
-            marginBottom: '0.75rem',
-            letterSpacing: '-0.02em',
-          }}>
-            PsoriAssist
-          </h2>
-
-          {/* Description */}
-          <p style={{
-            fontSize: '0.9375rem',
-            lineHeight: 1.7,
-            color: 'rgba(255,255,255,0.6)',
-            marginBottom: '1.5rem',
-          }}>
-            AI-powered psoriasis management app with ghost overlay innovation,
-            predictive flare alerts, and clinical-grade PASI scoring.
-          </p>
-
-          {/* Tech Tags */}
-          <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '0.5rem',
-            marginBottom: '1.5rem',
-          }}>
-            {['React Native', 'Python', 'TensorFlow', 'iOS'].map(tech => (
-              <span
-                key={tech}
+      {/* Atropos Container */}
+      <div
+        ref={atroposRef}
+        className="atropos"
+        style={{
+          position: 'absolute',
+          inset: 0,
+        }}
+      >
+        <div className="atropos-scale" style={{ height: '100%' }}>
+          <div className="atropos-rotate" style={{ height: '100%' }}>
+            <div className="atropos-inner" style={{ width: '100%', height: '100%', position: 'relative' }}>
+              {/* Editorial Number "02" (behind everything) */}
+              <div
+                data-atropos-offset="-8"
                 style={{
-                  fontSize: '0.65rem',
-                  padding: '0.35rem 0.75rem',
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 12,
-                  color: 'rgba(255,255,255,0.7)',
+                  position: 'absolute',
+                  top: '15%',
+                  left: '5%',
+                  fontSize: 'clamp(220px, 30vw, 450px)',
+                  fontWeight: 200,
+                  color: 'rgba(80, 200, 120, 0.15)', // Success green
+                  lineHeight: 1,
+                  pointerEvents: 'none',
+                  textShadow: '0 0 150px rgba(80, 200, 120, 0.3)',
+                  zIndex: 1,
                 }}
               >
-                {tech}
-              </span>
-            ))}
-          </div>
+                02
+              </div>
 
-          {/* CTA Button */}
-          <Link
-            href="/work/psoriassist"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.75rem 1.5rem',
-              fontSize: '0.8125rem',
-              fontWeight: 500,
-              color: 'rgba(255,255,255,0.95)',
-              background: 'rgba(80, 200, 120, 0.15)', // Green accent
-              border: '1px solid rgba(80, 200, 120, 0.3)',
-              borderRadius: 12,
-              textDecoration: 'none',
-              transition: 'all 0.2s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(80, 200, 120, 0.25)';
-              e.currentTarget.style.borderColor = 'rgba(80, 200, 120, 0.4)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(80, 200, 120, 0.15)';
-              e.currentTarget.style.borderColor = 'rgba(80, 200, 120, 0.3)';
-            }}
-          >
-            View Case Study
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </Link>
+              {/* Background Layer */}
+              <div
+                data-atropos-offset="-10"
+                style={{
+                  position: 'absolute',
+                  inset: '-10%',
+                  zIndex: 2,
+                }}
+              >
+                <Image
+                  src="/images/Psori_back.png"
+                  alt=""
+                  fill
+                  style={{
+                    objectFit: 'cover',
+                    transform: 'scale(1.2)'
+                  }}
+                  priority
+                  quality={95}
+                />
+              </div>
+
+              {/* Hero iPhone Layer (center, no parallax) */}
+              <div
+                data-atropos-offset="0"
+                style={{
+                  position: 'absolute',
+                  inset: '-10%',
+                  zIndex: 3,
+                }}
+              >
+                <Image
+                  src="/images/Psori_front.png"
+                  alt="PsoriAssist App on iPhone"
+                  fill
+                  style={{
+                    objectFit: 'contain',
+                    objectPosition: 'center',
+                    transform: 'scale(1.2)'
+                  }}
+                  priority
+                  quality={95}
+                />
+              </div>
+
+              {/* Floating Glass Panel (foreground) */}
+              <div
+                data-atropos-offset="4"
+                style={{
+                  position: 'absolute',
+                  bottom: '15%',
+                  right: '8%',
+                  width: 'clamp(320px, 32vw, 420px)',
+                  background: `linear-gradient(135deg,
+                    rgba(255,255,255,0.04) 0%,
+                    rgba(255,255,255,0.02) 50%,
+                    rgba(255,255,255,0.03) 100%),
+                    rgba(0,0,0,0.65)`,
+                  backdropFilter: 'blur(40px) saturate(180%)',
+                  border: '1px solid rgba(80, 200, 120, 0.2)', // Green accent
+                  borderRadius: 24,
+                  padding: '2rem',
+                  boxShadow: `
+                    0 32px 64px rgba(0, 0, 0, 0.2),
+                    0 0 0 1px rgba(255,255,255,0.05),
+                    inset 0 1px 0 rgba(255,255,255,0.1),
+                    0 0 80px rgba(80, 200, 120, 0.08)
+                  `,
+                  zIndex: 4,
+                }}
+              >
+                {/* Category Tag */}
+                <div style={{
+                  fontSize: '0.7rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.15em',
+                  color: 'rgba(255,255,255,0.5)',
+                  marginBottom: '1rem',
+                }}>
+                  Healthcare · 2024
+                </div>
+
+                {/* Project Title */}
+                <h2 style={{
+                  fontSize: '1.5rem',
+                  fontWeight: 600,
+                  color: 'rgba(255,255,255,0.95)',
+                  marginBottom: '0.75rem',
+                  letterSpacing: '-0.02em',
+                }}>
+                  PsoriAssist
+                </h2>
+
+                {/* Description */}
+                <p style={{
+                  fontSize: '0.9375rem',
+                  lineHeight: 1.7,
+                  color: 'rgba(255,255,255,0.6)',
+                  marginBottom: '1.5rem',
+                }}>
+                  AI-powered psoriasis management app with ghost overlay innovation,
+                  predictive flare alerts, and clinical-grade PASI scoring.
+                </p>
+
+                {/* Tech Tags */}
+                <div style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '0.5rem',
+                  marginBottom: '1.5rem',
+                }}>
+                  {['React Native', 'Python', 'TensorFlow', 'iOS'].map(tech => (
+                    <span
+                      key={tech}
+                      style={{
+                        fontSize: '0.65rem',
+                        padding: '0.35rem 0.75rem',
+                        background: 'rgba(255,255,255,0.05)',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: 12,
+                        color: 'rgba(255,255,255,0.7)',
+                      }}
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                {/* CTA Button */}
+                <Link
+                  href="/work/psoriassist"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.75rem 1.5rem',
+                    fontSize: '0.8125rem',
+                    fontWeight: 500,
+                    color: 'rgba(255,255,255,0.95)',
+                    background: 'rgba(80, 200, 120, 0.15)', // Green accent
+                    border: '1px solid rgba(80, 200, 120, 0.3)',
+                    borderRadius: 12,
+                    textDecoration: 'none',
+                    transition: 'all 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(80, 200, 120, 0.25)';
+                    e.currentTarget.style.borderColor = 'rgba(80, 200, 120, 0.4)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(80, 200, 120, 0.15)';
+                    e.currentTarget.style.borderColor = 'rgba(80, 200, 120, 0.3)';
+                  }}
+                >
+                  View Case Study
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
-      </Atropos>
+      </div>
     </div>
   );
 }
