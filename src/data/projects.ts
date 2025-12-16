@@ -202,6 +202,7 @@ export const projects: Project[] = [
     title: 'PsoriAssist',
     company: 'Personal Research',
     description: '18-month digital therapeutic design concept reimagining psoriasis care through AI-powered interventions. Born from lived experience, validated through 25 patient interviews, 12 stakeholder interviews, 75+ peer-reviewed studies, and 45 usability testing participants across 3 rounds. Features proprietary ghost overlay photo alignment, AI PASI scoring (33% better than average dermatologist), predictive flare-up alerts (LSTM 7-day forecast), integrated mental health screening (PHQ-9/GAD-7), and automated PsA detection (reducing 2.5-year diagnosis delay). Clinical validation RCT pathway (N=200), FDA Digital Health Precertification target. Business model: Freemium ($9.99/mo) + B2B enterprise ($50-150/patient/yr), LTV:CAC 6:1 by Year 3, $38M Year 5 revenue projection serving 2M patients globally.',
+    image: '/images/Psori_front.png',
     category: 'research',
     status: 'concept',
     tags: [
