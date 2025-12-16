@@ -442,7 +442,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                         style={{
                           objectFit: 'contain',
                           objectPosition: 'center',
-                          transform: 'scale(1.2)',
+                          transform: 'scale(0.9)',
                         }}
                         quality={95}
                         priority
