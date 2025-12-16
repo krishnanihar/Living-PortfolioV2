@@ -144,21 +144,26 @@ export function PsoriAssistHeroCard() {
                   width: isMobile ? '90%' : 'clamp(340px, 28vw, 420px)',
                   padding: isMobile ? '1.75rem' : '2rem 2.5rem',
                   pointerEvents: 'auto', // CRITICAL: Enable clicking on content
-                  // Theme-aware glassmorphism
+                  // Stronger glassmorphism for better text readability
                   background: `
-                    linear-gradient(135deg, var(--glass-04) 0%, var(--glass-02) 50%, var(--glass-03) 100()),
-                    var(--overlay-45)
+                    linear-gradient(135deg,
+                      rgba(255, 255, 255, 0.12) 0%,
+                      rgba(255, 255, 255, 0.08) 50%,
+                      rgba(255, 255, 255, 0.10) 100%
+                    ),
+                    rgba(0, 0, 0, 0.65)
                   `,
-                  backdropFilter: 'blur(60px) saturate(180%)',
-                  WebkitBackdropFilter: 'blur(60px) saturate(180%)',
+                  backdropFilter: 'blur(40px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(40px) saturate(180%)',
                   borderRadius: '32px',
-                  border: '1px solid var(--glass-04)',
-                  // Theme-aware shadows
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  // Enhanced shadows for depth
                   boxShadow: `
-                    0 40px 80px var(--overlay-20),
-                    0 20px 40px var(--overlay-15),
-                    inset 0 1px 0 var(--glass-05),
-                    inset 0 0 20px var(--overlay-10)
+                    0 40px 80px rgba(0, 0, 0, 0.3),
+                    0 20px 40px rgba(0, 0, 0, 0.2),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                    inset 0 0 20px rgba(0, 0, 0, 0.15),
+                    0 0 80px rgba(80, 200, 120, 0.08)
                   `,
                   textAlign: 'left',
                   overflow: 'hidden',
@@ -169,7 +174,7 @@ export function PsoriAssistHeroCard() {
                   fontSize: '0.7rem',
                   textTransform: 'uppercase',
                   letterSpacing: '0.15em',
-                  color: 'rgba(255,255,255,0.5)',
+                  color: 'rgba(255,255,255,0.7)',
                   marginBottom: '1rem',
                 }}>
                   Healthcare · 2024
@@ -179,7 +184,7 @@ export function PsoriAssistHeroCard() {
                 <h2 style={{
                   fontSize: '1.5rem',
                   fontWeight: 600,
-                  color: 'rgba(255,255,255,0.95)',
+                  color: 'rgba(255,255,255,0.98)',
                   marginBottom: '0.75rem',
                   letterSpacing: '-0.02em',
                 }}>
@@ -190,7 +195,7 @@ export function PsoriAssistHeroCard() {
                 <p style={{
                   fontSize: '0.9375rem',
                   lineHeight: 1.7,
-                  color: 'rgba(255,255,255,0.6)',
+                  color: 'rgba(255,255,255,0.85)',
                   marginBottom: '1.5rem',
                 }}>
                   AI-powered psoriasis management app with ghost overlay innovation,
@@ -210,10 +215,10 @@ export function PsoriAssistHeroCard() {
                       style={{
                         fontSize: '0.65rem',
                         padding: '0.35rem 0.75rem',
-                        background: 'rgba(255,255,255,0.05)',
-                        border: '1px solid rgba(255,255,255,0.1)',
+                        background: 'rgba(255,255,255,0.10)',
+                        border: '1px solid rgba(255,255,255,0.20)',
                         borderRadius: 12,
-                        color: 'rgba(255,255,255,0.7)',
+                        color: 'rgba(255,255,255,0.85)',
                       }}
                     >
                       {tech}
@@ -231,20 +236,20 @@ export function PsoriAssistHeroCard() {
                     padding: '0.75rem 1.5rem',
                     fontSize: '0.8125rem',
                     fontWeight: 500,
-                    color: 'rgba(255,255,255,0.95)',
-                    background: 'rgba(80, 200, 120, 0.15)', // Green accent
-                    border: '1px solid rgba(80, 200, 120, 0.3)',
+                    color: 'rgba(255,255,255,0.98)',
+                    background: 'rgba(80, 200, 120, 0.20)', // Green accent
+                    border: '1px solid rgba(80, 200, 120, 0.4)',
                     borderRadius: 12,
                     textDecoration: 'none',
                     transition: 'all 0.2s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(80, 200, 120, 0.25)';
-                    e.currentTarget.style.borderColor = 'rgba(80, 200, 120, 0.4)';
+                    e.currentTarget.style.background = 'rgba(80, 200, 120, 0.30)';
+                    e.currentTarget.style.borderColor = 'rgba(80, 200, 120, 0.5)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(80, 200, 120, 0.15)';
-                    e.currentTarget.style.borderColor = 'rgba(80, 200, 120, 0.3)';
+                    e.currentTarget.style.background = 'rgba(80, 200, 120, 0.20)';
+                    e.currentTarget.style.borderColor = 'rgba(80, 200, 120, 0.4)';
                   }}
                 >
                   View Case Study
