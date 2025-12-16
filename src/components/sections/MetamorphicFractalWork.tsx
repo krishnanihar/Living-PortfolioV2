@@ -2,126 +2,86 @@
 
 import React from 'react';
 import {
-  MetamorphicProvider,
-  AtmosphericBackground,
-  MetamorphicHero,
-  MirrorPortalSimulator,
-  EgoArcNarrative,
-  ProcessGallery,
-  NarrativeProgressIndicator,
-  NarrativeProgressBar,
-  RelatedProjects,
+  MetamorphicHeroV2,
+  JourneyNarrative,
+  TechnicalFlowDiagram,
+  ProcessGalleryV2,
+  ExperienceFilm,
+  RelatedProjectsV2,
 } from '@/components/metamorphic';
 
 /**
- * MetamorphicFractalWork - Immersive Narrative Case Study
+ * MetamorphicFractalWork - Anime.js-Powered Case Study
  *
- * A psychedelic journey towards ego death, now with:
- * - 3-act scroll-driven narrative (Approach → Dissolution → Integration)
- * - Mirror portal video experience
- * - Dynamic atmospheric color transitions
- * - Narrative progress indicator
+ * Complete redesign inspired by animejs.com featuring:
+ * - Interactive dot grid hero with cursor-reactive waves
+ * - Stagger-animated content reveals
+ * - Wave hover effects across galleries
+ * - Dark purple aesthetic
  *
- * Architecture:
- * - MetamorphicProvider: Central state management for scroll, colors, and interactions
- * - AtmosphericBackground: Fixed gradient backdrop with floating particles
- * - MetamorphicHero: Immersive entrance with Atropos 3D parallax
- * - MirrorPortalSimulator: Interactive video experience
- * - EgoArcNarrative: 3-act content structure (Concept, Process, Ethics)
- * - RelatedProjects: Grid of other case studies
+ * Sections:
+ * 1. Hero - Interactive grid background with stagger title
+ * 2. Experience Film - Video showcase
+ * 3. Journey - Three-phase narrative (Approach, Dissolution, Integration)
+ * 4. Technical - Animated system flow diagram
+ * 5. Process - Stagger reveal gallery
+ * 6. Related - Other projects with wave hover
  */
 export function MetamorphicFractalWork() {
-  return (
-    <MetamorphicProvider>
-      {/* Fixed atmospheric background */}
-      <AtmosphericBackground zIndex={0} />
+  const handleEnterPortal = () => {
+    // Scroll to experience section
+    const experienceSection = document.getElementById('experience');
+    if (experienceSection) {
+      experienceSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
-      {/* Progress indicators */}
-      <NarrativeProgressIndicator />
-      <NarrativeProgressBar />
-
-      {/* Main content */}
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 1,
-          minHeight: '100vh',
-          background: 'var(--bg-primary)',
-        }}
-      >
-        {/* Hero section */}
-        <MetamorphicHero />
-
-        {/* Divider */}
-        <SectionDivider />
-
-        {/* Experience video */}
-        <MirrorPortalSimulator />
-
-        {/* Divider */}
-        <SectionDivider />
-
-        {/* 3-act narrative content */}
-        <EgoArcNarrative />
-
-        {/* Divider */}
-        <SectionDivider />
-
-        {/* Building process gallery */}
-        <ProcessGallery />
-
-        {/* Divider */}
-        <SectionDivider />
-
-        {/* Related projects */}
-        <RelatedProjects />
-
-        {/* Footer */}
-        <MetamorphicFooter />
-      </div>
-    </MetamorphicProvider>
-  );
-}
-
-/**
- * Section divider with gradient line
- */
-function SectionDivider() {
   return (
     <div
+      className="metamorphic-fractal-work"
       style={{
-        height: '1px',
-        background: 'linear-gradient(90deg, transparent, var(--glass-15), transparent)',
-        maxWidth: '1200px',
-        margin: '0 auto',
-      }}
-      aria-hidden="true"
-    />
-  );
-}
-
-/**
- * Simple footer with copyright
- */
-function MetamorphicFooter() {
-  return (
-    <footer
-      style={{
-        padding: '2rem',
-        borderTop: '1px solid var(--glass-08)',
-        textAlign: 'center',
+        position: 'relative',
+        minHeight: '100vh',
+        background: 'var(--bg-primary)',
       }}
     >
-      <div
+      {/* Hero section with interactive grid */}
+      <MetamorphicHeroV2 onEnterPortal={handleEnterPortal} />
+
+      {/* Experience film video */}
+      <ExperienceFilm />
+
+      {/* Three-phase journey narrative */}
+      <JourneyNarrative />
+
+      {/* Technical system flow */}
+      <TechnicalFlowDiagram />
+
+      {/* Building process gallery */}
+      <ProcessGalleryV2 />
+
+      {/* Related projects */}
+      <RelatedProjectsV2 />
+
+      {/* Footer */}
+      <footer
         style={{
-          color: 'var(--text-40)',
-          fontSize: '0.8125rem',
-          fontWeight: '300',
+          padding: '2rem',
+          borderTop: '1px solid var(--glass-08)',
+          textAlign: 'center',
         }}
       >
-        Metamorphic Fractal Reflections · NID 2023
-      </div>
-    </footer>
+        <div
+          style={{
+            color: 'var(--text-40)',
+            fontSize: '0.8125rem',
+            fontWeight: '300',
+          }}
+        >
+          Metamorphic Fractal Reflections · NID 2023
+        </div>
+      </footer>
+    </div>
   );
 }
 
