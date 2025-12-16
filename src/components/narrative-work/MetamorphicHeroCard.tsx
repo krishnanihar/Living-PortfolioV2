@@ -56,37 +56,34 @@ export function MetamorphicHeroCard() {
   }, [isMobile]);
 
   return (
-    <section
+    <div
       style={{
-        maxWidth: 'clamp(1200px, 90vw, 1400px)',
-        margin: '0 auto 3rem auto',
-        padding: '0 1.5rem',
+        height: isMobile ? '85vh' : '75vh',
+        width: '100%',
         position: 'relative',
-        zIndex: 1,
+        overflow: 'hidden',
+        background: 'var(--bg-primary)',
+        borderRadius: '24px',
+        marginBottom: '6rem',
       }}
     >
+      {/* Atropos Container */}
       <div
         ref={atroposRef}
         className="atropos"
         style={{
-          height: isMobile ? '85vh' : 'clamp(600px, 75vh, 800px)',
-          width: '100%',
-          position: 'relative',
-          pointerEvents: 'auto',
+          position: 'absolute',
+          inset: 0,
         }}
       >
-        <div className="atropos-scale" style={{ height: '100%', overflow: 'visible', pointerEvents: 'none' }}>
-          <div className="atropos-rotate" style={{ height: '100%', overflow: 'visible', pointerEvents: 'all' }}>
+        <div className="atropos-scale" style={{ height: '100%', pointerEvents: 'none' }}>
+          <div className="atropos-rotate" style={{ height: '100%', pointerEvents: 'none' }}>
             <div
               className="atropos-inner"
               style={{
                 width: '100%',
                 height: '100%',
                 position: 'relative',
-                overflow: 'visible',
-                background: 'var(--bg-primary)',
-                borderRadius: '24px',
-                border: '1px solid var(--border-primary)',
               }}
             >
               {/* Giant Editorial Number - Parallax BACK */}
@@ -324,6 +321,6 @@ export function MetamorphicHeroCard() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
