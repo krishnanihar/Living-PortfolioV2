@@ -157,7 +157,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
       title: 'Metamorphic Fractal Reflections',
       category: 'Immersive Installation',
       description: 'Psychedelic journey installation exploring consciousness, ego dissolution, and the nature of reality through interactive design',
-      image: '/images/work/metamorphic-hero.jpg',
+      image: '/images/meta_front.png',
       brandColor: { r: 139, g: 92, b: 246 },
       year: '2023',
       metrics: [
@@ -438,6 +438,56 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                       <Image
                         src="/images/Psori_front.png"
                         alt="PsoriAssist App on iPhone"
+                        fill
+                        style={{
+                          objectFit: 'contain',
+                          objectPosition: 'center',
+                          transform: 'scale(0.9)',
+                        }}
+                        quality={95}
+                        priority
+                      />
+                    </div>
+                  </>
+                ) : project.id === 'metamorphic' ? (
+                  <>
+                    {/* LAYER 1: Background - Furthest Back */}
+                    <div
+                      data-atropos-offset="-10"
+                      style={{
+                        position: 'absolute',
+                        inset: '-10%',
+                        zIndex: 1,
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <Image
+                        src="/images/meta_back.png"
+                        alt=""
+                        fill
+                        style={{
+                          objectFit: 'cover',
+                          objectPosition: 'center',
+                          transform: 'scale(1.2)',
+                        }}
+                        quality={95}
+                        priority
+                      />
+                    </div>
+
+                    {/* LAYER 2: Foreground - Center */}
+                    <div
+                      data-atropos-offset="0"
+                      style={{
+                        position: 'absolute',
+                        inset: '-10%',
+                        zIndex: 2,
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <Image
+                        src="/images/meta_front.png"
+                        alt="Metamorphic Fractal Installation"
                         fill
                         style={{
                           objectFit: 'contain',

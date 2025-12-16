@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Atropos from 'atropos';
 import 'atropos/css';
 
@@ -108,113 +109,53 @@ export function MetamorphicHeroCard() {
                 03
               </div>
 
-              {/* LAYER 1: Gradient Background - Psychedelic/Fractal Theme */}
+              {/* Background Layer - Meta Back */}
+              <div
+                data-atropos-offset="-10"
+                style={{
+                  position: 'absolute',
+                  inset: '-10%',
+                  zIndex: 1,
+                  overflow: 'hidden',
+                }}
+              >
+                <Image
+                  src="/images/meta_back.png"
+                  alt=""
+                  fill
+                  style={{
+                    objectFit: 'cover',
+                    objectPosition: 'center',
+                    transform: 'scale(1.2)',
+                  }}
+                  priority
+                  quality={95}
+                />
+              </div>
+
+              {/* Foreground Layer - Meta Front */}
               <div
                 data-atropos-offset="0"
                 style={{
                   position: 'absolute',
-                  inset: 0,
-                  zIndex: 1,
-                  overflow: 'hidden',
-                  borderRadius: '24px',
-                  background: `
-                    radial-gradient(ellipse at 20% 30%, rgba(${brandRgb}, 0.2) 0%, transparent 50%),
-                    radial-gradient(ellipse at 80% 70%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
-                    radial-gradient(ellipse at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 60%),
-                    conic-gradient(from 180deg at 50% 50%, rgba(${brandRgb}, 0.05) 0deg, transparent 60deg, rgba(236, 72, 153, 0.05) 120deg, transparent 180deg, rgba(139, 92, 246, 0.05) 240deg, transparent 300deg, rgba(${brandRgb}, 0.05) 360deg),
-                    linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)
-                  `,
-                }}
-              />
-
-              {/* LAYER 2: Abstract Fractal Pattern */}
-              <div
-                data-atropos-offset="-1"
-                style={{
-                  position: 'absolute',
-                  inset: 0,
+                  inset: '-10%',
                   zIndex: 2,
                   overflow: 'hidden',
-                  borderRadius: '24px',
-                  opacity: 0.5,
                 }}
               >
-                {/* Fractal/kaleidoscope inspired pattern */}
-                <svg
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 400 400"
-                  preserveAspectRatio="xMidYMid slice"
-                  style={{ position: 'absolute', inset: 0 }}
-                >
-                  <defs>
-                    <linearGradient id="fractalGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor={`rgba(${brandRgb}, 0.4)`} />
-                      <stop offset="50%" stopColor="rgba(236, 72, 153, 0.3)" />
-                      <stop offset="100%" stopColor="rgba(139, 92, 246, 0.2)" />
-                    </linearGradient>
-                    <linearGradient id="fractalGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="rgba(236, 72, 153, 0.3)" />
-                      <stop offset="100%" stopColor={`rgba(${brandRgb}, 0.2)`} />
-                    </linearGradient>
-                  </defs>
-                  {/* Concentric hexagonal shapes suggesting fractals */}
-                  <polygon points="200,50 350,125 350,275 200,350 50,275 50,125" fill="none" stroke="url(#fractalGrad1)" strokeWidth="0.5" opacity="0.6" />
-                  <polygon points="200,80 320,140 320,260 200,320 80,260 80,140" fill="none" stroke="url(#fractalGrad1)" strokeWidth="0.4" opacity="0.5" />
-                  <polygon points="200,110 290,155 290,245 200,290 110,245 110,155" fill="none" stroke="url(#fractalGrad2)" strokeWidth="0.3" opacity="0.4" />
-                  <polygon points="200,140 260,170 260,230 200,260 140,230 140,170" fill="none" stroke="url(#fractalGrad2)" strokeWidth="0.3" opacity="0.3" />
-                  {/* Radiating lines from center */}
-                  {[0, 60, 120, 180, 240, 300].map((angle, i) => (
-                    <line
-                      key={i}
-                      x1="200"
-                      y1="200"
-                      x2={200 + 180 * Math.cos((angle * Math.PI) / 180)}
-                      y2={200 + 180 * Math.sin((angle * Math.PI) / 180)}
-                      stroke="url(#fractalGrad1)"
-                      strokeWidth="0.3"
-                      opacity="0.3"
-                    />
-                  ))}
-                </svg>
-              </div>
-
-              {/* LAYER 3: Floating Sparkle Icon */}
-              <div
-                data-atropos-offset="-2"
-                style={{
-                  position: 'absolute',
-                  top: '15%',
-                  right: '10%',
-                  zIndex: 3,
-                  pointerEvents: 'none',
-                }}
-              >
-                <Sparkles
-                  size={isMobile ? 80 : 120}
-                  strokeWidth={0.5}
+                <Image
+                  src="/images/meta_front.png"
+                  alt="Metamorphic Fractal Installation"
+                  fill
                   style={{
-                    color: `rgba(${brandRgb}, 0.25)`,
-                    filter: `drop-shadow(0 0 40px rgba(${brandRgb}, 0.4))`,
+                    objectFit: 'contain',
+                    objectPosition: 'center',
+                    transform: 'scale(0.9)',
                   }}
+                  priority
+                  quality={95}
                 />
               </div>
-
-              {/* Gradient overlay for readability */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  borderRadius: '24px',
-                  background: `linear-gradient(180deg,
-                    transparent 0%,
-                    transparent 70%,
-                    var(--overlay-40) 100%
-                  )`,
-                  pointerEvents: 'none',
-                  zIndex: 4,
-                }}
-              />
 
               {/* Floating Glass Panel - Parallax FORWARD */}
               <div
