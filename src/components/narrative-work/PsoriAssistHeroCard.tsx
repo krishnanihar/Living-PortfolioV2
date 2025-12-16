@@ -91,6 +91,7 @@ export function PsoriAssistHeroCard() {
                   position: 'absolute',
                   inset: '-10%',
                   zIndex: 2,
+                  overflow: 'hidden',
                 }}
               >
                 <Image
@@ -113,6 +114,7 @@ export function PsoriAssistHeroCard() {
                   position: 'absolute',
                   inset: '-10%',
                   zIndex: 3,
+                  overflow: 'hidden',
                 }}
               >
                 <Image
