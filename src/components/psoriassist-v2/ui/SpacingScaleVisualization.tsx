@@ -135,7 +135,7 @@ export function SpacingScaleVisualization({
                 key={space.token}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{}}
+                viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
                 onMouseEnter={() => handleHover(index)}
                 onMouseLeave={() => handleHover(null)}
@@ -176,7 +176,7 @@ export function SpacingScaleVisualization({
                   }}
                   initial={{ width: 0 }}
                   whileInView={{ width: Math.max(barWidth, 4) }}
-                  viewport={{}}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.05 + 0.2 }}
                 >
                   {/* Shimmer effect when active */}
@@ -253,7 +253,7 @@ export function SpacingScaleVisualization({
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{}}
+          viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.8 }}
           style={{
             marginTop: '1.25rem',

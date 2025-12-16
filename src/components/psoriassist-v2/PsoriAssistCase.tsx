@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, ExternalLink, Smartphone, Camera, Clock, Activity, Brain, Heart, Users, Zap, CheckCircle, Play, Pause, RotateCcw } from 'lucide-react';
 import { SnapSection } from './ui/SnapSection';
@@ -8,13 +8,6 @@ import { ExpandableCard } from './ui/ExpandableCard';
 import { AccordionGroup, CollapsibleSection } from './ui/AccordionGroup';
 import { InteractiveSwatchPicker, InteractiveTypography } from './ui/InteractiveSwatchPicker';
 import { TransformingColorPalette } from './ui/TransformingColorPalette';
-import { TokenHierarchyDiagram } from './ui/TokenHierarchyDiagram';
-import { ThemeSwitchVisualization } from './ui/ThemeSwitchVisualization';
-import { SpacingScaleVisualization } from './ui/SpacingScaleVisualization';
-import { ElevationSystemVisualization } from './ui/ElevationSystemVisualization';
-import { RadiusShowcase } from './ui/RadiusShowcase';
-import { MotionTimingLab } from './ui/MotionTimingLab';
-import { GlassmorphismPlayground } from './ui/GlassmorphismPlayground';
 import {
   heroStats,
   genesisTimeline,
@@ -1782,7 +1775,77 @@ export function PsoriAssistCase() {
             <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '0.5rem' }}>
               Spacing System
             </h3>
-            <SpacingScaleVisualization />
+            <div style={{
+              background: 'var(--glass-03)',
+              borderRadius: 16,
+              padding: '1.5rem',
+              border: '1px solid var(--border-primary)',
+            }}>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'auto 1fr auto',
+                gap: '0.75rem',
+                alignItems: 'center',
+              }}>
+                {[
+                  { token: '--space-4', px: 16 },
+                  { token: '--space-8', px: 32 },
+                  { token: '--space-11', px: 44, accessible: true },
+                  { token: '--space-12', px: 48, accessible: true },
+                  { token: '--space-16', px: 64, accessible: true },
+                ].map(space => (
+                  <React.Fragment key={space.token}>
+                    <span style={{
+                      fontSize: '0.75rem',
+                      fontFamily: 'monospace',
+                      color: 'var(--text-60)',
+                      minWidth: 90,
+                    }}>
+                      {space.token}
+                    </span>
+                    <div style={{
+                      height: 16,
+                      width: Math.min(space.px * 2, 200),
+                      background: space.accessible
+                        ? 'linear-gradient(90deg, #50C878, #2DD4BF)'
+                        : 'linear-gradient(90deg, var(--text-30), var(--text-20))',
+                      borderRadius: 4,
+                    }} />
+                    <span style={{
+                      fontSize: '0.75rem',
+                      color: 'var(--text-50)',
+                      minWidth: 40,
+                    }}>
+                      {space.px}px
+                    </span>
+                  </React.Fragment>
+                ))}
+              </div>
+              <div style={{
+                marginTop: '1.25rem',
+                padding: '0.75rem 1rem',
+                borderRadius: 8,
+                background: 'rgba(80, 200, 120, 0.08)',
+                border: '1px solid rgba(80, 200, 120, 0.2)',
+              }}>
+                <div style={{
+                  fontSize: '0.7rem',
+                  fontWeight: 600,
+                  color: '#50C878',
+                  marginBottom: '0.25rem',
+                }}>
+                  Healthcare Accessibility
+                </div>
+                <div style={{
+                  fontSize: '0.7rem',
+                  color: 'var(--text-60)',
+                  lineHeight: 1.5,
+                }}>
+                  Touch targets 44px+ ensure comfortable interaction for users with motor impairments.
+                  PsoriAssist uses --space-11 (44px) minimum for all interactive elements.
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Elevation System */}
@@ -1790,7 +1853,53 @@ export function PsoriAssistCase() {
             <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '0.5rem' }}>
               Elevation & Depth
             </h3>
-            <ElevationSystemVisualization />
+            <div style={{
+              background: 'var(--glass-03)',
+              borderRadius: 16,
+              padding: '1.5rem',
+              border: '1px solid var(--border-primary)',
+            }}>
+              <div style={{
+                display: 'flex',
+                gap: '1.5rem',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+              }}>
+                {[
+                  { name: 'None', shadow: 'none', useCase: 'Base surface' },
+                  { name: 'Subtle', shadow: '0 1px 2px rgba(0, 0, 0, 0.05)', useCase: 'Input fields' },
+                  { name: 'Default', shadow: '0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)', useCase: 'Cards' },
+                  { name: 'Elevated', shadow: '0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06)', useCase: 'Dropdowns' },
+                  { name: 'High', shadow: '0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05)', useCase: 'Modals' },
+                ].map(level => (
+                  <div key={level.name} style={{ textAlign: 'center' }}>
+                    <div style={{
+                      width: 80,
+                      height: 60,
+                      background: 'var(--glass-95)',
+                      borderRadius: 8,
+                      boxShadow: level.shadow,
+                      border: '1px solid var(--border-primary)',
+                      marginBottom: '0.5rem',
+                    }} />
+                    <div style={{
+                      fontSize: '0.7rem',
+                      color: 'var(--text-60)',
+                      fontWeight: 600,
+                      marginBottom: '0.25rem',
+                    }}>
+                      {level.name}
+                    </div>
+                    <div style={{
+                      fontSize: '0.65rem',
+                      color: 'var(--text-40)',
+                    }}>
+                      {level.useCase}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Border Radius */}
@@ -1798,7 +1907,51 @@ export function PsoriAssistCase() {
             <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '0.5rem' }}>
               Corner Radius System
             </h3>
-            <RadiusShowcase />
+            <div style={{
+              background: 'var(--glass-03)',
+              borderRadius: 16,
+              padding: '1.5rem',
+              border: '1px solid var(--border-primary)',
+            }}>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
+                gap: '1rem',
+              }}>
+                {[
+                  { name: 'None', value: 0 },
+                  { name: 'Small', value: 4 },
+                  { name: 'Medium', value: 8 },
+                  { name: 'Large', value: 16 },
+                  { name: 'XLarge', value: 24 },
+                  { name: 'Full', value: 9999 },
+                ].map(radius => (
+                  <div key={radius.name} style={{ textAlign: 'center' }}>
+                    <div style={{
+                      width: 60,
+                      height: 60,
+                      background: 'linear-gradient(135deg, #4A90E2, #50C878)',
+                      borderRadius: radius.value === 9999 ? '50%' : radius.value,
+                      margin: '0 auto 0.5rem',
+                    }} />
+                    <div style={{
+                      fontSize: '0.7rem',
+                      color: 'var(--text-60)',
+                      marginBottom: '0.15rem',
+                    }}>
+                      {radius.name}
+                    </div>
+                    <div style={{
+                      fontSize: '0.65rem',
+                      fontFamily: 'monospace',
+                      color: 'var(--text-40)',
+                    }}>
+                      {radius.value === 9999 ? '50%' : `${radius.value}px`}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Motion System */}
@@ -1806,31 +1959,266 @@ export function PsoriAssistCase() {
             <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '0.5rem' }}>
               Motion & Animation
             </h3>
-            <MotionTimingLab />
+            <div style={{
+              background: 'var(--glass-03)',
+              borderRadius: 16,
+              padding: '1.5rem',
+              border: '1px solid var(--border-primary)',
+            }}>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                gap: '1rem',
+              }}>
+                {[
+                  { name: 'Ease Out', curve: 'cubic-bezier(0.22, 1, 0.36, 1)', duration: '0.4s', use: 'Entering elements' },
+                  { name: 'Spring', curve: 'cubic-bezier(0.5, 1.5, 0.5, 1)', duration: '0.6s', use: 'Playful interactions' },
+                  { name: 'Ease In Out', curve: 'cubic-bezier(0.45, 0, 0.55, 1)', duration: '0.3s', use: 'State transitions' },
+                  { name: 'Bounce', curve: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)', duration: '0.5s', use: 'Success feedback' },
+                ].map(motion => (
+                  <div key={motion.name} style={{
+                    padding: '0.75rem',
+                    background: 'var(--glass-05)',
+                    borderRadius: 8,
+                    border: '1px solid var(--border-primary)',
+                  }}>
+                    <div style={{
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      color: 'var(--text-70)',
+                      marginBottom: '0.25rem',
+                    }}>
+                      {motion.name}
+                    </div>
+                    <div style={{
+                      fontSize: '0.65rem',
+                      fontFamily: 'monospace',
+                      color: 'var(--text-50)',
+                      marginBottom: '0.35rem',
+                      lineHeight: 1.4,
+                    }}>
+                      {motion.curve}
+                    </div>
+                    <div style={{
+                      fontSize: '0.65rem',
+                      color: 'var(--text-40)',
+                      marginBottom: '0.15rem',
+                    }}>
+                      Duration: {motion.duration}
+                    </div>
+                    <div style={{
+                      fontSize: '0.65rem',
+                      color: 'var(--text-40)',
+                    }}>
+                      Use: {motion.use}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Glassmorphism */}
           <div style={{ marginBottom: '2.5rem' }}>
             <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '0.5rem' }}>
-              Glassmorphism Playground
+              Glassmorphism
             </h3>
-            <GlassmorphismPlayground />
+            <div style={{
+              background: 'var(--glass-03)',
+              borderRadius: 16,
+              padding: '1.5rem',
+              border: '1px solid var(--border-primary)',
+            }}>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+                gap: '1rem',
+              }}>
+                {[
+                  { name: 'Subtle', blur: 20, opacity: 0.05, saturation: 140 },
+                  { name: 'Standard', blur: 80, opacity: 0.08, saturation: 180 },
+                  { name: 'Strong', blur: 120, opacity: 0.12, saturation: 200 },
+                ].map(glass => (
+                  <div key={glass.name} style={{
+                    padding: '1.5rem',
+                    background: `rgba(255,255,255,${glass.opacity})`,
+                    backdropFilter: `blur(${glass.blur}px) saturate(${glass.saturation}%)`,
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    borderRadius: 12,
+                    textAlign: 'center',
+                  }}>
+                    <div style={{
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      color: 'var(--text-80)',
+                      marginBottom: '0.35rem',
+                    }}>
+                      {glass.name}
+                    </div>
+                    <div style={{
+                      fontSize: '0.65rem',
+                      color: 'var(--text-50)',
+                      fontFamily: 'monospace',
+                      lineHeight: 1.4,
+                    }}>
+                      {glass.blur}px blur<br />
+                      {glass.saturation}% sat<br />
+                      {(glass.opacity * 100).toFixed(0)}% opacity
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Token Architecture - Three-tier system */}
-          <div style={{ marginTop: '2.5rem', marginBottom: '2.5rem' }}>
-            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '0.5rem' }}>
-              Token Architecture
-            </h3>
-            <TokenHierarchyDiagram />
-          </div>
+        </div>
+      </SnapSection>
 
-          {/* Adaptive Theming - Light/Dark mode */}
-          <div style={{ marginBottom: '2rem' }}>
-            <h3 style={{ fontSize: '1rem', color: 'var(--text-70)', marginBottom: '0.5rem' }}>
-              Adaptive Theming
-            </h3>
-            <ThemeSwitchVisualization />
+      {/* ===== SECTION 11.5: UI COMPONENTS ===== */}
+      <SnapSection id="components">
+        <div style={{ maxWidth: 1100, width: '100%' }}>
+          <motion.h2
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            style={{
+              fontSize: isMobile ? '2rem' : '3rem',
+              fontWeight: 200,
+              color: 'var(--text-90)',
+              marginBottom: '0.5rem',
+              textAlign: 'center',
+            }}
+          >
+            UI Components
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            style={{
+              fontSize: '1.1rem',
+              color: 'var(--text-50)',
+              textAlign: 'center',
+              marginBottom: '2.5rem',
+            }}
+          >
+            Reusable components from the PsoriAssist iOS prototype
+          </motion.p>
+
+          {/* Component showcase grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '2rem',
+            marginBottom: '2rem',
+          }}>
+            {/* InteractiveSwatchPicker */}
+            <div style={{
+              background: 'var(--glass-03)',
+              borderRadius: 16,
+              padding: '1.5rem',
+              border: '1px solid var(--border-primary)',
+            }}>
+              <h3 style={{
+                fontSize: '1rem',
+                color: 'var(--text-70)',
+                marginBottom: '0.5rem',
+              }}>
+                Interactive Swatch Picker
+              </h3>
+              <p style={{
+                fontSize: '0.75rem',
+                color: 'var(--text-50)',
+                marginBottom: '1rem',
+                lineHeight: 1.5,
+              }}>
+                Color selection with real-time contrast checking and accessibility validation
+              </p>
+              <InteractiveSwatchPicker
+                colors={[
+                  { id: 'primary', name: 'Primary', hex: '#4A90E2', rgb: '74, 144, 226', contrast: '4.5:1', use: 'Calming blue - Reduces anxiety' },
+                  { id: 'secondary', name: 'Secondary', hex: '#50C878', rgb: '80, 200, 120', contrast: '3.8:1', use: 'Success green - Progress indicators' },
+                  { id: 'accent', name: 'Accent', hex: '#FFB84D', rgb: '255, 184, 77', contrast: '4.2:1', use: 'Warm highlight - Calls-to-action' },
+                  { id: 'alert', name: 'Alert', hex: '#E74C3C', rgb: '231, 76, 60', contrast: '4.8:1', use: 'Alert red - Urgent notifications' },
+                ]}
+                defaultSelectedId="primary"
+              />
+            </div>
+
+            {/* ExpandableCard */}
+            <div style={{
+              background: 'var(--glass-03)',
+              borderRadius: 16,
+              padding: '1.5rem',
+              border: '1px solid var(--border-primary)',
+            }}>
+              <h3 style={{
+                fontSize: '1rem',
+                color: 'var(--text-70)',
+                marginBottom: '0.5rem',
+              }}>
+                Expandable Card
+              </h3>
+              <p style={{
+                fontSize: '0.75rem',
+                color: 'var(--text-50)',
+                marginBottom: '1rem',
+                lineHeight: 1.5,
+              }}>
+                Inline and modal expansion modes for content hierarchy
+              </p>
+              <ExpandableCard
+                id="medication-demo"
+                title="Medication Details"
+                subtitle="Methotrexate 15mg weekly"
+                expandMode="inline"
+              >
+                <div style={{ padding: '1rem', fontSize: '0.75rem', color: 'var(--text-60)' }}>
+                  Dosage: 15mg once weekly<br />
+                  Last taken: 2 days ago<br />
+                  Next dose: In 5 days<br />
+                  Side effects: Mild nausea
+                </div>
+              </ExpandableCard>
+            </div>
+
+            {/* AccordionGroup */}
+            <div style={{
+              background: 'var(--glass-03)',
+              borderRadius: 16,
+              padding: '1.5rem',
+              border: '1px solid var(--border-primary)',
+            }}>
+              <h3 style={{
+                fontSize: '1rem',
+                color: 'var(--text-70)',
+                marginBottom: '0.5rem',
+              }}>
+                Accordion
+              </h3>
+              <p style={{
+                fontSize: '0.75rem',
+                color: 'var(--text-50)',
+                marginBottom: '1rem',
+                lineHeight: 1.5,
+              }}>
+                Collapsible sections for progressive disclosure
+              </p>
+              <AccordionGroup
+                items={[
+                  {
+                    id: 'pasi',
+                    title: 'PASI Score Explanation',
+                    content: (
+                      <div style={{ padding: '1rem', fontSize: '0.75rem', color: 'var(--text-60)', lineHeight: 1.5 }}>
+                        The PASI (Psoriasis Area and Severity Index) score ranges from 0-72.
+                        It measures redness, thickness, and scaling across four body regions.
+                      </div>
+                    ),
+                  },
+                ]}
+                allowMultiple={false}
+                defaultOpenId={null}
+              />
+            </div>
           </div>
         </div>
       </SnapSection>

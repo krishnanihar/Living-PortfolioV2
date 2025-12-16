@@ -59,9 +59,8 @@ export const SnapSection = forwardRef<HTMLElement, SnapSectionProps>(
         ref={ref}
         id={id}
         className={`snap-section ${className}`}
-        initial="hidden"
         whileInView="visible"
-        viewport={{ amount: 0.2 }}
+        viewport={{ once: true, amount: 0.2 }}
         variants={sectionVariants}
         style={{
           minHeight: fullHeight ? '100vh' : 'auto',

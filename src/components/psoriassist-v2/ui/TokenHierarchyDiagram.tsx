@@ -206,7 +206,7 @@ export function TokenHierarchyDiagram() {
             strokeWidth={highlightedPath === 'semantic' ? 2 : 1}
             fill="none"
             initial={{ pathLength: 0 }}
-            animate={isInView ? { pathLength: 1 } : { pathLength: 0 }}
+            animate={{ pathLength: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           />
 
@@ -217,7 +217,7 @@ export function TokenHierarchyDiagram() {
             strokeWidth={highlightedPath === 'semantic' ? 2 : 1}
             fill="none"
             initial={{ pathLength: 0 }}
-            animate={isInView ? { pathLength: 1 } : { pathLength: 0 }}
+            animate={{ pathLength: 1 }}
             transition={{ duration: 0.5, delay: 0.6 }}
           />
 
@@ -226,7 +226,7 @@ export function TokenHierarchyDiagram() {
             points="675,76 685,80 675,84"
             fill={highlightedPath === 'semantic' ? '#4A90E2' : 'var(--text-20)'}
             initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.2, delay: 1 }}
           />
 
@@ -237,7 +237,7 @@ export function TokenHierarchyDiagram() {
             strokeWidth={highlightedPath === 'component' ? 2 : 1}
             fill="none"
             initial={{ pathLength: 0 }}
-            animate={isInView ? { pathLength: 1 } : { pathLength: 0 }}
+            animate={{ pathLength: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           />
 
@@ -248,7 +248,7 @@ export function TokenHierarchyDiagram() {
             strokeWidth={highlightedPath === 'component' ? 2 : 1}
             fill="none"
             initial={{ pathLength: 0 }}
-            animate={isInView ? { pathLength: 1 } : { pathLength: 0 }}
+            animate={{ pathLength: 1 }}
             transition={{ duration: 0.5, delay: 0.8 }}
           />
 
@@ -257,7 +257,7 @@ export function TokenHierarchyDiagram() {
             points="675,176 685,180 675,184"
             fill={highlightedPath === 'component' ? '#50C878' : 'var(--text-20)'}
             initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.2, delay: 1.2 }}
           />
         </svg>

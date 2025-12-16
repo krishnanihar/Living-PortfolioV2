@@ -138,11 +138,11 @@ export function ElevationSystemVisualization() {
               <motion.div
                 key={level.id}
                 initial={{ opacity: 0, y: 50 }}
-                animate={isInView ? {
+                animate={{
                   opacity: 1,
                   y: isHovered ? -level.zOffset - 10 : -level.zOffset,
                   scale: isSelected ? 1.02 : 1,
-                } : { opacity: 0, y: 50 }}
+                }}
                 transition={{
                   duration: 0.4,
                   delay: index * 0.08,

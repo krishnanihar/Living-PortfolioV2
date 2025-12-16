@@ -77,7 +77,7 @@ function ConnectingLine({
           strokeWidth={1}
           fill="none"
           initial={{ pathLength: 0 }}
-          animate={isInView ? { pathLength: 1 } : { pathLength: 0 }}
+          animate={{ pathLength: 1 }}
           transition={{ duration: 0.4, delay }}
         />
         <motion.circle
@@ -86,7 +86,7 @@ function ConnectingLine({
           r="3"
           fill={strokeColor}
           initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.2, delay: delay + 0.3 }}
         />
       </svg>
@@ -101,14 +101,14 @@ function ConnectingLine({
         strokeWidth={1}
         fill="none"
         initial={{ pathLength: 0 }}
-        animate={isInView ? { pathLength: 1 } : { pathLength: 0 }}
+        animate={{ pathLength: 1 }}
         transition={{ duration: 0.3, delay }}
       />
       <motion.polygon
         points="16,25 20,32 24,25"
         fill={strokeColor}
         initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.2, delay: delay + 0.2 }}
       />
     </svg>
@@ -220,7 +220,7 @@ export function ThemeSwitchVisualization() {
           {/* Merge dot */}
           <motion.div
             initial={{ scale: 0 }}
-            animate={isInView ? { scale: 1 } : { scale: 0 }}
+            animate={{ scale: 1 }}
             transition={{ duration: 0.3, delay: 0.6 }}
             style={{
               position: 'absolute',
