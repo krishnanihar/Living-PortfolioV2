@@ -63,8 +63,8 @@ export function PsoriAssistHeroCard() {
           inset: 0,
         }}
       >
-        <div className="atropos-scale" style={{ height: '100%' }}>
-          <div className="atropos-rotate" style={{ height: '100%' }}>
+        <div className="atropos-scale" style={{ height: '100%', pointerEvents: 'none' }}>
+          <div className="atropos-rotate" style={{ height: '100%', pointerEvents: 'none' }}>
             <div className="atropos-inner" style={{ width: '100%', height: '100%', position: 'relative' }}>
               {/* Editorial Number "02" (behind everything) */}
               <div
@@ -133,27 +133,36 @@ export function PsoriAssistHeroCard() {
                 />
               </div>
 
-              {/* Floating Glass Panel (foreground) */}
+              {/* Centered Content Card - Liquid Glass (Static, No Parallax) */}
               <div
-                data-atropos-offset="4"
                 style={{
                   position: 'absolute',
-                  bottom: isMobile ? '18%' : '15%',
-                  right: isMobile ? '5%' : '8%',
-                  width: isMobile ? '90%' : 'clamp(340px, 32vw, 420px)',
-                  background: `linear-gradient(135deg, var(--glass-04) 0%, var(--glass-02) 50%, var(--glass-03) 100%), var(--overlay-65)`,
-                  backdropFilter: 'blur(40px) saturate(180%)',
-                  WebkitBackdropFilter: 'blur(40px) saturate(180%)',
-                  border: '1px solid rgba(80, 200, 120, 0.2)', // Green accent
-                  borderRadius: '32px',
-                  padding: isMobile ? '1.75rem' : '2.25rem',
-                  boxShadow: `
-                    0 32px 64px var(--overlay-20),
-                    0 0 0 1px var(--glass-05),
-                    inset 0 1px 0 var(--glass-10),
-                    0 0 80px rgba(80, 200, 120, 0.08)
-                  `,
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
                   zIndex: 10,
+                  width: '90%',
+                  maxWidth: '580px',
+                  padding: isMobile ? '2rem' : '2.5rem 3rem',
+                  pointerEvents: 'auto', // CRITICAL: Enable clicking on content
+                  // Theme-aware glassmorphism
+                  background: `
+                    linear-gradient(135deg, var(--glass-04) 0%, var(--glass-02) 50%, var(--glass-03) 100()),
+                    var(--overlay-45)
+                  `,
+                  backdropFilter: 'blur(60px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(60px) saturate(180%)',
+                  borderRadius: '32px',
+                  border: '1px solid var(--glass-04)',
+                  // Theme-aware shadows
+                  boxShadow: `
+                    0 40px 80px var(--overlay-20),
+                    0 20px 40px var(--overlay-15),
+                    inset 0 1px 0 var(--glass-05),
+                    inset 0 0 20px var(--overlay-10)
+                  `,
+                  textAlign: 'center',
+                  overflow: 'hidden',
                 }}
               >
                 {/* Category Tag */}
@@ -195,6 +204,7 @@ export function PsoriAssistHeroCard() {
                   flexWrap: 'wrap',
                   gap: '0.5rem',
                   marginBottom: '1.5rem',
+                  justifyContent: 'center',
                 }}>
                   {['React Native', 'Python', 'TensorFlow', 'iOS'].map(tech => (
                     <span
