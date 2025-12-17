@@ -10,7 +10,6 @@ import { Chatbot } from '../Chatbot';
 import Atropos from 'atropos';
 import 'atropos/css';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
-import { PsoriAssistHeroCard } from '../narrative-work/PsoriAssistHeroCard';
 
 interface AboutSectionV2Props {
   className?: string;
@@ -1549,9 +1548,6 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
             scrollTo={scrollTo}
           />
         ))}
-
-        {/* PsoriAssist Hero Card */}
-        <PsoriAssistHeroCard />
 
         {/* Full-Screen View All Work Card */}
         <div
