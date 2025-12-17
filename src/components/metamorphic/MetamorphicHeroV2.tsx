@@ -1,19 +1,44 @@
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
+import Image from 'next/image';
 import { ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { InteractiveGridBackground } from './InteractiveGridBackground';
+import Atropos from 'atropos';
+import 'atropos/css';
 
 /**
- * MetamorphicHeroV2 - Anime.js-Inspired Hero Section
+ * MetamorphicHeroV2 - Air India-Style 3D Parallax Hero
  *
  * Full-viewport hero with:
- * - Interactive dot grid background (like animejs.com)
- * - Stagger-animated title and subtitle
- * - Scroll indicator with pulse animation
- * - Dark purple gradient overlay
+ * - 3D parallax image layers using Atropos
+ * - Glassmorphic centered content card
+ * - Purple accent theme integration
+ * - Smooth scroll indicator
  */
+
+// Shimmer placeholder for image loading
+const shimmer = (w: number, h: number) => `
+<svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="g">
+      <stop stop-color="#1a1a1a" offset="20%" />
+      <stop stop-color="#2a2a2a" offset="50%" />
+      <stop stop-color="#1a1a1a" offset="70%" />
+    </linearGradient>
+  </defs>
+  <rect width="${w}" height="${h}" fill="#1a1a1a" />
+  <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
+  <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
+</svg>`;
+
+const toBase64 = (str: string) =>
+  typeof window === 'undefined'
+    ? Buffer.from(str).toString('base64')
+    : window.btoa(str);
+
+const blurDataURL = (w: number, h: number) =>
+  `data:image/svg+xml;base64,${toBase64(shimmer(w, h))}`;
 
 interface MetamorphicHeroV2Props {
   /** Callback when CTA is clicked */
@@ -22,15 +47,16 @@ interface MetamorphicHeroV2Props {
 
 export function MetamorphicHeroV2({ onEnterPortal }: MetamorphicHeroV2Props) {
   const [isClient, setIsClient] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [inView, setInView] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Atropos refs
+  const atroposRef = useRef<HTMLDivElement>(null);
+  const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
 
   // Initialize client-side state
   useEffect(() => {
     setIsClient(true);
-    setPrefersReducedMotion(
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    );
     setIsMobile(window.innerWidth < 768);
 
     const handleResize = () => {
@@ -39,6 +65,29 @@ export function MetamorphicHeroV2({ onEnterPortal }: MetamorphicHeroV2Props) {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Initialize Atropos 3D parallax
+  useEffect(() => {
+    if (atroposRef.current && !isMobile && isClient) {
+      atroposInstance.current = Atropos({
+        el: atroposRef.current,
+        activeOffset: 60,
+        rotateXMax: 1,
+        rotateYMax: 1,
+        shadow: false,
+        highlight: false,
+        duration: 300,
+        alwaysActive: false,
+        commonOrigin: true,
+      });
+    }
+
+    return () => {
+      if (atroposInstance.current) {
+        atroposInstance.current.destroy();
+      }
+    };
+  }, [isMobile, isClient]);
 
   const handleScrollDown = () => {
     if (onEnterPortal) {
@@ -51,38 +100,11 @@ export function MetamorphicHeroV2({ onEnterPortal }: MetamorphicHeroV2Props) {
     }
   };
 
-  // Title text for character animation
-  const title = 'Metamorphic Fractal Reflections';
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.025,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const charVariants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.22, 1, 0.36, 1],
-      },
-    },
-  };
-
   if (!isClient) {
     return (
       <section
         style={{
-          minHeight: '100vh',
+          height: '100vh',
           background: 'var(--metamorphic-bg-primary)',
         }}
       />
@@ -90,201 +112,326 @@ export function MetamorphicHeroV2({ onEnterPortal }: MetamorphicHeroV2Props) {
   }
 
   return (
-    <section
+    <header
       id="metamorphic-hero"
       style={{
-        position: 'relative',
-        minHeight: '100vh',
+        height: '100vh',
+        width: '100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        position: 'relative',
+        zIndex: 1,
         overflow: 'hidden',
-        background: `linear-gradient(180deg,
-          var(--metamorphic-bg-primary) 0%,
-          var(--metamorphic-bg-secondary) 50%,
-          var(--metamorphic-bg-primary) 100%)`,
       }}
     >
-      {/* Interactive grid background */}
-      <InteractiveGridBackground
-        cols={isMobile ? 15 : 25}
-        rows={isMobile ? 12 : 15}
-        highlightRadius={isMobile ? 100 : 150}
-        zIndex={1}
-      />
-
-      {/* Gradient overlay */}
+      {/* Atropos Container - 3D Parallax Wrapper */}
       <div
+        ref={atroposRef}
+        className="atropos"
         style={{
           position: 'absolute',
           inset: 0,
-          zIndex: 2,
-          background: `radial-gradient(ellipse at center,
-            rgba(147, 51, 234, 0.08) 0%,
-            transparent 50%)`,
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* Content */}
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 3,
-          textAlign: 'center',
-          padding: isMobile ? '0 1.5rem' : '0 2rem',
-          maxWidth: '900px',
-          pointerEvents: 'none',
         }}
       >
-        {/* Category label */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          style={{ marginBottom: '1.5rem' }}
-        >
-          <span
-            style={{
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--text-50)',
-              padding: '0.5rem 1rem',
-              borderRadius: '100px',
-              background: 'var(--glass-05)',
-              border: '1px solid var(--glass-10)',
-            }}
-          >
-            Immersive Installation • NID 2023
-          </span>
-        </motion.div>
+        <div className="atropos-scale" style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
+          <div className="atropos-rotate" style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
+            <div className="atropos-inner" style={{ width: '100%', height: '100%', position: 'relative' }}>
 
-        {/* Title with character stagger */}
-        <motion.h1
-          variants={prefersReducedMotion ? undefined : containerVariants}
-          initial="hidden"
-          animate="visible"
-          style={{
-            fontSize: isMobile
-              ? 'clamp(2rem, 8vw, 3rem)'
-              : 'clamp(2.5rem, 5vw, 4rem)',
-            fontWeight: 200,
-            letterSpacing: '-0.03em',
-            lineHeight: 1.1,
-            color: 'var(--text-95)',
-            marginBottom: '1.5rem',
-            fontFamily: 'var(--font-space-grotesk)',
-          }}
-        >
-          {prefersReducedMotion
-            ? title
-            : title.split('').map((char, i) => (
-                <motion.span
-                  key={i}
-                  variants={charVariants}
-                  style={{ display: 'inline-block' }}
+              {/* LAYER 1: Background Image - Furthest Back */}
+              <div
+                data-atropos-offset="-8"
+                style={{
+                  position: 'absolute',
+                  inset: '-10%',
+                  zIndex: 1,
+                  overflow: 'hidden',
+                }}
+              >
+                <Image
+                  src="/images/meta_back.png"
+                  alt="Metamorphic background - bathroom installation"
+                  fill
+                  priority
+                  placeholder="blur"
+                  blurDataURL={blurDataURL(1920, 1080)}
+                  style={{
+                    objectFit: 'cover',
+                    objectPosition: 'center 40%',
+                    transform: 'scale(1.2)',
+                  }}
+                  quality={95}
+                />
+              </div>
+
+              {/* LAYER 2: Foreground Image - Closer */}
+              <div
+                data-atropos-offset="0"
+                style={{
+                  position: 'absolute',
+                  inset: '-10%',
+                  zIndex: 2,
+                  overflow: 'hidden',
+                }}
+              >
+                <Image
+                  src="/images/meta_front.png"
+                  alt="Metamorphic foreground - mirror installation"
+                  fill
+                  placeholder="blur"
+                  blurDataURL={blurDataURL(1920, 1080)}
+                  style={{
+                    objectFit: 'cover',
+                    objectPosition: 'center 40%',
+                    transform: 'scale(1.2)',
+                  }}
+                  quality={95}
+                />
+              </div>
+
+              {/* Purple Gradient Overlay */}
+              <div
+                data-atropos-offset="-3"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  zIndex: 3,
+                  background: `radial-gradient(ellipse at center,
+                    rgba(147, 51, 234, 0.15) 0%,
+                    transparent 60%)`,
+                  pointerEvents: 'none',
+                }}
+              />
+
+              {/* Bottom Fade - Theme-aware blend */}
+              <div
+                data-atropos-offset="-2"
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: '50%',
+                  background: 'linear-gradient(to top, var(--metamorphic-bg-primary) 0%, var(--metamorphic-bg-primary) 25%, transparent 100%)',
+                  pointerEvents: 'none',
+                  zIndex: 4,
+                }}
+              />
+
+              {/* Centered Content Card - Glassmorphism */}
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  zIndex: 10,
+                  width: '90%',
+                  maxWidth: '580px',
+                  padding: isMobile ? '2rem' : '2.5rem 3rem',
+                  pointerEvents: 'auto',
+                  // Glassmorphism
+                  background: `
+                    linear-gradient(135deg, var(--glass-04) 0%, var(--glass-02) 50%, var(--glass-03) 100%),
+                    var(--overlay-45)
+                  `,
+                  backdropFilter: 'blur(60px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(60px) saturate(180%)',
+                  borderRadius: '32px',
+                  border: '1px solid var(--glass-04)',
+                  boxShadow: `
+                    0 40px 80px var(--overlay-20),
+                    0 20px 40px var(--overlay-15),
+                    inset 0 1px 0 var(--glass-05),
+                    inset 0 0 20px var(--overlay-10)
+                  `,
+                  textAlign: 'center',
+                  overflow: 'hidden',
+                }}
+              >
+                {/* Gradient Border Overlay */}
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: '32px',
+                  padding: '1px',
+                  background: 'linear-gradient(135deg, var(--glass-06) 0%, var(--glass-02) 50%, var(--glass-04) 100%)',
+                  WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                  WebkitMaskComposite: 'xor',
+                  maskComposite: 'exclude',
+                  pointerEvents: 'none',
+                }} />
+
+                {/* Top Highlight */}
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: '10%',
+                  right: '10%',
+                  height: '1px',
+                  background: 'linear-gradient(90deg, transparent, rgba(147, 51, 234, 0.3), transparent)',
+                  pointerEvents: 'none',
+                }} />
+
+                {/* Eyebrow */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                  style={{
+                    fontSize: '0.6875rem',
+                    fontWeight: '500',
+                    color: 'var(--text-muted)',
+                    letterSpacing: '0.15em',
+                    textTransform: 'uppercase',
+                    marginBottom: '1rem',
+                  }}
                 >
-                  {char === ' ' ? '\u00A0' : char}
-                </motion.span>
-              ))}
-        </motion.h1>
+                  Case Study
+                </motion.div>
 
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          style={{
-            fontSize: isMobile ? '1.125rem' : '1.375rem',
-            fontWeight: 300,
-            fontStyle: 'italic',
-            color: 'var(--text-60)',
-            marginBottom: '2.5rem',
-          }}
-        >
-          A Journey Towards Ego Death
-        </motion.p>
+                {/* Purple Accent Icon */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={inView ? { opacity: 1, scale: 1 } : {}}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '0.75rem',
+                    marginBottom: '1.5rem',
+                  }}
+                >
+                  {/* Purple Fractal Icon */}
+                  <div
+                    style={{
+                      width: '64px',
+                      height: '64px',
+                      borderRadius: '16px',
+                      background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(147, 51, 234, 0.1))',
+                      border: '1px solid rgba(147, 51, 234, 0.3)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '1.75rem',
+                    }}
+                  >
+                    ◇
+                  </div>
+                </motion.div>
 
-        {/* CTA Button */}
-        <motion.button
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 1.1 }}
-          onClick={handleScrollDown}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.98 }}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.75rem',
-            padding: '1rem 2rem',
-            fontSize: '0.9375rem',
-            fontWeight: 500,
-            color: 'var(--text-95)',
-            background: 'rgba(147, 51, 234, 0.15)',
-            border: '1px solid rgba(147, 51, 234, 0.3)',
-            borderRadius: '100px',
-            cursor: 'pointer',
-            transition: 'background 0.3s, border-color 0.3s',
-            pointerEvents: 'auto',
-          }}
-        >
-          Enter the Portal
-          <ChevronDown size={18} />
-        </motion.button>
+                {/* Title */}
+                <motion.h1
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.7, delay: 0.7 }}
+                  style={{
+                    fontSize: isMobile
+                      ? 'clamp(1.75rem, 6vw, 2.25rem)'
+                      : 'clamp(2rem, 4vw, 2.75rem)',
+                    fontWeight: 200,
+                    letterSpacing: '-0.02em',
+                    lineHeight: 1.15,
+                    color: 'var(--text-95)',
+                    marginBottom: '1rem',
+                    fontFamily: 'var(--font-space-grotesk)',
+                  }}
+                >
+                  Metamorphic Fractal Reflections
+                </motion.h1>
+
+                {/* Subtitle */}
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: 0.85 }}
+                  style={{
+                    fontSize: isMobile ? '1rem' : '1.125rem',
+                    fontWeight: 300,
+                    color: 'var(--text-60)',
+                    marginBottom: '1.5rem',
+                    lineHeight: 1.5,
+                  }}
+                >
+                  An immersive installation exploring consciousness through ego dissolution
+                </motion.p>
+
+                {/* Meta Info */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: 1 }}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: '1.5rem',
+                    flexWrap: 'wrap',
+                    marginBottom: '1.5rem',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: '0.8125rem',
+                      fontWeight: 400,
+                      color: 'var(--text-50)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                    }}
+                  >
+                    <span style={{ color: 'rgba(147, 51, 234, 0.8)' }}>●</span>
+                    NID 2023
+                  </span>
+                  <span
+                    style={{
+                      fontSize: '0.8125rem',
+                      fontWeight: 400,
+                      color: 'var(--text-50)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                    }}
+                  >
+                    <span style={{ color: 'rgba(147, 51, 234, 0.8)' }}>●</span>
+                    Installation Art
+                  </span>
+                </motion.div>
+
+                {/* CTA Button */}
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={inView ? { opacity: 1, scale: 1 } : {}}
+                  transition={{ duration: 0.5, delay: 1.15 }}
+                  onClick={handleScrollDown}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.875rem 1.75rem',
+                    fontSize: '0.875rem',
+                    fontWeight: 500,
+                    color: 'var(--text-95)',
+                    background: 'rgba(147, 51, 234, 0.15)',
+                    border: '1px solid rgba(147, 51, 234, 0.3)',
+                    borderRadius: '100px',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                  }}
+                >
+                  Explore the Installation
+                  <ChevronDown size={16} />
+                </motion.button>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 1.4 }}
-        onClick={handleScrollDown}
-        style={{
-          position: 'absolute',
-          bottom: isMobile ? '2rem' : '3rem',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 3,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '0.5rem',
-          cursor: 'pointer',
-          pointerEvents: 'auto',
-        }}
-      >
-        <span
-          style={{
-            fontSize: '0.6875rem',
-            fontWeight: 500,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            color: 'var(--text-40)',
-          }}
-        >
-          Scroll to explore
-        </span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-          style={{
-            width: '32px',
-            height: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: '50%',
-            background: 'var(--glass-05)',
-            border: '1px solid var(--glass-10)',
-          }}
-        >
-          <ChevronDown size={16} style={{ color: 'var(--text-50)' }} />
-        </motion.div>
-      </motion.div>
-    </section>
+    </header>
   );
 }
 

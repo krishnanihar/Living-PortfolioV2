@@ -4,7 +4,7 @@ import React from 'react';
 import {
   MetamorphicHeroV2,
   JourneyNarrative,
-  TechnicalFlowDiagram,
+  BathroomExplodedView,
   ProcessGalleryV2,
   ExperienceFilm,
   RelatedProjectsV2,
@@ -54,8 +54,8 @@ export function MetamorphicFractalWork() {
       {/* Three-phase journey narrative */}
       <JourneyNarrative />
 
-      {/* Technical system flow */}
-      <TechnicalFlowDiagram />
+      {/* Technical system - 3D Exploded View */}
+      <BathroomExplodedView />
 
       {/* Building process gallery */}
       <ProcessGalleryV2 />

@@ -13,6 +13,7 @@ export { InteractiveGridBackground } from './InteractiveGridBackground';
 // Content sections
 export { JourneyNarrative } from './JourneyNarrative';
 export { TechnicalFlowDiagram } from './TechnicalFlowDiagram';
+export { BathroomExplodedView } from './BathroomExplodedView';
 export { ExperienceFilm } from './ExperienceFilm';
 
 // Gallery with stagger effects
