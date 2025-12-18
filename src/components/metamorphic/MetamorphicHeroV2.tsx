@@ -4,6 +4,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTheme } from 'next-themes';
 import Atropos from 'atropos';
 import 'atropos/css';
 
@@ -49,6 +50,7 @@ export function MetamorphicHeroV2({ onEnterPortal }: MetamorphicHeroV2Props) {
   const [isClient, setIsClient] = useState(false);
   const [inView, setInView] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const { resolvedTheme } = useTheme();
 
   // Atropos refs
   const atroposRef = useRef<HTMLDivElement>(null);
@@ -303,7 +305,7 @@ export function MetamorphicHeroV2({ onEnterPortal }: MetamorphicHeroV2Props) {
                     marginBottom: '1.5rem',
                   }}
                 >
-                  {/* Purple Fractal Icon */}
+                  {/* NID Logo */}
                   <div
                     style={{
                       width: '64px',
@@ -314,10 +316,18 @@ export function MetamorphicHeroV2({ onEnterPortal }: MetamorphicHeroV2Props) {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '1.75rem',
+                      padding: '12px',
                     }}
                   >
-                    ◇
+                    <Image
+                      src={resolvedTheme === 'light' ? '/logos/nid-dark.svg' : '/logos/nid-light.svg'}
+                      alt="NID Logo"
+                      width={40}
+                      height={28}
+                      style={{
+                        objectFit: 'contain',
+                      }}
+                    />
                   </div>
                 </motion.div>
 
