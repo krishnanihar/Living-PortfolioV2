@@ -320,13 +320,14 @@ export function MetamorphicHeroV2({ onEnterPortal }: MetamorphicHeroV2Props) {
                     }}
                   >
                     <Image
-                      src={resolvedTheme === 'light' ? '/logos/nid-dark.svg' : '/logos/nid-light.svg'}
+                      src={isClient && resolvedTheme === 'light' ? '/logos/nid-dark.svg' : '/logos/nid-light.svg'}
                       alt="NID Logo"
                       width={40}
                       height={28}
                       style={{
                         objectFit: 'contain',
                       }}
+                      unoptimized
                     />
                   </div>
                 </motion.div>
