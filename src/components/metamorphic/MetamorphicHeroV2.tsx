@@ -4,7 +4,6 @@ import React, { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useTheme } from 'next-themes';
 import Atropos from 'atropos';
 import 'atropos/css';
 
@@ -50,7 +49,6 @@ export function MetamorphicHeroV2({ onEnterPortal }: MetamorphicHeroV2Props) {
   const [isClient, setIsClient] = useState(false);
   const [inView, setInView] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const { resolvedTheme } = useTheme();
 
   // Atropos refs
   const atroposRef = useRef<HTMLDivElement>(null);
@@ -319,15 +317,23 @@ export function MetamorphicHeroV2({ onEnterPortal }: MetamorphicHeroV2Props) {
                       padding: '12px',
                     }}
                   >
-                    <Image
-                      src={isClient && resolvedTheme === 'light' ? '/logos/nid-dark.svg' : '/logos/nid-light.svg'}
-                      alt="NID Logo"
-                      width={40}
-                      height={28}
+                    {/* NID Logo - CSS mask for automatic theme color */}
+                    <div
+                      role="img"
+                      aria-label="NID Logo"
                       style={{
-                        objectFit: 'contain',
+                        width: '40px',
+                        height: '28px',
+                        backgroundColor: 'var(--text-90)',
+                        maskImage: 'url(/logos/nid.svg)',
+                        WebkitMaskImage: 'url(/logos/nid.svg)',
+                        maskSize: 'contain',
+                        WebkitMaskSize: 'contain',
+                        maskRepeat: 'no-repeat',
+                        WebkitMaskRepeat: 'no-repeat',
+                        maskPosition: 'center',
+                        WebkitMaskPosition: 'center',
                       }}
-                      unoptimized
                     />
                   </div>
                 </motion.div>
