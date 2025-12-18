@@ -165,11 +165,11 @@ export function Electronics({ scrollProgress }: ElectronicsProps) {
         <meshBasicMaterial color={cableColors[2]} transparent opacity={0.8} />
       </mesh>
 
-      {/* Floating labels */}
+      {/* Floating labels - spread apart to prevent overlap */}
       <FloatingLabel
         text="Arduino Uno"
         subtext="Microcontroller"
-        position={[-0.8, 0.2, 0]}
+        position={[-1.2, 0.5, 0]}
         side="left"
         visible={shouldShowLabel(progress.current, 0.4)}
         delay={getLabelDelay(7)}
@@ -178,7 +178,7 @@ export function Electronics({ scrollProgress }: ElectronicsProps) {
       <FloatingLabel
         text="Relay Module"
         subtext="Lighting Control"
-        position={[0.9, -0.1, 0]}
+        position={[1.2, 0.2, 0]}
         side="right"
         visible={shouldShowLabel(progress.current, 0.45)}
         delay={getLabelDelay(8)}
@@ -187,7 +187,7 @@ export function Electronics({ scrollProgress }: ElectronicsProps) {
       <FloatingLabel
         text="Power Supply"
         subtext="12V DC"
-        position={[-0.6, -0.35, -0.2]}
+        position={[-1.0, -0.6, -0.2]}
         side="left"
         visible={shouldShowLabel(progress.current, 0.5)}
         delay={getLabelDelay(9)}

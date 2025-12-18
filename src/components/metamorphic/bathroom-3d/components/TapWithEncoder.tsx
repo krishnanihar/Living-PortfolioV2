@@ -130,11 +130,11 @@ export function TapWithEncoder({ scrollProgress }: TapWithEncoderProps) {
         </mesh>
       </group>
 
-      {/* Floating labels */}
+      {/* Floating labels - spread vertically to prevent overlap */}
       <FloatingLabel
         text="Water Tap"
         subtext="Chrome Finish"
-        position={[0.6, 0.3, 0]}
+        position={[0.5, 0.6, 0]}
         side="right"
         visible={shouldShowLabel(progress.current, 0.35)}
         delay={getLabelDelay(5)}
@@ -143,7 +143,7 @@ export function TapWithEncoder({ scrollProgress }: TapWithEncoderProps) {
       <FloatingLabel
         text="Rotary Encoder"
         subtext="Position Sensor"
-        position={[0.6, 0.35, -0.2]}
+        position={[0.5, -0.1, -0.2]}
         side="right"
         visible={shouldShowLabel(progress.current, 0.45)}
         delay={getLabelDelay(6)}
