@@ -203,20 +203,6 @@ export function MetamorphicHeroV2({ onEnterPortal }: MetamorphicHeroV2Props) {
                 }}
               />
 
-              {/* Bottom Fade - Theme-aware blend */}
-              <div
-                data-atropos-offset="-2"
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: '50%',
-                  background: 'linear-gradient(to top, var(--metamorphic-bg-primary) 0%, var(--metamorphic-bg-primary) 25%, transparent 100%)',
-                  pointerEvents: 'none',
-                  zIndex: 4,
-                }}
-              />
 
               {/* Centered Content Card - Glassmorphism */}
               <div
