@@ -86,7 +86,7 @@ const TOUR_STEPS = [
     title: "LET'S CONNECT",
     description: 'Ready to create something meaningful together?',
     ctas: [
-      { label: 'Contact', href: 'mailto:krishnaniharsunkara@gmail.com', icon: Mail },
+      { label: 'Contact', href: '/contact', icon: Mail },
       { label: 'LinkedIn', href: 'https://linkedin.com/in/krishnanihar', icon: Linkedin, external: true },
     ],
   },

@@ -576,7 +576,7 @@ export function IntroductionSection({
           >
             {/* Contact Button - Liquid Glass with Subtle Pink Reflection */}
             <a
-              href="mailto:krishnaniharsunkara@gmail.com"
+              href="/contact"
               onMouseEnter={() => setHoveredButton('contact')}
               onMouseLeave={() => setHoveredButton(null)}
               style={{
