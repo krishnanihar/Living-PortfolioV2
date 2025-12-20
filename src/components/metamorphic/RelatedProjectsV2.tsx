@@ -25,16 +25,17 @@ const OTHER_PROJECTS = [
     href: '/work/air-india' as const,
     color: '218, 14, 41',
   },
-  {
-    id: 2,
-    icon: Hexagon,
-    title: 'Latent Space',
-    category: 'Speculative Design',
-    description: 'Exploring dream technology ethics through design fiction.',
-    year: '2024',
-    href: '/work/latent-space' as const,
-    color: '140, 100, 255',
-  },
+  // HIDDEN: Latent Space WIP
+  // {
+  //   id: 2,
+  //   icon: Hexagon,
+  //   title: 'Latent Space',
+  //   category: 'Speculative Design',
+  //   description: 'Exploring dream technology ethics through design fiction.',
+  //   year: '2024',
+  //   href: '/work/latent-space' as const,
+  //   color: '140, 100, 255',
+  // },
   {
     id: 3,
     icon: Heart,

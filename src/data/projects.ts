@@ -268,39 +268,40 @@ export const projects: Project[] = [
     order: 10,
   },
 
-  {
-    id: 'latent-space',
-    title: 'Latent Space',
-    company: 'Personal Research',
-    description: 'A speculative exploration of dream technology through critical design. What if we could navigate our dreams while preserving the mystery of consciousness? An interactive experience exploring ethical frameworks for brain-computer interfaces and the implications of consciousness data.',
-    category: 'research',
-    status: 'concept',
-    tags: [
-      { id: 'speculative-design', label: 'Speculative Design' },
-      { id: 'neuroscience', label: 'Neuroscience' },
-      { id: 'brain-computer-interface', label: 'Brain-Computer Interface' },
-      { id: 'ethical-ai', label: 'Ethical AI' },
-      { id: 'consciousness-tech', label: 'Consciousness Tech' },
-      { id: 'interactive-prototype', label: 'Interactive Prototype' },
-      { id: 'framer-motion', label: 'Framer Motion' },
-      { id: 'critical-design', label: 'Critical Design' },
-    ],
-    meta: {
-      year: '2024',
-      role: 'Designer & Researcher',
-      team: 'Solo Project',
-      duration: 'Four months',
-    },
-    metrics: {
-      impact: '24+ design provocations, 16 ethical considerations',
-      improvement: 'Privacy-first approach to consciousness technology',
-    },
-    links: [
-      { type: 'case-study', url: '/work/latent-space', label: 'Explore the Speculation' },
-    ],
-    featured: true,
-    order: 11,
-  },
+  // HIDDEN: Latent Space WIP - uncomment when ready
+  // {
+  //   id: 'latent-space',
+  //   title: 'Latent Space',
+  //   company: 'Personal Research',
+  //   description: 'A speculative exploration of dream technology through critical design. What if we could navigate our dreams while preserving the mystery of consciousness? An interactive experience exploring ethical frameworks for brain-computer interfaces and the implications of consciousness data.',
+  //   category: 'research',
+  //   status: 'concept',
+  //   tags: [
+  //     { id: 'speculative-design', label: 'Speculative Design' },
+  //     { id: 'neuroscience', label: 'Neuroscience' },
+  //     { id: 'brain-computer-interface', label: 'Brain-Computer Interface' },
+  //     { id: 'ethical-ai', label: 'Ethical AI' },
+  //     { id: 'consciousness-tech', label: 'Consciousness Tech' },
+  //     { id: 'interactive-prototype', label: 'Interactive Prototype' },
+  //     { id: 'framer-motion', label: 'Framer Motion' },
+  //     { id: 'critical-design', label: 'Critical Design' },
+  //   ],
+  //   meta: {
+  //     year: '2024',
+  //     role: 'Designer & Researcher',
+  //     team: 'Solo Project',
+  //     duration: 'Four months',
+  //   },
+  //   metrics: {
+  //     impact: '24+ design provocations, 16 ethical considerations',
+  //     improvement: 'Privacy-first approach to consciousness technology',
+  //   },
+  //   links: [
+  //     { type: 'case-study', url: '/work/latent-space', label: 'Explore the Speculation' },
+  //   ],
+  //   featured: true,
+  //   order: 11,
+  // },
   {
     id: 'metamorphic-fractal-reflections',
     title: 'Metamorphic Fractal Reflections',

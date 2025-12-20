@@ -166,21 +166,22 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
       tags: ['TouchDesigner', 'Arduino', 'Psychedelic', 'Installation'],
       link: '/work/metamorphic-fractal-reflections',
     },
-    {
-      id: 'latent-space',
-      title: 'Latent Space',
-      category: 'Speculative Design Fiction',
-      description: 'Narrative-driven experiences exploring consciousness technology through scroll-driven storytelling and speculative prototypes',
-      image: '/images/work/latent-space-hero.jpg',
-      brandColor: { r: 59, g: 130, b: 246 },
-      year: '2024',
-      metrics: [
-        { icon: Brain, label: 'Narrative', value: '3-Act' },
-        { icon: Sparkles, label: 'Tech', value: 'WebGL' }
-      ],
-      tags: ['Speculative Design', 'Narrative', 'WebGL', 'Ethics'],
-      link: '/work/latent-space',
-    },
+    // HIDDEN: Latent Space WIP
+    // {
+    //   id: 'latent-space',
+    //   title: 'Latent Space',
+    //   category: 'Speculative Design Fiction',
+    //   description: 'Narrative-driven experiences exploring consciousness technology through scroll-driven storytelling and speculative prototypes',
+    //   image: '/images/work/latent-space-hero.jpg',
+    //   brandColor: { r: 59, g: 130, b: 246 },
+    //   year: '2024',
+    //   metrics: [
+    //     { icon: Brain, label: 'Narrative', value: '3-Act' },
+    //     { icon: Sparkles, label: 'Tech', value: 'WebGL' }
+    //   ],
+    //   tags: ['Speculative Design', 'Narrative', 'WebGL', 'Ethics'],
+    //   link: '/work/latent-space',
+    // },
   ];
 
   const journeyMilestones = [

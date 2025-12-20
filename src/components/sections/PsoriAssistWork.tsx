@@ -305,16 +305,17 @@ export function PsoriAssistWork() {
       href: '/work/air-india' as const,
       orbColor: '218, 14, 41'
     },
-    {
-      id: 2,
-      icon: Hexagon,
-      title: 'Latent Space',
-      category: 'Speculative Design',
-      description: 'Critical design exploration of dream technology ethics and consciousness data.',
-      year: '2024',
-      href: '/work/latent-space' as const,
-      orbColor: '140, 100, 255'
-    },
+    // HIDDEN: Latent Space WIP
+    // {
+    //   id: 2,
+    //   icon: Hexagon,
+    //   title: 'Latent Space',
+    //   category: 'Speculative Design',
+    //   description: 'Critical design exploration of dream technology ethics and consciousness data.',
+    //   year: '2024',
+    //   href: '/work/latent-space' as const,
+    //   orbColor: '140, 100, 255'
+    // },
     {
       id: 3,
       icon: Grid3X3,

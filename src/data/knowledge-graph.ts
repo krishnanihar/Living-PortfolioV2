@@ -62,7 +62,7 @@ const domainNodes: KnowledgeNode[] = [
     type: 'domain',
     size: 1.2,
     color: colors.indigo,
-    connections: ['nihar', 'geb', 'latent-space', 'data-viz'],
+    connections: ['nihar', 'geb', 'data-viz'], // HIDDEN: removed latent-space
     description: 'Understanding interconnections and feedback loops',
   },
   {
@@ -80,7 +80,7 @@ const domainNodes: KnowledgeNode[] = [
     type: 'domain',
     size: 1.0,
     color: colors.cyan,
-    connections: ['nihar', 'user-research', 'speculative-design', 'latent-space', 'agile', 'technical-writing'],
+    connections: ['nihar', 'user-research', 'speculative-design', 'agile', 'technical-writing'], // HIDDEN: removed latent-space
     description: 'Speculative design and user research',
   },
   {
@@ -126,7 +126,7 @@ const skillNodes: KnowledgeNode[] = [
     type: 'skill',
     size: 0.7,
     color: colors.neutral,
-    connections: ['frontend-dev', 'data-viz', 'latent-space'],
+    connections: ['frontend-dev', 'data-viz'], // HIDDEN: removed latent-space
   },
   {
     id: 'framer-motion',
@@ -182,7 +182,7 @@ const skillNodes: KnowledgeNode[] = [
     type: 'skill',
     size: 0.6,
     color: colors.neutral,
-    connections: ['research', 'latent-space'],
+    connections: ['research'], // HIDDEN: removed latent-space
   },
   // Additional frontend skills
   {
@@ -207,7 +207,7 @@ const skillNodes: KnowledgeNode[] = [
     type: 'skill',
     size: 0.5,
     color: colors.neutral,
-    connections: ['webgl', 'threejs', 'latent-space'],
+    connections: ['webgl', 'threejs'], // HIDDEN: removed latent-space
   },
   {
     id: 'gsap',
@@ -451,16 +451,17 @@ const projectNodes: KnowledgeNode[] = [
     connections: ['product-design', 'user-research', 'react'],
     description: 'AI-powered health management app',
   },
-  {
-    id: 'latent-space',
-    label: 'Latent Space',
-    type: 'project',
-    size: 0.9,
-    color: colors.neutralLight,
-    url: '/work/latent-space',
-    connections: ['systems-thinking', 'threejs', 'speculative-design', 'research'],
-    description: 'Immersive narrative experience',
-  },
+  // HIDDEN: Latent Space WIP
+  // {
+  //   id: 'latent-space',
+  //   label: 'Latent Space',
+  //   type: 'project',
+  //   size: 0.9,
+  //   color: colors.neutralLight,
+  //   url: '/work/latent-space',
+  //   connections: ['systems-thinking', 'threejs', 'speculative-design', 'research'],
+  //   description: 'Immersive narrative experience',
+  // },
   {
     id: 'mythos',
     label: 'mythOS',
@@ -683,7 +684,7 @@ const influenceNodes: KnowledgeNode[] = [
     type: 'influence',
     size: 0.45,
     color: colors.orange,
-    connections: ['speculative-design', 'latent-space'],
+    connections: ['speculative-design'], // HIDDEN: removed latent-space
     description: 'Dunne & Raby critical design',
   },
   {

@@ -7,7 +7,8 @@ import { JourneyOverview } from '@/components/narrative-work/JourneyOverview';
 import { AirIndiaHeroCard } from '@/components/narrative-work/AirIndiaHeroCard';
 import { PsoriAssistHeroCard } from '@/components/narrative-work/PsoriAssistHeroCard';
 import { MetamorphicHeroCard } from '@/components/narrative-work/MetamorphicHeroCard';
-import { LatentSpaceHeroCard } from '@/components/narrative-work/LatentSpaceHeroCard';
+// HIDDEN: Latent Space WIP
+// import { LatentSpaceHeroCard } from '@/components/narrative-work/LatentSpaceHeroCard';
 import { MicroVisualization } from '@/components/narrative-work/MicroVisualizations';
 import { type ImpactCard } from '@/components/narrative-work/ImpactBentoGrid';
 import { ResearchShowcase } from '@/components/narrative-work/ResearchShowcase';
@@ -1418,7 +1419,8 @@ export function WorkNarrativePage() {
         )}
       </section>
 
-      {/* LATENT SPACE SECTION */}
+      {/* HIDDEN: Latent Space WIP - entire section commented out */}
+      {false && (
       <section style={{
         maxWidth: '1400px',
         margin: '0 auto',
@@ -1426,7 +1428,8 @@ export function WorkNarrativePage() {
         position: 'relative',
         zIndex: 1,
       }}>
-        <LatentSpaceHeroCard />
+        {/* <LatentSpaceHeroCard /> */}
+        <div />
 
         {/* Desktop: Bento Grid */}
         {!isMobile && (() => {
@@ -1688,6 +1691,7 @@ export function WorkNarrativePage() {
           </>
         )}
       </section>
+      )}
 
       {/* SECTION: Closing & Navigation */}
       <section style={{

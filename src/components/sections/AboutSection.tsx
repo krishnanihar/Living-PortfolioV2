@@ -166,7 +166,7 @@ export function AboutSection() {
         'The "I" is a strange loop in the brain',
         'Pattern recognition creates meaning from symbols'
       ],
-      relatedWork: 'Latent Space - exploring emergent AI consciousness patterns',
+      relatedWork: 'Metamorphic - exploring emergent consciousness patterns',
       tags: ['Systems', 'Narrative', 'Experience']
     },
     {
@@ -271,7 +271,7 @@ export function AboutSection() {
         'Choice architecture creates meaningful decisions',
         'Branching paths as design documentation'
       ],
-      relatedWork: 'Latent Space - decision tree visualization',
+      relatedWork: 'PsoriAssist - decision tree visualization',
       tags: ['Narrative', 'Strategy', 'Experience']
     },
   ];
