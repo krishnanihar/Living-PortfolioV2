@@ -378,15 +378,23 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
 
     // Smooth scroll to video section with onComplete callback
     // Overlay fades out only after scroll animation completes
+    const SCROLL_DURATION = 1.2;
+
     setTimeout(() => {
       scrollTo('#experience-film', {
         offset: 0,
-        duration: 1.2, // Slightly faster for snappier feel
+        duration: SCROLL_DURATION,
         onComplete: () => {
           // Fade out overlay after scroll completes - reveals video section
           setOverlayOpacity(0);
         },
       });
+
+      // Fallback: If onComplete doesn't fire (Lenis race condition), fade out overlay anyway
+      // This ensures the overlay always fades out even if Lenis callback fails
+      setTimeout(() => {
+        setOverlayOpacity(0);
+      }, (SCROLL_DURATION * 1000) + 200); // scroll duration + 200ms buffer
     }, 50); // Reduced delay - overlay masks the transition
   }, [start, scrollTo]);
 
