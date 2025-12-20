@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ChevronDown, Mail, Github, ArrowRight, X, Sun, Moon, Hand, Sparkles } from 'lucide-react';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
+import { useOnboarding } from '@/hooks/useOnboarding';
+import { animate } from '@/lib/anime-utils';
 import {
   initializeVisit,
   clearScrollMemory,
@@ -33,13 +35,21 @@ const PARTICLE_COLORS = {
   pink: 'rgba(236, 72, 153, 0.95)',    // #EC4899
 };
 
-export function IntroductionSection() {
+interface IntroductionSectionProps {
+  onStartTour?: () => void;
+}
+
+export function IntroductionSection({ onStartTour }: IntroductionSectionProps) {
   const { scrollTo } = useLenisScroll();
+  const { shouldShowTourPill, dismissTour } = useOnboarding();
+  const tourPillRef = useRef<HTMLDivElement>(null);
   const [hoveredButton, setHoveredButton] = useState<'contact' | 'github' | null>(null);
+  const [hoveredTourPill, setHoveredTourPill] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [animationStage, setAnimationStage] = useState(0);
   const [personalization, setPersonalization] = useState<PersonalizationData | null>(null);
   const [showScrollPill, setShowScrollPill] = useState(true);
+  const [tourPillVisible, setTourPillVisible] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -54,6 +64,75 @@ export function IntroductionSection() {
       setTimeout(() => setAnimationStage(stage), i * 100);
     });
   }, []);
+
+  // Tour pill entrance animation - triggers after hero buttons animate in
+  useEffect(() => {
+    if (animationStage >= 4 && shouldShowTourPill && tourPillRef.current && !tourPillVisible) {
+      // Slight delay after stage 4 to feel natural
+      const timer = setTimeout(() => {
+        setTourPillVisible(true);
+
+        // Check for reduced motion preference
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (!prefersReducedMotion && tourPillRef.current) {
+          animate(tourPillRef.current, {
+            opacity: [0, 1],
+            translateY: [20, 0],
+            scale: [0.9, 1],
+            duration: 600,
+            ease: 'outExpo',
+          });
+        }
+      }, 400);
+
+      return () => clearTimeout(timer);
+    }
+  }, [animationStage, shouldShowTourPill, tourPillVisible]);
+
+  // Handle tour pill click - animate out then open chat
+  const handleStartTour = () => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion && tourPillRef.current) {
+      animate(tourPillRef.current, {
+        opacity: [1, 0],
+        scale: [1, 0.95],
+        translateY: [0, 10],
+        duration: 300,
+        ease: 'inExpo',
+        complete: () => {
+          setTourPillVisible(false);
+          onStartTour?.();
+        },
+      });
+    } else {
+      setTourPillVisible(false);
+      onStartTour?.();
+    }
+  };
+
+  // Handle tour dismiss - animate out to the right
+  const handleDismissTour = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion && tourPillRef.current) {
+      animate(tourPillRef.current, {
+        opacity: [1, 0],
+        translateX: [0, 20],
+        duration: 250,
+        ease: 'inQuad',
+        complete: () => {
+          setTourPillVisible(false);
+          dismissTour();
+        },
+      });
+    } else {
+      setTourPillVisible(false);
+      dismissTour();
+    }
+  };
 
   // Dismiss scroll memory pill and clear the memory
   const dismissScrollPill = () => {
@@ -556,6 +635,73 @@ export function IntroductionSection() {
               <span style={{ position: 'relative', zIndex: 1 }}>GitHub</span>
             </a>
           </div>
+
+          {/* Tour Pill - First-time visitor CTA */}
+          {tourPillVisible && shouldShowTourPill && (
+            <div
+              ref={tourPillRef}
+              onClick={handleStartTour}
+              onMouseEnter={() => setHoveredTourPill(true)}
+              onMouseLeave={() => setHoveredTourPill(false)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.625rem',
+                padding: '10px 18px',
+                marginTop: '2rem',
+                ...UNIFIED_GLASS,
+                background: hoveredTourPill
+                  ? 'rgba(139, 92, 246, 0.1)'
+                  : 'rgba(139, 92, 246, 0.06)',
+                borderColor: hoveredTourPill
+                  ? 'rgba(139, 92, 246, 0.2)'
+                  : 'rgba(139, 92, 246, 0.12)',
+                borderRadius: '24px',
+                color: 'var(--text-85)',
+                fontSize: '0.8125rem',
+                fontWeight: '400',
+                cursor: 'pointer',
+                transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+                transform: hoveredTourPill ? 'translateY(-2px) scale(1.02)' : 'translateY(0) scale(1)',
+                opacity: 0, // Initial opacity - animated by anime.js
+              }}
+            >
+              <Sparkles
+                size={14}
+                style={{
+                  color: 'rgba(139, 92, 246, 0.9)',
+                  flexShrink: 0,
+                }}
+              />
+              <span style={{ letterSpacing: '0.01em' }}>First time? Take a tour</span>
+              <button
+                onClick={handleDismissTour}
+                style={{
+                  marginLeft: '0.25rem',
+                  padding: '4px',
+                  background: hoveredTourPill ? 'var(--glass-08)' : 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: 'var(--text-40)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: '50%',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = 'var(--text-80)';
+                  e.currentTarget.style.background = 'var(--glass-15)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'var(--text-40)';
+                  e.currentTarget.style.background = hoveredTourPill ? 'var(--glass-08)' : 'transparent';
+                }}
+              >
+                <X size={14} />
+              </button>
+            </div>
+          )}
 
         </div>
 

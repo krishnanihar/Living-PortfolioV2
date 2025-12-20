@@ -2,6 +2,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles } from 'lucide-react';
+import { useOnboarding } from '@/hooks/useOnboarding';
+import { animate } from '@/lib/anime-utils';
 
 interface FloatingChatButtonProps {
   onClick: () => void;
@@ -10,8 +12,11 @@ interface FloatingChatButtonProps {
 
 export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [showOnboardingHint, setShowOnboardingHint] = useState(false);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const leaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const onboardingHintRef = useRef<HTMLDivElement>(null);
+  const { shouldShowHint, markHintSeen } = useOnboarding();
 
   // Hero orb position (matches CosmicBackground.tsx)
   const spherePosition = { x: 65, y: 45 };
@@ -89,6 +94,80 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
     };
   }, []);
 
+  // Show onboarding hint after 10 seconds for first-time visitors
+  useEffect(() => {
+    if (!shouldShowHint('chat-discover')) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Show hint after 10 seconds
+    const showTimer = setTimeout(() => {
+      setShowOnboardingHint(true);
+
+      // Animate entrance
+      if (!prefersReducedMotion && onboardingHintRef.current) {
+        animate(onboardingHintRef.current, {
+          opacity: [0, 1],
+          translateX: [20, 0],
+          scale: [0.9, 1],
+          duration: 400,
+          ease: 'outExpo',
+        });
+
+        // Gentle pulse after entrance
+        setTimeout(() => {
+          if (onboardingHintRef.current) {
+            animate(onboardingHintRef.current, {
+              scale: [1, 1.02, 1],
+              duration: 2000,
+              loop: 3,
+              ease: 'inOutSine',
+            });
+          }
+        }, 400);
+      }
+    }, 10000);
+
+    // Auto-dismiss after 15 seconds (10s delay + 5s visible)
+    const dismissTimer = setTimeout(() => {
+      dismissOnboardingHint();
+    }, 15000);
+
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(dismissTimer);
+    };
+  }, [shouldShowHint]);
+
+  // Dismiss onboarding hint with animation
+  const dismissOnboardingHint = () => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion && onboardingHintRef.current) {
+      animate(onboardingHintRef.current, {
+        opacity: [1, 0],
+        translateX: [0, 10],
+        duration: 300,
+        ease: 'inQuad',
+        complete: () => {
+          setShowOnboardingHint(false);
+          markHintSeen('chat-discover');
+        },
+      });
+    } else {
+      setShowOnboardingHint(false);
+      markHintSeen('chat-discover');
+    }
+  };
+
+  // Handle click - also dismiss onboarding hint
+  const handleClick = () => {
+    if (showOnboardingHint) {
+      dismissOnboardingHint();
+    }
+    onClick();
+  };
+
   return (
     <div
       style={{
@@ -154,9 +233,65 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
         </div>
       )}
 
+      {/* Onboarding Hint - First-time visitor prompt */}
+      {showOnboardingHint && (
+        <div
+          ref={onboardingHintRef}
+          onClick={dismissOnboardingHint}
+          style={{
+            position: 'absolute',
+            right: 'calc(100% + 12px)',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            maxWidth: '200px',
+            padding: '12px 16px',
+            background: 'rgba(139, 92, 246, 0.12)',
+            backdropFilter: 'blur(80px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(80px) saturate(180%)',
+            border: '1px solid rgba(139, 92, 246, 0.25)',
+            borderRadius: '14px',
+            boxShadow: `
+              0 8px 32px rgba(0, 0, 0, 0.3),
+              0 2px 8px rgba(139, 92, 246, 0.15),
+              inset 0 1px 1px rgba(255, 255, 255, 0.1)
+            `,
+            cursor: 'pointer',
+            opacity: 0, // Animated by anime.js
+          }}
+        >
+          <span
+            style={{
+              fontSize: '0.8125rem',
+              fontWeight: '400',
+              color: 'var(--text-90)',
+              letterSpacing: '0.01em',
+              display: 'block',
+            }}
+          >
+            Have questions? I&apos;m here
+          </span>
+
+          {/* Arrow pointer */}
+          <div
+            style={{
+              position: 'absolute',
+              right: '-6px',
+              top: '50%',
+              transform: 'translateY(-50%) rotate(45deg)',
+              width: '10px',
+              height: '10px',
+              background: 'rgba(139, 92, 246, 0.12)',
+              border: '1px solid rgba(139, 92, 246, 0.25)',
+              borderLeft: 'none',
+              borderBottom: 'none',
+            }}
+          />
+        </div>
+      )}
+
       {/* Orb Button */}
       <button
-        onClick={onClick}
+        onClick={handleClick}
         aria-label="Open chat"
         className="floating-chat-button"
         style={{

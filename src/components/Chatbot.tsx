@@ -4,7 +4,9 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Send, X, Mic, MicOff, RotateCcw, Plane, Briefcase, MessageCircle } from 'lucide-react';
 import Markdown from 'react-markdown';
 import { usePersonalization } from '@/hooks/usePersonalization';
+import { useOnboarding } from '@/hooks/useOnboarding';
 import { PersonalizationPrompt } from '@/components/ui/PersonalizationPrompt';
+import { animate, stagger } from '@/lib/anime-utils';
 import type { VisitorIntent } from '@/lib/personalization/types';
 import type { SpeechRecognitionEvent } from '@/types/speech-recognition';
 
@@ -33,7 +35,54 @@ interface ChatbotProps {
   onClose: () => void;
   initialMessage?: string;
   intentContext?: string;
+  tourMode?: boolean;
+  onTourComplete?: () => void;
 }
+
+// Tour steps for guided walkthrough
+interface TourStep {
+  id: string;
+  message: string;
+  quickActions: { label: string; action: 'next' | 'skip' | 'question'; question?: string }[];
+}
+
+const TOUR_STEPS: TourStep[] = [
+  {
+    id: 'welcome',
+    message: "Welcome! I'm here to give you a quick tour of Nihar's portfolio. He's a **Product & New Media Designer** who creates experiences that millions interact with daily.\n\nReady to explore?",
+    quickActions: [
+      { label: "Let's go!", action: 'next' },
+      { label: "I'll explore myself", action: 'skip' },
+    ],
+  },
+  {
+    id: 'philosophy',
+    message: "Nihar believes interfaces should feel **alive** — breathing, adapting, responding. This portfolio itself is an experiment in that philosophy.\n\nScroll down to discover projects, or feel free to ask me anything about his work.",
+    quickActions: [
+      { label: 'Tell me about Air India', action: 'question', question: 'Tell me about the Air India project' },
+      { label: 'Next', action: 'next' },
+      { label: 'Skip tour', action: 'skip' },
+    ],
+  },
+  {
+    id: 'work',
+    message: "From **Air India's DesignLAB** to **healthcare AI**, each project sits at the intersection of design systems, new media, and speculative futures.\n\nThe /work page has all case studies — or ask me about any specific project.",
+    quickActions: [
+      { label: 'What projects should I see?', action: 'question', question: 'What are the most impressive projects I should look at?' },
+      { label: 'Next', action: 'next' },
+      { label: 'Skip tour', action: 'skip' },
+    ],
+  },
+  {
+    id: 'complete',
+    message: "That's the quick tour! I'm always here if you have questions — about projects, process, or anything else.\n\nWhat would you like to explore?",
+    quickActions: [
+      { label: 'Tell me about his design process', action: 'question', question: 'Walk me through your design process' },
+      { label: 'Show me featured projects', action: 'question', question: 'Show me your featured projects' },
+      { label: 'Done', action: 'skip' },
+    ],
+  },
+];
 
 // Storage key for message persistence
 const STORAGE_KEY = 'chatbot_history';
@@ -212,7 +261,7 @@ const QuickActions = ({ onAction }: { onAction: (action: string) => void }) => (
   </div>
 );
 
-export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: ChatbotProps) {
+export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMode = false, onTourComplete }: ChatbotProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -221,12 +270,16 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
   const [speechSupported, setSpeechSupported] = useState(false);
   const [dynamicSuggestions, setDynamicSuggestions] = useState<string[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
+  const [currentTourStep, setCurrentTourStep] = useState(0);
+  const [inTourMode, setInTourMode] = useState(tourMode);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const tourActionsRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
 
-  // Get personalization state
+  // Get personalization and onboarding state
   const { state } = usePersonalization();
+  const { completeTour, setTourStep } = useOnboarding();
   const storedIntent = state.schema.visitor.intent;
   const intentDeclined = state.schema.visitor.intentDeclined;
 
@@ -240,6 +293,71 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
       setSpeechSupported(!!SpeechRecognitionAPI);
     }
   }, []);
+
+  // Sync tourMode prop with internal state
+  useEffect(() => {
+    if (tourMode && isOpen) {
+      setInTourMode(true);
+      setCurrentTourStep(0);
+      // Clear any existing messages when entering tour mode
+      setMessages([]);
+    }
+  }, [tourMode, isOpen]);
+
+  // Animate tour actions when step changes
+  useEffect(() => {
+    if (inTourMode && tourActionsRef.current) {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReducedMotion) {
+        const buttons = tourActionsRef.current.querySelectorAll('button');
+        animate(buttons, {
+          opacity: [0, 1],
+          translateY: [15, 0],
+          delay: stagger(80, { start: 200 }),
+          duration: 400,
+          ease: 'outExpo',
+        });
+      }
+    }
+  }, [inTourMode, currentTourStep]);
+
+  // Handle tour action clicks
+  const handleTourAction = (action: 'next' | 'skip' | 'question', question?: string) => {
+    if (action === 'next') {
+      if (currentTourStep < TOUR_STEPS.length - 1) {
+        setCurrentTourStep(prev => prev + 1);
+        setTourStep(currentTourStep + 1);
+      } else {
+        // Tour complete
+        handleTourComplete();
+      }
+    } else if (action === 'skip') {
+      handleTourComplete();
+    } else if (action === 'question' && question) {
+      // Exit tour mode and send the question
+      setInTourMode(false);
+      completeTour();
+      onTourComplete?.();
+      // Small delay to let the UI transition
+      setTimeout(() => {
+        handleSendMessage(question);
+      }, 100);
+    }
+  };
+
+  const handleTourComplete = () => {
+    setInTourMode(false);
+    completeTour();
+    onTourComplete?.();
+    // Show normal greeting after tour
+    const greeting = getGreeting(effectiveIntent);
+    setMessages([{
+      id: 'greeting',
+      content: greeting,
+      isUser: false,
+      timestamp: Date.now(),
+    }]);
+  };
 
   // Load messages from localStorage
   useEffect(() => {
@@ -584,8 +702,16 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
                 width: '10px',
                 height: '10px',
                 borderRadius: '50%',
-                background: isLoading ? 'rgba(218, 14, 41, 0.8)' : 'rgba(16, 185, 129, 0.8)',
-                boxShadow: isLoading ? '0 0 8px rgba(218, 14, 41, 0.6)' : '0 0 8px rgba(16, 185, 129, 0.6)',
+                background: inTourMode
+                  ? 'rgba(139, 92, 246, 0.8)'
+                  : isLoading
+                  ? 'rgba(218, 14, 41, 0.8)'
+                  : 'rgba(16, 185, 129, 0.8)',
+                boxShadow: inTourMode
+                  ? '0 0 8px rgba(139, 92, 246, 0.6)'
+                  : isLoading
+                  ? '0 0 8px rgba(218, 14, 41, 0.6)'
+                  : '0 0 8px rgba(16, 185, 129, 0.6)',
                 animation: 'pulse 2s ease-in-out infinite',
               }} />
               <div>
@@ -595,14 +721,14 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
                   color: 'var(--text-primary)',
                   letterSpacing: '0.01em',
                 }}>
-                  {showIntentPrompt ? 'Welcome!' : 'Portfolio Assistant'}
+                  {inTourMode ? 'Quick Tour' : showIntentPrompt ? 'Welcome!' : 'Portfolio Assistant'}
                 </h3>
                 <p style={{
                   fontSize: '0.65rem',
                   color: 'var(--text-muted)',
                   fontWeight: '300',
                 }}>
-                  {showIntentPrompt ? 'Let me personalize your experience' : 'AI-powered by Gemini'}
+                  {inTourMode ? 'Get to know this portfolio' : showIntentPrompt ? 'Let me personalize your experience' : 'AI-powered by Gemini'}
                 </p>
               </div>
             </div>
@@ -667,8 +793,140 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
             </div>
           </div>
 
-          {/* Intent Prompt or Chat Content */}
-          {showIntentPrompt ? (
+          {/* Tour Mode, Intent Prompt, or Chat Content */}
+          {inTourMode ? (
+            <div style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '1.5rem',
+              gap: '1.5rem',
+            }}>
+              {/* Tour Progress Dots */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                gap: '0.5rem',
+              }}>
+                {TOUR_STEPS.map((_, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      width: index === currentTourStep ? '24px' : '8px',
+                      height: '8px',
+                      borderRadius: '4px',
+                      background: index === currentTourStep
+                        ? 'rgba(139, 92, 246, 0.8)'
+                        : index < currentTourStep
+                        ? 'rgba(139, 92, 246, 0.4)'
+                        : 'var(--glass-15)',
+                      transition: 'all 0.3s ease',
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Tour Message */}
+              <div style={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }}>
+                <div
+                  key={currentTourStep}
+                  style={{
+                    padding: '1.25rem 1.5rem',
+                    borderRadius: '20px',
+                    background: 'var(--glass-06)',
+                    border: '1px solid var(--glass-10)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    opacity: 0,
+                    animation: 'messageSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                  }}
+                >
+                  <div className="markdown-content" style={{
+                    fontSize: '0.9rem',
+                    color: 'var(--text-90)',
+                    fontWeight: '300',
+                    lineHeight: '1.7',
+                  }}>
+                    <Markdown
+                      components={{
+                        p: ({ children }) => <p style={{ margin: '0 0 0.75rem 0' }}>{children}</p>,
+                        strong: ({ children }) => <strong style={{ fontWeight: '500', color: 'var(--text-primary)' }}>{children}</strong>,
+                      }}
+                    >
+                      {TOUR_STEPS[currentTourStep].message}
+                    </Markdown>
+                  </div>
+                </div>
+              </div>
+
+              {/* Tour Quick Actions */}
+              <div
+                ref={tourActionsRef}
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '0.625rem',
+                  justifyContent: 'center',
+                }}
+              >
+                {TOUR_STEPS[currentTourStep].quickActions.map((action, i) => (
+                  <button
+                    key={i}
+                    onClick={() => handleTourAction(action.action, action.question)}
+                    style={{
+                      padding: '0.625rem 1rem',
+                      background: action.action === 'next' || (action.action === 'skip' && currentTourStep === TOUR_STEPS.length - 1)
+                        ? 'rgba(139, 92, 246, 0.15)'
+                        : 'var(--glass-05)',
+                      border: action.action === 'next' || (action.action === 'skip' && currentTourStep === TOUR_STEPS.length - 1)
+                        ? '1px solid rgba(139, 92, 246, 0.3)'
+                        : '1px solid var(--glass-10)',
+                      borderRadius: '14px',
+                      color: 'var(--text-85)',
+                      fontSize: '0.8125rem',
+                      fontWeight: '400',
+                      cursor: 'pointer',
+                      transition: 'all 0.25s ease',
+                      opacity: 0, // Animated by anime.js
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = action.action === 'next'
+                        ? 'rgba(139, 92, 246, 0.25)'
+                        : 'rgba(139, 92, 246, 0.1)';
+                      e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.4)';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = action.action === 'next'
+                        ? 'rgba(139, 92, 246, 0.15)'
+                        : 'var(--glass-05)';
+                      e.currentTarget.style.borderColor = action.action === 'next'
+                        ? 'rgba(139, 92, 246, 0.3)'
+                        : 'var(--glass-10)';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                  >
+                    {action.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Step indicator */}
+              <div style={{
+                fontSize: '0.7rem',
+                color: 'var(--text-40)',
+                textAlign: 'center',
+                letterSpacing: '0.03em',
+              }}>
+                Step {currentTourStep + 1} of {TOUR_STEPS.length}
+              </div>
+            </div>
+          ) : showIntentPrompt ? (
             <div style={{
               flex: 1,
               display: 'flex',
@@ -685,7 +943,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext }: Chat
           ) : (
             <>
               {/* Quick Actions */}
-              {!showIntentPrompt && (
+              {!showIntentPrompt && !inTourMode && (
                 <div style={{ padding: '0.75rem 1.5rem 0' }}>
                   <QuickActions onAction={handleSendMessage} />
                 </div>

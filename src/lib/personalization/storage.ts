@@ -17,11 +17,13 @@ import {
   createDefaultBehavior,
   createDefaultContext,
   createDefaultComputed,
+  createDefaultOnboarding,
   generateSessionId,
   type VisitorData,
   type BehavioralData,
   type ContextData,
   type ComputedData,
+  type OnboardingState,
 } from './types';
 
 // ============================================
@@ -304,6 +306,7 @@ class StorageManager {
       behavior: { ...defaults.behavior, ...(obj.behavior as Partial<BehavioralData> || {}) },
       context: { ...defaults.context, ...(obj.context as Partial<ContextData> || {}) },
       computed: { ...defaults.computed, ...(obj.computed as Partial<ComputedData> || {}) },
+      onboarding: { ...defaults.onboarding, ...(obj.onboarding as Partial<OnboardingState> || {}) },
       lastUpdated: (obj.lastUpdated as string) || new Date().toISOString(),
     };
   }
