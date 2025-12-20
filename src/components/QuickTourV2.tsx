@@ -19,7 +19,14 @@ const UNIFIED_GLASS = {
   `,
 };
 
-// Tour step content
+// Step-specific glow colors for hover effects
+const STEP_GLOW = {
+  journey: 'rgba(59, 130, 246, 0.15)',   // Blue
+  work: 'rgba(139, 92, 246, 0.15)',       // Purple
+  connect: 'rgba(236, 72, 153, 0.15)',    // Pink
+};
+
+// Tour step content with images
 const TOUR_STEPS = [
   {
     id: 'journey',
@@ -37,9 +44,9 @@ const TOUR_STEPS = [
     title: 'MY WORK',
     description: 'Projects that push boundaries',
     projects: [
-      { slug: 'air-india', name: 'Air India', category: 'System Design' },
-      { slug: 'psoriassist', name: 'PsoriAssist', category: 'AI + Health' },
-      { slug: 'latent-space', name: 'Latent Space', category: 'Research' },
+      { slug: 'air-india', name: 'Air India', category: 'System Design', image: '/images/air-india/IFE.png' },
+      { slug: 'psoriassist', name: 'PsoriAssist', category: 'AI + Health', image: '/images/Psori_front.png' },
+      { slug: 'latent-space', name: 'Latent Space', category: 'Research', image: '/images/meta_front.png' },
     ],
     particleColor: 'purple',
   },
@@ -65,8 +72,32 @@ export function QuickTourV2({ isOpen, onClose, onStepChange }: QuickTourV2Props)
   const [currentStep, setCurrentStep] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [isCardHovered, setIsCardHovered] = useState(false);
+  const [tiltStyle, setTiltStyle] = useState({ transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg)' });
   const cardRef = useRef<HTMLDivElement>(null);
   const autoAdvanceRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 3D Tilt effect handlers
+  const handleCardMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = (y - centerY) / 30; // Subtle tilt
+    const rotateY = (centerX - x) / 30;
+
+    setTiltStyle({
+      transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.01)`,
+    });
+  }, []);
+
+  const handleCardMouseLeave = useCallback(() => {
+    setTiltStyle({ transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)' });
+    setIsCardHovered(false);
+  }, []);
 
   const totalSteps = TOUR_STEPS.length;
   const step = TOUR_STEPS[currentStep];
@@ -186,8 +217,9 @@ export function QuickTourV2({ isOpen, onClose, onStepChange }: QuickTourV2Props)
   return (
     <div
       ref={cardRef}
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      onMouseEnter={() => { setIsPaused(true); setIsCardHovered(true); }}
+      onMouseLeave={handleCardMouseLeave}
+      onMouseMove={handleCardMouseMove}
       style={{
         position: 'relative',
         width: '100%',
@@ -196,6 +228,12 @@ export function QuickTourV2({ isOpen, onClose, onStepChange }: QuickTourV2Props)
         ...UNIFIED_GLASS,
         borderRadius: '24px',
         color: 'var(--text-95)',
+        ...tiltStyle,
+        transition: 'transform 0.15s ease-out, box-shadow 0.3s ease',
+        boxShadow: isCardHovered
+          ? `0 20px 60px ${STEP_GLOW[step.id as keyof typeof STEP_GLOW]}, 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 2px var(--glass-25), inset 0 -1px 2px rgba(0, 0, 0, 0.15)`
+          : `0 12px 48px rgba(0, 0, 0, 0.15), 0 4px 16px rgba(0, 0, 0, 0.10), inset 0 1px 2px var(--glass-25), inset 0 -1px 2px rgba(0, 0, 0, 0.15)`,
+        willChange: 'transform',
       }}
     >
       {/* Header: Progress dots + Skip */}
@@ -290,58 +328,83 @@ export function QuickTourV2({ isOpen, onClose, onStepChange }: QuickTourV2Props)
 
       {/* Step Content */}
       <div style={{ marginBottom: '1.5rem' }}>
-        {/* Journey Step - Milestones */}
+        {/* Journey Step - Milestones with Timeline Connectors */}
         {step.id === 'journey' && step.milestones && (
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
             {step.milestones.map((milestone, idx) => {
               const Icon = milestone.icon;
               return (
-                <div
-                  key={idx}
-                  style={{
-                    flex: 1,
-                    padding: '1rem',
-                    background: 'var(--glass-05)',
-                    border: '1px solid var(--text-06)',
-                    borderRadius: '16px',
-                    textAlign: 'center',
-                    transition: 'all 0.2s ease',
-                  }}
-                >
-                  <Icon
-                    size={20}
-                    style={{
-                      color: 'rgba(59, 130, 246, 0.8)',
-                      marginBottom: '0.5rem',
-                    }}
-                  />
+                <React.Fragment key={idx}>
                   <div
                     style={{
-                      fontSize: '1.125rem',
-                      fontWeight: '600',
-                      color: 'var(--text-90)',
-                      marginBottom: '0.25rem',
+                      flex: '0 0 auto',
+                      width: '110px',
+                      padding: '1rem 0.75rem',
+                      background: 'var(--glass-05)',
+                      border: '1px solid var(--text-06)',
+                      borderRadius: '16px',
+                      textAlign: 'center',
+                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                      cursor: 'default',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'var(--glass-10)';
+                      e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.2)';
+                      e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'var(--glass-05)';
+                      e.currentTarget.style.borderColor = 'var(--text-06)';
+                      e.currentTarget.style.transform = 'translateY(0) scale(1)';
                     }}
                   >
-                    {milestone.year}
+                    <Icon
+                      size={18}
+                      style={{
+                        color: 'rgba(59, 130, 246, 0.9)',
+                        marginBottom: '0.5rem',
+                      }}
+                    />
+                    <div
+                      style={{
+                        fontSize: '1.125rem',
+                        fontWeight: '600',
+                        color: 'var(--text-90)',
+                        marginBottom: '0.25rem',
+                      }}
+                    >
+                      {milestone.year}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: '0.6875rem',
+                        fontWeight: '400',
+                        color: 'var(--text-50)',
+                        letterSpacing: '0.02em',
+                      }}
+                    >
+                      {milestone.label}
+                    </div>
                   </div>
-                  <div
-                    style={{
-                      fontSize: '0.6875rem',
-                      fontWeight: '400',
-                      color: 'var(--text-50)',
-                      letterSpacing: '0.02em',
-                    }}
-                  >
-                    {milestone.label}
-                  </div>
-                </div>
+                  {/* Timeline connector between milestones */}
+                  {idx < step.milestones.length - 1 && (
+                    <div
+                      style={{
+                        width: '24px',
+                        height: '2px',
+                        background: 'linear-gradient(90deg, rgba(59,130,246,0.5), rgba(139,92,246,0.5))',
+                        borderRadius: '1px',
+                        flexShrink: 0,
+                      }}
+                    />
+                  )}
+                </React.Fragment>
               );
             })}
           </div>
         )}
 
-        {/* Work Step - Project Cards */}
+        {/* Work Step - Project Cards with Thumbnails */}
         {step.id === 'work' && step.projects && (
           <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
             {step.projects.map((project, idx) => (
@@ -351,44 +414,87 @@ export function QuickTourV2({ isOpen, onClose, onStepChange }: QuickTourV2Props)
                 onClick={handleClose}
                 style={{
                   flex: 1,
-                  padding: '1rem 0.75rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  overflow: 'hidden',
                   background: 'var(--glass-05)',
                   border: '1px solid var(--text-06)',
                   borderRadius: '16px',
-                  textAlign: 'center',
                   textDecoration: 'none',
-                  transition: 'all 0.2s ease',
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = 'var(--glass-10)';
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
-                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.25)';
+                  e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)';
+                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(139, 92, 246, 0.15)';
+                  // Zoom image on hover
+                  const img = e.currentTarget.querySelector('img') as HTMLImageElement;
+                  if (img) img.style.transform = 'scale(1.08)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = 'var(--glass-05)';
                   e.currentTarget.style.borderColor = 'var(--text-06)';
-                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                  e.currentTarget.style.boxShadow = 'none';
+                  const img = e.currentTarget.querySelector('img') as HTMLImageElement;
+                  if (img) img.style.transform = 'scale(1)';
                 }}
               >
+                {/* Thumbnail Image */}
                 <div
                   style={{
-                    fontSize: '0.875rem',
-                    fontWeight: '500',
-                    color: 'var(--text-90)',
-                    marginBottom: '0.25rem',
+                    height: '72px',
+                    overflow: 'hidden',
+                    borderRadius: '15px 15px 0 0',
+                    background: 'var(--glass-08)',
+                    position: 'relative',
                   }}
                 >
-                  {project.name}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={project.image}
+                    alt={project.name}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      opacity: 0.85,
+                      transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                    }}
+                  />
+                  {/* Gradient overlay for better text contrast */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.4) 100%)',
+                      pointerEvents: 'none',
+                    }}
+                  />
                 </div>
-                <div
-                  style={{
-                    fontSize: '0.625rem',
-                    fontWeight: '400',
-                    color: 'var(--text-40)',
-                    letterSpacing: '0.02em',
-                  }}
-                >
-                  {project.category}
+                {/* Text Content */}
+                <div style={{ padding: '0.75rem', textAlign: 'center' }}>
+                  <div
+                    style={{
+                      fontSize: '0.875rem',
+                      fontWeight: '500',
+                      color: 'var(--text-90)',
+                      marginBottom: '0.2rem',
+                    }}
+                  >
+                    {project.name}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: '0.625rem',
+                      fontWeight: '400',
+                      color: 'var(--text-45)',
+                      letterSpacing: '0.02em',
+                    }}
+                  >
+                    {project.category}
+                  </div>
                 </div>
               </Link>
             ))}

@@ -91,6 +91,11 @@ function GPGPUParticles({
   const particleCount = useMemo(() => getGPGPUParticleCount(), []);
   const noise3D = useMemo(() => createNoise3D(), []);
 
+  // Transition phase tracking for chaos → settle effect
+  const transitionPhaseRef = useRef<'stable' | 'bursting' | 'settling'>('stable');
+  const transitionStartTimeRef = useRef<number>(0);
+  const previousTourStepRef = useRef<number>(tourStep);
+
   // Calculate current pattern based on scroll
   const getCurrentPattern = (progress: number): Pattern => {
     if (progress < 0.25) return Pattern.CLOUD;
@@ -353,6 +358,25 @@ function GPGPUParticles({
     camera.position.x += (targetCameraX - camera.position.x) * 0.05;
     camera.position.y += (targetCameraY - camera.position.y) * 0.05;
 
+    // ===========================================
+    // TOUR STEP TRANSITION: Chaos → Settle Effect
+    // ===========================================
+    // Detect tour step changes and trigger burst phase
+    if (isTourActive && tourStep !== previousTourStepRef.current) {
+      transitionPhaseRef.current = 'bursting';
+      transitionStartTimeRef.current = time;
+      previousTourStepRef.current = tourStep;
+    }
+
+    // Phase timing: bursting (0-0.3s) → settling (0.3-1.2s) → stable
+    const transitionElapsed = time - transitionStartTimeRef.current;
+    if (transitionPhaseRef.current === 'bursting' && transitionElapsed > 0.3) {
+      transitionPhaseRef.current = 'settling';
+    }
+    if (transitionPhaseRef.current === 'settling' && transitionElapsed > 1.2) {
+      transitionPhaseRef.current = 'stable';
+    }
+
     // Update particles with scroll-reactive forces
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
@@ -424,13 +448,38 @@ function GPGPUParticles({
       const dy = targetPositions[i3 + 1] - positions[i3 + 1];
       const dz = targetPositions[i3 + 2] - positions[i3 + 2];
 
+      // ===========================================
+      // PHASE-SPECIFIC FORCES (Chaos → Settle)
+      // ===========================================
+      let damping = 0.97; // Default: smooth
+      let attractionMultiplier = 1.0;
+      let burstForceX = 0, burstForceY = 0, burstForceZ = 0;
+
+      if (isTourActive && transitionPhaseRef.current === 'bursting') {
+        // BURST PHASE: Particles explode outward with chaos
+        damping = 0.85; // Less damping = more chaos
+        attractionMultiplier = 0.1; // Weak attraction during burst
+
+        // Random outward burst velocity (deterministic per particle)
+        const burstAngle = ((i * 7919) % 1000) / 1000 * Math.PI * 2; // Pseudo-random
+        const burstRadius = 15 + ((i * 6271) % 1000) / 1000 * 25;
+        burstForceX = Math.cos(burstAngle) * burstRadius * 0.08;
+        burstForceY = Math.sin(burstAngle) * burstRadius * 0.08;
+        burstForceZ = (((i * 4517) % 1000) / 1000 - 0.5) * 4;
+      } else if (isTourActive && transitionPhaseRef.current === 'settling') {
+        // SETTLE PHASE: Strong pull to target ring formation
+        damping = 0.94; // Medium damping
+        attractionMultiplier = 2.5; // Strong pull to target
+      }
+
       // Stronger attraction during tour for snappier formations
       const baseAttractionStrength = isTourActive ? 0.04 : 0.02;
-      const attractionStrength = baseAttractionStrength * Math.max(0.3, effectiveMorphProgress);
+      const attractionStrength = baseAttractionStrength * attractionMultiplier * Math.max(0.3, effectiveMorphProgress);
 
-      velocities[i3] += fx + dx * attractionStrength;
-      velocities[i3 + 1] += fy + dy * attractionStrength;
-      velocities[i3 + 2] += fz + dz * attractionStrength;
+      // Apply burst force + flow field + attraction
+      velocities[i3] += burstForceX + fx + dx * attractionStrength;
+      velocities[i3 + 1] += burstForceY + fy + dy * attractionStrength;
+      velocities[i3 + 2] += burstForceZ + fz + dz * attractionStrength;
 
       // Mouse attraction force
       const mouseWorldX = mousePosition.x * 100 + camera.position.x;
@@ -452,18 +501,22 @@ function GPGPUParticles({
         velocities[i3 + 2] += (mouseDistZ / mouseDist) * mouseForce;
       }
 
-      // Standard damping
-      velocities[i3] *= 0.97;
-      velocities[i3 + 1] *= 0.97;
-      velocities[i3 + 2] *= 0.97;
+      // Phase-specific damping (velocity relaxation)
+      velocities[i3] *= damping;
+      velocities[i3 + 1] *= damping;
+      velocities[i3 + 2] *= damping;
 
       // Update position (all phases)
       positions[i3] += velocities[i3];
       positions[i3 + 1] += velocities[i3 + 1];
       positions[i3 + 2] += velocities[i3 + 2];
 
-      // Update lifetime (gentle pulse)
-      lifetimes[i] = 0.7 + Math.sin(time * 2 + i * 0.01) * 0.3;
+      // Update lifetime - brighten during burst for visual pop
+      if (isTourActive && transitionPhaseRef.current === 'bursting') {
+        lifetimes[i] = Math.min(1.0, 0.9 + Math.sin(time * 4 + i * 0.01) * 0.1);
+      } else {
+        lifetimes[i] = 0.7 + Math.sin(time * 2 + i * 0.01) * 0.3;
+      }
     }
 
     // Particle recycling for infinite tunnel effect
