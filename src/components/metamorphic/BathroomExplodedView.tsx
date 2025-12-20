@@ -228,6 +228,7 @@ const TOUCH_SENSITIVITY = 0.002;
 export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const scrollProgressRef = useRef(0);
+  const targetProgressRef = useRef(0); // Target progress for damped animation
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showScrollHint, setShowScrollHint] = useState(true);
@@ -241,6 +242,13 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
   const touchStartY = useRef(0);
   const hasUnlockedRef = useRef(false);
   const hasUserScrolled = useRef(false); // Track if user has scrolled at all
+
+  // Transition state for smooth fade to next section
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const transitioningRef = useRef(false);
+
+  // Lerp animation loop ref
+  const lerpAnimationRef = useRef<number | null>(null);
 
   // Auto-play state
   const [isPlaying, setIsPlaying] = useState(false);
@@ -326,31 +334,33 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
 
-    // Scroll to next section
+    // Smooth scroll to next section with longer duration
     setTimeout(() => {
-      scrollTo('#process-gallery', { offset: 0, duration: 1.2 });
+      scrollTo('#process-gallery', { offset: 0, duration: 1.5 }); // Longer duration for smoother transition
     }, 100);
   }, [start, scrollTo]);
 
-  // Handle wheel events during lock
+  // Handle wheel events during lock - updates TARGET progress (damped)
   const handleWheel = useCallback((e: WheelEvent) => {
-    if (!isLockedRef.current) return;
+    if (!isLockedRef.current || transitioningRef.current) return;
 
     e.preventDefault();
     e.stopPropagation();
 
     const delta = e.deltaY;
-    const newProgress = scrollProgressRef.current + delta * WHEEL_SENSITIVITY;
-    updateProgress(newProgress);
+    // Update TARGET progress, not actual progress (lerp loop will smooth it)
+    const newTarget = Math.max(0, Math.min(1, targetProgressRef.current + delta * WHEEL_SENSITIVITY));
+    targetProgressRef.current = newTarget;
 
-    // Unlock when reaching the end
-    if (newProgress >= 1.0) {
-      unlockScroll();
+    // Hide scroll hint when scrolling starts
+    if (newTarget > 0.02) {
+      setShowScrollHint(false);
     }
 
     // Allow scrolling back up if at start
-    if (newProgress <= 0 && delta < 0) {
+    if (newTarget <= 0 && delta < 0) {
       // User is scrolling up at the beginning - unlock and scroll up
+      targetProgressRef.current = 0;
       scrollProgressRef.current = 0;
       setScrollProgress(0);
       isLockedRef.current = false;
@@ -359,15 +369,16 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
       document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
     }
-  }, [updateProgress, unlockScroll, start]);
+  }, [start]);
 
   // Handle touch events during lock
   const handleTouchStart = useCallback((e: TouchEvent) => {
     touchStartY.current = e.touches[0].clientY;
   }, []);
 
+  // Handle touch move during lock - updates TARGET progress (damped)
   const handleTouchMove = useCallback((e: TouchEvent) => {
-    if (!isLockedRef.current) return;
+    if (!isLockedRef.current || transitioningRef.current) return;
 
     e.preventDefault();
     e.stopPropagation();
@@ -376,16 +387,18 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
     const deltaY = touchStartY.current - currentY;
     touchStartY.current = currentY;
 
-    const newProgress = scrollProgressRef.current + deltaY * TOUCH_SENSITIVITY;
-    updateProgress(newProgress);
+    // Update TARGET progress, not actual progress (lerp loop will smooth it)
+    const newTarget = Math.max(0, Math.min(1, targetProgressRef.current + deltaY * TOUCH_SENSITIVITY));
+    targetProgressRef.current = newTarget;
 
-    // Unlock when reaching the end
-    if (newProgress >= 1.0) {
-      unlockScroll();
+    // Hide scroll hint when scrolling starts
+    if (newTarget > 0.02) {
+      setShowScrollHint(false);
     }
 
     // Allow scrolling back up if at start
-    if (newProgress <= 0 && deltaY < 0) {
+    if (newTarget <= 0 && deltaY < 0) {
+      targetProgressRef.current = 0;
       scrollProgressRef.current = 0;
       setScrollProgress(0);
       isLockedRef.current = false;
@@ -394,7 +407,7 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
       document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
     }
-  }, [updateProgress, unlockScroll, start]);
+  }, [start]);
 
   // Setup IntersectionObserver to detect when section enters viewport
   useEffect(() => {
@@ -407,10 +420,13 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
       ([entry]) => {
         const rect = entry.boundingClientRect;
 
-        // Reset unlock flag when section is above viewport (user scrolled back up past it)
+        // Reset all state when section is above viewport (user scrolled back up past it)
         if (!entry.isIntersecting && rect.top > 0) {
           hasUnlockedRef.current = false;
+          transitioningRef.current = false;
+          setIsTransitioning(false);
           scrollProgressRef.current = 0;
+          targetProgressRef.current = 0;
           setScrollProgress(0);
           setShowScrollHint(true);
         }
@@ -487,13 +503,67 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
     };
   }, [handleWheel, handleTouchStart, handleTouchMove, start, prefersReducedMotion]);
 
+  // Lerp animation loop - smoothly interpolates actual progress toward target
+  // This creates the "damped" feel where fast scrolling queues up but plays smoothly
+  useEffect(() => {
+    if (!isLocked && !isPlaying) {
+      // Cleanup when not locked
+      if (lerpAnimationRef.current) {
+        cancelAnimationFrame(lerpAnimationRef.current);
+        lerpAnimationRef.current = null;
+      }
+      return;
+    }
+
+    // Don't run lerp during auto-play (it handles its own animation)
+    if (isPlaying) return;
+
+    const LERP_FACTOR = 0.04; // Lower = slower/smoother (0.04 means ~25 frames to catch up)
+    const THRESHOLD = 0.001; // Stop lerping when close enough
+
+    const animate = () => {
+      const current = scrollProgressRef.current;
+      const target = targetProgressRef.current;
+      const diff = target - current;
+
+      if (Math.abs(diff) > THRESHOLD) {
+        // Lerp toward target
+        const newProgress = current + diff * LERP_FACTOR;
+        scrollProgressRef.current = newProgress;
+        setScrollProgress(newProgress);
+
+        // Check if we've reached the end (trigger transition)
+        if (newProgress >= 0.98 && !transitioningRef.current) {
+          transitioningRef.current = true;
+          setIsTransitioning(true);
+
+          // Fade out, then unlock and scroll to next section
+          setTimeout(() => {
+            unlockScroll();
+          }, 800); // 800ms fade duration
+        }
+      }
+
+      lerpAnimationRef.current = requestAnimationFrame(animate);
+    };
+
+    lerpAnimationRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (lerpAnimationRef.current) {
+        cancelAnimationFrame(lerpAnimationRef.current);
+        lerpAnimationRef.current = null;
+      }
+    };
+  }, [isLocked, isPlaying, unlockScroll]);
+
   // Mark as loaded after a short delay
   useEffect(() => {
     const timer = setTimeout(() => setIsLoaded(true), 500);
     return () => clearTimeout(timer);
   }, []);
 
-  // Auto-play animation
+  // Auto-play animation - directly updates progress (bypasses damping for smooth timed animation)
   useEffect(() => {
     if (!isPlaying) {
       if (animationFrameRef.current) {
@@ -516,7 +586,9 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
       const progressDelta = elapsed / duration;
       const newProgress = Math.min(startProgress + progressDelta * (1 - startProgress), 1);
 
+      // Update both refs so they stay in sync
       scrollProgressRef.current = newProgress;
+      targetProgressRef.current = newProgress;
       setScrollProgress(newProgress);
 
       if (newProgress < 1) {
@@ -544,6 +616,9 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
       // If at 100%, reset to start
       if (scrollProgressRef.current >= 1) {
         scrollProgressRef.current = 0;
+        targetProgressRef.current = 0;
+        transitioningRef.current = false;
+        setIsTransitioning(false);
         setScrollProgress(0);
       }
       setIsPlaying(true);
@@ -631,8 +706,8 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
             style={{
               width: '100%',
               height: '100%',
-              opacity: isLoaded ? 1 : 0,
-              transition: 'opacity 0.5s ease-out',
+              opacity: isLoaded && !isTransitioning ? 1 : 0, // Fade out during transition
+              transition: 'opacity 0.8s ease-out', // Smooth fade for transition
             }}
           >
             {/* Camera */}
@@ -787,15 +862,15 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
         </div>
       </div>
 
-      {/* Safety buffer to prevent section bleed at bottom */}
+      {/* Safety buffer to prevent section bleed at bottom - extended for smoother blend */}
       <div
         style={{
           position: 'absolute',
           bottom: 0,
           left: 0,
           right: 0,
-          height: '100px',
-          background: 'linear-gradient(180deg, transparent 0%, var(--bg-primary) 100%)',
+          height: '150px', // Increased for smoother visual blend
+          background: 'linear-gradient(180deg, transparent 0%, var(--bg-primary) 80%, var(--bg-primary) 100%)',
           zIndex: 15,
           pointerEvents: 'none',
         }}
