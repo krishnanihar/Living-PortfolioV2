@@ -15,12 +15,12 @@ enum Pattern {
   HELIX = 3,
 }
 
-// Tour-specific formations
+// Tour-specific formations (all ring-based for elegant framing)
 enum TourPattern {
   RING = 0,           // Default ring (same as initial)
-  JOURNEY_HELIX = 1,  // Double helix for journey step
-  WORK_GRID = 2,      // Grid/constellation for work step
-  CONNECT_PULSE = 3,  // Converging pulse for connect step
+  JOURNEY_RING = 1,   // Ring with vertical wave
+  WORK_RING = 2,      // Ring with breathing pulse
+  CONNECT_RING = 3,   // Ring with inward glow pulse
 }
 
 // Tour step colors - blue → purple → pink
@@ -255,96 +255,68 @@ function GPGPUParticles({
   };
 
   // ============================================
-  // Tour-specific formation calculators
+  // Tour-specific formation calculators (Ring-based framing)
+  // All formations elegantly frame the tour card like the hero ring
   // ============================================
 
-  // Journey step: Double helix (DNA-like) representing growth/evolution
-  const calculateJourneyHelixPosition = (index: number, time: number): THREE.Vector3 => {
-    const particleIndex = index / particleCount;
-    const t = particleIndex * Math.PI * 6; // 3 full rotations
-    const radius = 45 + Math.sin(time * 0.5 + index * 0.01) * 5;
-    const height = 80;
+  // Journey step: Ring with subtle vertical wave
+  const calculateJourneyRingPosition = (index: number, time: number): THREE.Vector3 => {
+    const angle = (index / particleCount) * Math.PI * 2;
+    const baseRadius = 55 + (index % 100) / 100 * 10; // 55-65 units (deterministic spread)
 
-    // Two intertwined helixes (DNA structure)
-    const isSecondHelix = index % 2 === 0;
-    const phaseOffset = isSecondHelix ? Math.PI : 0;
+    // Subtle vertical wave - representing timeline/growth
+    const verticalWave = Math.sin(angle * 2 + time * 0.5) * 3;
 
     return new THREE.Vector3(
-      Math.cos(t + phaseOffset) * radius,
-      (particleIndex - 0.5) * height + Math.sin(time * 0.3) * 2,
-      Math.sin(t + phaseOffset) * radius - 120
+      Math.cos(angle) * baseRadius,
+      Math.sin(angle) * baseRadius + verticalWave,
+      -120
     );
   };
 
-  // Work step: Grid constellation (3 clusters for project cards)
-  const calculateWorkGridPosition = (index: number, time: number): THREE.Vector3 => {
-    const clusterIndex = index % 3; // 3 project clusters
-    const particleInCluster = Math.floor(index / 3);
-    const clusterParticleCount = Math.floor(particleCount / 3);
+  // Work step: Ring with gentle breathing pulse
+  const calculateWorkRingPosition = (index: number, time: number): THREE.Vector3 => {
+    const angle = (index / particleCount) * Math.PI * 2;
+    const baseRadius = 55 + (index % 100) / 100 * 10; // 55-65 units
 
-    // Cluster center positions (spread horizontally)
-    const clusterCenters = [
-      { x: -60, y: 0 },
-      { x: 0, y: 0 },
-      { x: 60, y: 0 },
-    ];
-
-    const center = clusterCenters[clusterIndex];
-
-    // Fibonacci sphere distribution within each cluster
-    const goldenRatio = (1 + Math.sqrt(5)) / 2;
-    const i = particleInCluster / clusterParticleCount;
-    const theta = 2 * Math.PI * particleInCluster * goldenRatio;
-    const phi = Math.acos(1 - 2 * i);
-    const clusterRadius = 25 + Math.sin(time * 0.4 + clusterIndex) * 3;
+    // Gentle breathing (8% radius pulse) - representing expanding portfolio
+    const breathe = 1 + Math.sin(time * 0.8) * 0.08;
+    const radius = baseRadius * breathe;
 
     return new THREE.Vector3(
-      center.x + clusterRadius * Math.sin(phi) * Math.cos(theta),
-      center.y + clusterRadius * Math.sin(phi) * Math.sin(theta) * 0.6, // Flatten vertically
-      clusterRadius * Math.cos(phi) * 0.5 - 120 // Compress depth
+      Math.cos(angle) * radius,
+      Math.sin(angle) * radius,
+      -120
     );
   };
 
-  // Connect step: Converging pulse (particles pulse inward like a heartbeat)
-  const calculateConnectPulsePosition = (index: number, time: number): THREE.Vector3 => {
-    const particleIndex = index / particleCount;
-    const angle = particleIndex * Math.PI * 2;
+  // Connect step: Ring with inward glow pulse
+  const calculateConnectRingPosition = (index: number, time: number): THREE.Vector3 => {
+    const angle = (index / particleCount) * Math.PI * 2;
+    const baseRadius = 55 + (index % 100) / 100 * 10; // 55-65 units
 
-    // Pulsing radius (heartbeat effect)
-    const pulsePhase = time * 1.5;
-    const basePulse = Math.sin(pulsePhase) * 0.5 + 0.5; // 0-1
-    const pulse = Math.pow(basePulse, 2); // Sharper pulse
-
-    // Particles start wide and converge inward with pulse
-    const outerRadius = 70;
-    const innerRadius = 15;
-    const radius = innerRadius + (outerRadius - innerRadius) * (1 - pulse * 0.6);
-
-    // Add some vertical spread
-    const verticalSpread = 40;
-    const yOffset = (Math.random() - 0.5) * verticalSpread * (1 - pulse * 0.5);
-
-    // Spiral inward slightly
-    const spiralOffset = pulse * Math.PI * 0.5;
+    // Inward pulse toward center - representing connection/coming together
+    const inwardPulse = Math.sin(time * 1.2 + angle) * 4;
+    const radius = baseRadius - inwardPulse;
 
     return new THREE.Vector3(
-      Math.cos(angle + spiralOffset) * radius * (0.8 + particleIndex * 0.4),
-      Math.sin(angle + spiralOffset) * radius * 0.3 + yOffset * particleIndex,
-      -120 + (Math.random() - 0.5) * 20 * (1 - pulse)
+      Math.cos(angle) * radius,
+      Math.sin(angle) * radius,
+      -120
     );
   };
 
-  // Get tour formation target based on current step
+  // Get tour formation target based on current step (all ring-based)
   const getTourTarget = (index: number, step: number, time: number): THREE.Vector3 => {
     switch (step) {
-      case 0: // Journey
-        return calculateJourneyHelixPosition(index, time);
-      case 1: // Work
-        return calculateWorkGridPosition(index, time);
-      case 2: // Connect
-        return calculateConnectPulsePosition(index, time);
+      case 0: // Journey - Blue ring with vertical wave
+        return calculateJourneyRingPosition(index, time);
+      case 1: // Work - Purple ring with breathing
+        return calculateWorkRingPosition(index, time);
+      case 2: // Connect - Pink ring with inward pulse
+        return calculateConnectRingPosition(index, time);
       default:
-        return calculateJourneyHelixPosition(index, time);
+        return calculateJourneyRingPosition(index, time);
     }
   };
 
