@@ -376,26 +376,19 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
 
-    // Smooth scroll to video section with onComplete callback
-    // Overlay fades out only after scroll animation completes
-    const SCROLL_DURATION = 1.2;
-
+    // Instant scroll to video section - overlay masks the transition
+    // Using immediate:true for instant jump (no animation needed since overlay hides it)
     setTimeout(() => {
       scrollTo('#experience-film', {
         offset: 0,
-        duration: SCROLL_DURATION,
-        onComplete: () => {
-          // Fade out overlay after scroll completes - reveals video section
-          setOverlayOpacity(0);
-        },
+        immediate: true, // Instant jump - overlay masks the transition
       });
 
-      // Fallback: If onComplete doesn't fire (Lenis race condition), fade out overlay anyway
-      // This ensures the overlay always fades out even if Lenis callback fails
+      // Fade out overlay after brief moment to reveal video section with thumbnail
       setTimeout(() => {
         setOverlayOpacity(0);
-      }, (SCROLL_DURATION * 1000) + 200); // scroll duration + 200ms buffer
-    }, 50); // Reduced delay - overlay masks the transition
+      }, 100); // Brief pause then reveal
+    }, 50);
   }, [start, scrollTo]);
 
   // Handle wheel events during lock - updates TARGET progress (damped)

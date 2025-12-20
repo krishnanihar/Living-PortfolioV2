@@ -63,17 +63,26 @@ export function ExperienceFilm() {
             }}
           />
         ) : (
-          /* Thumbnail state - minimal */
+          /* Thumbnail state with video preview */
           <>
-            {/* Cinematic gradient background */}
+            {/* YouTube video thumbnail background */}
             <div
               style={{
                 position: 'absolute',
                 inset: 0,
-                background: `
-                  radial-gradient(ellipse at 50% 50%, rgba(147, 51, 234, 0.08) 0%, transparent 50%),
-                  #000
-                `,
+                backgroundImage: 'url(https://img.youtube.com/vi/0U_BLJTcsDU/maxresdefault.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+
+            {/* Dark overlay for contrast with play button */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'rgba(0, 0, 0, 0.35)',
+                pointerEvents: 'none',
               }}
             />
 
@@ -82,7 +91,7 @@ export function ExperienceFilm() {
               style={{
                 position: 'absolute',
                 inset: 0,
-                background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%)',
+                background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.5) 100%)',
                 pointerEvents: 'none',
               }}
             />
