@@ -30,10 +30,13 @@ interface CameraRigProps {
  *
  * Active during 0-1.40 progress range (EXPLODE, PAUSE, IMPLODE phases)
  * CameraEntryController takes over at 1.40
+ *
+ * FIXED: LookAt value at handoff (0.8) matches CameraEntryController start
  */
 function CameraRig({ scrollProgress }: CameraRigProps) {
   const { camera } = useThree();
-  const targetLookAt = useRef(new THREE.Vector3(0, 0.5, 0));
+  // Initialize to match CameraEntryController's expected start lookAt
+  const targetLookAt = useRef(new THREE.Vector3(0, 0.8, 0));
 
   useFrame(() => {
     const rawProgress = scrollProgress.current;
@@ -66,12 +69,12 @@ function CameraRig({ scrollProgress }: CameraRigProps) {
     const targetZ = Math.cos(angle) * radius;
     const targetY = height;
 
-    // Smooth camera movement
+    // Smooth camera movement with consistent lerp factor
     camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetX, 0.05);
     camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetY, 0.05);
     camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetZ, 0.05);
 
-    // Look at center with slight vertical offset that changes with scroll
+    // Look at center - at t=1, this equals 0.8 to match CameraEntryController start
     targetLookAt.current.y = 0.3 + t * 0.5;
     camera.lookAt(targetLookAt.current);
   });

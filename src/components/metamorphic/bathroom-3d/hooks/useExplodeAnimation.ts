@@ -102,8 +102,10 @@ export function useExplodeAnimation(
       const implodeRangeT = Math.max(0, Math.min(1,
         (scrollT - implodeStartAt) / (implodeEndAt - implodeStartAt)
       ));
-      // Reverse: starts at 1, ends at 0
-      const reversedT = 1 - easingFn(implodeRangeT);
+      // FIXED: Invert range THEN apply easing for symmetric animation
+      // Before: 1 - easingFn(t) = asymmetric (fast start, slow end)
+      // After: easingFn(1 - t) = symmetric (mirrors explode animation)
+      const reversedT = easingFn(1 - implodeRangeT);
       finalProgress = reversedT;
       isExploding.current = reversedT > 0 && reversedT < 1;
     }
