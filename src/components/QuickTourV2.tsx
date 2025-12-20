@@ -73,31 +73,8 @@ export function QuickTourV2({ isOpen, onClose, onStepChange }: QuickTourV2Props)
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [isCardHovered, setIsCardHovered] = useState(false);
-  const [tiltStyle, setTiltStyle] = useState({ transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg)' });
   const cardRef = useRef<HTMLDivElement>(null);
   const autoAdvanceRef = useRef<NodeJS.Timeout | null>(null);
-
-  // 3D Tilt effect handlers
-  const handleCardMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    const rotateX = (y - centerY) / 30; // Subtle tilt
-    const rotateY = (centerX - x) / 30;
-
-    setTiltStyle({
-      transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.01)`,
-    });
-  }, []);
-
-  const handleCardMouseLeave = useCallback(() => {
-    setTiltStyle({ transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)' });
-    setIsCardHovered(false);
-  }, []);
 
   const totalSteps = TOUR_STEPS.length;
   const step = TOUR_STEPS[currentStep];
@@ -218,8 +195,7 @@ export function QuickTourV2({ isOpen, onClose, onStepChange }: QuickTourV2Props)
     <div
       ref={cardRef}
       onMouseEnter={() => { setIsPaused(true); setIsCardHovered(true); }}
-      onMouseLeave={handleCardMouseLeave}
-      onMouseMove={handleCardMouseMove}
+      onMouseLeave={() => setIsCardHovered(false)}
       style={{
         position: 'relative',
         width: '100%',
@@ -228,12 +204,10 @@ export function QuickTourV2({ isOpen, onClose, onStepChange }: QuickTourV2Props)
         ...UNIFIED_GLASS,
         borderRadius: '24px',
         color: 'var(--text-95)',
-        ...tiltStyle,
-        transition: 'transform 0.15s ease-out, box-shadow 0.3s ease',
+        transition: 'box-shadow 0.3s ease',
         boxShadow: isCardHovered
           ? `0 20px 60px ${STEP_GLOW[step.id as keyof typeof STEP_GLOW]}, 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 2px var(--glass-25), inset 0 -1px 2px rgba(0, 0, 0, 0.15)`
           : `0 12px 48px rgba(0, 0, 0, 0.15), 0 4px 16px rgba(0, 0, 0, 0.10), inset 0 1px 2px var(--glass-25), inset 0 -1px 2px rgba(0, 0, 0, 0.15)`,
-        willChange: 'transform',
       }}
     >
       {/* Header: Progress dots + Skip */}
