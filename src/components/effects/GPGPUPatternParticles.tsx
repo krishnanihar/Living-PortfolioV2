@@ -368,12 +368,13 @@ function GPGPUParticles({
       previousTourStepRef.current = tourStep;
     }
 
-    // Phase timing: bursting (0-0.3s) → settling (0.3-1.2s) → stable
+    // Phase timing: bursting (0-0.12s) → settling (0.12-0.4s) → stable
+    // Fast and smooth - chaos is brief, settling is snappy
     const transitionElapsed = time - transitionStartTimeRef.current;
-    if (transitionPhaseRef.current === 'bursting' && transitionElapsed > 0.3) {
+    if (transitionPhaseRef.current === 'bursting' && transitionElapsed > 0.12) {
       transitionPhaseRef.current = 'settling';
     }
-    if (transitionPhaseRef.current === 'settling' && transitionElapsed > 1.2) {
+    if (transitionPhaseRef.current === 'settling' && transitionElapsed > 0.4) {
       transitionPhaseRef.current = 'stable';
     }
 
@@ -456,24 +457,24 @@ function GPGPUParticles({
       let burstForceX = 0, burstForceY = 0, burstForceZ = 0;
 
       if (isTourActive && transitionPhaseRef.current === 'bursting') {
-        // BURST PHASE: Particles explode outward with chaos
-        damping = 0.85; // Less damping = more chaos
-        attractionMultiplier = 0.1; // Weak attraction during burst
+        // BURST PHASE: Brief, subtle chaos - particles scatter slightly
+        damping = 0.88; // Moderate damping for controlled chaos
+        attractionMultiplier = 0.3; // Still some attraction during burst
 
-        // Random outward burst velocity (deterministic per particle)
-        const burstAngle = ((i * 7919) % 1000) / 1000 * Math.PI * 2; // Pseudo-random
-        const burstRadius = 15 + ((i * 6271) % 1000) / 1000 * 25;
-        burstForceX = Math.cos(burstAngle) * burstRadius * 0.08;
-        burstForceY = Math.sin(burstAngle) * burstRadius * 0.08;
-        burstForceZ = (((i * 4517) % 1000) / 1000 - 0.5) * 4;
+        // Subtle outward burst (deterministic per particle)
+        const burstAngle = ((i * 7919) % 1000) / 1000 * Math.PI * 2;
+        const burstRadius = 8 + ((i * 6271) % 1000) / 1000 * 12; // Smaller burst
+        burstForceX = Math.cos(burstAngle) * burstRadius * 0.04; // Half intensity
+        burstForceY = Math.sin(burstAngle) * burstRadius * 0.04;
+        burstForceZ = (((i * 4517) % 1000) / 1000 - 0.5) * 2;
       } else if (isTourActive && transitionPhaseRef.current === 'settling') {
-        // SETTLE PHASE: Strong pull to target ring formation
-        damping = 0.94; // Medium damping
-        attractionMultiplier = 2.5; // Strong pull to target
+        // SETTLE PHASE: Fast, snappy convergence to ring
+        damping = 0.91; // Higher friction for faster settling
+        attractionMultiplier = 5.0; // Very strong pull to target
       }
 
       // Stronger attraction during tour for snappier formations
-      const baseAttractionStrength = isTourActive ? 0.04 : 0.02;
+      const baseAttractionStrength = isTourActive ? 0.06 : 0.02;
       const attractionStrength = baseAttractionStrength * attractionMultiplier * Math.max(0.3, effectiveMorphProgress);
 
       // Apply burst force + flow field + attraction
