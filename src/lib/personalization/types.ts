@@ -115,6 +115,17 @@ export interface ComputedData {
 }
 
 // ============================================
+// Onboarding Data (Tour & Hints)
+// ============================================
+
+export interface OnboardingState {
+  tourCompleted: boolean;         // User finished the tour
+  tourDismissed: boolean;         // User dismissed the tour pill
+  tourStep: number;               // Current step if in progress (0-3)
+  hintsShown: Record<string, boolean>;  // { 'chat-discover': true, ... }
+}
+
+// ============================================
 // Main Schema (Unified Storage)
 // ============================================
 
@@ -124,6 +135,7 @@ export interface PersonalizationSchema {
   behavior: BehavioralData;
   context: ContextData;
   computed: ComputedData;
+  onboarding: OnboardingState;
   lastUpdated: string;            // ISO timestamp
 }
 
@@ -258,6 +270,15 @@ export function createDefaultComputed(): ComputedData {
   };
 }
 
+export function createDefaultOnboarding(): OnboardingState {
+  return {
+    tourCompleted: false,
+    tourDismissed: false,
+    tourStep: 0,
+    hintsShown: {},
+  };
+}
+
 export function createDefaultSchema(): PersonalizationSchema {
   return {
     version: SCHEMA_VERSION,
@@ -265,6 +286,7 @@ export function createDefaultSchema(): PersonalizationSchema {
     behavior: createDefaultBehavior(),
     context: createDefaultContext(),
     computed: createDefaultComputed(),
+    onboarding: createDefaultOnboarding(),
     lastUpdated: new Date().toISOString(),
   };
 }

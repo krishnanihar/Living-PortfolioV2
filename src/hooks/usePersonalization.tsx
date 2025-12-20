@@ -24,6 +24,7 @@ import {
   type BehavioralData,
   type ContextData,
   type ComputedData,
+  type OnboardingState,
   type PersonalizedGreeting,
   type ScrollMemory,
   type ProjectTrail,
@@ -34,6 +35,7 @@ import {
   type ReferrerSource,
   type DeviceType,
   createDefaultSchema,
+  createDefaultOnboarding,
   generateSessionId,
 } from '@/lib/personalization/types';
 
@@ -83,7 +85,12 @@ export type PersonalizationAction =
   | { type: 'UPDATE_SCROLL_DEPTH'; payload: number }
   | { type: 'UPDATE_DWELL_TIME'; payload: number }
   | { type: 'ADD_INTERACTION'; payload: BehavioralData['interactions'][0] }
-  | { type: 'UPDATE_SECTION_INTEREST'; payload: { sectionId: string; dwellTime: number } };
+  | { type: 'UPDATE_SECTION_INTEREST'; payload: { sectionId: string; dwellTime: number } }
+  // Onboarding actions
+  | { type: 'DISMISS_TOUR' }
+  | { type: 'COMPLETE_TOUR' }
+  | { type: 'SET_TOUR_STEP'; payload: number }
+  | { type: 'MARK_HINT_SHOWN'; payload: string };
 
 // ============================================
 // Reducer
@@ -304,6 +311,79 @@ function personalizationReducer(
       };
     }
 
+    // ============================================
+    // Onboarding Actions
+    // ============================================
+
+    case 'DISMISS_TOUR': {
+      const newSchema = {
+        ...state.schema,
+        onboarding: {
+          ...state.schema.onboarding,
+          tourDismissed: true,
+        },
+        lastUpdated: new Date().toISOString(),
+      };
+      return {
+        ...state,
+        schema: newSchema,
+        ...computeDerivedState(newSchema),
+      };
+    }
+
+    case 'COMPLETE_TOUR': {
+      const newSchema = {
+        ...state.schema,
+        onboarding: {
+          ...state.schema.onboarding,
+          tourCompleted: true,
+          tourStep: 0,
+        },
+        lastUpdated: new Date().toISOString(),
+      };
+      return {
+        ...state,
+        schema: newSchema,
+        ...computeDerivedState(newSchema),
+      };
+    }
+
+    case 'SET_TOUR_STEP': {
+      const newSchema = {
+        ...state.schema,
+        onboarding: {
+          ...state.schema.onboarding,
+          tourStep: action.payload,
+        },
+        lastUpdated: new Date().toISOString(),
+      };
+      return {
+        ...state,
+        schema: newSchema,
+        ...computeDerivedState(newSchema),
+      };
+    }
+
+    case 'MARK_HINT_SHOWN': {
+      const hintId = action.payload;
+      const newSchema = {
+        ...state.schema,
+        onboarding: {
+          ...state.schema.onboarding,
+          hintsShown: {
+            ...state.schema.onboarding.hintsShown,
+            [hintId]: true,
+          },
+        },
+        lastUpdated: new Date().toISOString(),
+      };
+      return {
+        ...state,
+        schema: newSchema,
+        ...computeDerivedState(newSchema),
+      };
+    }
+
     default:
       return state;
   }
@@ -390,6 +470,8 @@ export function PersonalizationProvider({ children }: PersonalizationProviderPro
         ...schema.behavior,
         sessionDwellTime: 0,
       },
+      // Ensure onboarding exists (backward compatibility)
+      onboarding: schema.onboarding || createDefaultOnboarding(),
     };
 
     // Save to storage

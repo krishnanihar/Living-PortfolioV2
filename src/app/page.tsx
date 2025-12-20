@@ -44,6 +44,18 @@ const Chatbot = dynamic(
 
 export default function HomePage() {
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatTourMode, setChatTourMode] = useState(false);
+
+  // Handle starting the tour from the hero pill
+  const handleStartTour = () => {
+    setChatTourMode(true);
+    setIsChatOpen(true);
+  };
+
+  // Handle tour completion/exit
+  const handleTourComplete = () => {
+    setChatTourMode(false);
+  };
 
   // Lenis smooth scroll - provides buttery smooth scroll progress
   const { progress, scrollY, stop, start } = useLenisScroll();
@@ -102,7 +114,7 @@ export default function HomePage() {
         }}
       >
         {/* Hero Section */}
-        <IntroductionSection />
+        <IntroductionSection onStartTour={handleStartTour} />
 
         {/* Rest of page content */}
         <AboutSectionV2 snapIndex={currentSectionIndex} />
@@ -114,8 +126,13 @@ export default function HomePage() {
       {/* Chatbot modal */}
       <Chatbot
         isOpen={isChatOpen}
-        onClose={() => setIsChatOpen(false)}
+        onClose={() => {
+          setIsChatOpen(false);
+          setChatTourMode(false); // Reset tour mode when closing
+        }}
         intentContext="general"
+        tourMode={chatTourMode}
+        onTourComplete={handleTourComplete}
       />
     </HomeNarrativeWrapper>
   );
