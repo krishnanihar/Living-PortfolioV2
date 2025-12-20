@@ -15,6 +15,21 @@ enum Pattern {
   HELIX = 3,
 }
 
+// Tour-specific formations
+enum TourPattern {
+  RING = 0,           // Default ring (same as initial)
+  JOURNEY_HELIX = 1,  // Double helix for journey step
+  WORK_GRID = 2,      // Grid/constellation for work step
+  CONNECT_PULSE = 3,  // Converging pulse for connect step
+}
+
+// Tour step colors - blue → purple → pink
+const TOUR_COLORS = {
+  0: { slow: '#1E40AF', medium: '#3B82F6', fast: '#60A5FA' },   // Journey: Blue
+  1: { slow: '#5B21B6', medium: '#8B5CF6', fast: '#A78BFA' },   // Work: Purple
+  2: { slow: '#9D174D', medium: '#EC4899', fast: '#F472B6' },   // Connect: Pink
+};
+
 // Get adaptive particle count
 function getGPGPUParticleCount(): number {
   if (typeof window === 'undefined') return 30000;
@@ -57,9 +72,21 @@ interface GPGPUParticlesProps {
   mousePosition: { x: number; y: number };
   userScrolled: boolean;
   isDarkMode: boolean;
+  // Tour state
+  isTourActive?: boolean;
+  tourStep?: number;
+  tourMorphProgress?: number;
 }
 
-function GPGPUParticles({ scrollProgress, mousePosition, userScrolled, isDarkMode }: GPGPUParticlesProps) {
+function GPGPUParticles({
+  scrollProgress,
+  mousePosition,
+  userScrolled,
+  isDarkMode,
+  isTourActive = false,
+  tourStep = 0,
+  tourMorphProgress = 0,
+}: GPGPUParticlesProps) {
   const pointsRef = useRef<THREE.Points>(null);
   const particleCount = useMemo(() => getGPGPUParticleCount(), []);
   const noise3D = useMemo(() => createNoise3D(), []);
@@ -227,6 +254,100 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled, isDarkMod
     );
   };
 
+  // ============================================
+  // Tour-specific formation calculators
+  // ============================================
+
+  // Journey step: Double helix (DNA-like) representing growth/evolution
+  const calculateJourneyHelixPosition = (index: number, time: number): THREE.Vector3 => {
+    const particleIndex = index / particleCount;
+    const t = particleIndex * Math.PI * 6; // 3 full rotations
+    const radius = 45 + Math.sin(time * 0.5 + index * 0.01) * 5;
+    const height = 80;
+
+    // Two intertwined helixes (DNA structure)
+    const isSecondHelix = index % 2 === 0;
+    const phaseOffset = isSecondHelix ? Math.PI : 0;
+
+    return new THREE.Vector3(
+      Math.cos(t + phaseOffset) * radius,
+      (particleIndex - 0.5) * height + Math.sin(time * 0.3) * 2,
+      Math.sin(t + phaseOffset) * radius - 120
+    );
+  };
+
+  // Work step: Grid constellation (3 clusters for project cards)
+  const calculateWorkGridPosition = (index: number, time: number): THREE.Vector3 => {
+    const clusterIndex = index % 3; // 3 project clusters
+    const particleInCluster = Math.floor(index / 3);
+    const clusterParticleCount = Math.floor(particleCount / 3);
+
+    // Cluster center positions (spread horizontally)
+    const clusterCenters = [
+      { x: -60, y: 0 },
+      { x: 0, y: 0 },
+      { x: 60, y: 0 },
+    ];
+
+    const center = clusterCenters[clusterIndex];
+
+    // Fibonacci sphere distribution within each cluster
+    const goldenRatio = (1 + Math.sqrt(5)) / 2;
+    const i = particleInCluster / clusterParticleCount;
+    const theta = 2 * Math.PI * particleInCluster * goldenRatio;
+    const phi = Math.acos(1 - 2 * i);
+    const clusterRadius = 25 + Math.sin(time * 0.4 + clusterIndex) * 3;
+
+    return new THREE.Vector3(
+      center.x + clusterRadius * Math.sin(phi) * Math.cos(theta),
+      center.y + clusterRadius * Math.sin(phi) * Math.sin(theta) * 0.6, // Flatten vertically
+      clusterRadius * Math.cos(phi) * 0.5 - 120 // Compress depth
+    );
+  };
+
+  // Connect step: Converging pulse (particles pulse inward like a heartbeat)
+  const calculateConnectPulsePosition = (index: number, time: number): THREE.Vector3 => {
+    const particleIndex = index / particleCount;
+    const angle = particleIndex * Math.PI * 2;
+
+    // Pulsing radius (heartbeat effect)
+    const pulsePhase = time * 1.5;
+    const basePulse = Math.sin(pulsePhase) * 0.5 + 0.5; // 0-1
+    const pulse = Math.pow(basePulse, 2); // Sharper pulse
+
+    // Particles start wide and converge inward with pulse
+    const outerRadius = 70;
+    const innerRadius = 15;
+    const radius = innerRadius + (outerRadius - innerRadius) * (1 - pulse * 0.6);
+
+    // Add some vertical spread
+    const verticalSpread = 40;
+    const yOffset = (Math.random() - 0.5) * verticalSpread * (1 - pulse * 0.5);
+
+    // Spiral inward slightly
+    const spiralOffset = pulse * Math.PI * 0.5;
+
+    return new THREE.Vector3(
+      Math.cos(angle + spiralOffset) * radius * (0.8 + particleIndex * 0.4),
+      Math.sin(angle + spiralOffset) * radius * 0.3 + yOffset * particleIndex,
+      -120 + (Math.random() - 0.5) * 20 * (1 - pulse)
+    );
+  };
+
+  // Get tour formation target based on current step
+  const getTourTarget = (index: number, step: number, time: number): THREE.Vector3 => {
+    switch (step) {
+      case 0: // Journey
+        return calculateJourneyHelixPosition(index, time);
+      case 1: // Work
+        return calculateWorkGridPosition(index, time);
+      case 2: // Connect
+        return calculateConnectPulsePosition(index, time);
+      default:
+        return calculateJourneyHelixPosition(index, time);
+    }
+  };
+
   // Animation loop with scroll-reactive behavior
   useFrame(({ clock, camera }) => {
     if (!pointsRef.current) return;
@@ -264,29 +385,37 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled, isDarkMod
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
 
-      // Get current pattern and morph progress
-      const currentPattern = getCurrentPattern(scrollProgress);
-      const morphProgress = getMorphProgress(scrollProgress);
-
-      // Calculate target based on pattern (camera-relative)
       let target: THREE.Vector3;
-      switch (currentPattern) {
-        case Pattern.SPHERE:
-          target = calculateSpherePosition(i, camera.position.z);
-          break;
-        case Pattern.TORUS:
-          target = calculateTorusPosition(i, camera.position.z);
-          break;
-        case Pattern.HELIX:
-          target = calculateHelixPosition(i, camera.position.z);
-          break;
-        case Pattern.CLOUD:
-        default:
-          target = new THREE.Vector3(
-            initialPositions[i3],
-            initialPositions[i3 + 1],
-            initialPositions[i3 + 2] + camera.position.z
-          );
+      let effectiveMorphProgress: number;
+
+      // Tour mode: Use tour formations
+      if (isTourActive) {
+        target = getTourTarget(i, tourStep, time);
+        effectiveMorphProgress = tourMorphProgress;
+      } else {
+        // Normal scroll mode: Use pattern formations
+        const currentPattern = getCurrentPattern(scrollProgress);
+        effectiveMorphProgress = getMorphProgress(scrollProgress);
+
+        // Calculate target based on pattern (camera-relative)
+        switch (currentPattern) {
+          case Pattern.SPHERE:
+            target = calculateSpherePosition(i, camera.position.z);
+            break;
+          case Pattern.TORUS:
+            target = calculateTorusPosition(i, camera.position.z);
+            break;
+          case Pattern.HELIX:
+            target = calculateHelixPosition(i, camera.position.z);
+            break;
+          case Pattern.CLOUD:
+          default:
+            target = new THREE.Vector3(
+              initialPositions[i3],
+              initialPositions[i3 + 1],
+              initialPositions[i3 + 2] + camera.position.z
+            );
+        }
       }
 
       targetPositions[i3] = target.x;
@@ -323,7 +452,9 @@ function GPGPUParticles({ scrollProgress, mousePosition, userScrolled, isDarkMod
       const dy = targetPositions[i3 + 1] - positions[i3 + 1];
       const dz = targetPositions[i3 + 2] - positions[i3 + 2];
 
-      const attractionStrength = 0.02 * morphProgress;
+      // Stronger attraction during tour for snappier formations
+      const baseAttractionStrength = isTourActive ? 0.04 : 0.02;
+      const attractionStrength = baseAttractionStrength * Math.max(0.3, effectiveMorphProgress);
 
       velocities[i3] += fx + dx * attractionStrength;
       velocities[i3 + 1] += fy + dy * attractionStrength;
@@ -437,6 +568,10 @@ interface GPGPUPatternParticlesProps {
   userScrolled: boolean;
   isDarkMode: boolean;
   className?: string;
+  // Tour state
+  isTourActive?: boolean;
+  tourStep?: number;
+  tourMorphProgress?: number;
 }
 
 /**
@@ -457,6 +592,9 @@ export default function GPGPUPatternParticles({
   userScrolled = false,
   isDarkMode,
   className = '',
+  isTourActive = false,
+  tourStep = 0,
+  tourMorphProgress = 0,
 }: GPGPUPatternParticlesProps) {
   // Respect reduced motion
   const prefersReducedMotion = useMemo(() => {
@@ -495,6 +633,9 @@ export default function GPGPUPatternParticles({
           mousePosition={mousePosition}
           userScrolled={userScrolled}
           isDarkMode={isDarkMode}
+          isTourActive={isTourActive}
+          tourStep={tourStep}
+          tourMorphProgress={tourMorphProgress}
         />
       </Canvas>
     </div>

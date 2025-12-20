@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { ChevronDown, Mail, Github, ArrowRight, X, Sun, Moon, Hand, Sparkles } from 'lucide-react';
+import { ChevronDown, Mail, ArrowRight, X, Sun, Moon, Hand, Sparkles, Compass } from 'lucide-react';
+import { QuickTourV2 } from '@/components/QuickTourV2';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
 import { useOnboarding } from '@/hooks/useOnboarding';
 import { animate } from '@/lib/anime-utils';
@@ -37,13 +38,25 @@ const PARTICLE_COLORS = {
 
 interface IntroductionSectionProps {
   onStartTour?: () => void;
+  // Quick Tour V2 props (lifted from page.tsx)
+  isTourOpen?: boolean;
+  onOpenTour?: () => void;
+  onCloseTour?: () => void;
+  onTourStepChange?: (step: number) => void;
 }
 
-export function IntroductionSection({ onStartTour }: IntroductionSectionProps) {
+export function IntroductionSection({
+  onStartTour,
+  isTourOpen = false,
+  onOpenTour,
+  onCloseTour,
+  onTourStepChange,
+}: IntroductionSectionProps) {
   const { scrollTo } = useLenisScroll();
   const { shouldShowTourPill, dismissTour } = useOnboarding();
   const tourPillRef = useRef<HTMLDivElement>(null);
-  const [hoveredButton, setHoveredButton] = useState<'contact' | 'github' | null>(null);
+  const [hoveredButton, setHoveredButton] = useState<'contact' | 'tour' | null>(null);
+  const heroContentRef = useRef<HTMLDivElement>(null);
   const [hoveredTourPill, setHoveredTourPill] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [animationStage, setAnimationStage] = useState(0);
@@ -90,8 +103,8 @@ export function IntroductionSection({ onStartTour }: IntroductionSectionProps) {
     }
   }, [animationStage, shouldShowTourPill, tourPillVisible]);
 
-  // Handle tour pill click - animate out then open chat
-  const handleStartTour = () => {
+  // Handle tour pill click - animate out then open tour
+  const handleStartTourFromPill = () => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (!prefersReducedMotion && tourPillRef.current) {
@@ -103,12 +116,12 @@ export function IntroductionSection({ onStartTour }: IntroductionSectionProps) {
         ease: 'inExpo',
         complete: () => {
           setTourPillVisible(false);
-          onStartTour?.();
+          handleOpenTourInternal();
         },
       });
     } else {
       setTourPillVisible(false);
-      onStartTour?.();
+      handleOpenTourInternal();
     }
   };
 
@@ -139,6 +152,48 @@ export function IntroductionSection({ onStartTour }: IntroductionSectionProps) {
     setShowScrollPill(false);
     clearScrollMemory();
   };
+
+  // Open tour with animation
+  const handleOpenTourInternal = useCallback(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion && heroContentRef.current) {
+      // Animate hero content out
+      animate(heroContentRef.current, {
+        opacity: [1, 0],
+        scale: [1, 0.98],
+        duration: 300,
+        ease: 'inExpo',
+        complete: () => {
+          onOpenTour?.();
+        },
+      });
+    } else {
+      onOpenTour?.();
+    }
+  }, [onOpenTour]);
+
+  // Close tour with animation
+  const handleCloseTourInternal = useCallback(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    onCloseTour?.();
+
+    if (!prefersReducedMotion && heroContentRef.current) {
+      // Animate hero content back in
+      animate(heroContentRef.current, {
+        opacity: [0, 1],
+        scale: [0.98, 1],
+        duration: 400,
+        ease: 'outExpo',
+      });
+    }
+  }, [onCloseTour]);
+
+  // Handle tour step changes (for particle synchronization)
+  const handleTourStepChangeInternal = useCallback((step: number) => {
+    onTourStepChange?.(step);
+  }, [onTourStepChange]);
 
   // Compose the greeting display
   const getGreetingDisplay = () => {
@@ -387,12 +442,16 @@ export function IntroductionSection({ onStartTour }: IntroductionSectionProps) {
       >
         {/* Centered Content Container */}
         <div
+          ref={heroContentRef}
           className="hero-content"
           style={{
             maxWidth: '900px',
             margin: '0 auto',
             width: '100%',
             textAlign: 'center',
+            opacity: isTourOpen ? 0 : 1,
+            pointerEvents: isTourOpen ? 'none' : 'auto',
+            position: isTourOpen ? 'absolute' : 'relative',
           }}
         >
           {/* Opener Greeting - Small, Subtle with Icon */}
@@ -574,12 +633,10 @@ export function IntroductionSection({ onStartTour }: IntroductionSectionProps) {
               <span style={{ position: 'relative', zIndex: 1 }}>Contact</span>
             </a>
 
-            {/* GitHub Button - Liquid Glass with Subtle Blue Reflection */}
-            <a
-              href="https://github.com/krishn404"
-              target="_blank"
-              rel="noopener noreferrer"
-              onMouseEnter={() => setHoveredButton('github')}
+            {/* Quick Tour Button - Liquid Glass with Purple/Pink Gradient */}
+            <button
+              onClick={handleOpenTourInternal}
+              onMouseEnter={() => setHoveredButton('tour')}
               onMouseLeave={() => setHoveredButton(null)}
               style={{
                 position: 'relative',
@@ -588,20 +645,20 @@ export function IntroductionSection({ onStartTour }: IntroductionSectionProps) {
                 gap: '0.5rem',
                 padding: '13px 26px',
                 ...UNIFIED_GLASS,
-                background: hoveredButton === 'github'
-                  ? `linear-gradient(135deg, rgba(59, 130, 246, 0.04), rgba(139, 92, 246, 0.03))`
-                  : `linear-gradient(135deg, rgba(59, 130, 246, 0.03), rgba(139, 92, 246, 0.02))`,
-                borderColor: hoveredButton === 'github' ? 'rgba(59, 130, 246, 0.12)' : 'rgba(59, 130, 246, 0.08)',
+                background: hoveredButton === 'tour'
+                  ? `linear-gradient(135deg, rgba(139, 92, 246, 0.06), rgba(236, 72, 153, 0.04))`
+                  : `linear-gradient(135deg, rgba(139, 92, 246, 0.04), rgba(236, 72, 153, 0.02))`,
+                borderColor: hoveredButton === 'tour' ? 'rgba(139, 92, 246, 0.15)' : 'rgba(139, 92, 246, 0.08)',
                 borderRadius: '20px',
                 color: 'var(--text-95)',
-                textDecoration: 'none',
                 fontSize: '0.875rem',
                 fontWeight: '500',
                 cursor: 'pointer',
                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                transform: hoveredButton === 'github' ? 'translateY(-2px) scale(1.02)' : 'translateY(0) scale(1)',
+                transform: hoveredButton === 'tour' ? 'translateY(-2px) scale(1.02)' : 'translateY(0) scale(1)',
                 overflow: 'hidden',
-                animation: hoveredButton === 'github' ? 'buttonGlow 8s ease-in-out infinite' : 'none',
+                animation: hoveredButton === 'tour' ? 'buttonGlow 8s ease-in-out infinite' : 'none',
+                border: '1px solid',
               }}
             >
               {/* Refraction layer - Diagonal light reflection */}
@@ -610,37 +667,37 @@ export function IntroductionSection({ onStartTour }: IntroductionSectionProps) {
                   position: 'absolute',
                   inset: 0,
                   background: `linear-gradient(135deg,
-                    rgba(59, 130, 246, 0.08) 0%,
+                    rgba(139, 92, 246, 0.08) 0%,
                     transparent 40%,
                     transparent 60%,
-                    rgba(139, 92, 246, 0.05) 100%)`,
+                    rgba(236, 72, 153, 0.05) 100%)`,
                   mixBlendMode: 'overlay',
                   pointerEvents: 'none',
-                  opacity: hoveredButton === 'github' ? 1 : 0.5,
+                  opacity: hoveredButton === 'tour' ? 1 : 0.5,
                   transition: 'opacity 0.3s ease',
                 }}
               />
               {/* Subtle shimmer on hover */}
-              {hoveredButton === 'github' && (
+              {hoveredButton === 'tour' && (
                 <div
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(90deg, transparent 0%, rgba(59, 130, 246, 0.08) 50%, transparent 100%)',
+                    background: 'linear-gradient(90deg, transparent 0%, rgba(139, 92, 246, 0.08) 50%, transparent 100%)',
                     pointerEvents: 'none',
                   }}
                 />
               )}
-              <Github size={15} style={{ position: 'relative', zIndex: 1 }} />
-              <span style={{ position: 'relative', zIndex: 1 }}>GitHub</span>
-            </a>
+              <Compass size={15} style={{ position: 'relative', zIndex: 1 }} />
+              <span style={{ position: 'relative', zIndex: 1 }}>Quick Tour</span>
+            </button>
           </div>
 
           {/* Tour Pill - First-time visitor CTA */}
           {tourPillVisible && shouldShowTourPill && (
             <div
               ref={tourPillRef}
-              onClick={handleStartTour}
+              onClick={handleStartTourFromPill}
               onMouseEnter={() => setHoveredTourPill(true)}
               onMouseLeave={() => setHoveredTourPill(false)}
               style={{
@@ -704,6 +761,26 @@ export function IntroductionSection({ onStartTour }: IntroductionSectionProps) {
           )}
 
         </div>
+
+        {/* Quick Tour V2 - Replaces hero content when active */}
+        {isTourOpen && (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              maxWidth: '900px',
+              margin: '0 auto',
+              width: '100%',
+            }}
+          >
+            <QuickTourV2
+              isOpen={isTourOpen}
+              onClose={handleCloseTourInternal}
+              onStepChange={handleTourStepChangeInternal}
+            />
+          </div>
+        )}
 
         {/* Scroll Memory Pill - Floating CTA for returning visitors */}
         {showScrollPill && personalization?.scrollMemory.hasHistory && personalization.scrollMemory.lastProjectName && (

@@ -46,7 +46,32 @@ export default function HomePage() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatTourMode, setChatTourMode] = useState(false);
 
-  // Handle starting the tour from the hero pill
+  // Quick Tour V2 state
+  const [isQuickTourOpen, setIsQuickTourOpen] = useState(false);
+  const [quickTourStep, setQuickTourStep] = useState(0);
+  const [tourMorphProgress, setTourMorphProgress] = useState(1); // 1 = fully morphed to current formation
+
+  // Handle opening the quick tour
+  const handleOpenQuickTour = useCallback(() => {
+    setIsQuickTourOpen(true);
+    setQuickTourStep(0);
+    setTourMorphProgress(1);
+  }, []);
+
+  // Handle closing the quick tour
+  const handleCloseQuickTour = useCallback(() => {
+    setIsQuickTourOpen(false);
+    setQuickTourStep(0);
+    setTourMorphProgress(0);
+  }, []);
+
+  // Handle tour step changes
+  const handleQuickTourStepChange = useCallback((step: number) => {
+    setQuickTourStep(step);
+    setTourMorphProgress(1);
+  }, []);
+
+  // Handle starting the tour from the hero pill (legacy - for chat tour mode)
   const handleStartTour = () => {
     setChatTourMode(true);
     setIsChatOpen(true);
@@ -103,6 +128,9 @@ export default function HomePage() {
       <HeroParticleSystem
         starOpacity={0.35}
         scrollProgress={progress}
+        isTourActive={isQuickTourOpen}
+        tourStep={quickTourStep}
+        tourMorphProgress={tourMorphProgress}
       />
 
       {/* Main content - natural scroll flow */}
@@ -114,7 +142,13 @@ export default function HomePage() {
         }}
       >
         {/* Hero Section */}
-        <IntroductionSection onStartTour={handleStartTour} />
+        <IntroductionSection
+          onStartTour={handleStartTour}
+          isTourOpen={isQuickTourOpen}
+          onOpenTour={handleOpenQuickTour}
+          onCloseTour={handleCloseQuickTour}
+          onTourStepChange={handleQuickTourStepChange}
+        />
 
         {/* Rest of page content */}
         <AboutSectionV2 snapIndex={currentSectionIndex} />

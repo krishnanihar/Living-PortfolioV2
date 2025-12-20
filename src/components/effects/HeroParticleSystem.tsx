@@ -190,6 +190,10 @@ interface HeroParticleSystemProps {
   className?: string;
   /** Scroll progress (0-1) from Lenis smooth scroll */
   scrollProgress?: number;
+  /** Tour state for particle formations */
+  isTourActive?: boolean;
+  tourStep?: number;
+  tourMorphProgress?: number;
 }
 
 /**
@@ -224,6 +228,9 @@ export default function HeroParticleSystem({
   starOpacity = 0.2,
   className = '',
   scrollProgress = 0,
+  isTourActive = false,
+  tourStep = 0,
+  tourMorphProgress = 0,
 }: HeroParticleSystemProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { resolvedTheme } = useTheme();
@@ -293,6 +300,9 @@ export default function HeroParticleSystem({
         userScrolled={userScrolled}
         isDarkMode={isDarkMode}
         className="hero-gpgpu-layer"
+        isTourActive={isTourActive}
+        tourStep={tourStep}
+        tourMorphProgress={tourMorphProgress}
       />
 
       <style jsx>{`
