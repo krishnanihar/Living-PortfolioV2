@@ -9,25 +9,34 @@ interface CameraEntryControllerProps {
 }
 
 /**
- * CameraEntryController - Dolly camera into the bathroom
+ * CameraZoomController - Dolly camera into the bathroom toward mirror
  *
- * Active during progress 1.40-1.70
- * Smoothly moves camera from orbit position into the bathroom,
- * facing the mirror for the installation activation.
+ * Active during progress 1.5-2.8:
+ * - 1.5-2.0: HOLD - Camera holds at orbit end position
+ * - 2.0-2.8: ZOOM - Camera dollies into bathroom toward mirror
  *
- * FIXED: Camera now ends at comfortable viewing distance (Z=4)
- * FIXED: Uses Catmull-Rom spline to pass THROUGH mid-point
- * FIXED: Lerp factor matches CameraRig (0.05) for seamless handoff
+ * Takes over from CameraRig at progress 1.5
+ * Hands off to video playback at progress 2.8
  */
 
-// Camera path waypoints - adjusted for comfortable viewing
-const ENTRY_PATH = {
-  // Start matches CameraRig end position at progress 1.40
-  start: { position: new THREE.Vector3(18, 8, 0), lookAt: new THREE.Vector3(0, 0.8, 0) },
-  // Mid-point camera PASSES THROUGH (not just control point)
-  mid: { position: new THREE.Vector3(8, 4, 5), lookAt: new THREE.Vector3(0, 0.6, 0.3) },
-  // End at comfortable viewing distance (Z=4 instead of 1.5)
-  end: { position: new THREE.Vector3(0, 1.5, 4), lookAt: new THREE.Vector3(0, 1.2, 0) },
+// Camera path waypoints - end very close to mirror for video reveal
+const ZOOM_PATH = {
+  // Start: End of orbit phase (at 570° ≈ 210°, radius 14, height 6)
+  // Camera position at 570° (same as 210°): sin(210°) ≈ -0.5, cos(210°) ≈ -0.866
+  start: {
+    position: new THREE.Vector3(14 * Math.sin(Math.PI * 7/6), 6, 14 * Math.cos(Math.PI * 7/6)),
+    lookAt: new THREE.Vector3(0, 0.8, 0)
+  },
+  // Mid-point: Transitioning through bathroom entrance
+  mid: {
+    position: new THREE.Vector3(2, 2.5, 5),
+    lookAt: new THREE.Vector3(0, 1.0, 0.5)
+  },
+  // End: Face-to-face with mirror (very close for video reveal)
+  end: {
+    position: new THREE.Vector3(0, 1.2, 1.8),
+    lookAt: new THREE.Vector3(0, 1.2, 1.0)
+  },
 };
 
 // Smooth easing
@@ -77,8 +86,8 @@ export function CameraEntryController({ scrollProgress }: CameraEntryControllerP
   useFrame(() => {
     const progress = scrollProgress.current;
 
-    // Only active during 1.40-1.70 range
-    if (progress < 1.40 || progress >= 1.70) {
+    // Only active during 1.5-2.8 range
+    if (progress < 1.5 || progress >= 2.8) {
       hasInitialized.current = false;
       return;
     }
@@ -88,14 +97,25 @@ export function CameraEntryController({ scrollProgress }: CameraEntryControllerP
       hasInitialized.current = true;
     }
 
-    // Calculate local progress (0-1 within this phase)
-    const localProgress = (progress - 1.40) / 0.30;
-    const easedProgress = smoothstep(localProgress);
+    // Two-phase control:
+    // 1.5-2.0: HOLD at start position (easedProgress = 0)
+    // 2.0-2.8: ZOOM from start to end
+    let easedProgress: number;
+
+    if (progress < 2.0) {
+      // HOLD phase: stay at start position
+      easedProgress = 0;
+    } else {
+      // ZOOM phase: interpolate from start to end
+      // Range is 2.0 to 2.8 = 0.8 units
+      const localProgress = (progress - 2.0) / 0.8;
+      easedProgress = smoothstep(localProgress);
+    }
 
     // Use Catmull-Rom for smooth curve that passes through all points
     // Virtual points extend the curve naturally
-    const virtualStart = getVirtualPoint(ENTRY_PATH.start.position, ENTRY_PATH.mid.position);
-    const virtualEnd = getVirtualPoint(ENTRY_PATH.end.position, ENTRY_PATH.mid.position);
+    const virtualStart = getVirtualPoint(ZOOM_PATH.start.position, ZOOM_PATH.mid.position);
+    const virtualEnd = getVirtualPoint(ZOOM_PATH.end.position, ZOOM_PATH.mid.position);
 
     // For first half (0-0.5), interpolate from start to mid
     // For second half (0.5-1), interpolate from mid to end
@@ -107,36 +127,36 @@ export function CameraEntryController({ scrollProgress }: CameraEntryControllerP
       targetPosition = catmullRom(
         segmentT,
         virtualStart,
-        ENTRY_PATH.start.position,
-        ENTRY_PATH.mid.position,
-        ENTRY_PATH.end.position
+        ZOOM_PATH.start.position,
+        ZOOM_PATH.mid.position,
+        ZOOM_PATH.end.position
       );
       targetLookAt = catmullRom(
         segmentT,
-        getVirtualPoint(ENTRY_PATH.start.lookAt, ENTRY_PATH.mid.lookAt),
-        ENTRY_PATH.start.lookAt,
-        ENTRY_PATH.mid.lookAt,
-        ENTRY_PATH.end.lookAt
+        getVirtualPoint(ZOOM_PATH.start.lookAt, ZOOM_PATH.mid.lookAt),
+        ZOOM_PATH.start.lookAt,
+        ZOOM_PATH.mid.lookAt,
+        ZOOM_PATH.end.lookAt
       );
     } else {
       const segmentT = (easedProgress - 0.5) * 2; // 0-1 for second segment
       targetPosition = catmullRom(
         segmentT,
-        ENTRY_PATH.start.position,
-        ENTRY_PATH.mid.position,
-        ENTRY_PATH.end.position,
+        ZOOM_PATH.start.position,
+        ZOOM_PATH.mid.position,
+        ZOOM_PATH.end.position,
         virtualEnd
       );
       targetLookAt = catmullRom(
         segmentT,
-        ENTRY_PATH.start.lookAt,
-        ENTRY_PATH.mid.lookAt,
-        ENTRY_PATH.end.lookAt,
-        getVirtualPoint(ENTRY_PATH.end.lookAt, ENTRY_PATH.mid.lookAt)
+        ZOOM_PATH.start.lookAt,
+        ZOOM_PATH.mid.lookAt,
+        ZOOM_PATH.end.lookAt,
+        getVirtualPoint(ZOOM_PATH.end.lookAt, ZOOM_PATH.mid.lookAt)
       );
     }
 
-    // FIXED: Use same lerp factor as CameraRig (0.05) for seamless handoff
+    // Use same lerp factor as CameraRig (0.05) for seamless handoff
     const lerpFactor = 0.05;
     camera.position.lerp(targetPosition, lerpFactor);
     currentLookAt.current.lerp(targetLookAt, lerpFactor);

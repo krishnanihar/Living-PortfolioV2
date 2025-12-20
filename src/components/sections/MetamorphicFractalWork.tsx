@@ -6,7 +6,6 @@ import {
   JourneyNarrative,
   BathroomExplodedView,
   ProcessGalleryV2,
-  ExperienceFilm,
   RelatedProjectsV2,
 } from '@/components/metamorphic';
 
@@ -21,18 +20,17 @@ import {
  *
  * Sections:
  * 1. Hero - Interactive grid background with stagger title
- * 2. Experience Film - Video showcase
- * 3. Journey - Three-phase narrative (Approach, Dissolution, Integration)
- * 4. Technical - Animated system flow diagram
- * 5. Process - Stagger reveal gallery
- * 6. Related - Other projects with wave hover
+ * 2. Journey - Three-phase narrative (Approach, Dissolution, Integration)
+ * 3. Technical - 3D Exploded View with integrated video experience
+ * 4. Process - Stagger reveal gallery
+ * 5. Related - Other projects with wave hover
  */
 export function MetamorphicFractalWork() {
   const handleEnterPortal = () => {
-    // Scroll to experience section
-    const experienceSection = document.getElementById('experience');
-    if (experienceSection) {
-      experienceSection.scrollIntoView({ behavior: 'smooth' });
+    // Scroll to technical system (exploded view with integrated video)
+    const technicalSection = document.getElementById('technical-system');
+    if (technicalSection) {
+      technicalSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -47,9 +45,6 @@ export function MetamorphicFractalWork() {
     >
       {/* Hero section with interactive grid */}
       <MetamorphicHeroV2 onEnterPortal={handleEnterPortal} />
-
-      {/* Experience film video */}
-      <ExperienceFilm />
 
       {/* Three-phase journey narrative */}
       <JourneyNarrative />

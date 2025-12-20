@@ -40,13 +40,13 @@ const Vignette = dynamic(
 
 /**
  * DynamicVignette - Progress-aware vignette effect
- * Increases darkness during LIGHTS_FADE phase (1.70-1.90)
+ * Increases darkness during LIGHTS_FADE phase (2.5-2.8)
  */
 function DynamicVignetteEffect({ progress }: { progress: number }) {
   // Calculate vignette values based on progress
-  // Active during LIGHTS_FADE phase (1.70-1.90)
-  const offset = 0.1 + Math.max(0, progress - 1.7) * 0.5;
-  const darkness = progress > 1.7 ? Math.min((progress - 1.7) * 4, 0.8) : 0;
+  // Active during LIGHTS_FADE phase (2.5-2.8)
+  const offset = 0.1 + Math.max(0, progress - 2.5) * 0.5;
+  const darkness = progress > 2.5 ? Math.min((progress - 2.5) * 3, 0.9) : 0;
 
   return <Vignette offset={offset} darkness={darkness} />;
 }
@@ -237,24 +237,24 @@ interface BathroomExplodedViewProps {
 const WHEEL_SENSITIVITY = 0.0008;
 const TOUCH_SENSITIVITY = 0.002;
 
-// Animation phase markers (progress ranges 0-2)
+// Animation phase markers (progress ranges 0-3)
 export enum AnimationPhase {
-  EXPLODE = 'EXPLODE',       // 0.00-0.86: Components explode outward
-  PAUSE = 'PAUSE',           // 0.86-1.00: Hold exploded view
-  IMPLODE = 'IMPLODE',       // 1.00-1.40: Components return to base
-  CAMERA_ENTRY = 'CAMERA_ENTRY', // 1.40-1.70: Camera dollies into bathroom
-  LIGHTS_FADE = 'LIGHTS_FADE',   // 1.70-1.90: Lights fade to darkness
-  INSTALLATION = 'INSTALLATION', // 1.90-2.00: Mirror glows, transition
+  EXPLODE = 'EXPLODE',           // 0.00-1.00: Components explode + 360° orbit
+  IMPLODE = 'IMPLODE',           // 1.00-1.50: Components return + 180° orbit
+  HOLD = 'HOLD',                 // 1.50-2.00: Hold assembled view
+  ZOOM_ENTRY = 'ZOOM_ENTRY',     // 2.00-2.50: Camera dollies into bathroom
+  LIGHTS_FADE = 'LIGHTS_FADE',   // 2.50-2.80: Lights fade to darkness
+  VIDEO_PLAY = 'VIDEO_PLAY',     // 2.80-3.00: Video plays on mirror
 }
 
 // Get current animation phase from progress
 function getAnimationPhase(progress: number): AnimationPhase {
-  if (progress < 0.86) return AnimationPhase.EXPLODE;
-  if (progress < 1.00) return AnimationPhase.PAUSE;
-  if (progress < 1.40) return AnimationPhase.IMPLODE;
-  if (progress < 1.70) return AnimationPhase.CAMERA_ENTRY;
-  if (progress < 1.90) return AnimationPhase.LIGHTS_FADE;
-  return AnimationPhase.INSTALLATION;
+  if (progress < 1.00) return AnimationPhase.EXPLODE;
+  if (progress < 1.50) return AnimationPhase.IMPLODE;
+  if (progress < 2.00) return AnimationPhase.HOLD;
+  if (progress < 2.50) return AnimationPhase.ZOOM_ENTRY;
+  if (progress < 2.80) return AnimationPhase.LIGHTS_FADE;
+  return AnimationPhase.VIDEO_PLAY;
 }
 
 /**
@@ -264,7 +264,8 @@ function getAnimationPhase(progress: number): AnimationPhase {
  * Scroll input controls explosion animation until sequence completes.
  */
 export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
-  const sectionRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const stickyRef = useRef<HTMLElement>(null);
   const scrollProgressRef = useRef(0);
   const targetProgressRef = useRef(0); // Target progress for damped animation
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -330,9 +331,9 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
     };
   }, []);
 
-  // Update progress and sync ref - extended to 0-2 range
+  // Update progress and sync ref - extended to 0-3 range
   const updateProgress = useCallback((newProgress: number) => {
-    const clampedProgress = Math.max(0, Math.min(2, newProgress)); // Extended to 2
+    const clampedProgress = Math.max(0, Math.min(3, newProgress)); // Extended to 3
     scrollProgressRef.current = clampedProgress;
     setScrollProgress(clampedProgress);
 
@@ -372,9 +373,9 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
 
-    // Smooth scroll to experience/video section
+    // Smooth scroll to next section (video is now in-scene on mirror)
     setTimeout(() => {
-      scrollTo('#experience', { offset: 0, duration: 1.5 }); // Scroll to experience section
+      scrollTo('#process-gallery', { offset: 0, duration: 1.5 }); // Scroll to gallery section
     }, 100);
   }, [start, scrollTo]);
 
@@ -387,8 +388,8 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
 
     const delta = e.deltaY;
     // Update TARGET progress, not actual progress (lerp loop will smooth it)
-    // Extended to 0-2 range for full continuation sequence
-    const newTarget = Math.max(0, Math.min(2, targetProgressRef.current + delta * WHEEL_SENSITIVITY));
+    // Extended to 0-3 range for full continuation sequence
+    const newTarget = Math.max(0, Math.min(3, targetProgressRef.current + delta * WHEEL_SENSITIVITY));
     targetProgressRef.current = newTarget;
 
     // Hide scroll hint when scrolling starts
@@ -427,8 +428,8 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
     touchStartY.current = currentY;
 
     // Update TARGET progress, not actual progress (lerp loop will smooth it)
-    // Extended to 0-2 range for full continuation sequence
-    const newTarget = Math.max(0, Math.min(2, targetProgressRef.current + deltaY * TOUCH_SENSITIVITY));
+    // Extended to 0-3 range for full continuation sequence
+    const newTarget = Math.max(0, Math.min(3, targetProgressRef.current + deltaY * TOUCH_SENSITIVITY));
     targetProgressRef.current = newTarget;
 
     // Hide scroll hint when scrolling starts
@@ -453,14 +454,14 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
   useEffect(() => {
     if (typeof window === 'undefined' || prefersReducedMotion) return;
 
-    const section = sectionRef.current;
-    if (!section) return;
+    const container = containerRef.current;
+    if (!container) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         const rect = entry.boundingClientRect;
 
-        // Reset all state when section is above viewport (user scrolled back up past it)
+        // Reset all state when container is above viewport (user scrolled back up past it)
         if (!entry.isIntersecting && rect.top > 0) {
           hasUnlockedRef.current = false;
           transitioningRef.current = false;
@@ -471,9 +472,10 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
           setShowScrollHint(true);
         }
 
-        // Lock when section top reaches viewport top (or is above it)
-        if (entry.isIntersecting && rect.top <= 0 && rect.bottom > window.innerHeight * 0.5) {
-          if (!hasUnlockedRef.current && scrollProgressRef.current < 2.0) {
+        // Lock when sticky section is at top of viewport
+        // The sticky section stays at top=0, so we lock when container top is at or above viewport top
+        if (entry.isIntersecting && rect.top <= 0) {
+          if (!hasUnlockedRef.current && scrollProgressRef.current < 3.0) {
             lockScroll();
           }
         }
@@ -484,19 +486,19 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
       }
     );
 
-    observer.observe(section);
+    observer.observe(container);
 
     return () => {
       observer.disconnect();
     };
   }, [lockScroll, prefersReducedMotion]);
 
-  // Attach event listeners to section element only
+  // Attach event listeners to container element
   useEffect(() => {
     if (typeof window === 'undefined' || prefersReducedMotion) return;
 
-    const section = sectionRef.current;
-    if (!section) return;
+    const container = containerRef.current;
+    if (!container) return;
 
     // Create wrapper handlers that only work when section is in view
     const wheelHandler = (e: WheelEvent) => {
@@ -514,10 +516,10 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
       handleTouchMove(e);
     };
 
-    // Add listeners to section with passive: false
-    section.addEventListener('wheel', wheelHandler, { passive: false });
-    section.addEventListener('touchstart', touchStartHandler, { passive: true });
-    section.addEventListener('touchmove', touchMoveHandler, { passive: false });
+    // Add listeners to container with passive: false
+    container.addEventListener('wheel', wheelHandler, { passive: false });
+    container.addEventListener('touchstart', touchStartHandler, { passive: true });
+    container.addEventListener('touchmove', touchMoveHandler, { passive: false });
 
     // Also need global handler when locked (to capture all wheel events)
     const globalWheelHandler = (e: WheelEvent) => {
@@ -529,9 +531,9 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
     window.addEventListener('wheel', globalWheelHandler, { passive: false });
 
     return () => {
-      section.removeEventListener('wheel', wheelHandler);
-      section.removeEventListener('touchstart', touchStartHandler);
-      section.removeEventListener('touchmove', touchMoveHandler);
+      container.removeEventListener('wheel', wheelHandler);
+      container.removeEventListener('touchstart', touchStartHandler);
+      container.removeEventListener('touchmove', touchMoveHandler);
       window.removeEventListener('wheel', globalWheelHandler);
 
       // Cleanup: ensure scroll is unlocked
@@ -572,12 +574,12 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
         scrollProgressRef.current = newProgress;
         setScrollProgress(newProgress);
 
-        // Check if we've reached the end of full sequence (trigger transition at 1.95)
-        if (newProgress >= 1.95 && !transitioningRef.current) {
+        // Check if we've reached the end of full sequence (trigger transition at 2.95)
+        if (newProgress >= 2.95 && !transitioningRef.current) {
           transitioningRef.current = true;
           setIsTransitioning(true);
 
-          // Unlock and scroll to experience/video section
+          // Unlock and scroll to next section (video is now in-scene on mirror)
           setTimeout(() => {
             unlockScroll();
           }, 800); // 800ms delay before scroll
@@ -614,7 +616,7 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
       return;
     }
 
-    const duration = 24000; // 24 seconds for full 0-2 sequence (12s per half)
+    const duration = 36000; // 36 seconds for full 0-3 sequence (12s per phase)
     const startProgress = scrollProgressRef.current;
 
     const animate = (timestamp: number) => {
@@ -624,15 +626,15 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
 
       const elapsed = timestamp - playStartTimeRef.current;
       const progressDelta = elapsed / duration;
-      // Extended to 0-2 range for full continuation sequence
-      const newProgress = Math.min(startProgress + progressDelta * (2 - startProgress), 2);
+      // Extended to 0-3 range for full continuation sequence with video
+      const newProgress = Math.min(startProgress + progressDelta * (3 - startProgress), 3);
 
       // Update both refs so they stay in sync
       scrollProgressRef.current = newProgress;
       targetProgressRef.current = newProgress;
       setScrollProgress(newProgress);
 
-      if (newProgress < 2) {
+      if (newProgress < 3) {
         animationFrameRef.current = requestAnimationFrame(animate);
       } else {
         setIsPlaying(false);
@@ -655,7 +657,7 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
       setIsPlaying(false);
     } else {
       // If at 100% (full sequence complete), reset to start
-      if (scrollProgressRef.current >= 2) {
+      if (scrollProgressRef.current >= 3) {
         scrollProgressRef.current = 0;
         targetProgressRef.current = 0;
         transitioningRef.current = false;
@@ -667,24 +669,31 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
   }, [isPlaying]);
 
   return (
-    <section
-      ref={sectionRef}
+    <div
+      ref={containerRef}
       id="technical-system"
       className={className}
       style={{
         position: 'relative',
-        zIndex: 2, // Stack above next section to prevent bleed
-        width: '100%',
-        height: '100vh', // Single viewport height - scroll locked
-        minHeight: '100vh', // Ensure full coverage
-        overflow: 'hidden', // Prevent next section from bleeding in
-        background: `linear-gradient(180deg,
-          var(--bg-primary) 0%,
-          var(--metamorphic-bg-primary) 30%,
-          var(--metamorphic-bg-primary) 70%,
-          var(--bg-primary) 100%)`,
+        height: '200vh', // Extra scroll height - sticky section stays while container scrolls
+        zIndex: 10, // High z-index to ensure it stacks above next section
       }}
     >
+      <section
+        ref={stickyRef}
+        style={{
+          position: 'sticky',
+          top: 0,
+          width: '100%',
+          height: '100vh',
+          overflow: 'hidden',
+          background: `linear-gradient(180deg,
+            var(--bg-primary) 0%,
+            var(--metamorphic-bg-primary) 30%,
+            var(--metamorphic-bg-primary) 70%,
+            var(--bg-primary) 100%)`,
+        }}
+      >
       {/* Full viewport container for 3D scene */}
       <div
         style={{
@@ -785,6 +794,38 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
           </Canvas>
         )}
 
+        {/* YouTube Video Overlay - appears when camera zooms into mirror */}
+        {scrollProgress >= 2.75 && (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'black',
+              opacity: scrollProgress >= 2.8 ? 1 : (scrollProgress - 2.75) * 20,
+              transition: 'opacity 0.3s ease-out',
+              zIndex: 30,
+            }}
+          >
+            <iframe
+              width="100%"
+              height="100%"
+              src="https://www.youtube.com/embed/0U_BLJTcsDU?autoplay=1&mute=1&loop=1&playlist=0U_BLJTcsDU&controls=0&showinfo=0&rel=0&modestbranding=1"
+              title="Metamorphic Experience"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
+            />
+          </div>
+        )}
+
         {/* Loading state */}
         {!isLoaded && <LoadingFallback />}
 
@@ -815,7 +856,7 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
                 fontFamily: 'var(--font-space-grotesk)',
               }}
             >
-              {Math.round((scrollProgress / 2) * 100)}% • {getAnimationPhase(scrollProgress).replace('_', ' ')}
+              {Math.round((scrollProgress / 3) * 100)}% • {getAnimationPhase(scrollProgress).replace('_', ' ')}
             </span>
           </div>
         )}
@@ -905,20 +946,21 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
         </div>
       </div>
 
-      {/* Safety buffer to prevent section bleed at bottom - extended for smoother blend */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: '150px', // Increased for smoother visual blend
-          background: 'linear-gradient(180deg, transparent 0%, var(--bg-primary) 80%, var(--bg-primary) 100%)',
-          zIndex: 15,
-          pointerEvents: 'none',
-        }}
-      />
-    </section>
+        {/* Safety buffer to prevent section bleed at bottom - extended for smoother blend */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '150px', // Increased for smoother visual blend
+            background: 'linear-gradient(180deg, transparent 0%, var(--bg-primary) 80%, var(--bg-primary) 100%)',
+            zIndex: 15,
+            pointerEvents: 'none',
+          }}
+        />
+      </section>
+    </div>
   );
 }
 

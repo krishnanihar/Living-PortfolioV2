@@ -22,15 +22,15 @@ export function SinkBasin({ scrollProgress }: SinkBasinProps) {
   const height = 0.35;
   const wallThickness = 0.08;
 
-  // Explosion animation - fourth to explode (0.36-0.50), fourth to implode (1.18-1.26)
+  // Explosion animation - fourth to explode (0.36-0.50), fourth to implode (1.00-1.14)
   const { groupRef, progress } = useExplodeAnimation(scrollProgress, {
     direction: ExplodeDirections.down,
     distance: 1.5,
     startAt: 0.36,
     endAt: 0.50,
     easing: 'smoothstep',
-    implodeStartAt: 1.18,
-    implodeEndAt: 1.26,
+    implodeStartAt: 1.00,
+    implodeEndAt: 1.14,
   });
 
   // Create sink basin geometry (simplified as nested boxes)

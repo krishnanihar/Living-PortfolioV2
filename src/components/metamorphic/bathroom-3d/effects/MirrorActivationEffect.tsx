@@ -11,9 +11,10 @@ interface MirrorActivationEffectProps {
 /**
  * MirrorActivationEffect - Purple glow emanating from the mirror
  *
- * Active during progress 1.90-2.00
+ * Active during progress 2.70-2.85
  * Creates an ethereal purple glow that pulses from the mirror,
  * signaling the activation of the Metamorphic installation.
+ * Brief glow leads into video reveal at 2.8.
  */
 
 function smoothstep(x: number): number {
@@ -31,8 +32,8 @@ export function MirrorActivationEffect({ scrollProgress }: MirrorActivationEffec
   useFrame((_, delta) => {
     const progress = scrollProgress.current;
 
-    // Only active during 1.90-2.00 range
-    if (progress < 1.90) {
+    // Only active during 2.70-2.85 range (brief glow before video)
+    if (progress < 2.70 || progress >= 2.85) {
       // Hide glow when not in range
       if (glowRef.current) glowRef.current.visible = false;
       if (pointLightRef.current) pointLightRef.current.intensity = 0;
@@ -43,7 +44,7 @@ export function MirrorActivationEffect({ scrollProgress }: MirrorActivationEffec
     if (glowRef.current) glowRef.current.visible = true;
 
     // Calculate local progress (0-1 within this phase)
-    const localProgress = Math.min((progress - 1.90) / 0.10, 1);
+    const localProgress = Math.min((progress - 2.70) / 0.15, 1);
     const easedProgress = smoothstep(localProgress);
 
     // Update time for pulse animation

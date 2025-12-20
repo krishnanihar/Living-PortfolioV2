@@ -23,15 +23,15 @@ export function OuterShell({ scrollProgress }: OuterShellProps) {
   const depth = 3;
   const thickness = 0.15;
 
-  // Explosion animation - first to explode (0.00-0.14), last to implode (1.34-1.40)
+  // Explosion animation - first to explode (0.00-0.14), last to implode (1.36-1.50)
   const { groupRef, progress } = useExplodeAnimation(scrollProgress, {
     direction: ExplodeDirections.forward,
     distance: 3,
     startAt: 0.00,
     endAt: 0.14,
     easing: 'smoothstep',
-    implodeStartAt: 1.34,
-    implodeEndAt: 1.40,
+    implodeStartAt: 1.36,
+    implodeEndAt: 1.50,
   });
 
   // Create hollow box geometry (outer shell with panels)

@@ -25,57 +25,80 @@ interface CameraRigProps {
 /**
  * CameraRig - Controls camera position based on scroll
  *
- * Orbits around the bathroom model as user scrolls,
- * pulling back to reveal the full exploded view.
+ * Phase 1 (0-1.0): Full 360° orbit during explosion
+ * Phase 2 (1.0-1.5): Additional 180° orbit during implosion
  *
- * Active during 0-1.40 progress range (EXPLODE, PAUSE, IMPLODE phases)
- * CameraEntryController takes over at 1.40
+ * After 1.5, CameraZoomController takes over for dolly into mirror
  *
- * FIXED: LookAt value at handoff (0.8) matches CameraEntryController start
+ * Total rotation: 540° (360° + 180°)
  */
 function CameraRig({ scrollProgress }: CameraRigProps) {
   const { camera } = useThree();
-  // Initialize to match CameraEntryController's expected start lookAt
   const targetLookAt = useRef(new THREE.Vector3(0, 0.8, 0));
 
   useFrame(() => {
-    const rawProgress = scrollProgress.current;
+    const progress = scrollProgress.current;
 
-    // Only active during 0-1.40 range
-    // After 1.40, CameraEntryController takes over
-    if (rawProgress >= 1.40) return;
+    // Only active during 0-1.5 range
+    // After 1.5, CameraZoomController takes over
+    if (progress >= 1.5) return;
 
-    // Clamp progress to 0-1 for orbit calculations (0-1.40 maps to orbit)
-    // Progress 0-1 = explosion, 1-1.40 = hold at end position
-    const t = Math.min(rawProgress, 1);
+    let angle: number;
+    let radius: number;
+    let height: number;
+    let lookAtY: number;
 
-    // Camera orbit parameters - dramatic 168° rotation sweep
-    const startAngle = Math.PI / 6; // 30 degrees
-    const endAngle = Math.PI * 1.1; // 198 degrees (168° rotation)
-    const angle = startAngle + (endAngle - startAngle) * t;
+    if (progress <= 1.0) {
+      // PHASE 1: EXPLODE - Full 360° orbit (0-1.0)
+      const t = progress;
+      const startAngle = Math.PI / 6;           // 30°
+      const endAngle = startAngle + Math.PI * 2; // 30° + 360° = 390°
+      angle = startAngle + (endAngle - startAngle) * t;
 
-    // Pull back as we explode - more dramatic
-    const startRadius = 10;
-    const endRadius = 18; // Further back for full view
-    const radius = startRadius + (endRadius - startRadius) * t;
+      // Pull back as we explode
+      const startRadius = 10;
+      const endRadius = 18;
+      radius = startRadius + (endRadius - startRadius) * t;
 
-    // Camera height increases more for better vantage point
-    const startHeight = 3;
-    const endHeight = 8; // Higher vantage
-    const height = startHeight + (endHeight - startHeight) * t;
+      // Camera rises for better vantage
+      const startHeight = 3;
+      const endHeight = 8;
+      height = startHeight + (endHeight - startHeight) * t;
+
+      // Look at center rises slightly
+      lookAtY = 0.3 + t * 0.5;
+    } else {
+      // PHASE 2: IMPLODE - Additional 180° orbit (1.0-1.5)
+      const t = (progress - 1.0) / 0.5; // 0 → 1 within this phase
+      const startAngle = Math.PI / 6 + Math.PI * 2; // 390° (end of explode)
+      const endAngle = startAngle + Math.PI;         // 390° + 180° = 570°
+      angle = startAngle + (endAngle - startAngle) * t;
+
+      // Ease back to comfortable viewing distance
+      const startRadius = 18;
+      const endRadius = 14;
+      radius = startRadius + (endRadius - startRadius) * t;
+
+      // Lower height as we settle
+      const startHeight = 8;
+      const endHeight = 6;
+      height = startHeight + (endHeight - startHeight) * t;
+
+      // Look at center stabilizes
+      lookAtY = 0.8;
+    }
 
     // Calculate camera position
     const targetX = Math.sin(angle) * radius;
     const targetZ = Math.cos(angle) * radius;
-    const targetY = height;
 
     // Smooth camera movement with consistent lerp factor
     camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetX, 0.05);
-    camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetY, 0.05);
+    camera.position.y = THREE.MathUtils.lerp(camera.position.y, height, 0.05);
     camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetZ, 0.05);
 
-    // Look at center - at t=1, this equals 0.8 to match CameraEntryController start
-    targetLookAt.current.y = 0.3 + t * 0.5;
+    // Update look-at target
+    targetLookAt.current.y = lookAtY;
     camera.lookAt(targetLookAt.current);
   });
 
@@ -164,24 +187,24 @@ interface BathroomSceneProps {
  * Combines all bathroom components and manages the scroll-driven
  * explosion/implosion animation through shared scroll progress state.
  *
- * Extended to support 0-2 progress range:
- * - 0.00-0.86: EXPLODE - Components explode outward
- * - 0.86-1.00: PAUSE - Hold exploded view
- * - 1.00-1.40: IMPLODE - Components return to base
- * - 1.40-1.70: CAMERA_ENTRY - Dolly into bathroom
- * - 1.70-1.90: LIGHTS_FADE - Fade to darkness
- * - 1.90-2.00: INSTALLATION - Mirror glows, transition
+ * Extended to support 0-3 progress range:
+ * - 0.00-1.00: EXPLODE - Components explode + 360° camera orbit
+ * - 1.00-1.50: IMPLODE - Components return + 180° camera orbit
+ * - 1.50-2.00: HOLD - Assembled view, orbit ends
+ * - 2.00-2.50: ZOOM_ENTRY - Camera dollies into bathroom toward mirror
+ * - 2.50-2.80: LIGHTS_FADE - Fade to complete darkness
+ * - 2.80-3.00: VIDEO_PLAY - Video texture activates on mirror
  */
 export function BathroomScene({ scrollProgress }: BathroomSceneProps) {
   return (
     <group>
-      {/* Camera controller - orbit phase (0-1.40) */}
+      {/* Camera controller - orbit phase (0-1.5) */}
       <CameraRig scrollProgress={scrollProgress} />
 
-      {/* Camera entry controller - dolly into bathroom (1.40-1.70) */}
+      {/* Camera zoom controller - dolly into bathroom (1.5-2.8) */}
       <CameraEntryController scrollProgress={scrollProgress} />
 
-      {/* Light fade controller - fade to darkness (1.70-1.90) */}
+      {/* Light fade controller - fade to darkness (2.5-2.8) */}
       <LightFadeController scrollProgress={scrollProgress} />
 
       {/* Scene lighting */}
@@ -190,7 +213,7 @@ export function BathroomScene({ scrollProgress }: BathroomSceneProps) {
       {/* Ground reference */}
       <GroundPlane />
 
-      {/* Mirror activation effect - glow at the end (1.90-2.00) */}
+      {/* Mirror activation effect - glow before video (2.70-2.85) */}
       <MirrorActivationEffect scrollProgress={scrollProgress} />
 
       {/* Bathroom assembly */}

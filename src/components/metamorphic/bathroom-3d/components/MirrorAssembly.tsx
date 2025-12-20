@@ -15,6 +15,9 @@ interface MirrorAssemblyProps {
  *
  * The centerpiece of the installation. A two-way mirror positioned
  * above the sink that conceals a TV display behind it.
+ *
+ * At progress 2.8, a YouTube overlay appears over the canvas,
+ * creating the culmination of the scroll-driven experience.
  */
 export function MirrorAssembly({ scrollProgress }: MirrorAssemblyProps) {
   // Dimensions
@@ -26,15 +29,15 @@ export function MirrorAssembly({ scrollProgress }: MirrorAssemblyProps) {
   const tvDepth = 0.1;
   const gapBehindMirror = 0.15;
 
-  // Explosion animation - third to explode (0.24-0.38), fifth to implode (1.24-1.32)
+  // Explosion animation - third to explode (0.24-0.38), third to implode (1.12-1.26)
   const { groupRef, progress } = useExplodeAnimation(scrollProgress, {
     direction: ExplodeDirections.backward,
     distance: 2.5,
     startAt: 0.24,
     endAt: 0.38,
     easing: 'smoothstep',
-    implodeStartAt: 1.24,
-    implodeEndAt: 1.32,
+    implodeStartAt: 1.12,
+    implodeEndAt: 1.26,
   });
 
   const mirrorGeometry = useMemo(() => new THREE.BoxGeometry(mirrorWidth, mirrorHeight, mirrorDepth), []);
