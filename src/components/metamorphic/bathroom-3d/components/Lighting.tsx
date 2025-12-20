@@ -22,13 +22,15 @@ export function Lighting({ scrollProgress }: LightingProps) {
   const light2Ref = useRef<THREE.PointLight>(null);
   const timeRef = useRef(0);
 
-  // Explosion animation - last to explode (0.72-0.86)
+  // Explosion animation - last to explode (0.72-0.86), first to implode (1.00-1.08)
   const { groupRef, progress } = useExplodeAnimation(scrollProgress, {
     direction: new THREE.Vector3(0, 1, 0.3).normalize(),
     distance: 2,
     startAt: 0.72,
     endAt: 0.86,
     easing: 'smoothstep',
+    implodeStartAt: 1.00,
+    implodeEndAt: 1.08,
   });
 
   // Subtle light flicker animation

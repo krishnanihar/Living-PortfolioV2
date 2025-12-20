@@ -20,13 +20,15 @@ interface TapWithEncoderProps {
 export function TapWithEncoder({ scrollProgress }: TapWithEncoderProps) {
   const knobRef = useRef<THREE.Group>(null);
 
-  // Explosion animation - fifth to explode (0.48-0.62)
+  // Explosion animation - fifth to explode (0.48-0.62), third to implode (1.12-1.20)
   const { groupRef, progress } = useExplodeAnimation(scrollProgress, {
     direction: ExplodeDirections.right,
     distance: 2.5,
     startAt: 0.48,
     endAt: 0.62,
     easing: 'smoothstep',
+    implodeStartAt: 1.12,
+    implodeEndAt: 1.20,
   });
 
   // Animate the tap knob rotation when exploding

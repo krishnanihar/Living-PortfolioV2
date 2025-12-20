@@ -21,7 +21,7 @@ export function MetalFrame({ scrollProgress }: MetalFrameProps) {
   const height = 5.7;
   const depth = 2.7;
 
-  // Explosion animation - second to explode (0.12-0.26)
+  // Explosion animation - second to explode (0.12-0.26), sixth to implode (1.30-1.38)
   const { groupRef, progress } = useExplodeAnimation(scrollProgress, {
     direction: ExplodeDirections.up,
     distance: 2,
@@ -29,6 +29,8 @@ export function MetalFrame({ scrollProgress }: MetalFrameProps) {
     endAt: 0.26,
     easing: 'smoothstep',
     rotation: new THREE.Euler(0, 0.1, 0),
+    implodeStartAt: 1.30,
+    implodeEndAt: 1.38,
   });
 
   // Create frame geometry from line segments

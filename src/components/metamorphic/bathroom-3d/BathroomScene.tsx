@@ -13,6 +13,11 @@ import { TapWithEncoder } from './components/TapWithEncoder';
 import { Electronics } from './components/Electronics';
 import { Lighting } from './components/Lighting';
 
+// Import controllers for continuation sequence (1.40-2.00)
+import { CameraEntryController } from './controllers/CameraEntryController';
+import { LightFadeController } from './controllers/LightFadeController';
+import { MirrorActivationEffect } from './effects/MirrorActivationEffect';
+
 interface CameraRigProps {
   scrollProgress: MutableRefObject<number>;
 }
@@ -22,13 +27,24 @@ interface CameraRigProps {
  *
  * Orbits around the bathroom model as user scrolls,
  * pulling back to reveal the full exploded view.
+ *
+ * Active during 0-1.40 progress range (EXPLODE, PAUSE, IMPLODE phases)
+ * CameraEntryController takes over at 1.40
  */
 function CameraRig({ scrollProgress }: CameraRigProps) {
   const { camera } = useThree();
   const targetLookAt = useRef(new THREE.Vector3(0, 0.5, 0));
 
   useFrame(() => {
-    const t = scrollProgress.current;
+    const rawProgress = scrollProgress.current;
+
+    // Only active during 0-1.40 range
+    // After 1.40, CameraEntryController takes over
+    if (rawProgress >= 1.40) return;
+
+    // Clamp progress to 0-1 for orbit calculations (0-1.40 maps to orbit)
+    // Progress 0-1 = explosion, 1-1.40 = hold at end position
+    const t = Math.min(rawProgress, 1);
 
     // Camera orbit parameters - dramatic 168° rotation sweep
     const startAngle = Math.PI / 6; // 30 degrees
@@ -143,22 +159,36 @@ interface BathroomSceneProps {
  * BathroomScene - Main scene orchestrator
  *
  * Combines all bathroom components and manages the scroll-driven
- * explosion animation through shared scroll progress state.
+ * explosion/implosion animation through shared scroll progress state.
  *
- * Now accepts scrollProgress as prop from parent component
- * instead of using drei's useScroll (which requires ScrollControls).
+ * Extended to support 0-2 progress range:
+ * - 0.00-0.86: EXPLODE - Components explode outward
+ * - 0.86-1.00: PAUSE - Hold exploded view
+ * - 1.00-1.40: IMPLODE - Components return to base
+ * - 1.40-1.70: CAMERA_ENTRY - Dolly into bathroom
+ * - 1.70-1.90: LIGHTS_FADE - Fade to darkness
+ * - 1.90-2.00: INSTALLATION - Mirror glows, transition
  */
 export function BathroomScene({ scrollProgress }: BathroomSceneProps) {
   return (
     <group>
-      {/* Camera controller */}
+      {/* Camera controller - orbit phase (0-1.40) */}
       <CameraRig scrollProgress={scrollProgress} />
+
+      {/* Camera entry controller - dolly into bathroom (1.40-1.70) */}
+      <CameraEntryController scrollProgress={scrollProgress} />
+
+      {/* Light fade controller - fade to darkness (1.70-1.90) */}
+      <LightFadeController scrollProgress={scrollProgress} />
 
       {/* Scene lighting */}
       <SceneLighting />
 
       {/* Ground reference */}
       <GroundPlane />
+
+      {/* Mirror activation effect - glow at the end (1.90-2.00) */}
+      <MirrorActivationEffect scrollProgress={scrollProgress} />
 
       {/* Bathroom assembly */}
       <group position={[0, 0, 0]}>

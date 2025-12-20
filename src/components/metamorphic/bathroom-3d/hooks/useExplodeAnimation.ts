@@ -9,14 +9,18 @@ interface ExplodeConfig {
   direction: THREE.Vector3;
   /** Maximum distance to travel */
   distance: number;
-  /** Scroll progress range start (0-1) */
+  /** Scroll progress range start (0-1) - when explosion begins */
   startAt?: number;
-  /** Scroll progress range end (0-1) */
+  /** Scroll progress range end (0-1) - when explosion completes */
   endAt?: number;
   /** Easing function */
   easing?: 'linear' | 'easeIn' | 'easeOut' | 'easeInOut' | 'smoothstep';
   /** Rotation during explosion (radians) */
   rotation?: THREE.Euler;
+  /** Scroll progress when implode begins (1.0-2.0) - component returns to base */
+  implodeStartAt?: number;
+  /** Scroll progress when implode completes (1.0-2.0) */
+  implodeEndAt?: number;
 }
 
 interface UseExplodeAnimationReturn {
@@ -57,6 +61,8 @@ export function useExplodeAnimation(
     endAt = 1,
     easing = 'smoothstep',
     rotation,
+    implodeStartAt,
+    implodeEndAt,
   } = config;
 
   const groupRef = useRef<THREE.Group | null>(null);
@@ -74,27 +80,51 @@ export function useExplodeAnimation(
       baseRotation.current = groupRef.current.rotation.clone();
     }
 
-    // Calculate progress within our range
     const scrollT = scrollProgress.current;
-    const rangeT = Math.max(0, Math.min(1, (scrollT - startAt) / (endAt - startAt)));
-
-    // Apply easing
     const easingFn = easingFunctions[easing];
-    const easedT = easingFn(rangeT);
+    let finalProgress = 0;
 
-    progress.current = easedT;
-    isExploding.current = easedT > 0 && easedT < 1;
+    // Phase 1: EXPLODE (0 → 1 progress range)
+    if (scrollT <= 1) {
+      // Calculate progress within explode range
+      const rangeT = Math.max(0, Math.min(1, (scrollT - startAt) / (endAt - startAt)));
+      finalProgress = easingFn(rangeT);
+      isExploding.current = finalProgress > 0 && finalProgress < 1;
+    }
+    // Phase 2: HOLD (1.0 → implodeStartAt) - Stay fully exploded
+    else if (implodeStartAt && scrollT < implodeStartAt) {
+      finalProgress = 1; // Hold at fully exploded
+      isExploding.current = false;
+    }
+    // Phase 3: IMPLODE (implodeStartAt → implodeEndAt) - Return to base
+    else if (implodeStartAt && implodeEndAt && scrollT >= implodeStartAt) {
+      // Calculate reverse progress (1 → 0)
+      const implodeRangeT = Math.max(0, Math.min(1,
+        (scrollT - implodeStartAt) / (implodeEndAt - implodeStartAt)
+      ));
+      // Reverse: starts at 1, ends at 0
+      const reversedT = 1 - easingFn(implodeRangeT);
+      finalProgress = reversedT;
+      isExploding.current = reversedT > 0 && reversedT < 1;
+    }
+    // No implode configured, stay exploded
+    else {
+      finalProgress = 1;
+      isExploding.current = false;
+    }
+
+    progress.current = finalProgress;
 
     // Calculate new position
-    const offset = direction.clone().multiplyScalar(easedT * distance);
+    const offset = direction.clone().multiplyScalar(finalProgress * distance);
     groupRef.current.position.copy(basePosition.current.clone().add(offset));
 
     // Apply rotation if specified
     if (rotation && baseRotation.current) {
       groupRef.current.rotation.set(
-        baseRotation.current.x + rotation.x * easedT,
-        baseRotation.current.y + rotation.y * easedT,
-        baseRotation.current.z + rotation.z * easedT
+        baseRotation.current.x + rotation.x * finalProgress,
+        baseRotation.current.y + rotation.y * finalProgress,
+        baseRotation.current.z + rotation.z * finalProgress
       );
     }
   });

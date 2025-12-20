@@ -17,7 +17,7 @@ interface ElectronicsProps {
  * and controls the relay switch for lighting effects.
  */
 export function Electronics({ scrollProgress }: ElectronicsProps) {
-  // Explosion animation - sixth to explode (0.60-0.74)
+  // Explosion animation - sixth to explode (0.60-0.74), second to implode (1.06-1.14)
   const { groupRef, progress } = useExplodeAnimation(scrollProgress, {
     direction: ExplodeDirections.left,
     distance: 3,
@@ -25,6 +25,8 @@ export function Electronics({ scrollProgress }: ElectronicsProps) {
     endAt: 0.74,
     easing: 'smoothstep',
     rotation: new THREE.Euler(0, -0.2, 0),
+    implodeStartAt: 1.06,
+    implodeEndAt: 1.14,
   });
 
   // Arduino Uno dimensions (scaled)

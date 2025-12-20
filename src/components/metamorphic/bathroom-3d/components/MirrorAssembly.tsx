@@ -26,13 +26,15 @@ export function MirrorAssembly({ scrollProgress }: MirrorAssemblyProps) {
   const tvDepth = 0.1;
   const gapBehindMirror = 0.15;
 
-  // Explosion animation - third to explode (0.24-0.38)
+  // Explosion animation - third to explode (0.24-0.38), fifth to implode (1.24-1.32)
   const { groupRef, progress } = useExplodeAnimation(scrollProgress, {
     direction: ExplodeDirections.backward,
     distance: 2.5,
     startAt: 0.24,
     endAt: 0.38,
     easing: 'smoothstep',
+    implodeStartAt: 1.24,
+    implodeEndAt: 1.32,
   });
 
   const mirrorGeometry = useMemo(() => new THREE.BoxGeometry(mirrorWidth, mirrorHeight, mirrorDepth), []);

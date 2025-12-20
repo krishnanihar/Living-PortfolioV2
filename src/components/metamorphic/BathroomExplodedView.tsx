@@ -33,6 +33,24 @@ const Bloom = dynamic(
   { ssr: false }
 );
 
+const Vignette = dynamic(
+  () => import('@react-three/postprocessing').then((mod) => mod.Vignette),
+  { ssr: false }
+);
+
+/**
+ * DynamicVignette - Progress-aware vignette effect
+ * Increases darkness during LIGHTS_FADE phase (1.70-1.90)
+ */
+function DynamicVignetteEffect({ progress }: { progress: number }) {
+  // Calculate vignette values based on progress
+  // Active during LIGHTS_FADE phase (1.70-1.90)
+  const offset = 0.1 + Math.max(0, progress - 1.7) * 0.5;
+  const darkness = progress > 1.7 ? Math.min((progress - 1.7) * 4, 0.8) : 0;
+
+  return <Vignette offset={offset} darkness={darkness} />;
+}
+
 // Dynamically import scene
 const BathroomSceneInner = dynamic(
   () => import('./bathroom-3d/BathroomScene').then((mod) => mod.BathroomScene),
@@ -219,6 +237,26 @@ interface BathroomExplodedViewProps {
 const WHEEL_SENSITIVITY = 0.0008;
 const TOUCH_SENSITIVITY = 0.002;
 
+// Animation phase markers (progress ranges 0-2)
+export enum AnimationPhase {
+  EXPLODE = 'EXPLODE',       // 0.00-0.86: Components explode outward
+  PAUSE = 'PAUSE',           // 0.86-1.00: Hold exploded view
+  IMPLODE = 'IMPLODE',       // 1.00-1.40: Components return to base
+  CAMERA_ENTRY = 'CAMERA_ENTRY', // 1.40-1.70: Camera dollies into bathroom
+  LIGHTS_FADE = 'LIGHTS_FADE',   // 1.70-1.90: Lights fade to darkness
+  INSTALLATION = 'INSTALLATION', // 1.90-2.00: Mirror glows, transition
+}
+
+// Get current animation phase from progress
+function getAnimationPhase(progress: number): AnimationPhase {
+  if (progress < 0.86) return AnimationPhase.EXPLODE;
+  if (progress < 1.00) return AnimationPhase.PAUSE;
+  if (progress < 1.40) return AnimationPhase.IMPLODE;
+  if (progress < 1.70) return AnimationPhase.CAMERA_ENTRY;
+  if (progress < 1.90) return AnimationPhase.LIGHTS_FADE;
+  return AnimationPhase.INSTALLATION;
+}
+
 /**
  * BathroomExplodedView - Main exploded view component
  *
@@ -292,9 +330,9 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
     };
   }, []);
 
-  // Update progress and sync ref
+  // Update progress and sync ref - extended to 0-2 range
   const updateProgress = useCallback((newProgress: number) => {
-    const clampedProgress = Math.max(0, Math.min(1, newProgress));
+    const clampedProgress = Math.max(0, Math.min(2, newProgress)); // Extended to 2
     scrollProgressRef.current = clampedProgress;
     setScrollProgress(clampedProgress);
 
@@ -334,9 +372,9 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
 
-    // Smooth scroll to next section with longer duration
+    // Smooth scroll to experience/video section
     setTimeout(() => {
-      scrollTo('#process-gallery', { offset: 0, duration: 1.5 }); // Longer duration for smoother transition
+      scrollTo('#experience', { offset: 0, duration: 1.5 }); // Scroll to experience section
     }, 100);
   }, [start, scrollTo]);
 
@@ -349,7 +387,8 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
 
     const delta = e.deltaY;
     // Update TARGET progress, not actual progress (lerp loop will smooth it)
-    const newTarget = Math.max(0, Math.min(1, targetProgressRef.current + delta * WHEEL_SENSITIVITY));
+    // Extended to 0-2 range for full continuation sequence
+    const newTarget = Math.max(0, Math.min(2, targetProgressRef.current + delta * WHEEL_SENSITIVITY));
     targetProgressRef.current = newTarget;
 
     // Hide scroll hint when scrolling starts
@@ -388,7 +427,8 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
     touchStartY.current = currentY;
 
     // Update TARGET progress, not actual progress (lerp loop will smooth it)
-    const newTarget = Math.max(0, Math.min(1, targetProgressRef.current + deltaY * TOUCH_SENSITIVITY));
+    // Extended to 0-2 range for full continuation sequence
+    const newTarget = Math.max(0, Math.min(2, targetProgressRef.current + deltaY * TOUCH_SENSITIVITY));
     targetProgressRef.current = newTarget;
 
     // Hide scroll hint when scrolling starts
@@ -433,7 +473,7 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
 
         // Lock when section top reaches viewport top (or is above it)
         if (entry.isIntersecting && rect.top <= 0 && rect.bottom > window.innerHeight * 0.5) {
-          if (!hasUnlockedRef.current && scrollProgressRef.current < 1.0) {
+          if (!hasUnlockedRef.current && scrollProgressRef.current < 2.0) {
             lockScroll();
           }
         }
@@ -532,15 +572,15 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
         scrollProgressRef.current = newProgress;
         setScrollProgress(newProgress);
 
-        // Check if we've reached the end (trigger transition)
-        if (newProgress >= 0.98 && !transitioningRef.current) {
+        // Check if we've reached the end of full sequence (trigger transition at 1.95)
+        if (newProgress >= 1.95 && !transitioningRef.current) {
           transitioningRef.current = true;
           setIsTransitioning(true);
 
-          // Fade out, then unlock and scroll to next section
+          // Unlock and scroll to experience/video section
           setTimeout(() => {
             unlockScroll();
-          }, 800); // 800ms fade duration
+          }, 800); // 800ms delay before scroll
         }
       }
 
@@ -574,7 +614,7 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
       return;
     }
 
-    const duration = 12000; // 12 seconds for full animation - more dramatic
+    const duration = 24000; // 24 seconds for full 0-2 sequence (12s per half)
     const startProgress = scrollProgressRef.current;
 
     const animate = (timestamp: number) => {
@@ -584,14 +624,15 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
 
       const elapsed = timestamp - playStartTimeRef.current;
       const progressDelta = elapsed / duration;
-      const newProgress = Math.min(startProgress + progressDelta * (1 - startProgress), 1);
+      // Extended to 0-2 range for full continuation sequence
+      const newProgress = Math.min(startProgress + progressDelta * (2 - startProgress), 2);
 
       // Update both refs so they stay in sync
       scrollProgressRef.current = newProgress;
       targetProgressRef.current = newProgress;
       setScrollProgress(newProgress);
 
-      if (newProgress < 1) {
+      if (newProgress < 2) {
         animationFrameRef.current = requestAnimationFrame(animate);
       } else {
         setIsPlaying(false);
@@ -613,8 +654,8 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
     if (isPlaying) {
       setIsPlaying(false);
     } else {
-      // If at 100%, reset to start
-      if (scrollProgressRef.current >= 1) {
+      // If at 100% (full sequence complete), reset to start
+      if (scrollProgressRef.current >= 2) {
         scrollProgressRef.current = 0;
         targetProgressRef.current = 0;
         transitioningRef.current = false;
@@ -737,6 +778,8 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
                   mipmapBlur
                   radius={0.6}
                 />
+                {/* Dynamic vignette - increases during LIGHTS_FADE phase */}
+                <DynamicVignetteEffect progress={scrollProgress} />
               </EffectComposer>
             )}
           </Canvas>
@@ -748,7 +791,7 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
         {/* Scroll indicator */}
         <ScrollIndicator visible={isLoaded && showScrollHint && !isLocked} />
 
-        {/* Lock indicator */}
+        {/* Lock indicator with phase info */}
         {isLocked && (
           <div
             style={{
@@ -772,7 +815,7 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
                 fontFamily: 'var(--font-space-grotesk)',
               }}
             >
-              {Math.round(scrollProgress * 100)}% • Scroll to explore
+              {Math.round((scrollProgress / 2) * 100)}% • {getAnimationPhase(scrollProgress).replace('_', ' ')}
             </span>
           </div>
         )}
