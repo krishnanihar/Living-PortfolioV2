@@ -41,7 +41,7 @@ export function ExperienceFilm() {
   return (
     <section
       ref={sectionRef}
-      id="experience"
+      id="experience-film"
       style={{
         position: 'relative',
         height: '100vh',

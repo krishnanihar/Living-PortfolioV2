@@ -373,9 +373,9 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
 
-    // Smooth scroll to next section (video is now in-scene on mirror)
+    // Smooth scroll to video section
     setTimeout(() => {
-      scrollTo('#process-gallery', { offset: 0, duration: 1.5 }); // Scroll to gallery section
+      scrollTo('#experience-film', { offset: 0, duration: 1.5 });
     }, 100);
   }, [start, scrollTo]);
 
@@ -574,15 +574,15 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
         scrollProgressRef.current = newProgress;
         setScrollProgress(newProgress);
 
-        // Check if we've reached the end of full sequence (trigger transition at 2.95)
+        // Trigger transition at end of animation (progress 2.95)
         if (newProgress >= 2.95 && !transitioningRef.current) {
           transitioningRef.current = true;
           setIsTransitioning(true);
 
-          // Unlock and scroll to next section (video is now in-scene on mirror)
+          // Unlock and scroll to video section
           setTimeout(() => {
             unlockScroll();
-          }, 800); // 800ms delay before scroll
+          }, 800);
         }
       }
 
@@ -792,38 +792,6 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
               </EffectComposer>
             )}
           </Canvas>
-        )}
-
-        {/* YouTube Video Overlay - appears when camera zooms into mirror */}
-        {scrollProgress >= 2.75 && (
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: 'black',
-              opacity: scrollProgress >= 2.8 ? 1 : (scrollProgress - 2.75) * 20,
-              transition: 'opacity 0.3s ease-out',
-              zIndex: 30,
-            }}
-          >
-            <iframe
-              width="100%"
-              height="100%"
-              src="https://www.youtube.com/embed/0U_BLJTcsDU?autoplay=1&mute=1&loop=1&playlist=0U_BLJTcsDU&controls=0&showinfo=0&rel=0&modestbranding=1"
-              title="Metamorphic Experience"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-              }}
-            />
-          </div>
         )}
 
         {/* Loading state */}

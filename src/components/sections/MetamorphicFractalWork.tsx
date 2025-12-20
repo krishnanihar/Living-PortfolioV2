@@ -5,6 +5,7 @@ import {
   MetamorphicHeroV2,
   JourneyNarrative,
   BathroomExplodedView,
+  ExperienceFilm,
   ProcessGalleryV2,
   RelatedProjectsV2,
 } from '@/components/metamorphic';
@@ -51,6 +52,9 @@ export function MetamorphicFractalWork() {
 
       {/* Technical system - 3D Exploded View */}
       <BathroomExplodedView />
+
+      {/* Experience film - seamless transition from 3D animation */}
+      <ExperienceFilm />
 
       {/* Building process gallery */}
       <ProcessGalleryV2 />
