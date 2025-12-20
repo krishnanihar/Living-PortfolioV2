@@ -286,6 +286,9 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const transitioningRef = useRef(false);
 
+  // Cinematic overlay for seamless transition - fades to black then reveals video section
+  const [overlayOpacity, setOverlayOpacity] = useState(0);
+
   // Lerp animation loop ref
   const lerpAnimationRef = useRef<number | null>(null);
 
@@ -373,10 +376,18 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
 
-    // Smooth scroll to video section
+    // Smooth scroll to video section with onComplete callback
+    // Overlay fades out only after scroll animation completes
     setTimeout(() => {
-      scrollTo('#experience-film', { offset: 0, duration: 1.5 });
-    }, 100);
+      scrollTo('#experience-film', {
+        offset: 0,
+        duration: 1.2, // Slightly faster for snappier feel
+        onComplete: () => {
+          // Fade out overlay after scroll completes - reveals video section
+          setOverlayOpacity(0);
+        },
+      });
+    }, 50); // Reduced delay - overlay masks the transition
   }, [start, scrollTo]);
 
   // Handle wheel events during lock - updates TARGET progress (damped)
@@ -470,6 +481,7 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
           targetProgressRef.current = 0;
           setScrollProgress(0);
           setShowScrollHint(true);
+          setOverlayOpacity(0); // Reset overlay
         }
 
         // Lock when sticky section is at top of viewport
@@ -574,15 +586,23 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
         scrollProgressRef.current = newProgress;
         setScrollProgress(newProgress);
 
+        // Control overlay opacity during LIGHTS_FADE phase (2.5-2.95)
+        // This creates a cinematic fade-to-black that masks the scroll transition
+        if (newProgress >= 2.5 && newProgress < 2.95) {
+          const fadeProgress = (newProgress - 2.5) / 0.45; // 0-1 over range
+          setOverlayOpacity(fadeProgress);
+        } else if (newProgress >= 2.95) {
+          // Ensure overlay is fully opaque before transition
+          setOverlayOpacity(1);
+        }
+
         // Trigger transition at end of animation (progress 2.95)
+        // Overlay is now fully opaque, so scroll will be invisible
         if (newProgress >= 2.95 && !transitioningRef.current) {
           transitioningRef.current = true;
           setIsTransitioning(true);
-
-          // Unlock and scroll to video section
-          setTimeout(() => {
-            unlockScroll();
-          }, 800);
+          // Unlock immediately - overlay masks the transition
+          unlockScroll();
         }
       }
 
@@ -928,6 +948,21 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
           }}
         />
       </section>
+
+      {/* Cinematic transition overlay - fades to black during LIGHTS_FADE, stays during scroll, fades out after */}
+      {overlayOpacity > 0 && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: '#000',
+            opacity: overlayOpacity,
+            pointerEvents: 'none',
+            zIndex: 100, // Above everything including navigation
+            transition: 'opacity 0.4s ease-out', // Smooth fade-out when set to 0
+          }}
+        />
+      )}
     </div>
   );
 }

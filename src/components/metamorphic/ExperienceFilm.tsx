@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Play } from 'lucide-react';
 
 /**
@@ -10,29 +10,15 @@ import { Play } from 'lucide-react';
  * - Full viewport height
  * - Clean centered play button
  * - Smooth fade transition to video
+ *
+ * Note: Play button is always visible (no IntersectionObserver delay)
+ * because the cinematic overlay from BathroomExplodedView handles
+ * the reveal timing - it fades out only after scroll completes.
  */
 
 export function ExperienceFilm() {
   const sectionRef = useRef<HTMLElement>(null);
   const [showVideo, setShowVideo] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-
-  // Scroll-triggered reveal
-  useEffect(() => {
-    if (!sectionRef.current) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !isVisible) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, [isVisible]);
 
   const handlePlay = () => {
     setShowVideo(true);
@@ -121,7 +107,7 @@ export function ExperienceFilm() {
                 justifyContent: 'center',
                 boxShadow: '0 0 60px rgba(147, 51, 234, 0.3)',
                 transition: 'all 0.3s ease',
-                opacity: isVisible ? 1 : 0,
+                opacity: 1, // Always visible - overlay handles reveal timing
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translate(-50%, -50%) scale(1.08)';
