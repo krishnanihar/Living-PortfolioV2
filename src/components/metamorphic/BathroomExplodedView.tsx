@@ -706,8 +706,8 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
             style={{
               width: '100%',
               height: '100%',
-              opacity: isLoaded && !isTransitioning ? 1 : 0, // Fade out during transition
-              transition: 'opacity 0.8s ease-out', // Smooth fade for transition
+              opacity: isLoaded ? 1 : 0, // Only fade in on load, don't hide on transition
+              transition: 'opacity 0.5s ease-out',
             }}
           >
             {/* Camera */}
