@@ -39,7 +39,7 @@ interface WorkConceptHeroProps {
 export default function WorkConceptHero({ scrollProgress = 0 }: WorkConceptHeroProps) {
   const containerRef = useRef<HTMLElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
-  const { scrollTo } = useLenisScroll();
+  const { scrollTo, lenis } = useLenisScroll();
 
   const [mounted, setMounted] = useState(false);
   const [animationStage, setAnimationStage] = useState(0);
@@ -53,7 +53,44 @@ export default function WorkConceptHero({ scrollProgress = 0 }: WorkConceptHeroP
     stages.forEach((stage, i) => {
       setTimeout(() => setAnimationStage(stage), i * 100);
     });
+
+    // Refresh ScrollTrigger after content loads
+    const timeout = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 200);
+
+    return () => clearTimeout(timeout);
   }, []);
+
+  // Sync ScrollTrigger with Lenis
+  useEffect(() => {
+    if (lenis) {
+      lenis.on('scroll', ScrollTrigger.update);
+      ScrollTrigger.scrollerProxy(document.documentElement, {
+        scrollTop(value) {
+          if (arguments.length && value !== undefined) {
+            lenis.scrollTo(value, { immediate: true });
+          }
+          return lenis.scroll;
+        },
+        getBoundingClientRect() {
+          return {
+            top: 0,
+            left: 0,
+            width: window.innerWidth,
+            height: window.innerHeight,
+          };
+        },
+      });
+      ScrollTrigger.refresh();
+    }
+
+    return () => {
+      if (lenis) {
+        lenis.off('scroll', ScrollTrigger.update);
+      }
+    };
+  }, [lenis]);
 
   // Animate stats counter when stage 3 is reached
   useEffect(() => {

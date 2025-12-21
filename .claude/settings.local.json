@@ -8,7 +8,10 @@
       "mcp__context7__*",
       "Edit",
       "Write",
-      "Skill(frontend-design)"
+      "Skill(frontend-design)",
+      "Bash(dir /b \"c:\\\\Users\\\\krish\\\\OneDrive\\\\Desktop\\\\New folder \\(2\\)\\\\Living-PortfolioV2\\\\public\\\\images\\\\cleara\")",
+      "Bash(cd:*)",
+      "Bash(then rm -rf .next)"
     ],
     "deny": [],
     "ask": []
