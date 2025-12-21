@@ -282,6 +282,167 @@ const SPRING_CONFIG = {
   smooth: { type: 'spring', stiffness: 200, damping: 25 },
 };
 
+// =============================================================================
+// CONFETTI PARTICLE SYSTEM
+// =============================================================================
+
+interface ConfettiParticle {
+  id: number;
+  x: number;
+  y: number;
+  color: string;
+  velocityX: number;
+  velocityY: number;
+  rotation: number;
+  spin: number;
+  size: number;
+  opacity: number;
+}
+
+const CONFETTI_CONFIG = {
+  count: 50,
+  colors: [CLEARA_COLORS.lavender, CLEARA_COLORS.sage, CLEARA_COLORS.blush, CLEARA_COLORS.periwinkle],
+  gravity: 800,
+  airResistance: 0.98,
+  duration: 2000,
+};
+
+// Confetti component that renders particles
+const ConfettiExplosion: React.FC<{
+  particles: ConfettiParticle[];
+  containerRef: React.RefObject<HTMLDivElement | null>;
+}> = ({ particles }) => {
+  const [animatedParticles, setAnimatedParticles] = useState<ConfettiParticle[]>(particles);
+  const frameRef = useRef<number | null>(null);
+  const startTimeRef = useRef<number>(Date.now());
+
+  useEffect(() => {
+    if (particles.length === 0) return;
+
+    startTimeRef.current = Date.now();
+    setAnimatedParticles(particles);
+
+    const animate = () => {
+      const elapsed = Date.now() - startTimeRef.current;
+      if (elapsed > CONFETTI_CONFIG.duration) {
+        setAnimatedParticles([]);
+        return;
+      }
+
+      setAnimatedParticles(prev => prev.map(p => ({
+        ...p,
+        x: p.x + p.velocityX,
+        y: p.y + p.velocityY,
+        velocityY: p.velocityY + (CONFETTI_CONFIG.gravity / 60), // 60fps gravity
+        velocityX: p.velocityX * CONFETTI_CONFIG.airResistance,
+        rotation: p.rotation + p.spin,
+        opacity: Math.max(0, 1 - (elapsed / CONFETTI_CONFIG.duration)),
+      })));
+
+      frameRef.current = requestAnimationFrame(animate);
+    };
+
+    frameRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
+    };
+  }, [particles]);
+
+  if (animatedParticles.length === 0) return null;
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        pointerEvents: 'none',
+        zIndex: 9999,
+        overflow: 'hidden',
+      }}
+    >
+      {animatedParticles.map(p => (
+        <div
+          key={p.id}
+          style={{
+            position: 'absolute',
+            left: p.x,
+            top: p.y,
+            width: p.size,
+            height: p.size,
+            backgroundColor: p.color,
+            borderRadius: Math.random() > 0.5 ? '50%' : '2px',
+            transform: `rotate(${p.rotation}deg)`,
+            opacity: p.opacity,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// =============================================================================
+// MILESTONE BADGES
+// =============================================================================
+
+const MILESTONES = [
+  { days: 7, icon: Sprout, label: 'Seedling', color: CLEARA_COLORS.sage },
+  { days: 14, icon: Leaf, label: 'Growing', color: CLEARA_COLORS.lavender },
+  { days: 30, icon: Flower2, label: 'Blooming', color: CLEARA_COLORS.blush },
+  { days: 60, icon: TreeDeciduous, label: 'Flourishing', color: CLEARA_COLORS.periwinkle },
+];
+
+const MilestoneBadge: React.FC<{
+  milestone: typeof MILESTONES[0];
+  unlocked: boolean;
+  current?: boolean;
+}> = ({ milestone, unlocked, current }) => {
+  const IconComponent = milestone.icon;
+
+  return (
+    <motion.div
+      initial={unlocked && current ? { scale: 0 } : false}
+      animate={unlocked && current ? { scale: 1 } : {}}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 4,
+        opacity: unlocked ? 1 : 0.4,
+      }}
+    >
+      <div
+        style={{
+          width: 48,
+          height: 48,
+          borderRadius: '50%',
+          background: unlocked
+            ? `linear-gradient(135deg, ${milestone.color}40 0%, ${milestone.color}20 100%)`
+            : CLEARA_COLORS.glassSecondary,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          border: `2px solid ${unlocked ? milestone.color : CLEARA_COLORS.tertiaryLabel}`,
+          boxShadow: unlocked ? `0 0 20px ${milestone.color}40` : 'none',
+        }}
+      >
+        <IconComponent
+          size={24}
+          color={unlocked ? milestone.color : CLEARA_COLORS.tertiaryLabel}
+        />
+      </div>
+      <span style={{
+        fontSize: 10,
+        fontWeight: 600,
+        color: unlocked ? milestone.color : CLEARA_COLORS.tertiaryLabel,
+      }}>
+        {milestone.days} days
+      </span>
+    </motion.div>
+  );
+};
+
 // iPhone 15 Pro Natural Titanium Frame
 const TITANIUM_FRAME = {
   // Natural Titanium gradient - warm metallic to match Cleara aesthetic
@@ -1471,6 +1632,8 @@ interface RitualsScreenProps {
   onAddRitual: (title: string, category: 'morning' | 'evening') => void;
   subState: SubState;
   setSubState: (state: SubState) => void;
+  streak: number;
+  onTriggerConfetti: (x: number, y: number) => void;
 }
 
 const RitualsScreen: React.FC<RitualsScreenProps> = ({
@@ -1480,15 +1643,31 @@ const RitualsScreen: React.FC<RitualsScreenProps> = ({
   onAddRitual,
   subState,
   setSubState,
+  streak,
+  onTriggerConfetti,
 }) => {
   const [sparkles, setSparkles] = useState<Sparkle[]>([]);
   const [newRitualTitle, setNewRitualTitle] = useState('');
   const [newRitualCategory, setNewRitualCategory] = useState<'morning' | 'evening'>('morning');
+  const [showMilestoneUnlock, setShowMilestoneUnlock] = useState(false);
+
+  // Calculate current and next milestone
+  const currentMilestone = MILESTONES.filter(m => streak >= m.days).pop();
+  const nextMilestone = MILESTONES.find(m => streak < m.days);
+  const progressToNext = nextMilestone
+    ? ((streak - (currentMilestone?.days || 0)) / (nextMilestone.days - (currentMilestone?.days || 0))) * 100
+    : 100;
 
   const handleCheck = (e: React.MouseEvent, id: string) => {
     const ritual = rituals.find(r => r.id === id);
     if (ritual && !ritual.completed) {
       const rect = (e.target as HTMLElement).getBoundingClientRect();
+
+      // Trigger confetti explosion
+      onTriggerConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      haptic.success();
+
+      // Also add sparkles for extra visual flair
       const newSparkles = Array.from({ length: 12 }).map((_, i) => ({
         id: Date.now() + i,
         x: rect.left + rect.width / 2 + (Math.random() - 0.5) * 100,
@@ -1497,6 +1676,17 @@ const RitualsScreen: React.FC<RitualsScreenProps> = ({
       }));
       setSparkles(prev => [...prev, ...newSparkles]);
       setTimeout(() => setSparkles(prev => prev.slice(12)), 1000);
+
+      // Check if this completes all rituals today
+      const allComplete = rituals.every(r => r.id === id ? true : r.completed);
+      if (allComplete) {
+        // Check for milestone unlock
+        const wouldUnlockMilestone = MILESTONES.find(m => m.days === streak + 1);
+        if (wouldUnlockMilestone) {
+          setTimeout(() => setShowMilestoneUnlock(true), 500);
+          setTimeout(() => setShowMilestoneUnlock(false), 3000);
+        }
+      }
     }
     onToggleRitual(id);
   };
@@ -1584,44 +1774,140 @@ const RitualsScreen: React.FC<RitualsScreenProps> = ({
         </motion.button>
       </div>
 
-      {/* Progress Card */}
-      <GlassCard variant="blush" style={{ marginBottom: 24 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-          <span style={{
-            fontSize: 14,
-            fontWeight: 600,
-            color: CLEARA_COLORS.label,
-          }}>
-            7 days of consistency
-          </span>
-          <Flower2 size={16} color={CLEARA_COLORS.blush} />
+      {/* Streak & Milestone Card */}
+      <GlassCard variant="blush" style={{ marginBottom: 24 }} showShimmer>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <div>
+            <motion.span
+              key={streak}
+              initial={{ scale: 1.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              style={{
+                fontSize: 32,
+                fontWeight: 700,
+                color: CLEARA_COLORS.blush,
+                fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+              }}
+            >
+              {streak}
+            </motion.span>
+            <span style={{
+              fontSize: 14,
+              fontWeight: 500,
+              color: CLEARA_COLORS.label,
+              marginLeft: 8,
+            }}>
+              day streak
+            </span>
+          </div>
+          <Flame size={24} color={CLEARA_COLORS.blush} />
         </div>
+
+        {/* Milestone Badges */}
         <div style={{
-          height: 6,
-          backgroundColor: CLEARA_COLORS.glassSecondary,
-          borderRadius: 3,
-          overflow: 'hidden',
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: 16,
+          padding: '12px 0',
+          borderTop: `1px solid ${CLEARA_BORDERS.light}`,
+          borderBottom: `1px solid ${CLEARA_BORDERS.light}`,
         }}>
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: '70%' }}
-            transition={{ duration: 1, ease: 'easeOut' }}
-            style={{
-              height: '100%',
-              backgroundColor: CLEARA_COLORS.blush,
-              borderRadius: 3,
-            }}
-          />
+          {MILESTONES.map((milestone, i) => (
+            <MilestoneBadge
+              key={milestone.days}
+              milestone={milestone}
+              unlocked={streak >= milestone.days}
+              current={currentMilestone?.days === milestone.days}
+            />
+          ))}
         </div>
-        <p style={{
-          fontSize: 11,
-          color: CLEARA_COLORS.tertiaryLabel,
-          marginTop: 6,
-          textAlign: 'right',
-        }}>
-          3 more days to milestone
-        </p>
+
+        {/* Progress to next milestone */}
+        {nextMilestone && (
+          <>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+              <span style={{ fontSize: 12, color: CLEARA_COLORS.secondaryLabel }}>
+                Next: {nextMilestone.label}
+              </span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: nextMilestone.color }}>
+                {nextMilestone.days - streak} days to go
+              </span>
+            </div>
+            <div style={{
+              height: 6,
+              backgroundColor: CLEARA_COLORS.glassSecondary,
+              borderRadius: 3,
+              overflow: 'hidden',
+            }}>
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${progressToNext}%` }}
+                transition={{ duration: 1, ease: 'easeOut' }}
+                style={{
+                  height: '100%',
+                  backgroundColor: nextMilestone.color,
+                  borderRadius: 3,
+                }}
+              />
+            </div>
+          </>
+        )}
       </GlassCard>
+
+      {/* Milestone Unlock Overlay */}
+      <AnimatePresence>
+        {showMilestoneUnlock && currentMilestone && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              zIndex: 2000,
+            }}
+          >
+            <motion.div
+              initial={{ y: 50 }}
+              animate={{ y: 0 }}
+              style={{
+                background: CLEARA_COLORS.canvas,
+                borderRadius: 24,
+                padding: 32,
+                textAlign: 'center',
+                boxShadow: CLEARA_SHADOWS.floating,
+              }}
+            >
+              <motion.div
+                animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.1, 1] }}
+                transition={{ duration: 0.5 }}
+              >
+                <currentMilestone.icon size={64} color={currentMilestone.color} />
+              </motion.div>
+              <h3 style={{
+                fontSize: 24,
+                fontWeight: 700,
+                color: currentMilestone.color,
+                marginTop: 16,
+                fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+              }}>
+                {currentMilestone.label} Unlocked!
+              </h3>
+              <p style={{
+                fontSize: 14,
+                color: CLEARA_COLORS.secondaryLabel,
+                marginTop: 8,
+              }}>
+                {currentMilestone.days} days of consistent care
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Morning Rituals */}
       <div style={{ marginBottom: 24 }}>
@@ -4166,6 +4452,28 @@ const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
   const [breathPhase, setBreathPhase] = useState<'inhale' | 'exhale'>('inhale');
   const [breathCount, setBreathCount] = useState(0);
 
+  // Streak & Confetti state
+  const [streak, setStreak] = useState(7);
+  const [confettiParticles, setConfettiParticles] = useState<ConfettiParticle[]>([]);
+  const confettiContainerRef = useRef<HTMLDivElement>(null);
+
+  // Confetti trigger function
+  const triggerConfetti = (x: number, y: number) => {
+    const particles = Array.from({ length: CONFETTI_CONFIG.count }, (_, i) => ({
+      id: Date.now() + i,
+      x,
+      y,
+      color: CONFETTI_CONFIG.colors[Math.floor(Math.random() * CONFETTI_CONFIG.colors.length)],
+      velocityX: (Math.random() - 0.5) * 12,
+      velocityY: -Math.random() * 15 - 5,
+      rotation: Math.random() * 360,
+      spin: (Math.random() - 0.5) * 20,
+      size: 6 + Math.random() * 6,
+      opacity: 1,
+    }));
+    setConfettiParticles(particles);
+  };
+
   // Use controlled props if provided
   const activeScreen = controlledScreen ?? internalScreen;
   const activeSubState = controlledSubState ?? internalSubState;
@@ -4184,9 +4492,19 @@ const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
   };
 
   const handleToggleRitual = (id: string) => {
-    setRituals(prev => prev.map(r =>
-      r.id === id ? { ...r, completed: !r.completed } : r
-    ));
+    setRituals(prev => {
+      const updated = prev.map(r =>
+        r.id === id ? { ...r, completed: !r.completed } : r
+      );
+      // Check if all rituals are now complete
+      const allComplete = updated.every(r => r.completed);
+      const wasComplete = prev.every(r => r.completed);
+      if (allComplete && !wasComplete) {
+        // Increment streak when completing all rituals
+        setStreak(s => s + 1);
+      }
+      return updated;
+    });
   };
 
   const handleAddRitual = (title: string, category: 'morning' | 'evening') => {
@@ -4276,6 +4594,8 @@ const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
             onAddRitual={handleAddRitual}
             subState={activeSubState}
             setSubState={handleSetSubState}
+            streak={streak}
+            onTriggerConfetti={triggerConfetti}
           />
         );
       case 'wellness':
@@ -4590,6 +4910,23 @@ const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
               borderRadius: 3,
             }}
           />
+
+          {/* Confetti Explosion Overlay */}
+          <div
+            ref={confettiContainerRef}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              pointerEvents: 'none',
+              overflow: 'hidden',
+              zIndex: 100,
+            }}
+          >
+            <ConfettiExplosion
+              particles={confettiParticles}
+              containerRef={confettiContainerRef}
+            />
+          </div>
         </div>
       </div>
     </div>
