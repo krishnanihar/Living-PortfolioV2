@@ -53,6 +53,7 @@ export default function ConceptWorkStack() {
     cardRefs.current[index] = el;
   }, []);
 
+  // Bell curve animation with plateau + snapping
   useLayoutEffect(() => {
     const container = containerRef.current;
     const cards = cardRefs.current.filter(
@@ -63,29 +64,74 @@ export default function ConceptWorkStack() {
 
     const triggers: ScrollTrigger[] = [];
 
-    // Create shrink animation for each card - matches hero behavior
+    // Calculate snap points as progress values (0-1)
+    // Container range: from "container top at viewport bottom" to "container bottom at viewport top"
+    // Total range = containerHeight + viewportHeight = (cards * 120vh) + 100vh
+    const vh = window.innerHeight;
+    const containerHeight = cards.length * vh * 1.2; // 120dvh per card
+    const totalRange = containerHeight + vh;
+
+    // For each card, snap to where card wrapper top is at viewport top (card fills screen)
+    // Relative position: (cardIndex * 120vh + 100vh) / totalRange
+    const snapProgressValues = cards.map((_, i) => {
+      return (i * vh * 1.2 + vh) / totalRange;
+    });
+
+    // Add snap points to ScrollTrigger using array syntax
+    ScrollTrigger.create({
+      trigger: container,
+      start: 'top bottom',
+      end: 'bottom top',
+      snap: {
+        snapTo: snapProgressValues,
+        duration: { min: 0.3, max: 0.6 },
+        delay: 0.05,
+        ease: 'power2.inOut',
+      },
+    });
+
+    // Bell curve with plateau: shrunk → expand → HOLD FULL → shrink
+    // For 120dvh wrapper, faster timing for tighter transitions
     cards.forEach((card) => {
-      // Get inner glass container
       const inner = card.querySelector('.work-placeholder-inner') as HTMLDivElement;
 
       const trigger = ScrollTrigger.create({
         trigger: card,
-        start: 'top top',
-        end: 'bottom 60%', // Matches hero
-        scrub: 0.5, // Smooth scroll-linked animation
-        pin: true,
-        pinSpacing: true,
+        start: 'top bottom', // When card enters viewport
+        end: 'bottom top', // When card leaves viewport
+        scrub: 0.3,
         onUpdate: (self) => {
           const progress = self.progress;
-          const easedProgress = gsap.parseEase('power2.out')(progress);
 
-          // Shrink animation - matches hero exactly
-          const padding = easedProgress * 48;
-          card.style.paddingLeft = `${padding}px`;
-          card.style.paddingRight = `${padding}px`;
+          // Animation timing for 120dvh:
+          // 0-0.30: shrunk → full (entry)
+          // 0.30-0.50: hold at full (plateau)
+          // 0.50-0.65: full → shrunk (exit - before next card appears)
+          // 0.65-1.0: stays shrunk (already covered)
+          let animProgress: number;
+          if (progress < 0.3) {
+            // Entry: 0-0.3 maps to 1-0 (shrunk to full)
+            animProgress = 1 - progress / 0.3;
+          } else if (progress >= 0.5 && progress <= 0.65) {
+            // Exit: 0.5-0.65 maps to 0-1 (full to shrunk)
+            animProgress = (progress - 0.5) / 0.15;
+          } else if (progress > 0.65) {
+            // After exit: stays shrunk
+            animProgress = 1;
+          } else {
+            // Plateau: 0.3-0.5 stays at 0 (full)
+            animProgress = 0;
+          }
+
+          const easedProgress = gsap.parseEase('power2.out')(animProgress);
 
           if (inner) {
+            // Scale: 0.92 ↔ 1.0
+            const scale = 1 - easedProgress * 0.08;
+            // Radius: 32 ↔ 0
             const radius = easedProgress * 32;
+
+            inner.style.transform = `scale(${scale})`;
             inner.style.borderRadius = `${radius}px`;
           }
         },

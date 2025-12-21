@@ -26,26 +26,26 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
     return (
       <div
         ref={ref}
+        className="work-placeholder-wrapper"
         style={{
-          height: '100dvh',
+          height: '120dvh', // Reduced scroll distance for tighter transitions
           position: 'relative',
-          padding: 0,
-          willChange: 'padding',
-          display: 'flex',
-          alignItems: 'center',
           zIndex: 100,
         }}
       >
-        {/* Inner glass container - matches hero */}
+        {/* Sticky container - stays in view while scrolling */}
         <div
           className="work-placeholder-inner"
           style={{
+            position: 'sticky',
+            top: 0,
             width: '100%',
-            height: '100%',
-            position: 'relative',
+            height: '100dvh',
             overflow: 'hidden',
-            borderRadius: 0,
-            willChange: 'border-radius',
+            borderRadius: '32px', // Start shrunk
+            transform: 'scale(0.92)', // Start shrunk
+            willChange: 'transform, border-radius',
+            transformOrigin: 'center center',
             background: 'var(--glass-03)',
             backdropFilter: 'blur(60px) saturate(180%)',
             WebkitBackdropFilter: 'blur(60px) saturate(180%)',
