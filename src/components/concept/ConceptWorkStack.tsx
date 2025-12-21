@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useLayoutEffect, useEffect, useCallback } from 'react';
+import { useRef, useLayoutEffect, useEffect, useCallback, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
@@ -25,6 +25,7 @@ const featuredProjects = [
     brandColor: { r: 218, g: 14, b: 41 },
     year: '2024',
     link: '/work/air-india',
+    tags: ['Design System', 'React', 'Aviation', 'Mobile'],
   },
   {
     id: 'psoriassist',
@@ -35,6 +36,7 @@ const featuredProjects = [
     brandColor: { r: 16, g: 185, b: 129 },
     year: '2024',
     link: '/work/psoriassist',
+    tags: ['AI/ML', 'Healthcare', 'iOS', 'Computer Vision'],
   },
   {
     id: 'metamorphic',
@@ -45,6 +47,7 @@ const featuredProjects = [
     brandColor: { r: 139, g: 92, b: 246 },
     year: '2023',
     link: '/work/metamorphic-fractal-reflections',
+    tags: ['TouchDesigner', 'Arduino', 'Psychedelic', 'Installation'],
   },
 ];
 
@@ -53,7 +56,8 @@ export default function ConceptWorkStack() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const { lenis } = useLenisScroll();
 
-  // Track current card index
+  // Track current card index - both ref (for scroll sync) and state (for UI)
+  const [activeCardIndex, setActiveCardIndex] = useState(0);
   const currentCardRef = useRef(0);
   const lastScrollTriggerRef = useRef(0);
   const touchStartRef = useRef(0);
@@ -109,6 +113,7 @@ export default function ConceptWorkStack() {
       if (nextCard !== currentCardRef.current) {
         // Navigate to next/previous card
         currentCardRef.current = nextCard;
+        setActiveCardIndex(nextCard); // Update reactive state for UI
         const targetScroll = container.offsetTop + nextCard * vh;
 
         lenis.scrollTo(targetScroll, {
@@ -154,6 +159,7 @@ export default function ConceptWorkStack() {
 
       if (nextCard !== currentCardRef.current) {
         currentCardRef.current = nextCard;
+        setActiveCardIndex(nextCard); // Update reactive state for UI
         const targetScroll = container.offsetTop + nextCard * vh;
 
         lenis.scrollTo(targetScroll, {
@@ -199,8 +205,11 @@ export default function ConceptWorkStack() {
       const scrollInSection = window.scrollY - container.offsetTop;
 
       if (scrollInSection >= 0 && scrollInSection < cardCount * vh) {
-        const cardIndex = Math.round(scrollInSection / vh);
-        currentCardRef.current = Math.max(0, Math.min(cardCount - 1, cardIndex));
+        const cardIndex = Math.max(0, Math.min(cardCount - 1, Math.round(scrollInSection / vh)));
+        if (cardIndex !== currentCardRef.current) {
+          currentCardRef.current = cardIndex;
+          setActiveCardIndex(cardIndex); // Update reactive state for UI
+        }
       }
     };
 
@@ -265,6 +274,7 @@ export default function ConceptWorkStack() {
           ref={(el) => setCardRef(el, index)}
           project={project}
           index={index}
+          isActive={activeCardIndex === index}
         />
       ))}
     </section>
