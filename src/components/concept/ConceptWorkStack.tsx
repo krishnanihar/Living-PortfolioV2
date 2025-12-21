@@ -63,35 +63,55 @@ export default function ConceptWorkStack() {
 
     const triggers: ScrollTrigger[] = [];
 
-    // Create shrink animation for each card - matches hero behavior
+    // Create two-phase animation for each card
     cards.forEach((card) => {
-      // Get inner glass container
       const inner = card.querySelector('.work-placeholder-inner') as HTMLDivElement;
 
-      const trigger = ScrollTrigger.create({
+      // Phase 1: ENTRY - Card scrolls into view, expands from shrunk to full
+      const entryTrigger = ScrollTrigger.create({
+        trigger: card,
+        start: 'top bottom', // When card top enters viewport bottom
+        end: 'top 20%', // Until card top is 20% from viewport top
+        scrub: 0.3,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const easedProgress = gsap.parseEase('power2.out')(progress);
+
+          if (inner) {
+            // Expand: 0.92 → 1.0 as card enters
+            const scale = 0.92 + easedProgress * 0.08;
+            const radius = 32 - easedProgress * 32;
+
+            inner.style.transform = `scale(${scale})`;
+            inner.style.borderRadius = `${radius}px`;
+          }
+        },
+      });
+
+      // Phase 2: PINNED + EXIT - Card is pinned, then shrinks on exit
+      const pinTrigger = ScrollTrigger.create({
         trigger: card,
         start: 'top top',
-        end: 'bottom 60%', // Matches hero
-        scrub: 0.5, // Smooth scroll-linked animation
+        end: 'bottom 60%',
+        scrub: 0.5,
         pin: true,
         pinSpacing: true,
         onUpdate: (self) => {
           const progress = self.progress;
           const easedProgress = gsap.parseEase('power2.out')(progress);
 
-          // Shrink animation - matches hero exactly
-          const padding = easedProgress * 48;
-          card.style.paddingLeft = `${padding}px`;
-          card.style.paddingRight = `${padding}px`;
-
           if (inner) {
+            // Shrink: 1.0 → 0.92 as user scrolls past
+            const scale = 1.0 - easedProgress * 0.08;
             const radius = easedProgress * 32;
+
+            inner.style.transform = `scale(${scale})`;
             inner.style.borderRadius = `${radius}px`;
           }
         },
       });
 
-      triggers.push(trigger);
+      triggers.push(entryTrigger, pinTrigger);
     });
 
     return () => {

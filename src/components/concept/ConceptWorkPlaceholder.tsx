@@ -29,23 +29,20 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
         style={{
           height: '100dvh',
           position: 'relative',
-          padding: 0,
-          willChange: 'padding',
-          display: 'flex',
-          alignItems: 'center',
           zIndex: 100,
         }}
       >
-        {/* Inner glass container - matches hero */}
+        {/* Inner glass container - starts shrunk, expands on scroll */}
         <div
           className="work-placeholder-inner"
           style={{
             width: '100%',
             height: '100%',
-            position: 'relative',
             overflow: 'hidden',
-            borderRadius: 0,
-            willChange: 'border-radius',
+            borderRadius: '32px', // Start with rounded corners
+            transform: 'scale(0.92)', // Start shrunk
+            willChange: 'transform, border-radius',
+            transformOrigin: 'center center',
             background: 'var(--glass-03)',
             backdropFilter: 'blur(60px) saturate(180%)',
             WebkitBackdropFilter: 'blur(60px) saturate(180%)',
