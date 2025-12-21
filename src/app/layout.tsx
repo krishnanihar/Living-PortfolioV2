@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Space_Grotesk, DM_Sans, Fraunces, Manrope, JetBrains_Mono } from 'next/font/google';
+import { Space_Grotesk, DM_Sans, Fraunces, Manrope, JetBrains_Mono, Cormorant_Garamond } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/effects/ThemeProvider';
 import { SmoothScrollProvider } from '@/components/effects/SmoothScrollProvider';
@@ -46,6 +46,14 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-jetbrains',
   weight: ['100', '200', '300', '400', '500', '600', '700', '800'],
+  display: 'swap',
+});
+
+// Cleara case study - Serif font for poetic typography
+const cormorantGaramond = Cormorant_Garamond({
+  subsets: ['latin'],
+  variable: '--font-cormorant',
+  weight: ['400', '500', '600', '700'],
   display: 'swap',
 });
 
@@ -106,7 +114,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${dmSans.variable} ${fraunces.variable} ${manrope.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${spaceGrotesk.variable} ${dmSans.variable} ${fraunces.variable} ${manrope.variable} ${jetbrainsMono.variable} ${cormorantGaramond.variable}`} suppressHydrationWarning>
       <head>
         {/* next/font/google automatically handles font optimization and preloading */}
       </head>
