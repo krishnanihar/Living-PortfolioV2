@@ -88,7 +88,7 @@ export function ClearaHeroCard() {
                 width: '100%',
                 height: '100%',
                 position: 'relative',
-                overflow: 'visible',
+                overflow: 'hidden',
                 background: creamCanvas,
                 borderRadius: '24px',
                 border: `1px solid rgba(${lavenderRgb}, 0.3)`,
