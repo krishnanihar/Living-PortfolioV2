@@ -881,7 +881,7 @@ const FullScreenFlowSection: React.FC<FullScreenFlowSectionProps> = ({ flow, rev
       <ClearaPhoneMockup
         controlledScreen={flow.steps[currentStep].screen}
         controlledSubState={flow.steps[currentStep].subState}
-        scale={isMobile ? 0.85 : 1}
+        scale={isMobile ? 0.7 : 0.85}
       />
     </motion.div>
   );
