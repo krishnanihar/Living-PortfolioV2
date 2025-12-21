@@ -1,0 +1,3287 @@
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+  RadarChart,
+  Radar,
+  PolarGrid,
+  PolarAngleAxis,
+  Tooltip,
+} from 'recharts';
+import {
+  Home,
+  Camera,
+  BarChart3,
+  Heart,
+  User,
+  Sun,
+  Moon,
+  Check,
+  Plus,
+  X,
+  ArrowLeft,
+  Sparkles,
+  BookOpen,
+  AlertTriangle,
+  TrendingUp,
+  Clock,
+  Droplets,
+  Wind,
+  Activity,
+  Calendar,
+  ChevronRight,
+  Loader2,
+  Brain,
+  Flame,
+  Leaf,
+  CloudRain,
+  Thermometer,
+} from 'lucide-react';
+
+// =============================================================================
+// CLEARA DESIGN SYSTEM
+// =============================================================================
+
+const CLEARA_COLORS = {
+  // Core palette - warm cream aesthetic
+  canvas: '#FAF8F5',
+  canvasSecondary: '#F5F2EF',
+
+  // Brand colors - watercolor-inspired
+  lavender: '#8B9DC3',
+  lavenderLight: '#A8B5D4',
+  lavenderDark: '#6B7FA8',
+  periwinkle: '#B8C5E2',
+  blush: '#D4A5A5',
+  blushLight: '#E2BCBC',
+  sage: '#A8C5B5',
+  sageLight: '#C1D6CA',
+  sageDark: '#8FB39F',
+
+  // Text colors - warm charcoal
+  label: 'rgba(45, 45, 55, 0.95)',
+  secondaryLabel: 'rgba(45, 45, 55, 0.70)',
+  tertiaryLabel: 'rgba(45, 45, 55, 0.50)',
+  quaternaryLabel: 'rgba(45, 45, 55, 0.30)',
+
+  // Glass surfaces - warm white tints
+  glassPrimary: 'rgba(255, 255, 255, 0.85)',
+  glassSecondary: 'rgba(255, 255, 255, 0.70)',
+  glassTertiary: 'rgba(255, 255, 255, 0.50)',
+  glassLavender: 'rgba(139, 157, 195, 0.12)',
+  glassSage: 'rgba(168, 197, 181, 0.12)',
+  glassBlush: 'rgba(212, 165, 165, 0.12)',
+
+  // Semantic colors
+  success: '#A8C5B5',
+  warning: '#E8C87A',
+  error: '#D4A5A5',
+  info: '#8B9DC3',
+};
+
+const CLEARA_SHADOWS = {
+  // Soft, warm shadows
+  card: '0 2px 8px rgba(45, 45, 55, 0.06)',
+  cardHover: '0 4px 16px rgba(45, 45, 55, 0.08)',
+  floating: '0 8px 32px rgba(45, 45, 55, 0.10)',
+  device: '0 25px 80px rgba(45, 45, 55, 0.15), 0 8px 24px rgba(45, 45, 55, 0.08)',
+  inset: 'inset 0 1px 3px rgba(45, 45, 55, 0.04)',
+};
+
+const CLEARA_BORDERS = {
+  light: 'rgba(45, 45, 55, 0.06)',
+  medium: 'rgba(45, 45, 55, 0.10)',
+  lavender: 'rgba(139, 157, 195, 0.20)',
+  sage: 'rgba(168, 197, 181, 0.20)',
+  blush: 'rgba(212, 165, 165, 0.20)',
+};
+
+// iPhone 15 Pro Natural Titanium Frame
+const TITANIUM_FRAME = {
+  // Natural Titanium gradient - warm metallic to match Cleara aesthetic
+  bezelGradient: 'linear-gradient(145deg, #E8E4DF 0%, #D4D0CB 25%, #C9C5C0 50%, #B8B4AF 75%, #A8A49F 100%)',
+  bezelWidth: 12,
+  deviceRadius: 56,
+  screenRadius: 44,
+  // Premium multi-layer shadow for depth
+  deviceShadow: `
+    0 50px 100px -20px rgba(0, 0, 0, 0.25),
+    0 30px 60px -30px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(0, 0, 0, 0.05)
+  `,
+  // Inner highlights for metallic effect
+  bezelHighlight: 'inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 2px rgba(0, 0, 0, 0.1)',
+};
+
+// =============================================================================
+// TYPE DEFINITIONS
+// =============================================================================
+
+type Screen = 'home' | 'photo' | 'pasi' | 'rituals' | 'wellness' | 'insights' | 'journal' | 'flare' | 'learn' | 'profile';
+
+type SubState =
+  | 'camera' | 'ghost' | 'capture' | 'result'  // Photo states
+  | 'question1' | 'question2' | 'question3' | 'result'  // Wellness states
+  | 'add'  // Rituals states
+  | null;
+
+interface Ritual {
+  id: string;
+  title: string;
+  subtitle?: string;
+  category: 'morning' | 'evening';
+  completed: boolean;
+}
+
+interface PasiLog {
+  date: string;
+  score: number;
+  redness: number;
+  thickness: number;
+  scaling: number;
+}
+
+interface Sparkle {
+  id: number;
+  x: number;
+  y: number;
+  color: string;
+}
+
+interface ClearaPhoneMockupProps {
+  // Controlled mode for case study integration
+  controlledScreen?: Screen;
+  controlledSubState?: SubState;
+  scale?: number;
+  className?: string;
+}
+
+// =============================================================================
+// INITIAL DATA
+// =============================================================================
+
+const INITIAL_RITUALS: Ritual[] = [
+  { id: '1', title: 'Apply moisturizer', subtitle: 'After morning shower', category: 'morning', completed: false },
+  { id: '2', title: 'Take vitamin D', subtitle: '1000 IU with breakfast', category: 'morning', completed: true },
+  { id: '3', title: 'Gentle stretching', subtitle: '5 minutes', category: 'morning', completed: false },
+  { id: '4', title: 'Evening skincare routine', subtitle: 'Ceramide cream', category: 'evening', completed: false },
+  { id: '5', title: 'Relaxation practice', subtitle: 'Deep breathing', category: 'evening', completed: false },
+];
+
+const INITIAL_PASI_LOGS: PasiLog[] = [
+  { date: '2024-01-01', score: 12.4, redness: 2, thickness: 2, scaling: 2 },
+  { date: '2024-01-08', score: 10.8, redness: 2, thickness: 1, scaling: 2 },
+  { date: '2024-01-15', score: 9.2, redness: 1, thickness: 1, scaling: 2 },
+  { date: '2024-01-22', score: 7.6, redness: 1, thickness: 1, scaling: 1 },
+  { date: '2024-01-29', score: 6.4, redness: 1, thickness: 1, scaling: 1 },
+  { date: '2024-02-05', score: 5.2, redness: 1, thickness: 0, scaling: 1 },
+];
+
+const WELLNESS_QUESTIONS = [
+  "Have you felt tired or low on energy?",
+  "Have you felt little interest in doing things?",
+  "Have you felt down, depressed, or hopeless?"
+];
+
+const WELLNESS_OPTIONS = [
+  "Not really",
+  "Sometimes",
+  "Often",
+  "Most days"
+];
+
+const DAILY_INSPIRATIONS = [
+  "Your skin tells a story of resilience.",
+  "Healing is not linear, and that's okay.",
+  "Small rituals create lasting change.",
+  "Be gentle with yourself today.",
+  "Every day is a fresh start for your skin.",
+];
+
+// =============================================================================
+// UTILITY COMPONENTS
+// =============================================================================
+
+const StatusBar: React.FC = () => {
+  const now = new Date();
+  const timeString = now.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
+
+  return (
+    <div
+      style={{
+        height: 44,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 24px',
+        fontSize: 14,
+        fontWeight: 600,
+        color: CLEARA_COLORS.label,
+        fontFamily: 'var(--font-dm-sans), system-ui, -apple-system, sans-serif',
+      }}
+    >
+      <span>{timeString}</span>
+      <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+        <div style={{
+          width: 18,
+          height: 10,
+          borderRadius: 3,
+          border: `1.5px solid ${CLEARA_COLORS.label}`,
+          position: 'relative',
+        }}>
+          <div style={{
+            position: 'absolute',
+            left: 2,
+            top: 2,
+            bottom: 2,
+            right: 4,
+            backgroundColor: CLEARA_COLORS.sage,
+            borderRadius: 1,
+          }} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const DynamicIsland: React.FC = () => (
+  <div
+    style={{
+      position: 'absolute',
+      top: 11,
+      left: '50%',
+      transform: 'translateX(-50%)',
+      width: 126,  // iPhone 15 Pro dimensions
+      height: 37,  // iPhone 15 Pro dimensions
+      backgroundColor: '#1a1a1a',
+      borderRadius: 20,
+      zIndex: 100,
+      // Realistic depth with inner shadow and subtle highlight
+      boxShadow: 'inset 0 1px 3px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.05)',
+    }}
+  />
+);
+
+// iPhone 15 Pro Side Buttons
+const SideButtons: React.FC = () => (
+  <>
+    {/* Power Button - Right side */}
+    <div
+      style={{
+        position: 'absolute',
+        right: -3,
+        top: 120,
+        width: 3,
+        height: 65,
+        background: 'linear-gradient(90deg, #C9C5C0 0%, #A8A49F 100%)',
+        borderRadius: '0 2px 2px 0',
+        boxShadow: '1px 0 2px rgba(0, 0, 0, 0.2)',
+      }}
+    />
+
+    {/* Action Button - Left side (new for iPhone 15 Pro) */}
+    <div
+      style={{
+        position: 'absolute',
+        left: -3,
+        top: 60,
+        width: 3,
+        height: 28,
+        background: 'linear-gradient(270deg, #C9C5C0 0%, #A8A49F 100%)',
+        borderRadius: '2px 0 0 2px',
+        boxShadow: '-1px 0 2px rgba(0, 0, 0, 0.2)',
+      }}
+    />
+
+    {/* Volume Up - Left side */}
+    <div
+      style={{
+        position: 'absolute',
+        left: -3,
+        top: 100,
+        width: 3,
+        height: 35,
+        background: 'linear-gradient(270deg, #C9C5C0 0%, #A8A49F 100%)',
+        borderRadius: '2px 0 0 2px',
+        boxShadow: '-1px 0 2px rgba(0, 0, 0, 0.2)',
+      }}
+    />
+
+    {/* Volume Down - Left side */}
+    <div
+      style={{
+        position: 'absolute',
+        left: -3,
+        top: 145,
+        width: 3,
+        height: 35,
+        background: 'linear-gradient(270deg, #C9C5C0 0%, #A8A49F 100%)',
+        borderRadius: '2px 0 0 2px',
+        boxShadow: '-1px 0 2px rgba(0, 0, 0, 0.2)',
+      }}
+    />
+  </>
+);
+
+interface TabBarProps {
+  activeScreen: Screen;
+  onNavigate: (screen: Screen) => void;
+}
+
+const TabBar: React.FC<TabBarProps> = ({ activeScreen, onNavigate }) => {
+  const tabs: { screen: Screen; icon: React.ReactNode; label: string }[] = [
+    { screen: 'home', icon: <Home size={22} />, label: 'Home' },
+    { screen: 'photo', icon: <Camera size={22} />, label: 'Track' },
+    { screen: 'insights', icon: <BarChart3 size={22} />, label: 'Insights' },
+    { screen: 'rituals', icon: <Heart size={22} />, label: 'Rituals' },
+    { screen: 'profile', icon: <User size={22} />, label: 'Profile' },
+  ];
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 84,
+        backgroundColor: CLEARA_COLORS.glassPrimary,
+        backdropFilter: 'blur(20px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+        borderTop: `1px solid ${CLEARA_BORDERS.light}`,
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'flex-start',
+        paddingTop: 10,
+        paddingBottom: 24,
+      }}
+    >
+      {tabs.map((tab) => {
+        const isActive = activeScreen === tab.screen;
+        return (
+          <motion.button
+            key={tab.screen}
+            onClick={() => onNavigate(tab.screen)}
+            whileTap={{ scale: 0.9 }}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 4,
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 8,
+              color: isActive ? CLEARA_COLORS.lavender : CLEARA_COLORS.tertiaryLabel,
+              transition: 'color 0.2s ease',
+            }}
+          >
+            {tab.icon}
+            <span style={{
+              fontSize: 10,
+              fontWeight: isActive ? 600 : 500,
+              fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+            }}>
+              {tab.label}
+            </span>
+          </motion.button>
+        );
+      })}
+    </div>
+  );
+};
+
+interface GlassCardProps {
+  children: React.ReactNode;
+  variant?: 'primary' | 'lavender' | 'sage' | 'blush';
+  padding?: number;
+  style?: React.CSSProperties;
+  onClick?: () => void;
+}
+
+const GlassCard: React.FC<GlassCardProps> = ({
+  children,
+  variant = 'primary',
+  padding = 16,
+  style,
+  onClick,
+}) => {
+  const backgrounds = {
+    primary: CLEARA_COLORS.glassPrimary,
+    lavender: CLEARA_COLORS.glassLavender,
+    sage: CLEARA_COLORS.glassSage,
+    blush: CLEARA_COLORS.glassBlush,
+  };
+
+  const borders = {
+    primary: CLEARA_BORDERS.light,
+    lavender: CLEARA_BORDERS.lavender,
+    sage: CLEARA_BORDERS.sage,
+    blush: CLEARA_BORDERS.blush,
+  };
+
+  return (
+    <motion.div
+      whileHover={onClick ? { scale: 1.02 } : undefined}
+      whileTap={onClick ? { scale: 0.98 } : undefined}
+      onClick={onClick}
+      style={{
+        backgroundColor: backgrounds[variant],
+        backdropFilter: 'blur(12px) saturate(150%)',
+        WebkitBackdropFilter: 'blur(12px) saturate(150%)',
+        borderRadius: 20,
+        border: `1px solid ${borders[variant]}`,
+        padding,
+        boxShadow: CLEARA_SHADOWS.card,
+        cursor: onClick ? 'pointer' : 'default',
+        ...style,
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+// =============================================================================
+// HOME SCREEN
+// =============================================================================
+
+interface HomeScreenProps {
+  onNavigate: (screen: Screen) => void;
+  rituals: Ritual[];
+  pasiLogs: PasiLog[];
+}
+
+const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate, rituals, pasiLogs }) => {
+  const completedRituals = rituals.filter(r => r.completed).length;
+  const latestPasi = pasiLogs[pasiLogs.length - 1];
+  const previousPasi = pasiLogs[pasiLogs.length - 2];
+  const pasiChange = previousPasi ? latestPasi.score - previousPasi.score : 0;
+
+  const inspiration = DAILY_INSPIRATIONS[Math.floor(Date.now() / 86400000) % DAILY_INSPIRATIONS.length];
+
+  const quickActions = [
+    { icon: <Camera size={20} />, label: 'Log Photo', screen: 'photo' as Screen, color: CLEARA_COLORS.lavender },
+    { icon: <Activity size={20} />, label: 'Check PASI', screen: 'pasi' as Screen, color: CLEARA_COLORS.sage },
+    { icon: <Heart size={20} />, label: 'Wellness', screen: 'wellness' as Screen, color: CLEARA_COLORS.blush },
+    { icon: <BookOpen size={20} />, label: 'Journal', screen: 'journal' as Screen, color: CLEARA_COLORS.periwinkle },
+    { icon: <AlertTriangle size={20} />, label: 'Flare Risk', screen: 'flare' as Screen, color: CLEARA_COLORS.blush },
+    { icon: <Leaf size={20} />, label: 'Learn', screen: 'learn' as Screen, color: CLEARA_COLORS.sage },
+  ];
+
+  return (
+    <div style={{
+      padding: '0 20px 100px',
+      fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+    }}>
+      {/* Greeting */}
+      <div style={{ marginBottom: 24 }}>
+        <p style={{
+          fontSize: 14,
+          color: CLEARA_COLORS.secondaryLabel,
+          marginBottom: 4,
+          fontWeight: 500,
+        }}>
+          Good morning
+        </p>
+        <h1 style={{
+          fontSize: 28,
+          fontWeight: 600,
+          color: CLEARA_COLORS.label,
+          fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+          margin: 0,
+        }}>
+          Sarah
+        </h1>
+      </div>
+
+      {/* Daily Inspiration Card */}
+      <GlassCard variant="lavender" style={{ marginBottom: 20 }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+          <div style={{
+            width: 36,
+            height: 36,
+            borderRadius: 12,
+            backgroundColor: `${CLEARA_COLORS.lavender}20`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <Sparkles size={18} color={CLEARA_COLORS.lavender} />
+          </div>
+          <div style={{ flex: 1 }}>
+            <p style={{
+              fontSize: 11,
+              fontWeight: 600,
+              color: CLEARA_COLORS.lavender,
+              textTransform: 'uppercase',
+              letterSpacing: 0.5,
+              marginBottom: 6,
+            }}>
+              Daily Inspiration
+            </p>
+            <p style={{
+              fontSize: 16,
+              color: CLEARA_COLORS.label,
+              fontFamily: 'Georgia, serif',
+              fontStyle: 'italic',
+              lineHeight: 1.5,
+              margin: 0,
+            }}>
+              &ldquo;{inspiration}&rdquo;
+            </p>
+          </div>
+        </div>
+      </GlassCard>
+
+      {/* Quick Actions Grid */}
+      <div style={{ marginBottom: 24 }}>
+        <h2 style={{
+          fontSize: 13,
+          fontWeight: 600,
+          color: CLEARA_COLORS.secondaryLabel,
+          textTransform: 'uppercase',
+          letterSpacing: 0.5,
+          marginBottom: 12,
+        }}>
+          Quick Actions
+        </h2>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: 12,
+        }}>
+          {quickActions.map((action, idx) => (
+            <motion.button
+              key={idx}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => onNavigate(action.screen)}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 8,
+                padding: 16,
+                backgroundColor: CLEARA_COLORS.glassPrimary,
+                backdropFilter: 'blur(8px)',
+                border: `1px solid ${CLEARA_BORDERS.light}`,
+                borderRadius: 16,
+                cursor: 'pointer',
+                boxShadow: CLEARA_SHADOWS.card,
+              }}
+            >
+              <div style={{
+                width: 40,
+                height: 40,
+                borderRadius: 12,
+                backgroundColor: `${action.color}15`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: action.color,
+              }}>
+                {action.icon}
+              </div>
+              <span style={{
+                fontSize: 11,
+                fontWeight: 500,
+                color: CLEARA_COLORS.secondaryLabel,
+              }}>
+                {action.label}
+              </span>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+
+      {/* Rituals Progress */}
+      <GlassCard
+        variant="sage"
+        onClick={() => onNavigate('rituals')}
+        style={{ marginBottom: 20 }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <h3 style={{
+            fontSize: 15,
+            fontWeight: 600,
+            color: CLEARA_COLORS.label,
+            margin: 0,
+          }}>
+            Today&apos;s Rituals
+          </h3>
+          <ChevronRight size={18} color={CLEARA_COLORS.tertiaryLabel} />
+        </div>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+        }}>
+          <div style={{
+            width: 48,
+            height: 48,
+            borderRadius: 24,
+            border: `3px solid ${CLEARA_COLORS.sage}`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative',
+          }}>
+            <span style={{
+              fontSize: 14,
+              fontWeight: 700,
+              color: CLEARA_COLORS.sage,
+            }}>
+              {completedRituals}/{rituals.length}
+            </span>
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{
+              height: 6,
+              backgroundColor: `${CLEARA_COLORS.sage}20`,
+              borderRadius: 3,
+              overflow: 'hidden',
+            }}>
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${(completedRituals / rituals.length) * 100}%` }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                style={{
+                  height: '100%',
+                  backgroundColor: CLEARA_COLORS.sage,
+                  borderRadius: 3,
+                }}
+              />
+            </div>
+            <p style={{
+              fontSize: 12,
+              color: CLEARA_COLORS.tertiaryLabel,
+              marginTop: 6,
+            }}>
+              {completedRituals === rituals.length ? 'All done! Great job!' : `${rituals.length - completedRituals} more to go`}
+            </p>
+          </div>
+        </div>
+      </GlassCard>
+
+      {/* PASI Score */}
+      <GlassCard onClick={() => onNavigate('pasi')}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <h3 style={{
+            fontSize: 15,
+            fontWeight: 600,
+            color: CLEARA_COLORS.label,
+            margin: 0,
+          }}>
+            PASI Score
+          </h3>
+          <ChevronRight size={18} color={CLEARA_COLORS.tertiaryLabel} />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+          <span style={{
+            fontSize: 36,
+            fontWeight: 700,
+            color: CLEARA_COLORS.lavender,
+            fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+          }}>
+            {latestPasi.score.toFixed(1)}
+          </span>
+          <span style={{
+            fontSize: 14,
+            fontWeight: 600,
+            color: pasiChange <= 0 ? CLEARA_COLORS.sage : CLEARA_COLORS.blush,
+          }}>
+            {pasiChange <= 0 ? '↓' : '↑'} {Math.abs(pasiChange).toFixed(1)}
+          </span>
+        </div>
+        <p style={{
+          fontSize: 12,
+          color: CLEARA_COLORS.tertiaryLabel,
+          marginTop: 4,
+        }}>
+          Mild severity - Keep up the great work!
+        </p>
+      </GlassCard>
+    </div>
+  );
+};
+
+// =============================================================================
+// PHOTO SCREEN
+// =============================================================================
+
+interface PhotoScreenProps {
+  onNavigate: (screen: Screen) => void;
+  subState: SubState;
+  setSubState: (state: SubState) => void;
+}
+
+const PhotoScreen: React.FC<PhotoScreenProps> = ({ onNavigate, subState, setSubState }) => {
+  const [ghostOpacity, setGhostOpacity] = useState(0.5);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [hasCamera, setHasCamera] = useState(false);
+
+  useEffect(() => {
+    // Simulate camera access for mockup
+    setHasCamera(true);
+  }, []);
+
+  const renderGhostOverlay = () => (
+    <div style={{
+      padding: '0 20px 100px',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 20,
+      }}>
+        <button
+          onClick={() => setSubState(null)}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 8,
+            color: CLEARA_COLORS.secondaryLabel,
+          }}
+        >
+          <ArrowLeft size={24} />
+        </button>
+        <h2 style={{
+          fontSize: 17,
+          fontWeight: 600,
+          color: CLEARA_COLORS.label,
+          margin: 0,
+        }}>
+          Ghost Overlay
+        </h2>
+        <div style={{ width: 40 }} />
+      </div>
+
+      {/* Camera View with Ghost */}
+      <div style={{
+        flex: 1,
+        backgroundColor: '#1a1a1a',
+        borderRadius: 24,
+        overflow: 'hidden',
+        position: 'relative',
+        marginBottom: 20,
+      }}>
+        {/* Simulated camera feed */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <Camera size={48} color="rgba(255,255,255,0.3)" />
+        </div>
+
+        {/* Ghost overlay */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: 'url(/images/cleara/ghost-reference.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: ghostOpacity,
+          pointerEvents: 'none',
+        }} />
+
+        {/* Grid overlay */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gridTemplateRows: 'repeat(3, 1fr)',
+          pointerEvents: 'none',
+        }}>
+          {[...Array(9)].map((_, i) => (
+            <div
+              key={i}
+              style={{
+                border: '0.5px solid rgba(255,255,255,0.2)',
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Ghost Opacity Slider */}
+      <GlassCard style={{ marginBottom: 20 }}>
+        <p style={{
+          fontSize: 12,
+          fontWeight: 600,
+          color: CLEARA_COLORS.secondaryLabel,
+          marginBottom: 12,
+          textTransform: 'uppercase',
+          letterSpacing: 0.5,
+        }}>
+          Ghost Opacity
+        </p>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={ghostOpacity}
+          onChange={(e) => setGhostOpacity(parseFloat(e.target.value))}
+          style={{
+            width: '100%',
+            height: 4,
+            borderRadius: 2,
+            background: `linear-gradient(to right, ${CLEARA_COLORS.lavender} ${ghostOpacity * 100}%, ${CLEARA_COLORS.quaternaryLabel} ${ghostOpacity * 100}%)`,
+            appearance: 'none',
+            cursor: 'pointer',
+          }}
+        />
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginTop: 8,
+        }}>
+          <span style={{ fontSize: 11, color: CLEARA_COLORS.tertiaryLabel }}>0%</span>
+          <span style={{ fontSize: 11, color: CLEARA_COLORS.lavender, fontWeight: 600 }}>
+            {Math.round(ghostOpacity * 100)}%
+          </span>
+          <span style={{ fontSize: 11, color: CLEARA_COLORS.tertiaryLabel }}>100%</span>
+        </div>
+      </GlassCard>
+
+      {/* Capture Button */}
+      <motion.button
+        whileTap={{ scale: 0.95 }}
+        onClick={() => setSubState('result')}
+        style={{
+          width: '100%',
+          padding: 16,
+          backgroundColor: CLEARA_COLORS.lavender,
+          border: 'none',
+          borderRadius: 16,
+          color: 'white',
+          fontSize: 16,
+          fontWeight: 600,
+          cursor: 'pointer',
+          boxShadow: `0 4px 16px ${CLEARA_COLORS.lavender}40`,
+        }}
+      >
+        Capture Photo
+      </motion.button>
+    </div>
+  );
+
+  const renderPhotoResult = () => (
+    <div style={{
+      padding: '0 20px 100px',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 20,
+      }}>
+        <button
+          onClick={() => setSubState('ghost')}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 8,
+            color: CLEARA_COLORS.secondaryLabel,
+          }}
+        >
+          <ArrowLeft size={24} />
+        </button>
+        <h2 style={{
+          fontSize: 17,
+          fontWeight: 600,
+          color: CLEARA_COLORS.label,
+          margin: 0,
+        }}>
+          AI Analysis
+        </h2>
+        <div style={{ width: 40 }} />
+      </div>
+
+      {/* Analysis Result */}
+      <GlassCard variant="lavender" style={{ marginBottom: 20 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+          <div style={{
+            width: 44,
+            height: 44,
+            borderRadius: 22,
+            backgroundColor: `${CLEARA_COLORS.lavender}20`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <Brain size={22} color={CLEARA_COLORS.lavender} />
+          </div>
+          <div>
+            <p style={{
+              fontSize: 11,
+              fontWeight: 600,
+              color: CLEARA_COLORS.lavender,
+              textTransform: 'uppercase',
+              letterSpacing: 0.5,
+            }}>
+              PASI Analysis
+            </p>
+            <p style={{
+              fontSize: 24,
+              fontWeight: 700,
+              color: CLEARA_COLORS.label,
+              margin: 0,
+            }}>
+              5.2
+            </p>
+          </div>
+        </div>
+
+        {/* Metrics */}
+        <div style={{ display: 'flex', gap: 12 }}>
+          {[
+            { label: 'Redness', value: 1, max: 4 },
+            { label: 'Thickness', value: 0, max: 4 },
+            { label: 'Scaling', value: 1, max: 4 },
+          ].map((metric) => (
+            <div key={metric.label} style={{ flex: 1 }}>
+              <p style={{
+                fontSize: 10,
+                color: CLEARA_COLORS.secondaryLabel,
+                marginBottom: 4,
+              }}>
+                {metric.label}
+              </p>
+              <div style={{
+                height: 4,
+                backgroundColor: `${CLEARA_COLORS.lavender}20`,
+                borderRadius: 2,
+              }}>
+                <div style={{
+                  width: `${(metric.value / metric.max) * 100}%`,
+                  height: '100%',
+                  backgroundColor: CLEARA_COLORS.lavender,
+                  borderRadius: 2,
+                }} />
+              </div>
+              <p style={{
+                fontSize: 11,
+                fontWeight: 600,
+                color: CLEARA_COLORS.label,
+                marginTop: 4,
+              }}>
+                {metric.value}/{metric.max}
+              </p>
+            </div>
+          ))}
+        </div>
+      </GlassCard>
+
+      {/* AI Summary */}
+      <GlassCard style={{ flex: 1 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+          <Sparkles size={16} color={CLEARA_COLORS.lavender} />
+          <p style={{
+            fontSize: 13,
+            fontWeight: 600,
+            color: CLEARA_COLORS.label,
+          }}>
+            Healing Note
+          </p>
+        </div>
+        <p style={{
+          fontSize: 15,
+          color: CLEARA_COLORS.secondaryLabel,
+          lineHeight: 1.6,
+          fontFamily: 'Georgia, serif',
+          fontStyle: 'italic',
+        }}>
+          Your skin is showing wonderful signs of improvement. The mild presentation
+          suggests your current routine is working well. Keep focusing on gentle
+          moisturization and stress management.
+        </p>
+      </GlassCard>
+    </div>
+  );
+
+  // Main photo menu
+  if (subState === 'ghost') return renderGhostOverlay();
+  if (subState === 'result') return renderPhotoResult();
+
+  return (
+    <div style={{
+      padding: '0 20px 100px',
+      height: '100%',
+      fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+    }}>
+      <h1 style={{
+        fontSize: 24,
+        fontWeight: 600,
+        color: CLEARA_COLORS.label,
+        marginBottom: 8,
+        fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+      }}>
+        Track Progress
+      </h1>
+      <p style={{
+        fontSize: 14,
+        color: CLEARA_COLORS.secondaryLabel,
+        marginBottom: 24,
+      }}>
+        Capture photos to monitor your skin over time.
+      </p>
+
+      {/* Photo Options */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <GlassCard onClick={() => setSubState('ghost')} variant="lavender">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{
+              width: 56,
+              height: 56,
+              borderRadius: 16,
+              backgroundColor: `${CLEARA_COLORS.lavender}20`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <Camera size={24} color={CLEARA_COLORS.lavender} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <h3 style={{
+                fontSize: 16,
+                fontWeight: 600,
+                color: CLEARA_COLORS.label,
+                marginBottom: 4,
+              }}>
+                Ghost Overlay
+              </h3>
+              <p style={{
+                fontSize: 13,
+                color: CLEARA_COLORS.secondaryLabel,
+              }}>
+                Compare with previous photos
+              </p>
+            </div>
+            <ChevronRight size={20} color={CLEARA_COLORS.tertiaryLabel} />
+          </div>
+        </GlassCard>
+
+        <GlassCard onClick={() => setSubState('camera')}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{
+              width: 56,
+              height: 56,
+              borderRadius: 16,
+              backgroundColor: `${CLEARA_COLORS.sage}20`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <Plus size={24} color={CLEARA_COLORS.sage} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <h3 style={{
+                fontSize: 16,
+                fontWeight: 600,
+                color: CLEARA_COLORS.label,
+                marginBottom: 4,
+              }}>
+                Quick Capture
+              </h3>
+              <p style={{
+                fontSize: 13,
+                color: CLEARA_COLORS.secondaryLabel,
+              }}>
+                Take a new photo without overlay
+              </p>
+            </div>
+            <ChevronRight size={20} color={CLEARA_COLORS.tertiaryLabel} />
+          </div>
+        </GlassCard>
+      </div>
+
+      {/* Recent Photos */}
+      <div style={{ marginTop: 32 }}>
+        <h2 style={{
+          fontSize: 13,
+          fontWeight: 600,
+          color: CLEARA_COLORS.secondaryLabel,
+          textTransform: 'uppercase',
+          letterSpacing: 0.5,
+          marginBottom: 16,
+        }}>
+          Recent Photos
+        </h2>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: 8,
+        }}>
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div
+              key={i}
+              style={{
+                aspectRatio: '1',
+                backgroundColor: CLEARA_COLORS.canvasSecondary,
+                borderRadius: 12,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Camera size={20} color={CLEARA_COLORS.quaternaryLabel} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// =============================================================================
+// RITUALS SCREEN
+// =============================================================================
+
+interface RitualsScreenProps {
+  onNavigate: (screen: Screen) => void;
+  rituals: Ritual[];
+  onToggleRitual: (id: string) => void;
+  onAddRitual: (title: string, category: 'morning' | 'evening') => void;
+  subState: SubState;
+  setSubState: (state: SubState) => void;
+}
+
+const RitualsScreen: React.FC<RitualsScreenProps> = ({
+  onNavigate,
+  rituals,
+  onToggleRitual,
+  onAddRitual,
+  subState,
+  setSubState,
+}) => {
+  const [sparkles, setSparkles] = useState<Sparkle[]>([]);
+  const [newRitualTitle, setNewRitualTitle] = useState('');
+  const [newRitualCategory, setNewRitualCategory] = useState<'morning' | 'evening'>('morning');
+
+  const handleCheck = (e: React.MouseEvent, id: string) => {
+    const ritual = rituals.find(r => r.id === id);
+    if (ritual && !ritual.completed) {
+      const rect = (e.target as HTMLElement).getBoundingClientRect();
+      const newSparkles = Array.from({ length: 12 }).map((_, i) => ({
+        id: Date.now() + i,
+        x: rect.left + rect.width / 2 + (Math.random() - 0.5) * 100,
+        y: rect.top + rect.height / 2 + (Math.random() - 0.5) * 100,
+        color: [CLEARA_COLORS.lavender, CLEARA_COLORS.periwinkle, CLEARA_COLORS.sage, CLEARA_COLORS.blush][i % 4],
+      }));
+      setSparkles(prev => [...prev, ...newSparkles]);
+      setTimeout(() => setSparkles(prev => prev.slice(12)), 1000);
+    }
+    onToggleRitual(id);
+  };
+
+  const handleAddRitual = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newRitualTitle.trim()) {
+      onAddRitual(newRitualTitle, newRitualCategory);
+      setNewRitualTitle('');
+      setSubState(null);
+    }
+  };
+
+  const morningRituals = rituals.filter(r => r.category === 'morning');
+  const eveningRituals = rituals.filter(r => r.category === 'evening');
+
+  return (
+    <div style={{
+      padding: '0 20px 100px',
+      fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+      position: 'relative',
+    }}>
+      {/* Sparkles */}
+      {sparkles.map(sparkle => (
+        <motion.div
+          key={sparkle.id}
+          initial={{ opacity: 1, scale: 1 }}
+          animate={{ opacity: 0, scale: 0 }}
+          transition={{ duration: 0.8 }}
+          style={{
+            position: 'fixed',
+            left: sparkle.x,
+            top: sparkle.y,
+            width: 8,
+            height: 8,
+            borderRadius: 4,
+            backgroundColor: sparkle.color,
+            pointerEvents: 'none',
+            zIndex: 1000,
+          }}
+        />
+      ))}
+
+      {/* Header */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        marginBottom: 24,
+      }}>
+        <div>
+          <h1 style={{
+            fontSize: 24,
+            fontWeight: 600,
+            color: CLEARA_COLORS.label,
+            marginBottom: 4,
+            fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+          }}>
+            Your Rituals
+          </h1>
+          <p style={{
+            fontSize: 14,
+            color: CLEARA_COLORS.secondaryLabel,
+          }}>
+            Small acts of care, every day.
+          </p>
+        </div>
+        <motion.button
+          whileTap={{ scale: 0.9 }}
+          onClick={() => setSubState('add')}
+          style={{
+            width: 44,
+            height: 44,
+            borderRadius: 22,
+            backgroundColor: CLEARA_COLORS.label,
+            border: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            boxShadow: CLEARA_SHADOWS.floating,
+          }}
+        >
+          <Plus size={20} color="white" />
+        </motion.button>
+      </div>
+
+      {/* Progress Card */}
+      <GlassCard variant="blush" style={{ marginBottom: 24 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+          <span style={{
+            fontSize: 14,
+            fontWeight: 600,
+            color: CLEARA_COLORS.label,
+          }}>
+            7 days of consistency
+          </span>
+          <span>🌸</span>
+        </div>
+        <div style={{
+          height: 6,
+          backgroundColor: CLEARA_COLORS.glassSecondary,
+          borderRadius: 3,
+          overflow: 'hidden',
+        }}>
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: '70%' }}
+            transition={{ duration: 1, ease: 'easeOut' }}
+            style={{
+              height: '100%',
+              backgroundColor: CLEARA_COLORS.blush,
+              borderRadius: 3,
+            }}
+          />
+        </div>
+        <p style={{
+          fontSize: 11,
+          color: CLEARA_COLORS.tertiaryLabel,
+          marginTop: 6,
+          textAlign: 'right',
+        }}>
+          3 more days to milestone
+        </p>
+      </GlassCard>
+
+      {/* Morning Rituals */}
+      <div style={{ marginBottom: 24 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+          <Sun size={18} color={CLEARA_COLORS.secondaryLabel} />
+          <h2 style={{
+            fontSize: 15,
+            fontWeight: 600,
+            color: CLEARA_COLORS.secondaryLabel,
+          }}>
+            Morning Ritual
+          </h2>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {morningRituals.map(ritual => (
+            <GlassCard
+              key={ritual.id}
+              variant={ritual.completed ? 'sage' : 'primary'}
+              padding={12}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div>
+                  <h4 style={{
+                    fontSize: 15,
+                    fontWeight: 500,
+                    color: ritual.completed ? CLEARA_COLORS.tertiaryLabel : CLEARA_COLORS.label,
+                    textDecoration: ritual.completed ? 'line-through' : 'none',
+                    marginBottom: 2,
+                  }}>
+                    {ritual.title}
+                  </h4>
+                  {ritual.subtitle && (
+                    <p style={{
+                      fontSize: 12,
+                      color: CLEARA_COLORS.tertiaryLabel,
+                    }}>
+                      {ritual.subtitle}
+                    </p>
+                  )}
+                </div>
+                <motion.button
+                  whileTap={{ scale: 0.8 }}
+                  onClick={(e) => handleCheck(e, ritual.id)}
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: 14,
+                    backgroundColor: ritual.completed ? CLEARA_COLORS.sage : 'transparent',
+                    border: ritual.completed ? 'none' : `2px solid ${CLEARA_COLORS.quaternaryLabel}`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {ritual.completed && <Check size={14} color="white" strokeWidth={3} />}
+                </motion.button>
+              </div>
+            </GlassCard>
+          ))}
+        </div>
+      </div>
+
+      {/* Evening Rituals */}
+      <div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+          <Moon size={18} color={CLEARA_COLORS.secondaryLabel} />
+          <h2 style={{
+            fontSize: 15,
+            fontWeight: 600,
+            color: CLEARA_COLORS.secondaryLabel,
+          }}>
+            Evening Ritual
+          </h2>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {eveningRituals.map(ritual => (
+            <GlassCard
+              key={ritual.id}
+              variant={ritual.completed ? 'sage' : 'primary'}
+              padding={12}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div>
+                  <h4 style={{
+                    fontSize: 15,
+                    fontWeight: 500,
+                    color: ritual.completed ? CLEARA_COLORS.tertiaryLabel : CLEARA_COLORS.label,
+                    textDecoration: ritual.completed ? 'line-through' : 'none',
+                    marginBottom: 2,
+                  }}>
+                    {ritual.title}
+                  </h4>
+                  {ritual.subtitle && (
+                    <p style={{
+                      fontSize: 12,
+                      color: CLEARA_COLORS.tertiaryLabel,
+                    }}>
+                      {ritual.subtitle}
+                    </p>
+                  )}
+                </div>
+                <motion.button
+                  whileTap={{ scale: 0.8 }}
+                  onClick={(e) => handleCheck(e, ritual.id)}
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: 14,
+                    backgroundColor: ritual.completed ? CLEARA_COLORS.sage : 'transparent',
+                    border: ritual.completed ? 'none' : `2px solid ${CLEARA_COLORS.quaternaryLabel}`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {ritual.completed && <Check size={14} color="white" strokeWidth={3} />}
+                </motion.button>
+              </div>
+            </GlassCard>
+          ))}
+        </div>
+      </div>
+
+      {/* Add Ritual Modal */}
+      <AnimatePresence>
+        {subState === 'add' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              backgroundColor: 'rgba(45, 45, 55, 0.3)',
+              backdropFilter: 'blur(8px)',
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+              padding: 16,
+              zIndex: 100,
+            }}
+            onClick={() => setSubState(null)}
+          >
+            <motion.div
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 100, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                width: '100%',
+                maxWidth: 400,
+                backgroundColor: CLEARA_COLORS.canvas,
+                borderRadius: 24,
+                padding: 24,
+                boxShadow: CLEARA_SHADOWS.floating,
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+                <h3 style={{
+                  fontSize: 20,
+                  fontWeight: 600,
+                  color: CLEARA_COLORS.label,
+                  fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+                }}>
+                  New Ritual
+                </h3>
+                <button
+                  onClick={() => setSubState(null)}
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 16,
+                    backgroundColor: CLEARA_COLORS.canvasSecondary,
+                    border: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <X size={18} color={CLEARA_COLORS.secondaryLabel} />
+                </button>
+              </div>
+
+              <form onSubmit={handleAddRitual}>
+                <div style={{ marginBottom: 20 }}>
+                  <label style={{
+                    fontSize: 11,
+                    fontWeight: 600,
+                    color: CLEARA_COLORS.secondaryLabel,
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5,
+                    display: 'block',
+                    marginBottom: 8,
+                  }}>
+                    Title
+                  </label>
+                  <input
+                    type="text"
+                    value={newRitualTitle}
+                    onChange={(e) => setNewRitualTitle(e.target.value)}
+                    placeholder="e.g., Drink Green Tea"
+                    style={{
+                      width: '100%',
+                      padding: 12,
+                      fontSize: 16,
+                      border: 'none',
+                      borderBottom: `2px solid ${CLEARA_COLORS.quaternaryLabel}`,
+                      backgroundColor: 'transparent',
+                      color: CLEARA_COLORS.label,
+                      outline: 'none',
+                      fontFamily: 'Georgia, serif',
+                    }}
+                  />
+                </div>
+
+                <div style={{ marginBottom: 24 }}>
+                  <label style={{
+                    fontSize: 11,
+                    fontWeight: 600,
+                    color: CLEARA_COLORS.secondaryLabel,
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5,
+                    display: 'block',
+                    marginBottom: 8,
+                  }}>
+                    Time of Day
+                  </label>
+                  <div style={{ display: 'flex', gap: 12 }}>
+                    <button
+                      type="button"
+                      onClick={() => setNewRitualCategory('morning')}
+                      style={{
+                        flex: 1,
+                        padding: 12,
+                        borderRadius: 12,
+                        border: 'none',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 8,
+                        cursor: 'pointer',
+                        backgroundColor: newRitualCategory === 'morning'
+                          ? `${CLEARA_COLORS.sage}20`
+                          : CLEARA_COLORS.canvasSecondary,
+                        color: newRitualCategory === 'morning'
+                          ? CLEARA_COLORS.sageDark
+                          : CLEARA_COLORS.tertiaryLabel,
+                        fontWeight: 500,
+                      }}
+                    >
+                      <Sun size={16} /> Morning
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setNewRitualCategory('evening')}
+                      style={{
+                        flex: 1,
+                        padding: 12,
+                        borderRadius: 12,
+                        border: 'none',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 8,
+                        cursor: 'pointer',
+                        backgroundColor: newRitualCategory === 'evening'
+                          ? `${CLEARA_COLORS.lavender}20`
+                          : CLEARA_COLORS.canvasSecondary,
+                        color: newRitualCategory === 'evening'
+                          ? CLEARA_COLORS.lavenderDark
+                          : CLEARA_COLORS.tertiaryLabel,
+                        fontWeight: 500,
+                      }}
+                    >
+                      <Moon size={16} /> Evening
+                    </button>
+                  </div>
+                </div>
+
+                <motion.button
+                  type="submit"
+                  whileTap={{ scale: 0.98 }}
+                  disabled={!newRitualTitle.trim()}
+                  style={{
+                    width: '100%',
+                    padding: 16,
+                    backgroundColor: newRitualTitle.trim() ? CLEARA_COLORS.label : CLEARA_COLORS.quaternaryLabel,
+                    border: 'none',
+                    borderRadius: 16,
+                    color: 'white',
+                    fontSize: 16,
+                    fontWeight: 600,
+                    cursor: newRitualTitle.trim() ? 'pointer' : 'not-allowed',
+                  }}
+                >
+                  Begin Ritual
+                </motion.button>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+// =============================================================================
+// WELLNESS SCREEN (PHQ-9)
+// =============================================================================
+
+interface WellnessScreenProps {
+  onNavigate: (screen: Screen) => void;
+  subState: SubState;
+  setSubState: (state: SubState) => void;
+}
+
+const WellnessScreen: React.FC<WellnessScreenProps> = ({ onNavigate, subState, setSubState }) => {
+  const [step, setStep] = useState(0); // 0 = intro, 1-3 = questions, 4 = result
+  const [answers, setAnswers] = useState<number[]>([]);
+  const [aiAdvice, setAiAdvice] = useState<string | null>(null);
+  const [loadingAi, setLoadingAi] = useState(false);
+
+  const handleAnswer = (val: number) => {
+    const newAnswers = [...answers, val];
+    setAnswers(newAnswers);
+    if (step < WELLNESS_QUESTIONS.length) {
+      setStep(prev => prev + 1);
+    } else {
+      setStep(4);
+    }
+  };
+
+  const getAiGuidance = async () => {
+    setLoadingAi(true);
+    // Simulate AI response
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    setAiAdvice(
+      "The most gentle path forward is always one step at a time. " +
+      "Today, try these healing rituals:\n\n" +
+      "• Take a warm bath with lavender oil\n" +
+      "• Listen to calming nature sounds for 10 minutes\n" +
+      "• Write down three things you're grateful for"
+    );
+    setLoadingAi(false);
+  };
+
+  const resetWellness = () => {
+    setStep(0);
+    setAnswers([]);
+    setAiAdvice(null);
+  };
+
+  // Intro screen
+  if (step === 0) {
+    return (
+      <div style={{
+        padding: '0 24px',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+      }}>
+        <button
+          onClick={() => onNavigate('home')}
+          style={{
+            position: 'absolute',
+            top: 60,
+            left: 20,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 8,
+            color: CLEARA_COLORS.tertiaryLabel,
+          }}
+        >
+          <X size={24} />
+        </button>
+
+        <div style={{
+          width: 160,
+          height: 160,
+          borderRadius: 80,
+          overflow: 'hidden',
+          marginBottom: 32,
+          boxShadow: CLEARA_SHADOWS.floating,
+          border: `4px solid ${CLEARA_COLORS.glassSecondary}`,
+        }}>
+          <div style={{
+            width: '100%',
+            height: '100%',
+            background: `linear-gradient(135deg, ${CLEARA_COLORS.lavenderLight} 0%, ${CLEARA_COLORS.periwinkle} 100%)`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <Heart size={48} color="white" />
+          </div>
+        </div>
+
+        <h1 style={{
+          fontSize: 28,
+          fontWeight: 600,
+          color: CLEARA_COLORS.label,
+          marginBottom: 16,
+          lineHeight: 1.3,
+          fontFamily: 'Georgia, serif',
+        }}>
+          Taking a moment for yourself is an act of healing.
+        </h1>
+        <p style={{
+          fontSize: 15,
+          color: CLEARA_COLORS.secondaryLabel,
+          marginBottom: 40,
+          lineHeight: 1.6,
+        }}>
+          We&apos;ll ask a few gentle questions to understand how you&apos;re feeling lately. No judgment, just clarity.
+        </p>
+
+        <motion.button
+          whileTap={{ scale: 0.98 }}
+          onClick={() => setStep(1)}
+          style={{
+            width: '100%',
+            padding: 18,
+            backgroundColor: CLEARA_COLORS.label,
+            border: 'none',
+            borderRadius: 20,
+            color: 'white',
+            fontSize: 16,
+            fontWeight: 600,
+            cursor: 'pointer',
+            boxShadow: `0 8px 24px ${CLEARA_COLORS.lavender}30`,
+          }}
+        >
+          Begin Check-in
+        </motion.button>
+      </div>
+    );
+  }
+
+  // Result screen
+  if (step === 4) {
+    return (
+      <div style={{
+        padding: '0 20px 100px',
+        fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+      }}>
+        <div style={{
+          width: '100%',
+          height: 140,
+          borderRadius: 24,
+          overflow: 'hidden',
+          marginBottom: 24,
+          position: 'relative',
+        }}>
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: `linear-gradient(135deg, ${CLEARA_COLORS.lavender} 0%, ${CLEARA_COLORS.periwinkle} 100%)`,
+          }} />
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(to top, rgba(250,248,245,0.9) 0%, transparent 100%)',
+          }} />
+        </div>
+
+        <p style={{
+          fontSize: 11,
+          fontWeight: 700,
+          color: CLEARA_COLORS.blush,
+          textTransform: 'uppercase',
+          letterSpacing: 1,
+          marginBottom: 8,
+        }}>
+          Reflection
+        </p>
+        <h2 style={{
+          fontSize: 28,
+          fontWeight: 600,
+          color: CLEARA_COLORS.label,
+          marginBottom: 16,
+          fontFamily: 'Georgia, serif',
+        }}>
+          💜 You&apos;re not alone
+        </h2>
+        <p style={{
+          fontSize: 16,
+          color: CLEARA_COLORS.secondaryLabel,
+          lineHeight: 1.6,
+          marginBottom: 24,
+        }}>
+          Your check-in suggests you might benefit from some extra support right now.
+        </p>
+
+        <GlassCard variant="primary" style={{ marginBottom: 16 }}>
+          <h3 style={{
+            fontSize: 14,
+            fontWeight: 600,
+            color: CLEARA_COLORS.label,
+            marginBottom: 8,
+          }}>
+            🌸 This is common
+          </h3>
+          <p style={{
+            fontSize: 13,
+            color: CLEARA_COLORS.secondaryLabel,
+            lineHeight: 1.5,
+          }}>
+            1 in 5 people living with psoriasis experience these feelings.
+            Your skin and emotions are deeply connected.
+          </p>
+        </GlassCard>
+
+        {!aiAdvice && !loadingAi && (
+          <motion.button
+            whileTap={{ scale: 0.98 }}
+            onClick={getAiGuidance}
+            style={{
+              width: '100%',
+              padding: 20,
+              background: `linear-gradient(135deg, ${CLEARA_COLORS.glassLavender} 0%, ${CLEARA_COLORS.glassSage} 100%)`,
+              border: `1px solid ${CLEARA_BORDERS.lavender}`,
+              borderRadius: 20,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 12,
+              cursor: 'pointer',
+              marginBottom: 16,
+            }}
+          >
+            <Sparkles size={20} color={CLEARA_COLORS.lavender} />
+            <span style={{
+              fontSize: 16,
+              fontWeight: 500,
+              color: CLEARA_COLORS.label,
+              fontFamily: 'Georgia, serif',
+            }}>
+              Ask Cleara for gentle guidance
+            </span>
+          </motion.button>
+        )}
+
+        {loadingAi && (
+          <GlassCard style={{ marginBottom: 16, textAlign: 'center', padding: 32 }}>
+            <Loader2
+              size={24}
+              color={CLEARA_COLORS.lavender}
+              style={{ animation: 'spin 1s linear infinite' }}
+            />
+            <p style={{
+              fontSize: 15,
+              color: CLEARA_COLORS.secondaryLabel,
+              marginTop: 12,
+              fontFamily: 'Georgia, serif',
+            }}>
+              Crafting your healing note...
+            </p>
+          </GlassCard>
+        )}
+
+        {aiAdvice && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <GlassCard variant="lavender" style={{ marginBottom: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                <Sparkles size={16} color={CLEARA_COLORS.lavender} />
+                <span style={{
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: CLEARA_COLORS.label,
+                }}>
+                  Personalized Wisdom
+                </span>
+              </div>
+              <p style={{
+                fontSize: 15,
+                color: CLEARA_COLORS.secondaryLabel,
+                lineHeight: 1.7,
+                fontFamily: 'Georgia, serif',
+                whiteSpace: 'pre-wrap',
+              }}>
+                {aiAdvice}
+              </p>
+            </GlassCard>
+          </motion.div>
+        )}
+
+        <GlassCard style={{ marginBottom: 24 }}>
+          <h3 style={{
+            fontSize: 14,
+            fontWeight: 600,
+            color: CLEARA_COLORS.label,
+            marginBottom: 12,
+          }}>
+            Professional Support
+          </h3>
+          <ul style={{
+            margin: 0,
+            padding: 0,
+            listStyle: 'none',
+          }}>
+            {[
+              'Talk to someone you trust',
+              'Gentle movement helps',
+              'Consider speaking with a doctor',
+            ].map((item, i) => (
+              <li key={i} style={{
+                display: 'flex',
+                gap: 8,
+                fontSize: 13,
+                color: CLEARA_COLORS.secondaryLabel,
+                marginBottom: 8,
+              }}>
+                <span>•</span> {item}
+              </li>
+            ))}
+          </ul>
+        </GlassCard>
+
+        <motion.button
+          whileTap={{ scale: 0.98 }}
+          onClick={() => {
+            resetWellness();
+            onNavigate('home');
+          }}
+          style={{
+            width: '100%',
+            padding: 16,
+            backgroundColor: CLEARA_COLORS.glassPrimary,
+            border: `1px solid ${CLEARA_BORDERS.lavender}`,
+            borderRadius: 16,
+            color: CLEARA_COLORS.label,
+            fontSize: 15,
+            fontWeight: 500,
+            cursor: 'pointer',
+          }}
+        >
+          Close
+        </motion.button>
+      </div>
+    );
+  }
+
+  // Question screens
+  return (
+    <div style={{
+      padding: '0 20px',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+    }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 32,
+        color: CLEARA_COLORS.tertiaryLabel,
+      }}>
+        <button
+          onClick={() => setStep(step - 1)}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 8,
+            color: CLEARA_COLORS.tertiaryLabel,
+          }}
+        >
+          <ArrowLeft size={24} />
+        </button>
+        <span style={{ fontSize: 14, fontWeight: 500 }}>
+          {step} of {WELLNESS_QUESTIONS.length}
+        </span>
+      </div>
+
+      <div style={{ flex: 1 }}>
+        <h2 style={{
+          fontSize: 24,
+          fontWeight: 600,
+          color: CLEARA_COLORS.label,
+          marginBottom: 8,
+          lineHeight: 1.3,
+          fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+        }}>
+          Over the last two weeks, have you felt...
+        </h2>
+        <p style={{
+          fontSize: 20,
+          color: CLEARA_COLORS.lavender,
+          fontFamily: 'Georgia, serif',
+          fontStyle: 'italic',
+          marginBottom: 32,
+        }}>
+          &ldquo;{WELLNESS_QUESTIONS[step - 1]}&rdquo;
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {WELLNESS_OPTIONS.map((option, idx) => (
+            <motion.button
+              key={idx}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => handleAnswer(idx)}
+              style={{
+                width: '100%',
+                padding: 20,
+                textAlign: 'left',
+                backgroundColor: CLEARA_COLORS.glassPrimary,
+                backdropFilter: 'blur(8px)',
+                border: `1px solid ${CLEARA_BORDERS.light}`,
+                borderRadius: 20,
+                color: CLEARA_COLORS.label,
+                fontSize: 16,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              {option}
+            </motion.button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// =============================================================================
+// INSIGHTS SCREEN (Placeholder)
+// =============================================================================
+
+interface InsightsScreenProps {
+  onNavigate: (screen: Screen) => void;
+  pasiLogs: PasiLog[];
+}
+
+const InsightsScreen: React.FC<InsightsScreenProps> = ({ onNavigate, pasiLogs }) => {
+  const latestPasi = pasiLogs[pasiLogs.length - 1];
+
+  return (
+    <div style={{
+      padding: '0 20px 100px',
+      fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+    }}>
+      <h1 style={{
+        fontSize: 24,
+        fontWeight: 600,
+        color: CLEARA_COLORS.label,
+        marginBottom: 8,
+        fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+      }}>
+        Your Insights
+      </h1>
+      <p style={{
+        fontSize: 14,
+        color: CLEARA_COLORS.secondaryLabel,
+        marginBottom: 24,
+      }}>
+        Track your progress over time.
+      </p>
+
+      {/* PASI Score Card */}
+      <GlassCard variant="lavender" style={{ marginBottom: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            <p style={{
+              fontSize: 11,
+              fontWeight: 600,
+              color: CLEARA_COLORS.lavender,
+              textTransform: 'uppercase',
+              letterSpacing: 0.5,
+              marginBottom: 8,
+            }}>
+              Current PASI Score
+            </p>
+            <p style={{
+              fontSize: 48,
+              fontWeight: 700,
+              color: CLEARA_COLORS.label,
+              fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+              lineHeight: 1,
+            }}>
+              {latestPasi.score.toFixed(1)}
+            </p>
+            <p style={{
+              fontSize: 13,
+              color: CLEARA_COLORS.sage,
+              fontWeight: 600,
+              marginTop: 8,
+            }}>
+              ↓ 57% improvement
+            </p>
+          </div>
+          <div style={{
+            width: 80,
+            height: 80,
+            borderRadius: 40,
+            backgroundColor: `${CLEARA_COLORS.lavender}15`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <TrendingUp size={32} color={CLEARA_COLORS.lavender} />
+          </div>
+        </div>
+      </GlassCard>
+
+      {/* Trend Chart with Recharts */}
+      <GlassCard style={{ marginBottom: 20 }}>
+        <h3 style={{
+          fontSize: 14,
+          fontWeight: 600,
+          color: CLEARA_COLORS.label,
+          marginBottom: 16,
+        }}>
+          PASI Trend
+        </h3>
+        <div style={{ height: 140, marginLeft: -10, marginRight: -10 }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart
+              data={pasiLogs.map(log => ({
+                ...log,
+                date: new Date(log.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+              }))}
+              margin={{ top: 5, right: 10, left: -20, bottom: 5 }}
+            >
+              <defs>
+                <linearGradient id="colorPasi" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={CLEARA_COLORS.lavender} stopOpacity={0.4}/>
+                  <stop offset="95%" stopColor={CLEARA_COLORS.lavender} stopOpacity={0.05}/>
+                </linearGradient>
+              </defs>
+              <XAxis
+                dataKey="date"
+                tick={{ fontSize: 9, fill: CLEARA_COLORS.tertiaryLabel }}
+                axisLine={false}
+                tickLine={false}
+              />
+              <YAxis
+                domain={[0, 15]}
+                tick={{ fontSize: 9, fill: CLEARA_COLORS.tertiaryLabel }}
+                axisLine={false}
+                tickLine={false}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: CLEARA_COLORS.glassPrimary,
+                  border: `1px solid ${CLEARA_BORDERS.light}`,
+                  borderRadius: 12,
+                  boxShadow: CLEARA_SHADOWS.card,
+                  fontSize: 12,
+                }}
+                labelStyle={{ color: CLEARA_COLORS.label, fontWeight: 600 }}
+                formatter={(value) => [typeof value === 'number' ? value.toFixed(1) : String(value), 'PASI']}
+              />
+              <Area
+                type="monotone"
+                dataKey="score"
+                stroke={CLEARA_COLORS.lavender}
+                strokeWidth={2}
+                fill="url(#colorPasi)"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </GlassCard>
+
+      {/* Symptom Breakdown */}
+      <GlassCard>
+        <h3 style={{
+          fontSize: 14,
+          fontWeight: 600,
+          color: CLEARA_COLORS.label,
+          marginBottom: 16,
+        }}>
+          Symptom Breakdown
+        </h3>
+        {[
+          { label: 'Redness', value: latestPasi.redness, color: CLEARA_COLORS.blush },
+          { label: 'Thickness', value: latestPasi.thickness, color: CLEARA_COLORS.lavender },
+          { label: 'Scaling', value: latestPasi.scaling, color: CLEARA_COLORS.periwinkle },
+        ].map((symptom) => (
+          <div key={symptom.label} style={{ marginBottom: 16 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+              <span style={{ fontSize: 13, color: CLEARA_COLORS.secondaryLabel }}>{symptom.label}</span>
+              <span style={{ fontSize: 13, fontWeight: 600, color: CLEARA_COLORS.label }}>{symptom.value}/4</span>
+            </div>
+            <div style={{
+              height: 6,
+              backgroundColor: CLEARA_COLORS.canvasSecondary,
+              borderRadius: 3,
+            }}>
+              <div style={{
+                width: `${(symptom.value / 4) * 100}%`,
+                height: '100%',
+                backgroundColor: symptom.color,
+                borderRadius: 3,
+              }} />
+            </div>
+          </div>
+        ))}
+      </GlassCard>
+    </div>
+  );
+};
+
+// =============================================================================
+// PROFILE SCREEN (Placeholder)
+// =============================================================================
+
+interface ProfileScreenProps {
+  onNavigate: (screen: Screen) => void;
+}
+
+const ProfileScreen: React.FC<ProfileScreenProps> = ({ onNavigate }) => {
+  return (
+    <div style={{
+      padding: '0 20px 100px',
+      height: '100%',
+      fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+    }}>
+      <div style={{ textAlign: 'center', marginBottom: 32 }}>
+        <div style={{
+          width: 80,
+          height: 80,
+          borderRadius: 40,
+          backgroundColor: CLEARA_COLORS.lavenderLight,
+          margin: '0 auto 16px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <span style={{ fontSize: 32 }}>S</span>
+        </div>
+        <h1 style={{
+          fontSize: 22,
+          fontWeight: 600,
+          color: CLEARA_COLORS.label,
+          marginBottom: 4,
+        }}>
+          Sarah Mitchell
+        </h1>
+        <p style={{
+          fontSize: 14,
+          color: CLEARA_COLORS.secondaryLabel,
+        }}>
+          Member since Jan 2024
+        </p>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {[
+          { icon: <User size={20} />, label: 'Edit Profile' },
+          { icon: <Clock size={20} />, label: 'Reminders' },
+          { icon: <BookOpen size={20} />, label: 'Export Data' },
+          { icon: <Heart size={20} />, label: 'Share with Provider' },
+        ].map((item, i) => (
+          <GlassCard key={i} padding={14}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div style={{ color: CLEARA_COLORS.lavender }}>{item.icon}</div>
+              <span style={{
+                flex: 1,
+                fontSize: 15,
+                color: CLEARA_COLORS.label,
+              }}>
+                {item.label}
+              </span>
+              <ChevronRight size={18} color={CLEARA_COLORS.tertiaryLabel} />
+            </div>
+          </GlassCard>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// =============================================================================
+// PASI SCREEN (with RadarChart)
+// =============================================================================
+
+interface PASIScreenProps {
+  onNavigate: (screen: Screen) => void;
+  pasiLogs: PasiLog[];
+}
+
+const PASIScreen: React.FC<PASIScreenProps> = ({ onNavigate, pasiLogs }) => {
+  const latestPasi = pasiLogs[pasiLogs.length - 1];
+
+  const radarData = [
+    { subject: 'Scalp', A: 2, fullMark: 4 },
+    { subject: 'Trunk', A: 1, fullMark: 4 },
+    { subject: 'Upper Limbs', A: 1, fullMark: 4 },
+    { subject: 'Lower Limbs', A: 2, fullMark: 4 },
+  ];
+
+  const symptomRadarData = [
+    { symptom: 'Redness', value: latestPasi.redness },
+    { symptom: 'Thickness', value: latestPasi.thickness },
+    { symptom: 'Scaling', value: latestPasi.scaling },
+  ];
+
+  return (
+    <div style={{
+      padding: '0 20px 100px',
+      fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+    }}>
+      <button
+        onClick={() => onNavigate('home')}
+        style={{
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: 8,
+          marginLeft: -8,
+          marginBottom: 8,
+          color: CLEARA_COLORS.secondaryLabel,
+        }}
+      >
+        <ArrowLeft size={24} />
+      </button>
+
+      <h1 style={{
+        fontSize: 24,
+        fontWeight: 600,
+        color: CLEARA_COLORS.label,
+        marginBottom: 8,
+        fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+      }}>
+        PASI Score
+      </h1>
+      <p style={{
+        fontSize: 14,
+        color: CLEARA_COLORS.secondaryLabel,
+        marginBottom: 24,
+      }}>
+        Psoriasis Area and Severity Index
+      </p>
+
+      {/* Main Score Display */}
+      <GlassCard variant="lavender" style={{ marginBottom: 20, textAlign: 'center' }}>
+        <p style={{
+          fontSize: 11,
+          fontWeight: 600,
+          color: CLEARA_COLORS.lavender,
+          textTransform: 'uppercase',
+          letterSpacing: 0.5,
+          marginBottom: 8,
+        }}>
+          Current Score
+        </p>
+        <p style={{
+          fontSize: 64,
+          fontWeight: 700,
+          color: CLEARA_COLORS.label,
+          fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+          lineHeight: 1,
+          marginBottom: 8,
+        }}>
+          {latestPasi.score.toFixed(1)}
+        </p>
+        <div style={{
+          display: 'inline-block',
+          padding: '6px 12px',
+          backgroundColor: `${CLEARA_COLORS.sage}20`,
+          borderRadius: 20,
+        }}>
+          <span style={{
+            fontSize: 13,
+            fontWeight: 600,
+            color: CLEARA_COLORS.sage,
+          }}>
+            Mild Severity
+          </span>
+        </div>
+      </GlassCard>
+
+      {/* Body Area Chart */}
+      <GlassCard style={{ marginBottom: 20 }}>
+        <h3 style={{
+          fontSize: 14,
+          fontWeight: 600,
+          color: CLEARA_COLORS.label,
+          marginBottom: 8,
+        }}>
+          Affected Body Areas
+        </h3>
+        <div style={{ height: 180 }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <RadarChart data={radarData} margin={{ top: 10, right: 30, bottom: 10, left: 30 }}>
+              <PolarGrid stroke={CLEARA_COLORS.quaternaryLabel} />
+              <PolarAngleAxis
+                dataKey="subject"
+                tick={{ fontSize: 11, fill: CLEARA_COLORS.secondaryLabel }}
+              />
+              <Radar
+                name="Severity"
+                dataKey="A"
+                stroke={CLEARA_COLORS.lavender}
+                fill={CLEARA_COLORS.lavender}
+                fillOpacity={0.3}
+                strokeWidth={2}
+              />
+            </RadarChart>
+          </ResponsiveContainer>
+        </div>
+      </GlassCard>
+
+      {/* Symptom Breakdown */}
+      <GlassCard>
+        <h3 style={{
+          fontSize: 14,
+          fontWeight: 600,
+          color: CLEARA_COLORS.label,
+          marginBottom: 16,
+        }}>
+          Component Scores
+        </h3>
+        {[
+          { label: 'Redness (Erythema)', value: latestPasi.redness, color: CLEARA_COLORS.blush },
+          { label: 'Thickness (Induration)', value: latestPasi.thickness, color: CLEARA_COLORS.lavender },
+          { label: 'Scaling (Desquamation)', value: latestPasi.scaling, color: CLEARA_COLORS.periwinkle },
+        ].map((symptom) => (
+          <div key={symptom.label} style={{ marginBottom: 16 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+              <span style={{ fontSize: 13, color: CLEARA_COLORS.secondaryLabel }}>{symptom.label}</span>
+              <span style={{ fontSize: 13, fontWeight: 600, color: CLEARA_COLORS.label }}>{symptom.value}/4</span>
+            </div>
+            <div style={{
+              height: 8,
+              backgroundColor: CLEARA_COLORS.canvasSecondary,
+              borderRadius: 4,
+            }}>
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${(symptom.value / 4) * 100}%` }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                style={{
+                  height: '100%',
+                  backgroundColor: symptom.color,
+                  borderRadius: 4,
+                }}
+              />
+            </div>
+          </div>
+        ))}
+      </GlassCard>
+    </div>
+  );
+};
+
+// =============================================================================
+// JOURNAL SCREEN
+// =============================================================================
+
+interface JournalScreenProps {
+  onNavigate: (screen: Screen) => void;
+}
+
+const JOURNAL_PROMPTS = [
+  "What made your skin feel better today?",
+  "How did stress affect you this week?",
+  "What self-care moment brought you joy?",
+  "What patterns have you noticed lately?",
+];
+
+const JournalScreen: React.FC<JournalScreenProps> = ({ onNavigate }) => {
+  const [selectedMood, setSelectedMood] = useState<number | null>(null);
+
+  const moods = [
+    { emoji: '😊', label: 'Great', color: CLEARA_COLORS.sage },
+    { emoji: '🙂', label: 'Good', color: CLEARA_COLORS.lavender },
+    { emoji: '😐', label: 'Okay', color: CLEARA_COLORS.periwinkle },
+    { emoji: '😔', label: 'Low', color: CLEARA_COLORS.blush },
+  ];
+
+  const prompt = JOURNAL_PROMPTS[Math.floor(Date.now() / 86400000) % JOURNAL_PROMPTS.length];
+
+  return (
+    <div style={{
+      padding: '0 20px 100px',
+      fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+    }}>
+      <button
+        onClick={() => onNavigate('home')}
+        style={{
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: 8,
+          marginLeft: -8,
+          marginBottom: 8,
+          color: CLEARA_COLORS.secondaryLabel,
+        }}
+      >
+        <ArrowLeft size={24} />
+      </button>
+
+      <h1 style={{
+        fontSize: 24,
+        fontWeight: 600,
+        color: CLEARA_COLORS.label,
+        marginBottom: 8,
+        fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+      }}>
+        Healing Journal
+      </h1>
+      <p style={{
+        fontSize: 14,
+        color: CLEARA_COLORS.secondaryLabel,
+        marginBottom: 24,
+      }}>
+        Reflect on your journey.
+      </p>
+
+      {/* Mood Selector */}
+      <GlassCard variant="lavender" style={{ marginBottom: 20 }}>
+        <p style={{
+          fontSize: 12,
+          fontWeight: 600,
+          color: CLEARA_COLORS.lavender,
+          textTransform: 'uppercase',
+          letterSpacing: 0.5,
+          marginBottom: 12,
+        }}>
+          How are you feeling today?
+        </p>
+        <div style={{ display: 'flex', gap: 12 }}>
+          {moods.map((mood, i) => (
+            <motion.button
+              key={i}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setSelectedMood(i)}
+              style={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 4,
+                padding: 12,
+                backgroundColor: selectedMood === i ? `${mood.color}20` : 'transparent',
+                border: selectedMood === i ? `2px solid ${mood.color}` : `2px solid transparent`,
+                borderRadius: 16,
+                cursor: 'pointer',
+              }}
+            >
+              <span style={{ fontSize: 28 }}>{mood.emoji}</span>
+              <span style={{
+                fontSize: 11,
+                color: selectedMood === i ? mood.color : CLEARA_COLORS.secondaryLabel,
+                fontWeight: selectedMood === i ? 600 : 400,
+              }}>
+                {mood.label}
+              </span>
+            </motion.button>
+          ))}
+        </div>
+      </GlassCard>
+
+      {/* Journal Prompt */}
+      <GlassCard style={{ marginBottom: 20 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+          <Sparkles size={16} color={CLEARA_COLORS.lavender} />
+          <span style={{
+            fontSize: 12,
+            fontWeight: 600,
+            color: CLEARA_COLORS.lavender,
+            textTransform: 'uppercase',
+            letterSpacing: 0.5,
+          }}>
+            Today&apos;s Reflection
+          </span>
+        </div>
+        <p style={{
+          fontSize: 18,
+          color: CLEARA_COLORS.label,
+          fontFamily: 'Georgia, serif',
+          fontStyle: 'italic',
+          lineHeight: 1.5,
+          marginBottom: 16,
+        }}>
+          &ldquo;{prompt}&rdquo;
+        </p>
+        <textarea
+          placeholder="Write your thoughts..."
+          style={{
+            width: '100%',
+            height: 100,
+            padding: 12,
+            backgroundColor: CLEARA_COLORS.canvasSecondary,
+            border: 'none',
+            borderRadius: 12,
+            fontSize: 15,
+            color: CLEARA_COLORS.label,
+            resize: 'none',
+            outline: 'none',
+            fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+          }}
+        />
+      </GlassCard>
+
+      {/* Recent Entries */}
+      <h3 style={{
+        fontSize: 13,
+        fontWeight: 600,
+        color: CLEARA_COLORS.secondaryLabel,
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
+        marginBottom: 12,
+      }}>
+        Recent Entries
+      </h3>
+      {[
+        { date: 'Yesterday', mood: '🙂', excerpt: 'Felt good about my morning routine...' },
+        { date: '2 days ago', mood: '😊', excerpt: 'Skin looked clearer after...' },
+      ].map((entry, i) => (
+        <GlassCard key={i} padding={14} style={{ marginBottom: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ fontSize: 24 }}>{entry.mood}</span>
+            <div style={{ flex: 1 }}>
+              <p style={{
+                fontSize: 11,
+                color: CLEARA_COLORS.tertiaryLabel,
+                marginBottom: 2,
+              }}>
+                {entry.date}
+              </p>
+              <p style={{
+                fontSize: 14,
+                color: CLEARA_COLORS.secondaryLabel,
+              }}>
+                {entry.excerpt}
+              </p>
+            </div>
+            <ChevronRight size={18} color={CLEARA_COLORS.tertiaryLabel} />
+          </div>
+        </GlassCard>
+      ))}
+    </div>
+  );
+};
+
+// =============================================================================
+// FLARE SCREEN
+// =============================================================================
+
+interface FlareScreenProps {
+  onNavigate: (screen: Screen) => void;
+}
+
+const FlareScreen: React.FC<FlareScreenProps> = ({ onNavigate }) => {
+  const riskLevel = 35; // 0-100
+
+  const factors = [
+    { icon: <Moon size={18} />, label: 'Sleep', status: 'Low', value: '5.2 hrs', impact: 'negative' as const },
+    { icon: <Activity size={18} />, label: 'Stress', status: 'Moderate', value: '6/10', impact: 'warning' as const },
+    { icon: <CloudRain size={18} />, label: 'Weather', status: 'Cold', value: '42°F', impact: 'warning' as const },
+    { icon: <Droplets size={18} />, label: 'Hydration', status: 'Good', value: '2.1L', impact: 'positive' as const },
+  ];
+
+  return (
+    <div style={{
+      padding: '0 20px 100px',
+      fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+    }}>
+      <button
+        onClick={() => onNavigate('home')}
+        style={{
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: 8,
+          marginLeft: -8,
+          marginBottom: 8,
+          color: CLEARA_COLORS.secondaryLabel,
+        }}
+      >
+        <ArrowLeft size={24} />
+      </button>
+
+      <h1 style={{
+        fontSize: 24,
+        fontWeight: 600,
+        color: CLEARA_COLORS.label,
+        marginBottom: 8,
+        fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+      }}>
+        Flare Risk
+      </h1>
+      <p style={{
+        fontSize: 14,
+        color: CLEARA_COLORS.secondaryLabel,
+        marginBottom: 24,
+      }}>
+        Predictive analysis based on your patterns.
+      </p>
+
+      {/* Risk Thermometer */}
+      <GlassCard style={{ marginBottom: 20 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+          <div style={{
+            width: 60,
+            height: 180,
+            backgroundColor: CLEARA_COLORS.canvasSecondary,
+            borderRadius: 30,
+            position: 'relative',
+            overflow: 'hidden',
+          }}>
+            {/* Thermometer fill */}
+            <motion.div
+              initial={{ height: 0 }}
+              animate={{ height: `${riskLevel}%` }}
+              transition={{ duration: 1, ease: 'easeOut' }}
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                background: riskLevel > 60
+                  ? `linear-gradient(to top, ${CLEARA_COLORS.blush}, ${CLEARA_COLORS.blushLight})`
+                  : riskLevel > 30
+                    ? `linear-gradient(to top, ${CLEARA_COLORS.warning}, #F5D898)`
+                    : `linear-gradient(to top, ${CLEARA_COLORS.sage}, ${CLEARA_COLORS.sageLight})`,
+                borderRadius: 30,
+              }}
+            />
+            {/* Thermometer bulb */}
+            <div style={{
+              position: 'absolute',
+              bottom: -10,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: 40,
+              height: 40,
+              borderRadius: 20,
+              backgroundColor: riskLevel > 60 ? CLEARA_COLORS.blush : riskLevel > 30 ? CLEARA_COLORS.warning : CLEARA_COLORS.sage,
+            }} />
+          </div>
+
+          <div style={{ flex: 1 }}>
+            <p style={{
+              fontSize: 11,
+              fontWeight: 600,
+              color: CLEARA_COLORS.secondaryLabel,
+              textTransform: 'uppercase',
+              letterSpacing: 0.5,
+              marginBottom: 8,
+            }}>
+              Current Risk Level
+            </p>
+            <p style={{
+              fontSize: 48,
+              fontWeight: 700,
+              color: riskLevel > 60 ? CLEARA_COLORS.blush : riskLevel > 30 ? CLEARA_COLORS.warning : CLEARA_COLORS.sage,
+              fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+              lineHeight: 1,
+              marginBottom: 8,
+            }}>
+              {riskLevel}%
+            </p>
+            <div style={{
+              display: 'inline-block',
+              padding: '6px 12px',
+              backgroundColor: `${CLEARA_COLORS.sage}20`,
+              borderRadius: 20,
+            }}>
+              <span style={{
+                fontSize: 12,
+                fontWeight: 600,
+                color: CLEARA_COLORS.sage,
+              }}>
+                Low Risk
+              </span>
+            </div>
+          </div>
+        </div>
+      </GlassCard>
+
+      {/* Contributing Factors */}
+      <h3 style={{
+        fontSize: 13,
+        fontWeight: 600,
+        color: CLEARA_COLORS.secondaryLabel,
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
+        marginBottom: 12,
+      }}>
+        Contributing Factors
+      </h3>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {factors.map((factor, i) => (
+          <GlassCard
+            key={i}
+            padding={14}
+            variant={factor.impact === 'positive' ? 'sage' : factor.impact === 'warning' ? 'primary' : 'blush'}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div style={{
+                width: 36,
+                height: 36,
+                borderRadius: 12,
+                backgroundColor: factor.impact === 'positive'
+                  ? `${CLEARA_COLORS.sage}20`
+                  : factor.impact === 'warning'
+                    ? `${CLEARA_COLORS.warning}20`
+                    : `${CLEARA_COLORS.blush}20`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: factor.impact === 'positive'
+                  ? CLEARA_COLORS.sage
+                  : factor.impact === 'warning'
+                    ? CLEARA_COLORS.warning
+                    : CLEARA_COLORS.blush,
+              }}>
+                {factor.icon}
+              </div>
+              <div style={{ flex: 1 }}>
+                <p style={{
+                  fontSize: 14,
+                  fontWeight: 500,
+                  color: CLEARA_COLORS.label,
+                }}>
+                  {factor.label}
+                </p>
+                <p style={{
+                  fontSize: 12,
+                  color: CLEARA_COLORS.tertiaryLabel,
+                }}>
+                  {factor.status}
+                </p>
+              </div>
+              <span style={{
+                fontSize: 14,
+                fontWeight: 600,
+                color: CLEARA_COLORS.label,
+              }}>
+                {factor.value}
+              </span>
+            </div>
+          </GlassCard>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// =============================================================================
+// LEARN SCREEN
+// =============================================================================
+
+interface LearnScreenProps {
+  onNavigate: (screen: Screen) => void;
+}
+
+const LearnScreen: React.FC<LearnScreenProps> = ({ onNavigate }) => {
+  const categories = [
+    { icon: <Leaf size={24} />, label: 'Lifestyle', count: 12, color: CLEARA_COLORS.sage },
+    { icon: <Droplets size={24} />, label: 'Skincare', count: 8, color: CLEARA_COLORS.lavender },
+    { icon: <Heart size={24} />, label: 'Mental Health', count: 6, color: CLEARA_COLORS.blush },
+    { icon: <Activity size={24} />, label: 'Treatment', count: 10, color: CLEARA_COLORS.periwinkle },
+  ];
+
+  const articles = [
+    { title: 'Understanding PASI Scores', category: 'Treatment', time: '5 min read' },
+    { title: 'Stress and Your Skin', category: 'Mental Health', time: '4 min read' },
+    { title: 'Building a Skincare Routine', category: 'Skincare', time: '6 min read' },
+  ];
+
+  return (
+    <div style={{
+      padding: '0 20px 100px',
+      fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+    }}>
+      <button
+        onClick={() => onNavigate('home')}
+        style={{
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: 8,
+          marginLeft: -8,
+          marginBottom: 8,
+          color: CLEARA_COLORS.secondaryLabel,
+        }}
+      >
+        <ArrowLeft size={24} />
+      </button>
+
+      <h1 style={{
+        fontSize: 24,
+        fontWeight: 600,
+        color: CLEARA_COLORS.label,
+        marginBottom: 8,
+        fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+      }}>
+        Learn
+      </h1>
+      <p style={{
+        fontSize: 14,
+        color: CLEARA_COLORS.secondaryLabel,
+        marginBottom: 24,
+      }}>
+        Understand your condition better.
+      </p>
+
+      {/* Categories Grid */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        gap: 12,
+        marginBottom: 28,
+      }}>
+        {categories.map((cat, i) => (
+          <motion.div
+            key={i}
+            whileTap={{ scale: 0.98 }}
+            style={{
+              padding: 20,
+              backgroundColor: `${cat.color}10`,
+              borderRadius: 20,
+              border: `1px solid ${cat.color}20`,
+              cursor: 'pointer',
+            }}
+          >
+            <div style={{
+              width: 44,
+              height: 44,
+              borderRadius: 14,
+              backgroundColor: `${cat.color}20`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: cat.color,
+              marginBottom: 12,
+            }}>
+              {cat.icon}
+            </div>
+            <p style={{
+              fontSize: 15,
+              fontWeight: 600,
+              color: CLEARA_COLORS.label,
+              marginBottom: 2,
+            }}>
+              {cat.label}
+            </p>
+            <p style={{
+              fontSize: 12,
+              color: CLEARA_COLORS.tertiaryLabel,
+            }}>
+              {cat.count} articles
+            </p>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Recent Articles */}
+      <h3 style={{
+        fontSize: 13,
+        fontWeight: 600,
+        color: CLEARA_COLORS.secondaryLabel,
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
+        marginBottom: 12,
+      }}>
+        Recommended for You
+      </h3>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {articles.map((article, i) => (
+          <GlassCard key={i} padding={14}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div style={{
+                width: 56,
+                height: 56,
+                borderRadius: 12,
+                backgroundColor: CLEARA_COLORS.canvasSecondary,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+                <BookOpen size={22} color={CLEARA_COLORS.lavender} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <p style={{
+                  fontSize: 14,
+                  fontWeight: 500,
+                  color: CLEARA_COLORS.label,
+                  marginBottom: 4,
+                }}>
+                  {article.title}
+                </p>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <span style={{
+                    fontSize: 11,
+                    color: CLEARA_COLORS.lavender,
+                    fontWeight: 500,
+                  }}>
+                    {article.category}
+                  </span>
+                  <span style={{
+                    fontSize: 11,
+                    color: CLEARA_COLORS.tertiaryLabel,
+                  }}>
+                    {article.time}
+                  </span>
+                </div>
+              </div>
+              <ChevronRight size={18} color={CLEARA_COLORS.tertiaryLabel} />
+            </div>
+          </GlassCard>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// =============================================================================
+// MAIN COMPONENT
+// =============================================================================
+
+const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
+  controlledScreen,
+  controlledSubState,
+  scale = 1,
+  className = '',
+}) => {
+  // Screen state
+  const [internalScreen, setInternalScreen] = useState<Screen>('home');
+  const [internalSubState, setInternalSubState] = useState<SubState>(null);
+
+  // Data state
+  const [rituals, setRituals] = useState<Ritual[]>(INITIAL_RITUALS);
+  const [pasiLogs] = useState<PasiLog[]>(INITIAL_PASI_LOGS);
+
+  // Use controlled props if provided
+  const activeScreen = controlledScreen ?? internalScreen;
+  const activeSubState = controlledSubState ?? internalSubState;
+
+  const handleNavigate = (screen: Screen) => {
+    if (!controlledScreen) {
+      setInternalScreen(screen);
+      setInternalSubState(null);
+    }
+  };
+
+  const handleSetSubState = (state: SubState) => {
+    if (!controlledSubState) {
+      setInternalSubState(state);
+    }
+  };
+
+  const handleToggleRitual = (id: string) => {
+    setRituals(prev => prev.map(r =>
+      r.id === id ? { ...r, completed: !r.completed } : r
+    ));
+  };
+
+  const handleAddRitual = (title: string, category: 'morning' | 'evening') => {
+    const newRitual: Ritual = {
+      id: Date.now().toString(),
+      title,
+      category,
+      completed: false,
+    };
+    setRituals(prev => [...prev, newRitual]);
+  };
+
+  const renderScreen = () => {
+    switch (activeScreen) {
+      case 'home':
+        return (
+          <HomeScreen
+            onNavigate={handleNavigate}
+            rituals={rituals}
+            pasiLogs={pasiLogs}
+          />
+        );
+      case 'photo':
+        return (
+          <PhotoScreen
+            onNavigate={handleNavigate}
+            subState={activeSubState}
+            setSubState={handleSetSubState}
+          />
+        );
+      case 'rituals':
+        return (
+          <RitualsScreen
+            onNavigate={handleNavigate}
+            rituals={rituals}
+            onToggleRitual={handleToggleRitual}
+            onAddRitual={handleAddRitual}
+            subState={activeSubState}
+            setSubState={handleSetSubState}
+          />
+        );
+      case 'wellness':
+        return (
+          <WellnessScreen
+            onNavigate={handleNavigate}
+            subState={activeSubState}
+            setSubState={handleSetSubState}
+          />
+        );
+      case 'insights':
+        return (
+          <InsightsScreen
+            onNavigate={handleNavigate}
+            pasiLogs={pasiLogs}
+          />
+        );
+      case 'profile':
+        return (
+          <ProfileScreen
+            onNavigate={handleNavigate}
+          />
+        );
+      case 'pasi':
+        return (
+          <PASIScreen
+            onNavigate={handleNavigate}
+            pasiLogs={pasiLogs}
+          />
+        );
+      case 'journal':
+        return (
+          <JournalScreen
+            onNavigate={handleNavigate}
+          />
+        );
+      case 'flare':
+        return (
+          <FlareScreen
+            onNavigate={handleNavigate}
+          />
+        );
+      case 'learn':
+        return (
+          <LearnScreen
+            onNavigate={handleNavigate}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  // Check if we should hide the tab bar
+  const hideTabBar = activeScreen === 'wellness' ||
+    (activeScreen === 'photo' && (activeSubState === 'ghost' || activeSubState === 'result'));
+
+  return (
+    <div
+      className={className}
+      style={{
+        transform: `scale(${scale})`,
+        transformOrigin: 'center center',
+      }}
+    >
+      {/* iPhone 15 Pro Device Frame with Titanium Bezel */}
+      <div
+        style={{
+          position: 'relative',
+          width: 393 + TITANIUM_FRAME.bezelWidth * 2,  // iPhone 15 Pro viewport + bezel
+          height: 852 + TITANIUM_FRAME.bezelWidth * 2, // iPhone 15 Pro viewport + bezel
+          background: TITANIUM_FRAME.bezelGradient,
+          borderRadius: TITANIUM_FRAME.deviceRadius,
+          padding: TITANIUM_FRAME.bezelWidth,
+          boxShadow: TITANIUM_FRAME.deviceShadow,
+        }}
+      >
+        {/* Side Buttons */}
+        <SideButtons />
+
+        {/* Titanium Edge Highlight Overlay */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            borderRadius: TITANIUM_FRAME.deviceRadius,
+            boxShadow: TITANIUM_FRAME.bezelHighlight,
+            pointerEvents: 'none',
+            zIndex: 10,
+          }}
+        />
+
+        {/* Screen Container */}
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundColor: CLEARA_COLORS.canvas,
+            borderRadius: TITANIUM_FRAME.screenRadius,
+            overflow: 'hidden',
+            position: 'relative',
+            boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, 0.1)',
+          }}
+        >
+          {/* Dynamic Island */}
+          <DynamicIsland />
+
+          {/* Status Bar */}
+          <StatusBar />
+
+          {/* Screen Content */}
+          <div style={{
+            position: 'absolute',
+            top: 44,
+            left: 0,
+            right: 0,
+            bottom: hideTabBar ? 0 : 84,
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            WebkitOverflowScrolling: 'touch', // iOS momentum scrolling
+          }}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeScreen + (activeSubState || '')}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.2 }}
+                style={{ height: '100%' }}
+              >
+                {renderScreen()}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Tab Bar */}
+          {!hideTabBar && (
+            <TabBar
+              activeScreen={activeScreen}
+              onNavigate={handleNavigate}
+            />
+          )}
+
+          {/* Home Indicator */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 8,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: 134,
+              height: 5,
+              backgroundColor: CLEARA_COLORS.tertiaryLabel,
+              borderRadius: 3,
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ClearaPhoneMockup;
