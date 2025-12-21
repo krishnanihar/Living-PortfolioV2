@@ -314,15 +314,15 @@ export default function HeroParticleSystem({
           height: 100%;
           overflow: hidden;
           pointer-events: none;
-          z-index: 1;
+          z-index: 0;
         }
 
         .hero-stars-layer {
-          z-index: 2;
+          z-index: 1;
         }
 
         :global(.hero-gpgpu-layer) {
-          z-index: 3;
+          z-index: 2;
         }
       `}</style>
     </div>

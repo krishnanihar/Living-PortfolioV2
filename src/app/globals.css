@@ -551,6 +551,173 @@ button {
   box-shadow: 0 24px 64px rgba(42, 42, 42, 0.15), 0 8px 24px rgba(139, 157, 195, 0.10);
 }
 
+/* === OTHERLIFE CONCEPT - LIGHT MODE === */
+/* Inspired by otherlife.xyz - Shrinking hero + pinned work cards */
+
+.otherlife-light {
+  /* Canvas - Pure white */
+  --otherlife-canvas: #FFFFFF;
+  --otherlife-canvas-rgb: 255, 255, 255;
+
+  /* Primary Text - Forest green (from Otherlife) */
+  --otherlife-text-primary: #3E634F;
+  --otherlife-text-secondary: #5A7A68;
+  --otherlife-text-muted: #8A9E91;
+
+  /* Accent - Lime green */
+  --otherlife-accent: #33FF66;
+  --otherlife-accent-rgb: 51, 255, 102;
+  --otherlife-accent-dark: #2ACC55;
+
+  /* Surfaces */
+  --otherlife-surface-primary: rgba(62, 99, 79, 0.03);
+  --otherlife-surface-hover: rgba(62, 99, 79, 0.06);
+  --otherlife-surface-active: rgba(62, 99, 79, 0.10);
+
+  /* Borders */
+  --otherlife-border-primary: rgba(62, 99, 79, 0.08);
+  --otherlife-border-hover: rgba(62, 99, 79, 0.15);
+
+  /* Hero shrink effect */
+  --otherlife-hero-radius-max: 24px;
+  --otherlife-hero-padding-max: 42px;
+
+  /* Card accent colors (per project) */
+  --otherlife-card-1: #E8A87C; /* Warm coral */
+  --otherlife-card-2: #85A3B2; /* Steel blue */
+  --otherlife-card-3: #C5B4A0; /* Warm taupe */
+  --otherlife-card-4: #7B8B6F; /* Sage */
+  --otherlife-card-5: #B8A9C9; /* Soft purple */
+
+  /* Shadows */
+  --otherlife-shadow-sm: 0 2px 8px rgba(62, 99, 79, 0.08);
+  --otherlife-shadow-md: 0 4px 16px rgba(62, 99, 79, 0.10);
+  --otherlife-shadow-lg: 0 8px 32px rgba(62, 99, 79, 0.12);
+
+  /* Override base theme for concept page */
+  --bg-primary: var(--otherlife-canvas);
+  --text-primary: var(--otherlife-text-primary);
+  --text-secondary: var(--otherlife-text-secondary);
+  --surface-primary: var(--otherlife-surface-primary);
+  --border-primary: var(--otherlife-border-primary);
+}
+
+/* Otherlife typography utilities */
+.otherlife-light .otherlife-display {
+  font-family: var(--font-space-grotesk), 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--otherlife-text-primary);
+}
+
+.otherlife-light .otherlife-display em {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.otherlife-light .otherlife-heading {
+  font-family: var(--font-space-grotesk), 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.25rem, 2.5vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--otherlife-text-primary);
+}
+
+.otherlife-light .otherlife-body {
+  font-family: var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  line-height: 1.6;
+  color: var(--otherlife-text-secondary);
+}
+
+.otherlife-light .otherlife-label {
+  font-family: var(--font-space-grotesk), 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--otherlife-text-muted);
+}
+
+/* Otherlife button styles */
+.otherlife-light .otherlife-btn-primary {
+  background: var(--otherlife-accent);
+  color: var(--otherlife-text-primary);
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  font-family: var(--font-space-grotesk);
+  font-weight: 500;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.otherlife-light .otherlife-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--otherlife-shadow-md);
+}
+
+.otherlife-light .otherlife-btn-outline {
+  background: transparent;
+  color: var(--otherlife-text-primary);
+  border: 1px solid var(--otherlife-border-hover);
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  font-family: var(--font-space-grotesk);
+  font-weight: 500;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.otherlife-light .otherlife-btn-outline:hover {
+  background: var(--otherlife-surface-hover);
+  border-color: var(--otherlife-text-primary);
+}
+
+/* Otherlife hero container */
+.otherlife-hero-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.otherlife-hero-inner {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* GSAP handles padding and border-radius */
+}
+
+/* Otherlife work card base */
+.otherlife-work-card {
+  height: 100vh;
+  height: 100dvh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.otherlife-work-card-scrim {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+  pointer-events: none;
+}
+
 /* === BACKGROUND LAYERS === */
 
 
@@ -2703,4 +2870,28 @@ select {
   .milestone-card-pulse {
     animation: none !important;
   }
+}
+
+/* === 17. ATROPOS 3D PARALLAX - POINTER EVENTS FIX === */
+
+/* Fix pointer events for Atropos 3D parallax cards */
+.atropos-scale {
+  pointer-events: none !important;
+}
+
+.atropos-rotate {
+  pointer-events: all !important;
+}
+
+.atropos a,
+.atropos button,
+.atropos [role="button"] {
+  pointer-events: all !important;
+  position: relative;
+  z-index: 10;
+}
+
+/* Ensure Atropos inner content is interactive */
+.atropos-inner {
+  pointer-events: auto;
 }
