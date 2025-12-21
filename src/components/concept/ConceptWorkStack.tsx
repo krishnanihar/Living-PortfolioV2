@@ -63,46 +63,45 @@ export default function ConceptWorkStack() {
 
     const triggers: ScrollTrigger[] = [];
 
-    // Create two-phase animation for each card
+    // Bell curve with plateau: shrunk → expand → HOLD FULL → shrink
+    // Exit happens EARLY (0.5-0.65) so it's visible before next card covers it
     cards.forEach((card) => {
       const inner = card.querySelector('.work-placeholder-inner') as HTMLDivElement;
 
-      // Phase 1: ENTRY - Card scrolls into view, expands from shrunk to full
-      const entryTrigger = ScrollTrigger.create({
+      const trigger = ScrollTrigger.create({
         trigger: card,
-        start: 'top bottom', // When card top enters viewport bottom
-        end: 'top 20%', // Until card top is 20% from viewport top
+        start: 'top bottom', // When card enters viewport
+        end: 'bottom top', // When card leaves viewport
         scrub: 0.3,
         onUpdate: (self) => {
           const progress = self.progress;
-          const easedProgress = gsap.parseEase('power2.out')(progress);
 
-          if (inner) {
-            // Expand: 0.92 → 1.0 as card enters
-            const scale = 0.92 + easedProgress * 0.08;
-            const radius = 32 - easedProgress * 32;
-
-            inner.style.transform = `scale(${scale})`;
-            inner.style.borderRadius = `${radius}px`;
+          // Adjusted timing so exit happens before next card covers this one:
+          // 0-0.2: shrunk → full (entry)
+          // 0.2-0.5: hold at full (plateau)
+          // 0.5-0.65: full → shrunk (exit - happens BEFORE next card appears)
+          // 0.65-1.0: stays shrunk (already covered)
+          let animProgress: number;
+          if (progress < 0.2) {
+            // Entry: 0-0.2 maps to 1-0 (shrunk to full)
+            animProgress = 1 - (progress / 0.2);
+          } else if (progress >= 0.5 && progress <= 0.65) {
+            // Exit: 0.5-0.65 maps to 0-1 (full to shrunk)
+            animProgress = (progress - 0.5) / 0.15;
+          } else if (progress > 0.65) {
+            // After exit: stays shrunk
+            animProgress = 1;
+          } else {
+            // Plateau: 0.2-0.5 stays at 0 (full)
+            animProgress = 0;
           }
-        },
-      });
 
-      // Phase 2: PINNED + EXIT - Card is pinned, then shrinks on exit
-      const pinTrigger = ScrollTrigger.create({
-        trigger: card,
-        start: 'top top',
-        end: 'bottom 60%',
-        scrub: 0.5,
-        pin: true,
-        pinSpacing: true,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const easedProgress = gsap.parseEase('power2.out')(progress);
+          const easedProgress = gsap.parseEase('power2.out')(animProgress);
 
           if (inner) {
-            // Shrink: 1.0 → 0.92 as user scrolls past
-            const scale = 1.0 - easedProgress * 0.08;
+            // Scale: 0.92 ↔ 1.0
+            const scale = 1 - easedProgress * 0.08;
+            // Radius: 32 ↔ 0
             const radius = easedProgress * 32;
 
             inner.style.transform = `scale(${scale})`;
@@ -111,7 +110,7 @@ export default function ConceptWorkStack() {
         },
       });
 
-      triggers.push(entryTrigger, pinTrigger);
+      triggers.push(trigger);
     });
 
     return () => {
