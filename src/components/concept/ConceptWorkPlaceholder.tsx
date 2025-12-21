@@ -75,13 +75,13 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
         ref={ref}
         className="work-placeholder-wrapper"
         style={{
-          height: '120vh', // Extra height for dramatic spacing
+          height: '100dvh',
           position: 'relative',
           zIndex: 100,
           // Faded state transitions - smooth easing, no overshoot
           opacity: isActive ? 1 : 0.5,
           filter: isActive ? 'none' : 'saturate(0.8) brightness(0.9)',
-          transition: 'opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1), filter 1.4s cubic-bezier(0.22, 1, 0.36, 1)',
+          transition: 'opacity 1s cubic-bezier(0.22, 1, 0.36, 1), filter 1s cubic-bezier(0.22, 1, 0.36, 1)',
         }}
       >
         {/* Full-height container - controlled snap handles navigation */}

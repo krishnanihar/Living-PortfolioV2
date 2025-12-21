@@ -65,10 +65,9 @@ export default function ConceptWorkStack() {
   const lastScrollY = useRef(0); // Track scroll direction
 
   // Constants
-  const SCROLL_LOCKOUT = 1600; // Match slow dramatic transition
+  const SCROLL_LOCKOUT = 800; // 800ms balanced lockout
   const SWIPE_THRESHOLD = 50; // Minimum swipe distance
   const ENTRY_SNAP_THRESHOLD = 0.5; // Snap when 50% visible
-  const CARD_HEIGHT_MULTIPLIER = 1.2; // Cards are 120vh tall
   const cardCount = featuredProjects.length;
 
   // Callback ref to store card refs
@@ -118,19 +117,18 @@ export default function ConceptWorkStack() {
         // Navigate to next/previous card
         currentCardRef.current = nextCard;
         setActiveCardIndex(nextCard); // Update reactive state for UI
-        const cardHeight = vh * CARD_HEIGHT_MULTIPLIER;
-        const targetScroll = container.offsetTop + nextCard * cardHeight;
+        const targetScroll = container.offsetTop + nextCard * vh;
 
         lenis.scrollTo(targetScroll, {
           lock: true,
-          duration: 1.8, // Slow, dramatic transition
+          duration: 1.2,
           easing: premiumEaseOut,
         });
       } else if (direction === -1 && currentCardRef.current === 0) {
         // At first card, scrolling up - exit to previous section
-        const targetScroll = container.offsetTop - vh * CARD_HEIGHT_MULTIPLIER;
+        const targetScroll = container.offsetTop - vh;
         lenis.scrollTo(targetScroll, {
-          duration: 1.8,
+          duration: 1.2,
           easing: premiumEaseOut,
         });
       }
@@ -160,18 +158,17 @@ export default function ConceptWorkStack() {
       if (nextCard !== currentCardRef.current) {
         currentCardRef.current = nextCard;
         setActiveCardIndex(nextCard); // Update reactive state for UI
-        const cardHeight = vh * CARD_HEIGHT_MULTIPLIER;
-        const targetScroll = container.offsetTop + nextCard * cardHeight;
+        const targetScroll = container.offsetTop + nextCard * vh;
 
         lenis.scrollTo(targetScroll, {
           lock: true,
-          duration: 1.8, // Slow, dramatic transition
+          duration: 1.2,
           easing: premiumEaseOut,
         });
       } else if (direction === -1 && currentCardRef.current === 0) {
-        const targetScroll = container.offsetTop - vh * CARD_HEIGHT_MULTIPLIER;
+        const targetScroll = container.offsetTop - vh;
         lenis.scrollTo(targetScroll, {
-          duration: 1.8,
+          duration: 1.2,
           easing: premiumEaseOut,
         });
       }
@@ -199,11 +196,10 @@ export default function ConceptWorkStack() {
 
     const syncCardIndex = () => {
       const vh = window.innerHeight;
-      const cardHeight = vh * CARD_HEIGHT_MULTIPLIER;
       const scrollInSection = window.scrollY - container.offsetTop;
 
-      if (scrollInSection >= 0 && scrollInSection < cardCount * cardHeight) {
-        const cardIndex = Math.max(0, Math.min(cardCount - 1, Math.round(scrollInSection / cardHeight)));
+      if (scrollInSection >= 0 && scrollInSection < cardCount * vh) {
+        const cardIndex = Math.max(0, Math.min(cardCount - 1, Math.round(scrollInSection / vh)));
         if (cardIndex !== currentCardRef.current) {
           currentCardRef.current = cardIndex;
           setActiveCardIndex(cardIndex); // Update reactive state for UI
@@ -248,7 +244,7 @@ export default function ConceptWorkStack() {
 
         lenis.scrollTo(container.offsetTop, {
           lock: true,
-          duration: 1.8, // Slow, dramatic entry
+          duration: 1.2,
           easing: premiumEaseOut,
         });
       }
