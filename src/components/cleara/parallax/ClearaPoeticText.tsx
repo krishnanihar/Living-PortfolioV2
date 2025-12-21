@@ -11,12 +11,14 @@ export interface PoeticTextProps {
   size?: 'display' | 'heading' | 'body' | 'caption';
   className?: string;
   style?: React.CSSProperties;
-  staggerDelay?: number; // Delay between lines
+  persistAfterRange?: boolean; // If true, text stays visible after scrollRange ends
 }
 
 /**
  * Poetic text component with line-by-line reveal animation
  * Inspired by David Whyte's flowing text alongside watercolor fragments
+ *
+ * Pure scroll-driven animation - each line appears sequentially as you scroll
  */
 export function ClearaPoeticText({
   lines,
@@ -26,41 +28,61 @@ export function ClearaPoeticText({
   size = 'body',
   className,
   style,
-  staggerDelay = 0.15,
+  persistAfterRange = false,
 }: PoeticTextProps) {
-  // Calculate which lines should be visible
-  const { visibleLines, lineOpacities } = useMemo(() => {
+  // Calculate animation progress for each line
+  const lineAnimations = useMemo(() => {
     const [start, end] = scrollRange;
     const range = end - start;
+
+    // Each line gets an equal portion of the scroll range
     const perLineRange = range / lines.length;
+    // Add overlap so lines fade in smoothly before previous line is fully done
+    const fadeInDuration = perLineRange * 0.6;
+    // Fade out duration is proportional to the range (not a fixed value)
+    const fadeOutDuration = range * 0.5;
 
-    const visibleLines: number[] = [];
-    const lineOpacities: number[] = [];
+    return lines.map((_, index) => {
+      // Stagger: each line starts slightly after the previous
+      const lineStart = start + index * perLineRange * 0.7;
+      const linePeak = lineStart + fadeInDuration;
+      const sectionEnd = end;
+      const lineEnd = sectionEnd + fadeOutDuration;
 
-    lines.forEach((_, index) => {
-      const lineStart = start + index * perLineRange;
-      const lineEnd = lineStart + perLineRange * 1.5; // Overlap for smooth reveal
+      let opacity = 0;
+      let progress = 0; // 0 = hidden, 1 = fully visible
 
-      if (scrollProgress >= lineStart - 0.02) {
-        visibleLines.push(index);
-
-        // Calculate opacity based on position in range
-        if (scrollProgress < lineStart) {
-          lineOpacities.push((scrollProgress - (lineStart - 0.02)) / 0.02);
-        } else if (scrollProgress > lineEnd) {
-          // Fade out gradually after section (0.25 = 25% of scroll for slower fade)
-          const fadeProgress = (scrollProgress - lineEnd) / 0.25;
-          lineOpacities.push(Math.max(0, 1 - fadeProgress));
-        } else {
-          lineOpacities.push(1);
-        }
+      if (scrollProgress < lineStart) {
+        // Before this line should appear
+        opacity = 0;
+        progress = 0;
+      } else if (scrollProgress < linePeak) {
+        // Fading in
+        progress = (scrollProgress - lineStart) / fadeInDuration;
+        opacity = progress;
+      } else if (scrollProgress <= sectionEnd || persistAfterRange) {
+        // Fully visible (within range or persisting)
+        opacity = 1;
+        progress = 1;
+      } else if (scrollProgress < lineEnd) {
+        // Fading out (only if not persisting)
+        const fadeProgress = (scrollProgress - sectionEnd) / fadeOutDuration;
+        opacity = Math.max(0, 1 - fadeProgress);
+        progress = 1 - fadeProgress;
       } else {
-        lineOpacities.push(0);
+        // Fully hidden
+        opacity = 0;
+        progress = 0;
       }
-    });
 
-    return { visibleLines, lineOpacities };
-  }, [scrollProgress, scrollRange, lines.length]);
+      return {
+        opacity: Math.max(0, Math.min(1, opacity)),
+        // Smooth y and blur transitions based on progress
+        y: 20 * (1 - Math.min(1, progress * 1.5)), // Reaches 0 at ~67% progress
+        blur: 4 * (1 - Math.min(1, progress * 2)), // Clears at ~50% progress
+      };
+    });
+  }, [scrollProgress, scrollRange, lines.length, persistAfterRange]);
 
   // Typography styles based on size
   const sizeStyles: Record<string, React.CSSProperties> = {
@@ -109,28 +131,30 @@ export function ClearaPoeticText({
         ...style,
       }}
     >
-      {lines.map((line, index) => (
-        <motion.div
-          key={`${line}-${index}`}
-          initial={{ opacity: 0, y: 20, filter: 'blur(4px)' }}
-          animate={{
-            opacity: lineOpacities[index] ?? 0,
-            y: (lineOpacities[index] ?? 0) > 0.5 ? 0 : 20,
-            filter: (lineOpacities[index] ?? 0) > 0.5 ? 'blur(0px)' : 'blur(4px)',
-          }}
-          transition={{
-            duration: 0.8,
-            ease: [0.16, 1, 0.3, 1],
-            delay: index * staggerDelay,
-          }}
-          style={{
-            ...sizeStyles[size],
-            marginBottom: size === 'display' || size === 'heading' ? '0.5em' : '0.75em',
-          }}
-        >
-          {line}
-        </motion.div>
-      ))}
+      {lines.map((line, index) => {
+        const anim = lineAnimations[index];
+        return (
+          <motion.div
+            key={`${line}-${index}`}
+            animate={{
+              opacity: anim.opacity,
+              y: anim.y,
+              filter: `blur(${anim.blur}px)`,
+            }}
+            transition={{
+              duration: 0.15, // Quick response to scroll
+              ease: 'easeOut',
+            }}
+            style={{
+              ...sizeStyles[size],
+              marginBottom: size === 'display' || size === 'heading' ? '0.5em' : '0.75em',
+              willChange: 'opacity, transform, filter',
+            }}
+          >
+            {line}
+          </motion.div>
+        );
+      })}
     </div>
   );
 }

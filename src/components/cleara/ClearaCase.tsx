@@ -1498,7 +1498,6 @@ export function ClearaCase() {
               scrollRange={[0.43, 0.48]}
               size="heading"
               align="center"
-              staggerDelay={0.18}
             />
           </div>
         </section>
@@ -2452,7 +2451,6 @@ export function ClearaCase() {
               scrollRange={[0.84, 0.94]}
               size="heading"
               align="center"
-              staggerDelay={0.22}
             />
 
             <motion.div
