@@ -1216,64 +1216,6 @@ export function ClearaCase() {
                 </motion.div>
               ))}
             </div>
-
-            {/* Interactive Phone Mockup */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              style={{
-                marginTop: '5rem',
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <div
-                style={{
-                  position: 'relative',
-                  padding: '2rem',
-                }}
-              >
-                {/* Watercolor glow behind phone */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: '120%',
-                    height: '120%',
-                    background: `radial-gradient(ellipse at center,
-                      rgba(139, 157, 195, 0.15) 0%,
-                      rgba(184, 197, 226, 0.1) 30%,
-                      transparent 70%
-                    )`,
-                    filter: 'blur(40px)',
-                    pointerEvents: 'none',
-                    zIndex: -1,
-                  }}
-                />
-                <ClearaPhoneMockup scale={0.85} />
-              </div>
-            </motion.div>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="cleara-body"
-              style={{
-                textAlign: 'center',
-                fontSize: '0.9rem',
-                color: 'var(--cleara-text-secondary, #4A4A4A)',
-                marginTop: '2rem',
-                fontStyle: 'italic',
-              }}
-            >
-              Tap to explore the interactive prototype
-            </motion.p>
           </div>
         </section>
 
@@ -2054,6 +1996,64 @@ export function ClearaCase() {
                 </span>
               </div>
             </motion.div>
+
+            {/* Interactive Phone Mockup */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              style={{
+                marginTop: '4rem',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <div
+                style={{
+                  position: 'relative',
+                  padding: '2rem',
+                }}
+              >
+                {/* Watercolor glow behind phone */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: '120%',
+                    height: '120%',
+                    background: `radial-gradient(ellipse at center,
+                      rgba(139, 157, 195, 0.15) 0%,
+                      rgba(184, 197, 226, 0.1) 30%,
+                      transparent 70%
+                    )`,
+                    filter: 'blur(40px)',
+                    pointerEvents: 'none',
+                    zIndex: -1,
+                  }}
+                />
+                <ClearaPhoneMockup scale={0.85} />
+              </div>
+            </motion.div>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="cleara-body"
+              style={{
+                textAlign: 'center',
+                fontSize: '0.9rem',
+                color: 'var(--cleara-text-secondary, #4A4A4A)',
+                marginTop: '2rem',
+                fontStyle: 'italic',
+              }}
+            >
+              Tap to explore the interactive prototype
+            </motion.p>
           </div>
         </section>
 
