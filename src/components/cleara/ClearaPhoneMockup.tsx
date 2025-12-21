@@ -543,16 +543,20 @@ const INITIAL_PASI_LOGS: PasiLog[] = [
 ];
 
 const WELLNESS_QUESTIONS = [
-  "Have you felt tired or low on energy?",
-  "Have you felt little interest in doing things?",
-  "Have you felt down, depressed, or hopeless?"
+  { question: "Have you felt tired or low on energy?", category: 'energy' },
+  { question: "Have you felt little interest in doing things?", category: 'motivation' },
+  { question: "Have you felt down, depressed, or hopeless?", category: 'mood' },
+  { question: "Have you had trouble sleeping?", category: 'sleep' },
+  { question: "Have you felt stressed or overwhelmed?", category: 'stress' },
 ];
 
-const WELLNESS_OPTIONS = [
-  "Not really",
-  "Sometimes",
-  "Often",
-  "Most days"
+// 5-point Likert scale with labels and colors
+const LIKERT_SCALE = [
+  { value: 1, label: 'Not at all', color: CLEARA_COLORS.sage },
+  { value: 2, label: 'Rarely', color: '#A8C5B5' },
+  { value: 3, label: 'Sometimes', color: CLEARA_COLORS.lavender },
+  { value: 4, label: 'Often', color: '#C4A5B8' },
+  { value: 5, label: 'Very often', color: CLEARA_COLORS.blush },
 ];
 
 const DAILY_INSPIRATIONS = [
@@ -2700,19 +2704,42 @@ interface WellnessScreenProps {
 }
 
 const WellnessScreen: React.FC<WellnessScreenProps> = ({ onNavigate, subState, setSubState }) => {
-  const [step, setStep] = useState(0); // 0 = intro, 1-3 = questions, 4 = result
+  const [step, setStep] = useState(0); // 0 = intro, 1-5 = questions, 6 = result
   const [answers, setAnswers] = useState<number[]>([]);
+  const [currentValue, setCurrentValue] = useState(3); // Default to middle of scale
   const [aiAdvice, setAiAdvice] = useState<string | null>(null);
   const [loadingAi, setLoadingAi] = useState(false);
+  const [showScoreAnimation, setShowScoreAnimation] = useState(false);
 
-  const handleAnswer = (val: number) => {
-    const newAnswers = [...answers, val];
+  const handleAnswer = () => {
+    haptic.selection();
+    const newAnswers = [...answers, currentValue];
     setAnswers(newAnswers);
+    setCurrentValue(3); // Reset to middle
+
     if (step < WELLNESS_QUESTIONS.length) {
       setStep(prev => prev + 1);
     } else {
-      setStep(4);
+      setStep(WELLNESS_QUESTIONS.length + 1);
+      // Trigger score animation after a delay
+      setTimeout(() => setShowScoreAnimation(true), 500);
     }
+  };
+
+  // Calculate wellness score (lower is better, 5-25 scale converted to 0-100 where 100 is best)
+  const calculateScore = () => {
+    if (answers.length === 0) return 100;
+    const total = answers.reduce((sum, a) => sum + a, 0);
+    const maxPossible = WELLNESS_QUESTIONS.length * 5;
+    return Math.round((1 - (total - WELLNESS_QUESTIONS.length) / (maxPossible - WELLNESS_QUESTIONS.length)) * 100);
+  };
+
+  const getScoreLabel = (score: number) => {
+    if (score >= 80) return { label: 'Thriving', color: CLEARA_COLORS.sage };
+    if (score >= 60) return { label: 'Doing Well', color: '#A8C5B5' };
+    if (score >= 40) return { label: 'Managing', color: CLEARA_COLORS.lavender };
+    if (score >= 20) return { label: 'Struggling', color: '#C4A5B8' };
+    return { label: 'Needs Support', color: CLEARA_COLORS.blush };
   };
 
   const getAiGuidance = async () => {
@@ -2827,39 +2854,83 @@ const WellnessScreen: React.FC<WellnessScreenProps> = ({ onNavigate, subState, s
   }
 
   // Result screen
-  if (step === 4) {
+  if (step === WELLNESS_QUESTIONS.length + 1) {
+    const score = calculateScore();
+    const { label: scoreLabel, color: scoreColor } = getScoreLabel(score);
+
     return (
       <div style={{
         padding: '0 20px 100px',
         fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
       }}>
+        {/* Animated Score Circle */}
         <div style={{
-          width: '100%',
-          height: 140,
-          borderRadius: 24,
-          overflow: 'hidden',
+          display: 'flex',
+          justifyContent: 'center',
           marginBottom: 24,
-          position: 'relative',
+          marginTop: 20,
         }}>
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: `linear-gradient(135deg, ${CLEARA_COLORS.lavender} 0%, ${CLEARA_COLORS.periwinkle} 100%)`,
-          }} />
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(to top, rgba(250,248,245,0.9) 0%, transparent 100%)',
-          }} />
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            style={{
+              width: 160,
+              height: 160,
+              borderRadius: 80,
+              background: `conic-gradient(${scoreColor} ${score}%, ${CLEARA_COLORS.canvasSecondary} ${score}%)`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: `0 8px 32px ${scoreColor}30`,
+            }}
+          >
+            <div style={{
+              width: 130,
+              height: 130,
+              borderRadius: 65,
+              backgroundColor: CLEARA_COLORS.canvas,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <motion.span
+                initial={{ opacity: 0, y: 10 }}
+                animate={showScoreAnimation ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.3 }}
+                style={{
+                  fontSize: 36,
+                  fontWeight: 700,
+                  color: scoreColor,
+                }}
+              >
+                {score}
+              </motion.span>
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={showScoreAnimation ? { opacity: 1 } : {}}
+                transition={{ delay: 0.5 }}
+                style={{
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: CLEARA_COLORS.secondaryLabel,
+                }}
+              >
+                {scoreLabel}
+              </motion.span>
+            </div>
+          </motion.div>
         </div>
 
         <p style={{
           fontSize: 11,
           fontWeight: 700,
-          color: CLEARA_COLORS.blush,
+          color: scoreColor,
           textTransform: 'uppercase',
           letterSpacing: 1,
           marginBottom: 8,
+          textAlign: 'center',
         }}>
           Reflection
         </p>
@@ -3035,7 +3106,10 @@ const WellnessScreen: React.FC<WellnessScreenProps> = ({ onNavigate, subState, s
     );
   }
 
-  // Question screens
+  // Question screens with Likert scale
+  const currentQuestion = WELLNESS_QUESTIONS[step - 1];
+  const currentLikert = LIKERT_SCALE.find(l => l.value === currentValue) || LIKERT_SCALE[2];
+
   return (
     <div style={{
       padding: '0 20px',
@@ -3044,11 +3118,12 @@ const WellnessScreen: React.FC<WellnessScreenProps> = ({ onNavigate, subState, s
       flexDirection: 'column',
       fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
     }}>
+      {/* Header with back button and progress */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 32,
+        marginBottom: 16,
         color: CLEARA_COLORS.tertiaryLabel,
       }}>
         <button
@@ -3068,51 +3143,165 @@ const WellnessScreen: React.FC<WellnessScreenProps> = ({ onNavigate, subState, s
         </span>
       </div>
 
-      <div style={{ flex: 1 }}>
-        <h2 style={{
-          fontSize: 24,
-          fontWeight: 600,
-          color: CLEARA_COLORS.label,
-          marginBottom: 8,
-          lineHeight: 1.3,
-          fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
-        }}>
-          Over the last two weeks, have you felt...
-        </h2>
-        <p style={{
-          fontSize: 20,
-          color: CLEARA_COLORS.lavender,
-          fontFamily: 'Georgia, serif',
-          fontStyle: 'italic',
-          marginBottom: 32,
-        }}>
-          &ldquo;{WELLNESS_QUESTIONS[step - 1]}&rdquo;
-        </p>
+      {/* Progress bar */}
+      <div style={{
+        width: '100%',
+        height: 4,
+        backgroundColor: CLEARA_COLORS.canvasSecondary,
+        borderRadius: 2,
+        marginBottom: 32,
+        overflow: 'hidden',
+      }}>
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: `${(step / WELLNESS_QUESTIONS.length) * 100}%` }}
+          transition={{ duration: 0.3 }}
+          style={{
+            height: '100%',
+            backgroundColor: CLEARA_COLORS.lavender,
+            borderRadius: 2,
+          }}
+        />
+      </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {WELLNESS_OPTIONS.map((option, idx) => (
-            <motion.button
-              key={idx}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => handleAnswer(idx)}
+      <div style={{ flex: 1 }}>
+        <motion.div
+          key={step}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <h2 style={{
+            fontSize: 22,
+            fontWeight: 600,
+            color: CLEARA_COLORS.label,
+            marginBottom: 8,
+            lineHeight: 1.3,
+            fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+          }}>
+            Over the last two weeks...
+          </h2>
+          <p style={{
+            fontSize: 18,
+            color: CLEARA_COLORS.lavender,
+            fontFamily: 'Georgia, serif',
+            fontStyle: 'italic',
+            marginBottom: 40,
+          }}>
+            &ldquo;{currentQuestion.question}&rdquo;
+          </p>
+        </motion.div>
+
+        {/* Likert Scale Selector */}
+        <GlassCard style={{ marginBottom: 24 }}>
+          {/* Current selection display */}
+          <div style={{
+            textAlign: 'center',
+            marginBottom: 24,
+          }}>
+            <motion.span
+              key={currentValue}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
               style={{
-                width: '100%',
-                padding: 20,
-                textAlign: 'left',
-                backgroundColor: CLEARA_COLORS.glassPrimary,
-                backdropFilter: 'blur(8px)',
-                border: `1px solid ${CLEARA_BORDERS.light}`,
-                borderRadius: 20,
-                color: CLEARA_COLORS.label,
-                fontSize: 16,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
+                fontSize: 20,
+                fontWeight: 600,
+                color: currentLikert.color,
               }}
             >
-              {option}
-            </motion.button>
-          ))}
-        </div>
+              {currentLikert.label}
+            </motion.span>
+          </div>
+
+          {/* Slider track with dots */}
+          <div style={{ position: 'relative', padding: '0 8px' }}>
+            {/* Track background */}
+            <div style={{
+              height: 8,
+              backgroundColor: CLEARA_COLORS.canvasSecondary,
+              borderRadius: 4,
+              position: 'relative',
+            }}>
+              {/* Active portion */}
+              <motion.div
+                animate={{ width: `${((currentValue - 1) / 4) * 100}%` }}
+                transition={{ duration: 0.2 }}
+                style={{
+                  height: '100%',
+                  backgroundColor: currentLikert.color,
+                  borderRadius: 4,
+                }}
+              />
+            </div>
+
+            {/* Dots */}
+            <div style={{
+              position: 'absolute',
+              top: -4,
+              left: 8,
+              right: 8,
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}>
+              {LIKERT_SCALE.map((option) => (
+                <motion.button
+                  key={option.value}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => {
+                    haptic.light();
+                    setCurrentValue(option.value);
+                  }}
+                  style={{
+                    width: currentValue === option.value ? 24 : 16,
+                    height: currentValue === option.value ? 24 : 16,
+                    borderRadius: '50%',
+                    backgroundColor: currentValue >= option.value ? option.color : CLEARA_COLORS.canvasSecondary,
+                    border: currentValue === option.value ? `3px solid ${option.color}` : 'none',
+                    boxShadow: currentValue === option.value ? `0 2px 8px ${option.color}40` : 'none',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    marginTop: currentValue === option.value ? -4 : 0,
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Labels */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginTop: 16,
+          }}>
+            <span style={{ fontSize: 11, color: CLEARA_COLORS.tertiaryLabel }}>Not at all</span>
+            <span style={{ fontSize: 11, color: CLEARA_COLORS.tertiaryLabel }}>Very often</span>
+          </div>
+        </GlassCard>
+
+        {/* Continue button */}
+        <motion.button
+          whileTap={{ scale: 0.98 }}
+          onClick={handleAnswer}
+          style={{
+            width: '100%',
+            padding: 18,
+            backgroundColor: CLEARA_COLORS.lavender,
+            border: 'none',
+            borderRadius: 16,
+            color: 'white',
+            fontSize: 16,
+            fontWeight: 600,
+            cursor: 'pointer',
+            boxShadow: `0 4px 16px ${CLEARA_COLORS.lavender}30`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+          }}
+        >
+          {step === WELLNESS_QUESTIONS.length ? 'See Results' : 'Continue'}
+          <ChevronRight size={18} />
+        </motion.button>
       </div>
     </div>
   );
