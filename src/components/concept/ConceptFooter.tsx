@@ -83,13 +83,14 @@ export default function ConceptFooter() {
         style={{
           position: 'relative',
           zIndex: 30,
-          minHeight: '100vh',
+          minHeight: '140vh', // Extra scroll room before fade triggers
           background: 'var(--glass-03)',
           backdropFilter: mounted ? 'blur(60px) saturate(180%)' : 'none',
           WebkitBackdropFilter: mounted ? 'blur(60px) saturate(180%)' : 'none',
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-start', // Content at top, empty space at bottom for scroll
           justifyContent: 'center',
+          paddingTop: 'clamp(6rem, 15vh, 12rem)', // Push content down from very top
         }}
       >
         {/* Gradient overlay for depth */}
@@ -121,7 +122,7 @@ export default function ConceptFooter() {
             width: '100%',
             maxWidth: '800px',
             margin: '0 auto',
-            padding: 'clamp(3rem, 6vh, 5rem) clamp(1.5rem, 4vw, 3rem)',
+            padding: 'clamp(3rem, 6vh, 5rem) clamp(1.5rem, 4vw, 3rem) clamp(8rem, 20vh, 15rem)',
             textAlign: 'center',
           }}
         >
