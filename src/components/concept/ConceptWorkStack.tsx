@@ -65,7 +65,7 @@ export default function ConceptWorkStack() {
   const lastScrollY = useRef(0); // Track scroll direction
 
   // Constants
-  const SCROLL_LOCKOUT = 1800; // Slow dramatic transitions
+  const SCROLL_LOCKOUT = 900; // Snappy but still smooth
   const SWIPE_THRESHOLD = 50; // Minimum swipe distance
   const ENTRY_SNAP_THRESHOLD = 0.5; // Snap when 50% visible
   const cardCount = featuredProjects.length;
@@ -121,14 +121,14 @@ export default function ConceptWorkStack() {
 
         lenis.scrollTo(targetScroll, {
           lock: true,
-          duration: 2.0, // Slow, dramatic
+          duration: 1.0, // Snappy, smooth
           easing: premiumEaseOut,
         });
       } else if (direction === -1 && currentCardRef.current === 0) {
         // At first card, scrolling up - exit to previous section
         const targetScroll = container.offsetTop - vh;
         lenis.scrollTo(targetScroll, {
-          duration: 2.0, // Slow, dramatic
+          duration: 1.0, // Snappy, smooth
           easing: premiumEaseOut,
         });
       }
@@ -162,13 +162,13 @@ export default function ConceptWorkStack() {
 
         lenis.scrollTo(targetScroll, {
           lock: true,
-          duration: 2.0, // Slow, dramatic
+          duration: 1.0, // Snappy, smooth
           easing: premiumEaseOut,
         });
       } else if (direction === -1 && currentCardRef.current === 0) {
         const targetScroll = container.offsetTop - vh;
         lenis.scrollTo(targetScroll, {
-          duration: 2.0, // Slow, dramatic
+          duration: 1.0, // Snappy, smooth
           easing: premiumEaseOut,
         });
       }
@@ -244,7 +244,7 @@ export default function ConceptWorkStack() {
 
         lenis.scrollTo(container.offsetTop, {
           lock: true,
-          duration: 2.0, // Slow, dramatic
+          duration: 1.0, // Snappy, smooth
           easing: premiumEaseOut,
         });
       }
