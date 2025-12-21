@@ -61,10 +61,13 @@ export default function ConceptWorkStack() {
   const currentCardRef = useRef(0);
   const lastScrollTriggerRef = useRef(0);
   const touchStartRef = useRef(0);
+  const hasSnappedToSection = useRef(false); // Track if we've auto-snapped into section
+  const lastScrollY = useRef(0); // Track scroll direction
 
   // Constants
   const SCROLL_LOCKOUT = 1200; // 1.2s lockout (matches home page)
   const SWIPE_THRESHOLD = 50; // Minimum swipe distance
+  const ENTRY_SNAP_THRESHOLD = 0.8; // Snap when 80% visible
   const cardCount = featuredProjects.length;
 
   // Callback ref to store card refs
@@ -118,21 +121,21 @@ export default function ConceptWorkStack() {
 
         lenis.scrollTo(targetScroll, {
           lock: true,
-          duration: 0.7,
+          duration: 1.2,
           easing: premiumEaseOut,
         });
       } else if (direction === -1 && currentCardRef.current === 0) {
         // At first card, scrolling up - exit to previous section
         const targetScroll = container.offsetTop - vh;
         lenis.scrollTo(targetScroll, {
-          duration: 0.7,
+          duration: 1.2,
           easing: premiumEaseOut,
         });
       } else if (direction === 1 && currentCardRef.current === cardCount - 1) {
         // At last card, scrolling down - exit to next section
         const targetScroll = container.offsetTop + cardCount * vh;
         lenis.scrollTo(targetScroll, {
-          duration: 0.7,
+          duration: 1.2,
           easing: premiumEaseOut,
         });
       }
@@ -164,19 +167,19 @@ export default function ConceptWorkStack() {
 
         lenis.scrollTo(targetScroll, {
           lock: true,
-          duration: 0.7,
+          duration: 1.2,
           easing: premiumEaseOut,
         });
       } else if (direction === -1 && currentCardRef.current === 0) {
         const targetScroll = container.offsetTop - vh;
         lenis.scrollTo(targetScroll, {
-          duration: 0.7,
+          duration: 1.2,
           easing: premiumEaseOut,
         });
       } else if (direction === 1 && currentCardRef.current === cardCount - 1) {
         const targetScroll = container.offsetTop + cardCount * vh;
         lenis.scrollTo(targetScroll, {
-          duration: 0.7,
+          duration: 1.2,
           easing: premiumEaseOut,
         });
       }
@@ -217,7 +220,56 @@ export default function ConceptWorkStack() {
     return () => lenis.off('scroll', syncCardIndex);
   }, [lenis, cardCount]);
 
-  // Scale animation - exit only (like hero section)
+  // Auto-snap when work section enters viewport at 10%
+  // Creates elegant "magnetic pull" into the first work card (only when scrolling DOWN)
+  useEffect(() => {
+    if (!lenis) return;
+    const container = containerRef.current;
+    if (!container) return;
+
+    const checkEntrySnap = () => {
+      const vh = window.innerHeight;
+      const rect = container.getBoundingClientRect();
+      const currentScrollY = window.scrollY;
+
+      // Detect scroll direction
+      const isScrollingDown = currentScrollY > lastScrollY.current;
+      lastScrollY.current = currentScrollY;
+
+      // Calculate how much of the section is visible (0 to 1)
+      const visibleFromBottom = (vh - rect.top) / vh;
+
+      // Check if section is entering from bottom (scrolling down)
+      const isEnteringFromBottom = rect.top > 0 && rect.top < vh;
+
+      // Snap when 10% visible, scrolling DOWN, and we haven't snapped yet
+      if (isEnteringFromBottom && isScrollingDown && visibleFromBottom >= ENTRY_SNAP_THRESHOLD && !hasSnappedToSection.current) {
+        hasSnappedToSection.current = true;
+        lastScrollTriggerRef.current = Date.now();
+
+        // Snap to first card
+        currentCardRef.current = 0;
+        setActiveCardIndex(0);
+
+        lenis.scrollTo(container.offsetTop, {
+          lock: true,
+          duration: 1.2,
+          easing: premiumEaseOut,
+        });
+      }
+
+      // Reset snap flag when scrolled well above the section (to allow re-entry)
+      if (rect.top > vh * 0.5) {
+        hasSnappedToSection.current = false;
+      }
+    };
+
+    lenis.on('scroll', checkEntrySnap);
+    return () => lenis.off('scroll', checkEntrySnap);
+  }, [lenis]);
+
+  // Scale animation - bidirectional: expand on entry, shrink on exit
+  // Creates symmetric animation: shrunk → full → shrunk
   useLayoutEffect(() => {
     const cards = cardRefs.current.filter(
       (card): card is HTMLDivElement => card !== null
@@ -233,16 +285,38 @@ export default function ConceptWorkStack() {
 
       const trigger = ScrollTrigger.create({
         trigger: card,
-        start: 'top top', // Animation starts when card is at top
-        end: 'bottom 60%', // Matches hero section
-        scrub: 0.5,
+        start: 'top bottom', // Start when card enters viewport from bottom
+        end: 'bottom top', // End when card exits viewport from top
+        scrub: 0.1, // Lower scrub for faster response to snap scroll
         onUpdate: (self) => {
           const progress = self.progress;
-          const easedProgress = gsap.parseEase('power2.out')(progress);
 
-          // Scale: 1.0 → 0.92 (shrink only on exit)
+          // Bell curve animation:
+          // 0.0 - 0.2: Entry (shrunk → full) - card entering from bottom
+          // 0.2 - 0.5: Hold at full (plateau)
+          // 0.5 - 0.7: Exit (full → shrunk) - card exiting from top
+          // 0.7 - 1.0: Stay shrunk (card off screen)
+          let animProgress: number;
+
+          if (progress < 0.2) {
+            // Entry: shrunk → full (1 → 0)
+            animProgress = 1 - (progress / 0.2);
+          } else if (progress >= 0.5 && progress <= 0.7) {
+            // Exit: full → shrunk (0 → 1)
+            animProgress = (progress - 0.5) / 0.2;
+          } else if (progress > 0.7) {
+            // After exit: stays shrunk
+            animProgress = 1;
+          } else {
+            // Plateau: 0.2-0.5 stays at full (0)
+            animProgress = 0;
+          }
+
+          const easedProgress = gsap.parseEase('power2.out')(animProgress);
+
+          // Scale: 0.92 ↔ 1.0
           const scale = 1 - easedProgress * 0.08;
-          // Radius: 0 → 32 (round only on exit)
+          // Radius: 32 ↔ 0
           const radius = easedProgress * 32;
 
           inner.style.transform = `scale(${scale})`;
