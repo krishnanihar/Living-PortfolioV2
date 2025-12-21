@@ -224,7 +224,7 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
                     </>
                   ) : project.id === 'cleara' ? (
                     <>
-                      {/* LAYER 1: Background - Watercolor Fragment */}
+                      {/* LAYER 1: Background */}
                       <div
                         data-atropos-offset="-10"
                         style={{
@@ -236,7 +236,7 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
                         }}
                       >
                         <Image
-                          src="/images/cleara/watercolor/impact-bloom.png"
+                          src="/images/cleara/cleara_bg.png"
                           alt=""
                           fill
                           style={{
@@ -249,7 +249,7 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
                         />
                       </div>
 
-                      {/* LAYER 2: Phone Mockup - Center */}
+                      {/* LAYER 2: Features - Middle */}
                       <div
                         data-atropos-offset="0"
                         style={{
@@ -260,13 +260,37 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
                         }}
                       >
                         <Image
-                          src="/images/cleara/watercolor/phone-backdrop.png"
-                          alt="Cleara App"
+                          src="/images/cleara/cleara_features.png"
+                          alt="Cleara Features"
                           fill
                           style={{
                             objectFit: 'contain',
                             objectPosition: 'center',
                             transform: 'scale(0.9)',
+                          }}
+                          quality={95}
+                          priority
+                        />
+                      </div>
+
+                      {/* LAYER 3: Phone - Foreground */}
+                      <div
+                        data-atropos-offset="5"
+                        style={{
+                          position: 'absolute',
+                          inset: '-10%',
+                          zIndex: 3,
+                          overflow: 'hidden',
+                        }}
+                      >
+                        <Image
+                          src="/images/cleara/cleara_phone.png"
+                          alt="Cleara App"
+                          fill
+                          style={{
+                            objectFit: 'contain',
+                            objectPosition: 'center',
+                            transform: 'scale(0.75)',
                           }}
                           quality={95}
                           priority
