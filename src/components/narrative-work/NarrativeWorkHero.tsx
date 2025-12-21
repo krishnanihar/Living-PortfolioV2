@@ -89,129 +89,103 @@ export function NarrativeWorkHero() {
           <motion.p
             style={{
               fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
-              fontWeight: '300',
-              letterSpacing: '0.2em',
+              fontWeight: '400',
+              letterSpacing: '0.15em',
               textTransform: 'uppercase',
-              color: 'var(--text-60)',
-              marginBottom: '2rem',
+              color: 'var(--text-50)',
+              marginBottom: '1rem',
+              fontFamily: 'var(--font-space-grotesk)',
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
           >
-            A Design Journey
+            Selected Work
           </motion.p>
 
           {/* Main title */}
           <h1
             style={{
-              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-              fontWeight: '100',
-              lineHeight: '1.15',
+              fontSize: 'clamp(2rem, 4.5vw, 3.5rem)',
+              fontWeight: '200',
+              lineHeight: '1.3',
               letterSpacing: '0.02em',
-              marginBottom: '2.5rem',
-              background: 'linear-gradient(135deg, var(--text-95) 0%, var(--text-70) 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
+              marginBottom: '1rem',
+              color: 'var(--text-95)',
+              fontFamily: 'var(--font-space-grotesk)',
             }}
           >
-            From Consciousness
-            <br />
-            to Systems
+            Explore My Work
           </h1>
 
           {/* Subtitle */}
           <motion.p
             style={{
-              fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+              fontSize: 'clamp(0.9375rem, 1.75vw, 1.125rem)',
               fontWeight: '300',
-              color: 'var(--text-70)',
+              color: 'var(--text-60)',
               maxWidth: '42rem',
               marginLeft: 'auto',
               marginRight: 'auto',
-              lineHeight: '1.625',
-              marginBottom: '4rem',
+              lineHeight: '1.6',
+              marginBottom: '2.5rem',
+              letterSpacing: '0.01em',
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.8 }}
           >
-            4 years. 3 domains. 12+ shipped products.
-            <br />
-            <span style={{ color: 'var(--text-50)' }}>
-              Exploring the intersection of design, technology, and human experience.
-            </span>
+            From enterprise systems at 30,000ft to consciousness-exploring research
           </motion.p>
 
-          {/* Journey organization pills */}
+          {/* Stats Row */}
           <motion.div
             style={{
               display: 'flex',
-              flexWrap: 'wrap',
-              alignItems: 'center',
               justifyContent: 'center',
-              gap: '1rem',
-              marginBottom: '5rem',
+              alignItems: 'center',
+              gap: 'clamp(2rem, 5vw, 4rem)',
+              marginBottom: '2.5rem',
+              flexWrap: 'wrap',
             }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.1 }}
           >
             {[
-              { organization: 'Infosys', timeframe: '2020', logo: 'infosys.svg' },
-              { organization: 'National Institute of Design', timeframe: '2021 - 2023', logo: 'nid.svg' },
-              { organization: 'Air India', timeframe: '2024 - Present', logo: 'air-india.svg' },
-              { organization: 'Indian School of Business', timeframe: '2023', logo: 'ISB.jpeg' },
-            ].map((org, index) => (
+              { value: '12+', label: 'Shipped Products' },
+              { value: '4', label: 'Years Experience' },
+              { value: '3', label: 'Domains' },
+            ].map((stat, index) => (
               <div
                 key={index}
                 style={{
-                  display: 'inline-flex',
+                  display: 'flex',
+                  flexDirection: 'column',
                   alignItems: 'center',
-                  gap: '0.5rem',
-                  paddingLeft: '1.25rem',
-                  paddingRight: '1.25rem',
-                  paddingTop: '0.75rem',
-                  paddingBottom: '0.75rem',
-                  borderRadius: '1rem',
-                  background: 'var(--glass-08)',
-                  backdropFilter: 'blur(20px) saturate(150%)',
-                  WebkitBackdropFilter: 'blur(20px) saturate(150%)',
-                  border: '1px solid var(--text-10)',
-                  fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
-                  transition: 'all 300ms ease',
-                  cursor: 'default',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--text-20)';
-                  e.currentTarget.style.background = 'var(--glass-10)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--text-10)';
-                  e.currentTarget.style.background = 'var(--glass-08)';
+                  gap: '0.25rem',
                 }}
               >
-                {/* Logo */}
-                <img
-                  src={`/logos/${org.logo}`}
-                  alt={org.organization}
+                <span
                   style={{
-                    width: '28px',
-                    height: '28px',
-                    objectFit: 'contain',
-                    flexShrink: 0,
+                    fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
+                    fontWeight: '300',
+                    color: 'var(--text-90)',
+                    fontFamily: 'var(--font-space-grotesk)',
+                    letterSpacing: '-0.02em',
                   }}
-                />
-
-                {/* Organization name */}
-                <span style={{ color: 'var(--text-85)', fontWeight: '500', whiteSpace: 'nowrap' }}>
-                  {org.organization}
+                >
+                  {stat.value}
                 </span>
-
-                {/* Timeframe */}
-                <span style={{ color: 'var(--text-50)', marginLeft: 'auto', whiteSpace: 'nowrap' }}>
-                  {org.timeframe}
+                <span
+                  style={{
+                    fontSize: 'clamp(0.75rem, 1vw, 0.875rem)',
+                    fontWeight: '400',
+                    color: 'var(--text-45)',
+                    letterSpacing: '0.02em',
+                  }}
+                >
+                  {stat.label}
                 </span>
               </div>
             ))}
@@ -243,12 +217,12 @@ export function NarrativeWorkHero() {
         <span
           style={{
             fontSize: 'clamp(0.625rem, 1.2vw, 0.75rem)',
-            letterSpacing: '0.2em',
+            letterSpacing: '0.1em',
             textTransform: 'uppercase',
-            color: 'var(--text-50)',
+            color: 'var(--text-40)',
           }}
         >
-          Begin Journey
+          Scroll
         </span>
         <motion.div
           animate={{
