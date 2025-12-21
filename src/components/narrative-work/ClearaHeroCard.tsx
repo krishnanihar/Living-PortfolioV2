@@ -114,7 +114,7 @@ export function ClearaHeroCard() {
                 02
               </div>
 
-              {/* LAYER 1: Watercolor Background */}
+              {/* LAYER 1: Background */}
               <div
                 data-atropos-offset="-10"
                 style={{
@@ -125,7 +125,7 @@ export function ClearaHeroCard() {
                 }}
               >
                 <Image
-                  src="/images/cleara/watercolor/impact-bloom.png"
+                  src="/images/cleara/cleara_bg.png"
                   alt=""
                   fill
                   style={{
@@ -138,7 +138,7 @@ export function ClearaHeroCard() {
                 />
               </div>
 
-              {/* LAYER 2: Phone Mockup - Center */}
+              {/* LAYER 2: Features - Middle */}
               <div
                 data-atropos-offset="0"
                 style={{
@@ -149,13 +149,37 @@ export function ClearaHeroCard() {
                 }}
               >
                 <Image
-                  src="/images/cleara/watercolor/phone-backdrop.png"
+                  src="/images/cleara/cleara_features.png"
+                  alt="Cleara Features"
+                  fill
+                  style={{
+                    objectFit: 'contain',
+                    objectPosition: 'center',
+                    transform: 'scale(0.9)',
+                  }}
+                  quality={95}
+                  priority
+                />
+              </div>
+
+              {/* LAYER 3: Phone - Foreground */}
+              <div
+                data-atropos-offset="5"
+                style={{
+                  position: 'absolute',
+                  inset: '-10%',
+                  zIndex: 3,
+                  overflow: 'hidden',
+                }}
+              >
+                <Image
+                  src="/images/cleara/cleara_phone.png"
                   alt="Cleara App"
                   fill
                   style={{
                     objectFit: 'contain',
                     objectPosition: 'center',
-                    transform: 'scale(0.85)',
+                    transform: 'scale(0.75)',
                   }}
                   quality={95}
                   priority
