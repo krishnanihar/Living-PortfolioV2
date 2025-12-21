@@ -567,14 +567,7 @@ const DAILY_INSPIRATIONS = [
   "Every day is a fresh start for your skin.",
 ];
 
-// Flare prediction data
-const FLARE_FACTORS = [
-  { name: 'Weather changes', percentage: 85, icon: <CloudRain size={16} />, color: CLEARA_COLORS.lavender },
-  { name: 'Sleep quality', percentage: 72, icon: <Bed size={16} />, color: CLEARA_COLORS.periwinkle },
-  { name: 'Stress level', percentage: 68, icon: <Brain size={16} />, color: CLEARA_COLORS.blush },
-  { name: 'Missed rituals', percentage: 45, icon: <Calendar size={16} />, color: CLEARA_COLORS.sage },
-];
-
+// Flare recommendations (moved detailed FLARE_FACTORS to FlareScreen section)
 const FLARE_RECOMMENDATIONS = [
   "Apply extra moisturizer before bed tonight",
   "Try a 10-minute relaxation session",
@@ -3922,22 +3915,270 @@ const JournalScreen: React.FC<JournalScreenProps> = ({ onNavigate }) => {
 };
 
 // =============================================================================
-// FLARE SCREEN
+// FLARE SCREEN - Enhanced with Detail Flow
 // =============================================================================
+
+// Flare risk factors with detailed info
+const FLARE_FACTORS = [
+  {
+    id: 'sleep',
+    icon: Moon,
+    label: 'Sleep Quality',
+    status: 'Poor',
+    value: '5.2 hrs',
+    impact: 'negative' as const,
+    percentage: 76,
+    details: 'Your sleep has been below optimal for 3 days.',
+    recommendations: [
+      'Try a calming bedtime routine',
+      'Avoid screens 1 hour before sleep',
+      'Keep bedroom cool (65-68°F)',
+    ],
+  },
+  {
+    id: 'stress',
+    icon: Activity,
+    label: 'Stress Level',
+    status: 'Elevated',
+    value: '7/10',
+    impact: 'warning' as const,
+    percentage: 87,
+    details: 'Higher than your usual baseline this week.',
+    recommendations: [
+      'Try the breathing exercise',
+      'Take a 10-minute walk',
+      'Journal your thoughts',
+    ],
+  },
+  {
+    id: 'weather',
+    icon: CloudRain,
+    label: 'Weather',
+    status: 'Dry & Cold',
+    value: '42°F',
+    impact: 'warning' as const,
+    percentage: 58,
+    details: 'Low humidity may affect your skin.',
+    recommendations: [
+      'Use a humidifier indoors',
+      'Apply moisturizer more frequently',
+      'Drink extra water',
+    ],
+  },
+  {
+    id: 'hydration',
+    icon: Droplets,
+    label: 'Hydration',
+    status: 'Good',
+    value: '2.1L',
+    impact: 'positive' as const,
+    percentage: 24,
+    details: 'You are meeting your hydration goals!',
+    recommendations: [
+      'Keep up the good work',
+      'Continue tracking intake',
+    ],
+  },
+];
+
+const FLARE_MITIGATIONS = [
+  { icon: Wind, label: 'Try the 4-7-8 breathing technique', action: 'breathing' as Screen },
+  { icon: Droplets, label: 'Apply your evening moisturizer', action: 'rituals' as Screen },
+  { icon: Moon, label: 'Set a bedtime reminder for 10pm', action: 'settings' as Screen },
+  { icon: Thermometer, label: 'Check your PASI score', action: 'pasi' as Screen },
+];
 
 interface FlareScreenProps {
   onNavigate: (screen: Screen) => void;
+  subState: SubState;
+  setSubState: (state: SubState) => void;
 }
 
-const FlareScreen: React.FC<FlareScreenProps> = ({ onNavigate }) => {
-  const riskLevel = 35; // 0-100
+const FlareScreen: React.FC<FlareScreenProps> = ({ onNavigate, subState, setSubState }) => {
+  const riskLevel = 45; // 0-100
+  const [selectedFactor, setSelectedFactor] = useState<string | null>(null);
+  const [isPrepared, setIsPrepared] = useState(false);
 
-  const factors = [
-    { icon: <Moon size={18} />, label: 'Sleep', status: 'Low', value: '5.2 hrs', impact: 'negative' as const },
-    { icon: <Activity size={18} />, label: 'Stress', status: 'Moderate', value: '6/10', impact: 'warning' as const },
-    { icon: <CloudRain size={18} />, label: 'Weather', status: 'Cold', value: '42°F', impact: 'warning' as const },
-    { icon: <Droplets size={18} />, label: 'Hydration', status: 'Good', value: '2.1L', impact: 'positive' as const },
-  ];
+  const getRiskInfo = (level: number) => {
+    if (level >= 70) return { label: 'High Risk', color: CLEARA_COLORS.blush };
+    if (level >= 40) return { label: 'Moderate Risk', color: CLEARA_COLORS.warning };
+    return { label: 'Low Risk', color: CLEARA_COLORS.sage };
+  };
+
+  const riskInfo = getRiskInfo(riskLevel);
+
+  // Factor detail view
+  if (subState === 'flare-detail' && selectedFactor) {
+    const factor = FLARE_FACTORS.find(f => f.id === selectedFactor);
+    if (!factor) return null;
+
+    const FactorIcon = factor.icon;
+
+    return (
+      <div style={{
+        padding: '0 20px 100px',
+        fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+      }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          marginBottom: 24,
+        }}>
+          <button
+            onClick={() => {
+              haptic.selection();
+              setSubState(null);
+              setSelectedFactor(null);
+            }}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 8,
+              marginLeft: -8,
+              color: CLEARA_COLORS.secondaryLabel,
+            }}
+          >
+            <ArrowLeft size={24} />
+          </button>
+          <h2 style={{
+            fontSize: 17,
+            fontWeight: 600,
+            color: CLEARA_COLORS.label,
+            marginLeft: 8,
+          }}>
+            {factor.label}
+          </h2>
+        </div>
+
+        {/* Factor impact visualization */}
+        <GlassCard
+          variant={factor.impact === 'positive' ? 'sage' : factor.impact === 'warning' ? 'primary' : 'blush'}
+          style={{ marginBottom: 20 }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{
+              width: 64,
+              height: 64,
+              borderRadius: 20,
+              backgroundColor: factor.impact === 'positive'
+                ? `${CLEARA_COLORS.sage}25`
+                : factor.impact === 'warning'
+                  ? `${CLEARA_COLORS.warning}25`
+                  : `${CLEARA_COLORS.blush}25`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <FactorIcon
+                size={28}
+                color={factor.impact === 'positive' ? CLEARA_COLORS.sage : factor.impact === 'warning' ? CLEARA_COLORS.warning : CLEARA_COLORS.blush}
+              />
+            </div>
+            <div>
+              <p style={{
+                fontSize: 13,
+                color: CLEARA_COLORS.secondaryLabel,
+                marginBottom: 4,
+              }}>
+                Impact on Flare Risk
+              </p>
+              <p style={{
+                fontSize: 28,
+                fontWeight: 700,
+                color: factor.impact === 'positive' ? CLEARA_COLORS.sage : factor.impact === 'warning' ? CLEARA_COLORS.warning : CLEARA_COLORS.blush,
+              }}>
+                {factor.percentage}%
+              </p>
+            </div>
+          </div>
+        </GlassCard>
+
+        {/* Current status */}
+        <GlassCard style={{ marginBottom: 20 }}>
+          <p style={{
+            fontSize: 12,
+            fontWeight: 600,
+            color: CLEARA_COLORS.secondaryLabel,
+            textTransform: 'uppercase',
+            letterSpacing: 0.5,
+            marginBottom: 8,
+          }}>
+            Current Status
+          </p>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 12,
+          }}>
+            <span style={{ fontSize: 18, fontWeight: 600, color: CLEARA_COLORS.label }}>
+              {factor.status}
+            </span>
+            <span style={{ fontSize: 18, fontWeight: 700, color: CLEARA_COLORS.lavender }}>
+              {factor.value}
+            </span>
+          </div>
+          <p style={{
+            fontSize: 14,
+            color: CLEARA_COLORS.secondaryLabel,
+            lineHeight: 1.5,
+          }}>
+            {factor.details}
+          </p>
+        </GlassCard>
+
+        {/* Recommendations */}
+        <h3 style={{
+          fontSize: 13,
+          fontWeight: 600,
+          color: CLEARA_COLORS.secondaryLabel,
+          textTransform: 'uppercase',
+          letterSpacing: 0.5,
+          marginBottom: 12,
+        }}>
+          Recommendations
+        </h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
+          {factor.recommendations.map((rec, i) => (
+            <GlassCard key={i} padding={14}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <Check size={16} color={CLEARA_COLORS.sage} />
+                <span style={{ fontSize: 14, color: CLEARA_COLORS.label }}>
+                  {rec}
+                </span>
+              </div>
+            </GlassCard>
+          ))}
+        </div>
+
+        <motion.button
+          whileTap={{ scale: 0.98 }}
+          onClick={() => {
+            haptic.success();
+            setSubState(null);
+            setSelectedFactor(null);
+          }}
+          style={{
+            width: '100%',
+            padding: 16,
+            backgroundColor: CLEARA_COLORS.lavender,
+            border: 'none',
+            borderRadius: 16,
+            color: 'white',
+            fontSize: 15,
+            fontWeight: 600,
+            cursor: 'pointer',
+          }}
+        >
+          Got It
+        </motion.button>
+      </div>
+    );
+  }
+
+  // Main flare screen
+  const factors = FLARE_FACTORS;
 
   return (
     <div style={{
@@ -4042,22 +4283,22 @@ const FlareScreen: React.FC<FlareScreenProps> = ({ onNavigate }) => {
             <div style={{
               display: 'inline-block',
               padding: '6px 12px',
-              backgroundColor: `${CLEARA_COLORS.sage}20`,
+              backgroundColor: `${riskInfo.color}20`,
               borderRadius: 20,
             }}>
               <span style={{
                 fontSize: 12,
                 fontWeight: 600,
-                color: CLEARA_COLORS.sage,
+                color: riskInfo.color,
               }}>
-                Low Risk
+                {riskInfo.label}
               </span>
             </div>
           </div>
         </div>
       </GlassCard>
 
-      {/* Contributing Factors */}
+      {/* Contributing Factors - Clickable */}
       <h3 style={{
         fontSize: 13,
         fontWeight: 600,
@@ -4068,60 +4309,182 @@ const FlareScreen: React.FC<FlareScreenProps> = ({ onNavigate }) => {
       }}>
         Contributing Factors
       </h3>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        {factors.map((factor, i) => (
-          <GlassCard
-            key={i}
-            padding={14}
-            variant={factor.impact === 'positive' ? 'sage' : factor.impact === 'warning' ? 'primary' : 'blush'}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div style={{
-                width: 36,
-                height: 36,
-                borderRadius: 12,
-                backgroundColor: factor.impact === 'positive'
-                  ? `${CLEARA_COLORS.sage}20`
-                  : factor.impact === 'warning'
-                    ? `${CLEARA_COLORS.warning}20`
-                    : `${CLEARA_COLORS.blush}20`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: factor.impact === 'positive'
-                  ? CLEARA_COLORS.sage
-                  : factor.impact === 'warning'
-                    ? CLEARA_COLORS.warning
-                    : CLEARA_COLORS.blush,
-              }}>
-                {factor.icon}
-              </div>
-              <div style={{ flex: 1 }}>
-                <p style={{
-                  fontSize: 14,
-                  fontWeight: 500,
-                  color: CLEARA_COLORS.label,
-                }}>
-                  {factor.label}
-                </p>
-                <p style={{
-                  fontSize: 12,
-                  color: CLEARA_COLORS.tertiaryLabel,
-                }}>
-                  {factor.status}
-                </p>
-              </div>
-              <span style={{
-                fontSize: 14,
-                fontWeight: 600,
-                color: CLEARA_COLORS.label,
-              }}>
-                {factor.value}
-              </span>
-            </div>
-          </GlassCard>
-        ))}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
+        {factors.map((factor) => {
+          const FactorIcon = factor.icon;
+          return (
+            <motion.div
+              key={factor.id}
+              whileTap={{ scale: 0.98 }}
+            >
+              <GlassCard
+                onClick={() => {
+                  haptic.selection();
+                  setSelectedFactor(factor.id);
+                  setSubState('flare-detail');
+                }}
+                padding={14}
+                variant={factor.impact === 'positive' ? 'sage' : factor.impact === 'warning' ? 'primary' : 'blush'}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <div style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: 12,
+                    backgroundColor: factor.impact === 'positive'
+                      ? `${CLEARA_COLORS.sage}20`
+                      : factor.impact === 'warning'
+                        ? `${CLEARA_COLORS.warning}20`
+                        : `${CLEARA_COLORS.blush}20`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                    <FactorIcon
+                      size={18}
+                      color={factor.impact === 'positive' ? CLEARA_COLORS.sage : factor.impact === 'warning' ? CLEARA_COLORS.warning : CLEARA_COLORS.blush}
+                    />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <p style={{
+                      fontSize: 14,
+                      fontWeight: 500,
+                      color: CLEARA_COLORS.label,
+                    }}>
+                      {factor.label}
+                    </p>
+                    <p style={{
+                      fontSize: 12,
+                      color: CLEARA_COLORS.tertiaryLabel,
+                    }}>
+                      {factor.status}
+                    </p>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: CLEARA_COLORS.label,
+                    }}>
+                      {factor.value}
+                    </span>
+                    <ChevronRight size={16} color={CLEARA_COLORS.tertiaryLabel} />
+                  </div>
+                </div>
+              </GlassCard>
+            </motion.div>
+          );
+        })}
       </div>
+
+      {/* Mitigation Actions */}
+      <h3 style={{
+        fontSize: 13,
+        fontWeight: 600,
+        color: CLEARA_COLORS.secondaryLabel,
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
+        marginBottom: 12,
+      }}>
+        Recommended Actions
+      </h3>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
+        {FLARE_MITIGATIONS.map((action, i) => {
+          const ActionIcon = action.icon;
+          return (
+            <motion.div key={i} whileTap={{ scale: 0.98 }}>
+              <GlassCard
+                onClick={() => {
+                  haptic.selection();
+                  onNavigate(action.action);
+                }}
+                padding={14}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <div style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 10,
+                    backgroundColor: `${CLEARA_COLORS.lavender}15`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                    <ActionIcon size={16} color={CLEARA_COLORS.lavender} />
+                  </div>
+                  <span style={{
+                    flex: 1,
+                    fontSize: 14,
+                    color: CLEARA_COLORS.label,
+                  }}>
+                    {action.label}
+                  </span>
+                  <ChevronRight size={16} color={CLEARA_COLORS.tertiaryLabel} />
+                </div>
+              </GlassCard>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {/* I'm Prepared Acknowledgment */}
+      <AnimatePresence>
+        {!isPrepared ? (
+          <motion.button
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => {
+              haptic.success();
+              setIsPrepared(true);
+            }}
+            style={{
+              width: '100%',
+              padding: 18,
+              backgroundColor: CLEARA_COLORS.lavender,
+              border: 'none',
+              borderRadius: 16,
+              color: 'white',
+              fontSize: 16,
+              fontWeight: 600,
+              cursor: 'pointer',
+              boxShadow: `0 4px 16px ${CLEARA_COLORS.lavender}30`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 8,
+            }}
+          >
+            <Shield size={18} />
+            I&apos;m Prepared
+          </motion.button>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            style={{
+              width: '100%',
+              padding: 18,
+              backgroundColor: `${CLEARA_COLORS.sage}15`,
+              border: `1px solid ${CLEARA_COLORS.sage}30`,
+              borderRadius: 16,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 8,
+            }}
+          >
+            <Check size={18} color={CLEARA_COLORS.sage} />
+            <span style={{
+              fontSize: 15,
+              fontWeight: 600,
+              color: CLEARA_COLORS.sage,
+            }}>
+              You&apos;re Ready
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -5297,6 +5660,8 @@ const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
         return (
           <FlareScreen
             onNavigate={handleNavigate}
+            subState={activeSubState}
+            setSubState={handleSetSubState}
           />
         );
       case 'learn':
