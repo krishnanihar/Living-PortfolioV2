@@ -1061,6 +1061,7 @@ export function ClearaCase() {
             display: 'flex',
             alignItems: 'center',
             padding: '6rem 2rem',
+            background: 'linear-gradient(180deg, rgba(139, 157, 195, 0.03) 0%, transparent 100%)',
           }}
         >
           <div style={{ maxWidth: '650px', margin: '0 auto' }}>
@@ -1071,7 +1072,7 @@ export function ClearaCase() {
                 'feel so lonely?',
               ]}
               scrollProgress={scrollState.progress}
-              scrollRange={[0.03, 0.08]}
+              scrollRange={[0.03, 0.07]}
               size="heading"
               align="left"
             />
@@ -1083,7 +1084,7 @@ export function ClearaCase() {
                 'The gap between clinical care and daily life is vast.',
               ]}
               scrollProgress={scrollState.progress}
-              scrollRange={[0.06, 0.10]}
+              scrollRange={[0.07, 0.10]}
               size="body"
               align="left"
               style={{ marginTop: '3rem' }}
@@ -1095,7 +1096,7 @@ export function ClearaCase() {
                 'and to design something that could help.',
               ]}
               scrollProgress={scrollState.progress}
-              scrollRange={[0.08, 0.12]}
+              scrollRange={[0.10, 0.13]}
               size="body"
               align="left"
               style={{ marginTop: '2rem', fontStyle: 'italic' }}
@@ -1114,7 +1115,7 @@ export function ClearaCase() {
             <ClearaPoeticText
               lines={['The Broken Landscape']}
               scrollProgress={scrollState.progress}
-              scrollRange={[0.11, 0.15]}
+              scrollRange={[0.14, 0.17]}
               size="display"
               align="center"
             />
@@ -1125,7 +1126,7 @@ export function ClearaCase() {
                 'Here\'s why:',
               ]}
               scrollProgress={scrollState.progress}
-              scrollRange={[0.13, 0.17]}
+              scrollRange={[0.17, 0.20]}
               size="body"
               align="center"
               style={{ marginTop: '1.5rem', maxWidth: '500px', marginLeft: 'auto', marginRight: 'auto' }}
@@ -1256,7 +1257,7 @@ export function ClearaCase() {
                 'So I listened.',
               ]}
               scrollProgress={scrollState.progress}
-              scrollRange={[0.16, 0.20]}
+              scrollRange={[0.21, 0.24]}
               size="body"
               align="center"
               style={{ marginTop: '4rem', fontStyle: 'italic' }}
@@ -1273,13 +1274,14 @@ export function ClearaCase() {
           style={{
             minHeight: '120vh',
             padding: '8rem 2rem',
+            background: 'linear-gradient(180deg, rgba(168, 197, 181, 0.03) 0%, transparent 100%)',
           }}
         >
           <div style={{ maxWidth: '900px', margin: '0 auto' }}>
             <ClearaPoeticText
               lines={['The Research Journey']}
               scrollProgress={scrollState.progress}
-              scrollRange={[0.19, 0.24]}
+              scrollRange={[0.25, 0.29]}
               size="display"
               align="center"
             />
@@ -1347,7 +1349,7 @@ export function ClearaCase() {
             <ClearaPoeticText
               lines={['Who We Designed For']}
               scrollProgress={scrollState.progress}
-              scrollRange={[0.28, 0.33]}
+              scrollRange={[0.32, 0.36]}
               size="display"
               align="center"
             />
@@ -1358,7 +1360,7 @@ export function ClearaCase() {
                 'Their stories became our north star.',
               ]}
               scrollProgress={scrollState.progress}
-              scrollRange={[0.31, 0.36]}
+              scrollRange={[0.36, 0.40]}
               size="body"
               align="center"
               style={{ marginTop: '1.5rem', maxWidth: '500px', marginLeft: 'auto', marginRight: 'auto' }}
@@ -1493,7 +1495,7 @@ export function ClearaCase() {
                 'that requires holistic support.',
               ]}
               scrollProgress={scrollState.progress}
-              scrollRange={[0.38, 0.46]}
+              scrollRange={[0.43, 0.48]}
               size="heading"
               align="center"
               staggerDelay={0.18}
@@ -1512,7 +1514,7 @@ export function ClearaCase() {
             <ClearaPoeticText
               lines={['The 18-Month Journey']}
               scrollProgress={scrollState.progress}
-              scrollRange={[0.46, 0.51]}
+              scrollRange={[0.50, 0.54]}
               size="display"
               align="center"
             />
@@ -1523,7 +1525,7 @@ export function ClearaCase() {
                 'A story of listening, learning, and iteration.',
               ]}
               scrollProgress={scrollState.progress}
-              scrollRange={[0.48, 0.53]}
+              scrollRange={[0.54, 0.58]}
               size="body"
               align="center"
               style={{ marginTop: '1.5rem', maxWidth: '550px', marginLeft: 'auto', marginRight: 'auto' }}
@@ -1670,13 +1672,14 @@ export function ClearaCase() {
           style={{
             minHeight: '100vh',
             padding: '8rem 2rem',
+            background: 'linear-gradient(180deg, rgba(212, 165, 165, 0.03) 0%, transparent 100%)',
           }}
         >
           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
             <ClearaPoeticText
               lines={['The Solution']}
               scrollProgress={scrollState.progress}
-              scrollRange={[0.54, 0.59]}
+              scrollRange={[0.60, 0.64]}
               size="display"
               align="center"
             />
@@ -1687,7 +1690,7 @@ export function ClearaCase() {
                 'the full picture of living with psoriasis.',
               ]}
               scrollProgress={scrollState.progress}
-              scrollRange={[0.56, 0.61]}
+              scrollRange={[0.64, 0.68]}
               size="body"
               align="center"
               style={{ marginTop: '1.5rem' }}
@@ -1770,13 +1773,14 @@ export function ClearaCase() {
           style={{
             minHeight: '140vh',
             padding: '8rem 2rem',
+            background: 'linear-gradient(180deg, rgba(184, 197, 226, 0.04) 0%, transparent 100%)',
           }}
         >
           <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <ClearaPoeticText
               lines={['How Cleara Thinks']}
               scrollProgress={scrollState.progress}
-              scrollRange={[0.62, 0.68]}
+              scrollRange={[0.70, 0.75]}
               size="display"
               align="center"
             />

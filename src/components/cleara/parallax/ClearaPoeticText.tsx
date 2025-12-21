@@ -48,8 +48,8 @@ export function ClearaPoeticText({
         if (scrollProgress < lineStart) {
           lineOpacities.push((scrollProgress - (lineStart - 0.02)) / 0.02);
         } else if (scrollProgress > lineEnd) {
-          // Fade out gradually after section
-          const fadeProgress = (scrollProgress - lineEnd) / 0.1;
+          // Fade out gradually after section (0.25 = 25% of scroll for slower fade)
+          const fadeProgress = (scrollProgress - lineEnd) / 0.25;
           lineOpacities.push(Math.max(0, 1 - fadeProgress));
         } else {
           lineOpacities.push(1);
