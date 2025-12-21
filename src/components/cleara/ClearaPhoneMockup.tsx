@@ -535,24 +535,6 @@ const StatusBar: React.FC = () => {
   );
 };
 
-const DynamicIsland: React.FC = () => (
-  <div
-    style={{
-      position: 'absolute',
-      top: 11,
-      left: '50%',
-      transform: 'translateX(-50%)',
-      width: 126,  // iPhone 15 Pro dimensions
-      height: 37,  // iPhone 15 Pro dimensions
-      backgroundColor: '#1a1a1a',
-      borderRadius: 20,
-      zIndex: 100,
-      // Realistic depth with inner shadow and subtle highlight
-      boxShadow: 'inset 0 1px 3px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.05)',
-    }}
-  />
-);
-
 // iPhone 15 Pro Side Buttons
 const SideButtons: React.FC = () => (
   <>
@@ -4429,9 +4411,6 @@ const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
             boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, 0.1)',
           }}
         >
-          {/* Dynamic Island */}
-          <DynamicIsland />
-
           {/* Status Bar */}
           <StatusBar />
 
