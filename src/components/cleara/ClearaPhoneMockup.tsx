@@ -68,6 +68,7 @@ import {
   Link,
   Apple,
   Cloud,
+  Circle,
 } from 'lucide-react';
 
 // =============================================================================
@@ -467,7 +468,7 @@ const TITANIUM_FRAME = {
 type Screen = 'home' | 'photo' | 'pasi' | 'rituals' | 'wellness' | 'insights' | 'journal' | 'flare' | 'learn' | 'profile' | 'settings' | 'patterns' | 'report' | 'breathing';
 
 type SubState =
-  | 'camera' | 'ghost' | 'capture' | 'result'  // Photo states
+  | 'camera' | 'ghost' | 'capture' | 'result' | 'selection' | 'processing' | 'notes'  // Photo states
   | 'question1' | 'question2' | 'question3' | 'result'  // Wellness states
   | 'add'  // Rituals states
   | 'flare-detail'  // Flare prediction detail
@@ -1179,8 +1180,20 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate, rituals, pasiLogs }
 };
 
 // =============================================================================
-// PHOTO SCREEN
+// PHOTO SCREEN - Enhanced 9-Step Flow
 // =============================================================================
+
+// Body areas for photo tracking
+const BODY_AREAS = [
+  { id: 'scalp', label: 'Scalp', icon: Circle },
+  { id: 'face', label: 'Face', icon: Circle },
+  { id: 'chest', label: 'Chest', icon: Circle },
+  { id: 'back', label: 'Back', icon: Circle },
+  { id: 'arms', label: 'Arms', icon: Circle },
+  { id: 'legs', label: 'Legs', icon: Circle },
+  { id: 'hands', label: 'Hands', icon: Circle },
+  { id: 'feet', label: 'Feet', icon: Circle },
+];
 
 interface PhotoScreenProps {
   onNavigate: (screen: Screen) => void;
@@ -1192,11 +1205,368 @@ const PhotoScreen: React.FC<PhotoScreenProps> = ({ onNavigate, subState, setSubS
   const [ghostOpacity, setGhostOpacity] = useState(0.5);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hasCamera, setHasCamera] = useState(false);
+  const [selectedBodyArea, setSelectedBodyArea] = useState<string | null>(null);
+  const [isCapturing, setIsCapturing] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [photoNote, setPhotoNote] = useState('');
+  const [showFlash, setShowFlash] = useState(false);
 
   useEffect(() => {
     // Simulate camera access for mockup
     setHasCamera(true);
   }, []);
+
+  // Handle capture with flash animation
+  const handleCapture = () => {
+    haptic.medium();
+    setIsCapturing(true);
+    setShowFlash(true);
+
+    // Flash effect
+    setTimeout(() => setShowFlash(false), 150);
+
+    // Move to processing after capture animation
+    setTimeout(() => {
+      setIsCapturing(false);
+      setSubState('processing');
+      haptic.success();
+
+      // Simulate AI processing
+      setTimeout(() => {
+        setSubState('result');
+      }, 2000);
+    }, 500);
+  };
+
+  // Render body area selection grid
+  const renderBodySelection = () => (
+    <div style={{
+      padding: '0 20px 100px',
+      height: '100%',
+    }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 20,
+      }}>
+        <button
+          onClick={() => setSubState(null)}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 8,
+            color: CLEARA_COLORS.secondaryLabel,
+          }}
+        >
+          <ArrowLeft size={24} />
+        </button>
+        <h2 style={{
+          fontSize: 17,
+          fontWeight: 600,
+          color: CLEARA_COLORS.label,
+          margin: 0,
+        }}>
+          Select Body Area
+        </h2>
+        <div style={{ width: 40 }} />
+      </div>
+
+      <p style={{
+        fontSize: 14,
+        color: CLEARA_COLORS.secondaryLabel,
+        marginBottom: 24,
+        textAlign: 'center',
+      }}>
+        Which area would you like to track today?
+      </p>
+
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        gap: 12,
+      }}>
+        {BODY_AREAS.map((area) => (
+          <motion.div
+            key={area.id}
+            whileTap={{ scale: 0.97 }}
+          >
+            <GlassCard
+              onClick={() => {
+                haptic.selection();
+                setSelectedBodyArea(area.id);
+                setSubState('ghost');
+              }}
+              variant={selectedBodyArea === area.id ? 'lavender' : undefined}
+              style={{
+                textAlign: 'center',
+                padding: 20,
+              }}
+            >
+              <div style={{
+                width: 48,
+                height: 48,
+                borderRadius: 24,
+                backgroundColor: selectedBodyArea === area.id
+                  ? `${CLEARA_COLORS.lavender}30`
+                  : CLEARA_COLORS.canvasSecondary,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 12px',
+              }}>
+                <area.icon
+                  size={24}
+                  color={selectedBodyArea === area.id
+                    ? CLEARA_COLORS.lavender
+                    : CLEARA_COLORS.tertiaryLabel}
+                />
+              </div>
+              <p style={{
+                fontSize: 14,
+                fontWeight: 500,
+                color: CLEARA_COLORS.label,
+                margin: 0,
+              }}>
+                {area.label}
+              </p>
+            </GlassCard>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+
+  // Render processing animation
+  const renderProcessing = () => (
+    <div style={{
+      padding: '0 20px 100px',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      {/* Processing animation */}
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        style={{
+          width: 120,
+          height: 120,
+          borderRadius: 60,
+          background: `linear-gradient(135deg, ${CLEARA_COLORS.lavender}30, ${CLEARA_COLORS.periwinkle}30)`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: 32,
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Shimmer effect */}
+        <motion.div
+          animate={{
+            x: ['-100%', '200%'],
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+          }}
+        />
+        <Brain size={48} color={CLEARA_COLORS.lavender} />
+      </motion.div>
+
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        style={{
+          fontSize: 18,
+          fontWeight: 600,
+          color: CLEARA_COLORS.label,
+          marginBottom: 8,
+        }}
+      >
+        Analyzing Your Photo
+      </motion.p>
+
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        style={{
+          fontSize: 14,
+          color: CLEARA_COLORS.secondaryLabel,
+          textAlign: 'center',
+        }}
+      >
+        Our AI is evaluating clarity, lighting, and skin indicators...
+      </motion.p>
+
+      {/* Progress dots */}
+      <div style={{
+        display: 'flex',
+        gap: 8,
+        marginTop: 32,
+      }}>
+        {[0, 1, 2].map((i) => (
+          <motion.div
+            key={i}
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.5, 1, 0.5],
+            }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              delay: i * 0.2,
+            }}
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: 4,
+              backgroundColor: CLEARA_COLORS.lavender,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+
+  // Render notes input
+  const renderNotes = () => (
+    <div style={{
+      padding: '0 20px 100px',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 20,
+      }}>
+        <button
+          onClick={() => setSubState('result')}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 8,
+            color: CLEARA_COLORS.secondaryLabel,
+          }}
+        >
+          <ArrowLeft size={24} />
+        </button>
+        <h2 style={{
+          fontSize: 17,
+          fontWeight: 600,
+          color: CLEARA_COLORS.label,
+          margin: 0,
+        }}>
+          Add Context
+        </h2>
+        <button
+          onClick={() => {
+            haptic.success();
+            setSubState(null);
+            onNavigate('insights');
+          }}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 8,
+            color: CLEARA_COLORS.lavender,
+            fontSize: 15,
+            fontWeight: 600,
+          }}
+        >
+          Done
+        </button>
+      </div>
+
+      <GlassCard style={{ marginBottom: 20 }}>
+        <p style={{
+          fontSize: 12,
+          fontWeight: 600,
+          color: CLEARA_COLORS.secondaryLabel,
+          textTransform: 'uppercase',
+          letterSpacing: 0.5,
+          marginBottom: 12,
+        }}>
+          Notes (Optional)
+        </p>
+        <textarea
+          value={photoNote}
+          onChange={(e) => setPhotoNote(e.target.value)}
+          placeholder="Any context about how you're feeling, recent triggers, or observations..."
+          style={{
+            width: '100%',
+            minHeight: 120,
+            padding: 12,
+            border: 'none',
+            borderRadius: 12,
+            backgroundColor: CLEARA_COLORS.canvasSecondary,
+            color: CLEARA_COLORS.label,
+            fontSize: 15,
+            lineHeight: 1.6,
+            resize: 'none',
+            outline: 'none',
+            fontFamily: 'inherit',
+          }}
+        />
+      </GlassCard>
+
+      {/* Quick tags */}
+      <p style={{
+        fontSize: 12,
+        fontWeight: 600,
+        color: CLEARA_COLORS.secondaryLabel,
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
+        marginBottom: 12,
+      }}>
+        Quick Tags
+      </p>
+      <div style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: 8,
+      }}>
+        {['After shower', 'Morning routine', 'Flare day', 'Feeling better', 'New product', 'Stressful week'].map((tag) => (
+          <motion.button
+            key={tag}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              haptic.selection();
+              setPhotoNote(prev => prev ? `${prev} #${tag}` : `#${tag}`);
+            }}
+            style={{
+              padding: '8px 12px',
+              borderRadius: 20,
+              border: `1px solid ${CLEARA_COLORS.lavender}30`,
+              backgroundColor: 'transparent',
+              color: CLEARA_COLORS.lavender,
+              fontSize: 13,
+              cursor: 'pointer',
+            }}
+          >
+            {tag}
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  );
 
   const renderGhostOverlay = () => (
     <div style={{
@@ -1327,24 +1697,61 @@ const PhotoScreen: React.FC<PhotoScreenProps> = ({ onNavigate, subState, setSubS
         </div>
       </GlassCard>
 
+      {/* Flash Overlay */}
+      <AnimatePresence>
+        {showFlash && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              backgroundColor: 'white',
+              zIndex: 100,
+              pointerEvents: 'none',
+            }}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Capture Button */}
       <motion.button
         whileTap={{ scale: 0.95 }}
-        onClick={() => setSubState('result')}
+        animate={isCapturing ? { scale: [1, 0.9, 1] } : {}}
+        onClick={handleCapture}
+        disabled={isCapturing}
         style={{
           width: '100%',
           padding: 16,
-          backgroundColor: CLEARA_COLORS.lavender,
+          backgroundColor: isCapturing ? `${CLEARA_COLORS.lavender}80` : CLEARA_COLORS.lavender,
           border: 'none',
           borderRadius: 16,
           color: 'white',
           fontSize: 16,
           fontWeight: 600,
-          cursor: 'pointer',
+          cursor: isCapturing ? 'default' : 'pointer',
           boxShadow: `0 4px 16px ${CLEARA_COLORS.lavender}40`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 8,
         }}
       >
-        Capture Photo
+        {isCapturing ? (
+          <>
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+            >
+              <Loader2 size={18} />
+            </motion.div>
+            Capturing...
+          </>
+        ) : (
+          'Capture Photo'
+        )}
       </motion.button>
     </div>
   );
@@ -1461,7 +1868,7 @@ const PhotoScreen: React.FC<PhotoScreenProps> = ({ onNavigate, subState, setSubS
       </GlassCard>
 
       {/* AI Summary */}
-      <GlassCard style={{ flex: 1 }}>
+      <GlassCard style={{ marginBottom: 20 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
           <Sparkles size={16} color={CLEARA_COLORS.lavender} />
           <p style={{
@@ -1484,12 +1891,71 @@ const PhotoScreen: React.FC<PhotoScreenProps> = ({ onNavigate, subState, setSubS
           moisturization and stress management.
         </p>
       </GlassCard>
+
+      {/* Action Buttons */}
+      <div style={{ display: 'flex', gap: 12 }}>
+        <motion.button
+          whileTap={{ scale: 0.97 }}
+          onClick={() => {
+            haptic.selection();
+            setSubState('notes');
+          }}
+          style={{
+            flex: 1,
+            padding: 14,
+            backgroundColor: 'transparent',
+            border: `1px solid ${CLEARA_COLORS.lavender}40`,
+            borderRadius: 12,
+            color: CLEARA_COLORS.lavender,
+            fontSize: 14,
+            fontWeight: 600,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+          }}
+        >
+          <FileText size={16} />
+          Add Notes
+        </motion.button>
+
+        <motion.button
+          whileTap={{ scale: 0.97 }}
+          onClick={() => {
+            haptic.success();
+            setSubState(null);
+            onNavigate('insights');
+          }}
+          style={{
+            flex: 1,
+            padding: 14,
+            backgroundColor: CLEARA_COLORS.lavender,
+            border: 'none',
+            borderRadius: 12,
+            color: 'white',
+            fontSize: 14,
+            fontWeight: 600,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+          }}
+        >
+          <Check size={16} />
+          Save
+        </motion.button>
+      </div>
     </div>
   );
 
-  // Main photo menu
+  // Main photo menu - handle all substates
+  if (subState === 'selection') return renderBodySelection();
   if (subState === 'ghost') return renderGhostOverlay();
+  if (subState === 'processing') return renderProcessing();
   if (subState === 'result') return renderPhotoResult();
+  if (subState === 'notes') return renderNotes();
 
   return (
     <div style={{
@@ -1516,7 +1982,10 @@ const PhotoScreen: React.FC<PhotoScreenProps> = ({ onNavigate, subState, setSubS
 
       {/* Photo Options */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <GlassCard onClick={() => setSubState('ghost')} variant="lavender">
+        <GlassCard onClick={() => {
+          haptic.selection();
+          setSubState('selection');
+        }} variant="lavender">
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <div style={{
               width: 56,
@@ -1536,20 +2005,23 @@ const PhotoScreen: React.FC<PhotoScreenProps> = ({ onNavigate, subState, setSubS
                 color: CLEARA_COLORS.label,
                 marginBottom: 4,
               }}>
-                Ghost Overlay
+                Track New Photo
               </h3>
               <p style={{
                 fontSize: 13,
                 color: CLEARA_COLORS.secondaryLabel,
               }}>
-                Compare with previous photos
+                Select body area & compare with ghost
               </p>
             </div>
             <ChevronRight size={20} color={CLEARA_COLORS.tertiaryLabel} />
           </div>
         </GlassCard>
 
-        <GlassCard onClick={() => setSubState('camera')}>
+        <GlassCard onClick={() => {
+          haptic.selection();
+          setSubState('ghost');
+        }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <div style={{
               width: 56,
