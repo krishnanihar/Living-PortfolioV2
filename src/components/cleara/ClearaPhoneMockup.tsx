@@ -3250,7 +3250,6 @@ const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.2 }}
-                style={{ height: '100%' }}
               >
                 {renderScreen()}
               </motion.div>
