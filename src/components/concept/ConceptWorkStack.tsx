@@ -67,7 +67,7 @@ export default function ConceptWorkStack() {
   // Constants
   const SCROLL_LOCKOUT = 1200; // 1.2s lockout (matches home page)
   const SWIPE_THRESHOLD = 50; // Minimum swipe distance
-  const ENTRY_SNAP_THRESHOLD = 0.8; // Snap when 80% visible
+  const ENTRY_SNAP_THRESHOLD = 0.5; // Snap when 50% visible
   const cardCount = featuredProjects.length;
 
   // Callback ref to store card refs
@@ -131,14 +131,9 @@ export default function ConceptWorkStack() {
           duration: 1.2,
           easing: premiumEaseOut,
         });
-      } else if (direction === 1 && currentCardRef.current === cardCount - 1) {
-        // At last card, scrolling down - exit to next section
-        const targetScroll = container.offsetTop + cardCount * vh;
-        lenis.scrollTo(targetScroll, {
-          duration: 1.2,
-          easing: premiumEaseOut,
-        });
       }
+      // At last card scrolling down - let infinite scroll loop naturally to hero
+      // (removed explicit exit scroll - Lenis infinite handles the loop)
     };
 
     // Touch handlers for mobile
@@ -176,13 +171,9 @@ export default function ConceptWorkStack() {
           duration: 1.2,
           easing: premiumEaseOut,
         });
-      } else if (direction === 1 && currentCardRef.current === cardCount - 1) {
-        const targetScroll = container.offsetTop + cardCount * vh;
-        lenis.scrollTo(targetScroll, {
-          duration: 1.2,
-          easing: premiumEaseOut,
-        });
       }
+      // At last card scrolling down - let infinite scroll loop naturally to hero
+      // (removed explicit exit scroll - Lenis infinite handles the loop)
     };
 
     // Add event listeners

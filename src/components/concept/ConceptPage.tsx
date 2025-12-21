@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -23,19 +23,13 @@ if (typeof window !== 'undefined') {
 }
 
 export default function ConceptPage() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const { progress } = useLenisScroll();
 
   useEffect(() => {
-    // Initialize ScrollTrigger with proper settings
-    ScrollTrigger.defaults({
-      markers: false,
-    });
-
     // Refresh ScrollTrigger after all content is loaded
     const timeout = setTimeout(() => {
       ScrollTrigger.refresh();
-    }, 100);
+    }, 200);
 
     return () => {
       clearTimeout(timeout);
@@ -45,24 +39,18 @@ export default function ConceptPage() {
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      style={{
-        backgroundColor: 'var(--bg-primary)',
-        minHeight: '100vh',
-      }}
-    >
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
       {/* Particle background - fixed, full viewport */}
       <HeroParticleSystem
         starOpacity={0.35}
         scrollProgress={progress}
       />
 
-      {/* Navigation */}
+      {/* Navigation - fixed */}
       <PortfolioNavigation />
 
       {/* Main Content */}
-      <main style={{ position: 'relative', zIndex: 10, isolation: 'isolate' }}>
+      <main style={{ position: 'relative', zIndex: 10 }}>
         {/* Hero - Shrinks on scroll with glassmorphism */}
         <ConceptHero scrollProgress={progress} />
 

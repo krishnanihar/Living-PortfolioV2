@@ -75,8 +75,10 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
 
     // Check if page needs controlled snap behavior (reactive to route changes)
     const isHomePage = pathname === '/';
+    const isConceptPage = pathname === '/concept';
 
     const useControlledSnap = isHomePage; // Only home page uses controlled snap
+    const useInfiniteScroll = isConceptPage; // Concept page loops footer → hero
 
     // Section counts for snap pages
     const sectionCount = isHomePage ? 8 : 1;
@@ -86,6 +88,9 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
       lerp: prefersReducedMotion ? 1 : 0.15, // Keep same for stability
       duration: prefersReducedMotion ? 0 : 0.7, // 700ms - more luxurious feel
       easing: premiumEaseOut, // Quart ease-out - smooth, non-oscillating
+
+      // Enable infinite scroll for concept page (seamless loop from footer to hero)
+      infinite: isConceptPage,
 
       // THE FIX: virtualScroll returning false COMPLETELY disables Lenis wheel processing
       // wheelMultiplier: 0 only multiplies delta by 0, but Lenis still processes events internally
