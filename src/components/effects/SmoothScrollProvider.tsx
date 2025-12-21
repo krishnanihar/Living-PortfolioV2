@@ -74,14 +74,14 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // Check if page needs controlled snap behavior (reactive to route changes)
-    const isHomePage = pathname === '/';
-    const isConceptPage = pathname === '/concept';
+    // Home page now uses ConceptPage which handles its own snap in ConceptWorkStack
+    const isConceptPage = pathname === '/' || pathname === '/concept';
 
-    const useControlledSnap = isHomePage; // Only home page uses controlled snap
-    const useInfiniteScroll = isConceptPage; // Concept page loops footer → hero
+    const useControlledSnap = false; // ConceptPage handles its own snap in ConceptWorkStack
+    const useInfiniteScroll = isConceptPage; // ConceptPage loops footer → hero
 
-    // Section counts for snap pages
-    const sectionCount = isHomePage ? 8 : 1;
+    // Section counts for snap pages (not used since useControlledSnap is false)
+    const sectionCount = 1;
 
     // Initialize Lenis with premium smooth scroll settings
     const lenis = new Lenis({
