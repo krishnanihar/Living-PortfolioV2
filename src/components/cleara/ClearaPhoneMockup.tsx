@@ -42,6 +42,32 @@ import {
   Leaf,
   CloudRain,
   Thermometer,
+  Settings,
+  Bell,
+  Shield,
+  Smartphone,
+  FileText,
+  Share2,
+  Download,
+  ChevronDown,
+  Smile,
+  SmilePlus,
+  Meh,
+  Frown,
+  Flower2,
+  Sprout,
+  TreeDeciduous,
+  Zap,
+  Coffee,
+  Utensils,
+  Bed,
+  TrendingDown,
+  RefreshCw,
+  ChevronLeft,
+  MoreHorizontal,
+  Link,
+  Apple,
+  Cloud,
 } from 'lucide-react';
 
 // =============================================================================
@@ -102,6 +128,49 @@ const CLEARA_BORDERS = {
   blush: 'rgba(212, 165, 165, 0.20)',
 };
 
+// =============================================================================
+// HAPTIC FEEDBACK SYSTEM
+// =============================================================================
+
+const haptic = {
+  light: () => {
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      navigator.vibrate(10);
+    }
+  },
+  medium: () => {
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      navigator.vibrate(20);
+    }
+  },
+  success: () => {
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      navigator.vibrate([10, 50, 20]);
+    }
+  },
+  selection: () => {
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      navigator.vibrate(5);
+    }
+  },
+  warning: () => {
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      navigator.vibrate([30, 50, 30]);
+    }
+  },
+};
+
+// Pull-to-refresh constants
+const PULL_THRESHOLD = 60;
+const PULL_MAX = 100;
+
+// Spring animation configs
+const SPRING_CONFIG = {
+  snappy: { type: 'spring', stiffness: 400, damping: 30 },
+  bouncy: { type: 'spring', stiffness: 300, damping: 20 },
+  smooth: { type: 'spring', stiffness: 200, damping: 25 },
+};
+
 // iPhone 15 Pro Natural Titanium Frame
 const TITANIUM_FRAME = {
   // Natural Titanium gradient - warm metallic to match Cleara aesthetic
@@ -123,13 +192,30 @@ const TITANIUM_FRAME = {
 // TYPE DEFINITIONS
 // =============================================================================
 
-type Screen = 'home' | 'photo' | 'pasi' | 'rituals' | 'wellness' | 'insights' | 'journal' | 'flare' | 'learn' | 'profile';
+type Screen = 'home' | 'photo' | 'pasi' | 'rituals' | 'wellness' | 'insights' | 'journal' | 'flare' | 'learn' | 'profile' | 'settings' | 'patterns' | 'report' | 'breathing';
 
 type SubState =
   | 'camera' | 'ghost' | 'capture' | 'result'  // Photo states
   | 'question1' | 'question2' | 'question3' | 'result'  // Wellness states
   | 'add'  // Rituals states
+  | 'flare-detail'  // Flare prediction detail
   | null;
+
+interface TriggerData {
+  name: string;
+  icon: React.ReactNode;
+  percentage: number;
+  color: string;
+}
+
+interface ArticleData {
+  id: string;
+  title: string;
+  category: 'lifestyle' | 'skincare' | 'treatment' | 'mental';
+  readTime: string;
+  preview: string;
+  icon: React.ReactNode;
+}
 
 interface Ritual {
   id: string;
@@ -202,6 +288,90 @@ const DAILY_INSPIRATIONS = [
   "Small rituals create lasting change.",
   "Be gentle with yourself today.",
   "Every day is a fresh start for your skin.",
+];
+
+// Flare prediction data
+const FLARE_FACTORS = [
+  { name: 'Weather changes', percentage: 85, icon: <CloudRain size={16} />, color: CLEARA_COLORS.lavender },
+  { name: 'Sleep quality', percentage: 72, icon: <Bed size={16} />, color: CLEARA_COLORS.periwinkle },
+  { name: 'Stress level', percentage: 68, icon: <Brain size={16} />, color: CLEARA_COLORS.blush },
+  { name: 'Missed rituals', percentage: 45, icon: <Calendar size={16} />, color: CLEARA_COLORS.sage },
+];
+
+const FLARE_RECOMMENDATIONS = [
+  "Apply extra moisturizer before bed tonight",
+  "Try a 10-minute relaxation session",
+  "Consider wearing soft, breathable fabrics",
+  "Stay hydrated throughout the day",
+];
+
+// Trigger pattern data
+const TRIGGER_DATA: TriggerData[] = [
+  { name: 'Weather', icon: <Cloud size={18} />, percentage: 85, color: CLEARA_COLORS.lavender },
+  { name: 'Stress', icon: <Brain size={18} />, percentage: 72, color: CLEARA_COLORS.blush },
+  { name: 'Sleep', icon: <Bed size={18} />, percentage: 58, color: CLEARA_COLORS.periwinkle },
+  { name: 'Diet', icon: <Utensils size={18} />, percentage: 45, color: CLEARA_COLORS.sage },
+  { name: 'Exercise', icon: <Activity size={18} />, percentage: 32, color: CLEARA_COLORS.lavenderLight },
+];
+
+// Learn articles data
+const LEARN_ARTICLES: ArticleData[] = [
+  {
+    id: '1',
+    title: 'Understanding Your Skin',
+    category: 'skincare',
+    readTime: '5 min',
+    preview: 'Learn about the science behind psoriasis and how your skin responds to different factors.',
+    icon: <Droplets size={20} />,
+  },
+  {
+    id: '2',
+    title: 'Stress and Flares',
+    category: 'mental',
+    readTime: '4 min',
+    preview: 'Discover the connection between stress and skin flares, with practical management tips.',
+    icon: <Brain size={20} />,
+  },
+  {
+    id: '3',
+    title: 'Sleep for Healing',
+    category: 'lifestyle',
+    readTime: '6 min',
+    preview: 'Why quality sleep is essential for skin repair and how to optimize your rest.',
+    icon: <Bed size={20} />,
+  },
+  {
+    id: '4',
+    title: 'Moisturizing Guide',
+    category: 'skincare',
+    readTime: '4 min',
+    preview: 'The best practices for keeping your skin hydrated and reducing irritation.',
+    icon: <Droplets size={20} />,
+  },
+  {
+    id: '5',
+    title: 'Anti-Inflammatory Foods',
+    category: 'lifestyle',
+    readTime: '7 min',
+    preview: 'Dietary choices that may help reduce inflammation and support skin health.',
+    icon: <Utensils size={20} />,
+  },
+  {
+    id: '6',
+    title: 'Treatment Options',
+    category: 'treatment',
+    readTime: '8 min',
+    preview: 'An overview of available treatments from topicals to biologics.',
+    icon: <FileText size={20} />,
+  },
+];
+
+// Milestone badges data
+const MILESTONE_BADGES = [
+  { days: 7, icon: <Sprout size={18} />, label: 'Week One', color: CLEARA_COLORS.sage },
+  { days: 14, icon: <Leaf size={18} />, label: 'Two Weeks', color: CLEARA_COLORS.sageDark },
+  { days: 30, icon: <Flower2 size={18} />, label: 'One Month', color: CLEARA_COLORS.lavender },
+  { days: 60, icon: <Heart size={18} />, label: 'Two Months', color: CLEARA_COLORS.blush },
 ];
 
 // =============================================================================
@@ -1292,7 +1462,7 @@ const RitualsScreen: React.FC<RitualsScreenProps> = ({
           }}>
             7 days of consistency
           </span>
-          <span>🌸</span>
+          <Flower2 size={16} color={CLEARA_COLORS.blush} />
         </div>
         <div style={{
           height: 6,
@@ -1810,7 +1980,8 @@ const WellnessScreen: React.FC<WellnessScreenProps> = ({ onNavigate, subState, s
           marginBottom: 16,
           fontFamily: 'Georgia, serif',
         }}>
-          💜 You&apos;re not alone
+          <Heart size={24} color={CLEARA_COLORS.lavender} style={{ display: 'inline', marginRight: 8, verticalAlign: 'middle' }} />
+          You&apos;re not alone
         </h2>
         <p style={{
           fontSize: 16,
@@ -1828,7 +1999,8 @@ const WellnessScreen: React.FC<WellnessScreenProps> = ({ onNavigate, subState, s
             color: CLEARA_COLORS.label,
             marginBottom: 8,
           }}>
-            🌸 This is common
+            <Flower2 size={14} color={CLEARA_COLORS.blush} style={{ display: 'inline', marginRight: 6, verticalAlign: 'middle' }} />
+            This is common
           </h3>
           <p style={{
             fontSize: 13,
@@ -2498,10 +2670,10 @@ const JournalScreen: React.FC<JournalScreenProps> = ({ onNavigate }) => {
   const [selectedMood, setSelectedMood] = useState<number | null>(null);
 
   const moods = [
-    { emoji: '😊', label: 'Great', color: CLEARA_COLORS.sage },
-    { emoji: '🙂', label: 'Good', color: CLEARA_COLORS.lavender },
-    { emoji: '😐', label: 'Okay', color: CLEARA_COLORS.periwinkle },
-    { emoji: '😔', label: 'Low', color: CLEARA_COLORS.blush },
+    { icon: Smile, label: 'Great', color: CLEARA_COLORS.sage },
+    { icon: SmilePlus, label: 'Good', color: CLEARA_COLORS.lavender },
+    { icon: Meh, label: 'Okay', color: CLEARA_COLORS.periwinkle },
+    { icon: Frown, label: 'Low', color: CLEARA_COLORS.blush },
   ];
 
   const prompt = JOURNAL_PROMPTS[Math.floor(Date.now() / 86400000) % JOURNAL_PROMPTS.length];
@@ -2574,7 +2746,7 @@ const JournalScreen: React.FC<JournalScreenProps> = ({ onNavigate }) => {
                 cursor: 'pointer',
               }}
             >
-              <span style={{ fontSize: 28 }}>{mood.emoji}</span>
+              <mood.icon size={28} color={selectedMood === i ? mood.color : CLEARA_COLORS.secondaryLabel} />
               <span style={{
                 fontSize: 11,
                 color: selectedMood === i ? mood.color : CLEARA_COLORS.secondaryLabel,
@@ -2641,12 +2813,12 @@ const JournalScreen: React.FC<JournalScreenProps> = ({ onNavigate }) => {
         Recent Entries
       </h3>
       {[
-        { date: 'Yesterday', mood: '🙂', excerpt: 'Felt good about my morning routine...' },
-        { date: '2 days ago', mood: '😊', excerpt: 'Skin looked clearer after...' },
+        { date: 'Yesterday', MoodIcon: SmilePlus, color: CLEARA_COLORS.lavender, excerpt: 'Felt good about my morning routine...' },
+        { date: '2 days ago', MoodIcon: Smile, color: CLEARA_COLORS.sage, excerpt: 'Skin looked clearer after...' },
       ].map((entry, i) => (
         <GlassCard key={i} padding={14} style={{ marginBottom: 8 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <span style={{ fontSize: 24 }}>{entry.mood}</span>
+            <entry.MoodIcon size={24} color={entry.color} />
             <div style={{ flex: 1 }}>
               <p style={{
                 fontSize: 11,
@@ -3045,6 +3217,791 @@ const LearnScreen: React.FC<LearnScreenProps> = ({ onNavigate }) => {
 };
 
 // =============================================================================
+// SETTINGS SCREEN
+// =============================================================================
+
+interface SettingsScreenProps {
+  onNavigate: (screen: Screen) => void;
+}
+
+const SettingsScreen: React.FC<SettingsScreenProps> = ({ onNavigate }) => {
+  const [notifications, setNotifications] = useState({
+    ritualReminders: true,
+    flareAlerts: true,
+    weeklyReport: false,
+    tips: true,
+  });
+
+  const settingsSections = [
+    {
+      title: 'Notifications',
+      items: [
+        { key: 'ritualReminders', label: 'Ritual reminders', icon: <Bell size={20} /> },
+        { key: 'flareAlerts', label: 'Flare alerts', icon: <AlertTriangle size={20} /> },
+        { key: 'weeklyReport', label: 'Weekly report', icon: <FileText size={20} /> },
+        { key: 'tips', label: 'Daily tips', icon: <Sparkles size={20} /> },
+      ],
+    },
+  ];
+
+  const menuItems = [
+    { label: 'Connected Apps', icon: <Link size={20} />, screen: 'patterns' as Screen },
+    { label: 'Export Data', icon: <Download size={20} />, screen: 'report' as Screen },
+    { label: 'Privacy & Data', icon: <Shield size={20} />, screen: null },
+    { label: 'About Cleara', icon: <Smartphone size={20} />, screen: null },
+  ];
+
+  return (
+    <div style={{
+      padding: '0 20px 100px',
+      fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+    }}>
+      <button
+        onClick={() => { haptic.selection(); onNavigate('home'); }}
+        style={{
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: 8,
+          marginLeft: -8,
+          marginBottom: 8,
+          color: CLEARA_COLORS.secondaryLabel,
+        }}
+      >
+        <ArrowLeft size={24} />
+      </button>
+
+      <h1 style={{
+        fontSize: 24,
+        fontWeight: 600,
+        color: CLEARA_COLORS.label,
+        marginBottom: 24,
+        fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+      }}>
+        Settings
+      </h1>
+
+      {/* Profile Card */}
+      <GlassCard padding={16} style={{ marginBottom: 20 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <div style={{
+            width: 56,
+            height: 56,
+            borderRadius: 28,
+            background: `linear-gradient(135deg, ${CLEARA_COLORS.lavender}, ${CLEARA_COLORS.periwinkle})`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <User size={28} color="white" />
+          </div>
+          <div style={{ flex: 1 }}>
+            <p style={{
+              fontSize: 17,
+              fontWeight: 600,
+              color: CLEARA_COLORS.label,
+              marginBottom: 2,
+            }}>
+              Sarah Chen
+            </p>
+            <p style={{
+              fontSize: 13,
+              color: CLEARA_COLORS.secondaryLabel,
+            }}>
+              Member since January 2024
+            </p>
+          </div>
+          <ChevronRight size={20} color={CLEARA_COLORS.tertiaryLabel} />
+        </div>
+      </GlassCard>
+
+      {/* Notification Settings */}
+      {settingsSections.map((section, sectionIndex) => (
+        <div key={sectionIndex} style={{ marginBottom: 20 }}>
+          <h3 style={{
+            fontSize: 13,
+            fontWeight: 600,
+            color: CLEARA_COLORS.secondaryLabel,
+            textTransform: 'uppercase',
+            letterSpacing: 0.5,
+            marginBottom: 10,
+          }}>
+            {section.title}
+          </h3>
+          <GlassCard padding={0}>
+            {section.items.map((item, itemIndex) => (
+              <div
+                key={item.key}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '14px 16px',
+                  borderBottom: itemIndex < section.items.length - 1 ? `1px solid ${CLEARA_BORDERS.light}` : 'none',
+                }}
+              >
+                <div style={{ color: CLEARA_COLORS.lavender, marginRight: 12 }}>
+                  {item.icon}
+                </div>
+                <span style={{
+                  flex: 1,
+                  fontSize: 15,
+                  color: CLEARA_COLORS.label,
+                }}>
+                  {item.label}
+                </span>
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    haptic.selection();
+                    setNotifications(prev => ({
+                      ...prev,
+                      [item.key]: !prev[item.key as keyof typeof prev],
+                    }));
+                  }}
+                  style={{
+                    width: 48,
+                    height: 28,
+                    borderRadius: 14,
+                    border: 'none',
+                    cursor: 'pointer',
+                    background: notifications[item.key as keyof typeof notifications]
+                      ? CLEARA_COLORS.sage
+                      : CLEARA_COLORS.canvasSecondary,
+                    padding: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  <motion.div
+                    animate={{
+                      x: notifications[item.key as keyof typeof notifications] ? 20 : 0,
+                    }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                    style={{
+                      width: 24,
+                      height: 24,
+                      borderRadius: 12,
+                      backgroundColor: 'white',
+                      boxShadow: CLEARA_SHADOWS.card,
+                    }}
+                  />
+                </motion.button>
+              </div>
+            ))}
+          </GlassCard>
+        </div>
+      ))}
+
+      {/* Menu Items */}
+      <GlassCard padding={0}>
+        {menuItems.map((item, index) => (
+          <motion.div
+            key={index}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => {
+              haptic.selection();
+              if (item.screen) onNavigate(item.screen);
+            }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              padding: '14px 16px',
+              cursor: 'pointer',
+              borderBottom: index < menuItems.length - 1 ? `1px solid ${CLEARA_BORDERS.light}` : 'none',
+            }}
+          >
+            <div style={{ color: CLEARA_COLORS.lavender, marginRight: 12 }}>
+              {item.icon}
+            </div>
+            <span style={{
+              flex: 1,
+              fontSize: 15,
+              color: CLEARA_COLORS.label,
+            }}>
+              {item.label}
+            </span>
+            <ChevronRight size={18} color={CLEARA_COLORS.tertiaryLabel} />
+          </motion.div>
+        ))}
+      </GlassCard>
+
+      {/* Version */}
+      <p style={{
+        textAlign: 'center',
+        fontSize: 12,
+        color: CLEARA_COLORS.tertiaryLabel,
+        marginTop: 24,
+      }}>
+        Cleara v1.0.0
+      </p>
+    </div>
+  );
+};
+
+// =============================================================================
+// PATTERNS SCREEN
+// =============================================================================
+
+interface PatternsScreenProps {
+  onNavigate: (screen: Screen) => void;
+}
+
+const PatternsScreen: React.FC<PatternsScreenProps> = ({ onNavigate }) => {
+  const [stressLevel, setStressLevel] = useState(4);
+
+  const connectedSources = [
+    { name: 'Apple Health', icon: <Heart size={20} />, status: 'Connected', color: '#FF3B30' },
+    { name: 'Weather', icon: <Cloud size={20} />, status: 'Connected', color: CLEARA_COLORS.lavender },
+    { name: 'Calendar', icon: <Calendar size={20} />, status: 'Not connected', color: CLEARA_COLORS.tertiaryLabel },
+  ];
+
+  return (
+    <div style={{
+      padding: '0 20px 100px',
+      fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+    }}>
+      <button
+        onClick={() => { haptic.selection(); onNavigate('home'); }}
+        style={{
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: 8,
+          marginLeft: -8,
+          marginBottom: 8,
+          color: CLEARA_COLORS.secondaryLabel,
+        }}
+      >
+        <ArrowLeft size={24} />
+      </button>
+
+      <h1 style={{
+        fontSize: 24,
+        fontWeight: 600,
+        color: CLEARA_COLORS.label,
+        marginBottom: 8,
+        fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+      }}>
+        Your Patterns
+      </h1>
+      <p style={{
+        fontSize: 14,
+        color: CLEARA_COLORS.secondaryLabel,
+        marginBottom: 24,
+      }}>
+        Understanding what affects your skin.
+      </p>
+
+      {/* Trigger Correlations */}
+      <h3 style={{
+        fontSize: 13,
+        fontWeight: 600,
+        color: CLEARA_COLORS.secondaryLabel,
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
+        marginBottom: 12,
+      }}>
+        Trigger Correlations
+      </h3>
+      <GlassCard padding={16} style={{ marginBottom: 20 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          {TRIGGER_DATA.map((trigger, index) => (
+            <div key={index}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ color: trigger.color }}>{trigger.icon}</div>
+                  <span style={{ fontSize: 14, color: CLEARA_COLORS.label }}>{trigger.name}</span>
+                </div>
+                <span style={{ fontSize: 14, fontWeight: 600, color: trigger.color }}>
+                  {trigger.percentage}%
+                </span>
+              </div>
+              <div style={{
+                height: 8,
+                backgroundColor: CLEARA_COLORS.canvasSecondary,
+                borderRadius: 4,
+                overflow: 'hidden',
+              }}>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${trigger.percentage}%` }}
+                  transition={{ duration: 0.8, delay: index * 0.1 }}
+                  style={{
+                    height: '100%',
+                    backgroundColor: trigger.color,
+                    borderRadius: 4,
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </GlassCard>
+
+      {/* Quick Check-in */}
+      <h3 style={{
+        fontSize: 13,
+        fontWeight: 600,
+        color: CLEARA_COLORS.secondaryLabel,
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
+        marginBottom: 12,
+      }}>
+        How stressed are you today?
+      </h3>
+      <GlassCard padding={16} style={{ marginBottom: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+          <span style={{ fontSize: 12, color: CLEARA_COLORS.tertiaryLabel }}>Relaxed</span>
+          <span style={{ fontSize: 12, color: CLEARA_COLORS.tertiaryLabel }}>Stressed</span>
+        </div>
+        <div style={{ display: 'flex', gap: 8 }}>
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((level) => (
+            <motion.button
+              key={level}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => { haptic.selection(); setStressLevel(level); }}
+              style={{
+                flex: 1,
+                height: 40,
+                borderRadius: 8,
+                border: 'none',
+                cursor: 'pointer',
+                backgroundColor: stressLevel === level
+                  ? (level <= 3 ? CLEARA_COLORS.sage : level <= 5 ? CLEARA_COLORS.lavender : CLEARA_COLORS.blush)
+                  : CLEARA_COLORS.canvasSecondary,
+                color: stressLevel === level ? 'white' : CLEARA_COLORS.label,
+                fontSize: 14,
+                fontWeight: 500,
+              }}
+            >
+              {level}
+            </motion.button>
+          ))}
+        </div>
+      </GlassCard>
+
+      {/* Connected Sources */}
+      <h3 style={{
+        fontSize: 13,
+        fontWeight: 600,
+        color: CLEARA_COLORS.secondaryLabel,
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
+        marginBottom: 12,
+      }}>
+        Data Sources
+      </h3>
+      <GlassCard padding={0}>
+        {connectedSources.map((source, index) => (
+          <div
+            key={index}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              padding: '14px 16px',
+              borderBottom: index < connectedSources.length - 1 ? `1px solid ${CLEARA_BORDERS.light}` : 'none',
+            }}
+          >
+            <div style={{ color: source.color, marginRight: 12 }}>
+              {source.icon}
+            </div>
+            <div style={{ flex: 1 }}>
+              <span style={{ fontSize: 15, color: CLEARA_COLORS.label }}>{source.name}</span>
+            </div>
+            <span style={{
+              fontSize: 12,
+              color: source.status === 'Connected' ? CLEARA_COLORS.sage : CLEARA_COLORS.tertiaryLabel,
+            }}>
+              {source.status}
+            </span>
+          </div>
+        ))}
+      </GlassCard>
+    </div>
+  );
+};
+
+// =============================================================================
+// REPORT SCREEN
+// =============================================================================
+
+interface ReportScreenProps {
+  onNavigate: (screen: Screen) => void;
+}
+
+const ReportScreen: React.FC<ReportScreenProps> = ({ onNavigate }) => {
+  const [selectedSections, setSelectedSections] = useState({
+    photos: true,
+    pasi: true,
+    rituals: true,
+    wellness: false,
+  });
+
+  const sections = [
+    { key: 'photos', label: 'Photo Progress', icon: <Camera size={20} /> },
+    { key: 'pasi', label: 'PASI Trends', icon: <TrendingDown size={20} /> },
+    { key: 'rituals', label: 'Ritual Consistency', icon: <Check size={20} /> },
+    { key: 'wellness', label: 'Wellness Data', icon: <Heart size={20} /> },
+  ];
+
+  return (
+    <div style={{
+      padding: '0 20px 100px',
+      fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+    }}>
+      <button
+        onClick={() => { haptic.selection(); onNavigate('home'); }}
+        style={{
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: 8,
+          marginLeft: -8,
+          marginBottom: 8,
+          color: CLEARA_COLORS.secondaryLabel,
+        }}
+      >
+        <ArrowLeft size={24} />
+      </button>
+
+      <h1 style={{
+        fontSize: 24,
+        fontWeight: 600,
+        color: CLEARA_COLORS.label,
+        marginBottom: 8,
+        fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+      }}>
+        Provider Report
+      </h1>
+      <p style={{
+        fontSize: 14,
+        color: CLEARA_COLORS.secondaryLabel,
+        marginBottom: 24,
+      }}>
+        Share your progress with your healthcare provider.
+      </p>
+
+      {/* Report Preview */}
+      <GlassCard padding={20} style={{ marginBottom: 20, textAlign: 'center' }}>
+        <div style={{
+          width: 80,
+          height: 100,
+          margin: '0 auto 16px',
+          backgroundColor: 'white',
+          borderRadius: 8,
+          boxShadow: CLEARA_SHADOWS.card,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <FileText size={32} color={CLEARA_COLORS.lavender} />
+        </div>
+        <p style={{
+          fontSize: 16,
+          fontWeight: 600,
+          color: CLEARA_COLORS.label,
+          marginBottom: 4,
+        }}>
+          Health Summary
+        </p>
+        <p style={{
+          fontSize: 13,
+          color: CLEARA_COLORS.secondaryLabel,
+        }}>
+          Last 30 days
+        </p>
+      </GlassCard>
+
+      {/* Section Selection */}
+      <h3 style={{
+        fontSize: 13,
+        fontWeight: 600,
+        color: CLEARA_COLORS.secondaryLabel,
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
+        marginBottom: 12,
+      }}>
+        Include in Report
+      </h3>
+      <GlassCard padding={0} style={{ marginBottom: 24 }}>
+        {sections.map((section, index) => (
+          <motion.div
+            key={section.key}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => {
+              haptic.selection();
+              setSelectedSections(prev => ({
+                ...prev,
+                [section.key]: !prev[section.key as keyof typeof prev],
+              }));
+            }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              padding: '14px 16px',
+              cursor: 'pointer',
+              borderBottom: index < sections.length - 1 ? `1px solid ${CLEARA_BORDERS.light}` : 'none',
+            }}
+          >
+            <div style={{ color: CLEARA_COLORS.lavender, marginRight: 12 }}>
+              {section.icon}
+            </div>
+            <span style={{ flex: 1, fontSize: 15, color: CLEARA_COLORS.label }}>
+              {section.label}
+            </span>
+            <div style={{
+              width: 22,
+              height: 22,
+              borderRadius: 6,
+              border: `2px solid ${selectedSections[section.key as keyof typeof selectedSections] ? CLEARA_COLORS.sage : CLEARA_COLORS.tertiaryLabel}`,
+              backgroundColor: selectedSections[section.key as keyof typeof selectedSections] ? CLEARA_COLORS.sage : 'transparent',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              {selectedSections[section.key as keyof typeof selectedSections] && (
+                <Check size={14} color="white" />
+              )}
+            </div>
+          </motion.div>
+        ))}
+      </GlassCard>
+
+      {/* Actions */}
+      <div style={{ display: 'flex', gap: 12 }}>
+        <motion.button
+          whileTap={{ scale: 0.98 }}
+          onClick={() => haptic.success()}
+          style={{
+            flex: 1,
+            padding: '14px 20px',
+            borderRadius: 14,
+            border: 'none',
+            cursor: 'pointer',
+            backgroundColor: CLEARA_COLORS.lavender,
+            color: 'white',
+            fontSize: 15,
+            fontWeight: 600,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+          }}
+        >
+          <Download size={18} />
+          Generate PDF
+        </motion.button>
+        <motion.button
+          whileTap={{ scale: 0.98 }}
+          onClick={() => haptic.light()}
+          style={{
+            padding: '14px 20px',
+            borderRadius: 14,
+            border: `1px solid ${CLEARA_BORDERS.lavender}`,
+            cursor: 'pointer',
+            backgroundColor: 'transparent',
+            color: CLEARA_COLORS.lavender,
+            fontSize: 15,
+            fontWeight: 600,
+          }}
+        >
+          <Share2 size={18} />
+        </motion.button>
+      </div>
+    </div>
+  );
+};
+
+// =============================================================================
+// BREATHING SCREEN
+// =============================================================================
+
+interface BreathingScreenProps {
+  onNavigate: (screen: Screen) => void;
+  breathPhase: 'inhale' | 'exhale';
+  setBreathPhase: React.Dispatch<React.SetStateAction<'inhale' | 'exhale'>>;
+  breathCount: number;
+  setBreathCount: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const BreathingScreen: React.FC<BreathingScreenProps> = ({
+  onNavigate,
+  breathPhase,
+  setBreathPhase,
+  breathCount,
+  setBreathCount,
+}) => {
+  const [isActive, setIsActive] = useState(false);
+  const maxBreaths = 3;
+
+  useEffect(() => {
+    if (!isActive) return;
+
+    const interval = setInterval(() => {
+      setBreathPhase(prev => prev === 'inhale' ? 'exhale' : 'inhale');
+
+      if (breathPhase === 'exhale') {
+        setBreathCount(prev => {
+          if (prev + 1 >= maxBreaths) {
+            setIsActive(false);
+            haptic.success();
+            return 0;
+          }
+          return prev + 1;
+        });
+      }
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [isActive, breathPhase, setBreathPhase, setBreathCount]);
+
+  const handleStart = () => {
+    haptic.medium();
+    setBreathPhase('inhale');
+    setBreathCount(0);
+    setIsActive(true);
+  };
+
+  return (
+    <div style={{
+      padding: '0 20px',
+      fontFamily: 'var(--font-dm-sans), system-ui, sans-serif',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+      <button
+        onClick={() => { haptic.selection(); onNavigate('home'); }}
+        style={{
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: 8,
+          marginLeft: -8,
+          marginBottom: 8,
+          color: CLEARA_COLORS.secondaryLabel,
+        }}
+      >
+        <ArrowLeft size={24} />
+      </button>
+
+      <div style={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        paddingBottom: 60,
+      }}>
+        {/* Breathing Circle */}
+        <motion.div
+          animate={{
+            scale: isActive ? (breathPhase === 'inhale' ? 1.4 : 1) : 1,
+          }}
+          transition={{
+            duration: 4,
+            ease: 'easeInOut',
+          }}
+          style={{
+            width: 160,
+            height: 160,
+            borderRadius: '50%',
+            background: `linear-gradient(135deg, ${CLEARA_COLORS.lavender}40, ${CLEARA_COLORS.periwinkle}40)`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: 32,
+            boxShadow: `0 0 60px ${CLEARA_COLORS.lavender}30`,
+          }}
+        >
+          <motion.div
+            animate={{
+              scale: isActive ? (breathPhase === 'inhale' ? 1.3 : 1) : 1,
+            }}
+            transition={{
+              duration: 4,
+              ease: 'easeInOut',
+            }}
+            style={{
+              width: 100,
+              height: 100,
+              borderRadius: '50%',
+              background: `linear-gradient(135deg, ${CLEARA_COLORS.lavender}, ${CLEARA_COLORS.periwinkle})`,
+            }}
+          />
+        </motion.div>
+
+        {/* Instructions */}
+        <motion.p
+          key={breathPhase + isActive}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={{
+            fontSize: 24,
+            fontWeight: 500,
+            color: CLEARA_COLORS.label,
+            marginBottom: 8,
+            fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
+          }}
+        >
+          {!isActive ? 'Take a moment' : (breathPhase === 'inhale' ? 'Breathe in...' : 'Breathe out...')}
+        </motion.p>
+
+        <p style={{
+          fontSize: 14,
+          color: CLEARA_COLORS.secondaryLabel,
+          marginBottom: 32,
+        }}>
+          {!isActive ? 'A few deep breaths can help calm your mind.' : `${breathCount + 1} of ${maxBreaths}`}
+        </p>
+
+        {/* Start/Skip Button */}
+        {!isActive ? (
+          <motion.button
+            whileTap={{ scale: 0.98 }}
+            onClick={handleStart}
+            style={{
+              padding: '14px 40px',
+              borderRadius: 100,
+              border: 'none',
+              cursor: 'pointer',
+              backgroundColor: CLEARA_COLORS.lavender,
+              color: 'white',
+              fontSize: 16,
+              fontWeight: 600,
+            }}
+          >
+            Begin
+          </motion.button>
+        ) : (
+          <motion.button
+            whileTap={{ scale: 0.98 }}
+            onClick={() => {
+              haptic.selection();
+              setIsActive(false);
+              onNavigate('home');
+            }}
+            style={{
+              padding: '10px 24px',
+              borderRadius: 100,
+              border: `1px solid ${CLEARA_BORDERS.light}`,
+              cursor: 'pointer',
+              backgroundColor: 'transparent',
+              color: CLEARA_COLORS.secondaryLabel,
+              fontSize: 14,
+              fontWeight: 500,
+            }}
+          >
+            Skip
+          </motion.button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// =============================================================================
 // MAIN COMPONENT
 // =============================================================================
 
@@ -3064,6 +4021,18 @@ const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
 
   // Scroll container ref
   const screenContainerRef = useRef<HTMLDivElement>(null);
+
+  // Pull-to-refresh state
+  const [pullToRefresh, setPullToRefresh] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [pullThresholdCrossed, setPullThresholdCrossed] = useState(false);
+
+  // Swipe navigation state
+  const [swipeProgress, setSwipeProgress] = useState(0);
+
+  // Breathing state
+  const [breathPhase, setBreathPhase] = useState<'inhale' | 'exhale'>('inhale');
+  const [breathCount, setBreathCount] = useState(0);
 
   // Use controlled props if provided
   const activeScreen = controlledScreen ?? internalScreen;
@@ -3096,6 +4065,56 @@ const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
       completed: false,
     };
     setRituals(prev => [...prev, newRitual]);
+  };
+
+  // Pull-to-refresh handlers
+  const handlePullDrag = (_: MouseEvent | TouchEvent | PointerEvent, info: { offset: { y: number } }) => {
+    if (activeScreen === 'home' && info.offset.y > 0) {
+      const pullAmount = Math.min(info.offset.y, PULL_MAX);
+      setPullToRefresh(pullAmount);
+
+      if (pullAmount >= PULL_THRESHOLD && !pullThresholdCrossed) {
+        setPullThresholdCrossed(true);
+        haptic.medium();
+      } else if (pullAmount < PULL_THRESHOLD && pullThresholdCrossed) {
+        setPullThresholdCrossed(false);
+      }
+    }
+  };
+
+  const handlePullDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: { offset: { y: number } }) => {
+    if (info.offset.y >= PULL_THRESHOLD) {
+      setIsRefreshing(true);
+      haptic.success();
+      setTimeout(() => {
+        setIsRefreshing(false);
+        setPullToRefresh(0);
+        setPullThresholdCrossed(false);
+      }, 1500);
+    } else {
+      setPullToRefresh(0);
+      setPullThresholdCrossed(false);
+    }
+  };
+
+  // Swipe navigation handlers
+  const handleHorizontalDrag = (_: MouseEvent | TouchEvent | PointerEvent, info: { offset: { x: number } }) => {
+    const progress = Math.max(-1, Math.min(1, info.offset.x / 150));
+    setSwipeProgress(progress);
+  };
+
+  const handleSwipeEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: { offset: { x: number }; velocity: { x: number } }) => {
+    setSwipeProgress(0);
+    const swipeThreshold = 50;
+    const velocityThreshold = 200;
+
+    if (info.offset.x > swipeThreshold || info.velocity.x > velocityThreshold) {
+      // Swipe right - go back
+      haptic.selection();
+      if (activeScreen !== 'home') {
+        handleNavigate('home');
+      }
+    }
   };
 
   const renderScreen = () => {
@@ -3173,6 +4192,34 @@ const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
             onNavigate={handleNavigate}
           />
         );
+      case 'settings':
+        return (
+          <SettingsScreen
+            onNavigate={handleNavigate}
+          />
+        );
+      case 'patterns':
+        return (
+          <PatternsScreen
+            onNavigate={handleNavigate}
+          />
+        );
+      case 'report':
+        return (
+          <ReportScreen
+            onNavigate={handleNavigate}
+          />
+        );
+      case 'breathing':
+        return (
+          <BreathingScreen
+            onNavigate={handleNavigate}
+            breathPhase={breathPhase}
+            setBreathPhase={setBreathPhase}
+            breathCount={breathCount}
+            setBreathCount={setBreathCount}
+          />
+        );
       default:
         return null;
     }
@@ -3238,6 +4285,23 @@ const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
           {/* Screen Content */}
           <motion.div
             ref={screenContainerRef}
+            drag={activeScreen === 'home' ? 'y' : 'x'}
+            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+            dragElastic={activeScreen === 'home' ? { top: 0.3, bottom: 0 } : 0.2}
+            onDrag={(e, info) => {
+              if (activeScreen === 'home') {
+                handlePullDrag(e, info);
+              } else {
+                handleHorizontalDrag(e, info);
+              }
+            }}
+            onDragEnd={(e, info) => {
+              if (activeScreen === 'home') {
+                handlePullDragEnd(e, info);
+              } else {
+                handleSwipeEnd(e, info as { offset: { x: number }; velocity: { x: number } });
+              }
+            }}
             onWheel={(e) => {
               e.stopPropagation();
               if (screenContainerRef.current) {
@@ -3253,8 +4317,93 @@ const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
               overflow: 'auto',
               overflowX: 'hidden',
               WebkitOverflowScrolling: 'touch',
+              cursor: 'grab',
             }}
           >
+            {/* Pull-to-Refresh Indicator */}
+            {activeScreen === 'home' && pullToRefresh > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{
+                  opacity: Math.min(pullToRefresh / PULL_THRESHOLD, 1),
+                  y: 0,
+                  scale: pullThresholdCrossed ? 1.2 : 0.8 + (pullToRefresh / PULL_MAX) * 0.4
+                }}
+                style={{
+                  position: 'absolute',
+                  top: 12,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  zIndex: 10,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: 4,
+                }}
+              >
+                <motion.div
+                  animate={{
+                    rotate: isRefreshing ? 360 : pullToRefresh * 3.6,
+                  }}
+                  transition={isRefreshing ? {
+                    duration: 0.8,
+                    repeat: Infinity,
+                    ease: 'linear'
+                  } : { duration: 0.1 }}
+                  style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: '50%',
+                    background: pullThresholdCrossed
+                      ? `linear-gradient(135deg, ${CLEARA_COLORS.lavender}40, ${CLEARA_COLORS.lavender}20)`
+                      : 'rgba(255,255,255,0.5)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: CLEARA_SHADOWS.card,
+                  }}
+                >
+                  <RefreshCw
+                    size={18}
+                    color={pullThresholdCrossed ? CLEARA_COLORS.lavender : CLEARA_COLORS.tertiaryLabel}
+                  />
+                </motion.div>
+                {isRefreshing && (
+                  <span style={{
+                    fontSize: 11,
+                    color: CLEARA_COLORS.lavender,
+                    fontWeight: 500,
+                  }}>
+                    Refreshing...
+                  </span>
+                )}
+              </motion.div>
+            )}
+
+            {/* Swipe Edge Indicator */}
+            {activeScreen !== 'home' && swipeProgress > 0.1 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: swipeProgress }}
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  width: 24,
+                  height: 60,
+                  background: `linear-gradient(90deg, ${CLEARA_COLORS.lavender}30, transparent)`,
+                  borderRadius: '0 12px 12px 0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  zIndex: 10,
+                }}
+              >
+                <ChevronLeft size={16} color={CLEARA_COLORS.lavender} />
+              </motion.div>
+            )}
+
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeScreen + (activeSubState || '')}
