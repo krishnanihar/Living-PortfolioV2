@@ -22,7 +22,6 @@ import {
   Shield,
   Check,
   Heart,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
   Play,
@@ -589,18 +588,28 @@ const FLARE_PREDICTION_FLOW: FlowData = {
 const ALL_FLOWS: FlowData[] = [PHOTO_CAPTURE_FLOW, WELLNESS_CHECKIN_FLOW, FLARE_PREDICTION_FLOW];
 
 // =============================================================================
-// AUTO-PLAY FLOW SECTION COMPONENT
+// FULL-SCREEN FLOW SECTION COMPONENT (Side-by-Side Layout)
 // =============================================================================
 
-interface ClearaAutoPlayFlowSectionProps {
+interface FullScreenFlowSectionProps {
   flow: FlowData;
+  reversed?: boolean; // true = phone on LEFT, content on RIGHT
 }
 
-const ClearaAutoPlayFlowSection: React.FC<ClearaAutoPlayFlowSectionProps> = ({ flow }) => {
+const FullScreenFlowSection: React.FC<FullScreenFlowSectionProps> = ({ flow, reversed = false }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check for mobile viewport
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Auto-advance logic (3s per step)
   useEffect(() => {
@@ -649,76 +658,98 @@ const ClearaAutoPlayFlowSection: React.FC<ClearaAutoPlayFlowSectionProps> = ({ f
 
   const IconComponent = flow.icon;
 
-  return (
-    <div style={{
-      padding: '2rem',
-    }}>
-      {/* Title with icon */}
+  // Watercolor blob positions based on flow
+  const getBlobPosition = () => {
+    if (flow.id === 'photo-capture') return { top: '10%', right: '5%' };
+    if (flow.id === 'wellness-checkin') return { bottom: '15%', left: '5%' };
+    return { top: '15%', right: '8%' };
+  };
+
+  const contentSide = (
+    <motion.div
+      initial={{ opacity: 0, x: reversed ? 30 : -30 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, margin: '-100px' }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      style={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: isMobile ? '2rem 1rem' : '3rem',
+        maxWidth: isMobile ? '100%' : '500px',
+      }}
+    >
+      {/* Icon + Title */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        gap: '0.75rem',
-        marginBottom: '1rem',
+        gap: '1rem',
+        marginBottom: '0.75rem',
       }}>
-        <IconComponent size={28} color={flow.color} strokeWidth={1.5} />
-        <h3
+        <div style={{
+          width: 56,
+          height: 56,
+          borderRadius: '50%',
+          background: `${flow.color}15`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}>
+          <IconComponent size={28} color={flow.color} strokeWidth={1.5} />
+        </div>
+        <h2
           className="cleara-heading"
           style={{
-            fontSize: '1.5rem',
+            fontSize: isMobile ? '1.75rem' : '2.25rem',
             color: 'var(--cleara-text-primary, #2A2A2A)',
             margin: 0,
+            lineHeight: 1.2,
           }}
         >
           {flow.title}
-        </h3>
+        </h2>
       </div>
 
-      {/* Dynamic description with AnimatePresence */}
-      <AnimatePresence mode="wait">
-        <motion.p
-          key={currentStep}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.3 }}
-          className="cleara-body"
-          style={{
-            textAlign: 'center',
-            maxWidth: '550px',
-            margin: '0 auto 2rem',
-            color: 'var(--cleara-text-secondary, #4A4A4A)',
-            lineHeight: 1.7,
-            fontSize: '0.95rem',
-          }}
-        >
-          {flow.steps[currentStep].description}
-        </motion.p>
-      </AnimatePresence>
+      {/* Subtitle */}
+      <p
+        className="cleara-body"
+        style={{
+          fontSize: '1.1rem',
+          color: 'var(--cleara-text-secondary, #4A4A4A)',
+          marginBottom: '2rem',
+          lineHeight: 1.6,
+        }}
+      >
+        {flow.subtitle}
+      </p>
 
-      {/* Phone mockup (controlled) */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        marginBottom: '2rem',
-        height: '520px',
-      }}>
-        <div style={{
-          transform: 'scale(0.65)',
-          transformOrigin: 'top center',
-        }}>
-          <ClearaPhoneMockup
-            controlledScreen={flow.steps[currentStep].screen}
-            controlledSubState={flow.steps[currentStep].subState}
-            scale={0.9}
-          />
-        </div>
+      {/* Dynamic Step Description */}
+      <div style={{ minHeight: '5rem', marginBottom: '2rem' }}>
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={currentStep}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="cleara-body"
+            style={{
+              fontSize: '1rem',
+              lineHeight: 1.8,
+              color: 'var(--cleara-text-primary, #2A2A2A)',
+              margin: 0,
+            }}
+          >
+            {flow.steps[currentStep].description}
+          </motion.p>
+        </AnimatePresence>
       </div>
 
       {/* Controls: Prev | Play/Pause | Next */}
       <div style={{
         display: 'flex',
-        justifyContent: 'center',
         alignItems: 'center',
         gap: '1rem',
         marginBottom: '1.5rem',
@@ -729,8 +760,8 @@ const ClearaAutoPlayFlowSection: React.FC<ClearaAutoPlayFlowSectionProps> = ({ f
           whileHover={{ scale: currentStep === 0 ? 1 : 1.05 }}
           whileTap={{ scale: currentStep === 0 ? 1 : 0.95 }}
           style={{
-            width: 44,
-            height: 44,
+            width: 48,
+            height: 48,
             borderRadius: '50%',
             background: currentStep === 0 ? 'rgba(42,42,42,0.05)' : `${flow.color}20`,
             border: `2px solid ${currentStep === 0 ? 'rgba(42,42,42,0.1)' : flow.color}`,
@@ -750,8 +781,7 @@ const ClearaAutoPlayFlowSection: React.FC<ClearaAutoPlayFlowSectionProps> = ({ f
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           style={{
-            padding: isPlaying ? '0.75rem' : '0.75rem 1.5rem',
-            minWidth: isPlaying ? '48px' : 'auto',
+            padding: isPlaying ? '0.75rem 1rem' : '0.75rem 1.75rem',
             height: '48px',
             borderRadius: '100px',
             background: `${flow.color}20`,
@@ -763,7 +793,7 @@ const ClearaAutoPlayFlowSection: React.FC<ClearaAutoPlayFlowSectionProps> = ({ f
             alignItems: 'center',
             justifyContent: 'center',
             gap: '0.5rem',
-            fontSize: '0.9rem',
+            fontSize: '0.95rem',
           }}
         >
           {isPlaying ? (
@@ -771,7 +801,7 @@ const ClearaAutoPlayFlowSection: React.FC<ClearaAutoPlayFlowSectionProps> = ({ f
           ) : isComplete ? (
             <>
               <RotateCcw size={18} />
-              Play Again
+              Replay
             </>
           ) : (
             <>
@@ -787,8 +817,8 @@ const ClearaAutoPlayFlowSection: React.FC<ClearaAutoPlayFlowSectionProps> = ({ f
           whileHover={{ scale: (currentStep === flow.steps.length - 1 && isComplete) ? 1 : 1.05 }}
           whileTap={{ scale: (currentStep === flow.steps.length - 1 && isComplete) ? 1 : 0.95 }}
           style={{
-            width: 44,
-            height: 44,
+            width: 48,
+            height: 48,
             borderRadius: '50%',
             background: (currentStep === flow.steps.length - 1 && isComplete) ? 'rgba(42,42,42,0.05)' : `${flow.color}20`,
             border: `2px solid ${(currentStep === flow.steps.length - 1 && isComplete) ? 'rgba(42,42,42,0.1)' : flow.color}`,
@@ -803,27 +833,27 @@ const ClearaAutoPlayFlowSection: React.FC<ClearaAutoPlayFlowSectionProps> = ({ f
         </motion.button>
       </div>
 
-      {/* Progress bar */}
-      <div style={{ maxWidth: '350px', margin: '0 auto' }}>
+      {/* Progress Bar */}
+      <div style={{ maxWidth: '400px' }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
-          fontSize: '0.8rem',
+          fontSize: '0.85rem',
           color: 'var(--cleara-text-muted, #8A8A8A)',
           marginBottom: '0.5rem',
         }}>
           <span>Step {currentStep + 1} of {flow.steps.length}</span>
-          <span>{flow.steps[currentStep].label}</span>
+          <span style={{ fontWeight: 500, color: flow.color }}>{flow.steps[currentStep].label}</span>
         </div>
         <div style={{
-          height: 4,
-          borderRadius: 2,
+          height: 5,
+          borderRadius: 3,
           background: 'rgba(42,42,42,0.08)',
         }}>
           <motion.div
             style={{
               height: '100%',
-              borderRadius: 2,
+              borderRadius: 3,
               background: flow.color,
             }}
             animate={{ width: `${((currentStep + 1) / flow.steps.length) * 100}%` }}
@@ -831,125 +861,91 @@ const ClearaAutoPlayFlowSection: React.FC<ClearaAutoPlayFlowSectionProps> = ({ f
           />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
-};
 
-// =============================================================================
-// COLLAPSIBLE FLOW CARD COMPONENT
-// =============================================================================
-
-interface CollapsibleFlowCardProps {
-  flow: FlowData;
-  isExpanded: boolean;
-  onToggle: () => void;
-}
-
-const CollapsibleFlowCard: React.FC<CollapsibleFlowCardProps> = ({ flow, isExpanded, onToggle }) => {
-  const IconComponent = flow.icon;
-
-  return (
+  const phoneSide = (
     <motion.div
-      layout
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, margin: '-100px' }}
+      transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
       style={{
-        borderRadius: '20px',
-        overflow: 'hidden',
-        marginBottom: '1.5rem',
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: isMobile ? '2rem 0' : '2rem',
       }}
     >
-      {/* Collapsed Header (always visible) */}
-      <motion.button
-        onClick={onToggle}
-        whileHover={{ scale: 1.01 }}
-        whileTap={{ scale: 0.99 }}
+      <ClearaPhoneMockup
+        controlledScreen={flow.steps[currentStep].screen}
+        controlledSubState={flow.steps[currentStep].subState}
+        scale={isMobile ? 0.85 : 1}
+      />
+    </motion.div>
+  );
+
+  const blobPosition = getBlobPosition();
+
+  return (
+    <section
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        padding: isMobile ? '4rem 1rem' : '4rem 2rem',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Watercolor background blob */}
+      <div
         style={{
-          width: '100%',
-          padding: '1.5rem 2rem',
-          background: 'rgba(255, 255, 255, 0.7)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          border: `1px solid ${flow.color}20`,
-          borderRadius: isExpanded ? '20px 20px 0 0' : '20px',
-          cursor: 'pointer',
+          position: 'absolute',
+          ...blobPosition,
+          width: isMobile ? 200 : 350,
+          height: isMobile ? 200 : 350,
+          background: `radial-gradient(ellipse at 30% 30%, ${flow.color}30 0%, ${flow.color}10 40%, transparent 70%)`,
+          borderRadius: '50%',
+          filter: 'blur(40px)',
+          opacity: 0.6,
+          pointerEvents: 'none',
+        }}
+      />
+
+      <div
+        style={{
           display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
           alignItems: 'center',
-          gap: '1rem',
-          textAlign: 'left',
+          gap: isMobile ? '2rem' : '4rem',
+          maxWidth: '1400px',
+          margin: '0 auto',
+          width: '100%',
         }}
       >
-        {/* Icon */}
-        <div style={{
-          width: 48,
-          height: 48,
-          borderRadius: '50%',
-          background: `${flow.color}15`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-        }}>
-          <IconComponent size={24} color={flow.color} strokeWidth={1.5} />
-        </div>
-
-        {/* Title & Subtitle */}
-        <div style={{ flex: 1 }}>
-          <h4
-            className="cleara-heading"
-            style={{
-              fontSize: '1.125rem',
-              color: 'var(--cleara-text-primary, #2A2A2A)',
-              marginBottom: '0.25rem',
-              fontWeight: 600,
-            }}
-          >
-            {flow.title}
-          </h4>
-          <p
-            className="cleara-body"
-            style={{
-              fontSize: '0.875rem',
-              color: 'var(--cleara-text-secondary, #4A4A4A)',
-              margin: 0,
-            }}
-          >
-            {flow.subtitle}
-          </p>
-        </div>
-
-        {/* Expand/Collapse Chevron */}
-        <motion.div
-          animate={{ rotate: isExpanded ? 180 : 0 }}
-          transition={{ duration: 0.3 }}
-          style={{ flexShrink: 0 }}
-        >
-          <ChevronDown size={24} color="var(--cleara-text-muted, #8A8A8A)" />
-        </motion.div>
-      </motion.button>
-
-      {/* Expanded Content */}
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              background: 'rgba(255, 255, 255, 0.5)',
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
-              borderLeft: `1px solid ${flow.color}20`,
-              borderRight: `1px solid ${flow.color}20`,
-              borderBottom: `1px solid ${flow.color}20`,
-              borderRadius: '0 0 20px 20px',
-              overflow: 'hidden',
-            }}
-          >
-            <ClearaAutoPlayFlowSection flow={flow} />
-          </motion.div>
+        {isMobile ? (
+          // Mobile: Phone always on top
+          <>
+            {phoneSide}
+            {contentSide}
+          </>
+        ) : reversed ? (
+          // Desktop reversed: Phone LEFT, Content RIGHT
+          <>
+            {phoneSide}
+            {contentSide}
+          </>
+        ) : (
+          // Desktop normal: Content LEFT, Phone RIGHT
+          <>
+            {contentSide}
+            {phoneSide}
+          </>
         )}
-      </AnimatePresence>
-    </motion.div>
+      </div>
+    </section>
   );
 };
 
@@ -960,7 +956,6 @@ const CollapsibleFlowCard: React.FC<CollapsibleFlowCardProps> = ({ flow, isExpan
 export function ClearaCase() {
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollState = useClearaScroll();
-  const [expandedFlow, setExpandedFlow] = useState<string | null>(null);
 
   return (
     <div
@@ -1758,52 +1753,17 @@ export function ClearaCase() {
         {/* ================================================================= */}
         {/* KEY USER FLOWS SECTION */}
         {/* ================================================================= */}
-        <section
-          style={{
-            minHeight: '100vh',
-            padding: '8rem 2rem',
-          }}
-        >
-          <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-            <ClearaPoeticText
-              lines={['Experience the Flows']}
-              scrollProgress={scrollState.progress}
-              scrollRange={[0.58, 0.64]}
-              size="display"
-              align="center"
-            />
+        {/* EXPERIENCE THE FLOWS - 3 Full-Screen Side-by-Side Sections */}
+        {/* ================================================================= */}
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="cleara-body"
-              style={{
-                textAlign: 'center',
-                fontSize: '1.15rem',
-                color: 'var(--cleara-text-secondary, #4A4A4A)',
-                maxWidth: '550px',
-                margin: '1.5rem auto 4rem',
-                lineHeight: 1.7,
-              }}
-            >
-              Each interaction designed with intention. Tap to explore how Cleara guides your care journey.
-            </motion.p>
+        {/* Section 1: Photo Capture (Content LEFT, Phone RIGHT) */}
+        <FullScreenFlowSection flow={PHOTO_CAPTURE_FLOW} reversed={false} />
 
-            {/* Collapsible Flow Cards */}
-            <div>
-              {ALL_FLOWS.map((flow) => (
-                <CollapsibleFlowCard
-                  key={flow.id}
-                  flow={flow}
-                  isExpanded={expandedFlow === flow.id}
-                  onToggle={() => setExpandedFlow(expandedFlow === flow.id ? null : flow.id)}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Section 2: Wellness Check-In (Phone LEFT, Content RIGHT) */}
+        <FullScreenFlowSection flow={WELLNESS_CHECKIN_FLOW} reversed={true} />
+
+        {/* Section 3: Flare Prediction (Content LEFT, Phone RIGHT) */}
+        <FullScreenFlowSection flow={FLARE_PREDICTION_FLOW} reversed={false} />
 
         {/* AI ARCHITECTURE EXPLAINER */}
         <section
