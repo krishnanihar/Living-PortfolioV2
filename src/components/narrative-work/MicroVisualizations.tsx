@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
  */
 interface MicroVisualizationProps {
   cardId: number;
-  projectId: 'air-india' | 'psoriassist' | 'metamorphic' | 'latent-space';
+  projectId: 'air-india' | 'cleara' | 'metamorphic' | 'latent-space';
   color: string; // RGB format: "99, 102, 241"
   isHovered: boolean;
   size?: 'main' | 'thumbnail';
@@ -427,7 +427,7 @@ function InnovationViz({ color, isHovered, size }: Omit<MicroVisualizationProps,
 }
 
 // ============================================================================
-// PSORIASSIST VISUALIZATIONS (Cards 7-12)
+// CLEARA VISUALIZATIONS (Cards 7-12)
 // ============================================================================
 
 /** Card 7: Ghost Overlay - Layered photo frames with crosshair */
@@ -1580,8 +1580,8 @@ export function MicroVisualization({ cardId, projectId, color, isHovered, size =
     }
   }
 
-  // PsoriAssist visualizations (cards 1-6 / conceptually 7-12)
-  if (projectId === 'psoriassist') {
+  // Cleara visualizations (cards 1-6 / conceptually 7-12)
+  if (projectId === 'cleara') {
     switch (cardId) {
       case 1: return <GhostOverlayViz {...props} />;
       case 2: return <PASIMeterViz {...props} />;

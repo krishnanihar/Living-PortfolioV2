@@ -44,7 +44,7 @@ const domainNodes: KnowledgeNode[] = [
     type: 'domain',
     size: 1.3,
     color: colors.purple,
-    connections: ['nihar', 'figma', 'user-research', 'psoriassist', 'mythos'],
+    connections: ['nihar', 'figma', 'user-research', 'cleara', 'mythos'],
     description: 'End-to-end product thinking and execution',
   },
   {
@@ -102,7 +102,7 @@ const skillNodes: KnowledgeNode[] = [
     type: 'skill',
     size: 0.8,
     color: colors.neutral,
-    connections: ['frontend-dev', 'nextjs', 'air-india', 'psoriassist', 'mythos'],
+    connections: ['frontend-dev', 'nextjs', 'air-india', 'cleara', 'mythos'],
   },
   {
     id: 'typescript',
@@ -174,7 +174,7 @@ const skillNodes: KnowledgeNode[] = [
     type: 'skill',
     size: 0.65,
     color: colors.neutral,
-    connections: ['product-design', 'research', 'psoriassist'],
+    connections: ['product-design', 'research', 'cleara'],
   },
   {
     id: 'speculative-design',
@@ -232,7 +232,7 @@ const skillNodes: KnowledgeNode[] = [
     type: 'skill',
     size: 0.6,
     color: colors.neutral,
-    connections: ['figma', 'product-design', 'psoriassist'],
+    connections: ['figma', 'product-design', 'cleara'],
   },
   {
     id: 'visual-design',
@@ -273,7 +273,7 @@ const skillNodes: KnowledgeNode[] = [
     type: 'skill',
     size: 0.75,
     color: colors.neutral,
-    connections: ['psoriassist', 'mythos', 'research', 'llms', 'computer-vision', 'nlp', 'fine-tuning', 'vector-db', 'python'],
+    connections: ['cleara', 'mythos', 'research', 'llms', 'computer-vision', 'nlp', 'fine-tuning', 'vector-db', 'python'],
   },
   {
     id: 'prompt-engineering',
@@ -331,7 +331,7 @@ const skillNodes: KnowledgeNode[] = [
     type: 'skill',
     size: 0.55,
     color: colors.neutral,
-    connections: ['ai-ml', 'python', 'psoriassist'],
+    connections: ['ai-ml', 'python', 'cleara'],
     description: 'Image recognition and processing',
   },
   {
@@ -425,7 +425,7 @@ const skillNodes: KnowledgeNode[] = [
     type: 'skill',
     size: 0.55,
     color: colors.neutral,
-    connections: ['user-research', 'psoriassist'],
+    connections: ['user-research', 'cleara'],
   },
 ];
 
@@ -442,14 +442,14 @@ const projectNodes: KnowledgeNode[] = [
     description: 'Design system for airline operations',
   },
   {
-    id: 'psoriassist',
-    label: 'PsoriAssist',
+    id: 'cleara',
+    label: 'Cleara',
     type: 'project',
     size: 0.95,
     color: colors.neutralLight,
-    url: '/work/psoriassist',
+    url: '/work/cleara',
     connections: ['product-design', 'user-research', 'react'],
-    description: 'AI-powered health management app',
+    description: 'AI-powered digital therapeutic with watercolor aesthetic',
   },
   // HIDDEN: Latent Space WIP
   // {

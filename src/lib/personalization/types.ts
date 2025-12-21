@@ -198,7 +198,7 @@ export interface ProjectRecommendation {
 
 export const CASE_STUDIES = [
   { slug: 'air-india', name: 'Air India', category: 'system' },
-  { slug: 'psoriassist', name: 'PsoriAssist', category: 'mobile' },
+  { slug: 'cleara', name: 'Cleara', category: 'mobile' },
   { slug: 'latent-space', name: 'Latent Space', category: 'research' },
   { slug: 'metamorphic-fractal-reflections', name: 'Metamorphic Fractal', category: 'research' },
   { slug: 'mythos', name: 'Mythos', category: 'web' },

@@ -20,7 +20,7 @@ import type { ProjectRecommendation } from '@/lib/personalization/types';
 
 const PROJECT_IMAGES: Record<string, string> = {
   'air-india': '/images/projects/air-india-thumb.jpg',
-  'psoriassist': '/images/projects/psoriassist-thumb.jpg',
+  'cleara': '/images/cleara/watercolor/hero-fragment-1.png',
   // HIDDEN: Latent Space WIP
   // 'latent-space': '/images/projects/latent-space-thumb.jpg',
   'metamorphic-fractal-reflections': '/images/projects/metamorphic-thumb.jpg',
@@ -29,7 +29,7 @@ const PROJECT_IMAGES: Record<string, string> = {
 
 const PROJECT_CATEGORIES: Record<string, string> = {
   'air-india': 'System Design',
-  'psoriassist': 'Mobile App',
+  'cleara': 'Digital Therapeutic',
   // HIDDEN: Latent Space WIP
   // 'latent-space': 'Speculative Design',
   'metamorphic-fractal-reflections': 'Generative Art',

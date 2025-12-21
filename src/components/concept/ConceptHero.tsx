@@ -103,7 +103,7 @@ const tourSteps = [
     description: 'Products used by millions',
     projects: [
       { id: 'air-india', name: 'Air India', role: 'Design System', color: '#DA0E29' },
-      { id: 'psoriassist', name: 'PsoriAssist', role: 'AI Healthcare', color: '#10B981' },
+      { id: 'cleara', name: 'Cleara', role: 'AI Healthcare', color: '#8B9DC3' },
     ],
   },
   {

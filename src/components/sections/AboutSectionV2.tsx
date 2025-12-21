@@ -137,19 +137,19 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
       link: '/work/air-india',
     },
     {
-      id: 'psoriassist',
-      title: 'PsoriAssist',
-      category: 'Healthcare AI Platform',
-      description: 'AI-powered psoriasis management platform combining computer vision with clinical insights for personalized patient care',
-      image: '/images/Psori_front.png',
-      brandColor: { r: 16, g: 185, b: 129 },
+      id: 'cleara',
+      title: 'Cleara',
+      category: 'Digital Therapeutic',
+      description: 'AI-powered psoriasis digital therapeutic with watercolor healing aesthetic, combining clinical AI with supportive design',
+      image: '/images/cleara/watercolor/hero-fragment-1.png',
+      brandColor: { r: 139, g: 157, b: 195 },
       year: '2024',
       metrics: [
         { icon: Heart, label: 'Patient impact', value: 'Winner' },
         { icon: Activity, label: 'Research depth', value: '18mo' }
       ],
-      tags: ['AI/ML', 'Healthcare', 'iOS', 'Computer Vision'],
-      link: '/work/psoriassist',
+      tags: ['AI/ML', 'Healthcare', 'Digital Therapeutic', 'Watercolor'],
+      link: '/work/cleara',
     },
     {
       id: 'metamorphic',
@@ -399,9 +399,9 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                       }}
                     />
                   </>
-                ) : project.id === 'psoriassist' ? (
+                ) : project.id === 'cleara' ? (
                   <>
-                    {/* LAYER 1: Background - Furthest Back */}
+                    {/* LAYER 1: Background - Watercolor Fragment */}
                     <div
                       data-atropos-offset="-10"
                       style={{
@@ -409,10 +409,11 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                         inset: '-10%',
                         zIndex: 1,
                         overflow: 'hidden',
+                        background: '#FAF8F5',
                       }}
                     >
                       <Image
-                        src="/images/Psori_back.png"
+                        src="/images/cleara/watercolor/impact-bloom.png"
                         alt=""
                         fill
                         style={{
@@ -425,7 +426,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                       />
                     </div>
 
-                    {/* LAYER 2: iPhone - Center */}
+                    {/* LAYER 2: Phone Mockup - Center */}
                     <div
                       data-atropos-offset="0"
                       style={{
@@ -436,8 +437,8 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                       }}
                     >
                       <Image
-                        src="/images/Psori_front.png"
-                        alt="PsoriAssist App on iPhone"
+                        src="/images/cleara/watercolor/phone-backdrop.png"
+                        alt="Cleara App"
                         fill
                         style={{
                           objectFit: 'contain',
@@ -1009,26 +1010,26 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
           );
         }
 
-        /* PsoriAssist - Green gradient */
-        .project-card-psoriassist::before {
+        /* Cleara - Lavender gradient */
+        .project-card-cleara::before {
           background: conic-gradient(
             from 0deg,
-            rgba(16, 185, 129, 0.6) 0deg,
-            rgba(52, 211, 153, 0.8) 90deg,
-            rgba(16, 185, 129, 0.6) 180deg,
-            rgba(52, 211, 153, 0.8) 270deg,
-            rgba(16, 185, 129, 0.6) 360deg
+            rgba(139, 157, 195, 0.6) 0deg,
+            rgba(184, 197, 226, 0.8) 90deg,
+            rgba(139, 157, 195, 0.6) 180deg,
+            rgba(184, 197, 226, 0.8) 270deg,
+            rgba(139, 157, 195, 0.6) 360deg
           );
         }
 
-        .project-card-psoriassist:hover::before {
+        .project-card-cleara:hover::before {
           background: conic-gradient(
             from 0deg,
-            rgba(16, 185, 129, 0.8) 0deg,
-            rgba(52, 211, 153, 1) 90deg,
-            rgba(16, 185, 129, 0.8) 180deg,
-            rgba(52, 211, 153, 1) 270deg,
-            rgba(16, 185, 129, 0.8) 360deg
+            rgba(139, 157, 195, 0.8) 0deg,
+            rgba(184, 197, 226, 1) 90deg,
+            rgba(139, 157, 195, 0.8) 180deg,
+            rgba(184, 197, 226, 1) 270deg,
+            rgba(139, 157, 195, 0.8) 360deg
           );
         }
 

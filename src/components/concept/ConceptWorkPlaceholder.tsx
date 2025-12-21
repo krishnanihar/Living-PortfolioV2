@@ -222,9 +222,9 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
                         }}
                       />
                     </>
-                  ) : project.id === 'psoriassist' ? (
+                  ) : project.id === 'cleara' ? (
                     <>
-                      {/* LAYER 1: Background - Furthest Back */}
+                      {/* LAYER 1: Background - Watercolor Fragment */}
                       <div
                         data-atropos-offset="-10"
                         style={{
@@ -232,10 +232,11 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
                           inset: '-10%',
                           zIndex: 1,
                           overflow: 'hidden',
+                          background: '#FAF8F5',
                         }}
                       >
                         <Image
-                          src="/images/Psori_back.png"
+                          src="/images/cleara/watercolor/impact-bloom.png"
                           alt=""
                           fill
                           style={{
@@ -248,7 +249,7 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
                         />
                       </div>
 
-                      {/* LAYER 2: iPhone - Center */}
+                      {/* LAYER 2: Phone Mockup - Center */}
                       <div
                         data-atropos-offset="0"
                         style={{
@@ -259,8 +260,8 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
                         }}
                       >
                         <Image
-                          src="/images/Psori_front.png"
-                          alt="PsoriAssist App on iPhone"
+                          src="/images/cleara/watercolor/phone-backdrop.png"
+                          alt="Cleara App"
                           fill
                           style={{
                             objectFit: 'contain',

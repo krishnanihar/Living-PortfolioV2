@@ -5,7 +5,7 @@ import { WorkPageLayout } from '@/components/narrative-work/WorkPageLayout';
 import { NarrativeWorkHero } from '@/components/narrative-work/NarrativeWorkHero';
 import { JourneyOverview } from '@/components/narrative-work/JourneyOverview';
 import { AirIndiaHeroCard } from '@/components/narrative-work/AirIndiaHeroCard';
-import { PsoriAssistHeroCard } from '@/components/narrative-work/PsoriAssistHeroCard';
+import { ClearaHeroCard } from '@/components/narrative-work/ClearaHeroCard';
 import { MetamorphicHeroCard } from '@/components/narrative-work/MetamorphicHeroCard';
 // HIDDEN: Latent Space WIP
 // import { LatentSpaceHeroCard } from '@/components/narrative-work/LatentSpaceHeroCard';
@@ -43,12 +43,12 @@ export function WorkNarrativePage() {
   const researchSectionRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  // PsoriAssist section state
-  const [psoriassistHoveredCard, setPsoriassistHoveredCard] = useState<number | null>(null);
-  const [psoriassistDebouncedCard, setPsoriassistDebouncedCard] = useState<number | null>(null);
-  const psoriassistHoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [psoriassistCarouselIndex, setPsoriassistCarouselIndex] = useState(0);
-  const psoriassistCarouselRef = useRef<HTMLDivElement>(null);
+  // Cleara section state
+  const [clearaHoveredCard, setClearaHoveredCard] = useState<number | null>(null);
+  const [clearaDebouncedCard, setClearaDebouncedCard] = useState<number | null>(null);
+  const clearaHoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [clearaCarouselIndex, setClearaCarouselIndex] = useState(0);
+  const clearaCarouselRef = useRef<HTMLDivElement>(null);
 
   // Metamorphic section state
   const [metamorphicHoveredCard, setMetamorphicHoveredCard] = useState<number | null>(null);
@@ -158,8 +158,8 @@ export function WorkNarrativePage() {
       if (hoverTimeoutRef.current) {
         clearTimeout(hoverTimeoutRef.current);
       }
-      if (psoriassistHoverTimeoutRef.current) {
-        clearTimeout(psoriassistHoverTimeoutRef.current);
+      if (clearaHoverTimeoutRef.current) {
+        clearTimeout(clearaHoverTimeoutRef.current);
       }
       if (metamorphicHoverTimeoutRef.current) {
         clearTimeout(metamorphicHoverTimeoutRef.current);
@@ -170,19 +170,19 @@ export function WorkNarrativePage() {
     };
   }, []);
 
-  // PsoriAssist debounced hover handler
-  const handlePsoriassistHover = useCallback((cardId: number | null) => {
-    if (psoriassistHoverTimeoutRef.current) {
-      clearTimeout(psoriassistHoverTimeoutRef.current);
+  // Cleara debounced hover handler
+  const handleClearaHover = useCallback((cardId: number | null) => {
+    if (clearaHoverTimeoutRef.current) {
+      clearTimeout(clearaHoverTimeoutRef.current);
     }
     if (cardId !== null) {
-      setPsoriassistHoveredCard(cardId);
-      psoriassistHoverTimeoutRef.current = setTimeout(() => {
-        setPsoriassistDebouncedCard(cardId);
+      setClearaHoveredCard(cardId);
+      clearaHoverTimeoutRef.current = setTimeout(() => {
+        setClearaDebouncedCard(cardId);
       }, 50);
     } else {
-      setPsoriassistHoveredCard(null);
-      setPsoriassistDebouncedCard(null);
+      setClearaHoveredCard(null);
+      setClearaDebouncedCard(null);
     }
   }, []);
 
@@ -282,8 +282,8 @@ export function WorkNarrativePage() {
     },
   ];
 
-  // PsoriAssist Impact Cards
-  const psoriassistImpactCards = [
+  // Cleara Impact Cards
+  const clearaImpactCards = [
     {
       id: 1,
       label: '01',
@@ -292,7 +292,7 @@ export function WorkNarrativePage() {
       expandedDescription: 'Innovative camera overlay system that aligns previous photos with current shots, enabling precise visual comparison of psoriasis progression over time.',
       metric: '↑ Tracking accuracy',
       tags: ['Computer Vision', 'UX'],
-      color: '236, 72, 153',
+      color: '139, 157, 195', // Lavender
     },
     {
       id: 2,
@@ -302,17 +302,17 @@ export function WorkNarrativePage() {
       expandedDescription: 'Deep learning model trained on dermatological data to provide automated PASI severity scores, improving assessment consistency by 33% compared to manual methods.',
       metric: '+33% accuracy',
       tags: ['ML', 'Clinical'],
-      color: '139, 92, 246',
+      color: '184, 197, 226', // Periwinkle
     },
     {
       id: 3,
       label: '03',
-      title: 'Smart Reminders',
-      description: 'Context-aware medication adherence',
-      expandedDescription: 'Intelligent notification system that learns user behavior patterns to deliver reminders at optimal times, improving medication adherence rates.',
+      title: 'Gentle Reminders',
+      description: 'Supportive medication adherence',
+      expandedDescription: 'Thoughtful notification system that learns user behavior patterns to deliver reminders at optimal times with encouraging, supportive language.',
       metric: '↑ Adherence rate',
-      tags: ['Notifications', 'AI'],
-      color: '16, 185, 129',
+      tags: ['Wellness', 'AI'],
+      color: '168, 197, 181', // Sage
     },
     {
       id: 4,
@@ -322,27 +322,27 @@ export function WorkNarrativePage() {
       expandedDescription: 'Integrated PEST (Psoriasis Epidemiology Screening Tool) questionnaire with AI analysis to flag early signs of psoriatic arthritis.',
       metric: '→ Prevention first',
       tags: ['Prevention', 'ML'],
-      color: '251, 146, 60',
+      color: '212, 165, 165', // Blush
     },
     {
       id: 5,
       label: '05',
-      title: 'Mental Health',
+      title: 'Holistic Wellness',
       description: 'PHQ-9/GAD-7 integrated screening',
       expandedDescription: 'Holistic health approach with validated mental health questionnaires integrated into regular check-ins, recognizing the psychological impact of chronic skin conditions.',
       metric: '↑ Holistic care',
       tags: ['Holistic', 'Research'],
-      color: '14, 165, 233',
+      color: '139, 157, 195', // Lavender
     },
     {
       id: 6,
       label: '06',
-      title: 'Provider Dashboard',
+      title: 'Care Insights',
       description: 'Clinical data export & analytics',
-      expandedDescription: 'B2B analytics dashboard for healthcare providers with HIPAA-compliant data export, patient progress tracking, and population health insights.',
+      expandedDescription: 'Analytics dashboard for healthcare providers with HIPAA-compliant data export, patient progress tracking, and population health insights.',
       metric: '→ Clinical integration',
       tags: ['B2B', 'Analytics'],
-      color: '99, 102, 241',
+      color: '168, 197, 181', // Sage
     },
   ];
 
@@ -877,7 +877,7 @@ export function WorkNarrativePage() {
         )}
       </section>
 
-      {/* PSORIASSIST SECTION */}
+      {/* CLEARA SECTION */}
       <section style={{
         maxWidth: '1400px',
         margin: '0 auto',
@@ -885,15 +885,15 @@ export function WorkNarrativePage() {
         position: 'relative',
         zIndex: 1,
       }}>
-        <PsoriAssistHeroCard />
+        <ClearaHeroCard />
 
         {/* Desktop: Bento Grid */}
         {!isMobile && (() => {
           const getGridTemplate = () => {
-            if (!psoriassistDebouncedCard) {
+            if (!clearaDebouncedCard) {
               return { cols: '1fr 1fr 1fr', rows: '1fr 1fr' };
             }
-            const index = psoriassistImpactCards.findIndex(c => c.id === psoriassistDebouncedCard);
+            const index = clearaImpactCards.findIndex(c => c.id === clearaDebouncedCard);
             const col = index % 3;
             const row = Math.floor(index / 3);
             const cols = [0, 1, 2].map(c => c === col ? '2fr' : '0.5fr').join(' ');
@@ -916,15 +916,15 @@ export function WorkNarrativePage() {
                   layout: { duration: 0.5, ease: [0.32, 0.72, 0, 1] }
                 }}
               >
-                {psoriassistImpactCards.map((card) => {
-                  const isHovered = psoriassistHoveredCard === card.id;
+                {clearaImpactCards.map((card) => {
+                  const isHovered = clearaHoveredCard === card.id;
                   return (
                     <motion.div
                       key={card.id}
                       layout
-                      layoutId={`psoriassist-card-${card.id}`}
-                      onHoverStart={() => handlePsoriassistHover(card.id)}
-                      onHoverEnd={() => handlePsoriassistHover(null)}
+                      layoutId={`cleara-card-${card.id}`}
+                      onHoverStart={() => handleClearaHover(card.id)}
+                      onHoverEnd={() => handleClearaHover(null)}
                       transition={{ layout: { duration: 0.4, ease: [0.32, 0.72, 0, 1] } }}
                       style={{
                         position: 'relative',
@@ -1039,7 +1039,7 @@ export function WorkNarrativePage() {
                             }}>
                               <MicroVisualization
                                 cardId={card.id}
-                                projectId="psoriassist"
+                                projectId="cleara"
                                 color={card.color}
                                 isHovered={isHovered}
                                 size="main"
@@ -1051,7 +1051,7 @@ export function WorkNarrativePage() {
                     </motion.div>
                   );
                 })}
-                <PsoriAssistCTACard isMobile={false} />
+                <ClearaCTACard isMobile={false} />
               </motion.div>
             </LayoutGroup>
           );
@@ -1061,7 +1061,7 @@ export function WorkNarrativePage() {
         {isMobile && (
           <>
             <div
-              ref={psoriassistCarouselRef}
+              ref={clearaCarouselRef}
               style={{
                 display: 'flex',
                 gap: '1rem',
@@ -1072,7 +1072,7 @@ export function WorkNarrativePage() {
                 WebkitOverflowScrolling: 'touch',
               }}
             >
-              {psoriassistImpactCards.map((card) => (
+              {clearaImpactCards.map((card) => (
                 <div
                   key={card.id}
                   style={{
@@ -1123,7 +1123,7 @@ export function WorkNarrativePage() {
                   </div>
                 </div>
               ))}
-              <PsoriAssistCTACard isMobile={true} />
+              <ClearaCTACard isMobile={true} />
             </div>
             <div style={{
               display: 'flex',
@@ -1131,14 +1131,14 @@ export function WorkNarrativePage() {
               gap: '0.5rem',
               marginTop: '2rem',
             }}>
-              {psoriassistImpactCards.map((_, index) => (
+              {clearaImpactCards.map((_, index) => (
                 <div
                   key={index}
                   style={{
-                    width: psoriassistCarouselIndex === index ? '24px' : '8px',
+                    width: clearaCarouselIndex === index ? '24px' : '8px',
                     height: '8px',
                     borderRadius: '4px',
-                    background: psoriassistCarouselIndex === index ? 'var(--accent-primary)' : 'var(--border-primary)',
+                    background: clearaCarouselIndex === index ? 'var(--accent-primary)' : 'var(--border-primary)',
                     transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                   }}
                 />
@@ -2195,15 +2195,15 @@ function CTACard({ isMobile, inView }: { isMobile: boolean; inView: boolean }) {
 }
 
 /**
- * CTA Card for PsoriAssist case study
+ * CTA Card for Cleara case study
  */
-function PsoriAssistCTACard({ isMobile }: { isMobile: boolean }) {
+function ClearaCTACard({ isMobile }: { isMobile: boolean }) {
   const [isHovered, setIsHovered] = React.useState(false);
-  const brandColor = '236, 72, 153';
+  const brandColor = '139, 157, 195'; // Lavender
 
   return (
     <Link
-      href="/work/psoriassist"
+      href="/work/cleara"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
@@ -2269,7 +2269,7 @@ function PsoriAssistCTACard({ isMobile }: { isMobile: boolean }) {
         lineHeight: '1.6',
         marginBottom: '1.5rem',
       }}>
-        AI-powered psoriasis management for 125M patients
+        AI-powered digital therapeutic with watercolor healing aesthetic
       </p>
       <motion.div
         animate={{ x: isHovered ? 4 : 0 }}

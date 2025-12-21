@@ -28,15 +28,15 @@ const featuredProjects = [
     tags: ['Design System', 'React', 'Aviation', 'Mobile'],
   },
   {
-    id: 'psoriassist',
-    title: 'PsoriAssist',
-    category: 'Healthcare AI Platform',
+    id: 'cleara',
+    title: 'Cleara',
+    category: 'Digital Therapeutic',
     description:
-      'AI-powered psoriasis management platform combining computer vision with clinical insights for personalized patient care',
-    brandColor: { r: 16, g: 185, b: 129 },
+      'AI-powered psoriasis digital therapeutic with watercolor healing aesthetic, combining clinical AI with supportive design',
+    brandColor: { r: 139, g: 157, b: 195 },
     year: '2024',
-    link: '/work/psoriassist',
-    tags: ['AI/ML', 'Healthcare', 'iOS', 'Computer Vision'],
+    link: '/work/cleara',
+    tags: ['AI/ML', 'Healthcare', 'Digital Therapeutic', 'Watercolor'],
   },
   {
     id: 'metamorphic',

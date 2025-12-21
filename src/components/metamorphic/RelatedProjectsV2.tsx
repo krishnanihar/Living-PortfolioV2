@@ -39,12 +39,12 @@ const OTHER_PROJECTS = [
   {
     id: 3,
     icon: Heart,
-    title: 'PsoriAssist',
+    title: 'Cleara',
     category: 'Healthcare AI',
-    description: 'AI-powered chronic condition management platform.',
+    description: 'AI-powered digital therapeutic with watercolor healing aesthetic.',
     year: '2024',
-    href: '/work/psoriassist' as const,
-    color: '16, 185, 129',
+    href: '/work/cleara' as const,
+    color: '139, 157, 195',
   },
 ] as const;
 

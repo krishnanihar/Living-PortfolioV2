@@ -77,7 +77,7 @@ const TOUR_STEPS = [
     description: 'Projects that push boundaries',
     projects: [
       { slug: 'air-india', name: 'Air India', category: 'System Design', image: '/images/air-india/IFE.png' },
-      { slug: 'psoriassist', name: 'PsoriAssist', category: 'AI + Health', image: '/images/Psori_front.png' },
+      { slug: 'cleara', name: 'Cleara', category: 'AI + Health', image: '/images/cleara/watercolor/hero-fragment-1.png' },
       // HIDDEN: Latent Space WIP
       // { slug: 'latent-space', name: 'Latent Space', category: 'Research', image: '/images/meta_front.png' },
     ],

@@ -198,11 +198,11 @@ export const projects: Project[] = [
   // Research Projects
 
   {
-    id: 'psoriassist',
-    title: 'PsoriAssist',
+    id: 'cleara',
+    title: 'Cleara',
     company: 'Personal Research',
-    description: '18-month digital therapeutic design concept reimagining psoriasis care through AI-powered interventions. Born from lived experience, validated through 25 patient interviews, 12 stakeholder interviews, 75+ peer-reviewed studies, and 45 usability testing participants across 3 rounds. Features proprietary ghost overlay photo alignment, AI PASI scoring (33% better than average dermatologist), predictive flare-up alerts (LSTM 7-day forecast), integrated mental health screening (PHQ-9/GAD-7), and automated PsA detection (reducing 2.5-year diagnosis delay). Clinical validation RCT pathway (N=200), FDA Digital Health Precertification target. Business model: Freemium ($9.99/mo) + B2B enterprise ($50-150/patient/yr), LTV:CAC 6:1 by Year 3, $38M Year 5 revenue projection serving 2M patients globally.',
-    image: '/images/Psori_front.png',
+    description: '18-month digital therapeutic design concept reimagining psoriasis care through AI-powered interventions with a watercolor healing aesthetic. Born from lived experience, validated through 25 patient interviews, 12 stakeholder interviews, 75+ peer-reviewed studies, and 45 usability testing participants across 3 rounds. Features proprietary ghost overlay photo alignment, AI PASI scoring (33% better than average dermatologist), predictive flare-up alerts, integrated mental health screening (PHQ-9/GAD-7), and automated PsA detection. David Whyte-inspired narrative design with three-act scroll journey.',
+    image: '/images/cleara/watercolor/hero-fragment-1.png',
     category: 'research',
     status: 'concept',
     tags: [
@@ -214,8 +214,8 @@ export const projects: Project[] = [
       { id: 'predictive-analytics', label: 'Predictive Analytics' },
       { id: 'react-native', label: 'React Native' },
       { id: 'double-diamond', label: 'Double Diamond' },
-      { id: 'rct-design', label: 'RCT Design' },
-      { id: 'empathy-driven', label: 'Empathy-Driven' },
+      { id: 'narrative-design', label: 'Narrative Design' },
+      { id: 'watercolor-aesthetic', label: 'Watercolor Aesthetic' },
     ],
     meta: {
       year: '2024',
@@ -228,7 +228,7 @@ export const projects: Project[] = [
       improvement: '33% better AI PASI vs. dermatologist, SUS 82/100 (Grade A)',
     },
     links: [
-      { type: 'case-study', url: '/work/psoriassist', label: 'View Case Study' },
+      { type: 'case-study', url: '/work/cleara', label: 'View Case Study' },
     ],
     featured: true,
     order: 9,

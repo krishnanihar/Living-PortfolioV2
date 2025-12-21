@@ -114,7 +114,7 @@ interface OtherProject {
   category: string;
   description: string;
   year: string;
-  href: '/work/latent-space' | '/work/metamorphic-fractal-reflections' | '/' | '/work/psoriassist';
+  href: '/work/latent-space' | '/work/metamorphic-fractal-reflections' | '/' | '/work/cleara';
   orbColor: string;
 }
 
@@ -452,12 +452,12 @@ const otherProjects: OtherProject[] = [
   {
     id: 4,
     icon: Heart,
-    title: 'PsoriAssist',
+    title: 'Cleara',
     category: 'Healthcare AI',
-    description: 'AI-powered psoriasis management with 18 months of research.',
+    description: 'AI-powered digital therapeutic with watercolor healing aesthetic.',
     year: '2024',
-    href: '/work/psoriassist',
-    orbColor: '16, 185, 129'
+    href: '/work/cleara',
+    orbColor: '139, 157, 195'
   }
 ];
 

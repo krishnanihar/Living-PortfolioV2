@@ -225,7 +225,7 @@ export function HeroCard() {
         }}>
           {[
             { label: '10K+ daily users', tooltip: 'Air India mobile app + IFE systems' },
-            { label: '18-month research deep dive', tooltip: 'PsoriAssist healthcare design' },
+            { label: '18-month research deep dive', tooltip: 'Cleara digital therapeutic design' },
             { label: '2 hackathons won simultaneously', tooltip: '5000 LOC in 48 hours' },
           ].map((stat, idx) => (
             <div
@@ -323,7 +323,7 @@ export function HeroCard() {
         }}>
           {/* Primary: Featured Work */}
           <Link
-            href="/work/psoriassist"
+            href="/work/cleara"
             onMouseEnter={() => setHoveredButton('featured')}
             onMouseLeave={() => setHoveredButton(null)}
             style={{
@@ -332,8 +332,8 @@ export function HeroCard() {
               gap: '0.625rem',
               padding: 'clamp(0.875rem, 1.75vw, 1rem) clamp(1.5rem, 3vw, 2rem)',
               background: hoveredButton === 'featured'
-                ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(12, 12, 12, 0.7))'
-                : 'linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(12, 12, 12, 0.65))',
+                ? 'linear-gradient(135deg, rgba(139, 157, 195, 0.25), rgba(12, 12, 12, 0.7))'
+                : 'linear-gradient(135deg, rgba(139, 157, 195, 0.18), rgba(12, 12, 12, 0.65))',
               backdropFilter: 'blur(120px) saturate(200%)',
               WebkitBackdropFilter: 'blur(120px) saturate(200%)',
               border: hoveredButton === 'featured'
@@ -497,7 +497,7 @@ export function HeroCard() {
                0px 0px 1px rgba(255, 255, 255, 0.25) inset,
                0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
         }}>
-          <span style={{ color: 'var(--text-secondary)', fontWeight: '400' }}>INTP</span> building at the intersection of <span style={{ color: 'var(--text-secondary)' }}>healthcare × AI × consciousness</span>. 18-month deep dive into digital therapeutics culminating in <span style={{ color: 'var(--text-secondary)' }}>PsoriAssist</span>. Built <span style={{ color: 'var(--text-secondary)' }}>5000 lines in 48 hours</span> while winning <span style={{ color: 'var(--text-secondary)' }}>2 hackathons simultaneously</span>. Currently transforming enterprise systems at <span style={{ color: 'var(--text-secondary)' }}>Air India</span> (10K+ daily users) while exploring the future of <span style={{ color: 'var(--text-secondary)' }}>human-computer symbiosis</span>.
+          <span style={{ color: 'var(--text-secondary)', fontWeight: '400' }}>INTP</span> building at the intersection of <span style={{ color: 'var(--text-secondary)' }}>healthcare × AI × consciousness</span>. 18-month deep dive into digital therapeutics culminating in <span style={{ color: 'var(--text-secondary)' }}>Cleara</span>. Built <span style={{ color: 'var(--text-secondary)' }}>5000 lines in 48 hours</span> while winning <span style={{ color: 'var(--text-secondary)' }}>2 hackathons simultaneously</span>. Currently transforming enterprise systems at <span style={{ color: 'var(--text-secondary)' }}>Air India</span> (10K+ daily users) while exploring the future of <span style={{ color: 'var(--text-secondary)' }}>human-computer symbiosis</span>.
         </div>
       </div>
     </>

@@ -35,10 +35,10 @@ const acts: Act[] = [
   {
     id: 'innovation',
     title: 'Research & Innovation',
-    description: 'AI-powered health tech (PsoriAssist), speculative design (Latent Space), and Gemini exhibitions',
+    description: 'AI-powered health tech (Cleara), speculative design (Latent Space), and Gemini exhibitions',
     icon: Lightbulb,
     color: 'rgba(14, 165, 233, 0.8)',
-    projects: ['Latent Space', 'mythOS', 'PsoriAssist'],
+    projects: ['Latent Space', 'mythOS', 'Cleara'],
   },
 ];
 
