@@ -1,14 +1,18 @@
 'use client';
 
-import { useRef, useLayoutEffect, useCallback } from 'react';
+import { useRef, useLayoutEffect, useEffect, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLenisScroll } from '@/hooks/useLenisScroll';
 import ConceptWorkPlaceholder from './ConceptWorkPlaceholder';
 
 // Register plugin
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
+
+// Premium quart ease-out (matches SmoothScrollProvider)
+const premiumEaseOut = (t: number): number => 1 - Math.pow(1 - t, 4);
 
 // Featured projects data - matches main home page (AboutSectionV2)
 const featuredProjects = [
@@ -47,93 +51,193 @@ const featuredProjects = [
 export default function ConceptWorkStack() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const { lenis } = useLenisScroll();
+
+  // Track current card index
+  const currentCardRef = useRef(0);
+  const lastScrollTriggerRef = useRef(0);
+  const touchStartRef = useRef(0);
+
+  // Constants
+  const SCROLL_LOCKOUT = 1200; // 1.2s lockout (matches home page)
+  const SWIPE_THRESHOLD = 50; // Minimum swipe distance
+  const cardCount = featuredProjects.length;
 
   // Callback ref to store card refs
   const setCardRef = useCallback((el: HTMLDivElement | null, index: number) => {
     cardRefs.current[index] = el;
   }, []);
 
-  // Bell curve animation with plateau + snapping
-  useLayoutEffect(() => {
+  // Controlled snap scroll handlers
+  useEffect(() => {
+    if (!lenis) return;
     const container = containerRef.current;
+    if (!container) return;
+
+    const vh = window.innerHeight;
+
+    // Check if scroll position is within work section
+    const isInWorkSection = () => {
+      const rect = container.getBoundingClientRect();
+      // In section when container fills viewport (top at or above 0, bottom at or below vh)
+      return rect.top <= 0 && rect.bottom >= vh;
+    };
+
+    // Wheel handler - one scroll = one card
+    const wheelHandler = (e: WheelEvent) => {
+      // Check if target is inside an element that handles its own scroll
+      let target = e.target as HTMLElement | null;
+      while (target) {
+        if (target.hasAttribute('data-lenis-prevent')) {
+          return;
+        }
+        target = target.parentElement;
+      }
+
+      if (!isInWorkSection()) return;
+
+      e.preventDefault();
+
+      const now = Date.now();
+      if (now - lastScrollTriggerRef.current < SCROLL_LOCKOUT) return;
+
+      lastScrollTriggerRef.current = now;
+
+      const direction = e.deltaY > 0 ? 1 : -1;
+      const nextCard = Math.max(0, Math.min(cardCount - 1, currentCardRef.current + direction));
+
+      if (nextCard !== currentCardRef.current) {
+        // Navigate to next/previous card
+        currentCardRef.current = nextCard;
+        const targetScroll = container.offsetTop + nextCard * vh;
+
+        lenis.scrollTo(targetScroll, {
+          lock: true,
+          duration: 0.7,
+          easing: premiumEaseOut,
+        });
+      } else if (direction === -1 && currentCardRef.current === 0) {
+        // At first card, scrolling up - exit to previous section
+        const targetScroll = container.offsetTop - vh;
+        lenis.scrollTo(targetScroll, {
+          duration: 0.7,
+          easing: premiumEaseOut,
+        });
+      } else if (direction === 1 && currentCardRef.current === cardCount - 1) {
+        // At last card, scrolling down - exit to next section
+        const targetScroll = container.offsetTop + cardCount * vh;
+        lenis.scrollTo(targetScroll, {
+          duration: 0.7,
+          easing: premiumEaseOut,
+        });
+      }
+    };
+
+    // Touch handlers for mobile
+    const touchStartHandler = (e: TouchEvent) => {
+      touchStartRef.current = e.touches[0].clientY;
+    };
+
+    const touchEndHandler = (e: TouchEvent) => {
+      if (!isInWorkSection()) return;
+
+      const now = Date.now();
+      if (now - lastScrollTriggerRef.current < SCROLL_LOCKOUT) return;
+
+      const deltaY = touchStartRef.current - e.changedTouches[0].clientY;
+      if (Math.abs(deltaY) < SWIPE_THRESHOLD) return;
+
+      lastScrollTriggerRef.current = now;
+
+      const direction = deltaY > 0 ? 1 : -1;
+      const nextCard = Math.max(0, Math.min(cardCount - 1, currentCardRef.current + direction));
+
+      if (nextCard !== currentCardRef.current) {
+        currentCardRef.current = nextCard;
+        const targetScroll = container.offsetTop + nextCard * vh;
+
+        lenis.scrollTo(targetScroll, {
+          lock: true,
+          duration: 0.7,
+          easing: premiumEaseOut,
+        });
+      } else if (direction === -1 && currentCardRef.current === 0) {
+        const targetScroll = container.offsetTop - vh;
+        lenis.scrollTo(targetScroll, {
+          duration: 0.7,
+          easing: premiumEaseOut,
+        });
+      } else if (direction === 1 && currentCardRef.current === cardCount - 1) {
+        const targetScroll = container.offsetTop + cardCount * vh;
+        lenis.scrollTo(targetScroll, {
+          duration: 0.7,
+          easing: premiumEaseOut,
+        });
+      }
+    };
+
+    // Add event listeners
+    window.addEventListener('wheel', wheelHandler, { passive: false });
+    window.addEventListener('touchstart', touchStartHandler, { passive: true });
+    window.addEventListener('touchend', touchEndHandler, { passive: true });
+
+    return () => {
+      window.removeEventListener('wheel', wheelHandler);
+      window.removeEventListener('touchstart', touchStartHandler);
+      window.removeEventListener('touchend', touchEndHandler);
+    };
+  }, [lenis, cardCount]);
+
+  // Sync card index when scrolling normally into section
+  useEffect(() => {
+    if (!lenis) return;
+    const container = containerRef.current;
+    if (!container) return;
+
+    const syncCardIndex = () => {
+      const vh = window.innerHeight;
+      const scrollInSection = window.scrollY - container.offsetTop;
+
+      if (scrollInSection >= 0 && scrollInSection < cardCount * vh) {
+        const cardIndex = Math.round(scrollInSection / vh);
+        currentCardRef.current = Math.max(0, Math.min(cardCount - 1, cardIndex));
+      }
+    };
+
+    lenis.on('scroll', syncCardIndex);
+    return () => lenis.off('scroll', syncCardIndex);
+  }, [lenis, cardCount]);
+
+  // Scale animation - exit only (like hero section)
+  useLayoutEffect(() => {
     const cards = cardRefs.current.filter(
       (card): card is HTMLDivElement => card !== null
     );
 
-    if (!container || cards.length === 0) return;
+    if (cards.length === 0) return;
 
     const triggers: ScrollTrigger[] = [];
 
-    // Calculate snap points as progress values (0-1)
-    // Container range: from "container top at viewport bottom" to "container bottom at viewport top"
-    // Total range = containerHeight + viewportHeight = (cards * 120vh) + 100vh
-    const vh = window.innerHeight;
-    const containerHeight = cards.length * vh * 1.2; // 120dvh per card
-    const totalRange = containerHeight + vh;
-
-    // For each card, snap to where card wrapper top is at viewport top (card fills screen)
-    // Relative position: (cardIndex * 120vh + 100vh) / totalRange
-    const snapProgressValues = cards.map((_, i) => {
-      return (i * vh * 1.2 + vh) / totalRange;
-    });
-
-    // Add snap points to ScrollTrigger using array syntax
-    ScrollTrigger.create({
-      trigger: container,
-      start: 'top bottom',
-      end: 'bottom top',
-      snap: {
-        snapTo: snapProgressValues,
-        duration: { min: 0.3, max: 0.6 },
-        delay: 0.05,
-        ease: 'power2.inOut',
-      },
-    });
-
-    // Bell curve with plateau: shrunk → expand → HOLD FULL → shrink
-    // For 120dvh wrapper, faster timing for tighter transitions
     cards.forEach((card) => {
       const inner = card.querySelector('.work-placeholder-inner') as HTMLDivElement;
+      if (!inner) return;
 
       const trigger = ScrollTrigger.create({
         trigger: card,
-        start: 'top bottom', // When card enters viewport
-        end: 'bottom top', // When card leaves viewport
-        scrub: 0.3,
+        start: 'top top', // Animation starts when card is at top
+        end: 'bottom 60%', // Matches hero section
+        scrub: 0.5,
         onUpdate: (self) => {
           const progress = self.progress;
+          const easedProgress = gsap.parseEase('power2.out')(progress);
 
-          // Animation timing for 120dvh:
-          // 0-0.30: shrunk → full (entry)
-          // 0.30-0.50: hold at full (plateau)
-          // 0.50-0.65: full → shrunk (exit - before next card appears)
-          // 0.65-1.0: stays shrunk (already covered)
-          let animProgress: number;
-          if (progress < 0.3) {
-            // Entry: 0-0.3 maps to 1-0 (shrunk to full)
-            animProgress = 1 - progress / 0.3;
-          } else if (progress >= 0.5 && progress <= 0.65) {
-            // Exit: 0.5-0.65 maps to 0-1 (full to shrunk)
-            animProgress = (progress - 0.5) / 0.15;
-          } else if (progress > 0.65) {
-            // After exit: stays shrunk
-            animProgress = 1;
-          } else {
-            // Plateau: 0.3-0.5 stays at 0 (full)
-            animProgress = 0;
-          }
+          // Scale: 1.0 → 0.92 (shrink only on exit)
+          const scale = 1 - easedProgress * 0.08;
+          // Radius: 0 → 32 (round only on exit)
+          const radius = easedProgress * 32;
 
-          const easedProgress = gsap.parseEase('power2.out')(animProgress);
-
-          if (inner) {
-            // Scale: 0.92 ↔ 1.0
-            const scale = 1 - easedProgress * 0.08;
-            // Radius: 32 ↔ 0
-            const radius = easedProgress * 32;
-
-            inner.style.transform = `scale(${scale})`;
-            inner.style.borderRadius = `${radius}px`;
-          }
+          inner.style.transform = `scale(${scale})`;
+          inner.style.borderRadius = `${radius}px`;
         },
       });
 

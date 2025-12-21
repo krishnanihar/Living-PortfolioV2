@@ -28,22 +28,20 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
         ref={ref}
         className="work-placeholder-wrapper"
         style={{
-          height: '120dvh', // Reduced scroll distance for tighter transitions
+          height: '100dvh', // Exactly one viewport per card
           position: 'relative',
           zIndex: 100,
         }}
       >
-        {/* Sticky container - stays in view while scrolling */}
+        {/* Full-height container - controlled snap handles navigation */}
         <div
           className="work-placeholder-inner"
           style={{
-            position: 'sticky',
-            top: 0,
             width: '100%',
-            height: '100dvh',
+            height: '100%',
             overflow: 'hidden',
-            borderRadius: '32px', // Start shrunk
-            transform: 'scale(0.92)', // Start shrunk
+            borderRadius: '0px', // Start at full (no radius)
+            transform: 'scale(1)', // Start at full scale
             willChange: 'transform, border-radius',
             transformOrigin: 'center center',
             background: 'var(--glass-03)',
