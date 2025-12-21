@@ -278,7 +278,7 @@ export default function ConceptWorkStack() {
         trigger: card,
         start: 'top bottom', // Start when card enters viewport from bottom
         end: 'bottom top', // End when card exits viewport from top
-        scrub: 0.1, // Lower scrub for faster response to snap scroll
+        scrub: 0.5, // Balanced scrub - smooth without lag
         onUpdate: (self) => {
           const progress = self.progress;
 

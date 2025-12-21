@@ -59,7 +59,7 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
           rotateYMax: 1.5,
           shadow: false,
           highlight: false,
-          duration: 600,
+          duration: 800,
         });
       }
 
@@ -78,10 +78,10 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
           height: '100dvh',
           position: 'relative',
           zIndex: 100,
-          // Faded state transitions
-          opacity: isActive ? 1 : 0.55,
-          filter: isActive ? 'none' : 'saturate(0.7) brightness(0.85)',
-          transition: 'opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s cubic-bezier(0.16, 1, 0.3, 1)',
+          // Faded state transitions - smooth easing, no overshoot
+          opacity: isActive ? 1 : 0.5,
+          filter: isActive ? 'none' : 'saturate(0.8) brightness(0.9)',
+          transition: 'opacity 1s cubic-bezier(0.22, 1, 0.36, 1), filter 1s cubic-bezier(0.22, 1, 0.36, 1)',
         }}
       >
         {/* Full-height container - controlled snap handles navigation */}
