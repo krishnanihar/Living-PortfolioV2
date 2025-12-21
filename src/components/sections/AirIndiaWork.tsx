@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
@@ -597,6 +597,18 @@ export function AirIndiaWork() {
   const testimonialsSectionRef = useRef<HTMLDivElement>(null);
   const [testimonialsInView, setTestimonialsInView] = useState(false);
 
+  // Auto-play tracking - prevents re-triggering animations
+  const [pixelRadarAutoPlayed, setPixelRadarAutoPlayed] = useState(false);
+  const [figmaCascadeAutoPlayed, setFigmaCascadeAutoPlayed] = useState(false);
+  const [mcpPipelineAutoPlayed, setMcpPipelineAutoPlayed] = useState(false);
+  const [nluQueryAutoPlayed, setNluQueryAutoPlayed] = useState(false);
+
+  // Refs for viewport detection of animation sections
+  const pixelRadarRef = useRef<HTMLDivElement>(null);
+  const figmaCascadeRef = useRef<HTMLDivElement>(null);
+  const mcpPipelineRef = useRef<HTMLDivElement>(null);
+  const nluQueryRef = useRef<HTMLDivElement>(null);
+
   // Intersection observer for lazy loading
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
@@ -643,6 +655,143 @@ export function AirIndiaWork() {
     setHoveredProject(null);
   };
 
+  // Animation trigger functions for auto-play on viewport
+  const triggerPixelRadarAnimation = useCallback(() => {
+    if (isAnalyzing) return;
+    setIsAnalyzing(true);
+    setAnalysisPhase('scan');
+    setPixelRadarStep(2);
+    setTimeout(() => setAnalysisPhase('analyze'), 500);
+    setTimeout(() => {
+      setAnalysisPhase('complete');
+      setPixelRadarStep(3);
+      setIsAnalyzing(false);
+    }, 1500);
+  }, [isAnalyzing]);
+
+  const triggerMcpPipelineAnimation = useCallback(() => {
+    if (mcpPhase !== 'idle') return;
+    setMcpPhase('design');
+    setTimeout(() => setMcpPhase('server'), 600);
+    setTimeout(() => setMcpPhase('agent'), 1200);
+    setTimeout(() => setMcpPhase('output'), 1800);
+    setTimeout(() => setMcpPhase('idle'), 3000);
+  }, [mcpPhase]);
+
+  const triggerNluQueryAnimation = useCallback(() => {
+    if (queryPhase !== 'idle') return;
+    const fullQuery = '"Show me flights to Delhi under ₹5000 next weekend"';
+    setQueryPhase('typing');
+    setDisplayedQuery('');
+
+    let charIndex = 0;
+    const typeInterval = setInterval(() => {
+      if (charIndex < fullQuery.length) {
+        setDisplayedQuery(fullQuery.slice(0, charIndex + 1));
+        charIndex++;
+      } else {
+        clearInterval(typeInterval);
+        setTimeout(() => setQueryPhase('tokenize'), 300);
+        setTimeout(() => setQueryPhase('entities'), 800);
+        setTimeout(() => setQueryPhase('intent'), 1300);
+        setTimeout(() => setQueryPhase('results'), 1800);
+        setTimeout(() => setQueryPhase('idle'), 5000);
+      }
+    }, 25);
+  }, [queryPhase]);
+
+  const triggerFigmaCascadeAnimation = useCallback(() => {
+    if (figmaCascadePhase === 'playing') return;
+    setFigmaCascadePhase('playing');
+    setFigmaPreviewMode(false);
+    setFigmaHighlightedProperty(null);
+
+    // === PHASE 1: PRIMITIVES (0-4200ms) ===
+    setFigmaExpandedCategories(new Set(['color']));
+    setTimeout(() => {
+      setFigmaExpandedGroups(new Set(['color/brand']));
+      setFigmaHighlightedGroup('color/brand');
+    }, 200);
+
+    setTimeout(() => setFigmaPulsingRow('color/brand/primary'), 400);
+    setTimeout(() => setFigmaPulsingRow('color/brand/secondary'), 700);
+    setTimeout(() => setFigmaPulsingRow('color/brand/accent'), 1000);
+
+    setTimeout(() => {
+      setFigmaPulsingRow(null);
+      setFigmaExpandedGroups(prev => new Set([...prev, 'color/text']));
+      setFigmaHighlightedGroup('color/text');
+    }, 1300);
+
+    setTimeout(() => setFigmaPulsingRow('color/text/primary'), 1500);
+    setTimeout(() => setFigmaPulsingRow('color/text/secondary'), 1800);
+
+    setTimeout(() => {
+      setFigmaPulsingRow(null);
+      setFigmaExpandedCategories(prev => new Set([...prev, 'typography']));
+      setFigmaHighlightedGroup('typography');
+    }, 2200);
+
+    setTimeout(() => {
+      setFigmaExpandedGroups(prev => new Set([...prev, 'typography/font-size']));
+      setFigmaHighlightedGroup('typography/font-size');
+    }, 2500);
+
+    setTimeout(() => setFigmaPulsingRow('typography/font-size/md'), 2700);
+    setTimeout(() => setFigmaPulsingRow('typography/font-size/lg'), 3000);
+
+    setTimeout(() => {
+      setFigmaPulsingRow(null);
+      setFigmaExpandedCategories(prev => new Set([...prev, 'spacing']));
+      setFigmaExpandedGroups(prev => new Set([...prev, 'spacing/scale']));
+      setFigmaHighlightedGroup('spacing/scale');
+    }, 3400);
+
+    setTimeout(() => setFigmaPulsingRow('spacing/4'), 3600);
+    setTimeout(() => setFigmaPulsingRow('spacing/8'), 3900);
+
+    setTimeout(() => {
+      setFigmaPulsingRow(null);
+      setFigmaHighlightedGroup(null);
+    }, 4200);
+
+    // === PHASE 2: SEMANTICS (4300-5400ms) ===
+    setTimeout(() => {
+      setFigmaSelectedCollection('semantics');
+      setFigmaExpandedCollections(new Set(['semantics']));
+    }, 4300);
+
+    setTimeout(() => setFigmaPulsingRow('action/primary'), 4700);
+    setTimeout(() => setFigmaPulsingRow('action/primary-hover'), 5100);
+
+    // === PHASE 3: COMPONENT PREVIEW (5500-8000ms) ===
+    setTimeout(() => {
+      setFigmaPulsingRow(null);
+      setFigmaPreviewMode(true);
+      setFigmaPreviewComponent('button');
+    }, 5500);
+
+    setTimeout(() => setFigmaHighlightedProperty('bg'), 5900);
+    setTimeout(() => setFigmaHighlightedProperty('text'), 6300);
+    setTimeout(() => setFigmaHighlightedProperty('radius'), 6700);
+    setTimeout(() => setFigmaHighlightedProperty('padding-x'), 7100);
+
+    setTimeout(() => {
+      setFigmaHighlightedProperty(null);
+      setFigmaPreviewComponent('card');
+      setFigmaHighlightedProperty('bg');
+    }, 7500);
+
+    setTimeout(() => {
+      setFigmaHighlightedProperty(null);
+      setFigmaCascadePhase('complete');
+    }, 8000);
+
+    setTimeout(() => {
+      setFigmaCascadePhase('idle');
+    }, 9500);
+  }, [figmaCascadePhase]);
+
   // Intersection Observer
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -660,6 +809,74 @@ export function AirIndiaWork() {
 
     return () => observer.disconnect();
   }, []);
+
+  // Auto-play animations on viewport entry
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.3,
+      rootMargin: '0px 0px -50px 0px',
+    };
+
+    const observers: IntersectionObserver[] = [];
+
+    // Pixel Radar auto-play
+    if (pixelRadarRef.current && !pixelRadarAutoPlayed) {
+      const observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting && !pixelRadarAutoPlayed && !isAnalyzing) {
+          setPixelRadarAutoPlayed(true);
+          setTimeout(triggerPixelRadarAnimation, 400);
+          observer.disconnect();
+        }
+      }, observerOptions);
+      observer.observe(pixelRadarRef.current);
+      observers.push(observer);
+    }
+
+    // Figma Cascade auto-play
+    if (figmaCascadeRef.current && !figmaCascadeAutoPlayed) {
+      const observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting && !figmaCascadeAutoPlayed && figmaCascadePhase !== 'playing') {
+          setFigmaCascadeAutoPlayed(true);
+          setTimeout(triggerFigmaCascadeAnimation, 500);
+          observer.disconnect();
+        }
+      }, observerOptions);
+      observer.observe(figmaCascadeRef.current);
+      observers.push(observer);
+    }
+
+    // MCP Pipeline auto-play
+    if (mcpPipelineRef.current && !mcpPipelineAutoPlayed) {
+      const observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting && !mcpPipelineAutoPlayed && mcpPhase === 'idle') {
+          setMcpPipelineAutoPlayed(true);
+          setTimeout(triggerMcpPipelineAnimation, 300);
+          observer.disconnect();
+        }
+      }, observerOptions);
+      observer.observe(mcpPipelineRef.current);
+      observers.push(observer);
+    }
+
+    // NLU Query auto-play
+    if (nluQueryRef.current && !nluQueryAutoPlayed) {
+      const observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting && !nluQueryAutoPlayed && queryPhase === 'idle') {
+          setNluQueryAutoPlayed(true);
+          setTimeout(triggerNluQueryAnimation, 400);
+          observer.disconnect();
+        }
+      }, observerOptions);
+      observer.observe(nluQueryRef.current);
+      observers.push(observer);
+    }
+
+    return () => observers.forEach(obs => obs.disconnect());
+  }, [
+    pixelRadarAutoPlayed, figmaCascadeAutoPlayed, mcpPipelineAutoPlayed, nluQueryAutoPlayed,
+    isAnalyzing, figmaCascadePhase, mcpPhase, queryPhase,
+    triggerPixelRadarAnimation, triggerFigmaCascadeAnimation, triggerMcpPipelineAnimation, triggerNluQueryAnimation,
+  ]);
 
   // Mobile detection
   useEffect(() => {
@@ -2615,7 +2832,7 @@ export function AirIndiaWork() {
                             <span style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Analyzing...</span>
                           </>
                         ) : (
-                          <span>Run Analysis</span>
+                          <span>{pixelRadarAutoPlayed ? 'Replay Analysis' : 'Run Analysis'}</span>
                         )}
                       </button>
                     </div>
@@ -3665,7 +3882,7 @@ export function AirIndiaWork() {
                         <span style={{ fontSize: '10px', color: 'white' }}>▶</span>
                       )}
                       <span style={{ fontSize: '10px', color: 'white', fontWeight: 500 }}>
-                        {figmaCascadePhase === 'playing' ? 'Playing' : 'Demo'}
+                        {figmaCascadePhase === 'playing' ? 'Playing' : figmaCascadeAutoPlayed ? 'Replay' : 'Demo'}
                       </span>
                     </button>
 
@@ -4604,7 +4821,9 @@ export function AirIndiaWork() {
                         padding: '0 1rem',
                       }}
                     >
-                      {index === 0 ? renderDesignSystemDemo() : renderPixelRadarDemo()}
+                      <div ref={index === 0 ? figmaCascadeRef : pixelRadarRef}>
+                        {index === 0 ? renderDesignSystemDemo() : renderPixelRadarDemo()}
+                      </div>
 
                       {/* Pixel Radar Featured Section */}
                       {index === 1 && (
@@ -4707,7 +4926,7 @@ export function AirIndiaWork() {
                                 <path d="M4 2.5v11l9-5.5L4 2.5z"/>
                               </svg>
                             )}
-                            <span>{figmaCascadePhase === 'playing' ? 'Running Demo...' : 'Play Token Cascade'}</span>
+                            <span>{figmaCascadePhase === 'playing' ? 'Running Demo...' : figmaCascadeAutoPlayed ? 'Replay Token Cascade' : 'Play Token Cascade'}</span>
                           </button>
                         </div>
                       )}
@@ -6920,7 +7139,7 @@ export function AirIndiaWork() {
                   ) : index === 3 ? (
                     /* Card 3: MCP Handoff - Design-to-Code Bridge Visualization */
                     <>
-                    <div style={{
+                    <div ref={mcpPipelineRef} style={{
                       width: '100%',
                       maxWidth: '1000px',
                       margin: '0 auto',
@@ -7196,7 +7415,7 @@ export function AirIndiaWork() {
                             background: mcpPhase === 'idle' ? 'white' : `rgb(${project.color})`,
                             animation: mcpPhase !== 'idle' ? 'statusPulse 1s ease infinite' : 'none',
                           }} />
-                          {mcpPhase === 'idle' ? 'Watch Pipeline Demo' : 'Streaming Context...'}
+                          {mcpPhase === 'idle' ? (mcpPipelineAutoPlayed ? 'Replay Demo' : 'Watch Pipeline Demo') : 'Streaming Context...'}
                         </button>
 
                         <div style={{ fontSize: '11px', color: 'var(--text-50)', maxWidth: '300px', textAlign: 'right' }}>
@@ -8233,7 +8452,7 @@ export function AirIndiaWork() {
                         — Click &quot;Send&quot; to see AI in action
                       </span>
                     </div>
-                    <div style={{
+                    <div ref={nluQueryRef} style={{
                       width: '100%',
                       maxWidth: '1100px',
                       margin: '0 auto',
