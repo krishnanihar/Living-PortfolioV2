@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef, Suspense, useCallback } from 'react';
 import { WorkPageLayout } from '@/components/narrative-work/WorkPageLayout';
-import WorkConceptHero from '@/components/concept/WorkConceptHero';
+import { NarrativeWorkHero } from '@/components/narrative-work/NarrativeWorkHero';
 import { JourneyOverview } from '@/components/narrative-work/JourneyOverview';
 import { AirIndiaHeroCard } from '@/components/narrative-work/AirIndiaHeroCard';
 import { ClearaHeroCard } from '@/components/narrative-work/ClearaHeroCard';
@@ -476,13 +476,10 @@ export function WorkNarrativePage() {
 
   return (
     <WorkPageLayout>
-      {/* SECTION 1: Hero Entrance - Concept-style glassmorphic hero */}
+      {/* SECTION 1: Hero Entrance */}
       <Suspense fallback={<HeroSkeleton />}>
-        <WorkConceptHero />
+        <NarrativeWorkHero />
       </Suspense>
-
-      {/* Scroll anchor for hero CTA */}
-      <div id="work-content" />
 
       {/* SECTION 2: Journey Overview */}
       <Suspense fallback={<SectionSkeleton />}>
