@@ -129,6 +129,117 @@ const CLEARA_BORDERS = {
 };
 
 // =============================================================================
+// SVG FILTERS - Watercolor & Liquid Glass Effects
+// =============================================================================
+
+const SVGFilters = () => (
+  <svg style={{ position: 'absolute', width: 0, height: 0 }} aria-hidden="true">
+    <defs>
+      {/* Watercolor Texture Filter - creates soft organic displacement */}
+      <filter id="watercolor" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" />
+        <feGaussianBlur stdDeviation="0.5" />
+      </filter>
+
+      {/* Liquid Glass Refraction - iOS 26 inspired light bending */}
+      <filter id="liquidGlass" x="-10%" y="-10%" width="120%" height="120%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur" />
+        <feColorMatrix in="blur" type="saturate" values="1.8" result="saturated" />
+        <feSpecularLighting in="blur" surfaceScale="5" specularConstant="0.75" specularExponent="20" result="specular">
+          <fePointLight x="50" y="50" z="200" />
+        </feSpecularLighting>
+        <feComposite in="saturated" in2="specular" operator="arithmetic" k1="0" k2="1" k3="0.3" k4="0" />
+      </filter>
+
+      {/* Soft Organic Edges - subtle displacement for natural feel */}
+      <filter id="organicEdge">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" />
+      </filter>
+    </defs>
+  </svg>
+);
+
+// =============================================================================
+// WATERCOLOR DECORATIVE COMPONENTS
+// =============================================================================
+
+interface WatercolorBlobProps {
+  color: string;
+  size: number;
+  position: { top?: string; left?: string; right?: string; bottom?: string };
+  opacity?: number;
+}
+
+const WatercolorBlob: React.FC<WatercolorBlobProps> = ({
+  color,
+  size,
+  position,
+  opacity = 0.5
+}) => (
+  <div style={{
+    position: 'absolute',
+    ...position,
+    width: size,
+    height: size,
+    background: `radial-gradient(ellipse at 30% 30%, ${color}40 0%, ${color}20 40%, transparent 70%)`,
+    filter: 'url(#watercolor)',
+    opacity,
+    pointerEvents: 'none',
+    borderRadius: '60% 40% 50% 50%',
+    transform: 'rotate(-15deg)',
+  }} />
+);
+
+interface WatercolorDividerProps {
+  color?: string;
+  margin?: string;
+}
+
+const WatercolorDivider: React.FC<WatercolorDividerProps> = ({
+  color = CLEARA_COLORS.lavender,
+  margin = '16px 0'
+}) => (
+  <div style={{
+    height: 2,
+    margin,
+    background: `linear-gradient(90deg,
+      transparent,
+      ${color}30 20%,
+      ${color}50 50%,
+      ${color}30 80%,
+      transparent)`,
+    filter: 'url(#organicEdge)',
+  }} />
+);
+
+// Animated specular shimmer for liquid glass effect
+const SpecularShimmer: React.FC<{ delay?: number }> = ({ delay = 0 }) => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{
+      opacity: [0.3, 0.6, 0.3],
+      backgroundPosition: ['-200% 0', '200% 0'],
+    }}
+    transition={{
+      duration: 4,
+      repeat: Infinity,
+      ease: 'easeInOut',
+      delay,
+    }}
+    style={{
+      position: 'absolute',
+      inset: 0,
+      borderRadius: 'inherit',
+      pointerEvents: 'none',
+      background: 'linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%)',
+      backgroundSize: '200% 100%',
+    }}
+  />
+);
+
+// =============================================================================
 // HAPTIC FEEDBACK SYSTEM
 // =============================================================================
 
@@ -525,17 +636,30 @@ const TabBar: React.FC<TabBarProps> = ({ activeScreen, onNavigate }) => {
         left: 0,
         right: 0,
         height: 84,
-        backgroundColor: CLEARA_COLORS.glassPrimary,
-        backdropFilter: 'blur(20px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+        background: `linear-gradient(180deg,
+          rgba(255,255,255,0.92) 0%,
+          rgba(255,255,255,0.88) 100%)`,
+        backdropFilter: 'blur(24px) saturate(200%) brightness(102%)',
+        WebkitBackdropFilter: 'blur(24px) saturate(200%) brightness(102%)',
         borderTop: `1px solid ${CLEARA_BORDERS.light}`,
         display: 'flex',
         justifyContent: 'space-around',
         alignItems: 'flex-start',
         paddingTop: 10,
         paddingBottom: 24,
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.6)',
       }}
     >
+      {/* iOS 26 Liquid Glass specular highlight rim */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 20,
+        right: 20,
+        height: 1,
+        background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.7) 20%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0.7) 80%, transparent)',
+        opacity: 0.7,
+      }} />
       {tabs.map((tab) => {
         const isActive = activeScreen === tab.screen;
         return (
@@ -577,6 +701,7 @@ interface GlassCardProps {
   padding?: number;
   style?: React.CSSProperties;
   onClick?: () => void;
+  showShimmer?: boolean;
 }
 
 const GlassCard: React.FC<GlassCardProps> = ({
@@ -585,12 +710,26 @@ const GlassCard: React.FC<GlassCardProps> = ({
   padding = 16,
   style,
   onClick,
+  showShimmer = false,
 }) => {
+  // Liquid Glass gradient backgrounds with layered transparency
   const backgrounds = {
-    primary: CLEARA_COLORS.glassPrimary,
-    lavender: CLEARA_COLORS.glassLavender,
-    sage: CLEARA_COLORS.glassSage,
-    blush: CLEARA_COLORS.glassBlush,
+    primary: `linear-gradient(135deg,
+      rgba(255,255,255,0.28) 0%,
+      rgba(255,255,255,0.12) 50%,
+      rgba(255,255,255,0.18) 100%)`,
+    lavender: `linear-gradient(135deg,
+      rgba(139,157,195,0.18) 0%,
+      rgba(139,157,195,0.08) 50%,
+      rgba(139,157,195,0.12) 100%)`,
+    sage: `linear-gradient(135deg,
+      rgba(168,197,181,0.18) 0%,
+      rgba(168,197,181,0.08) 50%,
+      rgba(168,197,181,0.12) 100%)`,
+    blush: `linear-gradient(135deg,
+      rgba(212,165,165,0.18) 0%,
+      rgba(212,165,165,0.08) 50%,
+      rgba(212,165,165,0.12) 100%)`,
   };
 
   const borders = {
@@ -600,23 +739,34 @@ const GlassCard: React.FC<GlassCardProps> = ({
     blush: CLEARA_BORDERS.blush,
   };
 
+  // iOS 26 Liquid Glass specular shadow with inner highlights
+  const liquidGlassShadow = `
+    inset 0 1px 1px rgba(255,255,255,0.5),
+    inset 0 -1px 1px rgba(255,255,255,0.15),
+    0 2px 8px rgba(45,45,55,0.06),
+    0 1px 2px rgba(45,45,55,0.04)
+  `;
+
   return (
     <motion.div
       whileHover={onClick ? { scale: 1.02 } : undefined}
       whileTap={onClick ? { scale: 0.98 } : undefined}
       onClick={onClick}
       style={{
-        backgroundColor: backgrounds[variant],
-        backdropFilter: 'blur(12px) saturate(150%)',
-        WebkitBackdropFilter: 'blur(12px) saturate(150%)',
+        position: 'relative',
+        overflow: 'hidden',
+        background: backgrounds[variant],
+        backdropFilter: 'blur(16px) saturate(180%) brightness(105%)',
+        WebkitBackdropFilter: 'blur(16px) saturate(180%) brightness(105%)',
         borderRadius: 20,
         border: `1px solid ${borders[variant]}`,
         padding,
-        boxShadow: CLEARA_SHADOWS.card,
+        boxShadow: liquidGlassShadow,
         cursor: onClick ? 'pointer' : 'default',
         ...style,
       }}
     >
+      {showShimmer && <SpecularShimmer />}
       {children}
     </motion.div>
   );
@@ -4237,6 +4387,9 @@ const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
         transformOrigin: 'center center',
       }}
     >
+      {/* SVG Filter Definitions for Watercolor & Liquid Glass Effects */}
+      <SVGFilters />
+
       {/* iPhone 15 Pro Device Frame with Titanium Bezel */}
       <div
         style={{
@@ -4281,6 +4434,26 @@ const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
 
           {/* Status Bar */}
           <StatusBar />
+
+          {/* Watercolor Decorative Blobs */}
+          <WatercolorBlob
+            color={CLEARA_COLORS.lavender}
+            size={180}
+            position={{ top: '10%', right: '-40px' }}
+            opacity={0.4}
+          />
+          <WatercolorBlob
+            color={CLEARA_COLORS.sage}
+            size={150}
+            position={{ bottom: '25%', left: '-30px' }}
+            opacity={0.35}
+          />
+          <WatercolorBlob
+            color={CLEARA_COLORS.blush}
+            size={120}
+            position={{ top: '50%', right: '10%' }}
+            opacity={0.3}
+          />
 
           {/* Screen Content */}
           <motion.div
