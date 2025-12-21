@@ -3062,6 +3062,9 @@ const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
   const [rituals, setRituals] = useState<Ritual[]>(INITIAL_RITUALS);
   const [pasiLogs] = useState<PasiLog[]>(INITIAL_PASI_LOGS);
 
+  // Scroll container ref
+  const screenContainerRef = useRef<HTMLDivElement>(null);
+
   // Use controlled props if provided
   const activeScreen = controlledScreen ?? internalScreen;
   const activeSubState = controlledSubState ?? internalSubState;
@@ -3233,16 +3236,25 @@ const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
           <StatusBar />
 
           {/* Screen Content */}
-          <div style={{
-            position: 'absolute',
-            top: 44,
-            left: 0,
-            right: 0,
-            bottom: hideTabBar ? 0 : 84,
-            overflowY: 'auto',
-            overflowX: 'hidden',
-            WebkitOverflowScrolling: 'touch', // iOS momentum scrolling
-          }}>
+          <motion.div
+            ref={screenContainerRef}
+            onWheel={(e) => {
+              e.stopPropagation();
+              if (screenContainerRef.current) {
+                screenContainerRef.current.scrollTop += e.deltaY;
+              }
+            }}
+            style={{
+              position: 'absolute',
+              top: 44,
+              left: 0,
+              right: 0,
+              bottom: hideTabBar ? 0 : 84,
+              overflow: 'auto',
+              overflowX: 'hidden',
+              WebkitOverflowScrolling: 'touch',
+            }}
+          >
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeScreen + (activeSubState || '')}
@@ -3254,7 +3266,7 @@ const ClearaPhoneMockup: React.FC<ClearaPhoneMockupProps> = ({
                 {renderScreen()}
               </motion.div>
             </AnimatePresence>
-          </div>
+          </motion.div>
 
           {/* Tab Bar */}
           {!hideTabBar && (
