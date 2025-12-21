@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -23,7 +23,10 @@ if (typeof window !== 'undefined') {
 }
 
 export default function ConceptPage() {
-  const { progress } = useLenisScroll();
+  const { progress, lenis } = useLenisScroll();
+  const [fadeOpacity, setFadeOpacity] = useState(0);
+  const isResetting = useRef(false);
+  const hasTriggered = useRef(false);
 
   useEffect(() => {
     // Refresh ScrollTrigger after all content is loaded
@@ -37,6 +40,59 @@ export default function ConceptPage() {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
+
+  // Fade transition for infinite scroll loop
+  useEffect(() => {
+    if (!lenis) return;
+
+    const handleScroll = ({ scroll, limit }: { scroll: number; limit: number }) => {
+      if (isResetting.current) return;
+
+      // Use Lenis's own scroll/limit for accurate progress
+      const scrollProgress = limit > 0 ? scroll / limit : 0;
+
+      // Start fading when 97% scrolled (very end of page)
+      if (scrollProgress > 0.97 && !hasTriggered.current) {
+        // Calculate fade opacity (0.97 -> 1.0 maps to 0 -> 1)
+        const fadeProgress = (scrollProgress - 0.97) / 0.03;
+        setFadeOpacity(Math.min(fadeProgress, 1));
+
+        // When fade is at 70%+, trigger reset
+        if (fadeProgress >= 0.7) {
+          hasTriggered.current = true;
+          isResetting.current = true;
+
+          // Ensure full black before reset
+          setFadeOpacity(1);
+
+          // Small delay to ensure fade is visible, then reset
+          setTimeout(() => {
+            // Use window.scrollTo as backup
+            window.scrollTo(0, 0);
+            lenis.scrollTo(0, { immediate: true });
+
+            // Fade out after reset
+            setTimeout(() => {
+              setFadeOpacity(0);
+              isResetting.current = false;
+
+              // Allow re-trigger after cooldown
+              setTimeout(() => {
+                hasTriggered.current = false;
+              }, 1500);
+            }, 150);
+          }, 50);
+        }
+      } else if (scrollProgress < 0.95) {
+        // Reset fade when scrolled back up
+        setFadeOpacity(0);
+        hasTriggered.current = false;
+      }
+    };
+
+    lenis.on('scroll', handleScroll);
+    return () => lenis.off('scroll', handleScroll);
+  }, [lenis]);
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
@@ -63,6 +119,19 @@ export default function ConceptPage() {
         {/* Footer */}
         <ConceptFooter />
       </main>
+
+      {/* Fade Transition Overlay - for seamless infinite scroll loop */}
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          backgroundColor: '#0A0A0A',
+          opacity: fadeOpacity,
+          pointerEvents: fadeOpacity > 0 ? 'auto' : 'none',
+          transition: fadeOpacity === 0 ? 'opacity 0.4s ease-out' : 'none',
+          zIndex: 9999,
+        }}
+      />
     </div>
   );
 }

@@ -89,16 +89,17 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
       duration: prefersReducedMotion ? 0 : 0.7, // 700ms - more luxurious feel
       easing: premiumEaseOut, // Quart ease-out - smooth, non-oscillating
 
-      // Enable infinite scroll for concept page (seamless loop from footer to hero)
-      infinite: isConceptPage,
+      // Infinite scroll disabled - using ghost hero approach for seamless loop
+      // Ghost hero provides visual continuity, then resets to position 0
+      infinite: false,
 
       // THE FIX: virtualScroll returning false COMPLETELY disables Lenis wheel processing
       // wheelMultiplier: 0 only multiplies delta by 0, but Lenis still processes events internally
       // This ensures our custom handler has FULL control on snap scroll pages
       virtualScroll: () => !useControlledSnap, // false on snap pages = Lenis ignores ALL wheel/touch events
 
-      wheelMultiplier: useControlledSnap ? 0 : 0.8, // Keep for safety
-      touchMultiplier: useControlledSnap ? 0 : 1.5,
+      wheelMultiplier: useControlledSnap ? 0 : (isConceptPage ? 0.4 : 0.8), // Slower on concept page
+      touchMultiplier: useControlledSnap ? 0 : (isConceptPage ? 0.8 : 1.5), // Slower on concept page
       smoothWheel: !prefersReducedMotion,
       syncTouch: !useControlledSnap,
       syncTouchLerp: 0.1,
