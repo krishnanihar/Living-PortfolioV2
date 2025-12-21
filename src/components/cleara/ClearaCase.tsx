@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useRef, Suspense } from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef, useState, useEffect, Suspense } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import {
   Puzzle,
@@ -21,6 +21,14 @@ import {
   BookOpen,
   Shield,
   Check,
+  Heart,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Play,
+  Pause,
+  RotateCcw,
+  type LucideIcon,
 } from 'lucide-react';
 import { useClearaScroll } from '@/hooks/useClearaScroll';
 import { ClearaPoeticText } from './parallax/ClearaPoeticText';
@@ -419,12 +427,540 @@ const PERSONAS = [
 ];
 
 // =============================================================================
+// KEY USER FLOWS DATA
+// =============================================================================
+
+// Type definitions matching ClearaPhoneMockup
+type Screen = 'home' | 'photo' | 'pasi' | 'rituals' | 'wellness' | 'insights' | 'journal' | 'flare' | 'learn' | 'profile' | 'settings' | 'patterns' | 'report' | 'breathing';
+
+type SubState =
+  | 'camera' | 'ghost' | 'capture' | 'result' | 'selection' | 'processing' | 'notes'  // Photo states
+  | 'question1' | 'question2' | 'question3'  // Wellness states
+  | 'add'  // Rituals states
+  | 'flare-detail'  // Flare prediction detail
+  | null;
+
+interface FlowStep {
+  screen: Screen;
+  subState: SubState;
+  label: string;
+  description: string;
+}
+
+interface FlowData {
+  id: string;
+  title: string;
+  subtitle: string;
+  icon: LucideIcon;
+  color: string;
+  steps: FlowStep[];
+}
+
+// Cleara color palette for flows
+const FLOW_COLORS = {
+  lavender: '#8B9DC3',
+  blush: '#D4A5A5',
+  sage: '#A8C5B5',
+};
+
+// Photo Capture & AI Analysis Flow
+const PHOTO_CAPTURE_FLOW: FlowData = {
+  id: 'photo-capture',
+  title: 'Photo Capture & AI Analysis',
+  subtitle: 'Track skin progress with ghost overlay alignment',
+  icon: Camera,
+  color: FLOW_COLORS.lavender,
+  steps: [
+    {
+      screen: 'home',
+      subState: null,
+      label: 'Tap "Track Photo"',
+      description: 'Quick actions on the home screen provide one-tap access to the most common tasks. The photo tracking button is prominently placed because consistent documentation is the foundation of effective care.',
+    },
+    {
+      screen: 'photo',
+      subState: 'selection',
+      label: 'Select body area',
+      description: 'The body part selector ensures photos are organized by region—arms, legs, trunk, and more. This organization enables meaningful comparisons over time and helps the AI analyze each area independently.',
+    },
+    {
+      screen: 'photo',
+      subState: 'ghost',
+      label: 'Ghost overlay appears',
+      description: 'The ghost overlay shows your previous photo at 50% opacity. This solves the frustration of inconsistent angles—now you can align perfectly every time for accurate progress tracking.',
+    },
+    {
+      screen: 'photo',
+      subState: 'capture',
+      label: 'Align & capture',
+      description: 'Position your camera to match the ghost overlay. Haptic feedback confirms the capture, and the app automatically saves metadata like lighting conditions and timestamp.',
+    },
+    {
+      screen: 'photo',
+      subState: 'processing',
+      label: 'AI processing',
+      description: 'Your photo is securely analyzed using our trained computer vision model. Within seconds, you\'ll receive a clinical-grade severity assessment—the same metric dermatologists use.',
+    },
+    {
+      screen: 'photo',
+      subState: 'notes',
+      label: 'Add context notes',
+      description: 'Context matters. Adding notes like "after beach weekend" or "started new routine" helps you and your care team understand what factors might be affecting your skin.',
+    },
+    {
+      screen: 'pasi',
+      subState: null,
+      label: 'View PASI score',
+      description: 'Your PASI score is displayed with trend analysis—33% more accurate than average dermatologist assessment. Track your progress over time with beautiful, clear visualizations.',
+    },
+  ],
+};
+
+// Wellness Check-In Flow
+const WELLNESS_CHECKIN_FLOW: FlowData = {
+  id: 'wellness-checkin',
+  title: 'Wellness Check-In',
+  subtitle: 'Track mood, sleep, and stress with Likert scale',
+  icon: Heart,
+  color: FLOW_COLORS.blush,
+  steps: [
+    {
+      screen: 'home',
+      subState: null,
+      label: 'Open wellness',
+      description: 'Daily wellness tracking is essential for understanding your unique triggers. Research shows strong correlations between emotional wellbeing and skin health.',
+    },
+    {
+      screen: 'wellness',
+      subState: null,
+      label: 'Begin check-in',
+      description: 'Taking a moment for yourself is an act of healing. The check-in starts with a gentle invitation—no judgment, just clarity about how you\'re feeling.',
+    },
+    {
+      screen: 'wellness',
+      subState: 'question1',
+      label: 'Rate your mood',
+      description: 'A 5-point Likert scale captures nuanced wellness data. The color-coded dots guide you from sage (feeling great) to blush (struggling)—visual feedback that feels intuitive.',
+    },
+    {
+      screen: 'wellness',
+      subState: 'question2',
+      label: 'Track stress level',
+      description: 'Stress is one of the most common flare triggers. By tracking it daily, Cleara can identify patterns and give you early warnings before a flare-up occurs.',
+    },
+    {
+      screen: 'wellness',
+      subState: 'result',
+      label: 'View your score',
+      description: 'Your wellness score is revealed with a beautiful animated display. Personalized AI guidance offers gentle recommendations based on your responses.',
+    },
+  ],
+};
+
+// Flare Prediction Alert Flow
+const FLARE_PREDICTION_FLOW: FlowData = {
+  id: 'flare-prediction',
+  title: 'Predictive Flare Alert',
+  subtitle: 'ML-powered 3-5 day advance warning',
+  icon: AlertTriangle,
+  color: FLOW_COLORS.sage,
+  steps: [
+    {
+      screen: 'home',
+      subState: null,
+      label: 'ML detects risk',
+      description: 'Our machine learning model continuously analyzes your data—photo history, wellness scores, weather patterns, and stress indicators—to identify early warning signs.',
+    },
+    {
+      screen: 'flare',
+      subState: null,
+      label: 'View risk level',
+      description: 'The flare prediction screen shows your current risk level with an animated thermometer. Contributing factors are displayed with impact percentages so you understand the "why".',
+    },
+    {
+      screen: 'flare',
+      subState: 'flare-detail',
+      label: 'Factor details',
+      description: 'Tap any factor to drill down into specifics. See the current status, historical impact, and personalized recommendations to mitigate that particular risk.',
+    },
+  ],
+};
+
+const ALL_FLOWS: FlowData[] = [PHOTO_CAPTURE_FLOW, WELLNESS_CHECKIN_FLOW, FLARE_PREDICTION_FLOW];
+
+// =============================================================================
+// AUTO-PLAY FLOW SECTION COMPONENT
+// =============================================================================
+
+interface ClearaAutoPlayFlowSectionProps {
+  flow: FlowData;
+}
+
+const ClearaAutoPlayFlowSection: React.FC<ClearaAutoPlayFlowSectionProps> = ({ flow }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isComplete, setIsComplete] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Auto-advance logic (3s per step)
+  useEffect(() => {
+    if (isPlaying && !isComplete) {
+      intervalRef.current = setInterval(() => {
+        setCurrentStep(prev => {
+          if (prev >= flow.steps.length - 1) {
+            setIsPlaying(false);
+            setIsComplete(true);
+            return prev;
+          }
+          return prev + 1;
+        });
+      }, 3000);
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [isPlaying, isComplete, flow.steps.length]);
+
+  const handlePlayClick = () => {
+    if (isComplete) {
+      setCurrentStep(0);
+      setIsComplete(false);
+      setIsPlaying(true);
+    } else {
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const goToPrevStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(prev => prev - 1);
+      setIsComplete(false);
+    }
+  };
+
+  const goToNextStep = () => {
+    if (currentStep < flow.steps.length - 1) {
+      setCurrentStep(prev => prev + 1);
+    } else {
+      setIsComplete(true);
+      setIsPlaying(false);
+    }
+  };
+
+  const IconComponent = flow.icon;
+
+  return (
+    <div style={{
+      padding: '2rem',
+    }}>
+      {/* Title with icon */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '0.75rem',
+        marginBottom: '1rem',
+      }}>
+        <IconComponent size={28} color={flow.color} strokeWidth={1.5} />
+        <h3
+          className="cleara-heading"
+          style={{
+            fontSize: '1.5rem',
+            color: 'var(--cleara-text-primary, #2A2A2A)',
+            margin: 0,
+          }}
+        >
+          {flow.title}
+        </h3>
+      </div>
+
+      {/* Dynamic description with AnimatePresence */}
+      <AnimatePresence mode="wait">
+        <motion.p
+          key={currentStep}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.3 }}
+          className="cleara-body"
+          style={{
+            textAlign: 'center',
+            maxWidth: '550px',
+            margin: '0 auto 2rem',
+            color: 'var(--cleara-text-secondary, #4A4A4A)',
+            lineHeight: 1.7,
+            fontSize: '0.95rem',
+          }}
+        >
+          {flow.steps[currentStep].description}
+        </motion.p>
+      </AnimatePresence>
+
+      {/* Phone mockup (controlled) */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        marginBottom: '2rem',
+        height: '520px',
+      }}>
+        <div style={{
+          transform: 'scale(0.65)',
+          transformOrigin: 'top center',
+        }}>
+          <ClearaPhoneMockup
+            controlledScreen={flow.steps[currentStep].screen}
+            controlledSubState={flow.steps[currentStep].subState}
+            scale={0.9}
+          />
+        </div>
+      </div>
+
+      {/* Controls: Prev | Play/Pause | Next */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '1rem',
+        marginBottom: '1.5rem',
+      }}>
+        {/* Prev button */}
+        <motion.button
+          onClick={goToPrevStep}
+          whileHover={{ scale: currentStep === 0 ? 1 : 1.05 }}
+          whileTap={{ scale: currentStep === 0 ? 1 : 0.95 }}
+          style={{
+            width: 44,
+            height: 44,
+            borderRadius: '50%',
+            background: currentStep === 0 ? 'rgba(42,42,42,0.05)' : `${flow.color}20`,
+            border: `2px solid ${currentStep === 0 ? 'rgba(42,42,42,0.1)' : flow.color}`,
+            color: currentStep === 0 ? 'rgba(42,42,42,0.3)' : flow.color,
+            cursor: currentStep === 0 ? 'not-allowed' : 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <ChevronLeft size={24} />
+        </motion.button>
+
+        {/* Play/Pause/Replay button */}
+        <motion.button
+          onClick={handlePlayClick}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          style={{
+            padding: isPlaying ? '0.75rem' : '0.75rem 1.5rem',
+            minWidth: isPlaying ? '48px' : 'auto',
+            height: '48px',
+            borderRadius: '100px',
+            background: `${flow.color}20`,
+            border: `2px solid ${flow.color}`,
+            color: flow.color,
+            fontWeight: 600,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.5rem',
+            fontSize: '0.9rem',
+          }}
+        >
+          {isPlaying ? (
+            <Pause size={20} />
+          ) : isComplete ? (
+            <>
+              <RotateCcw size={18} />
+              Play Again
+            </>
+          ) : (
+            <>
+              <Play size={18} fill={flow.color} />
+              Play Demo
+            </>
+          )}
+        </motion.button>
+
+        {/* Next button */}
+        <motion.button
+          onClick={goToNextStep}
+          whileHover={{ scale: (currentStep === flow.steps.length - 1 && isComplete) ? 1 : 1.05 }}
+          whileTap={{ scale: (currentStep === flow.steps.length - 1 && isComplete) ? 1 : 0.95 }}
+          style={{
+            width: 44,
+            height: 44,
+            borderRadius: '50%',
+            background: (currentStep === flow.steps.length - 1 && isComplete) ? 'rgba(42,42,42,0.05)' : `${flow.color}20`,
+            border: `2px solid ${(currentStep === flow.steps.length - 1 && isComplete) ? 'rgba(42,42,42,0.1)' : flow.color}`,
+            color: (currentStep === flow.steps.length - 1 && isComplete) ? 'rgba(42,42,42,0.3)' : flow.color,
+            cursor: (currentStep === flow.steps.length - 1 && isComplete) ? 'not-allowed' : 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <ChevronRight size={24} />
+        </motion.button>
+      </div>
+
+      {/* Progress bar */}
+      <div style={{ maxWidth: '350px', margin: '0 auto' }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          fontSize: '0.8rem',
+          color: 'var(--cleara-text-muted, #8A8A8A)',
+          marginBottom: '0.5rem',
+        }}>
+          <span>Step {currentStep + 1} of {flow.steps.length}</span>
+          <span>{flow.steps[currentStep].label}</span>
+        </div>
+        <div style={{
+          height: 4,
+          borderRadius: 2,
+          background: 'rgba(42,42,42,0.08)',
+        }}>
+          <motion.div
+            style={{
+              height: '100%',
+              borderRadius: 2,
+              background: flow.color,
+            }}
+            animate={{ width: `${((currentStep + 1) / flow.steps.length) * 100}%` }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// =============================================================================
+// COLLAPSIBLE FLOW CARD COMPONENT
+// =============================================================================
+
+interface CollapsibleFlowCardProps {
+  flow: FlowData;
+  isExpanded: boolean;
+  onToggle: () => void;
+}
+
+const CollapsibleFlowCard: React.FC<CollapsibleFlowCardProps> = ({ flow, isExpanded, onToggle }) => {
+  const IconComponent = flow.icon;
+
+  return (
+    <motion.div
+      layout
+      style={{
+        borderRadius: '20px',
+        overflow: 'hidden',
+        marginBottom: '1.5rem',
+      }}
+    >
+      {/* Collapsed Header (always visible) */}
+      <motion.button
+        onClick={onToggle}
+        whileHover={{ scale: 1.01 }}
+        whileTap={{ scale: 0.99 }}
+        style={{
+          width: '100%',
+          padding: '1.5rem 2rem',
+          background: 'rgba(255, 255, 255, 0.7)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: `1px solid ${flow.color}20`,
+          borderRadius: isExpanded ? '20px 20px 0 0' : '20px',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '1rem',
+          textAlign: 'left',
+        }}
+      >
+        {/* Icon */}
+        <div style={{
+          width: 48,
+          height: 48,
+          borderRadius: '50%',
+          background: `${flow.color}15`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}>
+          <IconComponent size={24} color={flow.color} strokeWidth={1.5} />
+        </div>
+
+        {/* Title & Subtitle */}
+        <div style={{ flex: 1 }}>
+          <h4
+            className="cleara-heading"
+            style={{
+              fontSize: '1.125rem',
+              color: 'var(--cleara-text-primary, #2A2A2A)',
+              marginBottom: '0.25rem',
+              fontWeight: 600,
+            }}
+          >
+            {flow.title}
+          </h4>
+          <p
+            className="cleara-body"
+            style={{
+              fontSize: '0.875rem',
+              color: 'var(--cleara-text-secondary, #4A4A4A)',
+              margin: 0,
+            }}
+          >
+            {flow.subtitle}
+          </p>
+        </div>
+
+        {/* Expand/Collapse Chevron */}
+        <motion.div
+          animate={{ rotate: isExpanded ? 180 : 0 }}
+          transition={{ duration: 0.3 }}
+          style={{ flexShrink: 0 }}
+        >
+          <ChevronDown size={24} color="var(--cleara-text-muted, #8A8A8A)" />
+        </motion.div>
+      </motion.button>
+
+      {/* Expanded Content */}
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              background: 'rgba(255, 255, 255, 0.5)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              borderLeft: `1px solid ${flow.color}20`,
+              borderRight: `1px solid ${flow.color}20`,
+              borderBottom: `1px solid ${flow.color}20`,
+              borderRadius: '0 0 20px 20px',
+              overflow: 'hidden',
+            }}
+          >
+            <ClearaAutoPlayFlowSection flow={flow} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
+
+// =============================================================================
 // MAIN COMPONENT
 // =============================================================================
 
 export function ClearaCase() {
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollState = useClearaScroll();
+  const [expandedFlow, setExpandedFlow] = useState<string | null>(null);
 
   return (
     <div
@@ -1214,6 +1750,56 @@ export function ClearaCase() {
                     {feature.desc}
                   </p>
                 </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ================================================================= */}
+        {/* KEY USER FLOWS SECTION */}
+        {/* ================================================================= */}
+        <section
+          style={{
+            minHeight: '100vh',
+            padding: '8rem 2rem',
+          }}
+        >
+          <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+            <ClearaPoeticText
+              lines={['Experience the Flows']}
+              scrollProgress={scrollState.progress}
+              scrollRange={[0.58, 0.64]}
+              size="display"
+              align="center"
+            />
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="cleara-body"
+              style={{
+                textAlign: 'center',
+                fontSize: '1.15rem',
+                color: 'var(--cleara-text-secondary, #4A4A4A)',
+                maxWidth: '550px',
+                margin: '1.5rem auto 4rem',
+                lineHeight: 1.7,
+              }}
+            >
+              Each interaction designed with intention. Tap to explore how Cleara guides your care journey.
+            </motion.p>
+
+            {/* Collapsible Flow Cards */}
+            <div>
+              {ALL_FLOWS.map((flow) => (
+                <CollapsibleFlowCard
+                  key={flow.id}
+                  flow={flow}
+                  isExpanded={expandedFlow === flow.id}
+                  onToggle={() => setExpandedFlow(expandedFlow === flow.id ? null : flow.id)}
+                />
               ))}
             </div>
           </div>
