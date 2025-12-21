@@ -81,7 +81,7 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
           // Faded state transitions - smooth easing, no overshoot
           opacity: isActive ? 1 : 0.5,
           filter: isActive ? 'none' : 'saturate(0.8) brightness(0.9)',
-          transition: 'opacity 1s cubic-bezier(0.22, 1, 0.36, 1), filter 1s cubic-bezier(0.22, 1, 0.36, 1)',
+          transition: 'opacity 1.6s cubic-bezier(0.22, 1, 0.36, 1), filter 1.6s cubic-bezier(0.22, 1, 0.36, 1)',
         }}
       >
         {/* Full-height container - controlled snap handles navigation */}
