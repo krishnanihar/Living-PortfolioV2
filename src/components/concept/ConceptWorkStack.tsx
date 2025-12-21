@@ -65,9 +65,9 @@ export default function ConceptWorkStack() {
   const lastScrollY = useRef(0); // Track scroll direction
 
   // Constants
-  const SCROLL_LOCKOUT = 900; // Snappy but still smooth
+  const SCROLL_LOCKOUT = 1100; // Must exceed animation duration (1000ms) to prevent interrupts
   const SWIPE_THRESHOLD = 50; // Minimum swipe distance
-  const ENTRY_SNAP_THRESHOLD = 0.5; // Snap when 50% visible
+  const ENTRY_SNAP_THRESHOLD = 0.1; // Snap when 10% visible (magnetic pull)
   const cardCount = featuredProjects.length;
 
   // Callback ref to store card refs
@@ -278,7 +278,7 @@ export default function ConceptWorkStack() {
         trigger: card,
         start: 'top bottom', // Start when card enters viewport from bottom
         end: 'bottom top', // End when card exits viewport from top
-        scrub: 0.5, // Balanced scrub - smooth without lag
+        scrub: 0.3, // Tighter sync to reduce jitter during snap scroll
         onUpdate: (self) => {
           const progress = self.progress;
 
