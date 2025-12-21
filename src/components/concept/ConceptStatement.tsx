@@ -56,8 +56,8 @@ export default function ConceptStatement() {
         @keyframes blurToSharp {
           0% {
             opacity: 0;
-            filter: blur(20px);
-            transform: translateY(30px);
+            filter: blur(8px);
+            transform: translateY(20px);
           }
           100% {
             opacity: 1;

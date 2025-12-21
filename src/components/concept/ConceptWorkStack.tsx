@@ -65,7 +65,7 @@ export default function ConceptWorkStack() {
   const lastScrollY = useRef(0); // Track scroll direction
 
   // Constants
-  const SCROLL_LOCKOUT = 1200; // 1.2s lockout (matches home page)
+  const SCROLL_LOCKOUT = 800; // 800ms balanced lockout
   const SWIPE_THRESHOLD = 50; // Minimum swipe distance
   const ENTRY_SNAP_THRESHOLD = 0.5; // Snap when 50% visible
   const cardCount = featuredProjects.length;
@@ -283,23 +283,23 @@ export default function ConceptWorkStack() {
           const progress = self.progress;
 
           // Bell curve animation:
-          // 0.0 - 0.2: Entry (shrunk → full) - card entering from bottom
-          // 0.2 - 0.5: Hold at full (plateau)
-          // 0.5 - 0.7: Exit (full → shrunk) - card exiting from top
-          // 0.7 - 1.0: Stay shrunk (card off screen)
+          // 0.0 - 0.35: Entry (shrunk → full) - card entering from bottom
+          // 0.35 - 0.55: Hold at full (plateau) - centered sweet spot
+          // 0.55 - 0.75: Exit (full → shrunk) - card exiting from top
+          // 0.75 - 1.0: Stay shrunk (card off screen)
           let animProgress: number;
 
-          if (progress < 0.2) {
+          if (progress < 0.35) {
             // Entry: shrunk → full (1 → 0)
-            animProgress = 1 - (progress / 0.2);
-          } else if (progress >= 0.5 && progress <= 0.7) {
+            animProgress = 1 - (progress / 0.35);
+          } else if (progress >= 0.55 && progress <= 0.75) {
             // Exit: full → shrunk (0 → 1)
-            animProgress = (progress - 0.5) / 0.2;
-          } else if (progress > 0.7) {
+            animProgress = (progress - 0.55) / 0.2;
+          } else if (progress > 0.75) {
             // After exit: stays shrunk
             animProgress = 1;
           } else {
-            // Plateau: 0.2-0.5 stays at full (0)
+            // Plateau: 0.35-0.55 stays at full (0)
             animProgress = 0;
           }
 

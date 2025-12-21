@@ -47,14 +47,14 @@ export default function ConceptFooter() {
       content.querySelectorAll('.fade-up'),
       {
         opacity: 0,
-        y: 60,
+        y: 30,
       },
       {
         opacity: 1,
         y: 0,
-        duration: 1,
-        stagger: 0.15,
-        ease: 'power3.out',
+        duration: 0.8,
+        stagger: 0.12,
+        ease: 'power2.out',
       }
     );
 

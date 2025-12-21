@@ -120,7 +120,7 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
       const SWIPE_THRESHOLD = 50; // Minimum swipe distance to trigger
       // ABSOLUTE LOCKOUT: Ignore ALL scroll input for this duration after triggering a scroll
       // This outlasts trackpad momentum (typically 500-1000ms) completely
-      const SCROLL_LOCKOUT = 1200; // 1.2 seconds - longer than any trackpad momentum
+      const SCROLL_LOCKOUT = 800; // 800ms - balanced lockout
 
       // Wheel handler - intercept and navigate one section at a time
       wheelHandler = (e: WheelEvent) => {

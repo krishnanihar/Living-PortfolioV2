@@ -128,7 +128,7 @@ export default function ConceptPage() {
           backgroundColor: '#0A0A0A',
           opacity: fadeOpacity,
           pointerEvents: fadeOpacity > 0 ? 'auto' : 'none',
-          transition: fadeOpacity === 0 ? 'opacity 0.4s ease-out' : 'none',
+          transition: fadeOpacity === 0 ? 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
           zIndex: 9999,
         }}
       />

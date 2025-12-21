@@ -1,0 +1,7 @@
+{
+  "name": "Cleara",
+  "description": "A healing-first psoriasis management app with a watercolor aesthetic, focusing on clarity through care.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
