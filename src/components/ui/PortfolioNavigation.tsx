@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Briefcase, User, Moon, Sun, HelpCircle } from 'lucide-react';
+import { Briefcase, User, Moon, Sun } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
 import { MobileBottomNav } from './MobileBottomNav';
 
@@ -257,8 +257,6 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
                 ? 'radial-gradient(ellipse 600px 200px at 70% 50%, var(--text-18), var(--text-10) 40%, transparent 70%)'
                 : isActive('/about')
                 ? 'radial-gradient(ellipse 600px 200px at 78% 50%, var(--text-18), var(--text-10) 40%, transparent 70%)'
-                : isActive('/journey')
-                ? 'radial-gradient(ellipse 600px 200px at 94% 50%, var(--text-18), var(--text-10) 40%, transparent 70%)'
                 : 'none',
               filter: 'blur(50px)',
               transition: 'background 0.6s ease',
@@ -482,39 +480,6 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
               {resolvedTheme === 'dark' ? <Moon size={15} /> : <Sun size={15} />}
             </div>
 
-            {/* Journey Button - HelpCircle icon represents "getting to know me" / learning journey */}
-            <Link href="/journey" style={{ textDecoration: 'none' }} aria-label="View my journey">
-              <div
-                style={{
-                  position: 'relative',
-                  borderRadius: '50%',
-                  width: '34px',
-                  height: '34px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--text-secondary)',
-                  background: 'var(--surface-primary)',
-                  backdropFilter: 'blur(20px) brightness(0.8)',
-                  WebkitBackdropFilter: 'blur(20px) brightness(0.8)',
-                  border: '1px solid var(--border-primary)',
-                  transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                  cursor: 'pointer',
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.transform = 'scale(1.1)';
-                  (e.currentTarget as HTMLElement).style.background = 'var(--surface-secondary)';
-                  (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
-                  (e.currentTarget as HTMLElement).style.background = 'var(--surface-primary)';
-                  (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)';
-                }}
-              >
-                <HelpCircle size={15} />
-              </div>
-            </Link>
           </div>
         </div>
       </nav>

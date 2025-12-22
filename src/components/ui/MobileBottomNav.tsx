@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Briefcase, User, Compass, LucideIcon } from 'lucide-react';
+import { Home, Briefcase, User, LucideIcon } from 'lucide-react';
 
 interface NavItem {
   name: string;
@@ -15,7 +15,6 @@ const navItems: NavItem[] = [
   { name: 'Home', icon: Home, href: '/' },
   { name: 'Work', icon: Briefcase, href: '/work' },
   { name: 'About', icon: User, href: '/about' },
-  { name: 'Journey', icon: Compass, href: '/journey' },
 ];
 
 /**
