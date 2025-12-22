@@ -12,7 +12,6 @@ interface Act {
   icon?: React.ElementType; // For Lucide icons
   logo?: string; // For SVG logos
   color: string;
-  projects: string[];
 }
 
 const acts: Act[] = [
@@ -22,7 +21,6 @@ const acts: Act[] = [
     description: 'Immersive installations and generative art systems at National Institute of Design',
     logo: '/logos/nid.svg',
     color: 'rgba(147, 51, 234, 0.8)',
-    projects: ['Metamorphic Fractal Reflections'],
   },
   {
     id: 'industry',
@@ -30,7 +28,6 @@ const acts: Act[] = [
     description: '8 key projects for Air India\'s digital transformation: design systems, mobile patterns, data visualization',
     logo: '/logos/air-india.svg',
     color: 'rgba(218, 14, 41, 0.8)',
-    projects: ['Pixel Radar', 'Aviation Analytics', 'Mobile Patterns', 'Design Systems'],
   },
   {
     id: 'innovation',
@@ -38,7 +35,6 @@ const acts: Act[] = [
     description: 'AI-powered health tech (Cleara), speculative design (Latent Space), and Gemini exhibitions',
     icon: Lightbulb,
     color: 'rgba(14, 165, 233, 0.8)',
-    projects: ['Latent Space', 'mythOS', 'Cleara'],
   },
 ];
 
@@ -238,39 +234,6 @@ export function JourneyOverview() {
                     }}>
                       {act.description}
                     </p>
-
-                    {/* Projects */}
-                    <div style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '0.5rem',
-                    }}>
-                      {act.projects.map((project, i) => (
-                        <div
-                          key={i}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            fontSize: '0.75rem',
-                            transition: 'color 300ms ease',
-                            color: isHovered ? 'var(--text-70)' : 'var(--text-50)',
-                          }}
-                        >
-                          <div
-                            style={{
-                              width: '0.25rem',
-                              height: '0.25rem',
-                              borderRadius: '9999px',
-                              transition: 'all 300ms ease',
-                              background: isHovered ? act.color.replace('0.8', '0.6') : 'var(--text-30)',
-                              boxShadow: isHovered ? `0 0 8px ${act.color.replace('0.8', '0.3')}` : 'none',
-                            }}
-                          />
-                          {project}
-                        </div>
-                      ))}
-                    </div>
 
                     {/* Hover arrow */}
                     <motion.div
