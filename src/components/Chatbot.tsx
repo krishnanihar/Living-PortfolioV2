@@ -675,10 +675,10 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
         <div style={{
           height: '100%',
           borderRadius: '24px',
-          background: 'linear-gradient(135deg, var(--solid-15) 0%, var(--solid-10) 100%)',
+          background: 'linear-gradient(135deg, var(--solid-40) 0%, var(--solid-30) 100%)',
           backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
           WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
-          border: '1px solid var(--glass-06)',
+          border: '1px solid var(--glass-10)',
           boxShadow: `
             inset 0 1px 0 var(--glass-05),
             inset 0 -1px 0 var(--overlay-20),
