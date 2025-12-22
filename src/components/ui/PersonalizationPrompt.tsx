@@ -159,8 +159,10 @@ export function PersonalizationPrompt({
         >
           {/* Glass background */}
           <div
-            className="absolute inset-0 rounded-2xl"
             style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: '16px',
               background: 'var(--glass-05)',
               backdropFilter: 'blur(80px) saturate(180%)',
               WebkitBackdropFilter: 'blur(80px) saturate(180%)',
@@ -174,27 +176,35 @@ export function PersonalizationPrompt({
           />
 
           {/* Content */}
-          <div className="relative z-10 p-6">
+          <div style={{ position: 'relative', zIndex: 10, padding: '1.5rem' }}>
             {/* Close button (for floating/modal variants) */}
             {variant !== 'embedded' && (
               <button
                 onClick={handleSkip}
-                className="absolute top-4 right-4 p-2 rounded-full transition-colors"
                 style={{
-                  color: 'var(--text-40)',
+                  position: 'absolute',
+                  top: '1rem',
+                  right: '1rem',
+                  padding: '0.5rem',
+                  borderRadius: '50%',
                   background: 'var(--glass-05)',
+                  border: 'none',
+                  color: 'var(--text-40)',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
                 }}
                 aria-label="Close"
               >
-                <X className="w-4 h-4" />
+                <X style={{ width: '16px', height: '16px' }} />
               </button>
             )}
 
             {/* Title */}
             <h3
               id="personalization-title"
-              className="text-center mb-1"
               style={{
+                textAlign: 'center',
+                marginBottom: '0.5rem',
                 color: 'var(--text-90)',
                 fontSize: 'clamp(1rem, 2vw, 1.125rem)',
                 fontWeight: 500,
@@ -206,8 +216,9 @@ export function PersonalizationPrompt({
             {/* Subtitle */}
             <p
               id="personalization-description"
-              className="text-center mb-5"
               style={{
+                textAlign: 'center',
+                marginBottom: '1.25rem',
                 color: 'var(--text-50)',
                 fontSize: 'clamp(0.8125rem, 1.5vw, 0.875rem)',
               }}
@@ -216,7 +227,12 @@ export function PersonalizationPrompt({
             </p>
 
             {/* Intent buttons */}
-            <div className="grid grid-cols-2 gap-3 mb-4">
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '0.75rem',
+              marginBottom: '1rem',
+            }}>
               {INTENT_OPTIONS.map((option) => {
                 const Icon = option.icon;
                 const isSelected = selectedIntent === option.value;
@@ -225,23 +241,39 @@ export function PersonalizationPrompt({
                   <motion.button
                     key={option.value}
                     onClick={() => handleSelectIntent(option.value)}
-                    className="relative flex items-center gap-2.5 p-3 rounded-xl transition-all"
                     style={{
-                      background: isSelected ? `${option.color}20` : 'var(--glass-05)',
-                      border: `1px solid ${isSelected ? option.color : 'var(--glass-10)'}`,
+                      position: 'relative',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.625rem',
+                      padding: '0.75rem',
+                      borderRadius: '12px',
+                      background: isSelected ? `${option.color}20` : 'var(--glass-08)',
+                      backdropFilter: 'blur(20px)',
+                      WebkitBackdropFilter: 'blur(20px)',
+                      border: `1px solid ${isSelected ? option.color : 'var(--glass-12)'}`,
                       color: isSelected ? option.color : 'var(--text-80)',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
                     }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     aria-pressed={isSelected}
                   >
                     <Icon
-                      className="w-4 h-4 flex-shrink-0"
-                      style={{ color: isSelected ? option.color : 'var(--text-60)' }}
+                      style={{
+                        width: '16px',
+                        height: '16px',
+                        flexShrink: 0,
+                        color: isSelected ? option.color : 'var(--text-60)',
+                      }}
                     />
                     <span
-                      className="text-sm font-medium"
-                      style={{ color: isSelected ? option.color : 'var(--text-80)' }}
+                      style={{
+                        fontSize: '0.875rem',
+                        fontWeight: 500,
+                        color: isSelected ? option.color : 'var(--text-80)',
+                      }}
                     >
                       {option.label}
                     </span>
@@ -253,13 +285,19 @@ export function PersonalizationPrompt({
             {/* Skip button */}
             <button
               onClick={handleSkip}
-              className="w-full py-2 text-center transition-colors"
               style={{
+                width: '100%',
+                padding: '0.5rem 0',
+                textAlign: 'center',
+                background: 'transparent',
+                border: 'none',
                 color: 'var(--text-40)',
                 fontSize: '0.8125rem',
+                cursor: 'pointer',
+                transition: 'color 0.2s ease',
               }}
             >
-              Skip - I'm just browsing
+              Skip – I'm just browsing
             </button>
           </div>
         </motion.div>
