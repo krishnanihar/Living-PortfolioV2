@@ -376,8 +376,8 @@ function TeamStepsViz({ color, isHovered, size }: Omit<MicroVisualizationProps, 
   );
 }
 
-/** Card 6: Innovation - Lightbulb to Rocket morph */
-function InnovationViz({ color, isHovered, size }: Omit<MicroVisualizationProps, 'cardId' | 'projectId'>) {
+/** Card 3: Search with AI - NLU Pipeline visualization */
+function SearchPipelineViz({ color, isHovered, size }: Omit<MicroVisualizationProps, 'cardId' | 'projectId'>) {
   const isMain = size === 'main';
 
   return (
@@ -389,38 +389,403 @@ function InnovationViz({ color, isHovered, size }: Omit<MicroVisualizationProps,
       animate={isHovered ? "visible" : "hidden"}
       variants={staggerChildren}
     >
-      {/* Lightbulb/Rocket hybrid */}
-      <motion.ellipse
-        cx={50}
-        cy={isMain ? 40 : 42}
-        rx={isMain ? 20 : 16}
-        ry={isMain ? 25 : 20}
-        fill={`rgba(${color}, 0.2)`}
+      {/* Search input */}
+      <motion.rect
+        x={10}
+        y={40}
+        width={isMain ? 22 : 18}
+        height={isMain ? 20 : 16}
+        rx={4}
+        fill={`rgba(${color}, 0.15)`}
+        stroke={`rgba(${color}, 0.5)`}
+        strokeWidth={1.5}
+        variants={fadeInUp}
+      />
+      {/* Magnifying glass icon */}
+      <motion.circle
+        cx={isMain ? 18 : 16}
+        cy={isMain ? 47 : 46}
+        r={isMain ? 5 : 4}
+        fill="none"
         stroke={`rgba(${color}, 0.6)`}
         strokeWidth={1.5}
+        variants={fadeInUp}
+      />
+      <motion.line
+        x1={isMain ? 22 : 19}
+        y1={isMain ? 51 : 49}
+        x2={isMain ? 26 : 23}
+        y2={isMain ? 55 : 53}
+        stroke={`rgba(${color}, 0.6)`}
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        variants={fadeInUp}
+      />
+
+      {/* AI Processing nodes */}
+      {[0, 1, 2].map((i) => (
+        <motion.circle
+          key={i}
+          cx={isMain ? 42 + i * 12 : 40 + i * 14}
+          cy={50}
+          r={isMain ? 6 : 5}
+          fill={`rgba(${color}, ${0.2 + i * 0.15})`}
+          stroke={`rgba(${color}, 0.5)`}
+          strokeWidth={1}
+          variants={{
+            hidden: { scale: 0, opacity: 0 },
+            visible: { scale: 1, opacity: 1, transition: { duration: 0.3, delay: 0.2 + i * 0.1 } }
+          }}
+          style={{
+            animation: isHovered ? `microPulse 1.5s ease-in-out ${i * 0.2}s infinite` : 'none'
+          }}
+        />
+      ))}
+
+      {/* Connection lines between nodes */}
+      {isMain && (
+        <>
+          <motion.line x1={32} y1={50} x2={36} y2={50} stroke={`rgba(${color}, 0.4)`} strokeWidth={1.5} variants={pathVariants} />
+          <motion.line x1={48} y1={50} x2={54} y2={50} stroke={`rgba(${color}, 0.4)`} strokeWidth={1.5} variants={pathVariants} />
+          <motion.line x1={60} y1={50} x2={66} y2={50} stroke={`rgba(${color}, 0.4)`} strokeWidth={1.5} variants={pathVariants} />
+        </>
+      )}
+
+      {/* Result sparkles */}
+      {isMain && (
+        <>
+          <motion.circle cx={80} cy={42} r={3} fill={`rgba(${color}, 0.6)`} variants={fadeInUp} />
+          <motion.circle cx={88} cy={50} r={4} fill={`rgba(${color}, 0.5)`} variants={fadeInUp} />
+          <motion.circle cx={80} cy={58} r={3} fill={`rgba(${color}, 0.6)`} variants={fadeInUp} />
+        </>
+      )}
+
+      {/* Data flow line */}
+      <motion.path
+        d={isMain ? "M 72 50 Q 80 50 88 50" : "M 68 50 Q 78 50 88 50"}
+        fill="none"
+        stroke={`rgba(${color}, 0.4)`}
+        strokeWidth={1.5}
+        strokeDasharray={isHovered ? "0" : "3 3"}
+        variants={pathVariants}
+        style={{
+          animation: isHovered ? 'dataFlow 2s linear infinite' : 'none'
+        }}
+      />
+    </motion.svg>
+  );
+}
+
+/** Card 4: MCP Handoff - Design to Code Bridge */
+function MCPBridgeViz({ color, isHovered, size }: Omit<MicroVisualizationProps, 'cardId' | 'projectId'>) {
+  const isMain = size === 'main';
+
+  return (
+    <motion.svg
+      viewBox="0 0 100 100"
+      width="100%"
+      height="100%"
+      initial="hidden"
+      animate={isHovered ? "visible" : "hidden"}
+      variants={staggerChildren}
+    >
+      {/* Figma frame (left) */}
+      <motion.rect
+        x={isMain ? 10 : 12}
+        y={30}
+        width={isMain ? 24 : 20}
+        height={isMain ? 40 : 35}
+        rx={3}
+        fill={`rgba(${color}, 0.1)`}
+        stroke={`rgba(${color}, 0.5)`}
+        strokeWidth={1.5}
+        variants={fadeInUp}
+      />
+      {/* Figma inner frame */}
+      <motion.rect
+        x={isMain ? 14 : 15}
+        y={35}
+        width={isMain ? 16 : 12}
+        height={isMain ? 20 : 16}
+        rx={2}
+        fill={`rgba(${color}, 0.2)`}
+        variants={fadeInUp}
+      />
+      {/* Layer lines */}
+      {isMain && (
+        <>
+          <motion.line x1={14} y1={60} x2={30} y2={60} stroke={`rgba(${color}, 0.3)`} strokeWidth={1} variants={fadeInUp} />
+          <motion.line x1={14} y1={64} x2={26} y2={64} stroke={`rgba(${color}, 0.3)`} strokeWidth={1} variants={fadeInUp} />
+        </>
+      )}
+
+      {/* MCP Bridge (center) */}
+      <motion.g variants={fadeInUp}>
+        {/* Bidirectional arrows */}
+        <motion.path
+          d={isMain ? "M 38 45 L 46 50 L 38 55" : "M 36 45 L 42 50 L 36 55"}
+          fill="none"
+          stroke={`rgba(${color}, 0.6)`}
+          strokeWidth={1.5}
+          strokeLinecap="round"
+          variants={pathVariants}
+        />
+        <motion.path
+          d={isMain ? "M 62 45 L 54 50 L 62 55" : "M 64 45 L 58 50 L 64 55"}
+          fill="none"
+          stroke={`rgba(${color}, 0.6)`}
+          strokeWidth={1.5}
+          strokeLinecap="round"
+          variants={pathVariants}
+        />
+        {/* Sync circle */}
+        <motion.circle
+          cx={50}
+          cy={50}
+          r={isMain ? 8 : 6}
+          fill={`rgba(${color}, 0.15)`}
+          stroke={`rgba(${color}, 0.5)`}
+          strokeWidth={1.5}
+          style={{
+            animation: isHovered ? 'microPulse 2s ease-in-out infinite' : 'none'
+          }}
+        />
+        {/* Sync arrows inside */}
+        {isMain && (
+          <>
+            <motion.path d="M 47 47 L 50 44 L 53 47" fill="none" stroke={`rgba(${color}, 0.6)`} strokeWidth={1} strokeLinecap="round" variants={pathVariants} />
+            <motion.path d="M 53 53 L 50 56 L 47 53" fill="none" stroke={`rgba(${color}, 0.6)`} strokeWidth={1} strokeLinecap="round" variants={pathVariants} />
+          </>
+        )}
+      </motion.g>
+
+      {/* Code brackets (right) */}
+      <motion.rect
+        x={isMain ? 66 : 68}
+        y={30}
+        width={isMain ? 24 : 20}
+        height={isMain ? 40 : 35}
+        rx={3}
+        fill={`rgba(${color}, 0.1)`}
+        stroke={`rgba(${color}, 0.5)`}
+        strokeWidth={1.5}
+        variants={fadeInUp}
+      />
+      {/* Code lines */}
+      <motion.g variants={fadeInUp}>
+        <motion.line x1={isMain ? 70 : 71} y1={38} x2={isMain ? 86 : 84} y2={38} stroke={`rgba(${color}, 0.4)`} strokeWidth={2} />
+        <motion.line x1={isMain ? 70 : 71} y1={45} x2={isMain ? 82 : 80} y2={45} stroke={`rgba(${color}, 0.3)`} strokeWidth={2} />
+        <motion.line x1={isMain ? 70 : 71} y1={52} x2={isMain ? 78 : 77} y2={52} stroke={`rgba(${color}, 0.3)`} strokeWidth={2} />
+        {isMain && (
+          <>
+            <motion.line x1={70} y1={59} x2={84} y2={59} stroke={`rgba(${color}, 0.4)`} strokeWidth={2} />
+          </>
+        )}
+      </motion.g>
+    </motion.svg>
+  );
+}
+
+/** Card 5: IFE System Design - Seat-back display with content */
+function IFEDisplayViz({ color, isHovered, size }: Omit<MicroVisualizationProps, 'cardId' | 'projectId'>) {
+  const isMain = size === 'main';
+
+  return (
+    <motion.svg
+      viewBox="0 0 100 100"
+      width="100%"
+      height="100%"
+      initial="hidden"
+      animate={isHovered ? "visible" : "hidden"}
+      variants={staggerChildren}
+    >
+      {/* Screen frame (landscape) */}
+      <motion.rect
+        x={10}
+        y={isMain ? 20 : 25}
+        width={80}
+        height={isMain ? 55 : 45}
+        rx={4}
+        fill={`rgba(${color}, 0.08)`}
+        stroke={`rgba(${color}, 0.5)`}
+        strokeWidth={2}
+        variants={fadeInUp}
+      />
+
+      {/* Header tabs */}
+      <motion.g variants={fadeInUp}>
+        {['Movies', 'Shows', 'Music'].map((_, i) => (
+          <motion.rect
+            key={i}
+            x={15 + i * 25}
+            y={isMain ? 25 : 29}
+            width={20}
+            height={isMain ? 8 : 6}
+            rx={2}
+            fill={`rgba(${color}, ${i === 0 ? 0.4 : 0.15})`}
+          />
+        ))}
+      </motion.g>
+
+      {/* Featured content area */}
+      <motion.rect
+        x={15}
+        y={isMain ? 38 : 38}
+        width={isMain ? 45 : 40}
+        height={isMain ? 28 : 22}
+        rx={3}
+        fill={`rgba(${color}, 0.2)`}
+        variants={fadeInUp}
+      />
+
+      {/* Play button overlay */}
+      <motion.path
+        d={isMain ? "M 32 48 L 32 56 L 42 52 Z" : "M 30 46 L 30 52 L 38 49 Z"}
+        fill={`rgba(${color}, 0.7)`}
+        variants={{
+          hidden: { scale: 0, opacity: 0 },
+          visible: { scale: 1, opacity: 1, transition: { duration: 0.3, delay: 0.4 } }
+        }}
+        style={{
+          animation: isHovered ? 'microPulse 1.5s ease-in-out infinite' : 'none'
+        }}
+      />
+
+      {/* Side content cards */}
+      {isMain && [0, 1].map((i) => (
+        <motion.rect
+          key={i}
+          x={65}
+          y={38 + i * 15}
+          width={20}
+          height={12}
+          rx={2}
+          fill={`rgba(${color}, ${0.15 + i * 0.1})`}
+          variants={fadeInUp}
+        />
+      ))}
+
+      {/* Touch target indicators */}
+      {isMain && (
+        <motion.g variants={fadeInUp}>
+          <motion.circle cx={75} cy={44} r={3} fill="none" stroke={`rgba(${color}, 0.4)`} strokeWidth={1} strokeDasharray="2 2" />
+          <motion.circle cx={75} cy={59} r={3} fill="none" stroke={`rgba(${color}, 0.4)`} strokeWidth={1} strokeDasharray="2 2" />
+        </motion.g>
+      )}
+
+      {/* Progress bar */}
+      <motion.rect
+        x={15}
+        y={isMain ? 70 : 63}
+        width={70}
+        height={3}
+        rx={1.5}
+        fill={`rgba(${color}, 0.15)`}
+        variants={fadeInUp}
+      />
+      <motion.rect
+        x={15}
+        y={isMain ? 70 : 63}
+        width={isMain ? 40 : 35}
+        height={3}
+        rx={1.5}
+        fill={`rgba(${color}, 0.5)`}
+        variants={{
+          hidden: { width: 0 },
+          visible: { width: isMain ? 40 : 35, transition: { duration: 1, delay: 0.5 } }
+        }}
+      />
+    </motion.svg>
+  );
+}
+
+/** Card 6: Liftoff Program - Team culture hub */
+function TeamCultureViz({ color, isHovered, size }: Omit<MicroVisualizationProps, 'cardId' | 'projectId'>) {
+  const isMain = size === 'main';
+  const memberPositions = isMain
+    ? [{ x: 30, y: 25 }, { x: 70, y: 25 }, { x: 20, y: 55 }, { x: 50, y: 70 }, { x: 80, y: 55 }]
+    : [{ x: 30, y: 30 }, { x: 70, y: 30 }, { x: 30, y: 65 }, { x: 70, y: 65 }];
+
+  return (
+    <motion.svg
+      viewBox="0 0 100 100"
+      width="100%"
+      height="100%"
+      initial="hidden"
+      animate={isHovered ? "visible" : "hidden"}
+      variants={staggerChildren}
+    >
+      {/* Central hub */}
+      <motion.circle
+        cx={50}
+        cy={isMain ? 45 : 48}
+        r={isMain ? 12 : 10}
+        fill={`rgba(${color}, 0.25)`}
+        stroke={`rgba(${color}, 0.6)`}
+        strokeWidth={2}
         variants={fadeInUp}
         style={{
           animation: isHovered ? 'microPulse 2s ease-in-out infinite' : 'none'
         }}
       />
+      {/* Hub icon (people silhouette) */}
+      <motion.g variants={fadeInUp}>
+        <motion.circle cx={50} cy={isMain ? 41 : 44} r={isMain ? 4 : 3} fill={`rgba(${color}, 0.6)`} />
+        <motion.path
+          d={isMain ? "M 43 52 Q 50 48 57 52" : "M 45 53 Q 50 50 55 53"}
+          fill="none"
+          stroke={`rgba(${color}, 0.6)`}
+          strokeWidth={2}
+          strokeLinecap="round"
+        />
+      </motion.g>
 
-      {/* Flame/base */}
-      <motion.path
-        d={isMain ? "M 38 65 L 50 80 L 62 65" : "M 40 62 L 50 72 L 60 62"}
-        fill={`rgba(${color}, 0.4)`}
-        variants={{
-          hidden: { scale: 0, opacity: 0 },
-          visible: { scale: 1, opacity: 1, transition: { duration: 0.5, delay: 0.3 } }
-        }}
-      />
+      {/* Connection lines to members */}
+      {memberPositions.map((pos, i) => (
+        <motion.line
+          key={`line-${i}`}
+          x1={50}
+          y1={isMain ? 45 : 48}
+          x2={pos.x}
+          y2={pos.y}
+          stroke={`rgba(${color}, 0.3)`}
+          strokeWidth={1}
+          strokeDasharray={isHovered ? "0" : "3 3"}
+          variants={pathVariants}
+          style={{
+            animation: isHovered ? 'dataFlow 3s linear infinite' : 'none',
+            animationDelay: `${i * 0.2}s`
+          }}
+        />
+      ))}
 
-      {/* Spark lines */}
+      {/* Team member circles */}
+      {memberPositions.map((pos, i) => (
+        <motion.circle
+          key={`member-${i}`}
+          cx={pos.x}
+          cy={pos.y}
+          r={isMain ? 8 : 7}
+          fill={`rgba(${color}, ${0.15 + i * 0.08})`}
+          stroke={`rgba(${color}, 0.5)`}
+          strokeWidth={1.5}
+          variants={{
+            hidden: { scale: 0, opacity: 0 },
+            visible: { scale: 1, opacity: 1, transition: { duration: 0.3, delay: 0.1 + i * 0.08 } }
+          }}
+        />
+      ))}
+
+      {/* Growth arrow */}
       {isMain && (
-        <>
-          <motion.line x1={25} y1={30} x2={18} y2={22} stroke={`rgba(${color}, 0.5)`} strokeWidth={1.5} strokeLinecap="round" variants={pathVariants} />
-          <motion.line x1={75} y1={30} x2={82} y2={22} stroke={`rgba(${color}, 0.5)`} strokeWidth={1.5} strokeLinecap="round" variants={pathVariants} />
-          <motion.line x1={50} y1={12} x2={50} y2={5} stroke={`rgba(${color}, 0.5)`} strokeWidth={1.5} strokeLinecap="round" variants={pathVariants} />
-        </>
+        <motion.path
+          d="M 85 75 L 90 68 L 95 75"
+          fill="none"
+          stroke={`rgba(${color}, 0.5)`}
+          strokeWidth={2}
+          strokeLinecap="round"
+          variants={pathVariants}
+        />
       )}
     </motion.svg>
   );
@@ -1573,10 +1938,10 @@ export function MicroVisualization({ cardId, projectId, color, isHovered, size =
     switch (cardId) {
       case 1: return <TokenGridViz {...props} />;
       case 2: return <BarChartViz {...props} />;
-      case 3: return <DualDevicesViz {...props} />;
-      case 4: return <IFEScreenViz {...props} />;
-      case 5: return <TeamStepsViz {...props} />;
-      case 6: return <InnovationViz {...props} />;
+      case 3: return <SearchPipelineViz {...props} />;
+      case 4: return <MCPBridgeViz {...props} />;
+      case 5: return <IFEDisplayViz {...props} />;
+      case 6: return <TeamCultureViz {...props} />;
     }
   }
 
