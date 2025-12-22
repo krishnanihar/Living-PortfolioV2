@@ -1,16 +1,14 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Lightbulb, ArrowRight } from 'lucide-react';
+import { Lightbulb, ArrowRight, Sparkles, Plane } from 'lucide-react';
 
 interface Act {
   id: string;
   title: string;
   description: string;
-  icon?: React.ElementType; // For Lucide icons
-  logo?: string; // For SVG logos
+  icon: React.ElementType;
   color: string;
 }
 
@@ -19,14 +17,14 @@ const acts: Act[] = [
     id: 'foundation',
     title: 'Foundation',
     description: 'Immersive installations and generative art systems at National Institute of Design',
-    logo: '/logos/nid.svg',
+    icon: Sparkles,
     color: 'rgba(147, 51, 234, 0.8)',
   },
   {
     id: 'industry',
     title: 'Enterprise Work',
     description: '8 key projects for Air India\'s digital transformation: design systems, mobile patterns, data visualization',
-    logo: '/logos/air-india.svg',
+    icon: Plane,
     color: 'rgba(218, 14, 41, 0.8)',
   },
   {
@@ -149,7 +147,7 @@ export function JourneyOverview() {
             gap: '1.5rem',
           }}>
             {acts.map((act, index) => {
-              const Icon = act.icon as React.ComponentType<{ size?: number; style?: React.CSSProperties }>;
+              const Icon = act.icon as React.ComponentType<{ size?: number; strokeWidth?: number; style?: React.CSSProperties }>;
               const isHovered = hoveredAct === act.id;
 
               return (
@@ -184,32 +182,20 @@ export function JourneyOverview() {
                       transform: isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
                     }}
                   >
-                    {/* Icon or Logo - Direct Display (No Container) */}
+                    {/* Icon */}
                     <motion.div
                       style={{ marginBottom: '1.5rem' }}
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.3 }}
                     >
-                      {act.logo ? (
-                        <Image
-                          src={act.logo}
-                          alt={act.title}
-                          width={80}
-                          height={80}
-                          style={{
-                            objectFit: 'contain',
-                            filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2))',
-                          }}
-                        />
-                      ) : Icon ? (
-                        <Icon
-                          size={64}
-                          style={{
-                            color: 'var(--text-70)',
-                            filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2))',
-                          }}
-                        />
-                      ) : null}
+                      <Icon
+                        size={40}
+                        strokeWidth={1.5}
+                        style={{
+                          color: isHovered ? act.color : 'var(--text-60)',
+                          transition: 'color 500ms ease',
+                        }}
+                      />
                     </motion.div>
 
                     {/* Title */}
