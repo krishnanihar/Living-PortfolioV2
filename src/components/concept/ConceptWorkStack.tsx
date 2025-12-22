@@ -58,6 +58,7 @@ export default function ConceptWorkStack() {
 
   // Track current card index - both ref (for scroll sync) and state (for UI)
   const [activeCardIndex, setActiveCardIndex] = useState(0);
+  const [showIndicators, setShowIndicators] = useState(false);
   const currentCardRef = useRef(0);
   const lastScrollTriggerRef = useRef(0);
   const touchStartRef = useRef(0);
@@ -74,6 +75,24 @@ export default function ConceptWorkStack() {
   const setCardRef = useCallback((el: HTMLDivElement | null, index: number) => {
     cardRefs.current[index] = el;
   }, []);
+
+  // Click-to-navigate function for dot indicators
+  const scrollToCard = useCallback((index: number) => {
+    if (!lenis || !containerRef.current) return;
+
+    currentCardRef.current = index;
+    setActiveCardIndex(index);
+    lastScrollTriggerRef.current = Date.now();
+
+    const vh = window.innerHeight;
+    const targetScroll = containerRef.current.offsetTop + index * vh;
+
+    lenis.scrollTo(targetScroll, {
+      lock: true,
+      duration: 1.0,
+      easing: premiumEaseOut,
+    });
+  }, [lenis]);
 
   // Controlled snap scroll handlers
   useEffect(() => {
@@ -197,6 +216,10 @@ export default function ConceptWorkStack() {
     const syncCardIndex = () => {
       const vh = window.innerHeight;
       const scrollInSection = window.scrollY - container.offsetTop;
+
+      // Track section visibility for dot indicators
+      const isInSection = scrollInSection >= -vh * 0.1 && scrollInSection < cardCount * vh;
+      setShowIndicators(isInSection);
 
       if (scrollInSection >= 0 && scrollInSection < cardCount * vh) {
         const cardIndex = Math.max(0, Math.min(cardCount - 1, Math.round(scrollInSection / vh)));
@@ -342,6 +365,45 @@ export default function ConceptWorkStack() {
           isActive={activeCardIndex === index}
         />
       ))}
+
+      {/* Scroll Dot Indicators */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: '2rem',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          gap: '0.75rem',
+          zIndex: 110,
+          padding: '0.75rem 1rem',
+          borderRadius: '2rem',
+          background: 'var(--glass-08)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          opacity: showIndicators ? 1 : 0,
+          pointerEvents: showIndicators ? 'auto' : 'none',
+          transition: 'opacity 0.3s ease',
+        }}
+      >
+        {featuredProjects.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => scrollToCard(index)}
+            aria-label={`Go to project ${index + 1}`}
+            style={{
+              width: index === activeCardIndex ? '24px' : '8px',
+              height: '8px',
+              borderRadius: '4px',
+              background: index === activeCardIndex ? 'var(--text-90)' : 'var(--text-25)',
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+            }}
+          />
+        ))}
+      </div>
     </section>
   );
 }
