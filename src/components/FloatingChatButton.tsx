@@ -233,6 +233,36 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
         </div>
       )}
 
+      {/* Pulsing rings - attention grabber */}
+      <div
+        className="pulse-ring pulse-ring-1"
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 'clamp(48px, 10vw, 56px)',
+          height: 'clamp(48px, 10vw, 56px)',
+          borderRadius: '50%',
+          border: '2px solid rgba(218, 14, 41, 0.4)',
+          pointerEvents: 'none',
+        }}
+      />
+      <div
+        className="pulse-ring pulse-ring-2"
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 'clamp(48px, 10vw, 56px)',
+          height: 'clamp(48px, 10vw, 56px)',
+          borderRadius: '50%',
+          border: '2px solid rgba(218, 14, 41, 0.3)',
+          pointerEvents: 'none',
+        }}
+      />
+
       {/* Onboarding Hint - First-time visitor prompt */}
       {showOnboardingHint && (
         <div
@@ -401,6 +431,32 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
           }
         }
 
+        /* Pulsing ring animations */
+        .pulse-ring {
+          animation: pulseRing 2.5s ease-out infinite;
+          transition: opacity 0.3s ease;
+        }
+
+        .pulse-ring-2 {
+          animation-delay: 1.25s;
+        }
+
+        @keyframes pulseRing {
+          0% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.5;
+          }
+          100% {
+            transform: translate(-50%, -50%) scale(1.8);
+            opacity: 0;
+          }
+        }
+
+        /* Pause animation on hover - user has noticed the button */
+        div:hover > .pulse-ring {
+          animation-play-state: paused;
+          opacity: 0;
+        }
 
         @media (prefers-reduced-motion: reduce) {
           .floating-chat-button {
@@ -411,6 +467,10 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
           }
           .floating-chat-tooltip {
             animation: none !important;
+          }
+          .pulse-ring {
+            animation: none !important;
+            opacity: 0 !important;
           }
         }
 
