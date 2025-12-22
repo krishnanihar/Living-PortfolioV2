@@ -42,6 +42,7 @@ export function MobileBottomNav() {
 
   return (
     <nav
+      className="mobile-bottom-nav"
       style={{
         position: 'fixed',
         bottom: 0,
@@ -73,7 +74,9 @@ export function MobileBottomNav() {
               alignItems: 'center',
               justifyContent: 'center',
               gap: '4px',
-              padding: '8px 16px',
+              padding: '10px 20px',
+              minWidth: '64px',
+              minHeight: '48px',
               textDecoration: 'none',
               transition: 'all 0.2s ease',
               borderRadius: '12px',

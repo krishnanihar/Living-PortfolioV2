@@ -629,12 +629,26 @@ export default function GPGPUPatternParticles({
   }, []);
 
   if (prefersReducedMotion) {
-    return null;
+    return (
+      <div
+        className={`particles-fallback ${className}`}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'none',
+          zIndex: 3,
+          background: 'radial-gradient(ellipse at center, var(--glass-05) 0%, transparent 70%)',
+        }}
+      />
+    );
   }
 
   return (
     <div
-      className={className}
+      className={`gpgpu-particles ${className}`}
       style={{
         position: 'fixed',
         top: 0,

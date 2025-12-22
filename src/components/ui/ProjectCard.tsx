@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -14,6 +14,19 @@ export function ProjectCard({
   variant = 'default',
 }: ProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // Detect touch device for always-visible CTA
+  useEffect(() => {
+    const checkTouch = () => {
+      setIsTouchDevice(
+        !window.matchMedia('(hover: hover) and (pointer: fine)').matches
+      );
+    };
+    checkTouch();
+    window.addEventListener('resize', checkTouch, { passive: true });
+    return () => window.removeEventListener('resize', checkTouch);
+  }, []);
 
   // Status badge styling
   const getStatusStyles = (status: string) => {
@@ -140,9 +153,9 @@ export function ProjectCard({
             {project.description}
           </p>
 
-          {/* Tags */}
+          {/* Tags - limit to 3 on mobile, 4 on desktop */}
           <div className="flex flex-wrap gap-2">
-            {project.tags.slice(0, 4).map((tag) => (
+            {project.tags.slice(0, isTouchDevice ? 3 : 4).map((tag) => (
               <span
                 key={tag.id}
                 className={cn(
@@ -159,12 +172,12 @@ export function ProjectCard({
                 {tag.label}
               </span>
             ))}
-            {project.tags.length > 4 && (
+            {project.tags.length > (isTouchDevice ? 3 : 4) && (
               <span className={cn(
                 'px-2 py-1 text-xs font-medium text-white/60',
                 '[data-theme="light"] &:text-black/60'
               )}>
-                +{project.tags.length - 4} more
+                +{project.tags.length - (isTouchDevice ? 3 : 4)} more
               </span>
             )}
           </div>
@@ -205,10 +218,12 @@ export function ProjectCard({
               {project.meta.year}
             </span>
 
-            {/* Hover reveal action */}
+            {/* Hover reveal action - always visible on touch devices */}
             <div className={cn(
-              'opacity-0 group-hover:opacity-100 transition-all duration-300',
-              'transform translate-y-2 group-hover:translate-y-0'
+              'transition-all duration-300',
+              isTouchDevice
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0'
             )}>
               <Button
                 variant="ghost"

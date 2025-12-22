@@ -146,7 +146,9 @@ export function WorkGrid({
         initial="hidden"
         animate="visible"
         className={cn(
-          'grid gap-6',
+          'grid work-grid',
+          // Responsive gaps
+          'gap-4 sm:gap-5 md:gap-6',
           // Responsive grid - mobile first
           'grid-cols-1',
           // Tablet

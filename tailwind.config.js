@@ -10,16 +10,22 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        'xs': '375px',      // Small phones
+        'xxs': '320px',     // Very small phones (iPhone SE 1st gen)
+        'xs': '375px',      // Small phones (iPhone SE 2nd/3rd)
+        'phone-lg': '390px', // Large phones (iPhone 14-16 Pro Max)
         'sm': '640px',      // Landscape phones
-        'md': '768px',      // Tablets
-        'lg': '1024px',     // Small desktops
+        'md': '768px',      // Tablets portrait
+        'tablet-md': '834px', // iPad Air/Pro 11"
+        'lg': '1024px',     // Tablets landscape, small laptops
         'xl': '1280px',     // 13" laptops
         '2xl': '1440px',    // 14" laptops
         '3xl': '1728px',    // 16" laptops
         '4xl': '1920px',    // 15"+ displays
-        'touch': { 'raw': '(hover: none)' },
-        'pointer': { 'raw': '(hover: hover)' },
+        '5xl': '2560px',    // Ultra-wide monitors
+        'touch': { 'raw': '(hover: none) and (pointer: coarse)' },
+        'pointer': { 'raw': '(hover: hover) and (pointer: fine)' },
+        'landscape-phone': { 'raw': '(max-height: 500px) and (orientation: landscape)' },
+        'short': { 'raw': '(max-height: 850px)' },
       },
       colors: {
         brand: {

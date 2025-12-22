@@ -22,7 +22,7 @@ export function BentoGrid() {
       style={{
         display: 'grid',
         gridTemplateColumns: '1fr',
-        gap: '1.5rem',
+        gap: 'clamp(1rem, 3vw, 1.5rem)',
         width: '100%',
         maxWidth: '1400px',
         margin: '0 auto',

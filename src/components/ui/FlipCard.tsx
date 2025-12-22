@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 interface FlipCardProps {
   front: React.ReactNode;
@@ -20,6 +20,24 @@ export function FlipCard({
   color = '74, 144, 226'
 }: FlipCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile for responsive border-radius
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile, { passive: true });
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Check for reduced motion preference
+  const prefersReducedMotion = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }, []);
+
+  // Responsive border-radius
+  const borderRadius = isMobile ? '16px' : '24px';
 
   const handleFlip = () => {
     if (!flipOnHover) {
@@ -52,25 +70,31 @@ export function FlipCard({
       onMouseLeave={handleMouseLeave}
     >
       <div
+        className="flip-card"
         style={{
           position: 'relative',
           width: '100%',
           height: '100%',
-          transformStyle: 'preserve-3d',
-          transition: 'transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1)',
-          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
+          transformStyle: prefersReducedMotion ? 'flat' : 'preserve-3d',
+          transition: prefersReducedMotion
+            ? 'opacity 0.3s ease'
+            : 'transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1)',
+          transform: prefersReducedMotion ? 'none' : (isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'),
         }}
       >
         {/* Front Face */}
         <div
+          className="flip-card-front"
           style={{
             position: 'absolute',
             width: '100%',
             height: '100%',
-            backfaceVisibility: 'hidden',
-            WebkitBackfaceVisibility: 'hidden',
-            borderRadius: '24px',
-            overflow: 'hidden'
+            backfaceVisibility: prefersReducedMotion ? 'visible' : 'hidden',
+            WebkitBackfaceVisibility: prefersReducedMotion ? 'visible' : 'hidden',
+            borderRadius,
+            overflow: 'hidden',
+            opacity: prefersReducedMotion ? (isFlipped ? 0 : 1) : 1,
+            transition: prefersReducedMotion ? 'opacity 0.3s ease' : 'none',
           }}
         >
           {front}
@@ -78,15 +102,18 @@ export function FlipCard({
 
         {/* Back Face */}
         <div
+          className="flip-card-back"
           style={{
             position: 'absolute',
             width: '100%',
             height: '100%',
-            backfaceVisibility: 'hidden',
-            WebkitBackfaceVisibility: 'hidden',
-            transform: 'rotateY(180deg)',
-            borderRadius: '24px',
-            overflow: 'hidden'
+            backfaceVisibility: prefersReducedMotion ? 'visible' : 'hidden',
+            WebkitBackfaceVisibility: prefersReducedMotion ? 'visible' : 'hidden',
+            transform: prefersReducedMotion ? 'none' : 'rotateY(180deg)',
+            borderRadius,
+            overflow: 'hidden',
+            opacity: prefersReducedMotion ? (isFlipped ? 1 : 0) : 1,
+            transition: prefersReducedMotion ? 'opacity 0.3s ease' : 'none',
           }}
         >
           {back}
