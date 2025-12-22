@@ -385,16 +385,13 @@ export function AboutSection() {
         >
           <div style={{
             position: 'relative',
-            background: 'rgba(18, 18, 18, 0.72)',
-            backdropFilter: 'blur(120px) saturate(200%)',
-            WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-            borderRadius: '30px',
+            background: 'var(--glass-bg)',
+            backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+            WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+            borderRadius: '28px',
             padding: '3rem',
             border: '1px solid var(--border-primary)',
-            boxShadow: `0px 16px 48px rgba(0, 0, 0, 0.6),
-                        0px 0px 1px rgba(255, 255, 255, 0.3) inset,
-                        0px -1px 0px rgba(255, 255, 255, 0.08) inset,
-                        0px 1px 2px rgba(0, 0, 0, 0.8)`,
+            boxShadow: 'var(--shadow-small)',
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}>
             <div style={{
@@ -683,28 +680,22 @@ export function AboutSection() {
           {/* Current Focus Card */}
           <div style={{
             position: 'relative',
-            background: 'rgba(12, 12, 12, 0.65)',
-            backdropFilter: 'blur(120px) saturate(200%)',
-            WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-            borderRadius: '20px',
+            background: 'var(--glass-bg)',
+            backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+            WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+            borderRadius: '28px',
             padding: '2.5rem',
             border: '1px solid var(--border-primary)',
-            boxShadow: `0px 12px 36px rgba(0, 0, 0, 0.5),
-                        0px 0px 1px rgba(255, 255, 255, 0.25) inset,
-                        0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
-            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+            boxShadow: 'var(--shadow-medium)',
+            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
-            e.currentTarget.style.boxShadow = `0px 20px 48px rgba(0, 0, 0, 0.6),
-                        0px 0px 1px rgba(255, 255, 255, 0.3) inset,
-                        0px -1px 0px rgba(255, 255, 255, 0.08) inset`;
+            e.currentTarget.style.transform = 'scale(1.02)';
+            e.currentTarget.style.borderColor = 'var(--border-secondary)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0) scale(1)';
-            e.currentTarget.style.boxShadow = `0px 12px 36px rgba(0, 0, 0, 0.5),
-                        0px 0px 1px rgba(255, 255, 255, 0.25) inset,
-                        0px -1px 0px rgba(255, 255, 255, 0.06) inset`;
+            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.borderColor = 'var(--border-primary)';
           }}>
             <Briefcase size={32} style={{ color: 'var(--brand-red)', marginBottom: '1rem' }} />
             <h3 style={{
@@ -741,28 +732,22 @@ export function AboutSection() {
           {/* Philosophy Card */}
           <div style={{
             position: 'relative',
-            background: 'rgba(12, 12, 12, 0.65)',
-            backdropFilter: 'blur(120px) saturate(200%)',
-            WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-            borderRadius: '20px',
+            background: 'var(--glass-bg)',
+            backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+            WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+            borderRadius: '28px',
             padding: '2.5rem',
             border: '1px solid var(--border-primary)',
-            boxShadow: `0px 12px 36px rgba(0, 0, 0, 0.5),
-                        0px 0px 1px rgba(255, 255, 255, 0.25) inset,
-                        0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
+            boxShadow: 'var(--shadow-medium)',
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
-            e.currentTarget.style.boxShadow = `0px 20px 48px rgba(0, 0, 0, 0.6),
-                        0px 0px 1px rgba(255, 255, 255, 0.3) inset,
-                        0px -1px 0px rgba(255, 255, 255, 0.08) inset`;
+            e.currentTarget.style.transform = 'scale(1.02)';
+            e.currentTarget.style.borderColor = 'var(--border-secondary)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0) scale(1)';
-            e.currentTarget.style.boxShadow = `0px 12px 36px rgba(0, 0, 0, 0.5),
-                        0px 0px 1px rgba(255, 255, 255, 0.25) inset,
-                        0px -1px 0px rgba(255, 255, 255, 0.06) inset`;
+            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.borderColor = 'var(--border-primary)';
           }}>
             <Sparkles size={32} style={{ color: 'rgba(147, 51, 234, 0.8)', marginBottom: '1rem' }} />
             <h3 style={{
@@ -786,28 +771,22 @@ export function AboutSection() {
           {/* Approach Card */}
           <div style={{
             position: 'relative',
-            background: 'rgba(12, 12, 12, 0.65)',
-            backdropFilter: 'blur(120px) saturate(200%)',
-            WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-            borderRadius: '20px',
+            background: 'var(--glass-bg)',
+            backdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+            WebkitBackdropFilter: 'blur(180px) saturate(180%) brightness(1.1)',
+            borderRadius: '28px',
             padding: '2.5rem',
             border: '1px solid var(--border-primary)',
-            boxShadow: `0px 12px 36px rgba(0, 0, 0, 0.5),
-                        0px 0px 1px rgba(255, 255, 255, 0.25) inset,
-                        0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
+            boxShadow: 'var(--shadow-medium)',
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
-            e.currentTarget.style.boxShadow = `0px 20px 48px rgba(0, 0, 0, 0.6),
-                        0px 0px 1px rgba(255, 255, 255, 0.3) inset,
-                        0px -1px 0px rgba(255, 255, 255, 0.08) inset`;
+            e.currentTarget.style.transform = 'scale(1.02)';
+            e.currentTarget.style.borderColor = 'var(--border-secondary)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0) scale(1)';
-            e.currentTarget.style.boxShadow = `0px 12px 36px rgba(0, 0, 0, 0.5),
-                        0px 0px 1px rgba(255, 255, 255, 0.25) inset,
-                        0px -1px 0px rgba(255, 255, 255, 0.06) inset`;
+            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.borderColor = 'var(--border-primary)';
           }}>
             <Layers size={32} style={{ color: 'rgba(59, 130, 246, 0.8)', marginBottom: '1rem' }} />
             <h3 style={{
@@ -836,16 +815,13 @@ export function AboutSection() {
             opacity: isVisible ? 1 : 0,
             animationDelay: '300ms',
             marginBottom: '4rem',
-            background: 'rgba(18, 18, 18, 0.72)',
-            backdropFilter: 'blur(120px) saturate(200%)',
-            WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-            borderRadius: '30px',
+            background: 'var(--glass-bg)',
+            backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+            WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
+            borderRadius: '32px',
             border: '1px solid var(--border-primary)',
             padding: '4rem',
-            boxShadow: `0px 16px 48px rgba(0, 0, 0, 0.6),
-                        0px 0px 1px rgba(255, 255, 255, 0.3) inset,
-                        0px -1px 0px rgba(255, 255, 255, 0.08) inset,
-                        0px 1px 2px rgba(0, 0, 0, 0.8)`,
+            boxShadow: 'var(--shadow-large)',
           }}
         >
           {/* Section Header */}
@@ -1036,15 +1012,13 @@ export function AboutSection() {
                               initial={{ opacity: 0, y: 10 }}
                               animate={{ opacity: 1, y: 0 }}
                               style={{
-                                background: 'rgba(12, 12, 12, 0.65)',
-                                backdropFilter: 'blur(120px) saturate(200%)',
-                                WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-                                borderRadius: '15px',
+                                background: 'var(--surface-secondary)',
+                                backdropFilter: 'blur(40px)',
+                                WebkitBackdropFilter: 'blur(40px)',
+                                borderRadius: '20px',
                                 padding: '1.5rem',
                                 border: '1px solid var(--border-primary)',
-                                boxShadow: `0px 12px 36px rgba(0, 0, 0, 0.5),
-                                            0px 0px 1px rgba(255, 255, 255, 0.25) inset,
-                                            0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
+                                boxShadow: 'var(--shadow-small)',
                               }}
                             >
                               <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
@@ -1052,7 +1026,7 @@ export function AboutSection() {
                                   width: '40px',
                                   height: '40px',
                                   borderRadius: '12px',
-                                  background: 'rgba(255, 255, 255, 0.08)',
+                                  background: 'var(--surface-active)',
                                   display: 'flex',
                                   alignItems: 'center',
                                   justifyContent: 'center',
@@ -1108,15 +1082,13 @@ export function AboutSection() {
                               initial={{ opacity: 0, y: 10 }}
                               animate={{ opacity: 1, y: 0 }}
                               style={{
-                                background: 'rgba(12, 12, 12, 0.65)',
-                                backdropFilter: 'blur(120px) saturate(200%)',
-                                WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-                                borderRadius: '15px',
+                                background: 'var(--surface-secondary)',
+                                backdropFilter: 'blur(40px)',
+                                WebkitBackdropFilter: 'blur(40px)',
+                                borderRadius: '20px',
                                 padding: '1.5rem',
                                 border: '1px solid var(--border-primary)',
-                                boxShadow: `0px 12px 36px rgba(0, 0, 0, 0.5),
-                                            0px 0px 1px rgba(255, 255, 255, 0.25) inset,
-                                            0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
+                                boxShadow: 'var(--shadow-small)',
                               }}
                             >
                               <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
@@ -1124,7 +1096,7 @@ export function AboutSection() {
                                   width: '40px',
                                   height: '40px',
                                   borderRadius: '12px',
-                                  background: 'rgba(255, 255, 255, 0.08)',
+                                  background: 'var(--surface-active)',
                                   display: 'flex',
                                   alignItems: 'center',
                                   justifyContent: 'center',
@@ -1183,15 +1155,13 @@ export function AboutSection() {
                                   initial={{ opacity: 0, y: 10 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   style={{
-                                    background: 'rgba(12, 12, 12, 0.65)',
-                                    backdropFilter: 'blur(120px) saturate(200%)',
-                                    WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-                                    borderRadius: '15px',
+                                    background: 'var(--surface-secondary)',
+                                    backdropFilter: 'blur(40px)',
+                                    WebkitBackdropFilter: 'blur(40px)',
+                                    borderRadius: '20px',
                                     padding: '1.5rem',
                                     border: '1px solid var(--border-primary)',
-                                    boxShadow: `0px 12px 36px rgba(0, 0, 0, 0.5),
-                                                0px 0px 1px rgba(255, 255, 255, 0.25) inset,
-                                                0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
+                                    boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.1)',
                                   }}
                                 >
                                   <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
@@ -1199,7 +1169,7 @@ export function AboutSection() {
                                       width: '40px',
                                       height: '40px',
                                       borderRadius: '12px',
-                                      background: 'rgba(255, 255, 255, 0.08)',
+                                      background: 'var(--surface-active)',
                                       display: 'flex',
                                       alignItems: 'center',
                                       justifyContent: 'center',
@@ -1246,15 +1216,13 @@ export function AboutSection() {
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ delay: 0.1 }}
                                   style={{
-                                    background: 'rgba(12, 12, 12, 0.65)',
-                                    backdropFilter: 'blur(120px) saturate(200%)',
-                                    WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-                                    borderRadius: '15px',
+                                    background: 'var(--surface-secondary)',
+                                    backdropFilter: 'blur(40px)',
+                                    WebkitBackdropFilter: 'blur(40px)',
+                                    borderRadius: '20px',
                                     padding: '1.5rem',
                                     border: '1px solid var(--border-primary)',
-                                    boxShadow: `0px 12px 36px rgba(0, 0, 0, 0.5),
-                                                0px 0px 1px rgba(255, 255, 255, 0.25) inset,
-                                                0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
+                                    boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.1)',
                                   }}
                                 >
                                   <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
@@ -1262,7 +1230,7 @@ export function AboutSection() {
                                       width: '40px',
                                       height: '40px',
                                       borderRadius: '12px',
-                                      background: 'rgba(255, 255, 255, 0.08)',
+                                      background: 'var(--surface-active)',
                                       display: 'flex',
                                       alignItems: 'center',
                                       justifyContent: 'center',
@@ -1310,15 +1278,13 @@ export function AboutSection() {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             style={{
-                              background: 'rgba(12, 12, 12, 0.65)',
-                              backdropFilter: 'blur(120px) saturate(200%)',
-                              WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-                              borderRadius: '15px',
+                              background: 'var(--surface-secondary)',
+                              backdropFilter: 'blur(40px)',
+                              WebkitBackdropFilter: 'blur(40px)',
+                              borderRadius: '20px',
                               padding: '1.5rem',
                               border: '1px solid var(--border-primary)',
-                              boxShadow: `0px 12px 36px rgba(0, 0, 0, 0.5),
-                                          0px 0px 1px rgba(255, 255, 255, 0.25) inset,
-                                          0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
+                              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.1)',
                             }}
                           >
                             <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
@@ -1326,7 +1292,7 @@ export function AboutSection() {
                                 width: '40px',
                                 height: '40px',
                                 borderRadius: '12px',
-                                background: 'rgba(255, 255, 255, 0.08)',
+                                background: 'var(--surface-active)',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -1381,15 +1347,13 @@ export function AboutSection() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 }}
                             style={{
-                              background: 'rgba(12, 12, 12, 0.65)',
-                              backdropFilter: 'blur(120px) saturate(200%)',
-                              WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-                              borderRadius: '15px',
+                              background: 'var(--surface-secondary)',
+                              backdropFilter: 'blur(40px)',
+                              WebkitBackdropFilter: 'blur(40px)',
+                              borderRadius: '20px',
                               padding: '1.5rem',
                               border: '1px solid var(--border-primary)',
-                              boxShadow: `0px 12px 36px rgba(0, 0, 0, 0.5),
-                                          0px 0px 1px rgba(255, 255, 255, 0.25) inset,
-                                          0px -1px 0px rgba(255, 255, 255, 0.06) inset`,
+                              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.1)',
                             }}
                           >
                             <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
@@ -1397,7 +1361,7 @@ export function AboutSection() {
                                 width: '40px',
                                 height: '40px',
                                 borderRadius: '12px',
-                                background: 'rgba(255, 255, 255, 0.08)',
+                                background: 'var(--surface-active)',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -1978,16 +1942,13 @@ export function AboutSection() {
           zIndex: 1,
           maxWidth: '800px',
           margin: '0 auto',
-          background: 'rgba(18, 18, 18, 0.72)',
-          backdropFilter: 'blur(120px) saturate(200%)',
-          WebkitBackdropFilter: 'blur(120px) saturate(200%)',
-          border: '1px solid var(--border-primary)',
-          borderRadius: '30px',
+          background: 'var(--glass-surface)',
+          backdropFilter: 'blur(120px) saturate(180%) brightness(1.05)',
+          WebkitBackdropFilter: 'blur(120px) saturate(180%) brightness(1.05)',
+          border: '1px solid var(--border-muted)',
+          borderRadius: '24px',
           padding: '3rem',
-          boxShadow: `0px 16px 48px rgba(0, 0, 0, 0.6),
-                      0px 0px 1px rgba(255, 255, 255, 0.3) inset,
-                      0px -1px 0px rgba(255, 255, 255, 0.08) inset,
-                      0px 1px 2px rgba(0, 0, 0, 0.8)`,
+          boxShadow: 'var(--shadow-large)',
         }}>
           <h2 style={{
             fontSize: 'clamp(2rem, 4vw, 2.75rem)',
