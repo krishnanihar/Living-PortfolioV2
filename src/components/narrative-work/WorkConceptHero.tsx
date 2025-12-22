@@ -1,14 +1,15 @@
 'use client';
 
-import { useRef, useLayoutEffect, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import { ChevronDown } from 'lucide-react';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
 
-// Register plugin
+// Register plugins
 if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
 
 interface WorkConceptHeroProps {
@@ -39,38 +40,40 @@ export function WorkConceptHero({ scrollProgress = 0 }: WorkConceptHeroProps) {
     });
   }, []);
 
-  // Shrinking animation on scroll
-  useLayoutEffect(() => {
+  // Shrinking animation on scroll - using useGSAP for proper cleanup
+  useGSAP(() => {
     const container = containerRef.current;
     const inner = innerRef.current;
 
     if (!container || !inner) return;
 
-    // Create the shrink animation
-    const trigger = ScrollTrigger.create({
+    // Initialize styles to prevent stale state from previous navigation
+    gsap.set(container, { paddingLeft: 0, paddingRight: 0 });
+    gsap.set(inner, { borderRadius: 0 });
+
+    // Create the shrink animation with unique ID
+    ScrollTrigger.create({
+      id: 'work-hero-shrink', // Unique ID for this trigger
       trigger: container,
       start: 'top top',
       end: 'bottom 60%',
       scrub: 0.5,
+      invalidateOnRefresh: true, // Recalculate on refresh
       onUpdate: (self) => {
         const progress = self.progress;
         const easedProgress = gsap.parseEase('power2.out')(progress);
 
         // Animate padding: 0 -> 48px (left/right)
-        const padding = easedProgress * 48;
-        container.style.paddingLeft = `${padding}px`;
-        container.style.paddingRight = `${padding}px`;
+        gsap.set(container, {
+          paddingLeft: easedProgress * 48,
+          paddingRight: easedProgress * 48,
+        });
 
         // Animate border-radius: 0 -> 32px
-        const radius = easedProgress * 32;
-        inner.style.borderRadius = `${radius}px`;
+        gsap.set(inner, { borderRadius: easedProgress * 32 });
       },
     });
-
-    return () => {
-      trigger.kill();
-    };
-  }, []);
+  }, { scope: containerRef }); // Scoped cleanup
 
   const handleScrollToNext = () => {
     scrollTo('#journey-overview', { offset: -60, duration: 1.5 });

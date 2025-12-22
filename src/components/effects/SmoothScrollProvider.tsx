@@ -218,10 +218,17 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
     // Disable GSAP lag smoothing for instant response
     gsap.ticker.lagSmoothing(0);
 
+    // Refresh ScrollTrigger after Lenis initializes on route change
+    // This ensures ScrollTrigger recalculates positions with fresh scroll state
+    const refreshTimeout = setTimeout(() => {
+      ScrollTrigger.refresh(true); // true = safe refresh (waits for momentum to stop)
+    }, 100);
+
     setIsReady(true);
 
     // Cleanup
     return () => {
+      clearTimeout(refreshTimeout);
       // Remove controlled scroll handlers
       if (wheelHandler) {
         window.removeEventListener('wheel', wheelHandler);
