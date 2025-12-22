@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef, Suspense, useCallback } from 'react';
 import { WorkPageLayout } from '@/components/narrative-work/WorkPageLayout';
-import { NarrativeWorkHero } from '@/components/narrative-work/NarrativeWorkHero';
+import { WorkConceptHero } from '@/components/narrative-work/WorkConceptHero';
 import { JourneyOverview } from '@/components/narrative-work/JourneyOverview';
 import { AirIndiaHeroCard } from '@/components/narrative-work/AirIndiaHeroCard';
 import { ClearaHeroCard } from '@/components/narrative-work/ClearaHeroCard';
@@ -476,15 +476,17 @@ export function WorkNarrativePage() {
 
   return (
     <WorkPageLayout>
-      {/* SECTION 1: Hero Entrance */}
+      {/* SECTION 1: Hero Entrance - ConceptHero style with shrinking */}
       <Suspense fallback={<HeroSkeleton />}>
-        <NarrativeWorkHero />
+        <WorkConceptHero />
       </Suspense>
 
       {/* SECTION 2: Journey Overview */}
-      <Suspense fallback={<SectionSkeleton />}>
-        <JourneyOverview />
-      </Suspense>
+      <div id="journey-overview">
+        <Suspense fallback={<SectionSkeleton />}>
+          <JourneyOverview />
+        </Suspense>
+      </div>
 
       {/* Mobile Swipe Hint for Act II */}
       {isMobile && (
