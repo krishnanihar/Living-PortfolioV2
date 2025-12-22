@@ -18,10 +18,13 @@ import {
   Palette,
   Code,
   ArrowRight,
-  ExternalLink
+  ExternalLink,
+  Hand,
+  X
 } from 'lucide-react';
 import Link from 'next/link';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
+import { usePersonalization } from '@/hooks/usePersonalization';
 import { Chatbot } from '@/components/Chatbot';
 
 // Register plugins
@@ -122,29 +125,20 @@ interface ConceptHeroProps {
   scrollProgress?: number;
 }
 
-// Get time-based greeting
-function getGreeting() {
-  const hour = new Date().getHours();
-  if (hour >= 5 && hour < 12) {
-    return { icon: 'sun', opener: 'Good morning', message: "I'm Nihar.", secondary: 'Welcome.' };
-  } else if (hour >= 12 && hour < 17) {
-    return { icon: 'sun', opener: 'Good afternoon', message: "I'm Nihar.", secondary: 'Welcome.' };
-  } else if (hour >= 17 && hour < 21) {
-    return { icon: 'moon', opener: 'Good evening', message: "I'm Nihar.", secondary: 'Welcome.' };
-  } else {
-    return { icon: 'sparkles', opener: 'Hello, night owl', message: "I'm Nihar.", secondary: 'Welcome.' };
-  }
-}
-
 export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
   const containerRef = useRef<HTMLElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const { scrollTo } = useLenisScroll();
 
+  // Personalization hook
+  const { state: personalizationState } = usePersonalization();
+  const { greeting, scrollMemory, isHydrated } = personalizationState;
+
   const [mounted, setMounted] = useState(false);
   const [animationStage, setAnimationStage] = useState(0);
   const [hoveredButton, setHoveredButton] = useState<'contact' | 'tour' | null>(null);
-  const [greeting] = useState(getGreeting);
+  const [showScrollPill, setShowScrollPill] = useState(true);
+  const [scrollPillHovered, setScrollPillHovered] = useState(false);
 
   // Multi-view state
   const [activeView, setActiveView] = useState<HeroView>('default');
@@ -176,8 +170,8 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
 
   useEffect(() => {
     setMounted(true);
-    // Staggered animation stages
-    const stages = [1, 2, 3];
+    // Staggered animation stages (4 = scroll memory pill)
+    const stages = [1, 2, 3, 4];
     stages.forEach((stage, i) => {
       setTimeout(() => setAnimationStage(stage), i * 100);
     });
@@ -225,12 +219,18 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
   const renderGreetingIcon = () => {
     const iconProps = { size: 16, style: { opacity: 0.8 } };
     switch (greeting.icon) {
+      case 'hand': return <Hand {...iconProps} />;
       case 'sun': return <Sun {...iconProps} />;
       case 'moon': return <Moon {...iconProps} />;
       case 'sparkles': return <Sparkles {...iconProps} />;
-      default: return <Sparkles {...iconProps} />;
+      default: return <Sun {...iconProps} />;
     }
   };
+
+  // Dismiss scroll memory pill
+  const dismissScrollPill = useCallback(() => {
+    setShowScrollPill(false);
+  }, []);
 
   // Contact View Component
   const ContactView = () => (
@@ -782,22 +782,24 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
         </span>
       </h1>
 
-      {/* Secondary Message */}
-      <div
-        style={{
-          fontSize: 'clamp(0.9375rem, 1.5vw, 1.125rem)',
-          fontWeight: 300,
-          color: 'var(--text-60)',
-          letterSpacing: '0.01em',
-          marginBottom: '1.5rem',
-          opacity: animationStage >= 1 ? 1 : 0,
-          transform: animationStage >= 1 ? 'translateY(0)' : 'translateY(15px)',
-          filter: animationStage >= 1 ? 'blur(0)' : 'blur(8px)',
-          transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
-        }}
-      >
-        {greeting.secondary}
-      </div>
+      {/* Secondary Message - Only show if present (null for 8+ visits) */}
+      {greeting.secondary && (
+        <div
+          style={{
+            fontSize: 'clamp(0.9375rem, 1.5vw, 1.125rem)',
+            fontWeight: 300,
+            color: 'var(--text-60)',
+            letterSpacing: '0.01em',
+            marginBottom: '1.5rem',
+            opacity: animationStage >= 1 ? 1 : 0,
+            transform: animationStage >= 1 ? 'translateY(0)' : 'translateY(15px)',
+            filter: animationStage >= 1 ? 'blur(0)' : 'blur(8px)',
+            transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
+          }}
+        >
+          {greeting.secondary}
+        </div>
+      )}
 
       {/* Subtitle */}
       <div
@@ -928,6 +930,81 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
           <span style={{ position: 'relative', zIndex: 1 }}>Quick Tour</span>
         </button>
       </div>
+
+      {/* Scroll Memory Pill - Shows if user has viewing history */}
+      {isHydrated && scrollMemory.hasHistory && showScrollPill && scrollMemory.lastProjectName && (
+        <div
+          onMouseEnter={() => setScrollPillHovered(true)}
+          onMouseLeave={() => setScrollPillHovered(false)}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            marginTop: '2rem',
+            padding: '10px 16px 10px 20px',
+            ...UNIFIED_GLASS,
+            background: scrollPillHovered
+              ? 'var(--glass-08)'
+              : 'var(--glass-04)',
+            borderRadius: '24px',
+            opacity: animationStage >= 4 ? 1 : 0,
+            transform: animationStage >= 4 ? 'translateY(0)' : 'translateY(15px)',
+            filter: animationStage >= 4 ? 'blur(0)' : 'blur(8px)',
+            transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, background 0.2s ease, transform 0.2s ease',
+          }}
+        >
+          <Link
+            href={`/work/${scrollMemory.lastProject}`}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              color: 'var(--text-80)',
+              fontSize: '0.8125rem',
+              fontWeight: 400,
+              textDecoration: 'none',
+              transition: 'color 0.2s ease',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-95)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-80)')}
+          >
+            <span style={{ color: 'var(--text-50)' }}>Continue from</span>
+            <span style={{ fontWeight: 500, color: 'var(--text-90)' }}>
+              {scrollMemory.lastProjectName}
+            </span>
+            <ArrowRight size={14} style={{ opacity: 0.6 }} />
+          </Link>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              dismissScrollPill();
+            }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '20px',
+              height: '20px',
+              borderRadius: '50%',
+              background: 'var(--glass-08)',
+              border: 'none',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              marginLeft: '0.25rem',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'var(--glass-15)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'var(--glass-08)';
+            }}
+            aria-label="Dismiss"
+          >
+            <X size={12} style={{ color: 'var(--text-50)' }} />
+          </button>
+        </div>
+      )}
     </div>
   );
 
