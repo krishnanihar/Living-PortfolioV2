@@ -9,6 +9,18 @@ module.exports = {
   darkMode: ['class', '[data-theme="dark"]'],
   theme: {
     extend: {
+      screens: {
+        'xs': '375px',      // Small phones
+        'sm': '640px',      // Landscape phones
+        'md': '768px',      // Tablets
+        'lg': '1024px',     // Small desktops
+        'xl': '1280px',     // 13" laptops
+        '2xl': '1440px',    // 14" laptops
+        '3xl': '1728px',    // 16" laptops
+        '4xl': '1920px',    // 15"+ displays
+        'touch': { 'raw': '(hover: none)' },
+        'pointer': { 'raw': '(hover: hover)' },
+      },
       colors: {
         brand: {
           red: '#DA0E29',
@@ -99,6 +111,10 @@ module.exports = {
         'xl': '2rem',
         '2xl': '3rem',
         '3xl': '4rem',
+        'safe-top': 'env(safe-area-inset-top)',
+        'safe-bottom': 'env(safe-area-inset-bottom)',
+        'safe-left': 'env(safe-area-inset-left)',
+        'safe-right': 'env(safe-area-inset-right)',
       },
       borderRadius: {
         'xs': '4px',
@@ -179,6 +195,13 @@ module.exports = {
         },
         '.nav-height-mobile': {
           'height': '48px',
+        },
+        '.nav-height-bottom': {
+          'height': 'calc(64px + env(safe-area-inset-bottom))',
+          'padding-bottom': 'env(safe-area-inset-bottom)',
+        },
+        '.content-safe-bottom': {
+          'padding-bottom': 'calc(76px + env(safe-area-inset-bottom))',
         },
       }
       addUtilities(newUtilities)

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Briefcase, User, Moon, Sun, HelpCircle } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
+import { MobileBottomNav } from './MobileBottomNav';
 
 interface PortfolioNavigationProps {
   className?: string;
@@ -55,8 +56,17 @@ const NAV_HEIGHTS = {
 
 export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigationProps) {
   const [navHeight, setNavHeight] = useState({ normal: 60, scrolled: 54 });
+  const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
   const { theme, resolvedTheme, toggleTheme } = useTheme();
+
+  // Detect mobile screen size
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile, { passive: true });
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Responsive navigation height based on screen size
   useEffect(() => {
@@ -115,6 +125,11 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
     if (href === '/') return pathname === '/';
     return pathname.startsWith(href);
   };
+
+  // Render bottom navigation on mobile
+  if (isMobile) {
+    return <MobileBottomNav />;
+  }
 
   return (
     <>

@@ -2,6 +2,10 @@
 export { Button } from './Button';
 export type { ButtonProps } from './Button';
 
+// Navigation Components
+export { PortfolioNavigation } from './PortfolioNavigation';
+export { MobileBottomNav } from './MobileBottomNav';
+
 export {
   Card,
   CardHeader,
