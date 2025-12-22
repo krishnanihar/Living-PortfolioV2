@@ -14,10 +14,10 @@ export interface HelixConfig {
  * Default helix configuration tuned for the journey experience
  */
 export const DEFAULT_HELIX_CONFIG: HelixConfig = {
-  radius: 80,
-  pitch: 150,
-  verticalScale: 0.6,
-  startZ: 50,
+  radius: 35,
+  pitch: 70,
+  verticalScale: 0.5,
+  startZ: 30,
 };
 
 /**
@@ -60,22 +60,22 @@ export function generateCameraPath(
 
   // Add entry point before first milestone
   const firstPos = calculateCardPosition(0, config);
-  points.push(new THREE.Vector3(0, 0, firstPos.z + 150));
+  points.push(new THREE.Vector3(0, 0, firstPos.z + 60));
 
   // Add camera positions along the helix center
   for (let i = 0; i < milestoneCount; i++) {
     const cardPos = calculateCardPosition(i, config);
     // Camera stays in center of helix, slightly behind cards
     points.push(new THREE.Vector3(
-      cardPos.x * 0.2, // Subtle sway toward cards
-      cardPos.y * 0.3, // Reduced vertical movement
-      cardPos.z - 30   // Slightly ahead of cards
+      cardPos.x * 0.15, // Subtle sway toward cards
+      cardPos.y * 0.2,  // Reduced vertical movement
+      cardPos.z - 15    // Closer to cards
     ));
   }
 
   // Add exit point after last milestone
   const lastPos = calculateCardPosition(milestoneCount - 1, config);
-  points.push(new THREE.Vector3(0, 0, lastPos.z - 200));
+  points.push(new THREE.Vector3(0, 0, lastPos.z - 80));
 
   return new THREE.CatmullRomCurve3(points, false, 'centripetal', 0.5);
 }

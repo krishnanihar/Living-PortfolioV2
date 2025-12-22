@@ -38,22 +38,22 @@ export default function MilestoneCard3D({
 
   // Calculate visibility based on distance
   const visibility = useMemo(() => {
-    const maxDistance = 400;
-    const minDistance = 50;
+    const maxDistance = 200;
+    const minDistance = 25;
 
     if (distance < minDistance) {
       return { opacity: 1, scale: 1.05 };
     }
     if (distance > maxDistance) {
-      return { opacity: 0.35, scale: 0.8 };
+      return { opacity: 0.4, scale: 0.85 };
     }
 
     const t = (distance - minDistance) / (maxDistance - minDistance);
     const eased = 1 - Math.pow(t, 0.5);
 
     return {
-      opacity: 0.35 + eased * 0.65,
-      scale: 0.8 + eased * 0.25,
+      opacity: 0.4 + eased * 0.6,
+      scale: 0.85 + eased * 0.2,
     };
   }, [distance]);
 
@@ -131,7 +131,7 @@ export default function MilestoneCard3D({
     <group ref={groupRef} position={position}>
       {/* Glow plane behind card */}
       <mesh ref={glowMeshRef} position={[0, 0, -0.5]}>
-        <planeGeometry args={[5, 7]} />
+        <planeGeometry args={[6, 8]} />
         <shaderMaterial
           uniforms={glowUniforms}
           vertexShader={cardGlowVertexShader}
@@ -145,7 +145,7 @@ export default function MilestoneCard3D({
       {/* HTML Card Content */}
       <Html
         center
-        distanceFactor={12}
+        distanceFactor={8}
         occlude={false}
         transform
         style={{
@@ -161,7 +161,7 @@ export default function MilestoneCard3D({
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           style={{
-            width: '320px',
+            width: '380px',
             padding: '0',
             background: 'var(--glass-06)',
             backdropFilter: 'blur(40px) saturate(180%)',

@@ -91,7 +91,7 @@ function HelixTimeline({
         const isFocused = index === focusedMilestone;
 
         // Only render cards within reasonable distance
-        if (distance > 600) return null;
+        if (distance > 300) return null;
 
         return (
           <MilestoneCard3D
