@@ -929,6 +929,131 @@ function PASIMeterViz({ color, isHovered, size }: Omit<MicroVisualizationProps, 
   );
 }
 
+/** Card 9a: Predictive Flare Alerts - Timeline with prediction marker */
+function PredictiveAlertViz({ color, isHovered, size }: Omit<MicroVisualizationProps, 'cardId' | 'projectId'>) {
+  const isMain = size === 'main';
+
+  return (
+    <motion.svg
+      viewBox="0 0 100 100"
+      width="100%"
+      height="100%"
+      initial="hidden"
+      animate={isHovered ? "visible" : "hidden"}
+      variants={staggerChildren}
+    >
+      {/* Timeline base */}
+      <motion.line
+        x1={15}
+        y1={60}
+        x2={85}
+        y2={60}
+        stroke={`rgba(${color}, 0.3)`}
+        strokeWidth={2}
+        variants={pathVariants}
+      />
+
+      {/* Day markers */}
+      {[0, 1, 2, 3, 4].map((i) => (
+        <motion.g key={i} variants={fadeInUp}>
+          <line
+            x1={20 + i * 16}
+            y1={57}
+            x2={20 + i * 16}
+            y2={63}
+            stroke={`rgba(${color}, 0.4)`}
+            strokeWidth={1.5}
+          />
+          {isMain && (
+            <text
+              x={20 + i * 16}
+              y={72}
+              textAnchor="middle"
+              fill={`rgba(${color}, 0.5)`}
+              fontSize={8}
+            >
+              {i + 1}
+            </text>
+          )}
+        </motion.g>
+      ))}
+
+      {/* Prediction zone (shaded area before alert) */}
+      <motion.rect
+        x={52}
+        y={35}
+        width={isMain ? 28 : 24}
+        height={20}
+        rx={4}
+        fill={`rgba(${color}, 0.1)`}
+        stroke={`rgba(${color}, 0.3)`}
+        strokeWidth={1}
+        strokeDasharray="3 3"
+        variants={fadeInUp}
+      />
+
+      {/* Alert marker */}
+      <motion.g
+        variants={{
+          hidden: { scale: 0, opacity: 0 },
+          visible: { scale: 1, opacity: 1, transition: { duration: 0.4, delay: 0.5 } }
+        }}
+      >
+        {/* Alert triangle */}
+        <motion.path
+          d={isMain ? "M 68 25 L 76 38 L 60 38 Z" : "M 68 28 L 74 38 L 62 38 Z"}
+          fill={`rgba(${color}, 0.6)`}
+          style={{
+            animation: isHovered ? 'microPulse 1.5s ease-in-out infinite' : 'none'
+          }}
+        />
+        {/* Exclamation mark */}
+        <motion.line
+          x1={68}
+          y1={isMain ? 29 : 31}
+          x2={68}
+          y2={isMain ? 33 : 34}
+          stroke={`rgba(255, 255, 255, 0.9)`}
+          strokeWidth={2}
+          strokeLinecap="round"
+        />
+        <motion.circle
+          cx={68}
+          cy={isMain ? 36 : 36}
+          r={1}
+          fill="rgba(255, 255, 255, 0.9)"
+        />
+      </motion.g>
+
+      {/* Prediction label */}
+      {isMain && (
+        <motion.text
+          x={66}
+          y={48}
+          textAnchor="middle"
+          fill={`rgba(${color}, 0.7)`}
+          fontSize={8}
+          fontWeight={500}
+          variants={fadeInUp}
+        >
+          3-5 days
+        </motion.text>
+      )}
+
+      {/* Current day marker */}
+      <motion.circle
+        cx={20}
+        cy={60}
+        r={isMain ? 5 : 4}
+        fill={`rgba(${color}, 0.5)`}
+        stroke={`rgba(${color}, 0.7)`}
+        strokeWidth={1.5}
+        variants={fadeInUp}
+      />
+    </motion.svg>
+  );
+}
+
 /** Card 9: Smart Reminders - Clock with bell and optimal arc */
 function SmartRemindersViz({ color, isHovered, size }: Omit<MicroVisualizationProps, 'cardId' | 'projectId'>) {
   const isMain = size === 'main';
@@ -1950,9 +2075,9 @@ export function MicroVisualization({ cardId, projectId, color, isHovered, size =
     switch (cardId) {
       case 1: return <GhostOverlayViz {...props} />;
       case 2: return <PASIMeterViz {...props} />;
-      case 3: return <SmartRemindersViz {...props} />;
-      case 4: return <JointAlertViz {...props} />;
-      case 5: return <MindBodyViz {...props} />;
+      case 3: return <PredictiveAlertViz {...props} />;
+      case 4: return <MindBodyViz {...props} />;
+      case 5: return <SmartRemindersViz {...props} />;
       case 6: return <AnalyticsGridViz {...props} />;
     }
   }
