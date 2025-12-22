@@ -17,8 +17,8 @@ interface WorkConceptHeroProps {
 }
 
 /**
- * Work page hero with ConceptHero-style shrinking animation
- * - Shrinking container on scroll (padding + border-radius)
+ * Work page hero with fade-out animation on scroll
+ * - Opacity fades from 1 to 0 as user scrolls
  * - Glassmorphism inner container
  * - Gradient overlays for depth
  * - No particles (clean background)
@@ -40,37 +40,28 @@ export function WorkConceptHero({ scrollProgress = 0 }: WorkConceptHeroProps) {
     });
   }, []);
 
-  // Shrinking animation on scroll - using useGSAP for proper cleanup
+  // Fade out animation on scroll - using useGSAP for proper cleanup
   useGSAP(() => {
     const container = containerRef.current;
     const inner = innerRef.current;
 
     if (!container || !inner) return;
 
-    // Initialize styles to prevent stale state from previous navigation
-    gsap.set(container, { paddingLeft: 0, paddingRight: 0 });
-    gsap.set(inner, { borderRadius: 0 });
+    // Initialize opacity to 1
+    gsap.set(inner, { opacity: 1 });
 
-    // Create the shrink animation with unique ID
+    // Create the fade animation with unique ID
     ScrollTrigger.create({
-      id: 'work-hero-shrink', // Unique ID for this trigger
+      id: 'work-hero-fade',
       trigger: container,
       start: 'top top',
       end: 'bottom 60%',
       scrub: 0.5,
-      invalidateOnRefresh: true, // Recalculate on refresh
+      invalidateOnRefresh: true,
       onUpdate: (self) => {
-        const progress = self.progress;
-        const easedProgress = gsap.parseEase('power2.out')(progress);
-
-        // Animate padding: 0 -> 48px (left/right)
-        gsap.set(container, {
-          paddingLeft: easedProgress * 48,
-          paddingRight: easedProgress * 48,
-        });
-
-        // Animate border-radius: 0 -> 32px
-        gsap.set(inner, { borderRadius: easedProgress * 32 });
+        // Fade out: 1 → 0 as scroll progresses
+        const opacity = 1 - self.progress;
+        gsap.set(inner, { opacity });
       },
     });
   }, { scope: containerRef }); // Scoped cleanup
@@ -93,8 +84,6 @@ export function WorkConceptHero({ scrollProgress = 0 }: WorkConceptHeroProps) {
         style={{
           height: '100dvh',
           position: 'relative',
-          padding: 0,
-          willChange: 'padding',
           display: 'flex',
           alignItems: 'center',
           zIndex: 1,
@@ -107,8 +96,7 @@ export function WorkConceptHero({ scrollProgress = 0 }: WorkConceptHeroProps) {
             height: '100%',
             position: 'relative',
             overflow: 'hidden',
-            borderRadius: 0,
-            willChange: 'border-radius',
+            willChange: 'opacity',
             background: 'var(--glass-03)',
             backdropFilter: mounted ? 'blur(60px) saturate(180%)' : 'none',
             WebkitBackdropFilter: mounted ? 'blur(60px) saturate(180%)' : 'none',
