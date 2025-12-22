@@ -1,16 +1,9 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { WorkNarrativeProgressIndicator, WorkNarrativeProgressBar } from './WorkNarrativeProgressIndicator';
 import { useWorkNarrativeProgress } from '@/hooks/useWorkNarrativeProgress';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { gsap } from 'gsap';
-
-// Register plugin
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 interface WorkPageLayoutProps {
   children: React.ReactNode;
@@ -23,21 +16,8 @@ interface WorkPageLayoutProps {
 export function WorkPageLayout({ children }: WorkPageLayoutProps) {
   const narrativeState = useWorkNarrativeProgress();
 
-  // ScrollTrigger cleanup on unmount (matches ConceptPage pattern)
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 200);
-
-    return () => {
-      clearTimeout(timeout);
-      // Clean up all ScrollTrigger instances on unmount
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, []);
-
   // Apply atmospheric color to body background
-  useEffect(() => {
+  React.useEffect(() => {
     document.body.style.setProperty('--narrative-atmosphere', narrativeState.color.atmosphere);
   }, [narrativeState.color.atmosphere]);
 
