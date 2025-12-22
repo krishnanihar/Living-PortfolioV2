@@ -173,6 +173,13 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeView, switchView]);
 
+  // Reset scroll position on mount to ensure fresh start
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    // Refresh ScrollTrigger after scroll reset
+    ScrollTrigger.refresh();
+  }, []);
+
   useEffect(() => {
     setMounted(true);
     // Staggered animation stages
@@ -210,6 +217,14 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
     });
 
     return () => {
+      // Reset inline styles to default state before killing trigger
+      if (container) {
+        container.style.paddingLeft = '0px';
+        container.style.paddingRight = '0px';
+      }
+      if (inner) {
+        inner.style.borderRadius = '0px';
+      }
       trigger.kill();
     };
   }, []);

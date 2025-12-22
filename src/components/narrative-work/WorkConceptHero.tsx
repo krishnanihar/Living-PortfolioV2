@@ -30,6 +30,13 @@ export function WorkConceptHero({ scrollProgress = 0 }: WorkConceptHeroProps) {
   const [mounted, setMounted] = useState(false);
   const [animationStage, setAnimationStage] = useState(0);
 
+  // Reset scroll position on mount to ensure fresh start
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    // Refresh ScrollTrigger after scroll reset
+    ScrollTrigger.refresh();
+  }, []);
+
   useEffect(() => {
     setMounted(true);
     // Staggered animation stages
@@ -68,6 +75,14 @@ export function WorkConceptHero({ scrollProgress = 0 }: WorkConceptHeroProps) {
     });
 
     return () => {
+      // Reset inline styles to default state before killing trigger
+      if (container) {
+        container.style.paddingLeft = '0px';
+        container.style.paddingRight = '0px';
+      }
+      if (inner) {
+        inner.style.borderRadius = '0px';
+      }
       trigger.kill();
     };
   }, []);
