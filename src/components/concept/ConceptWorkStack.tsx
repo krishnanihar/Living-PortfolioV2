@@ -3,6 +3,7 @@
 import { useRef, useLayoutEffect, useEffect, useCallback, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ChevronUp, ChevronDown } from 'lucide-react';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
 import ConceptWorkPlaceholder from './ConceptWorkPlaceholder';
 
@@ -366,17 +367,19 @@ export default function ConceptWorkStack() {
         />
       ))}
 
-      {/* Scroll Dot Indicators */}
+      {/* Scroll Indicators - Vertical Left */}
       <div
         style={{
           position: 'fixed',
-          bottom: '2rem',
-          left: '50%',
-          transform: 'translateX(-50%)',
+          left: '2rem',
+          top: '50%',
+          transform: 'translateY(-50%)',
           display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
           gap: '0.75rem',
           zIndex: 110,
-          padding: '0.75rem 1rem',
+          padding: '1rem 0.75rem',
           borderRadius: '2rem',
           background: 'var(--glass-08)',
           backdropFilter: 'blur(20px)',
@@ -386,14 +389,31 @@ export default function ConceptWorkStack() {
           transition: 'opacity 0.3s ease',
         }}
       >
+        {/* Up Arrow */}
+        <button
+          onClick={() => scrollToCard(Math.max(0, activeCardIndex - 1))}
+          aria-label="Previous project"
+          style={{
+            background: 'none',
+            border: 'none',
+            padding: '0.25rem',
+            cursor: activeCardIndex === 0 ? 'default' : 'pointer',
+            opacity: activeCardIndex === 0 ? 0.3 : 1,
+            transition: 'opacity 0.3s ease',
+          }}
+        >
+          <ChevronUp size={18} style={{ color: 'var(--text-60)' }} />
+        </button>
+
+        {/* Dot Indicators */}
         {featuredProjects.map((_, index) => (
           <button
             key={index}
             onClick={() => scrollToCard(index)}
             aria-label={`Go to project ${index + 1}`}
             style={{
-              width: index === activeCardIndex ? '24px' : '8px',
-              height: '8px',
+              width: '8px',
+              height: index === activeCardIndex ? '24px' : '8px',
               borderRadius: '4px',
               background: index === activeCardIndex ? 'var(--text-90)' : 'var(--text-25)',
               border: 'none',
@@ -403,6 +423,22 @@ export default function ConceptWorkStack() {
             }}
           />
         ))}
+
+        {/* Down Arrow */}
+        <button
+          onClick={() => scrollToCard(Math.min(cardCount - 1, activeCardIndex + 1))}
+          aria-label="Next project"
+          style={{
+            background: 'none',
+            border: 'none',
+            padding: '0.25rem',
+            cursor: activeCardIndex === cardCount - 1 ? 'default' : 'pointer',
+            opacity: activeCardIndex === cardCount - 1 ? 0.3 : 1,
+            transition: 'opacity 0.3s ease',
+          }}
+        >
+          <ChevronDown size={18} style={{ color: 'var(--text-60)' }} />
+        </button>
       </div>
     </section>
   );
