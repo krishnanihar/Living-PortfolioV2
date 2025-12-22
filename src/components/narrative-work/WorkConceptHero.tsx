@@ -1,15 +1,14 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
 import { ChevronDown } from 'lucide-react';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
 
 // Register plugins
 if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, useGSAP);
+  gsap.registerPlugin(ScrollTrigger);
 }
 
 interface WorkConceptHeroProps {
@@ -40,18 +39,21 @@ export function WorkConceptHero({ scrollProgress = 0 }: WorkConceptHeroProps) {
     });
   }, []);
 
-  // Fade out animation on scroll - using useGSAP for proper cleanup
-  useGSAP(() => {
+  // Fade out animation on scroll
+  useLayoutEffect(() => {
     const container = containerRef.current;
     const inner = innerRef.current;
 
     if (!container || !inner) return;
 
-    // Initialize opacity to 1
-    gsap.set(inner, { opacity: 1 });
+    // Kill any existing trigger with this ID
+    ScrollTrigger.getById('work-hero-fade')?.kill();
 
-    // Create the fade animation with unique ID
-    ScrollTrigger.create({
+    // Initialize opacity to 1
+    inner.style.opacity = '1';
+
+    // Create the fade animation
+    const trigger = ScrollTrigger.create({
       id: 'work-hero-fade',
       trigger: container,
       start: 'top top',
@@ -61,10 +63,14 @@ export function WorkConceptHero({ scrollProgress = 0 }: WorkConceptHeroProps) {
       onUpdate: (self) => {
         // Fade out: 1 → 0 as scroll progresses
         const opacity = 1 - self.progress;
-        gsap.set(inner, { opacity });
+        inner.style.opacity = String(opacity);
       },
     });
-  }, { scope: containerRef }); // Scoped cleanup
+
+    return () => {
+      trigger.kill();
+    };
+  }, []);
 
   const handleScrollToNext = () => {
     scrollTo('#journey-overview', { offset: -60, duration: 1.5 });
