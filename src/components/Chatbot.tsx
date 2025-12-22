@@ -5,9 +5,7 @@ import { Send, X, Mic, MicOff, RotateCcw, Plane, Briefcase, MessageCircle } from
 import Markdown from 'react-markdown';
 import { usePersonalization } from '@/hooks/usePersonalization';
 import { useOnboarding } from '@/hooks/useOnboarding';
-import { PersonalizationPrompt } from '@/components/ui/PersonalizationPrompt';
 import { animate, stagger } from '@/lib/anime-utils';
-import type { VisitorIntent } from '@/lib/personalization/types';
 import type { SpeechRecognitionEvent } from '@/types/speech-recognition';
 
 // Define recognition type for the ref
@@ -280,7 +278,6 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [showIntentPrompt, setShowIntentPrompt] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(false);
   const [dynamicSuggestions, setDynamicSuggestions] = useState<string[]>([]);
@@ -416,28 +413,12 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  // Focus input when chat opens (and not showing intent prompt)
+  // Focus input when chat opens
   useEffect(() => {
-    if (isOpen && inputRef.current && !showIntentPrompt) {
+    if (isOpen && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [isOpen, showIntentPrompt]);
-
-  // Check if we should show intent prompt when chat opens
-  useEffect(() => {
-    if (isOpen && !storedIntent && !intentDeclined && !intentContext) {
-      setShowIntentPrompt(true);
-    } else if (isOpen) {
-      setShowIntentPrompt(false);
-    }
-  }, [isOpen, storedIntent, intentDeclined, intentContext]);
-
-  // Handle intent selection from prompt
-  const handleIntentComplete = (intent: NonNullable<VisitorIntent> | null) => {
-    setShowIntentPrompt(false);
-    setMessages([]);
-    localStorage.removeItem(STORAGE_KEY);
-  };
+  }, [isOpen]);
 
   // Send initial message when chat opens
   useEffect(() => {
@@ -446,9 +427,9 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
     }
   }, [isOpen, initialMessage]);
 
-  // Add greeting when chat first opens (after intent prompt is dismissed)
+  // Add greeting when chat first opens
   useEffect(() => {
-    if (isOpen && messages.length === 0 && !initialMessage && !showIntentPrompt) {
+    if (isOpen && messages.length === 0 && !initialMessage) {
       const greeting = getGreeting(effectiveIntent);
       setMessages([{
         id: 'greeting',
@@ -457,7 +438,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
         timestamp: Date.now(),
       }]);
     }
-  }, [isOpen, effectiveIntent, showIntentPrompt]);
+  }, [isOpen, effectiveIntent]);
 
   const getGreeting = (intent?: string): string => {
     // Use contextual greeting if provided (from GlobalChatbot)
@@ -716,7 +697,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
           {/* Header */}
           <div style={{
             padding: '1rem 1.5rem',
-            borderBottom: showIntentPrompt ? 'none' : '1px solid var(--glass-08)',
+            borderBottom: '1px solid var(--glass-08)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -745,19 +726,19 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                   color: 'var(--text-primary)',
                   letterSpacing: '0.01em',
                 }}>
-                  {inTourMode ? 'Quick Tour' : showIntentPrompt ? 'Welcome!' : 'Portfolio Assistant'}
+                  {inTourMode ? 'Quick Tour' : 'Portfolio Assistant'}
                 </h3>
                 <p style={{
                   fontSize: '0.65rem',
                   color: 'var(--text-muted)',
                   fontWeight: '300',
                 }}>
-                  {inTourMode ? 'Get to know this portfolio' : showIntentPrompt ? 'Let me personalize your experience' : 'AI-powered by Gemini'}
+                  {inTourMode ? 'Get to know this portfolio' : 'AI-powered by Gemini'}
                 </p>
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              {!showIntentPrompt && messages.length > 1 && (
+              {messages.length > 1 && (
                 <button
                   onClick={handleClearHistory}
                   title="Clear conversation"
@@ -950,24 +931,10 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                 Step {currentTourStep + 1} of {TOUR_STEPS.length}
               </div>
             </div>
-          ) : showIntentPrompt ? (
-            <div style={{
-              flex: 1,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '1.5rem',
-            }}>
-              <PersonalizationPrompt
-                variant="embedded"
-                forceShow={true}
-                onComplete={handleIntentComplete}
-              />
-            </div>
           ) : (
             <>
               {/* Quick Actions */}
-              {!showIntentPrompt && !inTourMode && (
+              {!inTourMode && (
                 <div style={{ padding: '0.75rem 1.5rem 0' }}>
                   <QuickActions onAction={handleSendMessage} />
                 </div>
