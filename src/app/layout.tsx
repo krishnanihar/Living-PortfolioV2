@@ -13,6 +13,11 @@ const MicroInteractionProvider = dynamic(
   () => import('@/components/effects/MicroInteractionProvider').then(mod => ({ default: mod.MicroInteractionProvider }))
 );
 
+// Lazy load GlobalChatbot for performance
+const GlobalChatbot = dynamic(
+  () => import('@/components/GlobalChatbot').then(mod => ({ default: mod.GlobalChatbot }))
+);
+
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-space-grotesk',
@@ -145,6 +150,9 @@ export default function RootLayout({
 
               {/* Main content */}
               {children}
+
+              {/* Global context-aware chatbot */}
+              <GlobalChatbot />
             </PersonalizationProvider>
           </SmoothScrollProvider>
         </ThemeProvider>

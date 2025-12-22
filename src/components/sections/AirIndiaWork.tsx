@@ -1038,6 +1038,7 @@ export function AirIndiaWork() {
       ========================================================================= */}
       <header
         ref={heroRef}
+        data-section-id="air-india-hero"
         style={{
           height: '100vh',
           width: '100%',
@@ -1390,13 +1391,16 @@ export function AirIndiaWork() {
       {/* =========================================================================
           SECTION 2: THE CHALLENGE
       ========================================================================= */}
-      <section style={{
-        maxWidth: 'min(900px, 85vw)',
-        margin: '0 auto',
-        padding: 'clamp(6rem, 12vh, 10rem) 2rem clamp(8rem, 15vh, 12rem)',
-        position: 'relative',
-        zIndex: 1,
-      }}>
+      <section
+        data-section-id="air-india-problem"
+        style={{
+          maxWidth: 'min(900px, 85vw)',
+          margin: '0 auto',
+          padding: 'clamp(6rem, 12vh, 10rem) 2rem clamp(8rem, 15vh, 12rem)',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
         <div style={{
           textAlign: 'center',
           animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both' : 'none',
@@ -1511,6 +1515,7 @@ export function AirIndiaWork() {
       ========================================================================= */}
       <section
         ref={projectsSectionRef}
+        data-section-id="air-india-solution"
         style={{
           maxWidth: 'min(1300px, 90vw)',
           margin: '0 auto',
@@ -9202,12 +9207,15 @@ export function AirIndiaWork() {
       {/* =========================================================================
           SECTION 8: TEAM RECOGNITION
       ========================================================================= */}
-      <section style={{
-        padding: 'clamp(6rem, 12vh, 10rem) 2rem',
-        position: 'relative',
-        zIndex: 1,
-        overflow: 'hidden',
-      }}>
+      <section
+        data-section-id="air-india-awards"
+        style={{
+          padding: 'clamp(6rem, 12vh, 10rem) 2rem',
+          position: 'relative',
+          zIndex: 1,
+          overflow: 'hidden',
+        }}
+      >
         <div style={{
           textAlign: 'center',
           marginBottom: 'clamp(2.5rem, 5vh, 4rem)',

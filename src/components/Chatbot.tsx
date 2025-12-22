@@ -30,6 +30,19 @@ interface ChatMessage {
   timestamp: number;
 }
 
+// Chat context for page/section awareness
+interface ChatContext {
+  intent: string;
+  currentPage: string;
+  currentSection: string | null;
+  currentProject: string | null;
+  projectTitle: string | null;
+  caseStudiesViewed: string[];
+  engagementScore: number;
+  visitCount: number;
+  sectionInterest: Record<string, { dwellTime: number; viewCount: number }>;
+}
+
 interface ChatbotProps {
   isOpen: boolean;
   onClose: () => void;
@@ -37,6 +50,8 @@ interface ChatbotProps {
   intentContext?: string;
   tourMode?: boolean;
   onTourComplete?: () => void;
+  chatContext?: ChatContext;
+  contextualGreeting?: string;
 }
 
 // Tour steps for guided walkthrough
@@ -261,7 +276,7 @@ const QuickActions = ({ onAction }: { onAction: (action: string) => void }) => (
   </div>
 );
 
-export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMode = false, onTourComplete }: ChatbotProps) {
+export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMode = false, onTourComplete, chatContext, contextualGreeting }: ChatbotProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -445,6 +460,12 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
   }, [isOpen, effectiveIntent, showIntentPrompt]);
 
   const getGreeting = (intent?: string): string => {
+    // Use contextual greeting if provided (from GlobalChatbot)
+    if (contextualGreeting) {
+      return contextualGreeting;
+    }
+
+    // Fallback to intent-based greeting
     switch (intent) {
       case 'hiring':
         return "Hello! I'd love to share insights about the **design systems** and methodologies behind these projects. What interests you most?";
@@ -543,6 +564,9 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
     setMessages(prev => [...prev, aiMessage]);
 
     try {
+      // Build context - use rich chatContext if available, otherwise just intent
+      const apiContext = chatContext || { intent: effectiveIntent };
+
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
@@ -550,7 +574,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
         },
         body: JSON.stringify({
           message: textToSend,
-          context: effectiveIntent,
+          context: apiContext,
         }),
       });
 

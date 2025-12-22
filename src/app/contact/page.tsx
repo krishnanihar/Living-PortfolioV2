@@ -7,11 +7,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { Mail, Linkedin, Github, MessageCircle, type LucideIcon } from 'lucide-react';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
 
-// Lazy load Chatbot
-const Chatbot = dynamic(
-  () => import('@/components/Chatbot').then(mod => ({ default: mod.Chatbot })),
-  { ssr: false, loading: () => null }
-);
+// GlobalChatbot is now provided at layout level
 
 // =============================================================================
 // ANIMATION CONSTANTS
@@ -408,9 +404,7 @@ function PromptPills({ onSelect }: PromptPillsProps) {
 // MAIN CONTACT PAGE
 // =============================================================================
 export default function ContactPage() {
-  const [isChatOpen, setIsChatOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [selectedPrompt, setSelectedPrompt] = useState<string | undefined>();
 
   useEffect(() => {
     setMounted(true);
@@ -422,15 +416,6 @@ export default function ContactPage() {
     if (hour < 12) return 'Good morning';
     if (hour < 18) return 'Good afternoon';
     return 'Good evening';
-  };
-
-  const handleChatOpen = () => {
-    setIsChatOpen(true);
-  };
-
-  const handlePromptSelect = (prompt: string) => {
-    setSelectedPrompt(prompt);
-    setIsChatOpen(true);
   };
 
   if (!mounted) {
@@ -555,7 +540,7 @@ export default function ContactPage() {
                 key={method.id}
                 method={method}
                 index={index}
-                onChatClick={handleChatOpen}
+                onChatClick={() => {}}
               />
             ))}
           </motion.div>
@@ -580,7 +565,7 @@ export default function ContactPage() {
             >
               Quick Start
             </motion.p>
-            <PromptPills onSelect={handlePromptSelect} />
+            <PromptPills onSelect={() => {}} />
           </motion.section>
 
           {/* Footer */}
@@ -606,15 +591,7 @@ export default function ContactPage() {
         </motion.div>
       </main>
 
-      {/* Chatbot Modal */}
-      <Chatbot
-        isOpen={isChatOpen}
-        onClose={() => {
-          setIsChatOpen(false);
-          setSelectedPrompt(undefined);
-        }}
-        intentContext="collaboration"
-      />
+      {/* GlobalChatbot is provided at layout level */}
     </>
   );
 }

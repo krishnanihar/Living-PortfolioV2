@@ -6,8 +6,6 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
 import { PortfolioNavigation } from '@/components/ui/PortfolioNavigation';
-import { FloatingChatButton } from '@/components/FloatingChatButton';
-import { Chatbot } from '@/components/Chatbot';
 import ConceptHero from './ConceptHero';
 import ConceptStatement from './ConceptStatement';
 import ConceptWorkStack from './ConceptWorkStack';
@@ -27,7 +25,6 @@ if (typeof window !== 'undefined') {
 export default function ConceptPage() {
   const { progress, lenis } = useLenisScroll();
   const [fadeOpacity, setFadeOpacity] = useState(0);
-  const [floatingChatOpen, setFloatingChatOpen] = useState(false);
   const isResetting = useRef(false);
   const hasTriggered = useRef(false);
 
@@ -123,17 +120,7 @@ export default function ConceptPage() {
         <ConceptFooter />
       </main>
 
-      {/* Floating Chat Button */}
-      <FloatingChatButton onClick={() => setFloatingChatOpen(true)} />
-
-      {/* Floating Chatbot Modal */}
-      {floatingChatOpen && (
-        <Chatbot
-          isOpen={floatingChatOpen}
-          onClose={() => setFloatingChatOpen(false)}
-          intentContext="collaboration"
-        />
-      )}
+      {/* GlobalChatbot is now provided at layout level */}
 
       {/* Fade Transition Overlay - for seamless infinite scroll loop */}
       <div

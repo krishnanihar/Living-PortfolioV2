@@ -197,7 +197,7 @@ export default function LatentSpaceSpeculative() {
       <SectionDivider />
 
       {/* Dream Fragment Generator - AI-Powered */}
-      <section style={baseStyles.section}>
+      <section data-section-id="latent-space-dream-tech" style={baseStyles.section}>
         <div style={{ textAlign: 'center' as const, marginBottom: 'var(--gap-card-lg)' }}>
           <motion.div
             initial="hidden"
@@ -376,6 +376,7 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
   return (
     <section
       ref={sectionRef}
+      data-section-id="latent-space-hero"
       style={{
         ...baseStyles.section,
         minHeight: '100vh',
@@ -625,7 +626,7 @@ const [expandedCard, setExpandedCard] = useState<number | null>(null);
   ];
 
   return (
-    <section style={baseStyles.section}>
+    <section data-section-id="latent-space-ethics" style={baseStyles.section}>
       <div style={{ textAlign: 'center' as const, marginBottom: 'var(--gap-card-lg)' }}>
         <motion.div
           initial="hidden"
@@ -1994,10 +1995,13 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
   ];
 
   return (
-    <section style={{
-      ...baseStyles.section,
-      background: 'linear-gradient(180deg, transparent 0%, rgba(147, 51, 234, 0.01) 50%, transparent 100%)',
-    }}>
+    <section
+      data-section-id="latent-space-prototype"
+      style={{
+        ...baseStyles.section,
+        background: 'linear-gradient(180deg, transparent 0%, rgba(147, 51, 234, 0.01) 50%, transparent 100%)',
+      }}
+    >
       <div style={{ textAlign: 'center' as const, marginBottom: 'var(--gap-card-lg)' }}>
         <motion.div
           initial="hidden"

@@ -273,17 +273,20 @@ export function AboutSection() {
   ];
 
   return (
-    <section style={{
-      minHeight: '100vh',
-      background: 'transparent',
-      color: 'var(--text-primary)',
-      paddingTop: '120px',
-      paddingBottom: '6rem',
-      paddingLeft: '1.5rem',
-      paddingRight: '1.5rem',
-      position: 'relative',
-      overflow: 'hidden',
-    }}>
+    <section
+      data-section-id="about-hero"
+      style={{
+        minHeight: '100vh',
+        background: 'transparent',
+        color: 'var(--text-primary)',
+        paddingTop: '120px',
+        paddingBottom: '6rem',
+        paddingLeft: '1.5rem',
+        paddingRight: '1.5rem',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
       <style jsx>{`
 
         @keyframes fadeInUp {
@@ -490,10 +493,13 @@ export function AboutSection() {
             </div>
 
             {/* Interactive Journey Timeline */}
-            <div style={{
-              paddingTop: '2rem',
-              borderTop: '1px solid var(--border-primary)',
-            }}>
+            <div
+              data-section-id="about-journey"
+              style={{
+                paddingTop: '2rem',
+                borderTop: '1px solid var(--border-primary)',
+              }}
+            >
               <h3 style={{
                 fontSize: '0.875rem',
                 fontWeight: '500',
