@@ -1,15 +1,8 @@
 'use client';
 
-import { useRef, useState, useEffect, useLayoutEffect } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useRef, useState, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
-
-// Register plugins
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 interface WorkConceptHeroProps {
   scrollProgress?: number;
@@ -25,7 +18,7 @@ interface WorkConceptHeroProps {
 export function WorkConceptHero({ scrollProgress = 0 }: WorkConceptHeroProps) {
   const containerRef = useRef<HTMLElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
-  const { scrollTo } = useLenisScroll();
+  const { scrollTo, scrollY } = useLenisScroll();
 
   const [mounted, setMounted] = useState(false);
   const [animationStage, setAnimationStage] = useState(0);
@@ -39,38 +32,10 @@ export function WorkConceptHero({ scrollProgress = 0 }: WorkConceptHeroProps) {
     });
   }, []);
 
-  // Fade out animation on scroll
-  useLayoutEffect(() => {
-    const container = containerRef.current;
-    const inner = innerRef.current;
-
-    if (!container || !inner) return;
-
-    // Kill any existing trigger with this ID
-    ScrollTrigger.getById('work-hero-fade')?.kill();
-
-    // Initialize opacity to 1
-    inner.style.opacity = '1';
-
-    // Create the fade animation
-    const trigger = ScrollTrigger.create({
-      id: 'work-hero-fade',
-      trigger: container,
-      start: 'top top',
-      end: 'bottom 60%',
-      scrub: 0.5,
-      invalidateOnRefresh: true,
-      onUpdate: (self) => {
-        // Fade out: 1 → 0 as scroll progresses
-        const opacity = 1 - self.progress;
-        inner.style.opacity = String(opacity);
-      },
-    });
-
-    return () => {
-      trigger.kill();
-    };
-  }, []);
+  // Calculate fade opacity based on scroll position
+  // Fade starts at 0 and completes when scrolled 40% of viewport height
+  const fadeProgress = Math.min(scrollY / (typeof window !== 'undefined' ? window.innerHeight * 0.4 : 400), 1);
+  const heroOpacity = Math.max(1 - fadeProgress, 0);
 
   const handleScrollToNext = () => {
     scrollTo('#journey-overview', { offset: -60, duration: 1.5 });
@@ -103,6 +68,7 @@ export function WorkConceptHero({ scrollProgress = 0 }: WorkConceptHeroProps) {
             position: 'relative',
             overflow: 'hidden',
             willChange: 'opacity',
+            opacity: heroOpacity,
             background: 'var(--glass-03)',
             backdropFilter: mounted ? 'blur(60px) saturate(180%)' : 'none',
             WebkitBackdropFilter: mounted ? 'blur(60px) saturate(180%)' : 'none',
