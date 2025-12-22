@@ -218,8 +218,8 @@ export default function ConceptWorkStack() {
       const vh = window.innerHeight;
       const scrollInSection = window.scrollY - container.offsetTop;
 
-      // Track section visibility for dot indicators
-      const isInSection = scrollInSection >= -vh * 0.1 && scrollInSection < cardCount * vh;
+      // Track section visibility for dot indicators (hide after 90% through last card)
+      const isInSection = scrollInSection >= -vh * 0.1 && scrollInSection < (cardCount - 0.1) * vh;
       setShowIndicators(isInSection);
 
       if (scrollInSection >= 0 && scrollInSection < cardCount * vh) {
