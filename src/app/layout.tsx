@@ -6,6 +6,7 @@ import { SmoothScrollProvider } from '@/components/effects/SmoothScrollProvider'
 import { FocusManager } from '@/components/effects/FocusManager';
 import { PersonalizationProvider } from '@/hooks/usePersonalization';
 import { BehaviorTracker } from '@/components/effects/BehaviorTracker';
+import { ChatProvider } from '@/contexts/ChatContext';
 import dynamic from 'next/dynamic';
 
 // Lazy load MicroInteractionProvider for better initial load
@@ -148,11 +149,14 @@ export default function RootLayout({
               {/* Enhanced focus management */}
               <FocusManager />
 
-              {/* Main content */}
-              {children}
+              {/* Chat context for mobile integration */}
+              <ChatProvider>
+                {/* Main content */}
+                {children}
 
-              {/* Global context-aware chatbot */}
-              <GlobalChatbot />
+                {/* Global context-aware chatbot */}
+                <GlobalChatbot />
+              </ChatProvider>
             </PersonalizationProvider>
           </SmoothScrollProvider>
         </ThemeProvider>

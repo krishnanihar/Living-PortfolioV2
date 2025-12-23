@@ -51,6 +51,7 @@ interface ChatbotProps {
   onTourComplete?: () => void;
   chatContext?: ChatContext;
   contextualGreeting?: string;
+  isMobileFullScreen?: boolean;
 }
 
 // Tour steps for guided walkthrough
@@ -275,7 +276,7 @@ const QuickActions = ({ onAction }: { onAction: (action: string) => void }) => (
   </div>
 );
 
-export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMode = false, onTourComplete, chatContext, contextualGreeting }: ChatbotProps) {
+export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMode = false, onTourComplete, chatContext, contextualGreeting, isMobileFullScreen = false }: ChatbotProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -290,6 +291,14 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
   const inputRef = useRef<HTMLInputElement>(null);
   const tourActionsRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
+
+  // Mobile swipe-to-close state
+  const [swipeDragY, setSwipeDragY] = useState(0);
+  const swipeStartY = useRef<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Mobile keyboard handling
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   // Get personalization and onboarding state
   const { state } = usePersonalization();
@@ -415,12 +424,59 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  // Focus input when chat opens
+  // Focus input when chat opens (not on mobile to prevent keyboard auto-open)
   useEffect(() => {
-    if (isOpen && inputRef.current) {
+    if (isOpen && inputRef.current && !isMobileFullScreen) {
       inputRef.current.focus();
     }
-  }, [isOpen]);
+  }, [isOpen, isMobileFullScreen]);
+
+  // Mobile keyboard handling using Visual Viewport API
+  useEffect(() => {
+    if (!isMobileFullScreen || typeof window === 'undefined') return;
+
+    const handleResize = () => {
+      if (window.visualViewport) {
+        const viewportHeight = window.visualViewport.height;
+        const windowHeight = window.innerHeight;
+        const keyboard = windowHeight - viewportHeight;
+        setKeyboardHeight(keyboard > 0 ? keyboard : 0);
+      }
+    };
+
+    window.visualViewport?.addEventListener('resize', handleResize);
+    window.visualViewport?.addEventListener('scroll', handleResize);
+
+    return () => {
+      window.visualViewport?.removeEventListener('resize', handleResize);
+      window.visualViewport?.removeEventListener('scroll', handleResize);
+    };
+  }, [isMobileFullScreen]);
+
+  // Mobile swipe-to-close handlers
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (!isMobileFullScreen) return;
+    swipeStartY.current = e.touches[0].clientY;
+  }, [isMobileFullScreen]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!isMobileFullScreen || swipeStartY.current === null) return;
+    const deltaY = e.touches[0].clientY - swipeStartY.current;
+    // Only track downward swipe
+    if (deltaY > 0) {
+      setSwipeDragY(deltaY);
+    }
+  }, [isMobileFullScreen]);
+
+  const handleTouchEnd = useCallback(() => {
+    if (!isMobileFullScreen) return;
+    // Close if dragged more than 100px
+    if (swipeDragY > 100) {
+      onClose();
+    }
+    setSwipeDragY(0);
+    swipeStartY.current = null;
+  }, [isMobileFullScreen, swipeDragY, onClose]);
 
   // Send initial message when chat opens
   useEffect(() => {
@@ -660,43 +716,68 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
 
   if (!isOpen) return null;
 
+  // Calculate mobile container bottom position
+  const mobileBottom = keyboardHeight > 0
+    ? `${keyboardHeight}px`
+    : 'calc(64px + env(safe-area-inset-bottom))';
+
   return (
     <>
-      {/* Backdrop */}
-      <div
-        onClick={onClose}
-        style={{
-          position: 'fixed',
-          inset: 0,
-          background: 'var(--overlay-30)',
-          backdropFilter: 'blur(4px)',
-          zIndex: 9998,
-          opacity: 0,
-          animation: 'fadeIn 0.3s ease forwards',
-        }}
-      />
+      {/* Backdrop - only on desktop */}
+      {!isMobileFullScreen && (
+        <div
+          onClick={onClose}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'var(--overlay-30)',
+            backdropFilter: 'blur(4px)',
+            zIndex: 9998,
+            opacity: 0,
+            animation: 'fadeIn 0.3s ease forwards',
+          }}
+        />
+      )}
 
       {/* Chatbot Container */}
-      <div style={{
-        position: 'fixed',
-        bottom: 'clamp(1rem, 3vw, 2rem)',
-        right: 'clamp(1rem, 3vw, 2rem)',
-        width: 'clamp(320px, 90vw, 420px)',
-        height: 'clamp(400px, 80vh, 650px)',
-        zIndex: 9999,
-        opacity: 0,
-        transform: 'translateY(20px) scale(0.95)',
-        animation: 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-      }}>
+      <div
+        ref={containerRef}
+        style={isMobileFullScreen ? {
+          // Mobile full-screen mode
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: mobileBottom,
+          width: '100%',
+          zIndex: 9998,
+          opacity: swipeDragY > 0 ? 1 - (swipeDragY / 300) : 1,
+          transform: swipeDragY > 0 ? `translateY(${swipeDragY}px)` : 'translateY(0)',
+          transition: swipeDragY > 0 ? 'none' : 'transform 0.3s ease, opacity 0.3s ease',
+          animation: 'mobileSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        } : {
+          // Desktop overlay mode
+          position: 'fixed',
+          bottom: 'clamp(1rem, 3vw, 2rem)',
+          right: 'clamp(1rem, 3vw, 2rem)',
+          width: 'clamp(320px, 90vw, 420px)',
+          height: 'clamp(400px, 80vh, 650px)',
+          zIndex: 9999,
+          opacity: 0,
+          transform: 'translateY(20px) scale(0.95)',
+          animation: 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        }}
+      >
         {/* Glass Card */}
         <div style={{
           height: '100%',
-          borderRadius: '24px',
+          borderRadius: isMobileFullScreen ? 0 : '24px',
           background: 'linear-gradient(135deg, var(--solid-40) 0%, var(--solid-30) 100%)',
           backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
           WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
-          border: '1px solid var(--glass-10)',
-          boxShadow: `
+          border: isMobileFullScreen ? 'none' : '1px solid var(--glass-10)',
+          borderBottom: isMobileFullScreen ? '1px solid var(--glass-10)' : undefined,
+          boxShadow: isMobileFullScreen ? 'none' : `
             inset 0 1px 0 var(--glass-05),
             inset 0 -1px 0 var(--overlay-20),
             0 16px 32px var(--overlay-40),
@@ -706,14 +787,42 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
           flexDirection: 'column',
           overflow: 'hidden',
         }}>
+          {/* Mobile Drag Handle */}
+          {isMobileFullScreen && (
+            <div
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                paddingTop: 'calc(env(safe-area-inset-top, 0px) + 8px)',
+                paddingBottom: '4px',
+                cursor: 'grab',
+              }}
+            >
+              <div style={{
+                width: '36px',
+                height: '4px',
+                background: 'var(--glass-30)',
+                borderRadius: '2px',
+              }} />
+            </div>
+          )}
+
           {/* Header */}
-          <div style={{
-            padding: '1rem 1.5rem',
-            borderBottom: '1px solid var(--glass-08)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
+          <div
+            onTouchStart={isMobileFullScreen ? handleTouchStart : undefined}
+            onTouchMove={isMobileFullScreen ? handleTouchMove : undefined}
+            onTouchEnd={isMobileFullScreen ? handleTouchEnd : undefined}
+            style={{
+              padding: isMobileFullScreen ? '0.75rem 1rem' : '1rem 1.5rem',
+              borderBottom: '1px solid var(--glass-08)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <div style={{
                 width: '10px',
@@ -749,14 +858,14 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                 </p>
               </div>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: isMobileFullScreen ? '0.75rem' : '0.5rem' }}>
               {messages.length > 1 && (
                 <button
                   onClick={handleClearHistory}
                   title="Clear conversation"
                   style={{
-                    width: '28px',
-                    height: '28px',
+                    width: isMobileFullScreen ? '36px' : '28px',
+                    height: isMobileFullScreen ? '36px' : '28px',
                     borderRadius: '50%',
                     background: 'var(--glass-05)',
                     border: '1px solid var(--glass-10)',
@@ -776,14 +885,14 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                     e.currentTarget.style.color = 'var(--text-muted)';
                   }}
                 >
-                  <RotateCcw size={12} />
+                  <RotateCcw size={isMobileFullScreen ? 16 : 12} />
                 </button>
               )}
               <button
                 onClick={onClose}
                 style={{
-                  width: '28px',
-                  height: '28px',
+                  width: isMobileFullScreen ? '36px' : '28px',
+                  height: isMobileFullScreen ? '36px' : '28px',
                   borderRadius: '50%',
                   background: 'var(--glass-05)',
                   border: '1px solid var(--glass-10)',
@@ -805,7 +914,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                   e.currentTarget.style.transform = 'rotate(0)';
                 }}
               >
-                <X size={14} />
+                <X size={isMobileFullScreen ? 18 : 14} />
               </button>
             </div>
           </div>

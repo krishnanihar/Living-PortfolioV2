@@ -13,6 +13,7 @@ import { FloatingChatButton } from './FloatingChatButton';
 import { Chatbot } from './Chatbot';
 import { usePersonalization } from '@/hooks/usePersonalization';
 import { getPersonalizedGreeting } from '@/lib/greetings';
+import { useChatContext } from '@/contexts/ChatContext';
 
 // ============================================
 // Types
@@ -65,9 +66,9 @@ function extractProject(pathname: string): string | null {
 export function GlobalChatbot() {
   const pathname = usePathname();
   const { state } = usePersonalization();
+  const { isOpen, isMobile, openChat, closeChat } = useChatContext();
 
-  // Chat state
-  const [isOpen, setIsOpen] = useState(false);
+  // Section tracking state
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
   // Derived values
@@ -133,20 +134,19 @@ export function GlobalChatbot() {
     [pathname, currentProject, state.schema]
   );
 
-  // Handlers
-  const handleOpen = useCallback(() => setIsOpen(true), []);
-  const handleClose = useCallback(() => setIsOpen(false), []);
-
   return (
     <>
-      <FloatingChatButton onClick={handleOpen} />
+      {/* Desktop only: Floating chat button */}
+      {!isMobile && <FloatingChatButton onClick={openChat} />}
 
+      {/* Chatbot with mobile full-screen mode */}
       <Chatbot
         isOpen={isOpen}
-        onClose={handleClose}
+        onClose={closeChat}
         intentContext={storedIntent || undefined}
         chatContext={buildChatContext()}
         contextualGreeting={contextualGreeting}
+        isMobileFullScreen={isMobile}
       />
     </>
   );

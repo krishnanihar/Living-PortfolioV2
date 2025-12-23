@@ -170,6 +170,7 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
 
   return (
     <div
+      className="floating-chat-container"
       style={{
         position: 'fixed',
         bottom: 'clamp(1rem, 3vw, 2rem)',
@@ -477,6 +478,13 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
         /* Hide tooltip on touch devices */
         @media (hover: none) {
           .floating-chat-tooltip {
+            display: none !important;
+          }
+        }
+
+        /* Hide floating chat button on mobile (handled by MobileBottomNav) */
+        @media (max-width: 767px) {
+          .floating-chat-container {
             display: none !important;
           }
         }
