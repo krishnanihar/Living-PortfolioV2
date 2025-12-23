@@ -46,6 +46,43 @@ export function ChatProvider({ children }: ChatProviderProps) {
     setIsOpen(prev => !prev);
   }, []);
 
+  // Body scroll lock for mobile chat
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    if (isOpen && isMobile) {
+      // Save current scroll position and lock body
+      const scrollY = window.scrollY;
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.setAttribute('data-scroll-locked', 'true');
+    } else if (document.body.getAttribute('data-scroll-locked') === 'true') {
+      // Restore scroll position
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      document.body.removeAttribute('data-scroll-locked');
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    }
+
+    return () => {
+      // Cleanup on unmount
+      if (document.body.getAttribute('data-scroll-locked') === 'true') {
+        const scrollY = document.body.style.top;
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
+        document.body.style.top = '';
+        document.body.removeAttribute('data-scroll-locked');
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
+    };
+  }, [isOpen, isMobile]);
+
   return (
     <ChatContext.Provider value={{ isOpen, isMobile, openChat, closeChat, toggleChat }}>
       {children}

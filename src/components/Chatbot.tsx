@@ -147,50 +147,38 @@ const playSound = (type: 'send' | 'receive') => {
   }
 };
 
-// Typing indicator component with animated dots
+// Typing indicator component with animated dots - Premium
 const TypingIndicator = () => (
   <div style={{
     display: 'flex',
     justifyContent: 'flex-start',
     opacity: 0,
-    animation: 'messageSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+    animation: 'messageSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
   }}>
     <div style={{
       padding: '0.875rem 1.125rem',
       borderRadius: '18px 18px 18px 4px',
-      background: 'var(--glass-05)',
-      border: '1px solid var(--glass-08)',
-      backdropFilter: 'blur(20px) brightness(0.9)',
-      WebkitBackdropFilter: 'blur(20px) brightness(0.9)',
+      background: 'var(--glass-06)',
+      border: '1px solid var(--glass-10)',
+      backdropFilter: 'blur(20px) brightness(0.95)',
+      WebkitBackdropFilter: 'blur(20px) brightness(0.95)',
       display: 'flex',
       alignItems: 'center',
-      gap: '4px',
+      gap: '6px',
     }}>
       {[0, 1, 2].map((i) => (
         <span
           key={i}
           style={{
-            width: '8px',
-            height: '8px',
+            width: '7px',
+            height: '7px',
             borderRadius: '50%',
-            background: 'rgba(218, 14, 41, 0.7)',
-            animation: `typingBounce 1.4s ease-in-out ${i * 0.2}s infinite`,
+            background: 'rgba(218, 14, 41, 0.8)',
+            animation: `typingPulse 1.4s ease-in-out ${i * 0.15}s infinite`,
           }}
         />
       ))}
     </div>
-    <style jsx>{`
-      @keyframes typingBounce {
-        0%, 60%, 100% {
-          transform: translateY(0);
-          opacity: 0.4;
-        }
-        30% {
-          transform: translateY(-8px);
-          opacity: 1;
-        }
-      }
-    `}</style>
   </div>
 );
 
@@ -299,6 +287,9 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
 
   // Mobile keyboard handling
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+  // Exit animation state
+  const [isClosing, setIsClosing] = useState(false);
 
   // Get personalization and onboarding state
   const { state } = usePersonalization();
@@ -453,6 +444,20 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
     };
   }, [isMobileFullScreen]);
 
+  // Handle close with exit animation
+  const handleClose = useCallback(() => {
+    if (isMobileFullScreen) {
+      setIsClosing(true);
+      // Wait for exit animation to complete
+      setTimeout(() => {
+        setIsClosing(false);
+        onClose();
+      }, 300); // Match mobileChatExit duration
+    } else {
+      onClose();
+    }
+  }, [isMobileFullScreen, onClose]);
+
   // Mobile swipe-to-close handlers
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (!isMobileFullScreen) return;
@@ -472,11 +477,11 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
     if (!isMobileFullScreen) return;
     // Close if dragged more than 100px
     if (swipeDragY > 100) {
-      onClose();
+      handleClose();
     }
     setSwipeDragY(0);
     swipeStartY.current = null;
-  }, [isMobileFullScreen, swipeDragY, onClose]);
+  }, [isMobileFullScreen, swipeDragY, handleClose]);
 
   // Send initial message when chat opens
   useEffect(() => {
@@ -694,7 +699,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
       e.preventDefault();
       handleSendMessage();
     } else if (e.key === 'Escape') {
-      onClose();
+      handleClose();
     }
   };
 
@@ -723,10 +728,24 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
 
   return (
     <>
-      {/* Backdrop - only on desktop */}
+      {/* Mobile opaque backdrop - solid OLED black */}
+      {isMobileFullScreen && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'var(--bg-primary)',
+            zIndex: 9997,
+            opacity: isClosing ? 0 : 1,
+            transition: 'opacity 0.3s ease',
+          }}
+        />
+      )}
+
+      {/* Desktop backdrop with blur */}
       {!isMobileFullScreen && (
         <div
-          onClick={onClose}
+          onClick={handleClose}
           style={{
             position: 'fixed',
             inset: 0,
@@ -751,10 +770,16 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
           bottom: mobileBottom,
           width: '100%',
           zIndex: 9998,
-          opacity: swipeDragY > 0 ? 1 - (swipeDragY / 300) : 1,
-          transform: swipeDragY > 0 ? `translateY(${swipeDragY}px)` : 'translateY(0)',
-          transition: swipeDragY > 0 ? 'none' : 'transform 0.3s ease, opacity 0.3s ease',
-          animation: 'mobileSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+          background: 'var(--bg-primary)',
+          // Swipe feedback with subtle scale
+          opacity: swipeDragY > 0 ? Math.max(0.4, 1 - (swipeDragY / 250)) : 1,
+          transform: swipeDragY > 0
+            ? `translateY(${swipeDragY}px) scale(${Math.max(0.96, 1 - swipeDragY / 1500)})`
+            : 'translateY(0) scale(1)',
+          transition: swipeDragY > 0 ? 'none' : 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          animation: isClosing
+            ? 'mobileChatExit 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+            : 'mobileChatEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
         } : {
           // Desktop overlay mode
           position: 'fixed',
@@ -787,7 +812,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
           flexDirection: 'column',
           overflow: 'hidden',
         }}>
-          {/* Mobile Drag Handle */}
+          {/* Mobile Drag Handle - Premium */}
           {isMobileFullScreen && (
             <div
               onTouchStart={handleTouchStart}
@@ -796,16 +821,18 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
               style={{
                 display: 'flex',
                 justifyContent: 'center',
-                paddingTop: 'calc(env(safe-area-inset-top, 0px) + 8px)',
-                paddingBottom: '4px',
+                paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)',
+                paddingBottom: '6px',
                 cursor: 'grab',
               }}
             >
               <div style={{
-                width: '36px',
+                width: swipeDragY > 0 ? '48px' : '36px',
                 height: '4px',
-                background: 'var(--glass-30)',
+                background: swipeDragY > 0 ? 'var(--glass-50)' : 'var(--glass-30)',
                 borderRadius: '2px',
+                transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                animation: swipeDragY > 0 ? 'none' : 'handleGlow 3s ease-in-out infinite',
               }} />
             </div>
           )}
@@ -889,7 +916,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                 </button>
               )}
               <button
-                onClick={onClose}
+                onClick={handleClose}
                 style={{
                   width: isMobileFullScreen ? '36px' : '28px',
                   height: isMobileFullScreen ? '36px' : '28px',
@@ -900,18 +927,26 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                   alignItems: 'center',
                   justifyContent: 'center',
                   cursor: 'pointer',
-                  transition: 'all 0.3s ease',
+                  transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
                   color: 'var(--text-muted)',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = 'rgba(218, 14, 41, 0.2)';
                   e.currentTarget.style.color = 'rgba(218, 14, 41, 0.9)';
-                  e.currentTarget.style.transform = 'rotate(90deg)';
+                  e.currentTarget.style.transform = 'scale(1.1) rotate(90deg)';
+                  e.currentTarget.style.boxShadow = '0 0 12px rgba(218, 14, 41, 0.3)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = 'var(--glass-05)';
                   e.currentTarget.style.color = 'var(--text-muted)';
-                  e.currentTarget.style.transform = 'rotate(0)';
+                  e.currentTarget.style.transform = 'scale(1) rotate(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+                onMouseDown={(e) => {
+                  e.currentTarget.style.transform = 'scale(0.95) rotate(90deg)';
+                }}
+                onMouseUp={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.1) rotate(90deg)';
                 }}
               >
                 <X size={isMobileFullScreen ? 18 : 14} />
@@ -1081,7 +1116,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                       display: 'flex',
                       justifyContent: message.isUser ? 'flex-end' : 'flex-start',
                       opacity: 0,
-                      animation: `messageSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.05}s forwards`,
+                      animation: `messageSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) ${Math.min(index * 0.08, 0.3)}s forwards`,
                     }}
                   >
                     <div style={{
@@ -1298,15 +1333,25 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                   backdropFilter: 'blur(20px) saturate(120%) brightness(0.9)',
                   WebkitBackdropFilter: 'blur(20px) saturate(120%) brightness(0.9)',
                   border: '1px solid var(--glass-08)',
-                  borderRadius: '20px',
-                  padding: '0.5rem 0.75rem',
-                  transition: 'all 0.3s ease',
+                  borderRadius: isMobileFullScreen ? '24px' : '20px',
+                  padding: isMobileFullScreen ? '0.625rem 1rem' : '0.5rem 0.75rem',
+                  transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.border = '1px solid rgba(218, 14, 41, 0.2)';
+                  e.currentTarget.style.border = '1px solid rgba(218, 14, 41, 0.25)';
+                  e.currentTarget.style.boxShadow = '0 0 0 2px rgba(218, 14, 41, 0.08)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.border = '1px solid var(--glass-08)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.border = '1px solid rgba(218, 14, 41, 0.3)';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(218, 14, 41, 0.1)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.border = '1px solid var(--glass-08)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
                 >
                   <input
@@ -1323,21 +1368,21 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                       border: 'none',
                       outline: 'none',
                       color: 'var(--text-primary)',
-                      fontSize: '0.8125rem',
+                      fontSize: isMobileFullScreen ? '1rem' : '0.8125rem',
                       fontWeight: '300',
                       letterSpacing: '0.01em',
                     }}
                   />
 
-                  {/* Voice Input Button */}
+                  {/* Voice Input Button - Premium */}
                   {speechSupported && (
                     <button
                       onClick={isListening ? stopListening : startListening}
                       disabled={isLoading}
                       title={isListening ? 'Stop listening' : 'Voice input'}
                       style={{
-                        width: '28px',
-                        height: '28px',
+                        width: isMobileFullScreen ? '36px' : '28px',
+                        height: isMobileFullScreen ? '36px' : '28px',
                         borderRadius: '50%',
                         background: isListening ? 'rgba(218, 14, 41, 0.3)' : 'var(--glass-05)',
                         border: isListening ? '1px solid rgba(218, 14, 41, 0.5)' : '1px solid var(--glass-10)',
@@ -1345,22 +1390,22 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                         alignItems: 'center',
                         justifyContent: 'center',
                         cursor: 'pointer',
-                        transition: 'all 0.3s ease',
+                        transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
                         color: isListening ? 'rgba(218, 14, 41, 0.9)' : 'var(--text-muted)',
-                        animation: isListening ? 'pulse 1s ease-in-out infinite' : 'none',
+                        animation: isListening ? 'glowPulse 1.5s ease-in-out infinite' : 'none',
                       }}
                     >
-                      {isListening ? <MicOff size={14} /> : <Mic size={14} />}
+                      {isListening ? <MicOff size={isMobileFullScreen ? 18 : 14} /> : <Mic size={isMobileFullScreen ? 18 : 14} />}
                     </button>
                   )}
 
-                  {/* Send Button */}
+                  {/* Send Button - Premium */}
                   <button
                     onClick={() => handleSendMessage()}
                     disabled={!inputValue.trim() || isLoading}
                     style={{
-                      width: '28px',
-                      height: '28px',
+                      width: isMobileFullScreen ? '36px' : '28px',
+                      height: isMobileFullScreen ? '36px' : '28px',
                       borderRadius: '50%',
                       background: (inputValue.trim() && !isLoading) ? 'rgba(218, 14, 41, 0.3)' : 'var(--glass-05)',
                       border: (inputValue.trim() && !isLoading) ? '1px solid rgba(218, 14, 41, 0.5)' : '1px solid var(--glass-10)',
@@ -1368,7 +1413,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                       alignItems: 'center',
                       justifyContent: 'center',
                       cursor: (inputValue.trim() && !isLoading) ? 'pointer' : 'not-allowed',
-                      transition: 'all 0.3s ease',
+                      transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
                       opacity: (inputValue.trim() && !isLoading) ? 1 : 0.5,
                       color: (inputValue.trim() && !isLoading) ? 'var(--text-primary)' : 'var(--text-muted)',
                     }}
@@ -1376,16 +1421,31 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                       if (inputValue.trim() && !isLoading) {
                         e.currentTarget.style.background = 'rgba(218, 14, 41, 0.4)';
                         e.currentTarget.style.transform = 'scale(1.1)';
+                        e.currentTarget.style.boxShadow = '0 0 16px rgba(218, 14, 41, 0.4)';
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (inputValue.trim() && !isLoading) {
                         e.currentTarget.style.background = 'rgba(218, 14, 41, 0.3)';
                         e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }
+                    }}
+                    onMouseDown={(e) => {
+                      if (inputValue.trim() && !isLoading) {
+                        e.currentTarget.style.transform = 'scale(0.9)';
+                      }
+                    }}
+                    onMouseUp={(e) => {
+                      if (inputValue.trim() && !isLoading) {
+                        e.currentTarget.style.transform = 'scale(1.15)';
+                        setTimeout(() => {
+                          e.currentTarget.style.transform = 'scale(1.1)';
+                        }, 100);
                       }
                     }}
                   >
-                    <Send size={12} />
+                    <Send size={isMobileFullScreen ? 16 : 12} />
                   </button>
                 </div>
                 <div style={{
@@ -1403,19 +1463,8 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
         </div>
       </div>
 
-      {/* Global styles for animations */}
+      {/* Global styles */}
       <style jsx global>{`
-        @keyframes typingBounce {
-          0%, 60%, 100% {
-            transform: translateY(0);
-            opacity: 0.4;
-          }
-          30% {
-            transform: translateY(-8px);
-            opacity: 1;
-          }
-        }
-
         .markdown-content p:last-child {
           margin-bottom: 0 !important;
         }
