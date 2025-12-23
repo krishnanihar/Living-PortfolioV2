@@ -60,6 +60,7 @@ export default function ConceptWorkStack() {
   // Track current card index - both ref (for scroll sync) and state (for UI)
   const [activeCardIndex, setActiveCardIndex] = useState(0);
   const [showIndicators, setShowIndicators] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const currentCardRef = useRef(0);
   const lastScrollTriggerRef = useRef(0);
   const touchStartRef = useRef(0);
@@ -71,6 +72,14 @@ export default function ConceptWorkStack() {
   const SWIPE_THRESHOLD = 50; // Minimum swipe distance
   const ENTRY_SNAP_THRESHOLD = 0.1; // Snap when 10% visible (magnetic pull)
   const cardCount = featuredProjects.length;
+
+  // Detect mobile for responsive indicator sizing
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Callback ref to store card refs
   const setCardRef = useCallback((el: HTMLDivElement | null, index: number) => {
@@ -371,16 +380,16 @@ export default function ConceptWorkStack() {
       <div
         style={{
           position: 'fixed',
-          left: '2rem',
+          left: isMobile ? '1rem' : '2rem',
           top: '50%',
           transform: 'translateY(-50%)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '0.75rem',
+          gap: isMobile ? '0.5rem' : '0.75rem',
           zIndex: 110,
-          padding: '1rem 0.75rem',
-          borderRadius: '2rem',
+          padding: isMobile ? '0.5rem' : '1rem 0.75rem',
+          borderRadius: isMobile ? '1.5rem' : '2rem',
           background: 'var(--glass-08)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
@@ -396,13 +405,13 @@ export default function ConceptWorkStack() {
           style={{
             background: 'none',
             border: 'none',
-            padding: '0.25rem',
+            padding: isMobile ? '0.125rem' : '0.25rem',
             cursor: activeCardIndex === 0 ? 'default' : 'pointer',
             opacity: activeCardIndex === 0 ? 0.3 : 1,
             transition: 'opacity 0.3s ease',
           }}
         >
-          <ChevronUp size={18} style={{ color: 'var(--text-60)' }} />
+          <ChevronUp size={isMobile ? 14 : 18} style={{ color: 'var(--text-60)' }} />
         </button>
 
         {/* Dot Indicators */}
@@ -412,8 +421,8 @@ export default function ConceptWorkStack() {
             onClick={() => scrollToCard(index)}
             aria-label={`Go to project ${index + 1}`}
             style={{
-              width: '8px',
-              height: index === activeCardIndex ? '24px' : '8px',
+              width: isMobile ? '6px' : '8px',
+              height: index === activeCardIndex ? (isMobile ? '16px' : '24px') : (isMobile ? '6px' : '8px'),
               borderRadius: '4px',
               background: index === activeCardIndex ? 'var(--text-90)' : 'var(--text-25)',
               border: 'none',
@@ -431,13 +440,13 @@ export default function ConceptWorkStack() {
           style={{
             background: 'none',
             border: 'none',
-            padding: '0.25rem',
+            padding: isMobile ? '0.125rem' : '0.25rem',
             cursor: activeCardIndex === cardCount - 1 ? 'default' : 'pointer',
             opacity: activeCardIndex === cardCount - 1 ? 0.3 : 1,
             transition: 'opacity 0.3s ease',
           }}
         >
-          <ChevronDown size={18} style={{ color: 'var(--text-60)' }} />
+          <ChevronDown size={isMobile ? 14 : 18} style={{ color: 'var(--text-60)' }} />
         </button>
       </div>
     </section>
