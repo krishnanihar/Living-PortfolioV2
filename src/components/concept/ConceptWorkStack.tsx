@@ -367,20 +367,10 @@ export default function ConceptWorkStack() {
         />
       ))}
 
-      {/* Scroll Indicators - Vertical Left (CSS variables handle responsiveness) */}
+      {/* Scroll Indicators - Tailwind responsive classes (bulletproof) */}
       <div
+        className="fixed left-2 md:left-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-1 md:gap-3 z-[110] p-1.5 md:p-3 rounded-xl md:rounded-2xl"
         style={{
-          position: 'fixed',
-          left: 'var(--indicator-left)',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: 'var(--indicator-gap)',
-          zIndex: 110,
-          padding: 'var(--indicator-padding)',
-          borderRadius: 'var(--indicator-radius)',
           background: 'var(--glass-08)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
@@ -393,20 +383,14 @@ export default function ConceptWorkStack() {
         <button
           onClick={() => scrollToCard(Math.max(0, activeCardIndex - 1))}
           aria-label="Previous project"
-          className="scroll-indicator-arrow"
+          className="p-0 bg-transparent border-none flex items-center justify-center"
           style={{
-            background: 'none',
-            border: 'none',
-            padding: 0,
             cursor: activeCardIndex === 0 ? 'default' : 'pointer',
             opacity: activeCardIndex === 0 ? 0.3 : 1,
             transition: 'opacity 0.3s ease',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
           }}
         >
-          <ChevronUp size={14} style={{ color: 'var(--text-60)' }} />
+          <ChevronUp className="w-3 h-3 md:w-4 md:h-4 text-white/60" />
         </button>
 
         {/* Dot Indicators */}
@@ -415,16 +399,12 @@ export default function ConceptWorkStack() {
             key={index}
             onClick={() => scrollToCard(index)}
             aria-label={`Go to project ${index + 1}`}
-            style={{
-              width: 'var(--indicator-dot-size)',
-              height: index === activeCardIndex ? 'var(--indicator-dot-active)' : 'var(--indicator-dot-size)',
-              borderRadius: 'var(--indicator-dot-radius)',
-              background: index === activeCardIndex ? 'var(--text-90)' : 'var(--text-25)',
-              border: 'none',
-              padding: 0,
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-            }}
+            className={`w-1 md:w-2 rounded-sm md:rounded border-none p-0 cursor-pointer ${
+              index === activeCardIndex
+                ? 'h-3 md:h-6 bg-white/90'
+                : 'h-1 md:h-2 bg-white/25'
+            }`}
+            style={{ transition: 'all 0.3s ease' }}
           />
         ))}
 
@@ -432,20 +412,14 @@ export default function ConceptWorkStack() {
         <button
           onClick={() => scrollToCard(Math.min(cardCount - 1, activeCardIndex + 1))}
           aria-label="Next project"
-          className="scroll-indicator-arrow"
+          className="p-0 bg-transparent border-none flex items-center justify-center"
           style={{
-            background: 'none',
-            border: 'none',
-            padding: 0,
             cursor: activeCardIndex === cardCount - 1 ? 'default' : 'pointer',
             opacity: activeCardIndex === cardCount - 1 ? 0.3 : 1,
             transition: 'opacity 0.3s ease',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
           }}
         >
-          <ChevronDown size={14} style={{ color: 'var(--text-60)' }} />
+          <ChevronDown className="w-3 h-3 md:w-4 md:h-4 text-white/60" />
         </button>
       </div>
     </section>
