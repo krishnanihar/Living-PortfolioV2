@@ -7,6 +7,7 @@ import { usePersonalization } from '@/hooks/usePersonalization';
 import { useOnboarding } from '@/hooks/useOnboarding';
 import { animate, stagger } from '@/lib/anime-utils';
 import type { SpeechRecognitionEvent } from '@/types/speech-recognition';
+import { CardRenderer, parseCards } from './chatbot/CardRenderer';
 
 // Define recognition type for the ref
 interface SpeechRecognitionInstance {
@@ -281,6 +282,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
   const [isListening, setIsListening] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(false);
   const [dynamicSuggestions, setDynamicSuggestions] = useState<string[]>([]);
+  const [lastRawResponse, setLastRawResponse] = useState<string>('');
   const [isStreaming, setIsStreaming] = useState(false);
   const [currentTourStep, setCurrentTourStep] = useState(0);
   const [inTourMode, setInTourMode] = useState(tourMode);
@@ -495,9 +497,15 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
     }
   }, []);
 
-  // Helper to parse suggestions from response
+  // Helper to parse suggestions and cards from response
   const parseSuggestions = (text: string): { cleanText: string; suggestions: string[] } => {
-    const suggestionsMatch = text.match(/\[SUGGESTIONS\]([\s\S]*?)\[\/SUGGESTIONS\]/);
+    let cleanText = text;
+
+    // First, remove card blocks
+    cleanText = cleanText.replace(/\[CARD:(projects|contact|actions|skills)\][\s\S]*?\[\/CARD\]/g, '').trim();
+
+    // Then parse suggestions
+    const suggestionsMatch = cleanText.match(/\[SUGGESTIONS\]([\s\S]*?)\[\/SUGGESTIONS\]/);
     if (suggestionsMatch) {
       const suggestions = suggestionsMatch[1]
         .split('\n')
@@ -506,10 +514,10 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
         .filter(s => s.length > 0)
         .slice(0, 3);
 
-      const cleanText = text.replace(/\[SUGGESTIONS\][\s\S]*?\[\/SUGGESTIONS\]/, '').trim();
+      cleanText = cleanText.replace(/\[SUGGESTIONS\][\s\S]*?\[\/SUGGESTIONS\]/, '').trim();
       return { cleanText, suggestions };
     }
-    return { cleanText: text, suggestions: [] };
+    return { cleanText, suggestions: [] };
   };
 
   const handleSendMessage = async (messageText?: string) => {
@@ -519,8 +527,9 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
     // Play send sound
     playSound('send');
 
-    // Clear previous suggestions
+    // Clear previous suggestions and cards
     setDynamicSuggestions([]);
+    setLastRawResponse('');
 
     const userMessage: ChatMessage = {
       id: `user-${Date.now()}`,
@@ -602,6 +611,9 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
       if (suggestions.length > 0) {
         setDynamicSuggestions(suggestions);
       }
+
+      // Save raw response for card rendering
+      setLastRawResponse(fullText);
 
       // Play receive sound after streaming completes
       playSound('receive');
@@ -1154,6 +1166,11 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                       ))}
                     </div>
                   </div>
+                )}
+
+                {/* Rich Cards */}
+                {lastRawResponse && !isLoading && (
+                  <CardRenderer content={lastRawResponse} onClose={onClose} />
                 )}
 
                 <div ref={messagesEndRef} />
