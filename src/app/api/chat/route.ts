@@ -6,6 +6,49 @@ export const runtime = 'nodejs';
 export const maxDuration = 30; // Vercel function timeout
 
 // ============================================
+// Rate Limiting & Validation Constants
+// ============================================
+
+const MAX_MESSAGE_LENGTH = 500;
+const RATE_LIMIT = 20;        // messages per window
+const RATE_WINDOW = 60000;    // 1 minute
+
+// In-memory rate limiter (resets on cold start, which is acceptable for this use case)
+const rateLimiter = new Map<string, { count: number; resetTime: number }>();
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimiter.get(ip);
+
+  if (!record || now > record.resetTime) {
+    rateLimiter.set(ip, { count: 1, resetTime: now + RATE_WINDOW });
+    return true;
+  }
+
+  if (record.count >= RATE_LIMIT) {
+    return false;
+  }
+
+  record.count++;
+  return true;
+}
+
+// Detect common prompt injection patterns
+const INJECTION_PATTERNS = [
+  /ignore (all )?(previous|above)/i,
+  /disregard (all )?(previous|above)/i,
+  /new instructions/i,
+  /system prompt/i,
+  /you are now/i,
+  /act as/i,
+  /pretend (to be|you're)/i,
+];
+
+function detectPromptInjection(message: string): boolean {
+  return INJECTION_PATTERNS.some(pattern => pattern.test(message));
+}
+
+// ============================================
 // Project Knowledge Base
 // ============================================
 
@@ -236,14 +279,26 @@ Behavior Guidelines:
 
 Remember: You're representing Nihar's portfolio. Be professional yet personable.
 
-IMPORTANT: At the end of EVERY response, you MUST include exactly 3 follow-up suggestions that the user might want to ask next. Format them exactly like this:
-[SUGGESTIONS]
-- First follow-up question
-- Second follow-up question
-- Third follow-up question
-[/SUGGESTIONS]
+CRITICAL - Accuracy Guidelines:
+- ONLY state facts that are explicitly mentioned in the project details provided above
+- If you don't have specific information about something, say "I don't have specific details about that, but I can tell you about [related topic]"
+- Never invent statistics, dates, or details not provided in the context
+- For questions about Nihar personally (contact info, availability, pricing, etc.), direct them to the contact page
+- If asked about projects not in your knowledge base, acknowledge you don't have that information
+- When uncertain, prefer phrases like:
+  - "Based on the portfolio information I have..."
+  - "I'd recommend checking the [specific page] for more details..."
+  - "I don't have specific information about that..."
 
-These suggestions should be contextually relevant to what you just discussed AND the page/section the user is viewing.
+Follow-up Suggestions:
+At the end of your response, you may include 1-3 relevant follow-up suggestions ONLY if they are genuinely helpful and contextually relevant. If the conversation is wrapping up, no good suggestions exist, or the user's question was fully answered, you may omit them.
+
+When including suggestions, format them like this:
+[SUGGESTIONS]
+- Relevant question 1
+- Relevant question 2 (optional)
+- Relevant question 3 (optional)
+[/SUGGESTIONS]
 `;
 
 // ============================================
@@ -276,14 +331,45 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Input validation: length limit
+    if (message.length > MAX_MESSAGE_LENGTH) {
+      return new Response(
+        "Your message is a bit long! Could you try asking in a shorter way? I work best with concise questions.",
+        { status: 200, headers: { 'Content-Type': 'text/plain; charset=utf-8' } }
+      );
+    }
+
+    // Sanitize message
+    const sanitizedMessage = message.trim().replace(/\s+/g, ' ');
+
+    // Rate limiting
+    const clientIp = request.headers.get('x-forwarded-for')?.split(',')[0] ||
+                     request.headers.get('x-real-ip') ||
+                     'unknown';
+
+    if (!checkRateLimit(clientIp)) {
+      return new Response(
+        "You're asking a lot of questions! Give me a moment to catch up. Try again in a minute.",
+        { status: 200, headers: { 'Content-Type': 'text/plain; charset=utf-8' } }
+      );
+    }
+
+    // Prompt injection detection
+    if (detectPromptInjection(sanitizedMessage)) {
+      return new Response(
+        "I'm here to help you learn about Nihar's portfolio! What would you like to know about his projects or experience?",
+        { status: 200, headers: { 'Content-Type': 'text/plain; charset=utf-8' } }
+      );
+    }
+
     // Initialize Gemini
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
       generationConfig: {
-        temperature: 1.0,
-        topK: 40,
-        topP: 0.95,
+        temperature: 0.4,   // Lower for more factual, deterministic responses
+        topK: 20,           // Narrower token selection
+        topP: 0.85,         // Less randomness
         maxOutputTokens: 1024,
       },
     });
@@ -291,7 +377,7 @@ export async function POST(request: NextRequest) {
     // Build context-aware prompt
     const contextPrefix = buildContextPrefix(context);
     const recommendations = generateRecommendations(context);
-    const fullPrompt = `${PORTFOLIO_CONTEXT}${contextPrefix}${recommendations}User question: ${message}\n\nYour response:`;
+    const fullPrompt = `${PORTFOLIO_CONTEXT}${contextPrefix}${recommendations}User question: ${sanitizedMessage}\n\nYour response:`;
 
     // Track generation time
     const startTime = Date.now();
