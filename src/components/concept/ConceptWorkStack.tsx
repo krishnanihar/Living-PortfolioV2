@@ -380,16 +380,16 @@ export default function ConceptWorkStack() {
       <div
         style={{
           position: 'fixed',
-          left: isMobile ? '1rem' : '2rem',
+          left: isMobile ? '0.5rem' : '2rem',
           top: '50%',
           transform: 'translateY(-50%)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: isMobile ? '0.5rem' : '0.75rem',
+          gap: isMobile ? '0.25rem' : '0.75rem',
           zIndex: 110,
-          padding: isMobile ? '0.5rem' : '1rem 0.75rem',
-          borderRadius: isMobile ? '1.5rem' : '2rem',
+          padding: isMobile ? '0.375rem' : '1rem 0.75rem',
+          borderRadius: isMobile ? '1rem' : '2rem',
           background: 'var(--glass-08)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
@@ -405,13 +405,13 @@ export default function ConceptWorkStack() {
           style={{
             background: 'none',
             border: 'none',
-            padding: isMobile ? '0.125rem' : '0.25rem',
+            padding: isMobile ? '0' : '0.25rem',
             cursor: activeCardIndex === 0 ? 'default' : 'pointer',
             opacity: activeCardIndex === 0 ? 0.3 : 1,
             transition: 'opacity 0.3s ease',
           }}
         >
-          <ChevronUp size={isMobile ? 14 : 18} style={{ color: 'var(--text-60)' }} />
+          <ChevronUp size={isMobile ? 12 : 18} style={{ color: 'var(--text-60)' }} />
         </button>
 
         {/* Dot Indicators */}
@@ -421,9 +421,9 @@ export default function ConceptWorkStack() {
             onClick={() => scrollToCard(index)}
             aria-label={`Go to project ${index + 1}`}
             style={{
-              width: isMobile ? '6px' : '8px',
-              height: index === activeCardIndex ? (isMobile ? '16px' : '24px') : (isMobile ? '6px' : '8px'),
-              borderRadius: '4px',
+              width: isMobile ? '4px' : '8px',
+              height: index === activeCardIndex ? (isMobile ? '12px' : '24px') : (isMobile ? '4px' : '8px'),
+              borderRadius: isMobile ? '2px' : '4px',
               background: index === activeCardIndex ? 'var(--text-90)' : 'var(--text-25)',
               border: 'none',
               padding: 0,
@@ -440,13 +440,13 @@ export default function ConceptWorkStack() {
           style={{
             background: 'none',
             border: 'none',
-            padding: isMobile ? '0.125rem' : '0.25rem',
+            padding: isMobile ? '0' : '0.25rem',
             cursor: activeCardIndex === cardCount - 1 ? 'default' : 'pointer',
             opacity: activeCardIndex === cardCount - 1 ? 0.3 : 1,
             transition: 'opacity 0.3s ease',
           }}
         >
-          <ChevronDown size={isMobile ? 14 : 18} style={{ color: 'var(--text-60)' }} />
+          <ChevronDown size={isMobile ? 12 : 18} style={{ color: 'var(--text-60)' }} />
         </button>
       </div>
     </section>
