@@ -57,7 +57,7 @@ export function CurrentRoleCard() {
         transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
         cursor: 'pointer',
         height: '100%',
-        minHeight: '240px',
+        minHeight: 'clamp(200px, 30vh, 280px)',
         display: 'flex',
         flexDirection: 'column',
         gap: '1.5rem',
@@ -67,8 +67,8 @@ export function CurrentRoleCard() {
       {/* Icon */}
       <div
         style={{
-          width: '56px',
-          height: '56px',
+          width: 'clamp(44px, 8vw, 56px)',
+          height: 'clamp(44px, 8vw, 56px)',
           borderRadius: '16px',
           background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.3), rgba(218, 14, 41, 0.15))',
           display: 'flex',
@@ -78,7 +78,7 @@ export function CurrentRoleCard() {
           transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
-        <Building2 size={28} color="rgb(218, 14, 41)" />
+        <Building2 style={{ width: 'clamp(22px, 4vw, 28px)', height: 'clamp(22px, 4vw, 28px)' }} color="rgb(218, 14, 41)" />
       </div>
 
       {/* Content */}
@@ -117,7 +117,7 @@ export function CurrentRoleCard() {
         >
           <div
             style={{
-              fontSize: '2.5rem',
+              fontSize: 'clamp(1.75rem, 5vw, 2.5rem)',
               fontWeight: '300',
               color: 'var(--brand-red)',
               lineHeight: '1',

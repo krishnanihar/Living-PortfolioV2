@@ -22,12 +22,12 @@ export function BentoGrid() {
       style={{
         display: 'grid',
         gridTemplateColumns: '1fr',
-        gap: 'clamp(1rem, 3vw, 1.5rem)',
+        gap: 'clamp(1rem, 2.5vw, 1.5rem)',
         width: '100%',
-        maxWidth: '1400px',
+        maxWidth: 'clamp(100%, 90vw, 1400px)',
         margin: '0 auto',
       }}
-      className="md:grid-cols-2 lg:grid-cols-3"
+      className="bento-grid md:grid-cols-2 lg:grid-cols-3"
     >
       {/* First row: Education, Timeline, Currently */}
       <motion.div

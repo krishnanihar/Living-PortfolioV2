@@ -40,8 +40,8 @@ export function AvailabilityWidget() {
       {/* Icon */}
       <div
         style={{
-          width: '56px',
-          height: '56px',
+          width: 'clamp(44px, 8vw, 56px)',
+          height: 'clamp(44px, 8vw, 56px)',
           borderRadius: '16px',
           background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1))',
           display: 'flex',
@@ -51,7 +51,7 @@ export function AvailabilityWidget() {
           transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
-        <Calendar size={28} color="rgb(59, 130, 246)" />
+        <Calendar style={{ width: 'clamp(22px, 4vw, 28px)', height: 'clamp(22px, 4vw, 28px)' }} color="rgb(59, 130, 246)" />
       </div>
 
       {/* Content */}

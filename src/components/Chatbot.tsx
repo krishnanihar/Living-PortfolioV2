@@ -667,10 +667,10 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
       {/* Chatbot Container */}
       <div style={{
         position: 'fixed',
-        bottom: '2rem',
-        right: '2rem',
-        width: 'min(420px, calc(100vw - 4rem))',
-        height: 'min(650px, calc(100vh - 4rem))',
+        bottom: 'clamp(1rem, 3vw, 2rem)',
+        right: 'clamp(1rem, 3vw, 2rem)',
+        width: 'clamp(320px, 90vw, 420px)',
+        height: 'clamp(400px, 80vh, 650px)',
         zIndex: 9999,
         opacity: 0,
         transform: 'translateY(20px) scale(0.95)',

@@ -276,6 +276,21 @@ button {
   --gap-card-md: clamp(2rem, 4vw, 3rem);
   --gap-card-lg: clamp(3rem, 5vw, 4rem);
 
+  /* Responsive Icon Sizes */
+  --icon-size-sm: clamp(40px, 6vw, 48px);
+  --icon-size-md: clamp(48px, 7vw, 56px);
+  --icon-size-lg: clamp(56px, 8vw, 64px);
+
+  /* Responsive Card Constraints */
+  --card-min-height-sm: clamp(180px, 25vh, 220px);
+  --card-min-height-md: clamp(200px, 30vh, 280px);
+  --card-min-height-lg: clamp(280px, 35vh, 360px);
+
+  /* Modal/Overlay Responsive */
+  --modal-width-sm: min(360px, calc(100vw - 2rem));
+  --modal-width-md: min(420px, calc(100vw - 3rem));
+  --modal-height-max: min(650px, calc(100vh - 4rem));
+
   /* Border Radius Scale */
   --radius-none: 0;
   --radius-sm: 0.125rem;  /* 2px */
@@ -1751,6 +1766,19 @@ button {
   }
 }
 
+/* iPad Air/Pro 11" Optimizations (834px - 1023px) */
+@media (min-width: 834px) and (max-width: 1023px) {
+  :root {
+    --container-max-width: 780px;
+    --gap-card-sm: clamp(1rem, 2vw, 1.25rem);
+  }
+
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(0.75rem, 2vw, 1rem);
+  }
+}
+
 /* Small Desktop Optimizations (1024px - 1279px) */
 @media (min-width: 1024px) and (max-width: 1279px) {
   :root {
@@ -1883,6 +1911,11 @@ button {
   .glass-hero {
     padding: 2.25rem !important;
     max-width: 720px;
+  }
+
+  /* 4-column work grid for larger displays */
+  .work-grid-responsive {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
