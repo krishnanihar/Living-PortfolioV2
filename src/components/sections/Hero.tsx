@@ -164,8 +164,9 @@ export function Hero({ className }: HeroProps) {
             style={{
               rotateX: mouseY,
               rotateY: mouseX,
+              padding: 'clamp(2rem, 5vw, 5rem)',
             }}
-            className="glass-hero rounded-3xl p-12 md:p-16 lg:p-20 transform-gpu will-change-transform"
+            className="glass-hero rounded-3xl transform-gpu will-change-transform"
           >
             <motion.div
               variants={containerVariants}

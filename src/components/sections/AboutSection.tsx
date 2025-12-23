@@ -392,7 +392,7 @@ export function AboutSection() {
             backdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
             WebkitBackdropFilter: 'blur(140px) saturate(120%) brightness(1.05)',
             borderRadius: '28px',
-            padding: '3rem',
+            padding: 'clamp(1.5rem, 4vw, 3rem)',
             border: '1px solid var(--border-primary)',
             boxShadow: 'var(--shadow-small)',
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -409,8 +409,8 @@ export function AboutSection() {
                 className="profile-avatar-container"
                 style={{
                   position: 'relative',
-                  width: isMobile ? '110px' : '140px',
-                  height: isMobile ? '110px' : '140px',
+                  width: 'clamp(100px, 15vw, 140px)',
+                  height: 'clamp(100px, 15vw, 140px)',
                   borderRadius: '50%',
                   background: 'var(--glass-surface)',
                   padding: '4px',

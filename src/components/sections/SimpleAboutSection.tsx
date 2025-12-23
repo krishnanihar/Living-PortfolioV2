@@ -421,8 +421,8 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
               {/* Two-Column Grid: Key Facts + Journey */}
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
-                gap: 'clamp(2rem, 4vw, 4rem)',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
+                gap: 'clamp(1.5rem, 4vw, 4rem)',
                 marginBottom: 'clamp(2rem, 4vw, 3rem)',
               }}>
 
@@ -557,7 +557,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                             onBlur={() => setHoveredSkillTag(null)}
                             style={{
                               position: 'relative',
-                              padding: isMobile ? '0.375rem 0.75rem' : '0.425rem 0.875rem',
+                              padding: 'clamp(0.375rem, 1vw, 0.425rem) clamp(0.75rem, 2vw, 0.875rem)',
                               borderRadius: '10px',
                               background: isTagHovered
                                 ? 'linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(245, 158, 11, 0.08))'
