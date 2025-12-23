@@ -60,7 +60,6 @@ export default function ConceptWorkStack() {
   // Track current card index - both ref (for scroll sync) and state (for UI)
   const [activeCardIndex, setActiveCardIndex] = useState(0);
   const [showIndicators, setShowIndicators] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const currentCardRef = useRef(0);
   const lastScrollTriggerRef = useRef(0);
   const touchStartRef = useRef(0);
@@ -72,14 +71,6 @@ export default function ConceptWorkStack() {
   const SWIPE_THRESHOLD = 50; // Minimum swipe distance
   const ENTRY_SNAP_THRESHOLD = 0.1; // Snap when 10% visible (magnetic pull)
   const cardCount = featuredProjects.length;
-
-  // Detect mobile for responsive indicator sizing
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   // Callback ref to store card refs
   const setCardRef = useCallback((el: HTMLDivElement | null, index: number) => {
@@ -376,20 +367,20 @@ export default function ConceptWorkStack() {
         />
       ))}
 
-      {/* Scroll Indicators - Vertical Left */}
+      {/* Scroll Indicators - Vertical Left (CSS variables handle responsiveness) */}
       <div
         style={{
           position: 'fixed',
-          left: isMobile ? '0.5rem' : '2rem',
+          left: 'var(--indicator-left)',
           top: '50%',
           transform: 'translateY(-50%)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: isMobile ? '0.25rem' : '0.75rem',
+          gap: 'var(--indicator-gap)',
           zIndex: 110,
-          padding: isMobile ? '0.375rem' : '1rem 0.75rem',
-          borderRadius: isMobile ? '1rem' : '2rem',
+          padding: 'var(--indicator-padding)',
+          borderRadius: 'var(--indicator-radius)',
           background: 'var(--glass-08)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
@@ -402,16 +393,20 @@ export default function ConceptWorkStack() {
         <button
           onClick={() => scrollToCard(Math.max(0, activeCardIndex - 1))}
           aria-label="Previous project"
+          className="scroll-indicator-arrow"
           style={{
             background: 'none',
             border: 'none',
-            padding: isMobile ? '0' : '0.25rem',
+            padding: 0,
             cursor: activeCardIndex === 0 ? 'default' : 'pointer',
             opacity: activeCardIndex === 0 ? 0.3 : 1,
             transition: 'opacity 0.3s ease',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
-          <ChevronUp size={isMobile ? 12 : 18} style={{ color: 'var(--text-60)' }} />
+          <ChevronUp size={14} style={{ color: 'var(--text-60)' }} />
         </button>
 
         {/* Dot Indicators */}
@@ -421,9 +416,9 @@ export default function ConceptWorkStack() {
             onClick={() => scrollToCard(index)}
             aria-label={`Go to project ${index + 1}`}
             style={{
-              width: isMobile ? '4px' : '8px',
-              height: index === activeCardIndex ? (isMobile ? '12px' : '24px') : (isMobile ? '4px' : '8px'),
-              borderRadius: isMobile ? '2px' : '4px',
+              width: 'var(--indicator-dot-size)',
+              height: index === activeCardIndex ? 'var(--indicator-dot-active)' : 'var(--indicator-dot-size)',
+              borderRadius: 'var(--indicator-dot-radius)',
               background: index === activeCardIndex ? 'var(--text-90)' : 'var(--text-25)',
               border: 'none',
               padding: 0,
@@ -437,16 +432,20 @@ export default function ConceptWorkStack() {
         <button
           onClick={() => scrollToCard(Math.min(cardCount - 1, activeCardIndex + 1))}
           aria-label="Next project"
+          className="scroll-indicator-arrow"
           style={{
             background: 'none',
             border: 'none',
-            padding: isMobile ? '0' : '0.25rem',
+            padding: 0,
             cursor: activeCardIndex === cardCount - 1 ? 'default' : 'pointer',
             opacity: activeCardIndex === cardCount - 1 ? 0.3 : 1,
             transition: 'opacity 0.3s ease',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
-          <ChevronDown size={isMobile ? 12 : 18} style={{ color: 'var(--text-60)' }} />
+          <ChevronDown size={14} style={{ color: 'var(--text-60)' }} />
         </button>
       </div>
     </section>

@@ -335,6 +335,15 @@ button {
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* Scroll Indicator Responsive Sizes (Desktop defaults) */
+  --indicator-left: 2rem;
+  --indicator-gap: 0.75rem;
+  --indicator-padding: 1rem 0.75rem;
+  --indicator-radius: 2rem;
+  --indicator-dot-size: 8px;
+  --indicator-dot-active: 24px;
+  --indicator-dot-radius: 4px;
 }
 
 /* Light Theme Overrides */
@@ -1689,6 +1698,15 @@ button {
     --space-section-lg: clamp(4rem, 10vh, 6rem);
     --container-padding: 1.25rem;
     --nav-bottom-height: calc(64px + env(safe-area-inset-bottom));
+
+    /* Scroll Indicator - Mobile sizes */
+    --indicator-left: 0.5rem;
+    --indicator-gap: 0.25rem;
+    --indicator-padding: 0.375rem;
+    --indicator-radius: 1rem;
+    --indicator-dot-size: 4px;
+    --indicator-dot-active: 12px;
+    --indicator-dot-radius: 2px;
   }
 
   /* Typography Scale - Mobile */
