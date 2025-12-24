@@ -90,7 +90,8 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
   // Compute static orbital positions
   const computePositions = useCallback(() => {
     const centerX = dimensions.width / 2;
-    const centerY = dimensions.height / 2;
+    // Shift center up by 40px on mobile to make room for bottom nav
+    const centerY = dimensions.height / 2 - 40;
     const positions = new Map<string, Position>();
     const floatOffsets = new Map<string, FloatOffset>();
 
@@ -102,10 +103,10 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
     const tools = knowledgeGraphData.nodes.filter(n => n.type === 'tool');
     const influences = knowledgeGraphData.nodes.filter(n => n.type === 'influence');
 
-    // Ring radii based on container size
-    const innerRadius = Math.min(dimensions.width, dimensions.height) * 0.18;
-    const middleRadius = Math.min(dimensions.width, dimensions.height) * 0.32;
-    const outerRadius = Math.min(dimensions.width, dimensions.height) * 0.42;
+    // Ring radii based on container size (reduced to avoid bottom nav overlap)
+    const innerRadius = Math.min(dimensions.width, dimensions.height) * 0.16;
+    const middleRadius = Math.min(dimensions.width, dimensions.height) * 0.28;
+    const outerRadius = Math.min(dimensions.width, dimensions.height) * 0.36;
 
     // Helper to place nodes in a ring
     const placeInRing = (nodes: KnowledgeNode[], radius: number, startAngle = -Math.PI / 2) => {
@@ -438,7 +439,7 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
             exit={{ opacity: 0, y: 10 }}
             style={{
               position: 'absolute',
-              bottom: 80,
+              bottom: 'calc(64px + env(safe-area-inset-bottom) + 4.5rem)',
               left: '50%',
               transform: 'translateX(-50%)',
               background: 'var(--glass-10)',

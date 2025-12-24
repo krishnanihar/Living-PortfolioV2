@@ -289,7 +289,7 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
           exit={{ opacity: 0, y: 10 }}
           style={{
             position: 'absolute',
-            bottom: '120px',
+            bottom: 'calc(64px + env(safe-area-inset-bottom) + 5rem)',
             left: 0,
             right: 0,
             display: 'flex',
@@ -335,7 +335,7 @@ export function AboutHero({ onScrollToContent }: AboutHeroProps) {
       <div
         style={{
           position: 'absolute',
-          bottom: '3rem',
+          bottom: 'calc(64px + env(safe-area-inset-bottom) + 1.5rem)',
           left: 0,
           right: 0,
           display: 'flex',
