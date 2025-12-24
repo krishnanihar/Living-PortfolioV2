@@ -31,8 +31,17 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
   const [positions, setPositions] = useState<Map<string, Position>>(new Map());
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const animationRef = useRef<number | null>(null);
   const isInitialized = useRef(false);
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Initialize dimensions
   useEffect(() => {
@@ -156,7 +165,8 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
             pos.y += pos.vy;
 
             // Boundary constraints
-            const padding = 40;
+            // More padding on mobile to keep nodes away from edges (prevents label clipping)
+            const padding = isMobile ? 70 : 40;
             pos.x = Math.max(padding, Math.min(dimensions.width - padding, pos.x));
             pos.y = Math.max(padding, Math.min(dimensions.height - padding, pos.y));
           }
@@ -304,8 +314,8 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
                   style={{ transition: 'opacity 0.3s ease' }}
                 />
 
-                {/* Label for larger nodes */}
-                {node.size >= 0.8 && !isDimmed && (
+                {/* Label - Always show for core node, others only on interaction (mobile) or always (desktop) */}
+                {node.size >= 0.8 && !isDimmed && (node.type === 'core' || !isMobile || isActive) && (
                   <text
                     y={radius + 14}
                     textAnchor="middle"
