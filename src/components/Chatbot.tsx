@@ -147,40 +147,73 @@ const playSound = (type: 'send' | 'receive') => {
   }
 };
 
-// Typing indicator component with animated dots - Premium
-const TypingIndicator = () => (
-  <div style={{
-    display: 'flex',
-    justifyContent: 'flex-start',
-    opacity: 0,
-    animation: 'messageSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
-  }}>
+// Thinking indicator component with step-by-step animation
+const ThinkingIndicator = () => {
+  const [currentStep, setCurrentStep] = useState(0);
+  const steps = [
+    'Analyzing your question...',
+    'Searching knowledge base...',
+    'Generating response...',
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentStep((prev) => (prev + 1) % steps.length);
+    }, 1500);
+    return () => clearInterval(interval);
+  }, [steps.length]);
+
+  return (
     <div style={{
-      padding: '0.875rem 1.125rem',
-      borderRadius: '18px 18px 18px 4px',
-      background: 'var(--glass-06)',
-      border: '1px solid var(--glass-10)',
-      backdropFilter: 'blur(20px) brightness(0.95)',
-      WebkitBackdropFilter: 'blur(20px) brightness(0.95)',
       display: 'flex',
-      alignItems: 'center',
-      gap: '6px',
+      justifyContent: 'flex-start',
+      opacity: 0,
+      animation: 'messageSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
     }}>
-      {[0, 1, 2].map((i) => (
+      <div style={{
+        padding: '0.875rem 1.125rem',
+        borderRadius: '18px 18px 18px 4px',
+        background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(139, 92, 246, 0.05) 100%)',
+        border: '1px solid rgba(59, 130, 246, 0.2)',
+        backdropFilter: 'blur(20px) brightness(0.95)',
+        WebkitBackdropFilter: 'blur(20px) brightness(0.95)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        minWidth: '180px',
+      }}>
         <span
-          key={i}
           style={{
-            width: '7px',
-            height: '7px',
+            width: '8px',
+            height: '8px',
             borderRadius: '50%',
-            background: 'rgba(218, 14, 41, 0.8)',
-            animation: `typingPulse 1.4s ease-in-out ${i * 0.15}s infinite`,
+            background: 'linear-gradient(135deg, var(--chat-accent) 0%, var(--chat-accent-secondary) 100%)',
+            animation: 'typingPulse 1.4s ease-in-out infinite',
+            flexShrink: 0,
           }}
         />
-      ))}
+        <span
+          key={currentStep}
+          style={{
+            fontSize: '0.8rem',
+            color: 'var(--text-70)',
+            fontWeight: '400',
+            opacity: 0,
+            animation: 'fadeInStep 0.3s ease-out forwards',
+          }}
+        >
+          {steps[currentStep]}
+        </span>
+      </div>
+      <style jsx>{`
+        @keyframes fadeInStep {
+          from { opacity: 0; transform: translateY(4px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </div>
-  </div>
-);
+  );
+};
 
 // Quick prompts based on intent
 const getQuickPrompts = (intent: string): { text: string; icon?: React.ReactNode }[] => {
@@ -248,8 +281,8 @@ const QuickActions = ({ onAction }: { onAction: (action: string) => void }) => (
           transition: 'all 0.2s ease',
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.background = 'rgba(218, 14, 41, 0.1)';
-          e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
+          e.currentTarget.style.background = 'rgba(59, 130, 246, 0.1)';
+          e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.3)';
           e.currentTarget.style.color = 'var(--text-90)';
         }}
         onMouseLeave={(e) => {
@@ -806,7 +839,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
             inset 0 1px 0 var(--glass-05),
             inset 0 -1px 0 var(--overlay-20),
             0 16px 32px var(--overlay-40),
-            0 0 60px rgba(218, 14, 41, 0.05)
+            0 0 60px rgba(59, 130, 246, 0.05)
           `,
           display: 'flex',
           flexDirection: 'column',
@@ -858,12 +891,12 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                 background: inTourMode
                   ? 'rgba(139, 92, 246, 0.8)'
                   : isLoading
-                  ? 'rgba(218, 14, 41, 0.8)'
+                  ? 'rgba(59, 130, 246, 0.8)'
                   : 'rgba(16, 185, 129, 0.8)',
                 boxShadow: inTourMode
                   ? '0 0 8px rgba(139, 92, 246, 0.6)'
                   : isLoading
-                  ? '0 0 8px rgba(218, 14, 41, 0.6)'
+                  ? '0 0 8px rgba(59, 130, 246, 0.6)'
                   : '0 0 8px rgba(16, 185, 129, 0.6)',
                 animation: 'pulse 2s ease-in-out infinite',
               }} />
@@ -931,10 +964,10 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                   color: 'var(--text-muted)',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(218, 14, 41, 0.2)';
-                  e.currentTarget.style.color = 'rgba(218, 14, 41, 0.9)';
+                  e.currentTarget.style.background = 'rgba(59, 130, 246, 0.2)';
+                  e.currentTarget.style.color = 'rgba(59, 130, 246, 0.9)';
                   e.currentTarget.style.transform = 'scale(1.1) rotate(90deg)';
-                  e.currentTarget.style.boxShadow = '0 0 12px rgba(218, 14, 41, 0.3)';
+                  e.currentTarget.style.boxShadow = '0 0 12px rgba(59, 130, 246, 0.3)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = 'var(--glass-05)';
@@ -1124,10 +1157,10 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                       padding: '0.75rem 1rem',
                       borderRadius: message.isUser ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
                       background: message.isUser
-                        ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.3) 0%, rgba(218, 14, 41, 0.2) 100%)'
+                        ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(139, 92, 246, 0.15) 100%)'
                         : 'var(--glass-08)',
                       border: message.isUser
-                        ? '1px solid rgba(218, 14, 41, 0.4)'
+                        ? '1px solid rgba(59, 130, 246, 0.35)'
                         : '1px solid var(--glass-08)',
                       backdropFilter: 'blur(20px) saturate(120%) brightness(0.95)',
                       WebkitBackdropFilter: 'blur(20px) saturate(120%) brightness(0.95)',
@@ -1175,7 +1208,7 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                                   href={href}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  style={{ color: 'rgba(218, 14, 41, 0.9)', textDecoration: 'underline' }}
+                                  style={{ color: 'rgba(59, 130, 246, 0.9)', textDecoration: 'underline' }}
                                 >
                                   {children}
                                 </a>
@@ -1221,37 +1254,39 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                           display: 'flex',
                           alignItems: 'center',
                           gap: '0.5rem',
-                          padding: '0.625rem 0.875rem',
-                          background: 'var(--glass-05)',
-                          border: '1px solid var(--glass-10)',
-                          borderRadius: '12px',
+                          padding: '0.5rem 1rem',
+                          background: 'var(--glass-06)',
+                          border: '1px solid var(--glass-12)',
+                          borderRadius: '999px',
                           cursor: 'pointer',
-                          transition: 'all 0.2s ease',
+                          transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
                           textAlign: 'left',
                           color: 'var(--text-70)',
                           fontSize: '0.75rem',
                           fontWeight: '400',
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.background = 'rgba(218, 14, 41, 0.08)';
-                          e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.2)';
+                          e.currentTarget.style.background = 'rgba(59, 130, 246, 0.1)';
+                          e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.25)';
                           e.currentTarget.style.color = 'var(--text-primary)';
+                          e.currentTarget.style.transform = 'translateY(-1px)';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'var(--glass-05)';
-                          e.currentTarget.style.borderColor = 'var(--glass-10)';
+                          e.currentTarget.style.background = 'var(--glass-06)';
+                          e.currentTarget.style.borderColor = 'var(--glass-12)';
                           e.currentTarget.style.color = 'var(--text-70)';
+                          e.currentTarget.style.transform = 'translateY(0)';
                         }}
                       >
-                        {prompt.icon && <span style={{ opacity: 0.7 }}>{prompt.icon}</span>}
+                        {prompt.icon && <span style={{ opacity: 0.8, color: 'var(--chat-accent)' }}>{prompt.icon}</span>}
                         {prompt.text}
                       </button>
                     ))}
                   </div>
                 )}
 
-                {/* Typing Indicator - only show when loading and not streaming yet */}
-                {isLoading && !isStreaming && <TypingIndicator />}
+                {/* Thinking Indicator - only show when loading and not streaming yet */}
+                {isLoading && !isStreaming && <ThinkingIndicator />}
 
                 {/* Dynamic Suggestions */}
                 {dynamicSuggestions.length > 0 && !isLoading && (
@@ -1283,26 +1318,28 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                             handleSendMessage(suggestion);
                           }}
                           style={{
-                            padding: '0.5rem 0.75rem',
-                            background: 'var(--glass-05)',
-                            border: '1px solid var(--glass-10)',
-                            borderRadius: '16px',
+                            padding: '0.5rem 1rem',
+                            background: 'var(--glass-06)',
+                            border: '1px solid var(--glass-12)',
+                            borderRadius: '999px',
                             color: 'var(--text-70)',
                             fontSize: '0.75rem',
                             fontWeight: '400',
                             cursor: 'pointer',
-                            transition: 'all 0.2s ease',
+                            transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
                             textAlign: 'left',
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.background = 'rgba(218, 14, 41, 0.08)';
-                            e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.2)';
+                            e.currentTarget.style.background = 'rgba(59, 130, 246, 0.1)';
+                            e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.25)';
                             e.currentTarget.style.color = 'var(--text-primary)';
+                            e.currentTarget.style.transform = 'translateY(-1px)';
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'var(--glass-05)';
-                            e.currentTarget.style.borderColor = 'var(--glass-10)';
+                            e.currentTarget.style.background = 'var(--glass-06)';
+                            e.currentTarget.style.borderColor = 'var(--glass-12)';
                             e.currentTarget.style.color = 'var(--text-70)';
+                            e.currentTarget.style.transform = 'translateY(0)';
                           }}
                         >
                           {suggestion}
@@ -1338,16 +1375,16 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                   transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.border = '1px solid rgba(218, 14, 41, 0.25)';
-                  e.currentTarget.style.boxShadow = '0 0 0 2px rgba(218, 14, 41, 0.08)';
+                  e.currentTarget.style.border = '1px solid rgba(59, 130, 246, 0.25)';
+                  e.currentTarget.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.08)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.border = '1px solid var(--glass-08)';
                   e.currentTarget.style.boxShadow = 'none';
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.border = '1px solid rgba(218, 14, 41, 0.3)';
-                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(218, 14, 41, 0.1)';
+                  e.currentTarget.style.border = '1px solid rgba(59, 130, 246, 0.3)';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
                 }}
                 onBlur={(e) => {
                   e.currentTarget.style.border = '1px solid var(--glass-08)';
@@ -1384,14 +1421,14 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                         width: isMobileFullScreen ? '36px' : '28px',
                         height: isMobileFullScreen ? '36px' : '28px',
                         borderRadius: '50%',
-                        background: isListening ? 'rgba(218, 14, 41, 0.3)' : 'var(--glass-05)',
-                        border: isListening ? '1px solid rgba(218, 14, 41, 0.5)' : '1px solid var(--glass-10)',
+                        background: isListening ? 'rgba(59, 130, 246, 0.3)' : 'var(--glass-05)',
+                        border: isListening ? '1px solid rgba(59, 130, 246, 0.5)' : '1px solid var(--glass-10)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         cursor: 'pointer',
                         transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                        color: isListening ? 'rgba(218, 14, 41, 0.9)' : 'var(--text-muted)',
+                        color: isListening ? 'rgba(59, 130, 246, 0.9)' : 'var(--text-muted)',
                         animation: isListening ? 'glowPulse 1.5s ease-in-out infinite' : 'none',
                       }}
                     >
@@ -1407,8 +1444,8 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                       width: isMobileFullScreen ? '36px' : '28px',
                       height: isMobileFullScreen ? '36px' : '28px',
                       borderRadius: '50%',
-                      background: (inputValue.trim() && !isLoading) ? 'rgba(218, 14, 41, 0.3)' : 'var(--glass-05)',
-                      border: (inputValue.trim() && !isLoading) ? '1px solid rgba(218, 14, 41, 0.5)' : '1px solid var(--glass-10)',
+                      background: (inputValue.trim() && !isLoading) ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.4) 0%, rgba(139, 92, 246, 0.3) 100%)' : 'var(--glass-05)',
+                      border: (inputValue.trim() && !isLoading) ? '1px solid rgba(59, 130, 246, 0.5)' : '1px solid var(--glass-10)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -1419,14 +1456,14 @@ export function Chatbot({ isOpen, onClose, initialMessage, intentContext, tourMo
                     }}
                     onMouseEnter={(e) => {
                       if (inputValue.trim() && !isLoading) {
-                        e.currentTarget.style.background = 'rgba(218, 14, 41, 0.4)';
+                        e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.5) 0%, rgba(139, 92, 246, 0.4) 100%)';
                         e.currentTarget.style.transform = 'scale(1.1)';
-                        e.currentTarget.style.boxShadow = '0 0 16px rgba(218, 14, 41, 0.4)';
+                        e.currentTarget.style.boxShadow = '0 0 16px rgba(59, 130, 246, 0.4)';
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (inputValue.trim() && !isLoading) {
-                        e.currentTarget.style.background = 'rgba(218, 14, 41, 0.3)';
+                        e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.4) 0%, rgba(139, 92, 246, 0.3) 100%)';
                         e.currentTarget.style.transform = 'scale(1)';
                         e.currentTarget.style.boxShadow = 'none';
                       }

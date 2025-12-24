@@ -25,7 +25,7 @@ const SKILL_MAP: Record<string, { label: string; color: string }> = {
   nodejs: { label: 'Node.js', color: 'rgba(104, 160, 99, 0.2)' },
 
   // Design Systems
-  'design-systems': { label: 'Design Systems', color: 'rgba(218, 14, 41, 0.15)' },
+  'design-systems': { label: 'Design Systems', color: 'rgba(59, 130, 246, 0.2)' },
   'design-tokens': { label: 'Design Tokens', color: 'rgba(139, 92, 246, 0.2)' },
   'component-library': { label: 'Component Libraries', color: 'rgba(16, 185, 129, 0.2)' },
 
@@ -46,7 +46,7 @@ export function SkillTags({ skills }: SkillTagsProps) {
     // Fallback: capitalize and use default color
     return {
       label: skill.charAt(0).toUpperCase() + skill.slice(1).replace(/-/g, ' '),
-      color: 'rgba(218, 14, 41, 0.12)',
+      color: 'rgba(59, 130, 246, 0.15)',
     };
   });
 

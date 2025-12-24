@@ -101,7 +101,7 @@ export function ProjectCarousel({ projectSlugs, onClose }: ProjectCarouselProps)
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = 'var(--glass-10)';
-              e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
+              e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.3)';
               e.currentTarget.style.transform = 'translateY(-2px)';
             }}
             onMouseLeave={(e) => {
@@ -155,7 +155,7 @@ export function ProjectCarousel({ projectSlugs, onClose }: ProjectCarouselProps)
                   alignItems: 'center',
                   gap: '0.25rem',
                   fontSize: '0.65rem',
-                  color: 'rgba(218, 14, 41, 0.9)',
+                  color: 'rgba(59, 130, 246, 0.9)',
                   fontWeight: '500',
                 }}
               >

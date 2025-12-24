@@ -81,8 +81,8 @@ export function ContactCard({ onClose }: ContactCardProps) {
                 cursor: 'pointer',
               }}
               onMouseEnter={(e: React.MouseEvent<HTMLElement>) => {
-                e.currentTarget.style.background = 'rgba(218, 14, 41, 0.1)';
-                e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.25)';
+                e.currentTarget.style.background = 'rgba(59, 130, 246, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.25)';
                 e.currentTarget.style.color = 'var(--text-primary)';
               }}
               onMouseLeave={(e: React.MouseEvent<HTMLElement>) => {

@@ -245,7 +245,7 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
           width: 'clamp(48px, 10vw, 56px)',
           height: 'clamp(48px, 10vw, 56px)',
           borderRadius: '50%',
-          border: '2px solid rgba(218, 14, 41, 0.4)',
+          border: '2px solid rgba(59, 130, 246, 0.4)',
           pointerEvents: 'none',
         }}
       />
@@ -259,7 +259,7 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
           width: 'clamp(48px, 10vw, 56px)',
           height: 'clamp(48px, 10vw, 56px)',
           borderRadius: '50%',
-          border: '2px solid rgba(218, 14, 41, 0.3)',
+          border: '2px solid rgba(59, 130, 246, 0.3)',
           pointerEvents: 'none',
         }}
       />
@@ -398,7 +398,7 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
               minWidth: '20px',
               height: '20px',
               borderRadius: '10px',
-              background: 'rgba(218, 14, 41, 1)',
+              background: 'linear-gradient(135deg, rgba(59, 130, 246, 1) 0%, rgba(139, 92, 246, 1) 100%)',
               color: 'white',
               fontSize: '11px',
               fontWeight: 700,
@@ -406,7 +406,7 @@ export function FloatingChatButton({ onClick, unreadCount }: FloatingChatButtonP
               alignItems: 'center',
               justifyContent: 'center',
               padding: '0 6px',
-              boxShadow: '0 2px 8px rgba(218, 14, 41, 0.6)',
+              boxShadow: '0 2px 8px rgba(59, 130, 246, 0.6)',
               border: '2px solid var(--solid-90)',
             }}
           >

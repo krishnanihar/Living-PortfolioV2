@@ -70,6 +70,12 @@ button {
   --brand-red: #DA0E29;
   --brand-red-rgb: 218, 14, 41;
 
+  /* Chat Accent Colors - Blue/Purple Gradient */
+  --chat-accent: #3B82F6;
+  --chat-accent-secondary: #8B5CF6;
+  --chat-accent-rgb: 59, 130, 246;
+  --chat-accent-secondary-rgb: 139, 92, 246;
+
   /* Metamorphic Fractal Reflections - Case Study Colors */
   --metamorphic-bg-primary: #0D0B1E;
   --metamorphic-bg-secondary: #1A1333;
