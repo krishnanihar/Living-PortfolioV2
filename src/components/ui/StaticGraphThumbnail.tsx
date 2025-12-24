@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Book {
   title: string;
@@ -24,6 +24,14 @@ interface StaticGraphThumbnailProps {
 
 export function StaticGraphThumbnail({ books, games, onClick }: StaticGraphThumbnailProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Extract unique concepts
   const concepts = Array.from(
@@ -174,20 +182,22 @@ export function StaticGraphThumbnail({ books, games, onClick }: StaticGraphThumb
                   fill={node.color}
                   style={{ transition: 'all 0.3s ease' }}
                 />
-                <text
-                  x={node.x}
-                  y={node.y + finalRadius * 2 + 12}
-                  textAnchor="middle"
-                  fill={node.color}
-                  fontSize="8"
-                  fontFamily="Inter, system-ui, -apple-system, sans-serif"
-                  fontWeight="400"
-                  letterSpacing="0.02em"
-                  opacity={0.5}
-                  style={{ transition: 'opacity 0.3s ease', pointerEvents: 'none' }}
-                >
-                  {node.name}
-                </text>
+                {!isMobile && (
+                  <text
+                    x={node.x}
+                    y={node.y + finalRadius * 2 + 12}
+                    textAnchor="middle"
+                    fill={node.color}
+                    fontSize="8"
+                    fontFamily="Inter, system-ui, -apple-system, sans-serif"
+                    fontWeight="400"
+                    letterSpacing="0.02em"
+                    opacity={0.5}
+                    style={{ transition: 'opacity 0.3s ease', pointerEvents: 'none' }}
+                  >
+                    {node.name}
+                  </text>
+                )}
               </g>
             );
           } else {

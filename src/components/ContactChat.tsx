@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Send, Sparkles } from 'lucide-react';
 
 interface ContactChatProps {
@@ -9,6 +9,14 @@ interface ContactChatProps {
 
 export function ContactChat({ onMessageSubmit }: ContactChatProps) {
   const [inputValue, setInputValue] = useState('');
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleSendMessage = () => {
     if (!inputValue.trim()) return;
@@ -44,8 +52,8 @@ export function ContactChat({ onMessageSubmit }: ContactChatProps) {
           backdropFilter: 'blur(30px) saturate(120%) brightness(0.9)',
           WebkitBackdropFilter: 'blur(30px) saturate(120%) brightness(0.9)',
           border: '1px solid rgba(218, 14, 41, 0.15)',
-          borderRadius: '28px',
-          padding: '0.875rem 1.25rem',
+          borderRadius: isMobile ? '24px' : '28px',
+          padding: isMobile ? '0.625rem 0.875rem' : '0.875rem 1.25rem',
           transition: 'all 0.3s ease',
         }}
         onMouseEnter={(e) => {
@@ -79,7 +87,7 @@ export function ContactChat({ onMessageSubmit }: ContactChatProps) {
             background: inputValue.trim() ? `${accentColor}40` : 'rgba(255, 255, 255, 0.05)',
             border: inputValue.trim() ? `1px solid ${accentColor}80` : '1px solid rgba(255, 255, 255, 0.1)',
             borderRadius: '20px',
-            padding: '0.5rem 1.25rem',
+            padding: isMobile ? '0.5rem 0.75rem' : '0.5rem 1.25rem',
             color: inputValue.trim() ? 'var(--text-primary)' : 'var(--text-muted)',
             fontSize: '0.825rem',
             fontWeight: '400',
@@ -103,8 +111,8 @@ export function ContactChat({ onMessageSubmit }: ContactChatProps) {
             }
           }}
         >
-          <Send size={14} />
-          Let's collaborate
+          <Send size={isMobile ? 16 : 14} />
+          {!isMobile && "Let's collaborate"}
         </button>
       </div>
 
@@ -129,10 +137,10 @@ export function ContactChat({ onMessageSubmit }: ContactChatProps) {
               backdropFilter: 'blur(30px) saturate(120%) brightness(0.9)',
               WebkitBackdropFilter: 'blur(30px) saturate(120%) brightness(0.9)',
               border: '1px solid rgba(255, 255, 255, 0.06)',
-              borderRadius: '16px',
-              padding: '0.375rem 0.875rem',
+              borderRadius: isMobile ? '12px' : '16px',
+              padding: isMobile ? '0.25rem 0.625rem' : '0.375rem 0.875rem',
               color: 'var(--text-secondary)',
-              fontSize: '0.75rem',
+              fontSize: isMobile ? '0.6875rem' : '0.75rem',
               fontWeight: '300',
               cursor: 'pointer',
               transition: 'all 0.3s ease',

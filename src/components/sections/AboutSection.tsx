@@ -399,9 +399,10 @@ export function AboutSection() {
           }}>
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'auto 1fr',
-              gap: '2rem',
-              alignItems: 'center',
+              gridTemplateColumns: isMobile ? '1fr' : 'auto 1fr',
+              gap: isMobile ? '1.5rem' : '2rem',
+              alignItems: isMobile ? 'center' : 'center',
+              justifyItems: isMobile ? 'center' : 'start',
               marginBottom: '2.5rem',
             }}>
               {/* Profile Picture with Glassmorphic Effect */}
@@ -453,7 +454,7 @@ export function AboutSection() {
               </div>
 
               {/* Introduction */}
-              <div>
+              <div style={{ textAlign: isMobile ? 'center' : 'left' }}>
                 <h1 style={{
                   fontSize: 'clamp(2rem, 5vw, 3rem)',
                   fontWeight: '200',
@@ -522,7 +523,11 @@ export function AboutSection() {
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.75rem',
+                gap: isMobile ? '0.5rem' : '0.75rem',
+                overflowX: isMobile ? 'auto' : 'visible',
+                WebkitOverflowScrolling: 'touch',
+                paddingBottom: isMobile ? '0.5rem' : '0',
+                scrollSnapType: isMobile ? 'x mandatory' : 'none',
               }}>
                 {journeyMilestones.map((milestone, index) => (
                   <React.Fragment key={milestone.id}>
@@ -562,8 +567,10 @@ export function AboutSection() {
                       <div
                         data-logo-container
                         style={{
-                          width: 'clamp(80px, 9vw, 96px)',
-                          height: 'clamp(80px, 9vw, 96px)',
+                          width: isMobile ? '64px' : 'clamp(80px, 9vw, 96px)',
+                          height: isMobile ? '64px' : 'clamp(80px, 9vw, 96px)',
+                          flexShrink: 0,
+                          scrollSnapAlign: isMobile ? 'center' : 'none',
                           padding: '14px',
                           borderRadius: '18px',
                           background: activeTimeline === milestone.id
@@ -991,8 +998,8 @@ export function AboutSection() {
                   transition={{ duration: 0.3 }}
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: '50% 1fr',
-                    gap: '3rem',
+                    gridTemplateColumns: isMobile ? '1fr' : '50% 1fr',
+                    gap: isMobile ? '2rem' : '3rem',
                   }}
                 >
                   {/* LEFT: Static Graph Thumbnail */}
@@ -1952,8 +1959,8 @@ export function AboutSection() {
           backdropFilter: 'blur(120px) saturate(180%) brightness(1.05)',
           WebkitBackdropFilter: 'blur(120px) saturate(180%) brightness(1.05)',
           border: '1px solid var(--border-muted)',
-          borderRadius: '24px',
-          padding: '3rem',
+          borderRadius: isMobile ? '20px' : '24px',
+          padding: isMobile ? '1.5rem' : '3rem',
           boxShadow: 'var(--shadow-large)',
         }}>
           <h2 style={{
