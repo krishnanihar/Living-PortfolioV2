@@ -522,6 +522,7 @@ export function AboutSection() {
               </p>
               <div
                 className={isMobile ? 'hide-scrollbar' : ''}
+                data-lenis-prevent={isMobile ? true : undefined}
                 style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -531,7 +532,7 @@ export function AboutSection() {
                 paddingBottom: isMobile ? '0.5rem' : '0',
                 scrollSnapType: isMobile ? 'x proximity' : 'none',
                 overscrollBehaviorX: isMobile ? 'contain' : 'auto',
-                touchAction: isMobile ? 'manipulation' : 'auto',
+                touchAction: isMobile ? 'pan-x' : 'auto',
                 paddingLeft: isMobile ? '0.5rem' : '0',
                 paddingRight: isMobile ? '0.5rem' : '0',
               }}>

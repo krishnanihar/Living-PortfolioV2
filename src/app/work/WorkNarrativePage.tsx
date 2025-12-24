@@ -775,6 +775,7 @@ export function WorkNarrativePage() {
             <div
               ref={carouselRef}
               className="hide-scrollbar"
+              data-lenis-prevent
               style={{
                 display: 'flex',
                 gap: '1rem',
@@ -784,7 +785,7 @@ export function WorkNarrativePage() {
                 msOverflowStyle: 'none',
                 WebkitOverflowScrolling: 'touch',
                 overscrollBehaviorX: 'contain',
-                touchAction: 'manipulation',
+                touchAction: 'pan-x',
                 paddingLeft: '1rem',
                 paddingRight: '1rem',
                 marginLeft: '-1rem',
@@ -1072,6 +1073,7 @@ export function WorkNarrativePage() {
             <div
               ref={clearaCarouselRef}
               className="hide-scrollbar"
+              data-lenis-prevent
               style={{
                 display: 'flex',
                 gap: '1rem',
@@ -1081,7 +1083,7 @@ export function WorkNarrativePage() {
                 msOverflowStyle: 'none',
                 WebkitOverflowScrolling: 'touch',
                 overscrollBehaviorX: 'contain',
-                touchAction: 'manipulation',
+                touchAction: 'pan-x',
                 paddingLeft: '1rem',
                 paddingRight: '1rem',
                 marginLeft: '-1rem',
@@ -1350,6 +1352,7 @@ export function WorkNarrativePage() {
             <div
               ref={metamorphicCarouselRef}
               className="hide-scrollbar"
+              data-lenis-prevent
               style={{
                 display: 'flex',
                 gap: '1rem',
@@ -1359,7 +1362,7 @@ export function WorkNarrativePage() {
                 msOverflowStyle: 'none',
                 WebkitOverflowScrolling: 'touch',
                 overscrollBehaviorX: 'contain',
-                touchAction: 'manipulation',
+                touchAction: 'pan-x',
                 paddingLeft: '1rem',
                 paddingRight: '1rem',
                 marginLeft: '-1rem',
@@ -1630,6 +1633,7 @@ export function WorkNarrativePage() {
             <div
               ref={latentCarouselRef}
               className="hide-scrollbar"
+              data-lenis-prevent
               style={{
                 display: 'flex',
                 gap: '1rem',
@@ -1639,7 +1643,7 @@ export function WorkNarrativePage() {
                 msOverflowStyle: 'none',
                 WebkitOverflowScrolling: 'touch',
                 overscrollBehaviorX: 'contain',
-                touchAction: 'manipulation',
+                touchAction: 'pan-x',
                 paddingLeft: '1rem',
                 paddingRight: '1rem',
                 marginLeft: '-1rem',
