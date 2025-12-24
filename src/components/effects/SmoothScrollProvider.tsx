@@ -98,8 +98,8 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
       // This ensures our custom handler has FULL control on snap scroll pages
       virtualScroll: () => !useControlledSnap, // false on snap pages = Lenis ignores ALL wheel/touch events
 
-      wheelMultiplier: useControlledSnap ? 0 : (isConceptPage ? 0.4 : 0.8), // Slower on concept page
-      touchMultiplier: useControlledSnap ? 0 : (isConceptPage ? 0.8 : 1.5), // Slower on concept page
+      wheelMultiplier: useControlledSnap ? 0 : 0.8,
+      touchMultiplier: useControlledSnap ? 0 : 1.5,
       smoothWheel: !prefersReducedMotion,
       syncTouch: !useControlledSnap,
       syncTouchLerp: 0.1,
