@@ -34,7 +34,7 @@ const navItems: NavItem[] = [
  */
 export function MobileBottomNav() {
   const pathname = usePathname();
-  const { isOpen: isChatOpen, openChat } = useChatContext();
+  const { isOpen: isChatOpen, openChat, closeChat } = useChatContext();
 
   // Determine if a nav item is active
   const isActive = (item: NavItem) => {
@@ -136,6 +136,11 @@ export function MobileBottomNav() {
             key={item.name}
             href={item.href!}
             style={itemStyle}
+            onClick={() => {
+              if (isChatOpen) {
+                closeChat();
+              }
+            }}
           >
             <Icon size={22} style={iconStyle} />
             <span style={labelStyle}>{item.name}</span>
