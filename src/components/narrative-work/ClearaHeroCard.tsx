@@ -63,7 +63,7 @@ export function ClearaHeroCard() {
       style={{
         maxWidth: 'clamp(1200px, 90vw, 1400px)',
         margin: '0 auto 3rem auto',
-        padding: '0 1.5rem',
+        padding: isMobile ? '0 0.5rem' : '0 1.5rem',
         position: 'relative',
         zIndex: 1,
       }}
@@ -73,8 +73,7 @@ export function ClearaHeroCard() {
         ref={atroposRef}
         className="atropos"
         style={{
-          minHeight: isMobile ? 'min(65vh, 540px)' : 'clamp(600px, 75vh, 800px)',
-          height: isMobile ? 'auto' : 'clamp(600px, 75vh, 800px)',
+          height: isMobile ? '85vh' : 'clamp(600px, 75vh, 800px)',
           width: '100%',
           position: 'relative',
           pointerEvents: 'auto',
@@ -192,28 +191,24 @@ export function ClearaHeroCard() {
                 data-atropos-offset="4"
                 style={{
                   position: 'absolute',
-                  bottom: isMobile ? '1rem' : '10%',
-                  left: isMobile ? '1rem' : 'auto',
-                  right: isMobile ? '1rem' : '6%',
+                  bottom: isMobile ? '6%' : '10%',
+                  left: isMobile ? '0.5rem' : 'auto',
+                  right: isMobile ? '0.5rem' : '6%',
                   zIndex: 10,
                   width: isMobile ? 'auto' : 'clamp(320px, 26vw, 400px)',
                   padding: isMobile ? '1.5rem' : '2rem 2.5rem',
                   pointerEvents: 'auto',
-                  // Cream-tinted glassmorphism - slightly more opaque on mobile for readability
-                  background: isMobile
-                    ? `linear-gradient(135deg,
-                        rgba(250, 248, 245, 0.94) 0%,
-                        rgba(250, 248, 245, 0.88) 50%,
-                        rgba(250, 248, 245, 0.92) 100%
-                      )`
-                    : `linear-gradient(135deg,
-                        rgba(250, 248, 245, 0.90) 0%,
-                        rgba(250, 248, 245, 0.80) 50%,
-                        rgba(250, 248, 245, 0.85) 100%
-                      )`,
-                  backdropFilter: isMobile ? 'blur(64px) saturate(200%)' : 'blur(60px) saturate(180%)',
-                  WebkitBackdropFilter: isMobile ? 'blur(64px) saturate(200%)' : 'blur(60px) saturate(180%)',
-                  borderRadius: isMobile ? '20px' : '28px',
+                  // Cream-tinted glassmorphism
+                  background: `
+                    linear-gradient(135deg,
+                      rgba(250, 248, 245, 0.90) 0%,
+                      rgba(250, 248, 245, 0.80) 50%,
+                      rgba(250, 248, 245, 0.85) 100%
+                    )
+                  `,
+                  backdropFilter: 'blur(60px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(60px) saturate(180%)',
+                  borderRadius: '28px',
                   border: `1px solid rgba(${lavenderRgb}, 0.25)`,
                   boxShadow: `
                     0 40px 80px rgba(0, 0, 0, 0.12),
@@ -229,7 +224,7 @@ export function ClearaHeroCard() {
                 <div
                   style={{
                     display: 'inline-block',
-                    fontSize: isMobile ? '0.75rem' : '0.6875rem',
+                    fontSize: '0.6875rem',
                     fontWeight: '500',
                     textTransform: 'uppercase',
                     letterSpacing: '0.12em',
@@ -259,8 +254,8 @@ export function ClearaHeroCard() {
                 {/* Description */}
                 <p
                   style={{
-                    fontSize: '0.9375rem',
-                    lineHeight: isMobile ? '1.6' : '1.65',
+                    fontSize: isMobile ? '0.875rem' : '0.9375rem',
+                    lineHeight: '1.65',
                     color: 'rgba(45, 45, 55, 0.75)',
                     marginBottom: '1.5rem',
                   }}
@@ -273,7 +268,7 @@ export function ClearaHeroCard() {
                   style={{
                     display: 'flex',
                     flexWrap: 'wrap',
-                    gap: isMobile ? '0.5rem' : '0.5rem',
+                    gap: '0.5rem',
                     marginBottom: '1.5rem',
                   }}
                 >
@@ -281,11 +276,11 @@ export function ClearaHeroCard() {
                     <span
                       key={tag}
                       style={{
-                        fontSize: isMobile ? '0.75rem' : '0.6875rem',
-                        padding: isMobile ? '0.4rem 0.75rem' : '0.375rem 0.75rem',
+                        fontSize: '0.6875rem',
+                        padding: '0.375rem 0.75rem',
                         background: `rgba(${lavenderRgb}, 0.12)`,
                         border: `1px solid rgba(${lavenderRgb}, 0.25)`,
-                        borderRadius: isMobile ? '10px' : '12px',
+                        borderRadius: '12px',
                         color: 'rgba(45, 45, 55, 0.8)',
                         fontWeight: '500',
                       }}
@@ -304,16 +299,15 @@ export function ClearaHeroCard() {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.5rem',
-                    minHeight: '44px',
-                    padding: isMobile ? '0.875rem 1.375rem' : '0.75rem 1.375rem',
-                    fontSize: isMobile ? '0.875rem' : '0.8125rem',
+                    padding: '0.75rem 1.375rem',
+                    fontSize: '0.8125rem',
                     fontWeight: '500',
                     color: 'rgba(45, 45, 55, 0.95)',
                     background: isButtonHovered
                       ? `rgba(${lavenderRgb}, 0.25)`
                       : `rgba(${lavenderRgb}, 0.15)`,
                     border: `1px solid rgba(${lavenderRgb}, ${isButtonHovered ? '0.5' : '0.35'})`,
-                    borderRadius: isMobile ? '14px' : '14px',
+                    borderRadius: '14px',
                     textDecoration: 'none',
                     transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
                     transform: isButtonHovered ? 'translateY(-1px)' : 'translateY(0)',

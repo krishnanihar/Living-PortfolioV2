@@ -58,8 +58,7 @@ export function MetamorphicHeroCard() {
   return (
     <div
       style={{
-        minHeight: isMobile ? 'min(65vh, 540px)' : '75vh',
-        height: isMobile ? 'auto' : '75vh',
+        height: isMobile ? '85vh' : '75vh',
         width: '100%',
         position: 'relative',
         overflow: 'hidden',
@@ -160,19 +159,17 @@ export function MetamorphicHeroCard() {
                 data-atropos-offset="4"
                 style={{
                   position: 'absolute',
-                  bottom: isMobile ? '1rem' : '3%',
-                  left: isMobile ? '1rem' : 'auto',
-                  right: isMobile ? '1rem' : '2%',
+                  bottom: isMobile ? '6%' : '3%',
+                  left: isMobile ? '0.5rem' : 'auto',
+                  right: isMobile ? '0.5rem' : '2%',
                   width: isMobile ? 'auto' : 'clamp(340px, 32vw, 420px)',
                   zIndex: 10,
-                  background: isMobile
-                    ? `linear-gradient(135deg, var(--glass-06) 0%, var(--glass-04) 50%, var(--glass-05) 100%), var(--overlay-70)`
-                    : `linear-gradient(135deg, var(--glass-04) 0%, var(--glass-02) 50%, var(--glass-03) 100%), var(--overlay-65)`,
-                  backdropFilter: isMobile ? 'blur(48px) saturate(200%)' : 'blur(40px) saturate(180%)',
-                  WebkitBackdropFilter: isMobile ? 'blur(48px) saturate(200%)' : 'blur(40px) saturate(180%)',
-                  borderRadius: isMobile ? '20px' : '24px',
+                  background: `linear-gradient(135deg, var(--glass-04) 0%, var(--glass-02) 50%, var(--glass-03) 100%), var(--overlay-65)`,
+                  backdropFilter: 'blur(40px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+                  borderRadius: '24px',
                   border: `1px solid rgba(${brandRgb}, 0.2)`,
-                  padding: isMobile ? '1.5rem' : '2.25rem',
+                  padding: isMobile ? '1.75rem' : '2.25rem',
                   boxShadow: `
                     0 32px 64px var(--overlay-20),
                     0 0 0 1px var(--glass-05),
@@ -193,19 +190,19 @@ export function MetamorphicHeroCard() {
                 >
                   <span
                     style={{
-                      fontSize: isMobile ? '0.75rem' : '0.7rem',
+                      fontSize: '0.7rem',
                       fontWeight: '600',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.12em',
+                      letterSpacing: '0.15em',
                       color: 'var(--text-50)',
                     }}
                   >
                     Immersive Installation
                   </span>
-                  <span style={{ color: 'var(--text-25)', fontSize: isMobile ? '0.7rem' : '0.65rem' }}>•</span>
+                  <span style={{ color: 'var(--text-25)', fontSize: '0.65rem' }}>•</span>
                   <span
                     style={{
-                      fontSize: isMobile ? '0.75rem' : '0.7rem',
+                      fontSize: '0.7rem',
                       fontWeight: '500',
                       color: 'var(--text-50)',
                       letterSpacing: '0.05em',
@@ -244,9 +241,9 @@ export function MetamorphicHeroCard() {
                 {/* Description */}
                 <p
                   style={{
-                    fontSize: '0.9375rem',
+                    fontSize: isMobile ? '0.875rem' : '0.9375rem',
                     fontWeight: '300',
-                    lineHeight: isMobile ? '1.65' : '1.7',
+                    lineHeight: '1.7',
                     color: 'var(--text-60)',
                     margin: '0 0 1.25rem 0',
                   }}
@@ -259,7 +256,7 @@ export function MetamorphicHeroCard() {
                   style={{
                     display: 'flex',
                     flexWrap: 'wrap',
-                    gap: isMobile ? '0.5rem' : '0.4rem',
+                    gap: '0.4rem',
                     marginBottom: '1.5rem',
                   }}
                 >
@@ -267,13 +264,13 @@ export function MetamorphicHeroCard() {
                     <span
                       key={i}
                       style={{
-                        fontSize: isMobile ? '0.75rem' : '0.65rem',
+                        fontSize: '0.65rem',
                         fontWeight: '500',
                         color: 'var(--text-50)',
-                        background: 'var(--glass-06)',
-                        border: '1px solid var(--text-12)',
-                        borderRadius: isMobile ? '8px' : '6px',
-                        padding: isMobile ? '0.4rem 0.75rem' : '0.35rem 0.65rem',
+                        background: 'var(--glass-05)',
+                        border: '1px solid var(--text-10)',
+                        borderRadius: '6px',
+                        padding: '0.35rem 0.65rem',
                       }}
                     >
                       {tag}
@@ -293,8 +290,7 @@ export function MetamorphicHeroCard() {
                     justifyContent: 'center',
                     gap: '0.5rem',
                     width: '100%',
-                    minHeight: '44px',
-                    fontSize: isMobile ? '0.875rem' : '0.8125rem',
+                    fontSize: '0.8125rem',
                     fontWeight: '500',
                     color: 'var(--text-95)',
                     background: isButtonHovered
@@ -303,8 +299,8 @@ export function MetamorphicHeroCard() {
                     border: isButtonHovered
                       ? `1px solid rgba(${brandRgb}, 0.3)`
                       : '1px solid var(--text-15)',
-                    borderRadius: isMobile ? '14px' : '12px',
-                    padding: isMobile ? '0.875rem 1.25rem' : '0.75rem 1.25rem',
+                    borderRadius: '12px',
+                    padding: '0.75rem 1.25rem',
                     transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
                     cursor: 'pointer',
                     textDecoration: 'none',
