@@ -395,6 +395,7 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
   }, [selectedNodeId, onNodeClick, onNodeHover, getConnectedIds, findHitNode]);
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    e.preventDefault(); // Bypass 300ms tap delay
     if (e.touches.length === 1) {
       handleInteraction(e.touches[0].clientX, e.touches[0].clientY);
     }
@@ -425,6 +426,7 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
           position: 'absolute',
           inset: 0,
           cursor: 'pointer',
+          touchAction: 'manipulation',
         }}
         onClick={handleClick}
         onTouchStart={handleTouchStart}
