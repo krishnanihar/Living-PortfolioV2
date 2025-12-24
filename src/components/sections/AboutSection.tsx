@@ -520,7 +520,9 @@ export function AboutSection() {
               }}>
                 Each chapter taught me a different language. Together, they made me fluent in building systems that scale.
               </p>
-              <div style={{
+              <div
+                className={isMobile ? 'hide-scrollbar' : ''}
+                style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: isMobile ? '0.5rem' : '0.75rem',
@@ -528,6 +530,9 @@ export function AboutSection() {
                 WebkitOverflowScrolling: 'touch',
                 paddingBottom: isMobile ? '0.5rem' : '0',
                 scrollSnapType: isMobile ? 'x mandatory' : 'none',
+                touchAction: isMobile ? 'pan-x' : 'auto',
+                paddingLeft: isMobile ? '0.5rem' : '0',
+                paddingRight: isMobile ? '0.5rem' : '0',
               }}>
                 {journeyMilestones.map((milestone, index) => (
                   <React.Fragment key={milestone.id}>
@@ -538,7 +543,10 @@ export function AboutSection() {
                         flexDirection: 'column',
                         alignItems: 'center',
                         gap: '0.75rem',
-                        flex: 1,
+                        flex: isMobile ? '0 0 auto' : 1,
+                        minWidth: isMobile ? '100px' : 'auto',
+                        flexShrink: 0,
+                        scrollSnapAlign: isMobile ? 'center' : undefined,
                         cursor: 'pointer',
                         transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                       }}
@@ -570,7 +578,6 @@ export function AboutSection() {
                           width: isMobile ? '64px' : 'clamp(80px, 9vw, 96px)',
                           height: isMobile ? '64px' : 'clamp(80px, 9vw, 96px)',
                           flexShrink: 0,
-                          scrollSnapAlign: isMobile ? 'center' : 'none',
                           padding: '14px',
                           borderRadius: '18px',
                           background: activeTimeline === milestone.id

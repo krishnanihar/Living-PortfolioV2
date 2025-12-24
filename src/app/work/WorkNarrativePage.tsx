@@ -774,6 +774,7 @@ export function WorkNarrativePage() {
           <>
             <div
               ref={carouselRef}
+              className="hide-scrollbar"
               style={{
                 display: 'flex',
                 gap: '1rem',
@@ -782,6 +783,11 @@ export function WorkNarrativePage() {
                 scrollbarWidth: 'none',
                 msOverflowStyle: 'none',
                 WebkitOverflowScrolling: 'touch',
+                touchAction: 'pan-x',
+                paddingLeft: '1rem',
+                paddingRight: '1rem',
+                marginLeft: '-1rem',
+                marginRight: '-1rem',
               }}
             >
               {impactCards.map((card, index) => {
@@ -1064,6 +1070,7 @@ export function WorkNarrativePage() {
           <>
             <div
               ref={clearaCarouselRef}
+              className="hide-scrollbar"
               style={{
                 display: 'flex',
                 gap: '1rem',
@@ -1072,6 +1079,11 @@ export function WorkNarrativePage() {
                 scrollbarWidth: 'none',
                 msOverflowStyle: 'none',
                 WebkitOverflowScrolling: 'touch',
+                touchAction: 'pan-x',
+                paddingLeft: '1rem',
+                paddingRight: '1rem',
+                marginLeft: '-1rem',
+                marginRight: '-1rem',
               }}
             >
               {clearaImpactCards.map((card) => (
@@ -1335,6 +1347,7 @@ export function WorkNarrativePage() {
           <>
             <div
               ref={metamorphicCarouselRef}
+              className="hide-scrollbar"
               style={{
                 display: 'flex',
                 gap: '1rem',
@@ -1343,6 +1356,11 @@ export function WorkNarrativePage() {
                 scrollbarWidth: 'none',
                 msOverflowStyle: 'none',
                 WebkitOverflowScrolling: 'touch',
+                touchAction: 'pan-x',
+                paddingLeft: '1rem',
+                paddingRight: '1rem',
+                marginLeft: '-1rem',
+                marginRight: '-1rem',
               }}
             >
               {metamorphicImpactCards.map((card) => (
@@ -1608,6 +1626,7 @@ export function WorkNarrativePage() {
           <>
             <div
               ref={latentCarouselRef}
+              className="hide-scrollbar"
               style={{
                 display: 'flex',
                 gap: '1rem',
@@ -1616,6 +1635,11 @@ export function WorkNarrativePage() {
                 scrollbarWidth: 'none',
                 msOverflowStyle: 'none',
                 WebkitOverflowScrolling: 'touch',
+                touchAction: 'pan-x',
+                paddingLeft: '1rem',
+                paddingRight: '1rem',
+                marginLeft: '-1rem',
+                marginRight: '-1rem',
               }}
             >
               {latentSpaceImpactCards.map((card) => (
