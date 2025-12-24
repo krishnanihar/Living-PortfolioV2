@@ -530,7 +530,7 @@ export function AboutSection() {
                 WebkitOverflowScrolling: 'touch',
                 paddingBottom: isMobile ? '0.5rem' : '0',
                 scrollSnapType: isMobile ? 'x mandatory' : 'none',
-                touchAction: isMobile ? 'pan-x' : 'auto',
+                overscrollBehaviorX: isMobile ? 'contain' : 'auto',
                 paddingLeft: isMobile ? '0.5rem' : '0',
                 paddingRight: isMobile ? '0.5rem' : '0',
               }}>
