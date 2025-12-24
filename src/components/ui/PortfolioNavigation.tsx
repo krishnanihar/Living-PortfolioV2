@@ -240,7 +240,7 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
           height: '100%',
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: '0 clamp(1.5rem, 3vw, 2.5rem)',
+          padding: '0 clamp(1rem, 3vw, 2.5rem)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
