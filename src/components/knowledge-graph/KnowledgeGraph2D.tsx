@@ -90,8 +90,8 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
   // Compute static orbital positions
   const computePositions = useCallback(() => {
     const centerX = dimensions.width / 2;
-    // Shift center up by 40px on mobile to make room for bottom nav
-    const centerY = dimensions.height / 2 - 40;
+    // Shift center up by 60px on mobile to make room for bottom nav
+    const centerY = dimensions.height / 2 - 60;
     const positions = new Map<string, Position>();
     const floatOffsets = new Map<string, FloatOffset>();
 
@@ -439,7 +439,7 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
             exit={{ opacity: 0, y: 10 }}
             style={{
               position: 'absolute',
-              bottom: 'calc(64px + env(safe-area-inset-bottom) + 4.5rem)',
+              bottom: 'calc(64px + env(safe-area-inset-bottom) + 6.5rem)',
               left: '50%',
               transform: 'translateX(-50%)',
               background: 'var(--glass-10)',
