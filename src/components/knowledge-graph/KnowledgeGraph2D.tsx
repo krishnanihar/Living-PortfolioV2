@@ -2,14 +2,24 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { knowledgeGraphData } from '@/data/knowledge-graph';
+import { animate, stagger } from 'animejs';
+import { knowledgeGraphData, domainNodes } from '@/data/knowledge-graph';
 import { KnowledgeNode } from '@/types/knowledge-graph';
 
 interface Position {
   x: number;
   y: number;
-  vx: number;
-  vy: number;
+  baseX: number;
+  baseY: number;
+  scale: number;
+  opacity: number;
+}
+
+interface FloatOffset {
+  phaseX: number;
+  phaseY: number;
+  speedX: number;
+  speedY: number;
 }
 
 interface KnowledgeGraph2DProps {
@@ -17,33 +27,35 @@ interface KnowledgeGraph2DProps {
   onNodeClick?: (node: KnowledgeNode) => void;
 }
 
-// Node size multiplier for 2D
+// Node size multiplier
 const NODE_SIZE_MULTIPLIER = 8;
 
-// Color mapping by node type
+// Get node color
 const getNodeColor = (node: KnowledgeNode): string => {
-  return node.color || 'var(--text-50)';
+  return node.color || 'rgba(255, 255, 255, 0.5)';
+};
+
+// Parse hex color to rgba
+const hexToRgba = (hex: string, alpha: number): string => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (!result) return `rgba(255, 255, 255, ${alpha})`;
+  return `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${alpha})`;
 };
 
 export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [dimensions, setDimensions] = useState({ width: 400, height: 600 });
-  const [positions, setPositions] = useState<Map<string, Position>>(new Map());
-  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
-  const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const animationRef = useRef<number | null>(null);
-  const isInitialized = useRef(false);
+  const positionsRef = useRef<Map<string, Position>>(new Map());
+  const floatOffsetsRef = useRef<Map<string, FloatOffset>>(new Map());
+  const nodeAnimationRef = useRef<{ scale: number; opacity: number }[]>([]);
 
-  // Mobile detection
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  const [dimensions, setDimensions] = useState({ width: 400, height: 600 });
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  // Initialize dimensions
+  // Initialize dimensions and canvas
   useEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
@@ -57,159 +69,120 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
     return () => window.removeEventListener('resize', updateDimensions);
   }, []);
 
-  // Initialize positions with force-directed layout
+  // Initialize canvas with device pixel ratio
   useEffect(() => {
-    if (isInitialized.current || dimensions.width === 0) return;
-    isInitialized.current = true;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-    const centerX = dimensions.width / 2;
-    const centerY = dimensions.height / 2;
-    const initialPositions = new Map<string, Position>();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = dimensions.width * dpr;
+    canvas.height = dimensions.height * dpr;
+    canvas.style.width = `${dimensions.width}px`;
+    canvas.style.height = `${dimensions.height}px`;
 
-    // Position nodes in a circle initially, with core at center
-    knowledgeGraphData.nodes.forEach((node, index) => {
-      if (node.type === 'core') {
-        initialPositions.set(node.id, {
-          x: centerX,
-          y: centerY,
-          vx: 0,
-          vy: 0,
-        });
-      } else {
-        const angle = (index / knowledgeGraphData.nodes.length) * Math.PI * 2;
-        const radius = Math.min(dimensions.width, dimensions.height) * 0.35;
-        initialPositions.set(node.id, {
-          x: centerX + Math.cos(angle) * radius + (Math.random() - 0.5) * 50,
-          y: centerY + Math.sin(angle) * radius + (Math.random() - 0.5) * 50,
-          vx: 0,
-          vy: 0,
-        });
-      }
-    });
-
-    setPositions(initialPositions);
-
-    // Run force simulation
-    let iteration = 0;
-    const maxIterations = 200;
-
-    const simulate = () => {
-      if (iteration >= maxIterations) {
-        if (animationRef.current) {
-          cancelAnimationFrame(animationRef.current);
-        }
-        return;
-      }
-
-      setPositions((prevPositions) => {
-        const newPositions = new Map(prevPositions);
-        const alpha = 1 - iteration / maxIterations;
-        const nodes = knowledgeGraphData.nodes;
-        const edges = knowledgeGraphData.edges;
-
-        // Apply forces
-        nodes.forEach((node) => {
-          const pos = newPositions.get(node.id);
-          if (!pos) return;
-
-          let fx = 0;
-          let fy = 0;
-
-          // Repulsion from all other nodes
-          nodes.forEach((otherNode) => {
-            if (node.id === otherNode.id) return;
-            const otherPos = newPositions.get(otherNode.id);
-            if (!otherPos) return;
-
-            const dx = pos.x - otherPos.x;
-            const dy = pos.y - otherPos.y;
-            const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-            const force = 2000 / (dist * dist);
-
-            fx += (dx / dist) * force * alpha;
-            fy += (dy / dist) * force * alpha;
-          });
-
-          // Attraction along edges
-          edges.forEach((edge) => {
-            let targetId: string | null = null;
-            if (edge.source === node.id) targetId = edge.target;
-            if (edge.target === node.id) targetId = edge.source;
-            if (!targetId) return;
-
-            const targetPos = newPositions.get(targetId);
-            if (!targetPos) return;
-
-            const dx = targetPos.x - pos.x;
-            const dy = targetPos.y - pos.y;
-            const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-            const force = dist * 0.01 * edge.strength;
-
-            fx += dx * force * alpha;
-            fy += dy * force * alpha;
-          });
-
-          // Center gravity
-          const dx = centerX - pos.x;
-          const dy = centerY - pos.y;
-          fx += dx * 0.001 * alpha;
-          fy += dy * 0.001 * alpha;
-
-          // Apply velocity
-          pos.vx = (pos.vx + fx) * 0.6;
-          pos.vy = (pos.vy + fy) * 0.6;
-
-          // Update position (keep core node fixed)
-          if (node.type !== 'core') {
-            pos.x += pos.vx;
-            pos.y += pos.vy;
-
-            // Boundary constraints
-            // More padding on mobile to keep nodes away from edges (prevents label clipping)
-            const padding = isMobile ? 70 : 40;
-            pos.x = Math.max(padding, Math.min(dimensions.width - padding, pos.x));
-            pos.y = Math.max(padding, Math.min(dimensions.height - padding, pos.y));
-          }
-
-          newPositions.set(node.id, pos);
-        });
-
-        return newPositions;
-      });
-
-      iteration++;
-      animationRef.current = requestAnimationFrame(simulate);
-    };
-
-    simulate();
-
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      ctx.scale(dpr, dpr);
+      contextRef.current = ctx;
+    }
   }, [dimensions]);
 
-  // Handle node tap
-  const handleNodeClick = useCallback(
-    (node: KnowledgeNode) => {
-      setSelectedNodeId((prev) => (prev === node.id ? null : node.id));
-      onNodeClick?.(node);
-    },
-    [onNodeClick]
-  );
+  // Compute static orbital positions
+  const computePositions = useCallback(() => {
+    const centerX = dimensions.width / 2;
+    const centerY = dimensions.height / 2;
+    const positions = new Map<string, Position>();
+    const floatOffsets = new Map<string, FloatOffset>();
 
-  // Handle node hover
-  const handleNodeHover = useCallback(
-    (node: KnowledgeNode | null) => {
-      setHoveredNodeId(node?.id || null);
-      onNodeHover?.(node);
-    },
-    [onNodeHover]
-  );
+    // Separate nodes by type for orbital rings
+    const coreNode = knowledgeGraphData.nodes.find(n => n.type === 'core');
+    const domains = knowledgeGraphData.nodes.filter(n => n.type === 'domain');
+    const skills = knowledgeGraphData.nodes.filter(n => n.type === 'skill');
+    const projects = knowledgeGraphData.nodes.filter(n => n.type === 'project');
+    const tools = knowledgeGraphData.nodes.filter(n => n.type === 'tool');
+    const influences = knowledgeGraphData.nodes.filter(n => n.type === 'influence');
+
+    // Ring radii based on container size
+    const innerRadius = Math.min(dimensions.width, dimensions.height) * 0.18;
+    const middleRadius = Math.min(dimensions.width, dimensions.height) * 0.32;
+    const outerRadius = Math.min(dimensions.width, dimensions.height) * 0.42;
+
+    // Helper to place nodes in a ring
+    const placeInRing = (nodes: KnowledgeNode[], radius: number, startAngle = -Math.PI / 2) => {
+      nodes.forEach((node, i) => {
+        const angle = startAngle + (i / nodes.length) * Math.PI * 2;
+        const x = centerX + Math.cos(angle) * radius;
+        const y = centerY + Math.sin(angle) * radius;
+
+        positions.set(node.id, {
+          x, y, baseX: x, baseY: y, scale: 0, opacity: 0
+        });
+
+        // Random float offset for organic motion
+        floatOffsets.set(node.id, {
+          phaseX: Math.random() * Math.PI * 2,
+          phaseY: Math.random() * Math.PI * 2,
+          speedX: 0.3 + Math.random() * 0.4,
+          speedY: 0.2 + Math.random() * 0.3,
+        });
+      });
+    };
+
+    // Core at center
+    if (coreNode) {
+      positions.set(coreNode.id, {
+        x: centerX, y: centerY, baseX: centerX, baseY: centerY, scale: 0, opacity: 0
+      });
+      floatOffsets.set(coreNode.id, {
+        phaseX: 0, phaseY: 0, speedX: 0, speedY: 0 // Core doesn't float
+      });
+    }
+
+    // Domains in inner ring
+    placeInRing(domains, innerRadius, -Math.PI / 2);
+
+    // Skills and projects in middle ring (interleaved)
+    const middleNodes = [...skills.slice(0, 12), ...projects];
+    placeInRing(middleNodes, middleRadius, -Math.PI / 3);
+
+    // Tools, influences, remaining skills in outer ring
+    const outerNodes = [...tools, ...influences, ...skills.slice(12)];
+    placeInRing(outerNodes, outerRadius, Math.PI / 6);
+
+    positionsRef.current = positions;
+    floatOffsetsRef.current = floatOffsets;
+
+    // Initialize animation state for each node
+    nodeAnimationRef.current = knowledgeGraphData.nodes.map(() => ({
+      scale: 0,
+      opacity: 0
+    }));
+  }, [dimensions]);
+
+  // Compute positions when dimensions change
+  useEffect(() => {
+    if (dimensions.width > 0) {
+      computePositions();
+      setIsInitialized(true);
+    }
+  }, [dimensions, computePositions]);
+
+  // Entrance animation with Anime.js
+  useEffect(() => {
+    if (!isInitialized || nodeAnimationRef.current.length === 0) return;
+
+    // Animate all nodes from center with stagger
+    animate(nodeAnimationRef.current, {
+      scale: [0, 1],
+      opacity: [0, 1],
+      delay: stagger(25),
+      duration: 800,
+      ease: 'outElastic(1, 0.6)',
+    });
+  }, [isInitialized]);
 
   // Get connected node IDs
-  const getConnectedIds = (nodeId: string): Set<string> => {
+  const getConnectedIds = useCallback((nodeId: string): Set<string> => {
     const connected = new Set<string>();
     connected.add(nodeId);
     knowledgeGraphData.edges.forEach((edge) => {
@@ -217,10 +190,223 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
       if (edge.target === nodeId) connected.add(edge.source);
     });
     return connected;
-  };
+  }, []);
 
-  const activeNodeId = hoveredNodeId || selectedNodeId;
-  const connectedIds = activeNodeId ? getConnectedIds(activeNodeId) : null;
+  // Render loop
+  useEffect(() => {
+    if (!contextRef.current || !isInitialized) return;
+
+    const render = () => {
+      const ctx = contextRef.current;
+      if (!ctx) return;
+
+      const time = performance.now() * 0.001;
+      ctx.clearRect(0, 0, dimensions.width, dimensions.height);
+
+      const connectedIds = selectedNodeId ? getConnectedIds(selectedNodeId) : null;
+      const nodes = knowledgeGraphData.nodes;
+      const edges = knowledgeGraphData.edges;
+
+      // Update positions with floating motion
+      nodes.forEach((node, i) => {
+        const pos = positionsRef.current.get(node.id);
+        const offset = floatOffsetsRef.current.get(node.id);
+        const animState = nodeAnimationRef.current[i];
+        if (!pos || !offset || !animState) return;
+
+        // Apply floating motion (not for core node)
+        if (node.type !== 'core') {
+          const floatX = Math.sin(time * offset.speedX + offset.phaseX) * 1.2;
+          const floatY = Math.cos(time * offset.speedY + offset.phaseY) * 0.8;
+          pos.x = pos.baseX + floatX;
+          pos.y = pos.baseY + floatY;
+        }
+
+        pos.scale = animState.scale;
+        pos.opacity = animState.opacity;
+      });
+
+      // Draw edges
+      edges.forEach(edge => {
+        const sourcePos = positionsRef.current.get(edge.source);
+        const targetPos = positionsRef.current.get(edge.target);
+        if (!sourcePos || !targetPos) return;
+        if (sourcePos.opacity < 0.1 || targetPos.opacity < 0.1) return;
+
+        const isHighlighted = connectedIds?.has(edge.source) && connectedIds?.has(edge.target);
+        const isDimmed = connectedIds !== null && !isHighlighted;
+
+        ctx.beginPath();
+        ctx.moveTo(sourcePos.x, sourcePos.y);
+        ctx.lineTo(targetPos.x, targetPos.y);
+
+        if (isHighlighted) {
+          ctx.strokeStyle = 'rgba(218, 14, 41, 0.4)';
+          ctx.lineWidth = 1.5;
+        } else {
+          ctx.strokeStyle = isDimmed
+            ? 'rgba(255, 255, 255, 0.02)'
+            : 'rgba(255, 255, 255, 0.08)';
+          ctx.lineWidth = 0.5;
+        }
+
+        ctx.stroke();
+      });
+
+      // Draw nodes
+      nodes.forEach((node, i) => {
+        const pos = positionsRef.current.get(node.id);
+        const animState = nodeAnimationRef.current[i];
+        if (!pos || !animState || pos.opacity < 0.01) return;
+
+        const isActive = selectedNodeId === node.id;
+        const isConnected = connectedIds?.has(node.id);
+        const isDimmed = connectedIds !== null && !isConnected;
+        const baseRadius = node.size * NODE_SIZE_MULTIPLIER;
+        const radius = baseRadius * pos.scale;
+
+        // Outer glow for active/core nodes
+        if (isActive || node.type === 'core') {
+          const glowRadius = radius * 2;
+          const pulseScale = node.type === 'core' ? 1 + Math.sin(time * 0.8) * 0.1 : 1;
+
+          const gradient = ctx.createRadialGradient(
+            pos.x, pos.y, radius * 0.5,
+            pos.x, pos.y, glowRadius * pulseScale
+          );
+          gradient.addColorStop(0, hexToRgba(node.color, 0.3));
+          gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+          ctx.beginPath();
+          ctx.arc(pos.x, pos.y, glowRadius * pulseScale, 0, Math.PI * 2);
+          ctx.fillStyle = gradient;
+          ctx.fill();
+        }
+
+        // Main circle
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = node.color;
+        ctx.globalAlpha = isDimmed ? 0.2 : (isActive ? 1 : 0.75) * pos.opacity;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        // Inner highlight
+        if (isActive) {
+          ctx.beginPath();
+          ctx.arc(pos.x, pos.y, radius * 0.6, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+          ctx.fill();
+        }
+
+        // Label for active node
+        if (isActive && node.size >= 0.5) {
+          ctx.font = '500 11px "DM Sans", system-ui, sans-serif';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'top';
+          ctx.fillText(node.label, pos.x, pos.y + radius + 8);
+        }
+
+        // Label for core node always visible
+        if (node.type === 'core' && !isActive) {
+          ctx.font = '500 12px "DM Sans", system-ui, sans-serif';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'top';
+          ctx.fillText(node.label, pos.x, pos.y + radius + 10);
+        }
+      });
+
+      animationRef.current = requestAnimationFrame(render);
+    };
+
+    render();
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [dimensions, isInitialized, selectedNodeId, getConnectedIds]);
+
+  // Find hit node helper
+  const findHitNode = useCallback((x: number, y: number): KnowledgeNode | null => {
+    let hitNode: KnowledgeNode | null = null;
+    let minDist = Infinity;
+
+    for (const node of knowledgeGraphData.nodes) {
+      const pos = positionsRef.current.get(node.id);
+      if (!pos) continue;
+
+      const dist = Math.sqrt((pos.x - x) ** 2 + (pos.y - y) ** 2);
+      const hitRadius = Math.max(node.size * NODE_SIZE_MULTIPLIER, 22); // 44px min tap target
+
+      if (dist < hitRadius && dist < minDist) {
+        minDist = dist;
+        hitNode = node;
+      }
+    }
+
+    return hitNode;
+  }, []);
+
+  // Touch/click handling
+  const handleInteraction = useCallback((clientX: number, clientY: number) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+
+    const hitNode = findHitNode(x, y);
+
+    if (hitNode) {
+      const newSelectedId = selectedNodeId === hitNode.id ? null : hitNode.id;
+      setSelectedNodeId(newSelectedId);
+
+      if (newSelectedId) {
+        onNodeClick?.(hitNode);
+        onNodeHover?.(hitNode);
+
+        // Animate connected nodes
+        const connectedIds = getConnectedIds(hitNode.id);
+        knowledgeGraphData.nodes.forEach((node, i) => {
+          const animState = nodeAnimationRef.current[i];
+          if (!animState) return;
+
+          if (connectedIds.has(node.id)) {
+            animate(animState, {
+              scale: [animState.scale, 1.15, 1],
+              duration: 400,
+              ease: 'outQuad',
+            });
+          }
+        });
+      } else {
+        onNodeHover?.(null);
+      }
+    } else {
+      setSelectedNodeId(null);
+      onNodeHover?.(null);
+    }
+  }, [selectedNodeId, onNodeClick, onNodeHover, getConnectedIds, findHitNode]);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      handleInteraction(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, [handleInteraction]);
+
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    handleInteraction(e.clientX, e.clientY);
+  }, [handleInteraction]);
+
+  // Get selected node for tooltip
+  const selectedNode = selectedNodeId
+    ? knowledgeGraphData.nodes.find(n => n.id === selectedNodeId)
+    : null;
 
   return (
     <div
@@ -232,114 +418,20 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
         touchAction: 'manipulation',
       }}
     >
-      <svg
-        width={dimensions.width}
-        height={dimensions.height}
+      <canvas
+        ref={canvasRef}
         style={{
           position: 'absolute',
           inset: 0,
+          cursor: 'pointer',
         }}
-      >
-        {/* Edges */}
-        <g>
-          {knowledgeGraphData.edges.map((edge) => {
-            const sourcePos = positions.get(edge.source);
-            const targetPos = positions.get(edge.target);
-            if (!sourcePos || !targetPos) return null;
-
-            const isHighlighted =
-              connectedIds?.has(edge.source) && connectedIds?.has(edge.target);
-            const isDimmed = connectedIds !== null && !isHighlighted;
-
-            return (
-              <line
-                key={`${edge.source}-${edge.target}`}
-                x1={sourcePos.x}
-                y1={sourcePos.y}
-                x2={targetPos.x}
-                y2={targetPos.y}
-                stroke={isHighlighted ? 'var(--text-40)' : 'var(--text-15)'}
-                strokeWidth={isHighlighted ? 1.5 : 0.5}
-                strokeDasharray={isHighlighted ? 'none' : '4 4'}
-                opacity={isDimmed ? 0.2 : 1}
-                style={{ transition: 'all 0.3s ease' }}
-              />
-            );
-          })}
-        </g>
-
-        {/* Nodes */}
-        <g>
-          {knowledgeGraphData.nodes.map((node) => {
-            const pos = positions.get(node.id);
-            if (!pos) return null;
-
-            const isActive = activeNodeId === node.id;
-            const isConnected = connectedIds?.has(node.id);
-            const isDimmed = connectedIds !== null && !isConnected;
-            const radius = node.size * NODE_SIZE_MULTIPLIER;
-
-            return (
-              <g
-                key={node.id}
-                transform={`translate(${pos.x}, ${pos.y})`}
-                style={{ cursor: 'pointer' }}
-                onClick={() => handleNodeClick(node)}
-                onPointerEnter={() => handleNodeHover(node)}
-                onPointerLeave={() => handleNodeHover(null)}
-              >
-                {/* Glow effect for active/hovered */}
-                {isActive && (
-                  <circle
-                    r={radius + 8}
-                    fill={getNodeColor(node)}
-                    opacity={0.2}
-                    style={{ filter: 'blur(8px)' }}
-                  />
-                )}
-
-                {/* Main node circle */}
-                <circle
-                  r={radius}
-                  fill={getNodeColor(node)}
-                  opacity={isDimmed ? 0.3 : isActive ? 1 : 0.8}
-                  style={{ transition: 'all 0.3s ease' }}
-                />
-
-                {/* Inner highlight */}
-                <circle
-                  r={radius * 0.6}
-                  fill="var(--text-10)"
-                  opacity={isActive ? 0.3 : 0}
-                  style={{ transition: 'opacity 0.3s ease' }}
-                />
-
-                {/* Label - Always show for core node, others only on interaction (mobile) or always (desktop) */}
-                {node.size >= 0.8 && !isDimmed && (node.type === 'core' || !isMobile || isActive) && (
-                  <text
-                    y={radius + 14}
-                    textAnchor="middle"
-                    fill="var(--text-70)"
-                    fontSize={node.type === 'core' ? 12 : 10}
-                    fontWeight={node.type === 'core' ? 500 : 400}
-                    opacity={isActive ? 1 : 0.7}
-                    style={{
-                      pointerEvents: 'none',
-                      transition: 'opacity 0.3s ease',
-                    }}
-                  >
-                    {node.label}
-                  </text>
-                )}
-              </g>
-            );
-          })}
-        </g>
-      </svg>
+        onClick={handleClick}
+        onTouchStart={handleTouchStart}
+      />
 
       {/* Selected node info tooltip */}
       <AnimatePresence>
-        {selectedNodeId && (
+        {selectedNode && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -357,38 +449,29 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
               border: '1px solid var(--text-10)',
               maxWidth: '280px',
               textAlign: 'center',
+              pointerEvents: 'none',
             }}
           >
-            {(() => {
-              const node = knowledgeGraphData.nodes.find(
-                (n) => n.id === selectedNodeId
-              );
-              if (!node) return null;
-              return (
-                <>
-                  <p
-                    style={{
-                      fontSize: '0.875rem',
-                      color: 'var(--text-90)',
-                      fontWeight: 500,
-                      marginBottom: node.description ? '0.25rem' : 0,
-                    }}
-                  >
-                    {node.label}
-                  </p>
-                  {node.description && (
-                    <p
-                      style={{
-                        fontSize: '0.75rem',
-                        color: 'var(--text-50)',
-                      }}
-                    >
-                      {node.description}
-                    </p>
-                  )}
-                </>
-              );
-            })()}
+            <p
+              style={{
+                fontSize: '0.875rem',
+                color: 'var(--text-90)',
+                fontWeight: 500,
+                marginBottom: selectedNode.description ? '0.25rem' : 0,
+              }}
+            >
+              {selectedNode.label}
+            </p>
+            {selectedNode.description && (
+              <p
+                style={{
+                  fontSize: '0.75rem',
+                  color: 'var(--text-50)',
+                }}
+              >
+                {selectedNode.description}
+              </p>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
