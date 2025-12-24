@@ -48,9 +48,30 @@ export function MobileBottomNav() {
   };
 
   return (
-    <nav
-      className="mobile-bottom-nav"
-      style={{
+    <>
+      <style jsx global>{`
+        @keyframes auroraDrift {
+          0%, 100% {
+            background-position: 0% 50%;
+            filter: blur(12px) saturate(1);
+          }
+          25% {
+            background-position: 100% 25%;
+            filter: blur(10px) saturate(1.2);
+          }
+          50% {
+            background-position: 100% 75%;
+            filter: blur(12px) saturate(1);
+          }
+          75% {
+            background-position: 0% 100%;
+            filter: blur(10px) saturate(1.2);
+          }
+        }
+      `}</style>
+      <nav
+        className="mobile-bottom-nav"
+        style={{
         position: 'fixed',
         bottom: 0,
         left: 0,
@@ -73,6 +94,7 @@ export function MobileBottomNav() {
 
         // Common styles for nav items
         const itemStyle = {
+          position: 'relative' as const,
           display: 'flex',
           flexDirection: 'column' as const,
           alignItems: 'center',
@@ -87,13 +109,16 @@ export function MobileBottomNav() {
           backgroundColor: active
             ? item.isChat
               ? 'rgba(218, 14, 41, 0.15)' // Brand red glow for active chat
-              : 'var(--glass-08)'
+              : 'transparent' // Remove background, aurora glow will handle it
             : 'transparent',
           border: 'none',
           cursor: 'pointer',
+          overflow: 'visible' as const,
         };
 
         const iconStyle = {
+          position: 'relative' as const,
+          zIndex: 1,
           color: active
             ? item.isChat
               ? 'rgba(218, 14, 41, 1)' // Brand red for active chat
@@ -103,6 +128,8 @@ export function MobileBottomNav() {
         };
 
         const labelStyle = {
+          position: 'relative' as const,
+          zIndex: 1,
           fontSize: '10px',
           fontWeight: active ? 500 : 400,
           color: active
@@ -113,6 +140,23 @@ export function MobileBottomNav() {
           fontFamily: "'Space Grotesk', system-ui, sans-serif",
           letterSpacing: '0.02em',
           transition: 'all 0.2s ease',
+        };
+
+        // Aurora glow style for active non-chat items
+        const auroraGlowStyle = {
+          position: 'absolute' as const,
+          inset: '-8px',
+          borderRadius: '16px',
+          background: `
+            radial-gradient(ellipse at 20% 50%, var(--text-20), transparent 60%),
+            radial-gradient(ellipse at 80% 50%, var(--text-15), transparent 60%),
+            radial-gradient(ellipse at 50% 20%, var(--text-12), transparent 50%)
+          `,
+          backgroundSize: '200% 200%',
+          animation: 'auroraDrift 4s ease-in-out infinite',
+          filter: 'blur(12px)',
+          pointerEvents: 'none' as const,
+          zIndex: 0,
         };
 
         // Chat button renders as button, not Link
@@ -142,12 +186,15 @@ export function MobileBottomNav() {
               }
             }}
           >
+            {/* Aurora glow for active non-chat items */}
+            {active && <div style={auroraGlowStyle} />}
             <Icon size={22} style={iconStyle} />
             <span style={labelStyle}>{item.name}</span>
           </Link>
         );
       })}
-    </nav>
+      </nav>
+    </>
   );
 }
 
