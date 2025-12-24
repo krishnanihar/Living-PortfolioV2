@@ -369,7 +369,7 @@ export default function ConceptWorkStack() {
 
       {/* Scroll Indicators - Tailwind responsive classes (bulletproof) */}
       <div
-        className="fixed left-2 md:left-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-1 md:gap-3 z-[110] p-1.5 md:p-3 rounded-xl md:rounded-2xl"
+        className="fixed left-2 md:left-8 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-1 md:gap-3 z-[110] p-1.5 md:p-3 rounded-xl md:rounded-2xl"
         style={{
           background: 'var(--glass-08)',
           backdropFilter: 'blur(20px)',
