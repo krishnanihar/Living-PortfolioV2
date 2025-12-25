@@ -222,12 +222,21 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
   const [chatOpen, setChatOpen] = useState(false);
   const [viewTransition, setViewTransition] = useState(false);
 
+  // Tour-specific state (lifted to parent to prevent re-render issues)
+  const [tourMousePosition, setTourMousePosition] = useState({ x: 50, y: 50 });
+  const [tourTimerProgress, setTourTimerProgress] = useState(0);
+  const [tourIsPaused, setTourIsPaused] = useState(false);
+
   // Switch view with transition
   const switchView = useCallback((newView: HeroView) => {
     setViewTransition(true);
     setTimeout(() => {
       setActiveView(newView);
-      if (newView === 'tour') setTourStep(0);
+      if (newView === 'tour') {
+        setTourStep(0);
+        setTourTimerProgress(0);
+        setTourIsPaused(false);
+      }
       setTimeout(() => setViewTransition(false), 50);
     }, 200);
   }, []);
@@ -251,6 +260,32 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
       setTimeout(() => setAnimationStage(stage), i * 100);
     });
   }, []);
+
+  // Tour auto-advance timer (lifted to parent)
+  useEffect(() => {
+    if (tourIsPaused || activeView !== 'tour') return;
+
+    const interval = setInterval(() => {
+      setTourTimerProgress((prev) => {
+        if (prev >= 100) {
+          if (tourStep < tourSteps.length - 1) {
+            setTourStep((s) => s + 1);
+          } else {
+            switchView('default');
+          }
+          return 0;
+        }
+        return prev + (100 / (TIMER_DURATION / 50));
+      });
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, [tourIsPaused, tourStep, activeView, switchView]);
+
+  // Reset timer on step change
+  useEffect(() => {
+    setTourTimerProgress(0);
+  }, [tourStep]);
 
   // Shrinking animation on scroll - using useGSAP for proper cleanup
   useGSAP(() => {
@@ -476,49 +511,19 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
   );
 
   // Tour View Component - Premium Version
+  // Note: State lifted to parent to prevent re-render issues
   const TourView = () => {
     const currentStep = tourSteps[tourStep];
     const isLastStep = tourStep === tourSteps.length - 1;
 
-    // Mouse tracking for reflection effect
-    const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
-    const [timerProgress, setTimerProgress] = useState(0);
-    const [isPaused, setIsPaused] = useState(false);
-
-    // Handle mouse movement for reflection
+    // Handle mouse movement for reflection (uses parent state)
     const handleMouseMove = useCallback((e: React.MouseEvent) => {
       const rect = e.currentTarget.getBoundingClientRect();
-      setMousePosition({
+      setTourMousePosition({
         x: ((e.clientX - rect.left) / rect.width) * 100,
         y: ((e.clientY - rect.top) / rect.height) * 100,
       });
     }, []);
-
-    // Auto-advance timer
-    useEffect(() => {
-      if (isPaused || activeView !== 'tour') return;
-
-      const interval = setInterval(() => {
-        setTimerProgress((prev) => {
-          if (prev >= 100) {
-            if (tourStep < tourSteps.length - 1) {
-              setTourStep((s) => s + 1);
-            } else {
-              switchView('default');
-            }
-            return 0;
-          }
-          return prev + (100 / (TIMER_DURATION / 50));
-        });
-      }, 50);
-
-      return () => clearInterval(interval);
-    }, [isPaused, tourStep, activeView, switchView]);
-
-    // Reset timer on step change
-    useEffect(() => {
-      setTimerProgress(0);
-    }, [tourStep]);
 
     // Memoized aurora gradient
     const auroraGradient = useMemo(
@@ -530,8 +535,8 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
     return (
       <div
         onMouseMove={handleMouseMove}
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
+        onMouseEnter={() => setTourIsPaused(true)}
+        onMouseLeave={() => setTourIsPaused(false)}
         style={{
           width: '100%',
           maxWidth: '640px',
@@ -570,7 +575,7 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
             position: 'absolute',
             inset: 0,
             borderRadius: '28px',
-            background: `radial-gradient(circle 350px at ${mousePosition.x}% ${mousePosition.y}%, rgba(255,255,255,0.06) 0%, transparent 60%)`,
+            background: `radial-gradient(circle 350px at ${tourMousePosition.x}% ${tourMousePosition.y}%, rgba(255,255,255,0.06) 0%, transparent 60%)`,
             mixBlendMode: 'overlay',
             pointerEvents: 'none',
             zIndex: 1,
@@ -917,7 +922,7 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
                   >
                     {index === tourStep && (
                       <>
-                        <TimerRing progress={timerProgress} stepIndex={index} />
+                        <TimerRing progress={tourTimerProgress} stepIndex={index} />
                         <div
                           style={{
                             position: 'absolute',
