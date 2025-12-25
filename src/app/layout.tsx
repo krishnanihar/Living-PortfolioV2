@@ -7,6 +7,8 @@ import { FocusManager } from '@/components/effects/FocusManager';
 import { PersonalizationProvider } from '@/hooks/usePersonalization';
 import { BehaviorTracker } from '@/components/effects/BehaviorTracker';
 import { ChatProvider } from '@/contexts/ChatContext';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import dynamic from 'next/dynamic';
 
 // Lazy load MicroInteractionProvider for better initial load
@@ -160,6 +162,8 @@ export default function RootLayout({
             </PersonalizationProvider>
           </SmoothScrollProvider>
         </ThemeProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
