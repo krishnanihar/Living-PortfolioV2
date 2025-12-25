@@ -1,9 +1,10 @@
 'use client';
 
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronDown,
   Mail,
@@ -48,6 +49,80 @@ const UNIFIED_GLASS = {
     inset 0 -1px 2px rgba(0, 0, 0, 0.15)
   `,
 };
+
+// Premium animation constants
+const PREMIUM_EASE = [0.16, 1, 0.3, 1] as const;
+const SPRING_CONFIG = { type: "spring" as const, stiffness: 400, damping: 25 };
+const STEP_COLORS = ['#3B82F6', '#8B5CF6', '#EC4899']; // Blue, Purple, Pink
+const TIMER_DURATION = 6000; // 6 seconds per step
+
+// Tour animation variants
+const tourCardVariants = {
+  hidden: { opacity: 0, y: 40, scale: 0.95, filter: 'blur(8px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: 'blur(0px)',
+    transition: { duration: 0.6, ease: PREMIUM_EASE },
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    scale: 0.95,
+    transition: { duration: 0.3 },
+  },
+};
+
+const contentVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.08, duration: 0.4, ease: PREMIUM_EASE },
+  }),
+};
+
+// Timer Ring Component for auto-advance
+function TimerRing({ progress, stepIndex }: { progress: number; stepIndex: number }) {
+  const radius = 12;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference * (1 - progress / 100);
+
+  return (
+    <svg
+      width="32"
+      height="32"
+      style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%) rotate(-90deg)',
+      }}
+    >
+      <circle
+        cx="16"
+        cy="16"
+        r={radius}
+        fill="none"
+        stroke="var(--glass-15)"
+        strokeWidth="2"
+      />
+      <motion.circle
+        cx="16"
+        cy="16"
+        r={radius}
+        fill="none"
+        stroke={STEP_COLORS[stepIndex]}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeDasharray={circumference}
+        animate={{ strokeDashoffset }}
+        transition={{ duration: 0.05, ease: 'linear' }}
+      />
+    </svg>
+  );
+}
 
 // Contact methods data
 const contactMethods = [
@@ -400,309 +475,500 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
     </div>
   );
 
-  // Tour View Component
+  // Tour View Component - Premium Version
   const TourView = () => {
     const currentStep = tourSteps[tourStep];
     const isLastStep = tourStep === tourSteps.length - 1;
 
+    // Mouse tracking for reflection effect
+    const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
+    const [timerProgress, setTimerProgress] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
+
+    // Handle mouse movement for reflection
+    const handleMouseMove = useCallback((e: React.MouseEvent) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      setMousePosition({
+        x: ((e.clientX - rect.left) / rect.width) * 100,
+        y: ((e.clientY - rect.top) / rect.height) * 100,
+      });
+    }, []);
+
+    // Auto-advance timer
+    useEffect(() => {
+      if (isPaused || activeView !== 'tour') return;
+
+      const interval = setInterval(() => {
+        setTimerProgress((prev) => {
+          if (prev >= 100) {
+            if (tourStep < tourSteps.length - 1) {
+              setTourStep((s) => s + 1);
+            } else {
+              switchView('default');
+            }
+            return 0;
+          }
+          return prev + (100 / (TIMER_DURATION / 50));
+        });
+      }, 50);
+
+      return () => clearInterval(interval);
+    }, [isPaused, tourStep, activeView, switchView]);
+
+    // Reset timer on step change
+    useEffect(() => {
+      setTimerProgress(0);
+    }, [tourStep]);
+
+    // Memoized aurora gradient
+    const auroraGradient = useMemo(
+      () =>
+        `radial-gradient(ellipse 60% 50% at center, ${STEP_COLORS[tourStep]}15 0%, transparent 70%)`,
+      [tourStep]
+    );
+
     return (
       <div
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
         style={{
           width: '100%',
-          maxWidth: '600px',
+          maxWidth: '640px',
           margin: '0 auto',
-          padding: '0 1.5rem',
+          padding: 'clamp(1.5rem, 4vw, 2.5rem)',
           position: 'relative',
+          ...UNIFIED_GLASS,
+          borderRadius: '28px',
+          overflow: 'hidden',
           opacity: viewTransition ? 0 : 1,
-          transform: viewTransition ? 'scale(0.98)' : 'scale(1)',
-          filter: viewTransition ? 'blur(8px)' : 'blur(0)',
-          transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+          transform: viewTransition ? 'scale(0.95)' : 'scale(1)',
+          filter: viewTransition ? 'blur(12px)' : 'blur(0)',
+          transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
-        {/* Back Button */}
-        <button
-          onClick={() => switchView('default')}
+        {/* Aurora glow - breathing background */}
+        <motion.div
+          key={`aurora-${tourStep}`}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.02, 1] }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           style={{
             position: 'absolute',
-            top: '-3rem',
+            inset: '-80px',
+            borderRadius: '100px',
+            background: auroraGradient,
+            filter: 'blur(50px)',
+            zIndex: 0,
+            pointerEvents: 'none',
+          }}
+        />
+
+        {/* Mouse-tracking reflection */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            borderRadius: '28px',
+            background: `radial-gradient(circle 350px at ${mousePosition.x}% ${mousePosition.y}%, rgba(255,255,255,0.06) 0%, transparent 60%)`,
+            mixBlendMode: 'overlay',
+            pointerEvents: 'none',
+            zIndex: 1,
+            transition: 'background 0.15s ease-out',
+          }}
+        />
+
+        {/* Back Button */}
+        <motion.button
+          onClick={() => switchView('default')}
+          whileHover={{ x: -4 }}
+          whileTap={{ scale: 0.95 }}
+          style={{
+            position: 'absolute',
+            top: '1rem',
             left: '1.5rem',
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
             background: 'none',
             border: 'none',
-            color: 'var(--text-60)',
-            fontSize: '0.875rem',
+            color: 'var(--text-50)',
+            fontSize: '0.8125rem',
             fontWeight: 400,
             cursor: 'pointer',
             padding: '0.5rem',
-            transition: 'color 0.2s ease',
+            zIndex: 10,
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-95)')}
-          onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-60)')}
         >
-          <ArrowLeft size={16} />
+          <ArrowLeft size={14} />
           <span>Back</span>
-        </button>
+        </motion.button>
 
-        {/* Step Content */}
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <h2
-            style={{
-              fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-              fontWeight: 300,
-              color: 'var(--text-95)',
-              marginBottom: '0.5rem',
-              fontFamily: 'var(--font-space-grotesk)',
-            }}
+        {/* Main Content with AnimatePresence */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={tourStep}
+            variants={tourCardVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            style={{ position: 'relative', zIndex: 2, paddingTop: '2rem' }}
           >
-            {currentStep.title}
-          </h2>
-          <p
-            style={{
-              fontSize: '0.9375rem',
-              color: 'var(--text-50)',
-            }}
-          >
-            {currentStep.description}
-          </p>
-        </div>
-
-        {/* Step-specific content */}
-        <div style={{ marginBottom: '2rem' }}>
-          {/* Journey Step - Timeline */}
-          {currentStep.id === 'journey' && currentStep.milestones && (
-            <div
+            {/* Step title with stagger */}
+            <motion.h2
+              custom={0}
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
               style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: '1rem',
-                padding: '1.5rem',
-                background: 'var(--glass-04)',
-                backdropFilter: mounted ? 'blur(40px)' : 'none',
-                borderRadius: '20px',
-                border: '1px solid var(--text-08)',
+                fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+                fontWeight: 300,
+                color: 'var(--text-95)',
+                marginBottom: '0.5rem',
+                fontFamily: 'var(--font-space-grotesk)',
+                textAlign: 'center',
               }}
             >
-              {currentStep.milestones.map((milestone, index) => {
-                const Icon = milestone.icon;
-                return (
-                  <div key={milestone.year} style={{ display: 'flex', alignItems: 'center' }}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: '56px',
-                          height: '56px',
-                          borderRadius: '16px',
-                          background: `${milestone.color}15`,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}
-                      >
-                        <Icon size={24} style={{ color: milestone.color }} />
-                      </div>
-                      <span style={{ fontSize: '0.8125rem', fontWeight: 500, color: 'var(--text-85)' }}>
-                        {milestone.label}
-                      </span>
-                      <span style={{ fontSize: '0.6875rem', color: 'var(--text-40)' }}>
-                        {milestone.year}
-                      </span>
-                    </div>
-                    {index < currentStep.milestones!.length - 1 && (
-                      <div
-                        style={{
-                          width: '40px',
-                          height: '2px',
-                          background: 'var(--text-15)',
-                          marginLeft: '1rem',
-                          marginRight: '0rem',
-                        }}
-                      />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
+              {currentStep.title}
+            </motion.h2>
 
-          {/* Work Step - Project Cards */}
-          {currentStep.id === 'work' && currentStep.projects && (
-            <div
+            {/* Step description with stagger */}
+            <motion.p
+              custom={1}
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
               style={{
-                display: 'flex',
-                gap: '1rem',
-                justifyContent: 'center',
+                fontSize: '0.9375rem',
+                color: 'var(--text-50)',
+                textAlign: 'center',
+                marginBottom: '2rem',
               }}
             >
-              {currentStep.projects.map((project) => (
-                <Link
-                  key={project.id}
-                  href={`/work/${project.id}`}
+              {currentStep.description}
+            </motion.p>
+
+            {/* Step-specific content */}
+            <div style={{ marginBottom: '2rem' }}>
+              {/* Journey Step - Timeline with premium cards */}
+              {currentStep.id === 'journey' && currentStep.milestones && (
+                <motion.div
+                  custom={2}
+                  variants={contentVariants}
+                  initial="hidden"
+                  animate="visible"
                   style={{
                     display: 'flex',
-                    flexDirection: 'column',
+                    justifyContent: 'center',
                     alignItems: 'center',
-                    padding: '1.5rem 2rem',
-                    background: 'var(--glass-04)',
-                    backdropFilter: mounted ? 'blur(40px)' : 'none',
-                    borderRadius: '16px',
-                    border: '1px solid var(--text-08)',
-                    textDecoration: 'none',
-                    transition: 'all 0.3s ease',
-                    cursor: 'pointer',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-4px)';
-                    e.currentTarget.style.borderColor = `${project.color}40`;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.borderColor = 'var(--text-08)';
+                    gap: '0.75rem',
+                    flexWrap: 'wrap',
                   }}
                 >
-                  <div
-                    style={{
-                      width: '48px',
-                      height: '48px',
-                      borderRadius: '12px',
-                      background: `${project.color}20`,
-                      marginBottom: '0.75rem',
-                    }}
-                  />
-                  <span style={{ fontSize: '0.9375rem', fontWeight: 500, color: 'var(--text-95)' }}>
-                    {project.name}
-                  </span>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-45)' }}>
-                    {project.role}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          )}
+                  {currentStep.milestones.map((milestone, index) => {
+                    const Icon = milestone.icon;
+                    return (
+                      <motion.div
+                        key={milestone.year}
+                        custom={index + 3}
+                        variants={contentVariants}
+                        initial="hidden"
+                        animate="visible"
+                        whileHover={{ scale: 1.05, y: -4 }}
+                        transition={SPRING_CONFIG}
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '0.75rem',
+                          padding: '1.25rem 1.5rem',
+                          background: `linear-gradient(135deg, ${milestone.color}12 0%, ${milestone.color}06 100%)`,
+                          borderRadius: '18px',
+                          border: `1px solid ${milestone.color}20`,
+                          boxShadow: `0 4px 20px ${milestone.color}10, inset 0 1px 0 ${milestone.color}15`,
+                          cursor: 'default',
+                          minWidth: '100px',
+                        }}
+                      >
+                        {/* Icon with glow */}
+                        <div
+                          style={{
+                            padding: '0.875rem',
+                            background: `${milestone.color}15`,
+                            borderRadius: '14px',
+                            boxShadow: `0 0 24px ${milestone.color}25`,
+                          }}
+                        >
+                          <Icon size={22} style={{ color: milestone.color }} />
+                        </div>
+                        <span
+                          style={{
+                            color: 'var(--text-95)',
+                            fontSize: '0.875rem',
+                            fontWeight: 500,
+                          }}
+                        >
+                          {milestone.label}
+                        </span>
+                        <span
+                          style={{
+                            color: 'var(--text-45)',
+                            fontSize: '0.75rem',
+                          }}
+                        >
+                          {milestone.year}
+                        </span>
+                      </motion.div>
+                    );
+                  })}
+                </motion.div>
+              )}
 
-          {/* Connect Step - CTA Buttons */}
-          {currentStep.id === 'connect' && currentStep.ctas && (
-            <div
+              {/* Work Step - Project Cards with premium styling */}
+              {currentStep.id === 'work' && currentStep.projects && (
+                <motion.div
+                  custom={2}
+                  variants={contentVariants}
+                  initial="hidden"
+                  animate="visible"
+                  style={{
+                    display: 'flex',
+                    gap: '1rem',
+                    justifyContent: 'center',
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  {currentStep.projects.map((project, index) => (
+                    <motion.div
+                      key={project.id}
+                      custom={index + 3}
+                      variants={contentVariants}
+                      initial="hidden"
+                      animate="visible"
+                    >
+                      <Link
+                        href={`/work/${project.id}`}
+                        style={{ textDecoration: 'none' }}
+                      >
+                        <motion.div
+                          whileHover={{ scale: 1.03, y: -6 }}
+                          whileTap={{ scale: 0.98 }}
+                          transition={SPRING_CONFIG}
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            padding: '1.5rem 2.5rem',
+                            background: 'var(--glass-04)',
+                            backdropFilter: 'blur(40px) saturate(180%)',
+                            WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+                            borderRadius: '18px',
+                            border: '1px solid var(--text-08)',
+                            boxShadow:
+                              '0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 var(--glass-10)',
+                            position: 'relative',
+                            overflow: 'hidden',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          {/* Hover gradient overlay */}
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            whileHover={{ opacity: 1 }}
+                            style={{
+                              position: 'absolute',
+                              inset: 0,
+                              background: `linear-gradient(135deg, ${project.color}12 0%, transparent 50%)`,
+                              pointerEvents: 'none',
+                            }}
+                          />
+                          <div
+                            style={{
+                              width: '52px',
+                              height: '52px',
+                              borderRadius: '14px',
+                              background: `linear-gradient(135deg, ${project.color}25 0%, ${project.color}15 100%)`,
+                              marginBottom: '0.875rem',
+                              boxShadow: `0 4px 16px ${project.color}20`,
+                            }}
+                          />
+                          <span
+                            style={{
+                              fontSize: '1rem',
+                              fontWeight: 500,
+                              color: 'var(--text-95)',
+                              position: 'relative',
+                              zIndex: 1,
+                            }}
+                          >
+                            {project.name}
+                          </span>
+                          <span
+                            style={{
+                              fontSize: '0.75rem',
+                              color: 'var(--text-45)',
+                              position: 'relative',
+                              zIndex: 1,
+                            }}
+                          >
+                            {project.role}
+                          </span>
+                        </motion.div>
+                      </Link>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
+
+              {/* Connect Step - CTA Buttons with premium styling */}
+              {currentStep.id === 'connect' && currentStep.ctas && (
+                <motion.div
+                  custom={2}
+                  variants={contentVariants}
+                  initial="hidden"
+                  animate="visible"
+                  style={{
+                    display: 'flex',
+                    gap: '1rem',
+                    justifyContent: 'center',
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  {currentStep.ctas.map((cta, index) => {
+                    const Icon = cta.icon;
+                    return (
+                      <motion.button
+                        key={cta.id}
+                        custom={index + 3}
+                        variants={contentVariants}
+                        initial="hidden"
+                        animate="visible"
+                        whileHover={{ scale: 1.05, y: -3 }}
+                        whileTap={{ scale: 0.97 }}
+                        transition={SPRING_CONFIG}
+                        onClick={() => {
+                          if (cta.id === 'contact') switchView('contact');
+                          if (cta.id === 'linkedin')
+                            window.open(
+                              'https://linkedin.com/in/krishnanihar',
+                              '_blank'
+                            );
+                        }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.625rem',
+                          padding: '1rem 1.75rem',
+                          ...UNIFIED_GLASS,
+                          background:
+                            cta.id === 'contact'
+                              ? 'linear-gradient(135deg, rgba(236, 72, 153, 0.08), rgba(139, 92, 246, 0.05))'
+                              : 'var(--glass-06)',
+                          borderRadius: '16px',
+                          color: 'var(--text-95)',
+                          fontSize: '0.9375rem',
+                          fontWeight: 500,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <Icon size={18} />
+                        {cta.label}
+                      </motion.button>
+                    );
+                  })}
+                </motion.div>
+              )}
+            </div>
+
+            {/* Step Navigation */}
+            <motion.div
+              custom={6}
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
               style={{
                 display: 'flex',
-                gap: '1rem',
-                justifyContent: 'center',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '1.25rem',
               }}
             >
-              {currentStep.ctas.map((cta) => {
-                const Icon = cta.icon;
-                return (
-                  <button
-                    key={cta.id}
-                    onClick={() => {
-                      if (cta.id === 'contact') switchView('contact');
-                      if (cta.id === 'linkedin') window.open('https://linkedin.com/in/krishnanihar', '_blank');
-                    }}
+              {/* Progress dots with timer ring */}
+              <div
+                style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}
+              >
+                {tourSteps.map((_, index) => (
+                  <motion.button
+                    key={index}
+                    onClick={() => setTourStep(index)}
+                    whileHover={{ scale: 1.2 }}
+                    whileTap={{ scale: 0.9 }}
                     style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      padding: '1rem 1.5rem',
-                      background: 'var(--glass-06)',
-                      backdropFilter: mounted ? 'blur(40px)' : 'none',
-                      borderRadius: '14px',
-                      border: '1px solid var(--text-10)',
-                      color: 'var(--text-95)',
-                      fontSize: '0.875rem',
-                      fontWeight: 500,
+                      width: index === tourStep ? '32px' : '10px',
+                      height: index === tourStep ? '32px' : '10px',
+                      borderRadius: '50%',
+                      background:
+                        index === tourStep ? 'transparent' : 'var(--glass-20)',
+                      border: 'none',
                       cursor: 'pointer',
+                      position: 'relative',
                       transition: 'all 0.3s ease',
                     }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                      e.currentTarget.style.background = 'var(--glass-10)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.background = 'var(--glass-06)';
-                    }}
                   >
-                    <Icon size={16} />
-                    {cta.label}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
+                    {index === tourStep && (
+                      <>
+                        <TimerRing progress={timerProgress} stepIndex={index} />
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            width: '8px',
+                            height: '8px',
+                            borderRadius: '50%',
+                            background: STEP_COLORS[index],
+                          }}
+                        />
+                      </>
+                    )}
+                  </motion.button>
+                ))}
+              </div>
 
-        {/* Step Dots & Navigation */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '1.5rem',
-          }}
-        >
-          {/* Step Dots */}
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            {tourSteps.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setTourStep(index)}
-                style={{
-                  width: tourStep === index ? '24px' : '8px',
-                  height: '8px',
-                  borderRadius: '4px',
-                  background: tourStep === index ? 'var(--text-60)' : 'var(--text-20)',
-                  border: 'none',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
+              {/* Next/Done Button */}
+              <motion.button
+                onClick={() => {
+                  if (isLastStep) {
+                    switchView('default');
+                  } else {
+                    setTourStep((prev) => prev + 1);
+                  }
                 }}
-              />
-            ))}
-          </div>
-
-          {/* Next/Done Button */}
-          <button
-            onClick={() => {
-              if (isLastStep) {
-                switchView('default');
-              } else {
-                setTourStep((prev) => prev + 1);
-              }
-            }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.75rem 1.5rem',
-              background: 'var(--glass-08)',
-              backdropFilter: mounted ? 'blur(40px)' : 'none',
-              borderRadius: '12px',
-              border: '1px solid var(--text-12)',
-              color: 'var(--text-95)',
-              fontSize: '0.875rem',
-              fontWeight: 500,
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'var(--glass-12)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'var(--glass-08)';
-            }}
-          >
-            {isLastStep ? 'Done' : 'Next'}
-            <ArrowRight size={14} />
-          </button>
-        </div>
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                transition={SPRING_CONFIG}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.875rem 1.75rem',
+                  ...UNIFIED_GLASS,
+                  background: `linear-gradient(135deg, ${STEP_COLORS[tourStep]}15, ${STEP_COLORS[tourStep]}08)`,
+                  borderColor: `${STEP_COLORS[tourStep]}25`,
+                  borderRadius: '14px',
+                  color: 'var(--text-95)',
+                  fontSize: '0.9375rem',
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                }}
+              >
+                {isLastStep ? 'Done' : 'Next'}
+                <ArrowRight size={16} />
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     );
   };
