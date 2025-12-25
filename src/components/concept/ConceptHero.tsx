@@ -25,7 +25,7 @@ import Link from 'next/link';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
 import { usePersonalization } from '@/hooks/usePersonalization';
 import { Chatbot } from '@/components/Chatbot';
-import { TourView } from './TourView';
+import { ScrollytellingTour } from './ScrollytellingTour';
 
 // Register plugins
 if (typeof window !== 'undefined') {
@@ -114,6 +114,7 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [viewTransition, setViewTransition] = useState(false);
+  const [isTourOpen, setIsTourOpen] = useState(false);
 
   // Switch view with transition
   const switchView = useCallback((newView: HeroView) => {
@@ -547,7 +548,7 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
 
         {/* Quick Tour Button */}
         <button
-          onClick={() => switchView('tour')}
+          onClick={() => setIsTourOpen(true)}
           onMouseEnter={() => setHoveredButton('tour')}
           onMouseLeave={() => setHoveredButton(null)}
           style={{
@@ -743,13 +744,6 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
           {/* View-based Content */}
           {activeView === 'default' && <DefaultView />}
           {activeView === 'contact' && <ContactView />}
-          {activeView === 'tour' && (
-            <TourView
-              onClose={() => switchView('default')}
-              onSwitchToContact={() => switchView('contact')}
-              viewTransition={viewTransition}
-            />
-          )}
 
           {/* Scroll indicator - only show in default view */}
           {activeView === 'default' && (
@@ -803,6 +797,19 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
           initialMessage=""
         />
       )}
+
+      {/* Scrollytelling Tour Overlay */}
+      <AnimatePresence>
+        {isTourOpen && (
+          <ScrollytellingTour
+            onClose={() => setIsTourOpen(false)}
+            onContact={() => {
+              setIsTourOpen(false);
+              switchView('contact');
+            }}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 }
