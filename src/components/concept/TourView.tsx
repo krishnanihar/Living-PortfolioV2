@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Mail, Linkedin, Sparkles, Code, Palette } from 'lucide-react';
@@ -272,13 +272,12 @@ export function TourView({ onClose, onSwitchToContact, viewTransition }: TourVie
   const [currentStep, setCurrentStep] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [timerProgress, setTimerProgress] = useState(0);
-  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
 
   const prefersReducedMotion = useReducedMotion();
   const step = TOUR_STEPS[currentStep];
   const isLastStep = currentStep === TOUR_STEPS.length - 1;
 
-  // Timer - auto advance (4s matches aurora breathing)
+  // Timer - auto advance
   useEffect(() => {
     if (isPaused) return;
 
@@ -304,31 +303,8 @@ export function TourView({ onClose, onSwitchToContact, viewTransition }: TourVie
     setTimerProgress(0);
   }, [currentStep]);
 
-  // Mouse tracking for reflection
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePosition({
-      x: ((e.clientX - rect.left) / rect.width) * 100,
-      y: ((e.clientY - rect.top) / rect.height) * 100,
-    });
-  }, []);
-
-  // Memoized gradients
-  const auroraGradient = useMemo(
-    () =>
-      `radial-gradient(ellipse 60% 50% at center, ${STEP_COLORS[currentStep]}15 0%, transparent 70%)`,
-    [currentStep]
-  );
-
-  const reflectionGradient = useMemo(
-    () =>
-      `radial-gradient(circle 350px at ${mousePosition.x}% ${mousePosition.y}%, rgba(255,255,255,0.06) 0%, transparent 60%)`,
-    [mousePosition.x, mousePosition.y]
-  );
-
   return (
     <div
-      onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       style={{
@@ -337,8 +313,6 @@ export function TourView({ onClose, onSwitchToContact, viewTransition }: TourVie
         margin: '0 auto',
         padding: 'clamp(1.5rem, 4vw, 2.5rem)',
         position: 'relative',
-        ...TOUR_GLASS,
-        borderRadius: '28px',
         overflow: 'hidden',
         opacity: viewTransition ? 0 : 1,
         transform: viewTransition ? 'scale(0.95)' : 'scale(1)',
@@ -346,39 +320,6 @@ export function TourView({ onClose, onSwitchToContact, viewTransition }: TourVie
         transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
       }}
     >
-      {/* Aurora glow - 4s breathing */}
-      {!prefersReducedMotion && (
-        <motion.div
-          key={`aurora-${currentStep}`}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.02, 1] }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-          style={{
-            position: 'absolute',
-            inset: '-80px',
-            borderRadius: '100px',
-            background: auroraGradient,
-            filter: 'blur(50px)',
-            zIndex: 0,
-            pointerEvents: 'none',
-          }}
-        />
-      )}
-
-      {/* Mouse-tracking reflection */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          borderRadius: '28px',
-          background: reflectionGradient,
-          mixBlendMode: 'overlay',
-          pointerEvents: 'none',
-          zIndex: 1,
-          transition: 'background 0.15s ease-out',
-        }}
-      />
-
       {/* Back Button */}
       <motion.button
         onClick={onClose}
