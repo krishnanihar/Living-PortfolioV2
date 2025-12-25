@@ -4,7 +4,7 @@ import { useRef, useState, useEffect, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   ChevronDown,
   Mail,
@@ -25,7 +25,6 @@ import Link from 'next/link';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
 import { usePersonalization } from '@/hooks/usePersonalization';
 import { Chatbot } from '@/components/Chatbot';
-import { ScrollytellingTour } from './ScrollytellingTour';
 
 // Register plugins
 if (typeof window !== 'undefined') {
@@ -114,7 +113,6 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [viewTransition, setViewTransition] = useState(false);
-  const [isTourOpen, setIsTourOpen] = useState(false);
 
   // Switch view with transition
   const switchView = useCallback((newView: HeroView) => {
@@ -547,8 +545,8 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
         </button>
 
         {/* Quick Tour Button */}
-        <button
-          onClick={() => setIsTourOpen(true)}
+        <Link
+          href="/tour"
           onMouseEnter={() => setHoveredButton('tour')}
           onMouseLeave={() => setHoveredButton(null)}
           style={{
@@ -570,6 +568,7 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
             transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
             transform: hoveredButton === 'tour' ? 'translateY(-2px) scale(1.02)' : 'translateY(0) scale(1)',
             overflow: 'hidden',
+            textDecoration: 'none',
           }}
         >
           <div
@@ -589,7 +588,7 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
           />
           <Compass size={15} style={{ position: 'relative', zIndex: 1 }} />
           <span style={{ position: 'relative', zIndex: 1 }}>Quick Tour</span>
-        </button>
+        </Link>
       </div>
 
       {/* Scroll Memory Pill - Shows if user has viewing history */}
@@ -797,19 +796,6 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
           initialMessage=""
         />
       )}
-
-      {/* Scrollytelling Tour Overlay */}
-      <AnimatePresence>
-        {isTourOpen && (
-          <ScrollytellingTour
-            onClose={() => setIsTourOpen(false)}
-            onContact={() => {
-              setIsTourOpen(false);
-              switchView('contact');
-            }}
-          />
-        )}
-      </AnimatePresence>
     </>
   );
 }
