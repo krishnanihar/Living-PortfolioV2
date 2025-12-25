@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect, useCallback, useMemo } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -16,8 +16,6 @@ import {
   Linkedin,
   Github,
   MessageCircle,
-  Palette,
-  Code,
   ArrowRight,
   ExternalLink,
   Hand,
@@ -27,6 +25,7 @@ import Link from 'next/link';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
 import { usePersonalization } from '@/hooks/usePersonalization';
 import { Chatbot } from '@/components/Chatbot';
+import { TourView } from './TourView';
 
 // Register plugins
 if (typeof window !== 'undefined') {
@@ -49,80 +48,6 @@ const UNIFIED_GLASS = {
     inset 0 -1px 2px rgba(0, 0, 0, 0.15)
   `,
 };
-
-// Premium animation constants
-const PREMIUM_EASE = [0.16, 1, 0.3, 1] as const;
-const SPRING_CONFIG = { type: "spring" as const, stiffness: 400, damping: 25 };
-const STEP_COLORS = ['#3B82F6', '#8B5CF6', '#EC4899']; // Blue, Purple, Pink
-const TIMER_DURATION = 6000; // 6 seconds per step
-
-// Tour animation variants
-const tourCardVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95, filter: 'blur(8px)' },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    filter: 'blur(0px)',
-    transition: { duration: 0.6, ease: PREMIUM_EASE },
-  },
-  exit: {
-    opacity: 0,
-    y: -20,
-    scale: 0.95,
-    transition: { duration: 0.3 },
-  },
-};
-
-const contentVariants = {
-  hidden: { opacity: 0, y: 15 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.08, duration: 0.4, ease: PREMIUM_EASE },
-  }),
-};
-
-// Timer Ring Component for auto-advance
-function TimerRing({ progress, stepIndex }: { progress: number; stepIndex: number }) {
-  const radius = 12;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference * (1 - progress / 100);
-
-  return (
-    <svg
-      width="32"
-      height="32"
-      style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%) rotate(-90deg)',
-      }}
-    >
-      <circle
-        cx="16"
-        cy="16"
-        r={radius}
-        fill="none"
-        stroke="var(--glass-15)"
-        strokeWidth="2"
-      />
-      <motion.circle
-        cx="16"
-        cy="16"
-        r={radius}
-        fill="none"
-        stroke={STEP_COLORS[stepIndex]}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeDasharray={circumference}
-        animate={{ strokeDashoffset }}
-        transition={{ duration: 0.05, ease: 'linear' }}
-      />
-    </svg>
-  );
-}
 
 // Contact methods data
 const contactMethods = [
@@ -164,37 +89,6 @@ const contactMethods = [
   },
 ];
 
-// Tour steps data
-const tourSteps = [
-  {
-    id: 'journey',
-    title: 'My Journey',
-    description: 'From design to code to AI',
-    milestones: [
-      { year: '2019', label: 'Design', icon: Palette, color: '#EC4899' },
-      { year: '2021', label: 'Code', icon: Code, color: '#3B82F6' },
-      { year: '2024', label: 'AI', icon: Sparkles, color: '#8B5CF6' },
-    ],
-  },
-  {
-    id: 'work',
-    title: 'Featured Work',
-    description: 'Products used by millions',
-    projects: [
-      { id: 'air-india', name: 'Air India', role: 'Design System', color: '#DA0E29' },
-      { id: 'cleara', name: 'Cleara', role: 'AI Healthcare', color: '#8B9DC3' },
-    ],
-  },
-  {
-    id: 'connect',
-    title: "Let's Connect",
-    description: 'Start a conversation',
-    ctas: [
-      { id: 'contact', label: 'Get in Touch', icon: Mail },
-      { id: 'linkedin', label: 'LinkedIn', icon: Linkedin },
-    ],
-  },
-];
 
 interface ConceptHeroProps {
   scrollProgress?: number;
@@ -217,26 +111,15 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
 
   // Multi-view state
   const [activeView, setActiveView] = useState<HeroView>('default');
-  const [tourStep, setTourStep] = useState(0);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [viewTransition, setViewTransition] = useState(false);
-
-  // Tour-specific state (lifted to parent to prevent re-render issues)
-  const [tourMousePosition, setTourMousePosition] = useState({ x: 50, y: 50 });
-  const [tourTimerProgress, setTourTimerProgress] = useState(0);
-  const [tourIsPaused, setTourIsPaused] = useState(false);
 
   // Switch view with transition
   const switchView = useCallback((newView: HeroView) => {
     setViewTransition(true);
     setTimeout(() => {
       setActiveView(newView);
-      if (newView === 'tour') {
-        setTourStep(0);
-        setTourTimerProgress(0);
-        setTourIsPaused(false);
-      }
       setTimeout(() => setViewTransition(false), 50);
     }, 200);
   }, []);
@@ -260,32 +143,6 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
       setTimeout(() => setAnimationStage(stage), i * 100);
     });
   }, []);
-
-  // Tour auto-advance timer (lifted to parent)
-  useEffect(() => {
-    if (tourIsPaused || activeView !== 'tour') return;
-
-    const interval = setInterval(() => {
-      setTourTimerProgress((prev) => {
-        if (prev >= 100) {
-          if (tourStep < tourSteps.length - 1) {
-            setTourStep((s) => s + 1);
-          } else {
-            switchView('default');
-          }
-          return 0;
-        }
-        return prev + (100 / (TIMER_DURATION / 50));
-      });
-    }, 50);
-
-    return () => clearInterval(interval);
-  }, [tourIsPaused, tourStep, activeView, switchView]);
-
-  // Reset timer on step change
-  useEffect(() => {
-    setTourTimerProgress(0);
-  }, [tourStep]);
 
   // Shrinking animation on scroll - using useGSAP for proper cleanup
   useGSAP(() => {
@@ -509,474 +366,6 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
       </div>
     </div>
   );
-
-  // Tour View Component - Premium Version
-  // Note: State lifted to parent to prevent re-render issues
-  const TourView = () => {
-    const currentStep = tourSteps[tourStep];
-    const isLastStep = tourStep === tourSteps.length - 1;
-
-    // Handle mouse movement for reflection (uses parent state)
-    const handleMouseMove = useCallback((e: React.MouseEvent) => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      setTourMousePosition({
-        x: ((e.clientX - rect.left) / rect.width) * 100,
-        y: ((e.clientY - rect.top) / rect.height) * 100,
-      });
-    }, []);
-
-    // Memoized aurora gradient
-    const auroraGradient = useMemo(
-      () =>
-        `radial-gradient(ellipse 60% 50% at center, ${STEP_COLORS[tourStep]}15 0%, transparent 70%)`,
-      [tourStep]
-    );
-
-    return (
-      <div
-        onMouseMove={handleMouseMove}
-        onMouseEnter={() => setTourIsPaused(true)}
-        onMouseLeave={() => setTourIsPaused(false)}
-        style={{
-          width: '100%',
-          maxWidth: '640px',
-          margin: '0 auto',
-          padding: 'clamp(1.5rem, 4vw, 2.5rem)',
-          position: 'relative',
-          ...UNIFIED_GLASS,
-          borderRadius: '28px',
-          overflow: 'hidden',
-          opacity: viewTransition ? 0 : 1,
-          transform: viewTransition ? 'scale(0.95)' : 'scale(1)',
-          filter: viewTransition ? 'blur(12px)' : 'blur(0)',
-          transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-        }}
-      >
-        {/* Aurora glow - breathing background */}
-        <motion.div
-          key={`aurora-${tourStep}`}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.02, 1] }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-          style={{
-            position: 'absolute',
-            inset: '-80px',
-            borderRadius: '100px',
-            background: auroraGradient,
-            filter: 'blur(50px)',
-            zIndex: 0,
-            pointerEvents: 'none',
-          }}
-        />
-
-        {/* Mouse-tracking reflection */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            borderRadius: '28px',
-            background: `radial-gradient(circle 350px at ${tourMousePosition.x}% ${tourMousePosition.y}%, rgba(255,255,255,0.06) 0%, transparent 60%)`,
-            mixBlendMode: 'overlay',
-            pointerEvents: 'none',
-            zIndex: 1,
-            transition: 'background 0.15s ease-out',
-          }}
-        />
-
-        {/* Back Button */}
-        <motion.button
-          onClick={() => switchView('default')}
-          whileHover={{ x: -4 }}
-          whileTap={{ scale: 0.95 }}
-          style={{
-            position: 'absolute',
-            top: '1rem',
-            left: '1.5rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            background: 'none',
-            border: 'none',
-            color: 'var(--text-50)',
-            fontSize: '0.8125rem',
-            fontWeight: 400,
-            cursor: 'pointer',
-            padding: '0.5rem',
-            zIndex: 10,
-          }}
-        >
-          <ArrowLeft size={14} />
-          <span>Back</span>
-        </motion.button>
-
-        {/* Main Content with AnimatePresence */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={tourStep}
-            variants={tourCardVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            style={{ position: 'relative', zIndex: 2, paddingTop: '2rem' }}
-          >
-            {/* Step title with stagger */}
-            <motion.h2
-              custom={0}
-              variants={contentVariants}
-              initial="hidden"
-              animate="visible"
-              style={{
-                fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-                fontWeight: 300,
-                color: 'var(--text-95)',
-                marginBottom: '0.5rem',
-                fontFamily: 'var(--font-space-grotesk)',
-                textAlign: 'center',
-              }}
-            >
-              {currentStep.title}
-            </motion.h2>
-
-            {/* Step description with stagger */}
-            <motion.p
-              custom={1}
-              variants={contentVariants}
-              initial="hidden"
-              animate="visible"
-              style={{
-                fontSize: '0.9375rem',
-                color: 'var(--text-50)',
-                textAlign: 'center',
-                marginBottom: '2rem',
-              }}
-            >
-              {currentStep.description}
-            </motion.p>
-
-            {/* Step-specific content */}
-            <div style={{ marginBottom: '2rem' }}>
-              {/* Journey Step - Timeline with premium cards */}
-              {currentStep.id === 'journey' && currentStep.milestones && (
-                <motion.div
-                  custom={2}
-                  variants={contentVariants}
-                  initial="hidden"
-                  animate="visible"
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: '0.75rem',
-                    flexWrap: 'wrap',
-                  }}
-                >
-                  {currentStep.milestones.map((milestone, index) => {
-                    const Icon = milestone.icon;
-                    return (
-                      <motion.div
-                        key={milestone.year}
-                        custom={index + 3}
-                        variants={contentVariants}
-                        initial="hidden"
-                        animate="visible"
-                        whileHover={{ scale: 1.05, y: -4 }}
-                        transition={SPRING_CONFIG}
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          gap: '0.75rem',
-                          padding: '1.25rem 1.5rem',
-                          background: `linear-gradient(135deg, ${milestone.color}12 0%, ${milestone.color}06 100%)`,
-                          borderRadius: '18px',
-                          border: `1px solid ${milestone.color}20`,
-                          boxShadow: `0 4px 20px ${milestone.color}10, inset 0 1px 0 ${milestone.color}15`,
-                          cursor: 'default',
-                          minWidth: '100px',
-                        }}
-                      >
-                        {/* Icon with glow */}
-                        <div
-                          style={{
-                            padding: '0.875rem',
-                            background: `${milestone.color}15`,
-                            borderRadius: '14px',
-                            boxShadow: `0 0 24px ${milestone.color}25`,
-                          }}
-                        >
-                          <Icon size={22} style={{ color: milestone.color }} />
-                        </div>
-                        <span
-                          style={{
-                            color: 'var(--text-95)',
-                            fontSize: '0.875rem',
-                            fontWeight: 500,
-                          }}
-                        >
-                          {milestone.label}
-                        </span>
-                        <span
-                          style={{
-                            color: 'var(--text-45)',
-                            fontSize: '0.75rem',
-                          }}
-                        >
-                          {milestone.year}
-                        </span>
-                      </motion.div>
-                    );
-                  })}
-                </motion.div>
-              )}
-
-              {/* Work Step - Project Cards with premium styling */}
-              {currentStep.id === 'work' && currentStep.projects && (
-                <motion.div
-                  custom={2}
-                  variants={contentVariants}
-                  initial="hidden"
-                  animate="visible"
-                  style={{
-                    display: 'flex',
-                    gap: '1rem',
-                    justifyContent: 'center',
-                    flexWrap: 'wrap',
-                  }}
-                >
-                  {currentStep.projects.map((project, index) => (
-                    <motion.div
-                      key={project.id}
-                      custom={index + 3}
-                      variants={contentVariants}
-                      initial="hidden"
-                      animate="visible"
-                    >
-                      <Link
-                        href={`/work/${project.id}`}
-                        style={{ textDecoration: 'none' }}
-                      >
-                        <motion.div
-                          whileHover={{ scale: 1.03, y: -6 }}
-                          whileTap={{ scale: 0.98 }}
-                          transition={SPRING_CONFIG}
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            padding: '1.5rem 2.5rem',
-                            background: 'var(--glass-04)',
-                            backdropFilter: 'blur(40px) saturate(180%)',
-                            WebkitBackdropFilter: 'blur(40px) saturate(180%)',
-                            borderRadius: '18px',
-                            border: '1px solid var(--text-08)',
-                            boxShadow:
-                              '0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 var(--glass-10)',
-                            position: 'relative',
-                            overflow: 'hidden',
-                            cursor: 'pointer',
-                          }}
-                        >
-                          {/* Hover gradient overlay */}
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            whileHover={{ opacity: 1 }}
-                            style={{
-                              position: 'absolute',
-                              inset: 0,
-                              background: `linear-gradient(135deg, ${project.color}12 0%, transparent 50%)`,
-                              pointerEvents: 'none',
-                            }}
-                          />
-                          <div
-                            style={{
-                              width: '52px',
-                              height: '52px',
-                              borderRadius: '14px',
-                              background: `linear-gradient(135deg, ${project.color}25 0%, ${project.color}15 100%)`,
-                              marginBottom: '0.875rem',
-                              boxShadow: `0 4px 16px ${project.color}20`,
-                            }}
-                          />
-                          <span
-                            style={{
-                              fontSize: '1rem',
-                              fontWeight: 500,
-                              color: 'var(--text-95)',
-                              position: 'relative',
-                              zIndex: 1,
-                            }}
-                          >
-                            {project.name}
-                          </span>
-                          <span
-                            style={{
-                              fontSize: '0.75rem',
-                              color: 'var(--text-45)',
-                              position: 'relative',
-                              zIndex: 1,
-                            }}
-                          >
-                            {project.role}
-                          </span>
-                        </motion.div>
-                      </Link>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              )}
-
-              {/* Connect Step - CTA Buttons with premium styling */}
-              {currentStep.id === 'connect' && currentStep.ctas && (
-                <motion.div
-                  custom={2}
-                  variants={contentVariants}
-                  initial="hidden"
-                  animate="visible"
-                  style={{
-                    display: 'flex',
-                    gap: '1rem',
-                    justifyContent: 'center',
-                    flexWrap: 'wrap',
-                  }}
-                >
-                  {currentStep.ctas.map((cta, index) => {
-                    const Icon = cta.icon;
-                    return (
-                      <motion.button
-                        key={cta.id}
-                        custom={index + 3}
-                        variants={contentVariants}
-                        initial="hidden"
-                        animate="visible"
-                        whileHover={{ scale: 1.05, y: -3 }}
-                        whileTap={{ scale: 0.97 }}
-                        transition={SPRING_CONFIG}
-                        onClick={() => {
-                          if (cta.id === 'contact') switchView('contact');
-                          if (cta.id === 'linkedin')
-                            window.open(
-                              'https://linkedin.com/in/krishnanihar',
-                              '_blank'
-                            );
-                        }}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.625rem',
-                          padding: '1rem 1.75rem',
-                          ...UNIFIED_GLASS,
-                          background:
-                            cta.id === 'contact'
-                              ? 'linear-gradient(135deg, rgba(236, 72, 153, 0.08), rgba(139, 92, 246, 0.05))'
-                              : 'var(--glass-06)',
-                          borderRadius: '16px',
-                          color: 'var(--text-95)',
-                          fontSize: '0.9375rem',
-                          fontWeight: 500,
-                          cursor: 'pointer',
-                        }}
-                      >
-                        <Icon size={18} />
-                        {cta.label}
-                      </motion.button>
-                    );
-                  })}
-                </motion.div>
-              )}
-            </div>
-
-            {/* Step Navigation */}
-            <motion.div
-              custom={6}
-              variants={contentVariants}
-              initial="hidden"
-              animate="visible"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '1.25rem',
-              }}
-            >
-              {/* Progress dots with timer ring */}
-              <div
-                style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}
-              >
-                {tourSteps.map((_, index) => (
-                  <motion.button
-                    key={index}
-                    onClick={() => setTourStep(index)}
-                    whileHover={{ scale: 1.2 }}
-                    whileTap={{ scale: 0.9 }}
-                    style={{
-                      width: index === tourStep ? '32px' : '10px',
-                      height: index === tourStep ? '32px' : '10px',
-                      borderRadius: '50%',
-                      background:
-                        index === tourStep ? 'transparent' : 'var(--glass-20)',
-                      border: 'none',
-                      cursor: 'pointer',
-                      position: 'relative',
-                      transition: 'all 0.3s ease',
-                    }}
-                  >
-                    {index === tourStep && (
-                      <>
-                        <TimerRing progress={tourTimerProgress} stepIndex={index} />
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            width: '8px',
-                            height: '8px',
-                            borderRadius: '50%',
-                            background: STEP_COLORS[index],
-                          }}
-                        />
-                      </>
-                    )}
-                  </motion.button>
-                ))}
-              </div>
-
-              {/* Next/Done Button */}
-              <motion.button
-                onClick={() => {
-                  if (isLastStep) {
-                    switchView('default');
-                  } else {
-                    setTourStep((prev) => prev + 1);
-                  }
-                }}
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                transition={SPRING_CONFIG}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.875rem 1.75rem',
-                  ...UNIFIED_GLASS,
-                  background: `linear-gradient(135deg, ${STEP_COLORS[tourStep]}15, ${STEP_COLORS[tourStep]}08)`,
-                  borderColor: `${STEP_COLORS[tourStep]}25`,
-                  borderRadius: '14px',
-                  color: 'var(--text-95)',
-                  fontSize: '0.9375rem',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                }}
-              >
-                {isLastStep ? 'Done' : 'Next'}
-                <ArrowRight size={16} />
-              </motion.button>
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-    );
-  };
 
   // Default View Component (original hero content)
   const DefaultView = () => (
@@ -1354,7 +743,13 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
           {/* View-based Content */}
           {activeView === 'default' && <DefaultView />}
           {activeView === 'contact' && <ContactView />}
-          {activeView === 'tour' && <TourView />}
+          {activeView === 'tour' && (
+            <TourView
+              onClose={() => switchView('default')}
+              onSwitchToContact={() => switchView('contact')}
+              viewTransition={viewTransition}
+            />
+          )}
 
           {/* Scroll indicator - only show in default view */}
           {activeView === 'default' && (
