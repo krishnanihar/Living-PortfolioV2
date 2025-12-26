@@ -47,6 +47,14 @@ import {
   type LucideIcon
 } from 'lucide-react';
 
+// Mobile-optimized components
+import {
+  IFESystemMobile,
+  MCPHandoffMobile,
+  PixelRadarMobile,
+  FigmaVariablesPanelMobile,
+} from '@/components/air-india/mobile';
+
 // =============================================================================
 // IMAGE OPTIMIZATION - Shimmer Placeholder
 // =============================================================================
@@ -2573,7 +2581,13 @@ export function AirIndiaWork() {
             };
 
             // Render Pixel Radar Demo - Full interactive Figma plugin UI
-            const renderPixelRadarDemo = () => (
+            const renderPixelRadarDemo = () => {
+              // Use mobile-optimized component on smaller screens
+              if (isMobile) {
+                return <PixelRadarMobile brandColor={project.color} />;
+              }
+
+              return (
               <>
                 {/* Interactive Prototype Helper */}
                 <div style={{
@@ -2971,6 +2985,7 @@ export function AirIndiaWork() {
                 </div>
               </>
             );
+            };
 
             // Render Design System Demo - Figma Variables Panel (Pixel-Perfect)
             // Figma dark theme color constants
@@ -3760,7 +3775,13 @@ export function AirIndiaWork() {
               }, 9500);
             };
 
-            const renderDesignSystemDemo = () => (
+            const renderDesignSystemDemo = () => {
+              // Use mobile-optimized component on smaller screens
+              if (isMobile) {
+                return <FigmaVariablesPanelMobile brandColor={project.color} />;
+              }
+
+              return (
               <div style={{
                 width: '100%',
                 maxWidth: '1000px',
@@ -4556,6 +4577,7 @@ export function AirIndiaWork() {
                 </div>
               </div>
             );
+            };
 
             return (
               <React.Fragment key={project.id}>
@@ -4835,7 +4857,7 @@ export function AirIndiaWork() {
                         <div style={{
                           marginTop: '2rem',
                           display: 'flex',
-                          flexDirection: 'row',
+                          flexDirection: isMobile ? 'column' : 'row',
                           alignItems: 'center',
                           gap: '1.5rem',
                           maxWidth: '680px',
@@ -4845,14 +4867,16 @@ export function AirIndiaWork() {
                           border: '1px solid var(--glass-10)',
                           borderRadius: '16px',
                           backdropFilter: 'blur(20px)',
+                          textAlign: isMobile ? 'center' : 'left',
                         }}>
                           {/* Left: Image */}
                           <img
                             src="/images/pixel-radar-author.jpeg"
                             alt="Pixel Radar Featured in Magazine"
                             style={{
-                              width: '200px',
-                              height: '200px',
+                              width: isMobile ? '100%' : '200px',
+                              maxWidth: isMobile ? '280px' : 'none',
+                              height: isMobile ? 'auto' : '200px',
                               objectFit: 'cover',
                               borderRadius: '12px',
                               border: '1px solid var(--glass-10)',
@@ -7143,6 +7167,9 @@ export function AirIndiaWork() {
                     </>
                   ) : index === 3 ? (
                     /* Card 3: MCP Handoff - Design-to-Code Bridge Visualization */
+                    isMobile ? (
+                      <MCPHandoffMobile brandColor={project.color} />
+                    ) : (
                     <>
                     <div ref={mcpPipelineRef} style={{
                       width: '100%',
@@ -7429,8 +7456,12 @@ export function AirIndiaWork() {
                       </div>
                     </div>
                     </>
+                    )
                   ) : index === 4 ? (
                     /* Card 4: IFE System Design - Real IFE Image */
+                    isMobile ? (
+                      <IFESystemMobile brandColor={project.color} blurDataURL={blurDataURL(900, 600)} />
+                    ) : (
                     <>
                     <div style={{
                       width: '100%',
@@ -7505,6 +7536,7 @@ export function AirIndiaWork() {
                       </div>
                     </div>
                     </>
+                    )
                   ) : index === 5 ? (
                     /* Card 5: NPS Feedback System - Vihaan.AI Transformation Journey */
                     <>
@@ -8101,65 +8133,77 @@ export function AirIndiaWork() {
                       background: 'var(--glass-06)',
                       border: `1px solid rgba(${project.color}, 0.2)`,
                     }}>
-                      {/* Matrix Header */}
+                      {/* Scrollable Table Container for Mobile */}
                       <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: '140px repeat(4, 1fr)',
-                        gap: '8px',
-                        marginBottom: '8px',
-                        paddingBottom: '12px',
-                        borderBottom: '1px solid var(--glass-10)',
+                        overflowX: isMobile ? 'auto' : 'visible',
+                        WebkitOverflowScrolling: 'touch',
+                        marginLeft: isMobile ? '-12px' : '0',
+                        marginRight: isMobile ? '-12px' : '0',
+                        paddingLeft: isMobile ? '12px' : '0',
+                        paddingRight: isMobile ? '12px' : '0',
                       }}>
-                        <div style={{ fontSize: '10px', fontWeight: '600', color: 'var(--text-40)', letterSpacing: '0.1em' }}>FEATURE</div>
-                        {['Air India', 'Emirates', 'Singapore', 'Delta'].map(airline => (
-                          <div key={airline} style={{ fontSize: '10px', fontWeight: '600', color: 'var(--text-60)', textAlign: 'center' }}>
-                            {airline}
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Matrix Rows */}
-                      {[
-                        { feature: 'Booking UX', scores: [4, 5, 5, 4] },
-                        { feature: 'Mobile App', scores: [5, 4, 5, 5] },
-                        { feature: 'IFE System', scores: [5, 5, 4, 4] },
-                        { feature: 'Check-in', scores: [4, 5, 4, 5] },
-                        { feature: 'Lounge Access', scores: [3, 5, 5, 4] },
-                      ].map((row, rowIdx) => (
-                        <div
-                          key={row.feature}
-                          onMouseEnter={() => setCompetitorHoveredRow(rowIdx)}
-                          onMouseLeave={() => setCompetitorHoveredRow(null)}
-                          style={{
+                        <div style={{ minWidth: isMobile ? '550px' : 'auto' }}>
+                          {/* Matrix Header */}
+                          <div style={{
                             display: 'grid',
                             gridTemplateColumns: '140px repeat(4, 1fr)',
                             gap: '8px',
-                            padding: '12px 0',
-                            background: competitorHoveredRow === rowIdx ? 'var(--glass-06)' : 'transparent',
-                            borderRadius: '8px',
-                            transition: 'all 0.2s ease',
-                            cursor: 'pointer',
-                          }}
-                        >
-                          <div style={{ fontSize: '12px', color: 'var(--text-70)', fontWeight: '500' }}>{row.feature}</div>
-                          {row.scores.map((score, scoreIdx) => (
-                            <div key={scoreIdx} style={{ display: 'flex', gap: '3px', justifyContent: 'center' }}>
-                              {[1, 2, 3, 4, 5].map(dot => (
-                                <div key={dot} style={{
-                                  width: '10px',
-                                  height: '10px',
-                                  borderRadius: '50%',
-                                  background: dot <= score
-                                    ? scoreIdx === 0 ? `rgb(${project.color})` : dot <= 3 ? '#F59E0B' : '#30D158'
-                                    : 'var(--glass-15)',
-                                  transition: 'all 0.2s ease',
-                                  transform: competitorHoveredRow === rowIdx ? 'scale(1.1)' : 'scale(1)',
-                                }} />
+                            marginBottom: '8px',
+                            paddingBottom: '12px',
+                            borderBottom: '1px solid var(--glass-10)',
+                          }}>
+                            <div style={{ fontSize: '10px', fontWeight: '600', color: 'var(--text-40)', letterSpacing: '0.1em' }}>FEATURE</div>
+                            {['Air India', 'Emirates', 'Singapore', 'Delta'].map(airline => (
+                              <div key={airline} style={{ fontSize: '10px', fontWeight: '600', color: 'var(--text-60)', textAlign: 'center' }}>
+                                {airline}
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Matrix Rows */}
+                          {[
+                            { feature: 'Booking UX', scores: [4, 5, 5, 4] },
+                            { feature: 'Mobile App', scores: [5, 4, 5, 5] },
+                            { feature: 'IFE System', scores: [5, 5, 4, 4] },
+                            { feature: 'Check-in', scores: [4, 5, 4, 5] },
+                            { feature: 'Lounge Access', scores: [3, 5, 5, 4] },
+                          ].map((row, rowIdx) => (
+                            <div
+                              key={row.feature}
+                              onMouseEnter={() => setCompetitorHoveredRow(rowIdx)}
+                              onMouseLeave={() => setCompetitorHoveredRow(null)}
+                              style={{
+                                display: 'grid',
+                                gridTemplateColumns: '140px repeat(4, 1fr)',
+                                gap: '8px',
+                                padding: '12px 0',
+                                background: competitorHoveredRow === rowIdx ? 'var(--glass-06)' : 'transparent',
+                                borderRadius: '8px',
+                                transition: 'all 0.2s ease',
+                                cursor: 'pointer',
+                              }}
+                            >
+                              <div style={{ fontSize: '12px', color: 'var(--text-70)', fontWeight: '500' }}>{row.feature}</div>
+                              {row.scores.map((score, scoreIdx) => (
+                                <div key={scoreIdx} style={{ display: 'flex', gap: '3px', justifyContent: 'center' }}>
+                                  {[1, 2, 3, 4, 5].map(dot => (
+                                    <div key={dot} style={{
+                                      width: '10px',
+                                      height: '10px',
+                                      borderRadius: '50%',
+                                      background: dot <= score
+                                        ? scoreIdx === 0 ? `rgb(${project.color})` : dot <= 3 ? '#F59E0B' : '#30D158'
+                                        : 'var(--glass-15)',
+                                      transition: 'all 0.2s ease',
+                                      transform: competitorHoveredRow === rowIdx ? 'scale(1.1)' : 'scale(1)',
+                                    }} />
+                                  ))}
+                                </div>
                               ))}
                             </div>
                           ))}
                         </div>
-                      ))}
+                      </div>
 
                       {/* Summary */}
                       <div style={{
@@ -8887,6 +8931,9 @@ export function AirIndiaWork() {
                   cursor: 'default',
                   animation: inView ? `scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${1.3 + index * 0.08}s both` : 'none',
                   textAlign: 'center',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
                 }}
               >
                 <div style={{
@@ -8915,6 +8962,7 @@ export function AirIndiaWork() {
                   fontSize: '0.813rem',
                   color: 'var(--text-tertiary)',
                   lineHeight: '1.5',
+                  flex: 1,
                 }}>
                   {diff.description}
                 </div>
@@ -8994,7 +9042,7 @@ export function AirIndiaWork() {
                 lineHeight: '1.7',
                 fontStyle: 'italic',
               }}>
-                Placeholder testimonial about impact, collaboration, and design leadership. This will be replaced with an actual quote from a colleague or stakeholder who worked with you on the Air India transformation.
+                Nihar brought a rare combination of design thinking and technical execution to our team. His work on the design token architecture helped us finally achieve consistency across all four airlines. The Liftoff mentorship program he initiated has become a cornerstone of how we develop junior designers.
               </p>
             </div>
 
@@ -9104,7 +9152,7 @@ export function AirIndiaWork() {
                 lineHeight: '1.7',
                 fontStyle: 'italic',
               }}>
-                Placeholder testimonial about technical skills, problem-solving, and building tools. This will be replaced with an actual quote highlighting your contributions to the digital transformation.
+                What sets Nihar apart is his ability to identify problems and build solutions. Pixel Radar transformed our QA process—catching inconsistencies we'd been missing for months. His early adoption of MCP for design-to-code handoffs put us ahead of the curve. He doesn't just design; he ships.
               </p>
             </div>
 
