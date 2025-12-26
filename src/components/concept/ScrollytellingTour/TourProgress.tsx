@@ -4,18 +4,18 @@ import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
 const SECTION_LABELS = [
-  'Welcome',
-  'Cleara',
+  'Journey',
   'Air India',
-  'Mythos',
+  'Cleara',
+  'Metamorphic',
   'Connect',
 ];
 
 const SECTION_COLORS = [
-  '#8B5CF6', // Welcome - Purple
-  '#10B981', // Cleara - Green
+  '#8B5CF6', // Journey - Purple
   '#DA0E29', // Air India - Red
-  '#8B5CF6', // Mythos - Purple
+  '#10B981', // Cleara - Green
+  '#8B5CF6', // Metamorphic - Purple
   '#EC4899', // Connect - Pink
 ];
 

@@ -13,10 +13,10 @@ import { ConnectSection } from './sections/ConnectSection';
 const PREMIUM_EASE = [0.16, 1, 0.3, 1] as const;
 
 const SECTION_COLORS = [
-  '#8B5CF6', // Welcome
-  '#10B981', // Cleara
+  '#8B5CF6', // Journey
   '#DA0E29', // Air India
-  '#8B5CF6', // Mythos
+  '#10B981', // Cleara
+  '#8B5CF6', // Metamorphic
   '#EC4899', // Connect
 ];
 

@@ -1,10 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import Atropos from 'atropos';
+import 'atropos/css';
 
 const PREMIUM_EASE = [0.16, 1, 0.3, 1] as const;
 const SPRING_CONFIG = { type: 'spring' as const, stiffness: 400, damping: 25 };
@@ -31,6 +33,31 @@ interface ProjectSectionProps {
 export function ProjectSection({ project, isActive }: ProjectSectionProps) {
   const prefersReducedMotion = useReducedMotion();
   const [isHovered, setIsHovered] = React.useState(false);
+  const atroposRef = useRef<HTMLDivElement>(null);
+  const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
+
+  // Initialize Atropos 3D effect
+  useEffect(() => {
+    if (!atroposRef.current || prefersReducedMotion) return;
+
+    // Only initialize on non-touch devices
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice) return;
+
+    atroposInstance.current = Atropos({
+      el: atroposRef.current,
+      activeOffset: 60,
+      rotateXMax: 2,
+      rotateYMax: 2,
+      shadow: false,
+      highlight: false,
+      duration: 800,
+    });
+
+    return () => {
+      atroposInstance.current?.destroy();
+    };
+  }, [prefersReducedMotion]);
 
   const contentVariants = {
     hidden: { opacity: 0, y: 20, filter: 'blur(8px)' },
@@ -109,92 +136,118 @@ export function ProjectSection({ project, isActive }: ProjectSectionProps) {
         {project.tagline}
       </motion.p>
 
-      {/* Hero Image with Glass Frame */}
+      {/* Hero Image with 3D Atropos Effect */}
       <motion.div
         variants={imageVariants}
         initial="hidden"
         animate={isActive ? 'visible' : 'hidden'}
         style={{
-          position: 'relative',
           width: '100%',
           maxWidth: '600px',
-          aspectRatio: '16/10',
-          borderRadius: '24px',
-          overflow: 'hidden',
-          background: 'var(--glass-03)',
-          backdropFilter: 'blur(40px) saturate(150%)',
-          WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-          border: '1px solid var(--text-06)',
-          boxShadow: `
-            0 8px 32px rgba(0, 0, 0, 0.15),
-            0 0 0 1px ${project.accentColor}10,
-            inset 0 1px 0 var(--text-08)
-          `,
         }}
       >
-        {/* Accent glow behind image */}
         <div
+          ref={atroposRef}
+          className="atropos"
           style={{
-            position: 'absolute',
-            inset: '-20%',
-            background: `radial-gradient(ellipse 60% 60% at 50% 50%, ${project.accentColor}15 0%, transparent 70%)`,
-            pointerEvents: 'none',
-          }}
-        />
-
-        <Image
-          src={project.images.hero}
-          alt={project.name}
-          fill
-          style={{
-            objectFit: 'cover',
-            objectPosition: 'center',
-          }}
-          sizes="(max-width: 768px) 100vw, 600px"
-          priority
-        />
-
-        {/* Subtle overlay for depth */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.3) 100%)',
-            pointerEvents: 'none',
-          }}
-        />
-      </motion.div>
-
-      {/* Secondary floating image (if exists) */}
-      {project.images.secondary && (
-        <motion.div
-          custom={0.4}
-          variants={contentVariants}
-          initial="hidden"
-          animate={isActive ? 'visible' : 'hidden'}
-          style={{
-            position: 'absolute',
-            right: '5%',
-            top: '15%',
-            width: '120px',
-            height: '120px',
-            borderRadius: '16px',
-            overflow: 'hidden',
-            opacity: 0.6,
-            filter: 'blur(1px)',
-            transform: 'rotate(6deg)',
-            pointerEvents: 'none',
+            width: '100%',
+            aspectRatio: '16/10',
           }}
         >
-          <Image
-            src={project.images.secondary}
-            alt=""
-            fill
-            style={{ objectFit: 'cover' }}
-            sizes="120px"
-          />
-        </motion.div>
-      )}
+          <div className="atropos-scale" style={{ height: '100%' }}>
+            <div className="atropos-rotate" style={{ height: '100%' }}>
+              <div
+                className="atropos-inner"
+                style={{
+                  height: '100%',
+                  borderRadius: '24px',
+                  overflow: 'hidden',
+                  background: 'var(--glass-03)',
+                  backdropFilter: 'blur(40px) saturate(150%)',
+                  WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                  border: '1px solid var(--text-06)',
+                  boxShadow: `
+                    0 8px 32px rgba(0, 0, 0, 0.15),
+                    0 0 0 1px ${project.accentColor}10,
+                    inset 0 1px 0 var(--text-08)
+                  `,
+                }}
+              >
+                {/* Background glow layer - parallax back */}
+                <div
+                  data-atropos-offset="-5"
+                  style={{
+                    position: 'absolute',
+                    inset: '-30%',
+                    background: `radial-gradient(ellipse 70% 70% at 50% 50%, ${project.accentColor}20 0%, transparent 70%)`,
+                    pointerEvents: 'none',
+                  }}
+                />
+
+                {/* Main image layer */}
+                <div
+                  data-atropos-offset="0"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                  }}
+                >
+                  <Image
+                    src={project.images.hero}
+                    alt={project.name}
+                    fill
+                    style={{
+                      objectFit: 'cover',
+                      objectPosition: 'center',
+                    }}
+                    sizes="(max-width: 768px) 100vw, 600px"
+                    priority
+                  />
+                </div>
+
+                {/* Overlay gradient layer - parallax front */}
+                <div
+                  data-atropos-offset="3"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.4) 100%)',
+                    pointerEvents: 'none',
+                  }}
+                />
+
+                {/* Floating accent badge - most forward */}
+                <div
+                  data-atropos-offset="5"
+                  style={{
+                    position: 'absolute',
+                    bottom: '1rem',
+                    left: '1rem',
+                    padding: '0.5rem 1rem',
+                    background: 'var(--glass-15)',
+                    backdropFilter: 'blur(20px)',
+                    borderRadius: '8px',
+                    border: `1px solid ${project.accentColor}30`,
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: '0.75rem',
+                      fontWeight: 500,
+                      color: project.accentColor,
+                      fontFamily: 'var(--font-space-grotesk)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                    }}
+                  >
+                    {project.tagline.split(' ')[0]}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Description */}
       <motion.p
@@ -298,20 +351,8 @@ export function ProjectSection({ project, isActive }: ProjectSectionProps) {
   );
 }
 
-// Project data for the tour
+// Project data for the tour - Order: Air India, Cleara, Metamorphic
 export const TOUR_PROJECTS: ProjectData[] = [
-  {
-    id: 'cleara',
-    name: 'Cleara',
-    tagline: 'AI-Powered Psoriasis Care',
-    description: '18 months of deep research into chronic condition management, resulting in an AI companion that understands the unpredictable nature of skin conditions.',
-    metrics: ['18 months research', '3 user personas', 'AI-driven insights'],
-    accentColor: '#10B981',
-    images: {
-      hero: '/images/cleara/cleara_phone.png',
-      secondary: '/images/cleara/watercolor/hero-fragment-1.png',
-    },
-  },
   {
     id: 'air-india',
     name: 'Air India',
@@ -325,14 +366,25 @@ export const TOUR_PROJECTS: ProjectData[] = [
     logo: '/logos/air-india.svg',
   },
   {
-    id: 'mythos',
-    name: 'Mythos',
-    tagline: 'Gaming Platform Experience',
-    description: 'Crafting immersive gaming experiences with attention to micro-interactions and player engagement.',
-    metrics: ['Immersive UX', 'Micro-interactions', 'Player-first design'],
+    id: 'cleara',
+    name: 'Cleara',
+    tagline: 'AI-Powered Psoriasis Care',
+    description: '18 months of deep research into chronic condition management, resulting in an AI companion that understands the unpredictable nature of skin conditions.',
+    metrics: ['18 months research', '3 user personas', 'AI-driven insights'],
+    accentColor: '#10B981',
+    images: {
+      hero: '/images/cleara/cleara_phone.png',
+    },
+  },
+  {
+    id: 'metamorphic-fractal-reflections',
+    name: 'Metamorphic Fractal Reflections',
+    tagline: 'Generative Art Exhibition',
+    description: 'An exploration of algorithmic beauty through generative art, creating infinite variations of fractal patterns.',
+    metrics: ['Generative art', 'Interactive exhibition', 'Algorithmic design'],
     accentColor: '#8B5CF6',
     images: {
-      hero: '/projects/mythoscover1.png',
+      hero: '/images/metamorphic/meta1.jpg',
     },
   },
 ];
