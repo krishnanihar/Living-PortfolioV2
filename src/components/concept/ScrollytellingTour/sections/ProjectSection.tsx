@@ -14,21 +14,44 @@ const SPRING_CONFIG = { type: 'spring' as const, stiffness: 400, damping: 25 };
 export interface ProjectData {
   id: string;
   name: string;
+  company: string;
   tagline: string;
   description: string;
-  metrics: string[];
+  status: 'live' | 'shipped' | 'concept' | 'winner' | 'development';
+  category: string;
+  tags: string[];
+  year: string;
   accentColor: string;
-  images: {
-    hero: string;
-    secondary?: string;
-  };
-  logo?: string;
+  image: string;
 }
 
 interface ProjectSectionProps {
   project: ProjectData;
   isActive: boolean;
 }
+
+// Status badge styling (matching ProjectCard.tsx)
+const getStatusStyles = (status: string) => {
+  const styles: Record<string, string> = {
+    live: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+    shipped: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+    concept: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+    winner: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+    development: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+  };
+  return styles[status] || styles.development;
+};
+
+const getStatusLabel = (status: string) => {
+  const labels: Record<string, string> = {
+    live: 'Live',
+    shipped: 'Shipped',
+    concept: 'Concept',
+    winner: 'Winner',
+    development: 'In Dev',
+  };
+  return labels[status] || 'In Dev';
+};
 
 export function ProjectSection({ project, isActive }: ProjectSectionProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -47,8 +70,8 @@ export function ProjectSection({ project, isActive }: ProjectSectionProps) {
     atroposInstance.current = Atropos({
       el: atroposRef.current,
       activeOffset: 60,
-      rotateXMax: 2,
-      rotateYMax: 2,
+      rotateXMax: 3,
+      rotateYMax: 3,
       shadow: false,
       highlight: false,
       duration: 800,
@@ -73,20 +96,6 @@ export function ProjectSection({ project, isActive }: ProjectSectionProps) {
     }),
   };
 
-  const imageVariants = {
-    hidden: { opacity: 0, scale: 0.95, y: 30 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: {
-        duration: prefersReducedMotion ? 0 : 0.8,
-        delay: prefersReducedMotion ? 0 : 0.2,
-        ease: PREMIUM_EASE,
-      },
-    },
-  };
-
   return (
     <div
       style={{
@@ -94,258 +103,238 @@ export function ProjectSection({ project, isActive }: ProjectSectionProps) {
         flexDirection: 'column',
         alignItems: 'center',
         gap: '1.5rem',
-        maxWidth: '800px',
+        maxWidth: '600px',
         margin: '0 auto',
         padding: '0 1.5rem',
       }}
     >
-      {/* Project Name */}
-      <motion.h2
+      {/* Card with Atropos 3D Effect */}
+      <motion.div
         custom={0.1}
         variants={contentVariants}
         initial="hidden"
         animate={isActive ? 'visible' : 'hidden'}
-        style={{
-          fontSize: 'clamp(2rem, 5vw, 3rem)',
-          fontWeight: 300,
-          color: 'var(--text-95)',
-          fontFamily: 'var(--font-space-grotesk)',
-          margin: 0,
-          letterSpacing: '-0.02em',
-        }}
-      >
-        {project.name}
-      </motion.h2>
-
-      {/* Tagline */}
-      <motion.p
-        custom={0.15}
-        variants={contentVariants}
-        initial="hidden"
-        animate={isActive ? 'visible' : 'hidden'}
-        style={{
-          fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
-          fontWeight: 500,
-          color: project.accentColor,
-          fontFamily: 'var(--font-space-grotesk)',
-          textTransform: 'uppercase',
-          letterSpacing: '0.1em',
-          margin: 0,
-        }}
-      >
-        {project.tagline}
-      </motion.p>
-
-      {/* Hero Image with 3D Atropos Effect */}
-      <motion.div
-        variants={imageVariants}
-        initial="hidden"
-        animate={isActive ? 'visible' : 'hidden'}
-        style={{
-          width: '100%',
-          maxWidth: '600px',
-        }}
+        style={{ width: '100%' }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         <div
           ref={atroposRef}
           className="atropos"
-          style={{
-            width: '100%',
-            aspectRatio: '16/10',
-          }}
+          style={{ width: '100%' }}
         >
-          <div className="atropos-scale" style={{ height: '100%' }}>
-            <div className="atropos-rotate" style={{ height: '100%' }}>
+          <div className="atropos-scale">
+            <div className="atropos-rotate">
               <div
-                className="atropos-inner"
+                className="atropos-inner group"
                 style={{
-                  height: '100%',
-                  borderRadius: '24px',
+                  borderRadius: '20px',
                   overflow: 'hidden',
                   background: 'var(--glass-03)',
                   backdropFilter: 'blur(40px) saturate(150%)',
                   WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-                  border: '1px solid var(--text-06)',
-                  boxShadow: `
-                    0 8px 32px rgba(0, 0, 0, 0.15),
-                    0 0 0 1px ${project.accentColor}10,
-                    inset 0 1px 0 var(--text-08)
-                  `,
+                  border: '1px solid var(--text-08)',
+                  borderLeft: isHovered ? `2px solid ${project.accentColor}` : '2px solid transparent',
+                  padding: '1.5rem',
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  transform: isHovered ? 'scale(1.02)' : 'scale(1)',
                 }}
               >
-                {/* Background glow layer - parallax back */}
+                {/* Top accent line animation */}
                 <div
-                  data-atropos-offset="-5"
                   style={{
                     position: 'absolute',
-                    inset: '-30%',
-                    background: `radial-gradient(ellipse 70% 70% at 50% 50%, ${project.accentColor}20 0%, transparent 70%)`,
-                    pointerEvents: 'none',
+                    top: 0,
+                    left: 0,
+                    height: '2px',
+                    width: isHovered ? '100%' : '0%',
+                    background: project.accentColor,
+                    transition: 'width 0.3s ease',
                   }}
                 />
 
-                {/* Main image layer */}
+                {/* Header: Title + Status Badge */}
                 <div
-                  data-atropos-offset="0"
+                  data-atropos-offset="2"
                   style={{
-                    position: 'absolute',
-                    inset: 0,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                    marginBottom: '0.75rem',
+                  }}
+                >
+                  <div>
+                    <h2
+                      style={{
+                        fontSize: 'clamp(1.25rem, 3vw, 1.5rem)',
+                        fontWeight: 600,
+                        color: 'var(--text-95)',
+                        fontFamily: 'var(--font-space-grotesk)',
+                        margin: 0,
+                        marginBottom: '0.25rem',
+                        transition: 'color 0.2s ease',
+                      }}
+                    >
+                      {project.name}
+                    </h2>
+                    <p
+                      style={{
+                        fontSize: '0.875rem',
+                        fontWeight: 500,
+                        color: 'var(--text-60)',
+                        margin: 0,
+                      }}
+                    >
+                      {project.company}
+                    </p>
+                  </div>
+
+                  {/* Status Badge */}
+                  <span
+                    className={getStatusStyles(project.status)}
+                    style={{
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '6px',
+                      fontSize: '0.6875rem',
+                      fontWeight: 600,
+                      borderWidth: '1px',
+                      borderStyle: 'solid',
+                      flexShrink: 0,
+                    }}
+                  >
+                    {getStatusLabel(project.status)}
+                  </span>
+                </div>
+
+                {/* Image Container - 16:9 aspect ratio */}
+                <div
+                  data-atropos-offset="5"
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    aspectRatio: '16/9',
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    marginBottom: '1rem',
                   }}
                 >
                   <Image
-                    src={project.images.hero}
+                    src={project.image}
                     alt={project.name}
                     fill
                     style={{
                       objectFit: 'cover',
                       objectPosition: 'center',
+                      transition: 'transform 0.3s ease',
+                      transform: isHovered ? 'scale(1.05)' : 'scale(1)',
                     }}
                     sizes="(max-width: 768px) 100vw, 600px"
                     priority
                   />
                 </div>
 
-                {/* Overlay gradient layer - parallax front */}
-                <div
+                {/* Description */}
+                <p
                   data-atropos-offset="3"
                   style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.4) 100%)',
-                    pointerEvents: 'none',
+                    fontSize: '0.875rem',
+                    color: 'var(--text-70)',
+                    lineHeight: 1.6,
+                    margin: 0,
+                    marginBottom: '1rem',
                   }}
-                />
+                >
+                  {project.description}
+                </p>
 
-                {/* Floating accent badge - most forward */}
+                {/* Tags */}
                 <div
-                  data-atropos-offset="5"
+                  data-atropos-offset="2"
                   style={{
-                    position: 'absolute',
-                    bottom: '1rem',
-                    left: '1rem',
-                    padding: '0.5rem 1rem',
-                    background: 'var(--glass-15)',
-                    backdropFilter: 'blur(20px)',
-                    borderRadius: '8px',
-                    border: `1px solid ${project.accentColor}30`,
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '0.5rem',
+                    marginBottom: '1rem',
+                  }}
+                >
+                  {project.tags.slice(0, 4).map((tag) => (
+                    <span
+                      key={tag}
+                      style={{
+                        padding: '0.25rem 0.5rem',
+                        fontSize: '0.75rem',
+                        fontWeight: 500,
+                        borderRadius: '6px',
+                        background: isHovered ? 'var(--glass-10)' : 'var(--glass-05)',
+                        border: `1px solid ${isHovered ? 'var(--text-20)' : 'var(--text-10)'}`,
+                        color: isHovered ? 'var(--text-90)' : 'var(--text-80)',
+                        transition: 'all 0.2s ease',
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Footer: Year + View Details */}
+                <div
+                  data-atropos-offset="1"
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingTop: '1rem',
+                    borderTop: '1px solid var(--text-10)',
                   }}
                 >
                   <span
                     style={{
                       fontSize: '0.75rem',
-                      fontWeight: 500,
-                      color: project.accentColor,
-                      fontFamily: 'var(--font-space-grotesk)',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
+                      fontWeight: 600,
+                      color: isHovered ? 'var(--text-70)' : 'var(--text-50)',
+                      transition: 'color 0.2s ease',
                     }}
                   >
-                    {project.tagline.split(' ')[0]}
+                    {project.year}
                   </span>
+
+                  <Link href={`/work/${project.id}`} style={{ textDecoration: 'none' }}>
+                    <motion.div
+                      whileHover={prefersReducedMotion ? undefined : { x: 3 }}
+                      whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.375rem',
+                        padding: '0.375rem 0.75rem',
+                        background: isHovered ? 'var(--glass-08)' : 'transparent',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        opacity: isHovered ? 1 : 0,
+                        transform: isHovered ? 'translateY(0)' : 'translateY(8px)',
+                        transition: 'all 0.3s ease',
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: '0.75rem',
+                          fontWeight: 500,
+                          color: 'var(--text-80)',
+                        }}
+                      >
+                        View Details
+                      </span>
+                      <ArrowRight
+                        size={12}
+                        style={{ color: project.accentColor }}
+                      />
+                    </motion.div>
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </motion.div>
-
-      {/* Description */}
-      <motion.p
-        custom={0.3}
-        variants={contentVariants}
-        initial="hidden"
-        animate={isActive ? 'visible' : 'hidden'}
-        style={{
-          fontSize: 'clamp(0.9375rem, 2vw, 1.0625rem)',
-          color: 'var(--text-60)',
-          maxWidth: '500px',
-          lineHeight: 1.7,
-          margin: 0,
-          textAlign: 'center',
-        }}
-      >
-        {project.description}
-      </motion.p>
-
-      {/* Metrics */}
-      <motion.div
-        custom={0.4}
-        variants={contentVariants}
-        initial="hidden"
-        animate={isActive ? 'visible' : 'hidden'}
-        style={{
-          display: 'flex',
-          gap: '1rem',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-        }}
-      >
-        {project.metrics.map((metric, index) => (
-          <React.Fragment key={metric}>
-            <span
-              style={{
-                fontSize: '0.8125rem',
-                color: 'var(--text-45)',
-                fontFamily: 'var(--font-space-grotesk)',
-              }}
-            >
-              {metric}
-            </span>
-            {index < project.metrics.length - 1 && (
-              <span style={{ color: 'var(--text-20)' }}>·</span>
-            )}
-          </React.Fragment>
-        ))}
-      </motion.div>
-
-      {/* CTA Button */}
-      <motion.div
-        custom={0.5}
-        variants={contentVariants}
-        initial="hidden"
-        animate={isActive ? 'visible' : 'hidden'}
-      >
-        <Link href={`/work/${project.id}`} style={{ textDecoration: 'none' }}>
-          <motion.div
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            whileHover={prefersReducedMotion ? undefined : { scale: 1.03, y: -2 }}
-            whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
-            transition={SPRING_CONFIG}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.75rem 1.5rem',
-              background: isHovered ? 'var(--glass-08)' : 'var(--glass-04)',
-              backdropFilter: 'blur(40px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-              border: `1px solid ${isHovered ? `${project.accentColor}30` : 'var(--text-08)'}`,
-              borderRadius: '12px',
-              cursor: 'pointer',
-              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-            }}
-          >
-            <span
-              style={{
-                fontSize: '0.875rem',
-                fontWeight: 500,
-                color: 'var(--text-90)',
-              }}
-            >
-              View Project
-            </span>
-            <ArrowRight
-              size={14}
-              style={{
-                color: project.accentColor,
-                transform: isHovered ? 'translateX(3px)' : 'translateX(0)',
-                transition: 'transform 0.2s ease',
-              }}
-            />
-          </motion.div>
-        </Link>
       </motion.div>
     </div>
   );
@@ -356,35 +345,40 @@ export const TOUR_PROJECTS: ProjectData[] = [
   {
     id: 'air-india',
     name: 'Air India',
+    company: 'Air India DesignLAB',
     tagline: 'Design System at 40,000 Feet',
     description: 'Unified design language serving 450+ daily users across in-flight entertainment, crew tools, and passenger touchpoints.',
-    metrics: ['450+ daily users', 'System-wide unification', 'Enterprise scale'],
+    status: 'shipped',
+    category: 'system',
+    tags: ['Design Systems', 'Aviation', 'Enterprise', 'IFE'],
+    year: '2024',
     accentColor: '#DA0E29',
-    images: {
-      hero: '/images/air-india/IFE.png',
-    },
-    logo: '/logos/air-india.svg',
+    image: '/images/air-india/IFE.png',
   },
   {
     id: 'cleara',
     name: 'Cleara',
+    company: 'Personal Research',
     tagline: 'AI-Powered Psoriasis Care',
-    description: '18 months of deep research into chronic condition management, resulting in an AI companion that understands the unpredictable nature of skin conditions.',
-    metrics: ['18 months research', '3 user personas', 'AI-driven insights'],
+    description: '18-month digital therapeutic design concept reimagining psoriasis care through AI-powered interventions with a watercolor healing aesthetic.',
+    status: 'concept',
+    category: 'research',
+    tags: ['Digital Health', 'AI/ML', 'UX Research', 'Mobile'],
+    year: '2024',
     accentColor: '#10B981',
-    images: {
-      hero: '/images/cleara/cleara_phone.png',
-    },
+    image: '/images/cleara/watercolor/hero-fragment-1.png',
   },
   {
     id: 'metamorphic-fractal-reflections',
     name: 'Metamorphic Fractal Reflections',
+    company: 'National Institute of Design',
     tagline: 'Generative Art Exhibition',
-    description: 'An exploration of algorithmic beauty through generative art, creating infinite variations of fractal patterns.',
-    metrics: ['Generative art', 'Interactive exhibition', 'Algorithmic design'],
+    description: 'Psychedelic journey installation exploring consciousness through ego dissolution. An immersive bathroom mirror portal experience.',
+    status: 'shipped',
+    category: 'research',
+    tags: ['Installation', 'TouchDesigner', 'Consciousness', 'Art'],
+    year: '2023',
     accentColor: '#8B5CF6',
-    images: {
-      hero: '/images/metamorphic/meta1.jpg',
-    },
+    image: '/images/metamorphic/meta1.jpg',
   },
 ];
