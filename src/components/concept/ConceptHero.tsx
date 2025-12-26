@@ -8,7 +8,6 @@ import { motion } from 'framer-motion';
 import {
   ChevronDown,
   Mail,
-  Compass,
   Sun,
   Moon,
   Sparkles,
@@ -544,9 +543,9 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
           <span style={{ position: 'relative', zIndex: 1 }}>Contact</span>
         </button>
 
-        {/* Quick Tour Button */}
-        <Link
-          href="/tour"
+        {/* Explore Button */}
+        <button
+          onClick={handleScrollToNext}
           onMouseEnter={() => setHoveredButton('tour')}
           onMouseLeave={() => setHoveredButton(null)}
           style={{
@@ -568,7 +567,6 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
             transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
             transform: hoveredButton === 'tour' ? 'translateY(-2px) scale(1.02)' : 'translateY(0) scale(1)',
             overflow: 'hidden',
-            textDecoration: 'none',
           }}
         >
           <div
@@ -586,9 +584,9 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
               transition: 'opacity 0.3s ease',
             }}
           />
-          <Compass size={15} style={{ position: 'relative', zIndex: 1 }} />
-          <span style={{ position: 'relative', zIndex: 1 }}>Quick Tour</span>
-        </Link>
+          <ChevronDown size={15} style={{ position: 'relative', zIndex: 1 }} />
+          <span style={{ position: 'relative', zIndex: 1 }}>Explore</span>
+        </button>
       </div>
 
       {/* Scroll Memory Pill - Shows if user has viewing history */}
