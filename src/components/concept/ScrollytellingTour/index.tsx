@@ -7,18 +7,16 @@ import { useTourSnap } from './useTourSnap';
 import { TourSection } from './TourSection';
 import { TourProgress } from './TourProgress';
 import { WelcomeSection } from './sections/WelcomeSection';
-import { MilestoneSection, MILESTONES } from './sections/MilestoneSection';
-import { WorkSection } from './sections/WorkSection';
+import { ProjectSection, TOUR_PROJECTS } from './sections/ProjectSection';
 import { ConnectSection } from './sections/ConnectSection';
 
 const PREMIUM_EASE = [0.16, 1, 0.3, 1] as const;
 
 const SECTION_COLORS = [
   '#8B5CF6', // Welcome
-  '#3B82F6', // Origins
-  '#EC4899', // Systems
-  '#DA0E29', // Scale
-  '#8B5CF6', // Work
+  '#10B981', // Cleara
+  '#DA0E29', // Air India
+  '#8B5CF6', // Mythos
   '#EC4899', // Connect
 ];
 
@@ -154,38 +152,29 @@ export function ScrollytellingTour({ onClose, onContact }: ScrollytellingTourPro
           <WelcomeSection isActive={currentIndex === 0} />
         </TourSection>
 
-        {/* Section 2-4: Milestones */}
-        {MILESTONES.map((milestone, index) => (
+        {/* Section 2-4: Projects */}
+        {TOUR_PROJECTS.map((project, index) => (
           <TourSection
-            key={milestone.year}
-            accentColor={milestone.accentColor}
+            key={project.id}
+            accentColor={project.accentColor}
             index={index + 1}
             isActive={currentIndex === index + 1}
           >
-            <MilestoneSection
-              milestone={milestone}
+            <ProjectSection
+              project={project}
               isActive={currentIndex === index + 1}
             />
           </TourSection>
         ))}
 
-        {/* Section 5: Work */}
+        {/* Section 5: Connect */}
         <TourSection
           accentColor={SECTION_COLORS[4]}
           index={4}
           isActive={currentIndex === 4}
         >
-          <WorkSection isActive={currentIndex === 4} />
-        </TourSection>
-
-        {/* Section 6: Connect */}
-        <TourSection
-          accentColor={SECTION_COLORS[5]}
-          index={5}
-          isActive={currentIndex === 5}
-        >
           <ConnectSection
-            isActive={currentIndex === 5}
+            isActive={currentIndex === 4}
             onClose={onClose}
             onContact={handleContact}
           />
@@ -208,7 +197,7 @@ export function ScrollytellingTour({ onClose, onContact }: ScrollytellingTourPro
         }}
         className="tour-dots-mobile"
       >
-        {[0, 1, 2, 3, 4, 5].map((index) => (
+        {[0, 1, 2, 3, 4].map((index) => (
           <motion.button
             key={index}
             onClick={() => goToSection(index)}

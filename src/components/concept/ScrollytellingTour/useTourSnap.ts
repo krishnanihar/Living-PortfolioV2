@@ -3,8 +3,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useMotionValue, animate } from 'framer-motion';
 
-// Configuration - 6 sections for the tour
-const TOTAL_SECTIONS = 6;
+// Configuration - 5 sections for the tour (Welcome + 3 Projects + Connect)
+const TOTAL_SECTIONS = 5;
 
 // Spring config for smooth, snappy animations
 const springConfig = {

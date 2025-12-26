@@ -5,20 +5,18 @@ import { motion, useReducedMotion } from 'framer-motion';
 
 const SECTION_LABELS = [
   'Welcome',
-  'Origins',
-  'Systems',
-  'Scale',
-  'Work',
+  'Cleara',
+  'Air India',
+  'Mythos',
   'Connect',
 ];
 
 const SECTION_COLORS = [
   '#8B5CF6', // Welcome - Purple
-  '#3B82F6', // Origins - Blue
-  '#EC4899', // Systems - Pink
-  '#DA0E29', // Scale - Red
-  '#8B5CF6', // Work - Purple (gradient)
-  '#EC4899', // Connect - Pink (gradient)
+  '#10B981', // Cleara - Green
+  '#DA0E29', // Air India - Red
+  '#8B5CF6', // Mythos - Purple
+  '#EC4899', // Connect - Pink
 ];
 
 interface TourProgressProps {
