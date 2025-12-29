@@ -5,6 +5,7 @@ import { Sparkles, ChevronDown } from 'lucide-react';
 import Atropos from 'atropos';
 import 'atropos/css';
 import { useMetamorphic } from './MetamorphicContext';
+import { useAtroposGyroscope } from '@/hooks/useAtroposGyroscope';
 
 /**
  * MetamorphicHero - Immersive Mirror Portal Entrance
@@ -20,7 +21,15 @@ export function MetamorphicHero() {
   const { isMobile, scrollToSection, prefersReducedMotion, atmosphereColor } = useMetamorphic();
   const [isHovered, setIsHovered] = useState(false);
   const atroposRef = useRef<HTMLDivElement>(null);
+  const rotateRef = useRef<HTMLDivElement>(null);
   const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
+
+  // Gyroscope for mobile (Android only)
+  useAtroposGyroscope(rotateRef, {
+    maxRotateX: 2,
+    maxRotateY: 2,
+    enabled: isMobile && !prefersReducedMotion,
+  });
 
   // Brand color (purple - matches Metamorphic theme)
   const brandRgb = '147, 51, 234';
@@ -91,7 +100,7 @@ export function MetamorphicHero() {
         }}
       >
         <div className="atropos-scale" style={{ height: '100%', overflow: 'visible' }}>
-          <div className="atropos-rotate" style={{ height: '100%', overflow: 'visible' }}>
+          <div ref={rotateRef} className="atropos-rotate" style={{ height: '100%', overflow: 'visible' }}>
             <div
               className="atropos-inner"
               style={{

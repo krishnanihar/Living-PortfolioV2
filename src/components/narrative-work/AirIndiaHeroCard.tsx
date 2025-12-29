@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import Atropos from 'atropos';
 import 'atropos/css';
+import { useAtroposGyroscope } from '@/hooks/useAtroposGyroscope';
 
 /**
  * Giant Air India Hero Card with Atropos 3D Parallax Effect
@@ -17,7 +18,15 @@ export function AirIndiaHeroCard() {
   const [isMobile, setIsMobile] = useState(false);
   const [isButtonHovered, setIsButtonHovered] = useState(false);
   const atroposRef = useRef<HTMLDivElement>(null);
+  const rotateRef = useRef<HTMLDivElement>(null);
   const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
+
+  // Gyroscope for mobile (Android only)
+  useAtroposGyroscope(rotateRef, {
+    maxRotateX: 1,
+    maxRotateY: 1,
+    enabled: isMobile,
+  });
 
   // Air India brand color (RGB: 218, 14, 41)
   const brandRgb = '218, 14, 41';
@@ -80,7 +89,7 @@ export function AirIndiaHeroCard() {
         }}
       >
         <div className="atropos-scale" style={{ height: '100%', overflow: 'visible', pointerEvents: 'none' }}>
-          <div className="atropos-rotate" style={{ height: '100%', overflow: 'visible', pointerEvents: 'all' }}>
+          <div ref={rotateRef} className="atropos-rotate" style={{ height: '100%', overflow: 'visible', pointerEvents: 'all' }}>
             {/* Visual card with background/border - sized to original dimensions */}
             <div
               className="atropos-inner"

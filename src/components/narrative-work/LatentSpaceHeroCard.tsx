@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowRight, Brain } from 'lucide-react';
 import Atropos from 'atropos';
 import 'atropos/css';
+import { useAtroposGyroscope } from '@/hooks/useAtroposGyroscope';
 
 /**
  * Giant Latent Space Hero Card with Atropos 3D Parallax Effect
@@ -14,7 +15,15 @@ export function LatentSpaceHeroCard() {
   const [isMobile, setIsMobile] = useState(false);
   const [isButtonHovered, setIsButtonHovered] = useState(false);
   const atroposRef = useRef<HTMLDivElement>(null);
+  const rotateRef = useRef<HTMLDivElement>(null);
   const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
+
+  // Gyroscope for mobile (Android only)
+  useAtroposGyroscope(rotateRef, {
+    maxRotateX: 1,
+    maxRotateY: 1,
+    enabled: isMobile,
+  });
 
   // Latent Space brand color (RGB: 139, 92, 246 - violet)
   const brandRgb = '139, 92, 246';
@@ -75,7 +84,7 @@ export function LatentSpaceHeroCard() {
         }}
       >
         <div className="atropos-scale" style={{ height: '100%', overflow: 'visible', pointerEvents: 'none' }}>
-          <div className="atropos-rotate" style={{ height: '100%', overflow: 'visible', pointerEvents: 'all' }}>
+          <div ref={rotateRef} className="atropos-rotate" style={{ height: '100%', overflow: 'visible', pointerEvents: 'all' }}>
             <div
               className="atropos-inner"
               style={{

@@ -8,6 +8,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Atropos from 'atropos';
 import 'atropos/css';
+import { useAtroposGyroscope } from '@/hooks/useAtroposGyroscope';
 
 // Register GSAP plugin
 if (typeof window !== 'undefined') {
@@ -528,8 +529,16 @@ export function AirIndiaWork() {
   const heroRef = useRef<HTMLElement>(null);
   const heroImageRef = useRef<HTMLDivElement>(null);
   const atroposRef = useRef<HTMLDivElement>(null);
+  const rotateRef = useRef<HTMLDivElement>(null);
   const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
   const [isHeroHovered, setIsHeroHovered] = useState(false);
+
+  // Gyroscope for mobile (Android only)
+  useAtroposGyroscope(rotateRef, {
+    maxRotateX: 1,
+    maxRotateY: 1,
+    enabled: isMobile,
+  });
 
   // Narrative act tracking
   const [currentAct, setCurrentAct] = useState<1 | 2 | 3>(1);
@@ -1068,7 +1077,7 @@ export function AirIndiaWork() {
           }}
         >
           <div className="atropos-scale" style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
-            <div className="atropos-rotate" style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
+            <div ref={rotateRef} className="atropos-rotate" style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
               <div className="atropos-inner" style={{ width: '100%', height: '100%', position: 'relative' }}>
 
                 {/* LAYER 1: Sky Background - Furthest Back */}

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import Atropos from 'atropos';
 import 'atropos/css';
+import { useAtroposGyroscope } from '@/hooks/useAtroposGyroscope';
 
 interface Project {
   id: string;
@@ -31,8 +32,16 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
     const [isMobile, setIsMobile] = useState(false);
     const [isButtonHovered, setIsButtonHovered] = useState(false);
     const atroposRef = useRef<HTMLDivElement>(null);
+    const rotateRef = useRef<HTMLDivElement>(null);
     const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
     const isAirIndia = project.id === 'air-india';
+
+    // Gyroscope for mobile (Android only)
+    useAtroposGyroscope(rotateRef, {
+      maxRotateX: 1.5,
+      maxRotateY: 1.5,
+      enabled: isMobile,
+    });
 
     // Mount state (SSR safety)
     useEffect(() => {
@@ -105,7 +114,7 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
             style={{ position: 'absolute', inset: 0 }}
           >
             <div className="atropos-scale" style={{ height: '100%' }}>
-              <div className="atropos-rotate" style={{ height: '100%' }}>
+              <div ref={rotateRef} className="atropos-rotate" style={{ height: '100%' }}>
                 <div
                   className="atropos-inner"
                   style={{

@@ -6,6 +6,7 @@ import { ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Atropos from 'atropos';
 import 'atropos/css';
+import { useAtroposGyroscope } from '@/hooks/useAtroposGyroscope';
 
 /**
  * MetamorphicHeroV2 - Air India-Style 3D Parallax Hero
@@ -52,7 +53,15 @@ export function MetamorphicHeroV2({ onEnterPortal }: MetamorphicHeroV2Props) {
 
   // Atropos refs
   const atroposRef = useRef<HTMLDivElement>(null);
+  const rotateRef = useRef<HTMLDivElement>(null);
   const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
+
+  // Gyroscope for mobile (Android only)
+  useAtroposGyroscope(rotateRef, {
+    maxRotateX: 1,
+    maxRotateY: 1,
+    enabled: isMobile,
+  });
 
   // Initialize client-side state
   useEffect(() => {
@@ -135,7 +144,7 @@ export function MetamorphicHeroV2({ onEnterPortal }: MetamorphicHeroV2Props) {
         }}
       >
         <div className="atropos-scale" style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
-          <div className="atropos-rotate" style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
+          <div ref={rotateRef} className="atropos-rotate" style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
             <div className="atropos-inner" style={{ width: '100%', height: '100%', position: 'relative' }}>
 
               {/* LAYER 1: Background Image - Furthest Back */}

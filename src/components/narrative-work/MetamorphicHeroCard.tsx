@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import Atropos from 'atropos';
 import 'atropos/css';
+import { useAtroposGyroscope } from '@/hooks/useAtroposGyroscope';
 
 /**
  * Giant Metamorphic Fractal Reflections Hero Card with Atropos 3D Parallax Effect
@@ -15,7 +16,15 @@ export function MetamorphicHeroCard() {
   const [isMobile, setIsMobile] = useState(false);
   const [isButtonHovered, setIsButtonHovered] = useState(false);
   const atroposRef = useRef<HTMLDivElement>(null);
+  const rotateRef = useRef<HTMLDivElement>(null);
   const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
+
+  // Gyroscope for mobile (Android only)
+  useAtroposGyroscope(rotateRef, {
+    maxRotateX: 1,
+    maxRotateY: 1,
+    enabled: isMobile,
+  });
 
   // Metamorphic brand color (RGB: 147, 51, 234 - purple)
   const brandRgb = '147, 51, 234';
@@ -77,7 +86,7 @@ export function MetamorphicHeroCard() {
         }}
       >
         <div className="atropos-scale" style={{ height: '100%', pointerEvents: 'none' }}>
-          <div className="atropos-rotate" style={{ height: '100%', pointerEvents: 'none' }}>
+          <div ref={rotateRef} className="atropos-rotate" style={{ height: '100%', pointerEvents: 'none' }}>
             <div
               className="atropos-inner"
               style={{

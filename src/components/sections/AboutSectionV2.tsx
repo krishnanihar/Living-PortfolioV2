@@ -10,6 +10,7 @@ import { Chatbot } from '../Chatbot';
 import Atropos from 'atropos';
 import 'atropos/css';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
+import { useAtroposGyroscope } from '@/hooks/useAtroposGyroscope';
 
 interface AboutSectionV2Props {
   className?: string;
@@ -243,9 +244,17 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
   function FullScreenProjectCard({ project, index, scrollTo }: ProjectCardProps) {
     const [isButtonHovered, setIsButtonHovered] = useState(false);
     const atroposRef = useRef<HTMLDivElement>(null);
+    const rotateRef = useRef<HTMLDivElement>(null);
     const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
     const brandRgb = `${project.brandColor.r}, ${project.brandColor.g}, ${project.brandColor.b}`;
     const isAirIndia = project.id === 'air-india';
+
+    // Gyroscope for mobile (Android only)
+    useAtroposGyroscope(rotateRef, {
+      maxRotateX: 1,
+      maxRotateY: 1,
+      enabled: isMobile,
+    });
 
     // Initialize Atropos 3D effect on the ENTIRE card (reduced for easier clicking)
     useEffect(() => {
@@ -288,7 +297,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
           }}
         >
           <div className="atropos-scale" style={{ height: '100%' }}>
-            <div className="atropos-rotate" style={{ height: '100%' }}>
+            <div ref={rotateRef} className="atropos-rotate" style={{ height: '100%' }}>
               <div className="atropos-inner" style={{ width: '100%', height: '100%', position: 'relative' }}>
 
                 {/* Giant Editorial Number - Parallax BACK */}

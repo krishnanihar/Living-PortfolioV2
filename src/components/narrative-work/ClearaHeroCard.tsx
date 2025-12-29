@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import Atropos from 'atropos';
 import 'atropos/css';
+import { useAtroposGyroscope } from '@/hooks/useAtroposGyroscope';
 
 /**
  * Giant Cleara Hero Card with Atropos 3D Parallax Effect
@@ -17,7 +18,15 @@ export function ClearaHeroCard() {
   const [isMobile, setIsMobile] = useState(false);
   const [isButtonHovered, setIsButtonHovered] = useState(false);
   const atroposRef = useRef<HTMLDivElement>(null);
+  const rotateRef = useRef<HTMLDivElement>(null);
   const atroposInstance = useRef<ReturnType<typeof Atropos> | null>(null);
+
+  // Gyroscope for mobile (Android only)
+  useAtroposGyroscope(rotateRef, {
+    maxRotateX: 1,
+    maxRotateY: 1,
+    enabled: isMobile,
+  });
 
   // Cleara brand colors
   const lavenderRgb = '139, 157, 195';
@@ -80,7 +89,7 @@ export function ClearaHeroCard() {
         }}
       >
         <div className="atropos-scale" style={{ height: '100%', overflow: 'visible', pointerEvents: 'none' }}>
-          <div className="atropos-rotate" style={{ height: '100%', overflow: 'visible', pointerEvents: 'all' }}>
+          <div ref={rotateRef} className="atropos-rotate" style={{ height: '100%', overflow: 'visible', pointerEvents: 'all' }}>
             {/* Visual card with cream background */}
             <div
               className="atropos-inner"
