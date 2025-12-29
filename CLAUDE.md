@@ -749,3 +749,35 @@ color: 'var(--text-95)'
 - `/journey` - Timeline of professional journey
 - `/about` - About page with knowledge graph
 - `/contact` - Contact chat interface
+
+## SEO Configuration
+
+### Implemented
+- **robots.txt**: `public/robots.txt` - Crawler guidance and sitemap reference
+- **sitemap.xml**: `src/app/sitemap.ts` - Dynamic sitemap with all pages
+- **JSON-LD schemas**: Person and WebSite structured data in layout.tsx
+- **metadataBase**: Set to `https://knihar.io` for proper URL resolution
+- **Page metadata**: All case study pages have proper title/description/OpenGraph
+
+### TODO: OpenGraph Image
+Create a branded OG image for better social media previews:
+1. Create `public/og-image.jpg` (1200x630px)
+2. Update `src/app/layout.tsx` openGraph config:
+   ```ts
+   openGraph: {
+     images: [{
+       url: '/og-image.jpg',
+       width: 1200,
+       height: 630,
+       alt: 'Krishna Nihar - Product & New Media Designer'
+     }]
+   }
+   ```
+3. Test with https://www.opengraph.xyz/
+
+### Verification
+After deployment, verify SEO setup:
+- Sitemap: `knihar.io/sitemap.xml`
+- Robots: `knihar.io/robots.txt`
+- Rich Results: https://search.google.com/test/rich-results
+- Submit sitemap to Google Search Console

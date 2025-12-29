@@ -21,6 +21,11 @@ const GlobalChatbot = dynamic(
   () => import('@/components/GlobalChatbot').then(mod => ({ default: mod.GlobalChatbot }))
 );
 
+// Lazy load Konami code easter egg
+const KonamiCodeListener = dynamic(
+  () => import('@/hooks/useKonamiCode').then(mod => ({ default: mod.KonamiCodeListener }))
+);
+
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-space-grotesk',
@@ -66,6 +71,7 @@ const cormorantGaramond = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://knihar.io'),
   title: {
     default: 'Krishna Nihar — Product & New Media Designer',
     template: '%s | Krishna Nihar',
@@ -125,6 +131,49 @@ export default function RootLayout({
     <html lang="en" className={`${spaceGrotesk.variable} ${dmSans.variable} ${fraunces.variable} ${manrope.variable} ${jetbrainsMono.variable} ${cormorantGaramond.variable}`} suppressHydrationWarning>
       <head>
         {/* next/font/google automatically handles font optimization and preloading */}
+
+        {/* JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [
+                {
+                  '@type': 'Person',
+                  '@id': 'https://knihar.io/#person',
+                  name: 'Krishna Nihar',
+                  jobTitle: 'Product & New Media Designer',
+                  url: 'https://knihar.io',
+                  description: 'Product & New Media Designer specializing in design systems, aviation UX, and consciousness-aware interfaces.',
+                  sameAs: [
+                    'https://twitter.com/niharsunkara',
+                    'https://linkedin.com/in/niharsunkara',
+                    'https://github.com/krishnanihar',
+                  ],
+                  knowsAbout: [
+                    'Product Design',
+                    'Design Systems',
+                    'Aviation UX',
+                    'User Experience',
+                    'New Media Art',
+                  ],
+                },
+                {
+                  '@type': 'WebSite',
+                  '@id': 'https://knihar.io/#website',
+                  url: 'https://knihar.io',
+                  name: 'Krishna Nihar Portfolio',
+                  description: 'A living portfolio that breathes, remembers, and evolves with you.',
+                  publisher: {
+                    '@id': 'https://knihar.io/#person',
+                  },
+                  inLanguage: 'en-US',
+                },
+              ],
+            }),
+          }}
+        />
       </head>
       <body
         className={`
@@ -144,6 +193,9 @@ export default function RootLayout({
             <PersonalizationProvider>
               {/* Behavioral tracking (invisible) */}
               <BehaviorTracker />
+
+              {/* Konami code easter egg (invisible) */}
+              <KonamiCodeListener />
 
               {/* Micro-interactions system */}
               <MicroInteractionProvider />
