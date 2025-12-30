@@ -73,7 +73,7 @@ export default function ConceptFooter() {
   const socialLinks = [
     { id: 'linkedin', href: 'https://linkedin.com/in/krishnanihar', icon: Linkedin, label: 'LinkedIn' },
     { id: 'github', href: 'https://github.com/krishnanihar', icon: Github, label: 'GitHub' },
-    { id: 'email', href: 'mailto:hello@nihar.design', icon: Mail, label: 'Email' },
+    { id: 'email', href: 'mailto:krishnanihar.s@gmail.com', icon: Mail, label: 'Email' },
   ];
 
   return (
@@ -375,6 +375,27 @@ export default function ConceptFooter() {
             >
               © {new Date().getFullYear()} Krishna Nihar Sunkara
             </p>
+
+            {/* Easter egg link */}
+            <Link
+              href="/work/living-organism"
+              style={{
+                color: 'var(--text-15)',
+                fontSize: '0.6875rem',
+                fontWeight: 400,
+                textDecoration: 'none',
+                transition: 'color 0.3s ease',
+                marginTop: '0.5rem',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = 'var(--text-50)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'var(--text-15)';
+              }}
+            >
+              This site is alive
+            </Link>
           </div>
         </div>
       </footer>

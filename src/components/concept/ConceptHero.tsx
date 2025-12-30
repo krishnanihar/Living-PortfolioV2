@@ -53,8 +53,8 @@ const contactMethods = [
     id: 'email',
     icon: Mail,
     title: 'Email',
-    subtitle: 'hello@nihar.design',
-    href: 'mailto:hello@nihar.design',
+    subtitle: 'krishnanihar.s@gmail.com',
+    href: 'mailto:krishnanihar.s@gmail.com',
     color: '#3B82F6',
     isExternal: false
   },
