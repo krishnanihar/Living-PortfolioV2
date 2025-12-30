@@ -96,12 +96,19 @@ export const metadata: Metadata = {
     title: 'Krishna Nihar — Product & New Media Designer',
     description: 'A living portfolio that breathes, remembers, and evolves with you.',
     siteName: 'Krishna Nihar Portfolio',
+    images: [{
+      url: '/images/og.jpeg',
+      width: 1200,
+      height: 630,
+      alt: 'Krishna Nihar - Product & New Media Designer',
+    }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Krishna Nihar — Product & New Media Designer',
     description: 'A living portfolio that breathes, remembers, and evolves with you.',
     creator: '@niharsunkara',
+    images: ['/images/og.jpeg'],
   },
   robots: {
     index: true,
