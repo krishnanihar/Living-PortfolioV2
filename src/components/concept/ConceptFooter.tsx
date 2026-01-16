@@ -3,7 +3,7 @@
 import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, User, Linkedin, Github, Mail } from 'lucide-react';
+import { ArrowRight, User, Linkedin, Github, Mail, MapPin } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ContactChat } from '@/components/ContactChat';
@@ -238,6 +238,76 @@ export default function ConceptFooter() {
                   Product Designer at{' '}
                   <span style={{ color: '#DA0E29', fontWeight: 500 }}>Air India</span>
                 </p>
+              </div>
+            </div>
+
+            {/* Location & Availability Badge */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '0.5rem',
+                marginTop: '0.5rem',
+              }}
+            >
+              {/* Location Badge */}
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.5rem 1rem',
+                  background: 'var(--glass-04)',
+                  backdropFilter: mounted ? 'blur(20px) saturate(120%)' : 'none',
+                  border: '1px solid var(--text-06)',
+                  borderRadius: '20px',
+                }}
+              >
+                <MapPin size={14} style={{ color: 'var(--text-40)' }} />
+                <span style={{
+                  fontSize: '0.8125rem',
+                  fontWeight: 400,
+                  color: 'var(--text-70)',
+                }}>
+                  Hyderabad, India
+                </span>
+                <span style={{
+                  color: 'var(--text-25)',
+                  margin: '0 0.25rem',
+                }}>
+                  •
+                </span>
+                <span style={{
+                  fontSize: '0.75rem',
+                  fontWeight: 400,
+                  color: 'var(--text-50)',
+                  fontFamily: 'var(--font-space-grotesk)',
+                }}>
+                  IST (UTC+5:30)
+                </span>
+              </div>
+
+              {/* Remote Availability Indicator */}
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.375rem',
+                  fontSize: '0.75rem',
+                  color: 'var(--text-40)',
+                }}
+              >
+                {/* Pulsing green dot */}
+                <span style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  background: 'rgb(16, 185, 129)',
+                  boxShadow: '0 0 8px rgba(16, 185, 129, 0.5)',
+                  animation: 'statusPulse 2s ease-in-out infinite',
+                }} />
+                <span>Open to remote opportunities</span>
               </div>
             </div>
 

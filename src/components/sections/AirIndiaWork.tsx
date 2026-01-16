@@ -1527,6 +1527,186 @@ export function AirIndiaWork() {
       </section>
 
       {/* =========================================================================
+          SECTION 3: MY ROLE - Personal Contribution Clarity
+      ========================================================================= */}
+      <section
+        data-section-id="air-india-my-role"
+        style={{
+          maxWidth: 'min(900px, 85vw)',
+          margin: '0 auto',
+          padding: 'clamp(4rem, 8vh, 6rem) 2rem',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        <div style={{
+          padding: 'clamp(2rem, 4vw, 3rem)',
+          borderRadius: '24px',
+          background: 'var(--glass-04)',
+          border: '1px solid var(--glass-08)',
+          position: 'relative',
+          overflow: 'hidden',
+        }}>
+          {/* Accent gradient border top */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: '10%',
+            right: '10%',
+            height: '2px',
+            background: `linear-gradient(90deg, transparent, rgb(${brandRgb}), transparent)`,
+            borderRadius: '2px',
+          }} />
+
+          {/* Section Label */}
+          <div style={{
+            fontSize: '0.6875rem',
+            fontWeight: 500,
+            color: `rgb(${brandRgb})`,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            marginBottom: '1rem',
+          }}>
+            My Role
+          </div>
+
+          {/* Main Statement */}
+          <h3 style={{
+            fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)',
+            fontWeight: 300,
+            color: 'var(--text-primary)',
+            marginBottom: '1.5rem',
+            lineHeight: 1.4,
+          }}>
+            Product Designer at <span style={{ color: `rgb(${brandRgb})`, fontWeight: 500 }}>Air India DesignLAB</span>
+            <br />
+            <span style={{ color: 'var(--text-tertiary)' }}>Since September 2023</span>
+          </h3>
+
+          {/* Role Grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+            gap: 'clamp(1.5rem, 3vw, 2rem)',
+          }}>
+            {/* Individual Contributions */}
+            <div>
+              <div style={{
+                fontSize: '0.75rem',
+                fontWeight: 500,
+                color: 'var(--text-muted)',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                marginBottom: '0.75rem',
+              }}>
+                Solo Work
+              </div>
+              <ul style={{
+                listStyle: 'none',
+                padding: 0,
+                margin: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.5rem',
+              }}>
+                {[
+                  { label: 'Pixel Radar (Figma Plugin)', badge: 'SOLE BUILDER' },
+                  { label: 'Token Architecture', badge: 'LEAD' },
+                  { label: 'Competitor Research', badge: 'LEAD' },
+                ].map((item, i) => (
+                  <li key={i} style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.75rem',
+                    fontSize: '0.875rem',
+                    color: 'var(--text-secondary)',
+                  }}>
+                    <CheckCircle size={14} style={{ color: 'rgb(16, 185, 129)', flexShrink: 0 }} />
+                    <span>{item.label}</span>
+                    <span style={{
+                      fontSize: '0.625rem',
+                      padding: '0.125rem 0.5rem',
+                      borderRadius: '4px',
+                      background: 'var(--glass-08)',
+                      color: 'var(--text-muted)',
+                      fontWeight: 500,
+                      letterSpacing: '0.05em',
+                    }}>
+                      {item.badge}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Team Contributions */}
+            <div>
+              <div style={{
+                fontSize: '0.75rem',
+                fontWeight: 500,
+                color: 'var(--text-muted)',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                marginBottom: '0.75rem',
+              }}>
+                Team Leadership
+              </div>
+              <ul style={{
+                listStyle: 'none',
+                padding: 0,
+                margin: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.5rem',
+              }}>
+                {[
+                  { label: 'Search with AI', badge: 'LEAD' },
+                  { label: 'IFE System Design', badge: 'LEAD' },
+                  { label: 'MCP Handoff Workflow', badge: 'INITIATOR' },
+                  { label: 'Liftoff Program', badge: 'INITIATOR' },
+                ].map((item, i) => (
+                  <li key={i} style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.75rem',
+                    fontSize: '0.875rem',
+                    color: 'var(--text-secondary)',
+                  }}>
+                    <Users size={14} style={{ color: 'rgb(99, 102, 241)', flexShrink: 0 }} />
+                    <span>{item.label}</span>
+                    <span style={{
+                      fontSize: '0.625rem',
+                      padding: '0.125rem 0.5rem',
+                      borderRadius: '4px',
+                      background: 'var(--glass-08)',
+                      color: 'var(--text-muted)',
+                      fontWeight: 500,
+                      letterSpacing: '0.05em',
+                    }}>
+                      {item.badge}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom Summary */}
+          <p style={{
+            marginTop: '1.5rem',
+            paddingTop: '1.5rem',
+            borderTop: '1px solid var(--glass-08)',
+            fontSize: '0.875rem',
+            color: 'var(--text-tertiary)',
+            lineHeight: 1.6,
+          }}>
+            As an individual contributor with leadership responsibilities, I operate with significant autonomy—
+            identifying gaps, building solutions, and shipping without waiting for permission.
+          </p>
+        </div>
+      </section>
+
+      {/* =========================================================================
           SECTION 4: KEY PROJECTS - PREMIUM VISUAL BENTO GRID
       ========================================================================= */}
       <section

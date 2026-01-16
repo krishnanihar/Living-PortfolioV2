@@ -440,6 +440,32 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
         </span>
       </h1>
 
+      {/* Role Title - Professional Descriptor */}
+      <div
+        style={{
+          fontSize: 'clamp(0.8125rem, 1.25vw, 0.9375rem)',
+          fontWeight: 400,
+          color: 'var(--text-50)',
+          letterSpacing: '0.03em',
+          marginBottom: '0.5rem',
+          opacity: animationStage >= 1 ? 1 : 0,
+          transform: animationStage >= 1 ? 'translateY(0)' : 'translateY(10px)',
+          filter: animationStage >= 1 ? 'blur(0)' : 'blur(6px)',
+          transition: 'all 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
+          fontFamily: 'var(--font-dm-sans)',
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          gap: '0.25rem',
+        }}
+      >
+        <span>Product & New Media Designer</span>
+        <span style={{ color: 'var(--text-25)' }}>|</span>
+        <span>Design Systems & Aviation UX</span>
+        <span style={{ color: 'var(--text-25)' }}>|</span>
+        <span>4 Years</span>
+      </div>
+
       {/* Secondary Message - Only show if present (null for 8+ visits) */}
       {greeting.secondary && (
         <div
