@@ -485,31 +485,6 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
         </div>
       )}
 
-      {/* Subtitle */}
-      <div
-        style={{
-          maxWidth: '650px',
-          margin: '0 auto',
-          marginBottom: '2.5rem',
-          opacity: animationStage >= 2 ? 1 : 0,
-          transform: animationStage >= 2 ? 'translateY(0)' : 'translateY(20px)',
-          filter: animationStage >= 2 ? 'blur(0)' : 'blur(10px)',
-          transition: 'all 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
-        }}
-      >
-        <p
-          style={{
-            fontSize: 'clamp(0.9375rem, 1.75vw, 1.125rem)',
-            fontWeight: 300,
-            color: 'var(--text-65)',
-            letterSpacing: '0.01em',
-            lineHeight: 1.6,
-          }}
-        >
-          Designing experiences that millions interact with daily, from 30,000ft to healthcare
-        </p>
-      </div>
-
       {/* CTA Buttons */}
       <div
         style={{
