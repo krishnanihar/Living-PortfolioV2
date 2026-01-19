@@ -493,6 +493,7 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
           alignItems: 'center',
           gap: 'clamp(1.5rem, 2.5vw, 2rem)',
           flexWrap: 'wrap',
+          marginTop: '2rem',
           opacity: animationStage >= 3 ? 1 : 0,
           transform: animationStage >= 3 ? 'translateY(0)' : 'translateY(15px)',
           filter: animationStage >= 3 ? 'blur(0)' : 'blur(8px)',
