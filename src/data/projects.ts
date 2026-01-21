@@ -37,6 +37,37 @@ export const projects: Project[] = [
     featured: true,
     order: 1,
   },
+  {
+    id: 'origen',
+    title: 'Origen',
+    company: 'Personal Research',
+    description: 'The first design system built for the AI era. Exposes design tokens and React components through Model Context Protocol, enabling LLMs to query design decisions programmatically instead of hallucinating tokens. Features 7 MCP tools, 400+ W3C DTCG tokens, and 5 production-ready React components.',
+    category: 'research',
+    status: 'development',
+    tags: [
+      { id: 'mcp', label: 'MCP Protocol' },
+      { id: 'design-tokens', label: 'Design Tokens' },
+      { id: 'ai-native', label: 'AI-Native' },
+      { id: 'typescript', label: 'TypeScript' },
+      { id: 'react', label: 'React' },
+      { id: 'w3c-dtcg', label: 'W3C DTCG' },
+    ],
+    meta: {
+      year: '2025',
+      role: 'Designer & Developer',
+      team: 'Solo Project',
+      duration: 'Ongoing',
+    },
+    metrics: {
+      impact: '7 MCP tools, 400+ design tokens, 5 React components',
+      improvement: 'Zero token hallucination with programmatic access',
+    },
+    links: [
+      { type: 'case-study', url: '/work/origen', label: 'View Case Study' },
+    ],
+    featured: true,
+    order: 2,
+  },
   // System Design Projects
   {
     id: 'pixel-radar',

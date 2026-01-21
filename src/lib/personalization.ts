@@ -57,6 +57,7 @@ const STORAGE_KEYS = {
 // All available case studies (slugs)
 export const CASE_STUDIES = [
   { slug: 'air-india', name: 'Air India' },
+  { slug: 'origen', name: 'Origen' },
   { slug: 'cleara', name: 'Cleara' },
   { slug: 'latent-space', name: 'Latent Space' },
   { slug: 'metamorphic-fractal-reflections', name: 'Metamorphic Fractal' },

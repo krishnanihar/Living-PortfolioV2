@@ -7,6 +7,7 @@ import { JourneyOverview } from '@/components/narrative-work/JourneyOverview';
 import { AirIndiaHeroCard } from '@/components/narrative-work/AirIndiaHeroCard';
 import { ClearaHeroCard } from '@/components/narrative-work/ClearaHeroCard';
 import { MetamorphicHeroCard } from '@/components/narrative-work/MetamorphicHeroCard';
+import { OrigenHeroCard } from '@/components/narrative-work/OrigenHeroCard';
 // HIDDEN: Latent Space WIP
 // import { LatentSpaceHeroCard } from '@/components/narrative-work/LatentSpaceHeroCard';
 import { MicroVisualization } from '@/components/narrative-work/MicroVisualizations';
@@ -63,6 +64,13 @@ export function WorkNarrativePage() {
   const latentHoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [latentCarouselIndex, setLatentCarouselIndex] = useState(0);
   const latentCarouselRef = useRef<HTMLDivElement>(null);
+
+  // Origen section state
+  const [origenHoveredCard, setOrigenHoveredCard] = useState<number | null>(null);
+  const [origenDebouncedCard, setOrigenDebouncedCard] = useState<number | null>(null);
+  const origenHoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [origenCarouselIndex, setOrigenCarouselIndex] = useState(0);
+  const origenCarouselRef = useRef<HTMLDivElement>(null);
 
   // Detect mobile devices
   useEffect(() => {
@@ -167,6 +175,9 @@ export function WorkNarrativePage() {
       if (latentHoverTimeoutRef.current) {
         clearTimeout(latentHoverTimeoutRef.current);
       }
+      if (origenHoverTimeoutRef.current) {
+        clearTimeout(origenHoverTimeoutRef.current);
+      }
     };
   }, []);
 
@@ -215,6 +226,22 @@ export function WorkNarrativePage() {
     } else {
       setLatentHoveredCard(null);
       setLatentDebouncedCard(null);
+    }
+  }, []);
+
+  // Origen debounced hover handler
+  const handleOrigenHover = useCallback((cardId: number | null) => {
+    if (origenHoverTimeoutRef.current) {
+      clearTimeout(origenHoverTimeoutRef.current);
+    }
+    if (cardId !== null) {
+      setOrigenHoveredCard(cardId);
+      origenHoverTimeoutRef.current = setTimeout(() => {
+        setOrigenDebouncedCard(cardId);
+      }, 50);
+    } else {
+      setOrigenHoveredCard(null);
+      setOrigenDebouncedCard(null);
     }
   }, []);
 
@@ -470,6 +497,70 @@ export function WorkNarrativePage() {
       expandedDescription: 'Structured the case study as a three-act narrative: Seduction (promise), Complication (ethics), Resolution (framework), creating an immersive reading experience.',
       metric: '→ Storytelling',
       tags: ['UX Writing', 'Narrative'],
+      color: '14, 165, 233',
+    },
+  ];
+
+  // Origen Impact Cards
+  const origenImpactCards = [
+    {
+      id: 1,
+      label: '01',
+      title: 'MCP Protocol',
+      description: 'First design system with AI-native interface',
+      expandedDescription: 'Implemented Model Context Protocol (MCP) integration, giving LLMs programmatic access to query design tokens, components, and semantic decisions instead of hallucinating values.',
+      metric: '7 MCP Tools',
+      tags: ['MCP', 'AI-Native'],
+      color: '59, 130, 246',
+    },
+    {
+      id: 2,
+      label: '02',
+      title: 'W3C DTCG Tokens',
+      description: 'Industry-standard design token format',
+      expandedDescription: 'Comprehensive design token system following W3C Design Tokens Community Group specification, ensuring cross-platform compatibility and tool interoperability.',
+      metric: '400+ Tokens',
+      tags: ['W3C', 'Tokens'],
+      color: '168, 85, 247',
+    },
+    {
+      id: 3,
+      label: '03',
+      title: 'React Components',
+      description: 'Production-ready component library',
+      expandedDescription: 'Built 5 foundational React components with TypeScript, complete token integration, and built-in accessibility. Components can be queried programmatically by AI assistants.',
+      metric: '5 Components',
+      tags: ['React', 'TypeScript'],
+      color: '16, 185, 129',
+    },
+    {
+      id: 4,
+      label: '04',
+      title: 'Semantic Search',
+      description: 'AI understands design intent, not just values',
+      expandedDescription: 'MCP resources expose semantic context—when to use which color, why certain spacing exists, component usage guidelines—enabling intelligent design decisions.',
+      metric: '→ Context-aware',
+      tags: ['Semantic', 'AI'],
+      color: '245, 158, 11',
+    },
+    {
+      id: 5,
+      label: '05',
+      title: 'Monorepo Architecture',
+      description: 'Modular packages with shared tooling',
+      expandedDescription: 'Clean monorepo structure with separate packages for tokens, components, and MCP server. TypeScript throughout, unified build system, and comprehensive documentation.',
+      metric: '→ Scalable',
+      tags: ['Monorepo', 'DX'],
+      color: '236, 72, 153',
+    },
+    {
+      id: 6,
+      label: '06',
+      title: 'Zero Hallucination',
+      description: 'AI agents use real values, not guesses',
+      expandedDescription: 'By providing programmatic access to actual design tokens and component props, LLMs no longer need to hallucinate CSS values—they query the source of truth.',
+      metric: '→ Accurate',
+      tags: ['Reliability', 'Trust'],
       color: '14, 165, 233',
     },
   ];
@@ -878,6 +969,247 @@ export function WorkNarrativePage() {
                     background: currentCarouselIndex === index
                       ? 'var(--accent-primary)'
                       : 'var(--border-primary)',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </section>
+
+      {/* ORIGEN SECTION */}
+      <section style={{
+        maxWidth: '1400px',
+        margin: '0 auto',
+        padding: '4rem 1.5rem',
+        position: 'relative',
+        zIndex: 1,
+      }}>
+        <OrigenHeroCard />
+
+        {/* Desktop: Bento Grid */}
+        {!isMobile && (() => {
+          const getGridTemplate = () => {
+            if (!origenDebouncedCard) {
+              return { cols: '1fr 1fr 1fr', rows: '1fr 1fr' };
+            }
+            const index = origenImpactCards.findIndex(c => c.id === origenDebouncedCard);
+            const col = index % 3;
+            const row = Math.floor(index / 3);
+            const cols = [0, 1, 2].map(c => c === col ? '2fr' : '0.5fr').join(' ');
+            const rows = [0, 1].map(r => r === row ? '2fr' : '0.5fr').join(' ');
+            return { cols, rows };
+          };
+          const { cols, rows } = getGridTemplate();
+
+          return (
+            <LayoutGroup>
+              <motion.div
+                layout
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: cols,
+                  gridTemplateRows: rows,
+                  gap: '1.5rem',
+                }}
+                transition={{
+                  layout: { duration: 0.5, ease: [0.32, 0.72, 0, 1] }
+                }}
+              >
+                {origenImpactCards.map((card) => {
+                  const isHovered = origenHoveredCard === card.id;
+                  return (
+                    <motion.div
+                      key={card.id}
+                      layout
+                      layoutId={`origen-card-${card.id}`}
+                      onHoverStart={() => handleOrigenHover(card.id)}
+                      onHoverEnd={() => handleOrigenHover(null)}
+                      transition={{ layout: { duration: 0.4, ease: [0.32, 0.72, 0, 1] } }}
+                      style={{
+                        position: 'relative',
+                        padding: isHovered ? '2rem' : '1.5rem',
+                        borderRadius: 20,
+                        background: isHovered
+                          ? `linear-gradient(135deg, rgba(${card.color}, 0.08), var(--surface-primary))`
+                          : 'var(--surface-primary)',
+                        backdropFilter: 'blur(40px)',
+                        WebkitBackdropFilter: 'blur(40px)',
+                        border: '1px solid transparent',
+                        cursor: 'pointer',
+                        boxShadow: isHovered
+                          ? `0 30px 60px rgba(${card.color}, 0.2)`
+                          : 'var(--shadow-sm)',
+                        overflow: 'hidden',
+                        transition: 'background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease',
+                      }}
+                    >
+                      {isHovered && (
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          borderRadius: '20px',
+                          padding: '1px',
+                          background: `linear-gradient(90deg, transparent, rgba(${card.color}, 0.8), transparent)`,
+                          backgroundSize: '200% 100%',
+                          animation: 'borderShimmer 3s ease-in-out infinite',
+                          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                          WebkitMaskComposite: 'xor',
+                          maskComposite: 'exclude',
+                          pointerEvents: 'none',
+                        }} />
+                      )}
+                      <div style={{ display: 'flex', gap: '1.5rem', height: '100%' }}>
+                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                          <div style={{
+                            fontSize: '0.75rem',
+                            fontWeight: '600',
+                            color: `rgb(${card.color})`,
+                            marginBottom: '1rem',
+                            letterSpacing: '0.1em',
+                            opacity: 0.8,
+                          }}>
+                            {card.label}
+                          </div>
+                          <h3 style={{
+                            fontSize: '1.25rem',
+                            fontWeight: '500',
+                            color: 'var(--text-primary)',
+                            marginBottom: '0.75rem',
+                            letterSpacing: '-0.01em',
+                          }}>
+                            {card.title}
+                          </h3>
+                          <p style={{
+                            fontSize: '0.875rem',
+                            color: 'var(--text-tertiary)',
+                            lineHeight: '1.6',
+                            marginBottom: '1rem',
+                          }}>
+                            {isHovered ? card.expandedDescription : card.description}
+                          </p>
+                          {isHovered && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.3, delay: 0.1 }}
+                              style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}
+                            >
+                              {card.tags.map((tag: string, i: number) => (
+                                <span key={i} style={{
+                                  fontSize: '0.6875rem',
+                                  padding: '0.25rem 0.5rem',
+                                  borderRadius: '4px',
+                                  background: `rgba(${card.color}, 0.15)`,
+                                  color: `rgb(${card.color})`,
+                                  fontWeight: '500',
+                                }}>
+                                  {tag}
+                                </span>
+                              ))}
+                            </motion.div>
+                          )}
+                          <div style={{
+                            fontSize: '0.813rem',
+                            fontWeight: '500',
+                            color: `rgb(${card.color})`,
+                            letterSpacing: '0.02em',
+                            marginTop: 'auto',
+                          }}>
+                            {card.metric}
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+            </LayoutGroup>
+          );
+        })()}
+
+        {/* Mobile: Carousel */}
+        {isMobile && (
+          <>
+            <div
+              ref={origenCarouselRef}
+              style={{
+                display: 'flex',
+                gap: '1rem',
+                overflowX: 'auto',
+                scrollSnapType: 'x mandatory',
+                WebkitOverflowScrolling: 'touch',
+                paddingBottom: '1rem',
+                msOverflowStyle: 'none',
+                scrollbarWidth: 'none',
+              }}
+            >
+              {origenImpactCards.map((card) => (
+                <div
+                  key={card.id}
+                  style={{
+                    flex: '0 0 85%',
+                    scrollSnapAlign: 'center',
+                    padding: '1.5rem',
+                    borderRadius: 16,
+                    background: 'var(--surface-primary)',
+                    backdropFilter: 'blur(40px)',
+                    WebkitBackdropFilter: 'blur(40px)',
+                    border: '1px solid var(--border-primary)',
+                  }}
+                >
+                  <div style={{
+                    fontSize: '0.75rem',
+                    fontWeight: '600',
+                    color: `rgb(${card.color})`,
+                    marginBottom: '0.75rem',
+                    letterSpacing: '0.1em',
+                    opacity: 0.8,
+                  }}>
+                    {card.label}
+                  </div>
+                  <h3 style={{
+                    fontSize: '1.125rem',
+                    fontWeight: '500',
+                    color: 'var(--text-primary)',
+                    marginBottom: '0.5rem',
+                  }}>
+                    {card.title}
+                  </h3>
+                  <p style={{
+                    fontSize: '0.813rem',
+                    color: 'var(--text-tertiary)',
+                    lineHeight: '1.5',
+                    marginBottom: '0.75rem',
+                  }}>
+                    {card.description}
+                  </p>
+                  <div style={{
+                    fontSize: '0.75rem',
+                    fontWeight: '500',
+                    color: `rgb(${card.color})`,
+                  }}>
+                    {card.metric}
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Carousel Indicators */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              marginTop: '0.5rem',
+            }}>
+              {origenImpactCards.map((_, index) => (
+                <div
+                  key={index}
+                  style={{
+                    width: origenCarouselIndex === index ? '24px' : '8px',
+                    height: '8px',
+                    borderRadius: '4px',
+                    background: origenCarouselIndex === index ? 'var(--accent-primary)' : 'var(--border-primary)',
                     transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                   }}
                 />
