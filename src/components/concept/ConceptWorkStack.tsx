@@ -29,6 +29,17 @@ const featuredProjects = [
     tags: ['Design System', 'React', 'Aviation', 'Mobile'],
   },
   {
+    id: 'origen',
+    title: 'Origen',
+    category: 'Design System for AI',
+    description:
+      'The first design system built for the AI era. Give LLMs programmatic access to query design decisions instead of hallucinating tokens.',
+    brandColor: { r: 59, g: 130, b: 246 },
+    year: '2025',
+    link: '/work/origen',
+    tags: ['MCP', 'Design Tokens', 'AI-Native', 'TypeScript'],
+  },
+  {
     id: 'cleara',
     title: 'Cleara',
     category: 'Digital Therapeutic',
@@ -65,9 +76,10 @@ export default function ConceptWorkStack() {
   const touchStartRef = useRef(0);
   const hasSnappedToSection = useRef(false); // Track if we've auto-snapped into section
   const lastScrollY = useRef(0); // Track scroll direction
+  const isAnimatingRef = useRef(false); // Track programmatic scroll animation state
 
   // Constants
-  const SCROLL_LOCKOUT = 1100; // Must exceed animation duration (1000ms) to prevent interrupts
+  const SCROLL_LOCKOUT = 1300; // Must exceed animation duration (1000ms) + buffer to prevent interrupts
   const SWIPE_THRESHOLD = 50; // Minimum swipe distance
   const ENTRY_SNAP_THRESHOLD = 0.1; // Snap when 10% visible (magnetic pull)
   const cardCount = featuredProjects.length;
@@ -84,6 +96,7 @@ export default function ConceptWorkStack() {
     currentCardRef.current = index;
     setActiveCardIndex(index);
     lastScrollTriggerRef.current = Date.now();
+    isAnimatingRef.current = true;
 
     const vh = window.innerHeight;
     const targetScroll = containerRef.current.offsetTop + index * vh;
@@ -92,6 +105,9 @@ export default function ConceptWorkStack() {
       lock: true,
       duration: 1.0,
       easing: premiumEaseOut,
+      onComplete: () => {
+        isAnimatingRef.current = false;
+      },
     });
   }, [lenis]);
 
@@ -125,6 +141,9 @@ export default function ConceptWorkStack() {
 
       e.preventDefault();
 
+      // Skip if animation is in progress
+      if (isAnimatingRef.current) return;
+
       const now = Date.now();
       if (now - lastScrollTriggerRef.current < SCROLL_LOCKOUT) return;
 
@@ -137,19 +156,27 @@ export default function ConceptWorkStack() {
         // Navigate to next/previous card
         currentCardRef.current = nextCard;
         setActiveCardIndex(nextCard); // Update reactive state for UI
+        isAnimatingRef.current = true;
         const targetScroll = container.offsetTop + nextCard * vh;
 
         lenis.scrollTo(targetScroll, {
           lock: true,
           duration: 1.0, // Snappy, smooth
           easing: premiumEaseOut,
+          onComplete: () => {
+            isAnimatingRef.current = false;
+          },
         });
       } else if (direction === -1 && currentCardRef.current === 0) {
         // At first card, scrolling up - exit to previous section
+        isAnimatingRef.current = true;
         const targetScroll = container.offsetTop - vh;
         lenis.scrollTo(targetScroll, {
           duration: 1.0, // Snappy, smooth
           easing: premiumEaseOut,
+          onComplete: () => {
+            isAnimatingRef.current = false;
+          },
         });
       }
       // At last card scrolling down - let infinite scroll loop naturally to hero
@@ -163,6 +190,9 @@ export default function ConceptWorkStack() {
 
     const touchEndHandler = (e: TouchEvent) => {
       if (!isInWorkSection()) return;
+
+      // Skip if animation is in progress
+      if (isAnimatingRef.current) return;
 
       const now = Date.now();
       if (now - lastScrollTriggerRef.current < SCROLL_LOCKOUT) return;
@@ -178,18 +208,26 @@ export default function ConceptWorkStack() {
       if (nextCard !== currentCardRef.current) {
         currentCardRef.current = nextCard;
         setActiveCardIndex(nextCard); // Update reactive state for UI
+        isAnimatingRef.current = true;
         const targetScroll = container.offsetTop + nextCard * vh;
 
         lenis.scrollTo(targetScroll, {
           lock: true,
           duration: 1.0, // Snappy, smooth
           easing: premiumEaseOut,
+          onComplete: () => {
+            isAnimatingRef.current = false;
+          },
         });
       } else if (direction === -1 && currentCardRef.current === 0) {
+        isAnimatingRef.current = true;
         const targetScroll = container.offsetTop - vh;
         lenis.scrollTo(targetScroll, {
           duration: 1.0, // Snappy, smooth
           easing: premiumEaseOut,
+          onComplete: () => {
+            isAnimatingRef.current = false;
+          },
         });
       }
       // At last card scrolling down - let infinite scroll loop naturally to hero
@@ -215,6 +253,9 @@ export default function ConceptWorkStack() {
     if (!container) return;
 
     const syncCardIndex = () => {
+      // Skip sync during programmatic scroll animation to prevent race conditions
+      if (isAnimatingRef.current) return;
+
       const vh = window.innerHeight;
       const scrollInSection = window.scrollY - container.offsetTop;
 
@@ -223,7 +264,8 @@ export default function ConceptWorkStack() {
       setShowIndicators(isInSection);
 
       if (scrollInSection >= 0 && scrollInSection < cardCount * vh) {
-        const cardIndex = Math.max(0, Math.min(cardCount - 1, Math.round(scrollInSection / vh)));
+        // Use floor + 0.5 offset for more predictable snapping (same as Math.round but clearer)
+        const cardIndex = Math.max(0, Math.min(cardCount - 1, Math.floor((scrollInSection + vh * 0.5) / vh)));
         if (cardIndex !== currentCardRef.current) {
           currentCardRef.current = cardIndex;
           setActiveCardIndex(cardIndex); // Update reactive state for UI
@@ -261,6 +303,7 @@ export default function ConceptWorkStack() {
       if (isEnteringFromBottom && isScrollingDown && visibleFromBottom >= ENTRY_SNAP_THRESHOLD && !hasSnappedToSection.current) {
         hasSnappedToSection.current = true;
         lastScrollTriggerRef.current = Date.now();
+        isAnimatingRef.current = true;
 
         // Snap to first card
         currentCardRef.current = 0;
@@ -270,6 +313,9 @@ export default function ConceptWorkStack() {
           lock: true,
           duration: 1.0, // Snappy, smooth
           easing: premiumEaseOut,
+          onComplete: () => {
+            isAnimatingRef.current = false;
+          },
         });
       }
 

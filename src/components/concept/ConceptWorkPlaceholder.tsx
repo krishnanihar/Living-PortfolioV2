@@ -356,6 +356,298 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
                         />
                       </div>
                     </>
+                  ) : project.id === 'origen' ? (
+                    <>
+                      {/* LAYER 1: Grid Background - Furthest Back */}
+                      <div
+                        data-atropos-offset="-10"
+                        className="origen-grid"
+                        style={{
+                          position: 'absolute',
+                          inset: '-10%',
+                          zIndex: 1,
+                          overflow: 'hidden',
+                          background: `
+                            linear-gradient(90deg, rgba(59, 130, 246, 0.04) 1px, transparent 1px),
+                            linear-gradient(rgba(59, 130, 246, 0.04) 1px, transparent 1px),
+                            linear-gradient(180deg, #0a0a0a 0%, #0f172a 50%, #0a0a0a 100%)
+                          `,
+                          backgroundSize: '40px 40px, 40px 40px, 100% 100%',
+                        }}
+                      />
+
+                      {/* LAYER 2: Radial Gradient Glows */}
+                      <div
+                        data-atropos-offset="-5"
+                        style={{
+                          position: 'absolute',
+                          inset: '-10%',
+                          zIndex: 2,
+                          background: `
+                            radial-gradient(ellipse at 25% 25%, rgba(168, 85, 247, 0.18) 0%, transparent 50%),
+                            radial-gradient(ellipse at 75% 75%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+                            radial-gradient(ellipse at 50% 50%, rgba(59, 130, 246, 0.22) 0%, transparent 45%)
+                          `,
+                        }}
+                      />
+
+                      {/* LAYER 3: SVG Orbital Rings */}
+                      <div
+                        data-atropos-offset="-2"
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          zIndex: 3,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <svg
+                          viewBox="0 0 400 400"
+                          style={{
+                            width: isMobile ? '85%' : '70%',
+                            height: isMobile ? '85%' : '70%',
+                            overflow: 'visible',
+                          }}
+                        >
+                          {/* Outer ring - purple (tokens) - tilted wrapper + spinning ellipse */}
+                          <g style={{ transform: 'rotate(-20deg)', transformOrigin: '200px 200px' }}>
+                            <ellipse
+                              cx="200"
+                              cy="200"
+                              rx="150"
+                              ry="55"
+                              fill="none"
+                              stroke="#A855F7"
+                              strokeWidth="0.75"
+                              opacity="0.35"
+                              strokeDasharray="6 4"
+                              className="origen-orbit-1"
+                            />
+                          </g>
+                          {/* Middle ring - blue (react) - tilted wrapper + spinning ellipse */}
+                          <g style={{ transform: 'rotate(15deg)', transformOrigin: '200px 200px' }}>
+                            <ellipse
+                              cx="200"
+                              cy="200"
+                              rx="120"
+                              ry="45"
+                              fill="none"
+                              stroke="#3B82F6"
+                              strokeWidth="1"
+                              opacity="0.45"
+                              strokeDasharray="8 3"
+                              className="origen-orbit-2"
+                            />
+                          </g>
+                          {/* Inner ring - green (mcp) - tilted wrapper + spinning ellipse */}
+                          <g style={{ transform: 'rotate(40deg)', transformOrigin: '200px 200px' }}>
+                            <ellipse
+                              cx="200"
+                              cy="200"
+                              rx="90"
+                              ry="35"
+                              fill="none"
+                              stroke="#10B981"
+                              strokeWidth="0.75"
+                              opacity="0.4"
+                              strokeDasharray="4 6"
+                              className="origen-orbit-3"
+                            />
+                          </g>
+                          {/* Central hub glow */}
+                          <circle
+                            cx="200"
+                            cy="200"
+                            r="25"
+                            fill="url(#hubGradient)"
+                            opacity="0.6"
+                          />
+                          <circle
+                            cx="200"
+                            cy="200"
+                            r="18"
+                            fill="none"
+                            stroke="#3B82F6"
+                            strokeWidth="1"
+                            opacity="0.5"
+                          />
+                          {/* Gradient definitions */}
+                          <defs>
+                            <radialGradient id="hubGradient" cx="50%" cy="50%" r="50%">
+                              <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.4" />
+                              <stop offset="70%" stopColor="#A855F7" stopOpacity="0.2" />
+                              <stop offset="100%" stopColor="transparent" />
+                            </radialGradient>
+                          </defs>
+                        </svg>
+                      </div>
+
+                      {/* LAYER 4: Package Nodes */}
+                      <div
+                        data-atropos-offset="0"
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          zIndex: 4,
+                          pointerEvents: 'none',
+                        }}
+                      >
+                        {/* Tokens node - top left */}
+                        <div
+                          className="origen-node-1"
+                          style={{
+                            position: 'absolute',
+                            top: isMobile ? '22%' : '25%',
+                            left: isMobile ? '18%' : '22%',
+                            width: isMobile ? '36px' : '44px',
+                            height: isMobile ? '36px' : '44px',
+                            borderRadius: '50%',
+                            background: 'rgba(168, 85, 247, 0.12)',
+                            border: '1px solid rgba(168, 85, 247, 0.35)',
+                            boxShadow: '0 0 30px rgba(168, 85, 247, 0.25), inset 0 0 15px rgba(168, 85, 247, 0.15)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A855F7" strokeWidth="1.5">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                            <path d="M2 17l10 5 10-5" />
+                            <path d="M2 12l10 5 10-5" />
+                          </svg>
+                        </div>
+                        {/* React node - center right (uses wrapper for positioning) */}
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: '50%',
+                            right: isMobile ? '15%' : '20%',
+                            transform: 'translateY(-50%)',
+                          }}
+                        >
+                          <div
+                            className="origen-node-2"
+                            style={{
+                              width: isMobile ? '40px' : '50px',
+                              height: isMobile ? '40px' : '50px',
+                              borderRadius: '50%',
+                              background: 'rgba(59, 130, 246, 0.15)',
+                              border: '1px solid rgba(59, 130, 246, 0.4)',
+                              boxShadow: '0 0 40px rgba(59, 130, 246, 0.3), inset 0 0 20px rgba(59, 130, 246, 0.2)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" strokeWidth="1.5">
+                              <rect x="3" y="3" width="7" height="7" rx="1" />
+                              <rect x="14" y="3" width="7" height="7" rx="1" />
+                              <rect x="3" y="14" width="7" height="7" rx="1" />
+                              <rect x="14" y="14" width="7" height="7" rx="1" />
+                            </svg>
+                          </div>
+                        </div>
+                        {/* MCP node - bottom left */}
+                        <div
+                          className="origen-node-3"
+                          style={{
+                            position: 'absolute',
+                            bottom: isMobile ? '28%' : '28%',
+                            left: isMobile ? '25%' : '28%',
+                            width: isMobile ? '36px' : '44px',
+                            height: isMobile ? '36px' : '44px',
+                            borderRadius: '50%',
+                            background: 'rgba(16, 185, 129, 0.12)',
+                            border: '1px solid rgba(16, 185, 129, 0.35)',
+                            boxShadow: '0 0 30px rgba(16, 185, 129, 0.25), inset 0 0 15px rgba(16, 185, 129, 0.15)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="1.5">
+                            <rect x="4" y="4" width="16" height="16" rx="2" />
+                            <rect x="9" y="9" width="6" height="6" rx="1" />
+                            <line x1="9" y1="2" x2="9" y2="4" />
+                            <line x1="15" y1="2" x2="15" y2="4" />
+                            <line x1="9" y1="20" x2="9" y2="22" />
+                            <line x1="15" y1="20" x2="15" y2="22" />
+                          </svg>
+                        </div>
+                      </div>
+
+                      {/* LAYER 5: Floating Code Snippets */}
+                      {!isMobile && (
+                        <div
+                          data-atropos-offset="4"
+                          style={{
+                            position: 'absolute',
+                            inset: 0,
+                            zIndex: 5,
+                            pointerEvents: 'none',
+                          }}
+                        >
+                          {/* Top right snippet */}
+                          <div
+                            style={{
+                              position: 'absolute',
+                              top: '18%',
+                              right: '12%',
+                              padding: '10px 14px',
+                              background: 'var(--glass-06)',
+                              backdropFilter: 'blur(20px)',
+                              WebkitBackdropFilter: 'blur(20px)',
+                              borderRadius: '10px',
+                              border: '1px solid rgba(59, 130, 246, 0.15)',
+                              fontFamily: 'ui-monospace, monospace',
+                              fontSize: '11px',
+                              color: 'rgba(59, 130, 246, 0.8)',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            get_tokens(&#123; category: &apos;colors&apos; &#125;)
+                          </div>
+                          {/* Bottom left snippet */}
+                          <div
+                            style={{
+                              position: 'absolute',
+                              bottom: '22%',
+                              left: '10%',
+                              padding: '10px 14px',
+                              background: 'var(--glass-06)',
+                              backdropFilter: 'blur(20px)',
+                              WebkitBackdropFilter: 'blur(20px)',
+                              borderRadius: '10px',
+                              border: '1px solid rgba(16, 185, 129, 0.15)',
+                              fontFamily: 'ui-monospace, monospace',
+                              fontSize: '11px',
+                              color: 'rgba(16, 185, 129, 0.8)',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            compose_interface(&#123; ... &#125;)
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Light gradient overlay for glass panel readability */}
+                      <div
+                        style={{
+                          position: 'absolute',
+                          inset: '-10%',
+                          background: `linear-gradient(180deg,
+                            transparent 0%,
+                            transparent 60%,
+                            var(--overlay-50) 100%
+                          )`,
+                          pointerEvents: 'none',
+                          zIndex: 6,
+                        }}
+                      />
+
+                    </>
                   ) : null}
 
                   {/* Floating Glass Panel - Parallax FORWARD */}
@@ -551,19 +843,65 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
           </div>
         </div>
 
-        {/* Atropos pointer-events fix */}
-        <style jsx>{`
-          :global(.atropos-scale) {
+        {/* Atropos pointer-events fix + Origen animations */}
+        <style jsx global>{`
+          .atropos-scale {
             pointer-events: none !important;
           }
-          :global(.atropos-rotate) {
+          .atropos-rotate {
             pointer-events: all !important;
           }
-          :global(.atropos a),
-          :global(.atropos button) {
+          .atropos a,
+          .atropos button {
             pointer-events: all !important;
             position: relative;
             z-index: 10;
+          }
+          @keyframes gridPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.6; }
+          }
+          @keyframes orbitalSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+          @keyframes orbitalSpinReverse {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+          }
+          @keyframes nodePulse {
+            0%, 100% {
+              transform: scale(1);
+              opacity: 1;
+            }
+            50% {
+              transform: scale(1.08);
+              opacity: 0.85;
+            }
+          }
+          .origen-orbit-1 {
+            animation: orbitalSpin 80s linear infinite;
+            transform-origin: 200px 200px;
+          }
+          .origen-orbit-2 {
+            animation: orbitalSpinReverse 60s linear infinite;
+            transform-origin: 200px 200px;
+          }
+          .origen-orbit-3 {
+            animation: orbitalSpin 100s linear infinite;
+            transform-origin: 200px 200px;
+          }
+          .origen-node-1 {
+            animation: nodePulse 3s ease-in-out infinite;
+          }
+          .origen-node-2 {
+            animation: nodePulse 3s ease-in-out infinite 0.5s;
+          }
+          .origen-node-3 {
+            animation: nodePulse 3s ease-in-out infinite 1s;
+          }
+          .origen-grid {
+            animation: gridPulse 8s ease-in-out infinite;
           }
         `}</style>
       </div>
