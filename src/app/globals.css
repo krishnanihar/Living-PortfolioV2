@@ -11,12 +11,11 @@
 
 /* === VANILLA JS DESIGN TOKEN SYSTEM === */
 
-/* Base Reset & Fundamentals */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/*
+ * NOTE: The global * { margin: 0; padding: 0; } reset was REMOVED.
+ * Tailwind's Preflight (included via @import 'tailwindcss') provides
+ * a proper CSS reset. The old reset was overriding Tailwind utilities.
+ */
 
 html {
   font-family: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
