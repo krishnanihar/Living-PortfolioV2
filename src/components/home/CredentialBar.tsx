@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useTheme } from 'next-themes';
+import { useTheme } from '@/components/effects/ThemeProvider';
 
 export interface Credential {
   logo: string;
+  lightLogo?: string; // Optional different logo for light mode
   name: string;
   role?: string;
   isPhoto?: boolean; // Photos can't use monochrome filter
@@ -19,10 +19,10 @@ export interface CredentialBarProps {
 }
 
 const defaultCredentials: Credential[] = [
-  { logo: '/logos/nid-light.svg', name: 'NID Gandhinagar', role: 'Graduate' },
+  { logo: '/logos/nid-light.svg', lightLogo: '/logos/nid-dark.svg', name: 'NID Gandhinagar', role: 'Graduate' },
   { logo: '/logos/ISB.jpeg', name: 'ISB Hyderabad', role: 'Product', isPhoto: true },
-  { logo: '/logos/infosys.svg', name: 'Infosys', role: 'Former' },
-  { logo: '/logos/air-india.svg', name: 'Air India', role: 'Current', scale: 1.4 },
+  { logo: '/logos/infosys.svg', lightLogo: '/logos/infosys-dark.svg', name: 'Infosys', role: 'Former' },
+  { logo: '/logos/air-india.svg', lightLogo: '/logos/air-india-dark.svg', name: 'Air India', role: 'Current', scale: 1.4 },
 ];
 
 const containerVariants = {
@@ -54,26 +54,38 @@ export function CredentialBar({
   className = '',
 }: CredentialBarProps) {
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // ThemeProvider already handles hydration - resolvedTheme is ready to use
+  const isLight = resolvedTheme === 'light';
 
-  // Default to dark mode (site default) until mounted
-  const isDark = mounted ? resolvedTheme !== 'light' : true;
+  // Get the appropriate logo source based on theme
+  const getLogoSrc = (cred: Credential) => {
+    if (isLight && cred.lightLogo) {
+      return cred.lightLogo;
+    }
+    return cred.logo;
+  };
 
   // Get filter for each credential type
   const getFilter = (cred: Credential) => {
     if (cred.isPhoto) {
-      // Photos: just grayscale (preserves image)
-      return 'grayscale(100%)';
+      // Photos: grayscale, with brightness adjustment for light mode visibility
+      return isLight
+        ? 'grayscale(100%) brightness(0.4) contrast(1.2)'
+        : 'grayscale(100%)';
     }
-    // SVGs: convert to white (dark mode) or black (light mode)
-    return isDark
-      ? 'brightness(0) invert(1)'
-      : 'brightness(0)';
+    // If using theme-specific logo (lightLogo), minimal filter needed
+    if (isLight && cred.lightLogo) {
+      return 'none'; // lightLogo should already be correct color
+    }
+    // SVGs without lightLogo: convert to black (light mode) or white (dark mode)
+    return isLight
+      ? 'brightness(0) saturate(0)'  // Force black
+      : 'brightness(0) invert(1)';   // Force white
   };
+
+  // Higher opacity in light mode for better visibility on light backgrounds
+  const getOpacity = () => isLight ? 0.55 : 0.4;
 
   return (
     <motion.div
@@ -90,7 +102,7 @@ export function CredentialBar({
     >
       {credentials.map((cred) => (
         <motion.div
-          key={cred.name}
+          key={`${cred.name}-${isLight ? 'light' : 'dark'}`}
           variants={itemVariants}
           initial="hidden"
           animate="visible"
@@ -115,16 +127,18 @@ export function CredentialBar({
               position: 'relative',
               width: `calc(clamp(26px, 3.5vw, 32px) * ${cred.scale || 1})`,
               height: `calc(clamp(26px, 3.5vw, 32px) * ${cred.scale || 1})`,
-              opacity: 0.4,
+              opacity: getOpacity(),
               filter: getFilter(cred),
               transition: 'opacity 0.3s ease, filter 0.3s ease',
             }}
             title={cred.name}
           >
             <Image
-              src={cred.logo}
+              key={`${cred.name}-${isLight ? 'light' : 'dark'}`}
+              src={getLogoSrc(cred)}
               alt={cred.name}
               fill
+              unoptimized
               style={{
                 objectFit: 'contain',
               }}
