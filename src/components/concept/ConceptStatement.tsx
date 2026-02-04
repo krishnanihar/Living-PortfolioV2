@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ChevronDown } from 'lucide-react';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
+import { ImpactMetric } from '@/components/home';
 
 // Register plugin
 if (typeof window !== 'undefined') {
@@ -111,21 +112,6 @@ export default function ConceptStatement() {
               fontFamily: 'var(--font-space-grotesk)',
             }}
           >
-            Most designers can't{' '}
-            <span
-              style={{
-                background: 'linear-gradient(120deg, rgba(59,130,246,0.7), rgba(96,165,250,0.8), rgba(59,130,246,0.7), rgba(96,165,250,0.8))',
-                backgroundSize: '200% auto',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                fontWeight: 500,
-                animation: 'gradientFlow 18s ease-in-out infinite',
-              }}
-            >
-              code
-            </span>
-            . Most developers can't{' '}
             <span
               style={{
                 background: 'linear-gradient(120deg, rgba(236,72,153,0.7), rgba(139,92,246,0.8), rgba(236,72,153,0.7), rgba(139,92,246,0.8))',
@@ -137,9 +123,51 @@ export default function ConceptStatement() {
                 animation: 'gradientFlow 18s ease-in-out infinite',
               }}
             >
-              design
+              Research
             </span>
-            .
+            {' '}to uncover. {' '}
+            <span
+              style={{
+                background: 'linear-gradient(120deg, rgba(59,130,246,0.7), rgba(96,165,250,0.8), rgba(59,130,246,0.7), rgba(96,165,250,0.8))',
+                backgroundSize: '200% auto',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                fontWeight: 500,
+                animation: 'gradientFlow 18s ease-in-out infinite',
+              }}
+            >
+              Design
+            </span>
+            {' '}to envision. {' '}
+            <span
+              style={{
+                background: 'linear-gradient(120deg, rgba(16,185,129,0.7), rgba(52,211,153,0.8), rgba(16,185,129,0.7), rgba(52,211,153,0.8))',
+                backgroundSize: '200% auto',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                fontWeight: 500,
+                animation: 'gradientFlow 18s ease-in-out infinite',
+              }}
+            >
+              Code
+            </span>
+            {' '}to build. {' '}
+            <span
+              style={{
+                background: 'linear-gradient(120deg, rgba(251,191,36,0.7), rgba(245,158,11,0.8), rgba(251,191,36,0.7), rgba(245,158,11,0.8))',
+                backgroundSize: '200% auto',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                fontWeight: 500,
+                animation: 'gradientFlow 18s ease-in-out infinite',
+              }}
+            >
+              Business
+            </span>
+            {' '}to scale.
           </h2>
 
           {/* Value Proposition */}
@@ -154,9 +182,9 @@ export default function ConceptStatement() {
               animation: inView && mounted ? 'blurToSharp 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both' : 'none',
             }}
           >
-            I design and code experiences that remember, learn, and scale—
+            I bridge research, design, code, and strategy to create experiences that
             <br />
-            serving <span style={{ fontWeight: 400 }}>millions</span> across aviation, healthcare, and beyond.
+            serve <span style={{ fontWeight: 400 }}>millions</span> across aviation, healthcare, and beyond.
           </p>
 
           {/* Meta Statement */}
@@ -171,17 +199,34 @@ export default function ConceptStatement() {
               animation: inView && mounted ? 'blurToSharp 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both' : 'none',
             }}
           >
-            Including this site. Designed and coded <span style={{ fontWeight: 500 }}>from the ground up</span>.
+            Including this site. Researched, designed, and coded <span style={{ fontWeight: 500 }}>from the ground up</span>.
           </p>
+
+          {/* Impact Metrics */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: 'clamp(2rem, 6vw, 4rem)',
+              marginTop: '2.5rem',
+              flexWrap: 'wrap',
+              opacity: inView && mounted ? 1 : 0,
+              animation: inView && mounted ? 'blurToSharp 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both' : 'none',
+            }}
+          >
+            <ImpactMetric value={10} suffix="M+" label="Passengers Served" />
+            <ImpactMetric value={50} suffix="+" label="Components" />
+            <ImpactMetric value={12} suffix="+" label="Applications" />
+          </div>
 
           {/* Breathing Orb */}
           <div
             style={{
-              marginTop: '3rem',
+              marginTop: '2.5rem',
               display: 'flex',
               justifyContent: 'center',
               opacity: inView && mounted ? 1 : 0,
-              animation: inView && mounted ? 'blurToSharp 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both' : 'none',
+              animation: inView && mounted ? 'blurToSharp 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1s both' : 'none',
             }}
           >
             <div

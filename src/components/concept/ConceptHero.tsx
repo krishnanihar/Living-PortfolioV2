@@ -24,6 +24,7 @@ import Link from 'next/link';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
 import { usePersonalization } from '@/hooks/usePersonalization';
 import { Chatbot } from '@/components/Chatbot';
+import { CredentialBar } from '@/components/home';
 
 // Register plugins
 if (typeof window !== 'undefined') {
@@ -196,6 +197,16 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
   const dismissScrollPill = useCallback(() => {
     setShowScrollPill(false);
   }, []);
+
+  // Auto-dismiss scroll memory toast after 8 seconds
+  useEffect(() => {
+    if (isHydrated && scrollMemory.hasHistory && showScrollPill) {
+      const autoDismissTimer = setTimeout(() => {
+        dismissScrollPill();
+      }, 8000);
+      return () => clearTimeout(autoDismissTimer);
+    }
+  }, [isHydrated, scrollMemory.hasHistory, showScrollPill, dismissScrollPill]);
 
   // Contact View Component
   const ContactView = () => (
@@ -491,9 +502,9 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          gap: 'clamp(1.5rem, 2.5vw, 2rem)',
+          gap: 'clamp(1rem, 2vw, 1.5rem)',
           flexWrap: 'wrap',
-          marginTop: '2rem',
+          marginTop: '1.75rem',
           opacity: animationStage >= 3 ? 1 : 0,
           transform: animationStage >= 3 ? 'translateY(0)' : 'translateY(15px)',
           filter: animationStage >= 3 ? 'blur(0)' : 'blur(8px)',
@@ -591,80 +602,18 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
         </button>
       </div>
 
-      {/* Scroll Memory Pill - Shows if user has viewing history */}
-      {isHydrated && scrollMemory.hasHistory && showScrollPill && scrollMemory.lastProjectName && (
-        <div
-          onMouseEnter={() => setScrollPillHovered(true)}
-          onMouseLeave={() => setScrollPillHovered(false)}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.75rem',
-            marginTop: '2rem',
-            padding: '10px 16px 10px 20px',
-            ...UNIFIED_GLASS,
-            background: scrollPillHovered
-              ? 'var(--glass-08)'
-              : 'var(--glass-04)',
-            borderRadius: '24px',
-            opacity: animationStage >= 4 ? 1 : 0,
-            transform: animationStage >= 4 ? 'translateY(0)' : 'translateY(15px)',
-            filter: animationStage >= 4 ? 'blur(0)' : 'blur(8px)',
-            transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, background 0.2s ease, transform 0.2s ease',
-          }}
-        >
-          <Link
-            href={`/work/${scrollMemory.lastProject}`}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              color: 'var(--text-80)',
-              fontSize: '0.8125rem',
-              fontWeight: 400,
-              textDecoration: 'none',
-              transition: 'color 0.2s ease',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-95)')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-80)')}
-          >
-            <span style={{ color: 'var(--text-50)' }}>Continue from</span>
-            <span style={{ fontWeight: 500, color: 'var(--text-90)' }}>
-              {scrollMemory.lastProjectName}
-            </span>
-            <ArrowRight size={14} style={{ opacity: 0.6 }} />
-          </Link>
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              dismissScrollPill();
-            }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '20px',
-              height: '20px',
-              borderRadius: '50%',
-              background: 'var(--glass-08)',
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              marginLeft: '0.25rem',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'var(--glass-15)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'var(--glass-08)';
-            }}
-            aria-label="Dismiss"
-          >
-            <X size={12} style={{ color: 'var(--text-50)' }} />
-          </button>
-        </div>
-      )}
+      {/* Credential Logos - subtle trust indicators */}
+      <div
+        style={{
+          marginTop: '1.5rem',
+          opacity: animationStage >= 3 ? 1 : 0,
+          transform: animationStage >= 3 ? 'translateY(0)' : 'translateY(10px)',
+          filter: animationStage >= 3 ? 'blur(0)' : 'blur(6px)',
+          transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s',
+        }}
+      >
+        <CredentialBar />
+      </div>
     </div>
   );
 
@@ -687,6 +636,26 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
         @keyframes scrollBounce {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(8px); }
+        }
+        @keyframes toastSlideIn {
+          0% {
+            opacity: 0;
+            transform: translateX(100%);
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        @keyframes toastSlideOut {
+          0% {
+            opacity: 1;
+            transform: translateX(0);
+          }
+          100% {
+            opacity: 0;
+            transform: translateX(100%);
+          }
         }
       `}</style>
 
@@ -783,6 +752,97 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
                 }}
               />
             </button>
+          )}
+
+          {/* Scroll Memory Toast - Bottom Right */}
+          {isHydrated && scrollMemory.hasHistory && showScrollPill && scrollMemory.lastProjectName && (
+            <div
+              onMouseEnter={() => setScrollPillHovered(true)}
+              onMouseLeave={() => setScrollPillHovered(false)}
+              style={{
+                position: 'absolute',
+                bottom: '2rem',
+                right: '2rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                padding: '12px 14px 12px 16px',
+                ...UNIFIED_GLASS,
+                background: scrollPillHovered
+                  ? 'var(--glass-10)'
+                  : 'var(--glass-06)',
+                borderRadius: '14px',
+                animation: animationStage >= 4 ? 'toastSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards' : 'none',
+                opacity: animationStage >= 4 ? 1 : 0,
+                zIndex: 20,
+                maxWidth: '280px',
+              }}
+            >
+              <Link
+                href={`/work/${scrollMemory.lastProject}`}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.125rem',
+                  color: 'var(--text-80)',
+                  fontSize: '0.8125rem',
+                  fontWeight: 400,
+                  textDecoration: 'none',
+                  transition: 'color 0.2s ease',
+                  flex: 1,
+                }}
+              >
+                <span style={{
+                  fontSize: '0.6875rem',
+                  color: 'var(--text-40)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  fontWeight: 500,
+                }}>
+                  Continue where you left off
+                </span>
+                <span style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.375rem',
+                  fontWeight: 500,
+                  color: 'var(--text-90)',
+                  fontSize: '0.875rem',
+                }}>
+                  {scrollMemory.lastProjectName}
+                  <ArrowRight size={14} style={{ opacity: 0.6 }} />
+                </span>
+              </Link>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  dismissScrollPill();
+                }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '8px',
+                  background: 'var(--glass-08)',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  flexShrink: 0,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'var(--glass-15)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'var(--glass-08)';
+                }}
+                aria-label="Dismiss"
+              >
+                <X size={14} style={{ color: 'var(--text-50)' }} />
+              </button>
+            </div>
           )}
         </div>
       </section>
