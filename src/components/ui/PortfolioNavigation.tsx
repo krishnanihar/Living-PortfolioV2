@@ -160,9 +160,10 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
           : 'max-width 0.5s var(--ease-premium)',
       }}
     >
-      {/* Inner content container */}
+      {/* Inner content container — z-index above pseudo-element glass layers */}
       <div style={{
         position: 'relative',
+        zIndex: 2,
         height: '100%',
         maxWidth: '1400px',
         margin: '0 auto',
@@ -171,7 +172,7 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
-        {/* Ambient Aurora Reflection - Entire Nav Bar */}
+        {/* Ambient Aurora Reflection - route-aware glow across entire nav */}
         <div
           style={{
             position: 'absolute',
@@ -277,31 +278,51 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
                   onMouseEnter={(e) => {
                     if (!active) {
                       (e.currentTarget as HTMLElement).style.color = 'var(--text-90)';
+                      (e.currentTarget as HTMLElement).style.background = 'var(--glass-04)';
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!active) {
                       (e.currentTarget as HTMLElement).style.color = 'var(--text-70)';
+                      (e.currentTarget as HTMLElement).style.background = 'transparent';
                     }
                   }}
                 >
-                  {/* Animated active indicator - shared layoutId */}
+                  {/* Animated active indicator — glassmorphic pill with aurora mesh */}
                   {active && (
                     <motion.div
                       layoutId="nav-active-indicator"
+                      className="nav-active-pill"
                       style={{
                         position: 'absolute',
                         inset: 0,
                         borderRadius: '10px',
-                        background: 'var(--glass-08)',
-                        border: '1px solid var(--glass-06)',
+                        overflow: 'hidden',
                       }}
                       transition={{
                         type: 'spring',
                         stiffness: 400,
                         damping: 30,
                       }}
-                    />
+                    >
+                      {/* Aurora mesh glow */}
+                      <div
+                        style={{
+                          position: 'absolute',
+                          inset: '-20px',
+                          background: `
+                            radial-gradient(ellipse at 20% 50%, var(--text-25), transparent 60%),
+                            radial-gradient(ellipse at 80% 50%, var(--text-20), transparent 60%),
+                            radial-gradient(ellipse at 50% 20%, var(--text-15), transparent 50%),
+                            linear-gradient(135deg, var(--aurora-gradient-2) 0%, transparent 50%, var(--aurora-gradient-2) 100%)
+                          `,
+                          backgroundSize: '250% 250%',
+                          animation: shouldReduceMotion ? 'none' : 'auroraDrift 4s ease-in-out infinite',
+                          filter: 'blur(20px)',
+                          pointerEvents: 'none',
+                        }}
+                      />
+                    </motion.div>
                   )}
 
                   {/* Nav item content */}
