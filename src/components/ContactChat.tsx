@@ -31,7 +31,7 @@ export function ContactChat({ onMessageSubmit }: ContactChatProps) {
     }
   };
 
-  const accentColor = '#DA0E29';
+  const accentColor = '#d97757';
 
   return (
     <div style={{
@@ -51,7 +51,7 @@ export function ContactChat({ onMessageSubmit }: ContactChatProps) {
           background: 'rgba(255, 255, 255, 0.04)',
           backdropFilter: 'blur(30px) saturate(120%) brightness(0.9)',
           WebkitBackdropFilter: 'blur(30px) saturate(120%) brightness(0.9)',
-          border: '1px solid rgba(218, 14, 41, 0.15)',
+          border: '1px solid rgba(217, 119, 87, 0.15)',
           borderRadius: isMobile ? '24px' : '28px',
           padding: isMobile ? '0.625rem 0.875rem' : '0.875rem 1.25rem',
           transition: 'all 0.3s ease',

@@ -65,7 +65,7 @@ export function NarrativeProgressIndicator({
       description: 'What do we lose?',
       icon: AlertCircle,
       range: [0.3, 0.7],
-      color: 'rgba(218, 14, 41, 0.8)',
+      color: 'rgba(217, 119, 87, 0.8)',
     },
     {
       id: 'resolution',
@@ -321,7 +321,7 @@ export function NarrativeProgressBar() {
       <motion.div
         style={{
           height: '100%',
-          background: `linear-gradient(90deg, rgba(147, 51, 234, 0.8), rgba(218, 14, 41, 0.8), rgba(14, 165, 233, 0.8))`,
+          background: `linear-gradient(90deg, rgba(147, 51, 234, 0.8), rgba(217, 119, 87, 0.8), rgba(14, 165, 233, 0.8))`,
           width: `${narrativeState.progress * 100}%`,
           boxShadow: `0 0 10px ${narrativeState.color.primary}`,
         }}

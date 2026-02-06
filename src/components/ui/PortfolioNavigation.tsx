@@ -303,6 +303,8 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
                 className="font-heading"
                 style={{
                   display: 'inline-block',
+                  fontStyle: 'italic',
+                  letterSpacing: '0.04em',
                   background: isActive('/') ? 'var(--logo-gradient-active)' : 'var(--logo-gradient-inactive)',
                   backgroundSize: '200% 100%',
                   backgroundPosition: '0% 50%',

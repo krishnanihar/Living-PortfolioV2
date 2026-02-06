@@ -84,7 +84,7 @@ function StatCard({
         animate={isInView ? { scale: 1 } : { scale: 0.5 }}
         transition={{ duration: 0.6, delay: index * 0.1 + 0.3 }}
         style={{
-          fontFamily: 'var(--font-space-grotesk)',
+          fontFamily: 'var(--font-newsreader)',
           fontSize: 'clamp(2rem, 5vw, 3rem)',
           fontWeight: 300,
           color,
@@ -96,7 +96,7 @@ function StatCard({
       </motion.p>
       <p
         style={{
-          fontFamily: 'var(--font-space-grotesk)',
+          fontFamily: 'var(--font-newsreader)',
           fontSize: '0.875rem',
           fontWeight: 500,
           color: 'var(--text-80)',
@@ -108,7 +108,7 @@ function StatCard({
       </p>
       <p
         style={{
-          fontFamily: 'var(--font-dm-sans)',
+          fontFamily: 'var(--font-urbanist)',
           fontSize: '0.75rem',
           color: 'var(--text-40)',
           position: 'relative',
@@ -147,7 +147,7 @@ export function PromiseSection({ narrativeState }: PromiseSectionProps) {
         >
           <p
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '0.75rem',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -159,7 +159,7 @@ export function PromiseSection({ narrativeState }: PromiseSectionProps) {
           </p>
           <h2
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
               fontWeight: 300,
               color: 'var(--text-90)',
@@ -171,7 +171,7 @@ export function PromiseSection({ narrativeState }: PromiseSectionProps) {
           </h2>
           <p
             style={{
-              fontFamily: 'var(--font-dm-sans)',
+              fontFamily: 'var(--font-urbanist)',
               fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
               color: 'var(--text-60)',
               maxWidth: '640px',
@@ -251,7 +251,7 @@ export function PromiseSection({ narrativeState }: PromiseSectionProps) {
             </div>
             <h3
               style={{
-                fontFamily: 'var(--font-space-grotesk)',
+                fontFamily: 'var(--font-newsreader)',
                 fontSize: '1.125rem',
                 fontWeight: 500,
                 color: 'var(--text-90)',
@@ -262,7 +262,7 @@ export function PromiseSection({ narrativeState }: PromiseSectionProps) {
             </h3>
             <p
               style={{
-                fontFamily: 'var(--font-dm-sans)',
+                fontFamily: 'var(--font-urbanist)',
                 fontSize: '0.875rem',
                 color: 'var(--text-50)',
                 lineHeight: 1.6,
@@ -309,7 +309,7 @@ export function PromiseSection({ narrativeState }: PromiseSectionProps) {
             </div>
             <h3
               style={{
-                fontFamily: 'var(--font-space-grotesk)',
+                fontFamily: 'var(--font-newsreader)',
                 fontSize: '1.125rem',
                 fontWeight: 500,
                 color: 'var(--text-90)',
@@ -320,7 +320,7 @@ export function PromiseSection({ narrativeState }: PromiseSectionProps) {
             </h3>
             <p
               style={{
-                fontFamily: 'var(--font-dm-sans)',
+                fontFamily: 'var(--font-urbanist)',
                 fontSize: '0.875rem',
                 color: 'var(--text-50)',
                 lineHeight: 1.6,

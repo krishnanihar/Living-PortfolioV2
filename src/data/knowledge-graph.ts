@@ -2,7 +2,7 @@ import { KnowledgeGraphData, KnowledgeNode, KnowledgeEdge } from '@/types/knowle
 
 // Color palette matching the design system
 const colors = {
-  brandRed: '#DA0E29',
+  brandRed: '#d97757',
   blue: '#3B82F6',
   purple: '#8B5CF6',
   pink: '#EC4899',

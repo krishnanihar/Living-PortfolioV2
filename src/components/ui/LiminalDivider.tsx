@@ -44,7 +44,7 @@ export function LiminalDivider({
         };
       case 'shimmer':
         return {
-          background: 'linear-gradient(180deg, transparent 0%, rgba(218, 14, 41, 0.03) 50%, transparent 100%)',
+          background: 'linear-gradient(180deg, transparent 0%, rgba(217, 119, 87, 0.03) 50%, transparent 100%)',
           position: 'relative' as const,
         };
       case 'fog':
@@ -52,7 +52,7 @@ export function LiminalDivider({
         return {
           background: `
             radial-gradient(ellipse at 50% ${50 + parallaxOffset * 0.1}%,
-              rgba(218, 14, 41, 0.08) 0%,
+              rgba(217, 119, 87, 0.08) 0%,
               rgba(139, 125, 107, 0.04) 40%,
               transparent 70%)
           `,

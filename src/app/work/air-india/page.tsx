@@ -4,15 +4,15 @@ import { AirIndiaWork } from '@/components/sections/AirIndiaWork';
 import { CaseStudyTracker } from '@/components/CaseStudyTracker';
 
 export const metadata: Metadata = {
-  title: 'Air India Case Study — $200M Digital Transformation | Red Dot Award',
-  description: 'Built design infrastructure from zero during Air India\'s Tata transformation. Pixel Radar (450+ daily users), AI-native features, MCP handoff. Red Dot 2024, Gold Stevie, APEX Four Star recognition.',
+  title: 'Air India Case Study — Design Infrastructure from Zero | Krishna Nihar',
+  description: 'How I built token architecture, QA automation (Pixel Radar, 450+ DAU), and AI-native features from zero during Air India\'s $200M Tata transformation — merging 4 airlines, 140 legacy systems.',
   openGraph: {
-    title: 'Air India Case Study — Design Infrastructure from Zero',
-    description: 'When Tata acquired Air India, zero design infrastructure existed. I built Pixel Radar (450+ users), design systems for 4 merging airlines, and AI-native features that won Red Dot 2024.',
+    title: 'Air India — Building Design Infrastructure Where None Existed',
+    description: 'Case study: Token systems, Pixel Radar (450+ daily users), and AI search for Air India\'s 4-airline merger. Red Dot 2024.',
   },
   twitter: {
-    title: 'Air India Case Study — Design Infrastructure from Zero',
-    description: 'When Tata acquired Air India, zero design infrastructure existed. I built Pixel Radar (450+ users), design systems for 4 merging airlines, and AI-native features that won Red Dot 2024.',
+    title: 'Air India — Building Design Infrastructure Where None Existed',
+    description: 'Case study: Token systems, Pixel Radar (450+ daily users), and AI search for Air India\'s 4-airline merger. Red Dot 2024.',
   },
 };
 

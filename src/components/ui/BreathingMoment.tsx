@@ -259,14 +259,14 @@ export function ActTransition({
       case 'seduction':
         return 'rgba(147, 51, 234, 0.8)';
       case 'complication':
-        return 'rgba(218, 14, 41, 0.8)';
+        return 'rgba(217, 119, 87, 0.8)';
       case 'resolution':
         return 'rgba(14, 165, 233, 0.8)';
       // Home page acts
       case 'arrival':
         return 'rgba(147, 51, 234, 0.8)'; // Purple - curiosity
       case 'philosophy':
-        return 'rgba(218, 14, 41, 0.8)'; // Red - conviction
+        return 'rgba(217, 119, 87, 0.8)'; // Red - conviction
       case 'catalog':
         return 'rgba(14, 165, 233, 0.8)'; // Blue - invitation
       default:

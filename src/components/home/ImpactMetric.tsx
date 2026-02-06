@@ -83,7 +83,7 @@ export function ImpactMetric({
         style={{
           fontSize: 'clamp(1.75rem, 3vw, 2.5rem)',
           fontWeight: 600,
-          fontFamily: 'var(--font-space-grotesk)',
+          fontFamily: 'var(--font-newsreader)',
           color: 'var(--text-90)',
           lineHeight: 1,
         }}

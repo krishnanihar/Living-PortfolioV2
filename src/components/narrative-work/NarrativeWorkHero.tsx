@@ -94,7 +94,7 @@ export function NarrativeWorkHero() {
               textTransform: 'uppercase',
               color: 'var(--text-50)',
               marginBottom: '1rem',
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -112,7 +112,7 @@ export function NarrativeWorkHero() {
               letterSpacing: '0.02em',
               marginBottom: '1rem',
               color: 'var(--text-95)',
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
             }}
           >
             Explore My Work
@@ -171,7 +171,7 @@ export function NarrativeWorkHero() {
                     fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
                     fontWeight: '300',
                     color: 'var(--text-90)',
-                    fontFamily: 'var(--font-space-grotesk)',
+                    fontFamily: 'var(--font-newsreader)',
                     letterSpacing: '-0.02em',
                   }}
                 >

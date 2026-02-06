@@ -6,6 +6,7 @@ import { TouchHighlight, MobileStepIndicator, SwipeableCards } from './shared';
 
 interface PixelRadarMobileProps {
   brandColor: string;
+  isMobile?: boolean;
 }
 
 type AnalysisPhase = 'idle' | 'scan' | 'analyze' | 'complete';
@@ -27,7 +28,7 @@ const backendModules = [
  * PixelRadarMobile - Mobile-optimized Pixel Radar demo
  * Features swipeable cards between Plugin UI and Backend Architecture
  */
-export function PixelRadarMobile({ brandColor }: PixelRadarMobileProps) {
+export function PixelRadarMobile({ brandColor, isMobile = true }: PixelRadarMobileProps) {
   const [viewIndex, setViewIndex] = useState(0);
   const [analysisPhase, setAnalysisPhase] = useState<AnalysisPhase>('idle');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -293,6 +294,7 @@ export function PixelRadarMobile({ brandColor }: PixelRadarMobileProps) {
             padding: '14px',
             textAlign: 'center',
             minHeight: '48px',
+            animation: !isAnalyzing ? 'demoButtonPulse 2s ease-in-out infinite' : 'none',
           }}
         >
           <div style={{
@@ -504,22 +506,37 @@ export function PixelRadarMobile({ brandColor }: PixelRadarMobileProps) {
         </span>
       </div>
 
-      {/* Swipeable Views */}
-      <SwipeableCards
-        currentIndex={viewIndex}
-        onIndexChange={setViewIndex}
-        hintText="Swipe to see backend"
-      >
-        {[PluginView, BackendView]}
-      </SwipeableCards>
+      {isMobile ? (
+        <>
+          {/* Swipeable Views (mobile) */}
+          <SwipeableCards
+            currentIndex={viewIndex}
+            onIndexChange={setViewIndex}
+            hintText="Swipe to see backend"
+          >
+            {[PluginView, BackendView]}
+          </SwipeableCards>
 
-      {/* Step Indicator */}
-      <MobileStepIndicator
-        totalSteps={2}
-        currentStep={viewIndex}
-        onStepTap={setViewIndex}
-        activeColor="#0D99FF"
-      />
+          {/* Step Indicator */}
+          <MobileStepIndicator
+            totalSteps={2}
+            currentStep={viewIndex}
+            onStepTap={setViewIndex}
+            activeColor="#0D99FF"
+          />
+        </>
+      ) : (
+        /* Side-by-side views (desktop) */
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '20px',
+          alignItems: 'start',
+        }}>
+          {PluginView}
+          {BackendView}
+        </div>
+      )}
     </div>
   );
 }

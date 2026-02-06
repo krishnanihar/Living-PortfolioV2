@@ -94,7 +94,7 @@ function LoadingFallback() {
           style={{
             fontSize: '0.875rem',
             color: 'var(--text-50)',
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
           }}
         >
           Loading 3D View...
@@ -131,7 +131,7 @@ function ScrollIndicator({ visible }: { visible: boolean }) {
           letterSpacing: '0.15em',
           textTransform: 'uppercase',
           color: 'var(--text-40)',
-          fontFamily: 'var(--font-space-grotesk)',
+          fontFamily: 'var(--font-newsreader)',
         }}
       >
         Scroll to Explore
@@ -215,7 +215,7 @@ function ProgressMarkers({ progress, isMobile }: { progress: number; isMobile: b
               style={{
                 fontSize: '0.6875rem',
                 color: isPast ? 'var(--text-70)' : 'var(--text-40)',
-                fontFamily: 'var(--font-space-grotesk)',
+                fontFamily: 'var(--font-newsreader)',
                 display: isMobile ? 'none' : 'block',
                 transition: 'color 0.3s ease',
               }}
@@ -842,7 +842,7 @@ export function BathroomExplodedView({ className }: BathroomExplodedViewProps) {
               style={{
                 fontSize: '0.75rem',
                 color: 'var(--text-60)',
-                fontFamily: 'var(--font-space-grotesk)',
+                fontFamily: 'var(--font-newsreader)',
               }}
             >
               {Math.round((scrollProgress / 3) * 100)}% • {getAnimationPhase(scrollProgress).replace('_', ' ')}

@@ -203,7 +203,7 @@ function RecommendationCard({ recommendation, index }: RecommendationCardProps) 
 
           {/* Title */}
           <h4
-            className="mt-1 font-medium transition-colors group-hover:text-[#DA0E29]"
+            className="mt-1 font-medium transition-colors group-hover:text-[#d97757]"
             style={{
               color: 'var(--text-90)',
               fontSize: 'clamp(0.9375rem, 1.5vw, 1rem)',
@@ -224,7 +224,7 @@ function RecommendationCard({ recommendation, index }: RecommendationCardProps) 
         {/* Hover indicator */}
         <motion.div
           className="absolute bottom-0 left-0 right-0 h-0.5"
-          style={{ background: '#DA0E29' }}
+          style={{ background: '#d97757' }}
           initial={{ scaleX: 0 }}
           whileHover={{ scaleX: 1 }}
           transition={{ duration: 0.3 }}

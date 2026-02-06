@@ -5,6 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 
 ## Development Commands
+> **Skill Reference**: Use `nextjs` skill for Next.js App Router patterns and best practices
 
 ### Core Commands
 - `npm run dev` - Start development server
@@ -32,6 +33,42 @@ npm run build
 - **Fonts**: Space Grotesk (headings), DM Sans (body)
 - **Animation**: Framer Motion (dev dependency), Anime.js
 - **Additional Libraries**: clsx, tailwind-merge for utility class management
+
+### Installed Agent Skills
+
+Skills are installed in `.agents/skills/` and provide specialized knowledge for AI coding agents.
+
+| Skill | Source | Use When |
+|-------|--------|----------|
+| **nextjs** | `jezweb/claude-skills` | Creating/modifying Next.js App Router pages, layouts, API routes, server components |
+| **react-19** | `noklip-io/agent-skills` | Using React 19 features (use, actions, form handling, server components) |
+| **react-performance** | `thebushidocollective/han` | Optimizing React renders, memo, useMemo, useCallback, profiling |
+| **tailwind4-expert** | `yuniorglez/gemini-elite-core` | Tailwind CSS 4 syntax, new features, configuration |
+| **tailwind-responsive-design** | `thebushidocollective/han` | Responsive breakpoints, clamp(), container queries |
+| **threejs** | `mrgoonie/claudekit-skills` | Three.js scenes, WebGL, GPGPU, shaders, particle systems |
+| **framer-motion-animator** | `patricio0312rev/skills` | Framer Motion animations, variants, gestures, scroll-triggered |
+| **typescript** | `lobehub/lobehub` | TypeScript patterns, strict mode, generics, utility types |
+| **accessibility** | `jezweb/claude-skills` | WCAG compliance, ARIA, keyboard navigation, screen readers |
+
+**Skill Usage Guidelines:**
+- Skills are automatically loaded by compatible agents (Claude Code, Cursor, Codex, etc.)
+- Reference skills when working on related features (e.g., use `threejs` skill for particle system work)
+- Skills complement but don't replace project-specific patterns in this CLAUDE.md
+
+**Install Additional Skills:**
+```bash
+npx skills search <keyword>      # Search for skills
+npx skills add <owner/repo@skill> --yes  # Install a skill
+npx skills list                  # List installed skills
+```
+
+### Available MCP Servers
+
+| Server | Use When |
+|--------|----------|
+| **context7** | Need up-to-date docs for Next.js 15, Framer Motion, Three.js, Tailwind CSS 4 |
+| **figma-dev-mode-mcp-server** | Converting Figma designs to code, extracting design tokens |
+| **chrome-devtools** | Debugging, taking screenshots, performance traces |
 
 ### Directory Structure
 ```
@@ -197,6 +234,8 @@ TypeScript path mapping configured:
 ## Code Conventions
 
 ### Styling
+> **Skill References**: Use `tailwind4-expert` for Tailwind CSS 4 patterns, `tailwind-responsive-design` for responsive layouts
+
 - Use Tailwind classes exclusively
 - Reference design tokens for consistency
 - Prefer custom utility classes for complex effects
@@ -221,18 +260,24 @@ color: 'var(--text-95)'
 - Opacity values: 100, 95, 90, 85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25, 20, 18, 15, 12, 10, 08, 06, 05, 04, 03, 02, 01
 
 ### TypeScript
+> **Skill Reference**: Use `typescript` skill for advanced patterns
+
 - Strict mode enabled
 - Export types alongside components
 - Use `as const` for immutable data structures
 - Prefer type definitions over interfaces for data types
 
 ### Components
+> **Skill References**: Use `react-19` for React 19 patterns, `react-performance` for optimization, `accessibility` for a11y
+
 - Use functional components with TypeScript
 - Export component and props type from same file
 - Follow naming convention: PascalCase for components
 - Use barrel exports in `index.ts` files
 
 ### Performance Optimizations
+> **Skill Reference**: Use `react-performance` for React-specific optimizations, `nextjs` for Next.js build optimizations
+
 - Image optimization configured (WebP, AVIF)
 - Font preloading in layout
 - DNS prefetch for external resources
@@ -609,6 +654,8 @@ color: 'var(--text-95)'
 ## Major Features & Case Studies
 
 ### Narrative Storytelling System (Latent Space)
+> **Skill Reference**: Use `framer-motion-animator` for scroll-driven animations
+
 **Advanced scroll-driven narrative architecture** - 2,500+ lines of code
 - **Three-act structure**: Seduction → Complication → Resolution
 - **Dynamic theming**: Purple → Red → Blue across narrative acts
@@ -621,6 +668,8 @@ color: 'var(--text-95)'
 - **Documentation**: NARRATIVE_ENHANCEMENTS.md, NARRATIVE_COMPONENTS_GUIDE.md
 
 ### Interactive iOS Prototypes (PsoriAssist)
+> **Skill Reference**: Use `accessibility` skill for iOS accessibility patterns
+
 **Portfolio-grade iOS 17 light mode design system**
 - **8 fully interactive screens**: Home, Journal, Photo, Scan, PASI, Tracking, Medication, Profile
 - **Authentic iOS design**:
@@ -640,6 +689,8 @@ color: 'var(--text-95)'
 5. **PsoriAssist** - AI-powered health management with iOS prototypes
 
 ### GPGPU Pattern Particle System (Hero Page)
+> **Skill Reference**: Use `threejs` skill for Three.js, WebGL, shaders, and particle system modifications
+
 **GPU-accelerated dual-layer particle system** - Instant visual impact on page load
 
 #### Architecture Overview
@@ -781,3 +832,89 @@ After deployment, verify SEO setup:
 - Robots: `knihar.io/robots.txt`
 - Rich Results: https://search.google.com/test/rich-results
 - Submit sitemap to Google Search Console
+
+## Agent Skills & MCP Usage Guide
+
+### When to Use Specific Skills
+
+| Task | Primary Skill | Secondary Skills |
+|------|---------------|------------------|
+| Creating new pages/routes | `nextjs` | `react-19`, `typescript` |
+| Building UI components | `react-19` | `tailwind4-expert`, `accessibility` |
+| Responsive layouts | `tailwind-responsive-design` | `tailwind4-expert` |
+| Animation work | `framer-motion-animator` | `react-performance` |
+| Particle system / 3D | `threejs` | - |
+| Performance optimization | `react-performance` | `nextjs` |
+| Type safety improvements | `typescript` | - |
+| Accessibility audit | `accessibility` | - |
+
+### MCP Server Usage
+
+**context7** - Use for up-to-date documentation:
+```
+Query context7 when:
+- Next.js 15 App Router patterns are unclear
+- Framer Motion API has changed
+- Three.js/React Three Fiber syntax needed
+- Tailwind CSS 4 new features
+```
+
+**figma-dev-mode-mcp-server** - Use for design implementation:
+```
+Use when:
+- Converting Figma designs to React components
+- Extracting design tokens (colors, spacing, typography)
+- Getting screenshot references for components
+```
+
+**chrome-devtools** - Use for debugging:
+```
+Use when:
+- Testing responsive layouts in browser
+- Debugging console errors
+- Performance profiling
+- Taking screenshots for documentation
+```
+
+### Skill Interaction with Project Conventions
+
+Skills provide general best practices, but **this CLAUDE.md takes precedence** for project-specific patterns:
+
+| Topic | Skill Says | This Project Says | **Follow** |
+|-------|------------|-------------------|------------|
+| Theme styling | Use CSS-in-JS / Tailwind | Use CSS variables (`--text-XX`, `--glass-XX`) | **CLAUDE.md** |
+| Fonts | System fonts | Space Grotesk + DM Sans | **CLAUDE.md** |
+| Navigation | Generic patterns | PortfolioNavigation with specific heights | **CLAUDE.md** |
+| Build optimization | General tips | NO inline theme conditionals | **CLAUDE.md** |
+
+### Managing Skills
+
+```bash
+# List all installed skills
+ls -la .agents/skills/
+
+# Search for new skills
+npx skills search <keyword>
+
+# Install a new skill
+npx skills add <owner/repo@skill> --yes
+
+# Skills are automatically loaded by compatible agents
+# No manual activation needed
+```
+
+### Skills Directory Structure
+
+```
+.agents/
+└── skills/
+    ├── nextjs/              # Next.js 15 App Router patterns
+    ├── react-19/            # React 19 features (use, actions, etc.)
+    ├── react-performance/   # React optimization techniques
+    ├── tailwind4-expert/    # Tailwind CSS 4 syntax & features
+    ├── tailwind-responsive-design/  # Responsive design patterns
+    ├── threejs/             # Three.js & WebGL patterns
+    ├── framer-motion-animator/  # Framer Motion animations
+    ├── typescript/          # TypeScript strict patterns
+    └── accessibility/       # WCAG & a11y best practices
+```

@@ -8,7 +8,7 @@ const milestones = [
   { year: '2005', label: 'The Spark', color: 'rgba(251, 191, 36, 0.6)', id: 'hyderabad-roots' },
   { year: '2018', label: 'BFA Journey', color: 'rgba(59, 130, 246, 0.6)', id: 'undergrad-2018' },
   { year: '2021', label: 'NID Masters', color: 'rgba(139, 92, 246, 0.6)', id: 'nid-2021' },
-  { year: '2024', label: 'Air India', color: 'rgba(218, 14, 41, 0.8)', id: 'air-india-2024' },
+  { year: '2024', label: 'Air India', color: 'rgba(217, 119, 87, 0.8)', id: 'air-india-2024' },
 ];
 
 export function TimelineVisual() {
@@ -63,7 +63,7 @@ export function TimelineVisual() {
             left: '50%',
             top: 0,
             width: '2px',
-            background: 'linear-gradient(180deg, rgba(218, 14, 41, 0.2), rgba(218, 14, 41, 0.6), rgba(218, 14, 41, 0.2))',
+            background: 'linear-gradient(180deg, rgba(217, 119, 87, 0.2), rgba(217, 119, 87, 0.6), rgba(217, 119, 87, 0.2))',
             transform: 'translateX(-50%)',
           }}
         />

@@ -29,9 +29,9 @@ export const Hero = () => {
                 top: `${top}%`,
                 width: '2px',
                 height: '2px',
-                background: '#DA0E29',
+                background: '#d97757',
                 borderRadius: '50%',
-                boxShadow: '0 0 8px rgba(218, 14, 41, 0.6)',
+                boxShadow: '0 0 8px rgba(217, 119, 87, 0.6)',
                 animationDelay: `${delay}s`,
                 opacity: opacity,
               }}
@@ -45,7 +45,7 @@ export const Hero = () => {
         {/* Badge */}
         <div className={`${styles.fadeInUp} ${styles.badgePulse}`} style={{ animationDelay: '0.3s' }}>
           <div className={styles.badge}>
-            <Sparkles className="w-4 h-4 text-[#DA0E29]" />
+            <Sparkles className="w-4 h-4 text-[#d97757]" />
             <span>Mythos</span>
           </div>
         </div>

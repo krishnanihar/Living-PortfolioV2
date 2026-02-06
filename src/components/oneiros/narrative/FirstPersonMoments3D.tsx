@@ -235,7 +235,7 @@ export function FirstPersonMoments3D({
             lineHeight: '1.3',
             color: 'rgba(255, 255, 255, 0.95)',
             marginBottom: activeMoment.subtext ? '0.5rem' : '0',
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
           }}
         >
           {activeMoment.text}
@@ -250,7 +250,7 @@ export function FirstPersonMoments3D({
               color: 'rgba(255, 255, 255, 0.6)',
               fontStyle: 'italic',
               lineHeight: '1.5',
-              fontFamily: 'var(--font-dm-sans)',
+              fontFamily: 'var(--font-urbanist)',
             }}
           >
             {activeMoment.subtext}

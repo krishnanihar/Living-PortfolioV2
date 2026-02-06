@@ -108,7 +108,7 @@ export function MobileBottomNav() {
           borderRadius: '12px',
           backgroundColor: active
             ? item.isChat
-              ? 'rgba(218, 14, 41, 0.15)' // Brand red glow for active chat
+              ? 'rgba(217, 119, 87, 0.15)' // Brand red glow for active chat
               : 'transparent' // Remove background, aurora glow will handle it
             : 'transparent',
           border: 'none',
@@ -121,7 +121,7 @@ export function MobileBottomNav() {
           zIndex: 1,
           color: active
             ? item.isChat
-              ? 'rgba(218, 14, 41, 1)' // Brand red for active chat
+              ? 'rgba(217, 119, 87, 1)' // Brand red for active chat
               : 'var(--text-95)'
             : 'var(--text-50)',
           transition: 'color 0.2s ease',
@@ -134,10 +134,10 @@ export function MobileBottomNav() {
           fontWeight: active ? 500 : 400,
           color: active
             ? item.isChat
-              ? 'rgba(218, 14, 41, 1)' // Brand red for active chat
+              ? 'rgba(217, 119, 87, 1)' // Brand red for active chat
               : 'var(--text-90)'
             : 'var(--text-40)',
-          fontFamily: "'Space Grotesk', system-ui, sans-serif",
+          fontFamily: "'Urbanist', system-ui, sans-serif",
           letterSpacing: '0.02em',
           transition: 'all 0.2s ease',
         };

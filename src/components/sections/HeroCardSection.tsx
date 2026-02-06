@@ -65,17 +65,17 @@ export function HeroCardSection() {
               width: '40px',
               height: '40px',
               borderRadius: '50%',
-              background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(147, 51, 234, 0.08))',
+              background: 'linear-gradient(135deg, rgba(217, 119, 87, 0.12), rgba(147, 51, 234, 0.08))',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid rgba(218, 14, 41, 0.25)',
+              border: '1px solid rgba(217, 119, 87, 0.25)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 2px 8px rgba(218, 14, 41, 0.15)',
+              boxShadow: '0 2px 8px rgba(217, 119, 87, 0.15)',
             }}
           >
-            <User size={18} style={{ color: 'rgba(218, 14, 41, 0.95)' }} />
+            <User size={18} style={{ color: 'rgba(217, 119, 87, 0.95)' }} />
           </div>
 
           <h2
@@ -83,7 +83,7 @@ export function HeroCardSection() {
               fontSize: '1.5rem',
               fontWeight: '500',
               letterSpacing: '0.05em',
-              color: 'rgba(218, 14, 41, 0.95)',
+              color: 'rgba(217, 119, 87, 0.95)',
             }}
           >
             Introduction
@@ -96,7 +96,7 @@ export function HeroCardSection() {
               background: 'rgba(255, 255, 255, 0.04)',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid rgba(218, 14, 41, 0.2)',
+              border: '1px solid rgba(217, 119, 87, 0.2)',
               fontSize: '0.75rem',
               fontWeight: '300',
               color: 'var(--text-secondary)',

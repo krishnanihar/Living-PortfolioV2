@@ -145,8 +145,8 @@ export function CustomCursor({ className = '' }: CursorProps) {
       case 'button':
         return {
           scale: 1.5,
-          backgroundColor: 'rgba(218, 14, 41, 0.2)',
-          border: '2px solid rgba(218, 14, 41, 0.6)',
+          backgroundColor: 'rgba(217, 119, 87, 0.2)',
+          border: '2px solid rgba(217, 119, 87, 0.6)',
         };
       case 'link':
         return {
@@ -157,8 +157,8 @@ export function CustomCursor({ className = '' }: CursorProps) {
       case 'click':
         return {
           scale: 0.8,
-          backgroundColor: 'rgba(218, 14, 41, 0.4)',
-          border: '2px solid rgba(218, 14, 41, 0.8)',
+          backgroundColor: 'rgba(217, 119, 87, 0.4)',
+          border: '2px solid rgba(217, 119, 87, 0.8)',
         };
       case 'drag':
         return {

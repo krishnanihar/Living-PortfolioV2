@@ -95,7 +95,7 @@ function ResearchCard({
         <div>
           <h4
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '1rem',
               fontWeight: 500,
               color: 'var(--text-85)',
@@ -106,7 +106,7 @@ function ResearchCard({
           </h4>
           <p
             style={{
-              fontFamily: 'var(--font-dm-sans)',
+              fontFamily: 'var(--font-urbanist)',
               fontSize: '0.8125rem',
               color: 'var(--text-50)',
             }}
@@ -154,7 +154,7 @@ function ResearchCard({
             >
               <p
                 style={{
-                  fontFamily: 'var(--font-dm-sans)',
+                  fontFamily: 'var(--font-urbanist)',
                   fontSize: '0.9375rem',
                   color: 'var(--text-70)',
                   lineHeight: 1.7,
@@ -165,7 +165,7 @@ function ResearchCard({
               </p>
               <p
                 style={{
-                  fontFamily: 'var(--font-space-grotesk)',
+                  fontFamily: 'var(--font-newsreader)',
                   fontSize: '0.6875rem',
                   color: 'var(--text-35)',
                   textTransform: 'uppercase',
@@ -206,7 +206,7 @@ export function ResearchSection({ narrativeState }: ResearchSectionProps) {
         >
           <p
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '0.75rem',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -218,7 +218,7 @@ export function ResearchSection({ narrativeState }: ResearchSectionProps) {
           </p>
           <h2
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
               fontWeight: 300,
               color: 'var(--text-90)',
@@ -230,7 +230,7 @@ export function ResearchSection({ narrativeState }: ResearchSectionProps) {
           </h2>
           <p
             style={{
-              fontFamily: 'var(--font-dm-sans)',
+              fontFamily: 'var(--font-urbanist)',
               fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
               color: 'var(--text-60)',
               maxWidth: '560px',

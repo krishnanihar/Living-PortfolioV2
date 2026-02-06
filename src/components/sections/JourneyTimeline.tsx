@@ -254,7 +254,7 @@ export function JourneyTimeline() {
         <div style={{
           height: '100%',
           width: `${scrollProgress * 100}%`,
-          background: 'rgba(218, 14, 41, 0.6)',
+          background: 'rgba(217, 119, 87, 0.6)',
           transition: 'width 0.1s ease-out',
         }} />
       </div>
@@ -289,8 +289,8 @@ export function JourneyTimeline() {
             width: '6px',
             height: '6px',
             borderRadius: '50%',
-            background: 'rgba(218, 14, 41, 0.8)',
-            boxShadow: '0 0 8px rgba(218, 14, 41, 0.5)',
+            background: 'rgba(217, 119, 87, 0.8)',
+            boxShadow: '0 0 8px rgba(217, 119, 87, 0.5)',
             animation: 'pulse 2s ease-in-out infinite',
           }} />
           The Journey
@@ -377,7 +377,7 @@ export function JourneyTimeline() {
             style={{
               color: 'var(--text-muted)',
               animation: 'scrollBounce 2s ease-in-out infinite',
-              filter: 'drop-shadow(0 0 8px rgba(218, 14, 41, 0.3))',
+              filter: 'drop-shadow(0 0 8px rgba(217, 119, 87, 0.3))',
             }}
           />
         </div>
@@ -409,7 +409,7 @@ export function JourneyTimeline() {
             left: 0,
             right: 0,
             height: '100%',
-            background: 'rgba(218, 14, 41, 0.5)',
+            background: 'rgba(217, 119, 87, 0.5)',
             transformOrigin: 'top',
             transform: 'scaleY(0)',
           }} />
@@ -458,8 +458,8 @@ export function JourneyTimeline() {
                 >
                   <defs>
                     <linearGradient id={`gradient-${index}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: 'rgba(218, 14, 41, 0.6)', stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: 'rgba(218, 14, 41, 0.2)', stopOpacity: 1 }} />
+                      <stop offset="0%" style={{ stopColor: 'rgba(217, 119, 87, 0.6)', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: 'rgba(217, 119, 87, 0.2)', stopOpacity: 1 }} />
                     </linearGradient>
                   </defs>
                   <path
@@ -678,9 +678,9 @@ export function JourneyTimeline() {
                     {milestone.lesson && (
                       <div style={{
                         background: resolvedTheme === 'light'
-                          ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(0, 0, 0, 0.05))'
-                          : 'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(255, 255, 255, 0.08))',
-                        border: '2px solid rgba(218, 14, 41, 0.4)',
+                          ? 'linear-gradient(135deg, rgba(217, 119, 87, 0.15), rgba(0, 0, 0, 0.05))'
+                          : 'linear-gradient(135deg, rgba(217, 119, 87, 0.15), rgba(255, 255, 255, 0.08))',
+                        border: '2px solid rgba(217, 119, 87, 0.4)',
                         borderRadius: '12px',
                         padding: '1.25rem',
                         marginBottom: '1.5rem',
@@ -689,7 +689,7 @@ export function JourneyTimeline() {
                           fontSize: '0.7rem',
                           textTransform: 'uppercase',
                           letterSpacing: '0.12em',
-                          color: 'rgba(218, 14, 41, 0.9)',
+                          color: 'rgba(217, 119, 87, 0.9)',
                           marginBottom: '0.5rem',
                           fontWeight: '600',
                         }}>
@@ -713,7 +713,7 @@ export function JourneyTimeline() {
                         fontStyle: 'italic',
                         color: 'var(--text-secondary)',
                         marginBottom: '1rem',
-                        borderLeft: '4px solid rgba(218, 14, 41, 0.6)',
+                        borderLeft: '4px solid rgba(217, 119, 87, 0.6)',
                         paddingLeft: '1.25rem',
                         lineHeight: '1.7',
                         fontWeight: '400',
@@ -753,8 +753,8 @@ export function JourneyTimeline() {
                             cursor: 'pointer',
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.background = 'rgba(218, 14, 41, 0.15)';
-                            e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
+                            e.currentTarget.style.background = 'rgba(217, 119, 87, 0.15)';
+                            e.currentTarget.style.borderColor = 'rgba(217, 119, 87, 0.3)';
                             e.currentTarget.style.color = resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.95)' : 'rgba(255, 255, 255, 0.95)';
                             e.currentTarget.style.transform = 'translateY(-2px)';
                           }}
@@ -781,9 +781,9 @@ export function JourneyTimeline() {
                           marginTop: '1.5rem',
                           padding: '1rem 1.25rem',
                           background: resolvedTheme === 'light'
-                            ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(0, 0, 0, 0.05))'
-                            : 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))',
-                          border: '1px solid rgba(218, 14, 41, 0.3)',
+                            ? 'linear-gradient(135deg, rgba(217, 119, 87, 0.12), rgba(0, 0, 0, 0.05))'
+                            : 'linear-gradient(135deg, rgba(217, 119, 87, 0.12), rgba(255, 255, 255, 0.05))',
+                          border: '1px solid rgba(217, 119, 87, 0.3)',
                           borderRadius: '14px',
                           color: 'var(--text-primary)',
                           textDecoration: 'none',
@@ -793,24 +793,24 @@ export function JourneyTimeline() {
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.background = resolvedTheme === 'light'
-                            ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(0, 0, 0, 0.08))'
-                            : 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(255, 255, 255, 0.08))';
-                          e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.5)';
+                            ? 'linear-gradient(135deg, rgba(217, 119, 87, 0.18), rgba(0, 0, 0, 0.08))'
+                            : 'linear-gradient(135deg, rgba(217, 119, 87, 0.18), rgba(255, 255, 255, 0.08))';
+                          e.currentTarget.style.borderColor = 'rgba(217, 119, 87, 0.5)';
                           e.currentTarget.style.transform = 'translateY(-2px)';
-                          e.currentTarget.style.boxShadow = '0 8px 24px rgba(218, 14, 41, 0.2)';
+                          e.currentTarget.style.boxShadow = '0 8px 24px rgba(217, 119, 87, 0.2)';
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.background = resolvedTheme === 'light'
-                            ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(0, 0, 0, 0.05))'
-                            : 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.05))';
-                          e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
+                            ? 'linear-gradient(135deg, rgba(217, 119, 87, 0.12), rgba(0, 0, 0, 0.05))'
+                            : 'linear-gradient(135deg, rgba(217, 119, 87, 0.12), rgba(255, 255, 255, 0.05))';
+                          e.currentTarget.style.borderColor = 'rgba(217, 119, 87, 0.3)';
                           e.currentTarget.style.transform = 'translateY(0)';
                           e.currentTarget.style.boxShadow = 'none';
                         }}
                       >
                         <span>View Full Case Study</span>
                         <ExternalLink size={16} style={{
-                          color: 'rgba(218, 14, 41, 0.8)',
+                          color: 'rgba(217, 119, 87, 0.8)',
                           flexShrink: 0,
                         }} />
                       </Link>
@@ -833,12 +833,12 @@ export function JourneyTimeline() {
                   height: isPast || isActive ? '16px' : '12px',
                   borderRadius: '50%',
                   background: isPast || isActive
-                    ? 'rgba(218, 14, 41, 0.9)'
+                    ? 'rgba(217, 119, 87, 0.9)'
                     : (resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.2)'),
                   border: isPast || isActive
-                    ? '2px solid rgba(218, 14, 41, 0.5)'
+                    ? '2px solid rgba(217, 119, 87, 0.5)'
                     : (resolvedTheme === 'light' ? '2px solid rgba(0, 0, 0, 0.3)' : '2px solid rgba(255, 255, 255, 0.3)'),
-                  boxShadow: isActive ? '0 0 0 8px rgba(218, 14, 41, 0.2)' : 'none',
+                  boxShadow: isActive ? '0 0 0 8px rgba(217, 119, 87, 0.2)' : 'none',
                   transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                   animation: isActive ? 'dotPulse 2s ease-in-out infinite' : 'none',
                   cursor: 'pointer',
@@ -1085,9 +1085,9 @@ export function JourneyTimeline() {
                         {milestone.lesson && (
                       <div style={{
                         background: resolvedTheme === 'light'
-                          ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(0, 0, 0, 0.05))'
-                          : 'linear-gradient(135deg, rgba(218, 14, 41, 0.15), rgba(255, 255, 255, 0.08))',
-                        border: '2px solid rgba(218, 14, 41, 0.4)',
+                          ? 'linear-gradient(135deg, rgba(217, 119, 87, 0.15), rgba(0, 0, 0, 0.05))'
+                          : 'linear-gradient(135deg, rgba(217, 119, 87, 0.15), rgba(255, 255, 255, 0.08))',
+                        border: '2px solid rgba(217, 119, 87, 0.4)',
                         borderRadius: '12px',
                         padding: '1.25rem',
                         marginBottom: '1.5rem',
@@ -1096,7 +1096,7 @@ export function JourneyTimeline() {
                           fontSize: '0.7rem',
                           textTransform: 'uppercase',
                           letterSpacing: '0.12em',
-                          color: 'rgba(218, 14, 41, 0.9)',
+                          color: 'rgba(217, 119, 87, 0.9)',
                           marginBottom: '0.5rem',
                           fontWeight: '600',
                         }}>
@@ -1120,7 +1120,7 @@ export function JourneyTimeline() {
                         fontStyle: 'italic',
                         color: 'var(--text-secondary)',
                         marginBottom: '1rem',
-                        borderLeft: '4px solid rgba(218, 14, 41, 0.6)',
+                        borderLeft: '4px solid rgba(217, 119, 87, 0.6)',
                         paddingLeft: '1.25rem',
                         lineHeight: '1.7',
                         fontWeight: '400',
@@ -1160,8 +1160,8 @@ export function JourneyTimeline() {
                             cursor: 'pointer',
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.background = 'rgba(218, 14, 41, 0.15)';
-                            e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.3)';
+                            e.currentTarget.style.background = 'rgba(217, 119, 87, 0.15)';
+                            e.currentTarget.style.borderColor = 'rgba(217, 119, 87, 0.3)';
                             e.currentTarget.style.color = resolvedTheme === 'light' ? 'rgba(0, 0, 0, 0.95)' : 'rgba(255, 255, 255, 0.95)';
                             e.currentTarget.style.transform = 'translateY(-2px)';
                           }}

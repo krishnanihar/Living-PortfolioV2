@@ -112,7 +112,7 @@ export function FloatingLabel({
           gap: '0.5rem',
           flexDirection: getFlexDirection(),
           opacity: 0,
-          fontFamily: 'var(--font-space-grotesk)',
+          fontFamily: 'var(--font-newsreader)',
           whiteSpace: 'nowrap',
         }}
       >

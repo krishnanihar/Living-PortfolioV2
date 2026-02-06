@@ -242,7 +242,7 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
         ctx.lineTo(targetPos.x, targetPos.y);
 
         if (isHighlighted) {
-          ctx.strokeStyle = 'rgba(218, 14, 41, 0.4)';
+          ctx.strokeStyle = 'rgba(217, 119, 87, 0.4)';
           ctx.lineWidth = 1.5;
         } else {
           ctx.strokeStyle = isDimmed
@@ -302,7 +302,7 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
 
         // Label for active node
         if (isActive && node.size >= 0.5) {
-          ctx.font = '500 11px "DM Sans", system-ui, sans-serif';
+          ctx.font = '500 11px "Urbanist", system-ui, sans-serif';
           ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'top';
@@ -311,7 +311,7 @@ export function KnowledgeGraph2D({ onNodeHover, onNodeClick }: KnowledgeGraph2DP
 
         // Label for core node always visible
         if (node.type === 'core' && !isActive) {
-          ctx.font = '500 12px "DM Sans", system-ui, sans-serif';
+          ctx.font = '500 12px "Urbanist", system-ui, sans-serif';
           ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'top';

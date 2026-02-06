@@ -1,0 +1,684 @@
+/* Living Organism Case Study Styles */
+/* Following Mythos pattern with section-based CSS modules */
+
+/* ============================================
+   Section Base Styles
+   ============================================ */
+
+.section {
+  position: relative;
+  min-height: 100vh;
+  padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 5vw, 4rem);
+  overflow: hidden;
+}
+
+.sectionContent {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.sectionTitle {
+  font-family: var(--font-newsreader);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+  background: linear-gradient(
+    135deg,
+    var(--text-95) 0%,
+    var(--text-70) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sectionSubtitle {
+  font-family: var(--font-urbanist);
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  color: var(--text-60);
+  max-width: 600px;
+  line-height: 1.6;
+  margin-bottom: 3rem;
+}
+
+.divider {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--section-accent, var(--text-20)), transparent);
+  margin: 2rem 0 3rem;
+}
+
+/* ============================================
+   Section-Specific Accent Colors
+   ============================================ */
+
+.sectionHero {
+  --section-accent: rgba(147, 51, 234, 0.8);
+  background: radial-gradient(
+    ellipse 80% 50% at 50% 0%,
+    rgba(147, 51, 234, 0.08) 0%,
+    transparent 60%
+  );
+}
+
+.sectionDNA {
+  --section-accent: rgba(147, 51, 234, 0.8);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(147, 51, 234, 0.03) 50%,
+    transparent 100%
+  );
+}
+
+.sectionCells {
+  --section-accent: #d97757;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(217, 119, 87, 0.03) 50%,
+    transparent 100%
+  );
+}
+
+.sectionNervous {
+  --section-accent: #d97757;
+  background: radial-gradient(
+    ellipse 60% 40% at 80% 50%,
+    rgba(217, 119, 87, 0.05) 0%,
+    transparent 60%
+  );
+}
+
+.sectionEvolution {
+  --section-accent: rgba(14, 165, 233, 0.8);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(14, 165, 233, 0.03) 50%,
+    transparent 100%
+  );
+}
+
+.sectionMeta {
+  --section-accent: rgba(14, 165, 233, 0.8);
+  background: radial-gradient(
+    ellipse 100% 60% at 50% 100%,
+    rgba(14, 165, 233, 0.08) 0%,
+    transparent 70%
+  );
+}
+
+/* ============================================
+   Hero Section
+   ============================================ */
+
+.heroContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.heroTitle {
+  font-family: var(--font-newsreader);
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.heroTitleGradient {
+  background: linear-gradient(
+    135deg,
+    rgba(147, 51, 234, 1) 0%,
+    #d97757 50%,
+    rgba(14, 165, 233, 1) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.heroSubtitle {
+  font-family: var(--font-urbanist);
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  color: var(--text-60);
+  max-width: 600px;
+  line-height: 1.5;
+}
+
+.heroMeta {
+  margin-top: 3rem;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.heroMetaItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.heroMetaValue {
+  font-family: var(--font-newsreader);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-90);
+}
+
+.heroMetaLabel {
+  font-family: var(--font-urbanist);
+  font-size: 0.875rem;
+  color: var(--text-50);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================
+   DNA Helix Visualization
+   ============================================ */
+
+.dnaContainer {
+  position: relative;
+  height: 400px;
+  margin: 3rem 0;
+}
+
+.dnaHelix {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dnaBasePair {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+}
+
+.dnaBase {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--base-color, var(--section-accent));
+  box-shadow: 0 0 20px var(--base-color, var(--section-accent));
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dnaBase:hover {
+  transform: scale(1.5);
+  box-shadow: 0 0 30px var(--base-color, var(--section-accent));
+}
+
+.dnaConnector {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--base-color, var(--section-accent)) 0%,
+    transparent 50%,
+    var(--base-color, var(--section-accent)) 100%
+  );
+  opacity: 0.3;
+}
+
+/* ============================================
+   Code Showcase
+   ============================================ */
+
+.codeBlock {
+  position: relative;
+  background: var(--glass-05);
+  border: 1px solid var(--text-10);
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: var(--font-jetbrains);
+}
+
+.codeHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--glass-05);
+  border-bottom: 1px solid var(--text-08);
+}
+
+.codeLanguage {
+  font-size: 0.75rem;
+  color: var(--text-50);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.codeCopyButton {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  background: var(--glass-10);
+  border: 1px solid var(--text-10);
+  border-radius: 4px;
+  color: var(--text-70);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.codeCopyButton:hover {
+  background: var(--glass-20);
+  color: var(--text-90);
+}
+
+.codeContent {
+  padding: 1.5rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.codeLine {
+  display: flex;
+}
+
+.codeLineNumber {
+  width: 3rem;
+  color: var(--text-30);
+  text-align: right;
+  padding-right: 1rem;
+  user-select: none;
+}
+
+.codeLineContent {
+  flex: 1;
+}
+
+/* ============================================
+   Demo Container
+   ============================================ */
+
+.demoContainer {
+  position: relative;
+  background: var(--glass-03);
+  border: 1px solid var(--text-08);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.demoHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.75rem;
+  background: var(--glass-05);
+  border-bottom: 1px solid var(--text-08);
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.demoTitle {
+  font-family: var(--font-newsreader);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  color: var(--text-80);
+}
+
+.demoControls {
+  display: flex;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+
+.demoContent {
+  min-height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2.5rem;
+}
+
+.demoControlPanel {
+  padding: 1.25rem 1.75rem;
+  background: var(--glass-05);
+  border-top: 1px solid var(--text-08);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.demoControlItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.demoControlLabel {
+  font-size: 0.75rem;
+  color: var(--text-50);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.demoSlider {
+  width: 120px;
+  height: 4px;
+  -webkit-appearance: none;
+  background: var(--glass-20);
+  border-radius: 2px;
+  outline: none;
+}
+
+.demoSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--section-accent);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.demoSlider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* ============================================
+   Before/After Slider
+   ============================================ */
+
+.beforeAfterContainer {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: var(--glass-05);
+  border: 1px solid var(--text-10);
+}
+
+.beforeAfterSide {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.beforeAfterAfter {
+  clip-path: inset(0 0 0 var(--slider-position, 50%));
+}
+
+.beforeAfterDivider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--slider-position, 50%);
+  transform: translateX(-50%);
+  width: 4px;
+  background: var(--text-95);
+  cursor: ew-resize;
+  z-index: 10;
+}
+
+.beforeAfterHandle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: var(--text-95);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.beforeAfterLabel {
+  position: absolute;
+  top: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--glass-80);
+  backdrop-filter: blur(8px);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.beforeAfterLabelBefore {
+  left: 1rem;
+}
+
+.beforeAfterLabelAfter {
+  right: 1rem;
+}
+
+/* ============================================
+   Stats Grid
+   ============================================ */
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.75rem;
+  margin: 2.5rem 0;
+}
+
+.statCard {
+  background: var(--glass-05);
+  border: 1px solid var(--text-08);
+  border-radius: 12px;
+  padding: 1.75rem;
+  text-align: center;
+}
+
+.statValue {
+  font-family: var(--font-newsreader);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--section-accent);
+  margin-bottom: 0.5rem;
+}
+
+.statLabel {
+  font-family: var(--font-urbanist);
+  font-size: 0.875rem;
+  color: var(--text-60);
+}
+
+.statDelta {
+  font-size: 0.75rem;
+  color: #10B981;
+  margin-top: 0.5rem;
+}
+
+/* ============================================
+   Vitals Display (Meta Section)
+   ============================================ */
+
+.vitalsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin: 3rem 0;
+}
+
+.vitalCard {
+  background: var(--glass-05);
+  border: 1px solid var(--text-10);
+  border-radius: 16px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.vitalCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--section-accent), transparent);
+}
+
+.vitalIcon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--glass-10);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  color: var(--section-accent);
+}
+
+.vitalValue {
+  font-family: var(--font-newsreader);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-95);
+  margin-bottom: 0.25rem;
+}
+
+.vitalLabel {
+  font-family: var(--font-urbanist);
+  font-size: 1rem;
+  color: var(--text-60);
+}
+
+/* ============================================
+   Breathing Animation
+   ============================================ */
+
+.breathing {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   Glass Card
+   ============================================ */
+
+.glassCard {
+  background: var(--glass-05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--text-08);
+  border-radius: 16px;
+  /* Padding removed - apply via Tailwind classes per component */
+}
+
+.glassCardHover {
+  transition: all 0.3s ease;
+}
+
+.glassCardHover:hover {
+  background: var(--glass-08);
+  border-color: var(--text-15);
+  transform: translateY(-4px);
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================ */
+
+@media (max-width: 768px) {
+  .section {
+    padding: 3rem 1rem;
+  }
+
+  .heroMeta {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .demoControlPanel {
+    flex-direction: column;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .vitalsContainer {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================
+   Scroll Reveal Animation
+   ============================================ */
+
+.scrollReveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scrollReveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   Pulse Animation for Alive Indicator
+   ============================================ */
+
+.pulseAlive {
+  position: relative;
+}
+
+.pulseAlive::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -20px;
+  width: 8px;
+  height: 8px;
+  background: #10B981;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+  }
+}

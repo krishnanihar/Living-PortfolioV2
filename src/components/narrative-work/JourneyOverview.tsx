@@ -25,7 +25,7 @@ const acts: Act[] = [
     title: 'Enterprise Work',
     description: '8 key projects for Air India\'s digital transformation: design systems, mobile patterns, data visualization',
     icon: Plane,
-    color: 'rgba(218, 14, 41, 0.8)',
+    color: 'rgba(217, 119, 87, 0.8)',
   },
   {
     id: 'innovation',

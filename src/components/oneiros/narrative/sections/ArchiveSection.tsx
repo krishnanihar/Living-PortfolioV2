@@ -95,7 +95,7 @@ function MetricCard({
     >
       <p
         style={{
-          fontFamily: 'var(--font-space-grotesk)',
+          fontFamily: 'var(--font-newsreader)',
           fontSize: 'clamp(1.5rem, 3vw, 2rem)',
           fontWeight: 300,
           color,
@@ -106,7 +106,7 @@ function MetricCard({
       </p>
       <p
         style={{
-          fontFamily: 'var(--font-dm-sans)',
+          fontFamily: 'var(--font-urbanist)',
           fontSize: '0.875rem',
           color: 'var(--text-70)',
           marginBottom: '0.5rem',
@@ -116,7 +116,7 @@ function MetricCard({
       </p>
       <p
         style={{
-          fontFamily: 'var(--font-dm-sans)',
+          fontFamily: 'var(--font-urbanist)',
           fontSize: '0.75rem',
           color: 'var(--text-40)',
           fontStyle: 'italic',
@@ -174,7 +174,7 @@ function AnalysisCard({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontFamily: 'var(--font-space-grotesk)',
+          fontFamily: 'var(--font-newsreader)',
           fontSize: '1rem',
           color,
           flexShrink: 0,
@@ -185,7 +185,7 @@ function AnalysisCard({
       <div>
         <h4
           style={{
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             fontSize: '0.9375rem',
             fontWeight: 500,
             color: 'var(--text-85)',
@@ -196,7 +196,7 @@ function AnalysisCard({
         </h4>
         <p
           style={{
-            fontFamily: 'var(--font-dm-sans)',
+            fontFamily: 'var(--font-urbanist)',
             fontSize: '0.8125rem',
             color: 'var(--text-50)',
             lineHeight: 1.5,
@@ -232,7 +232,7 @@ export function ArchiveSection({ narrativeState }: ArchiveSectionProps) {
         >
           <p
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '0.75rem',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -244,7 +244,7 @@ export function ArchiveSection({ narrativeState }: ArchiveSectionProps) {
           </p>
           <h2
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
               fontWeight: 300,
               color: 'var(--text-90)',
@@ -256,7 +256,7 @@ export function ArchiveSection({ narrativeState }: ArchiveSectionProps) {
           </h2>
           <p
             style={{
-              fontFamily: 'var(--font-dm-sans)',
+              fontFamily: 'var(--font-urbanist)',
               fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
               color: 'var(--text-60)',
               maxWidth: '640px',
@@ -297,7 +297,7 @@ export function ArchiveSection({ narrativeState }: ArchiveSectionProps) {
         >
           <h3
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '1.125rem',
               fontWeight: 400,
               color: 'var(--text-70)',
@@ -340,7 +340,7 @@ export function ArchiveSection({ narrativeState }: ArchiveSectionProps) {
         >
           <p
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '1.125rem',
               fontStyle: 'italic',
               color: narrativeState.color.primary,

@@ -370,7 +370,7 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
                           background: `
                             linear-gradient(90deg, rgba(59, 130, 246, 0.04) 1px, transparent 1px),
                             linear-gradient(rgba(59, 130, 246, 0.04) 1px, transparent 1px),
-                            linear-gradient(180deg, #0a0a0a 0%, #0f172a 50%, #0a0a0a 100%)
+                            linear-gradient(180deg, #0c0c10 0%, #0f172a 50%, #0c0c10 100%)
                           `,
                           backgroundSize: '40px 40px, 40px 40px, 100% 100%',
                         }}

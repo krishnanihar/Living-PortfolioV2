@@ -109,7 +109,7 @@ export default function ConceptStatement() {
               marginBottom: '1.5rem',
               opacity: inView && mounted ? 1 : 0,
               animation: inView && mounted ? 'blurToSharp 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
             }}
           >
             <span
@@ -234,7 +234,7 @@ export default function ConceptStatement() {
                 width: '100px',
                 height: '100px',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle at 30% 30%, rgba(218, 14, 41, 0.4) 0%, rgba(147, 51, 234, 0.2) 50%, transparent 100%)',
+                background: 'radial-gradient(circle at 30% 30%, rgba(217, 119, 87, 0.4) 0%, rgba(147, 51, 234, 0.2) 50%, transparent 100%)',
                 filter: 'blur(40px)',
                 animation: 'breathe 4s ease-in-out infinite',
               }}

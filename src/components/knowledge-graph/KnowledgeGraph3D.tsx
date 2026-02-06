@@ -126,7 +126,7 @@ function LoadingFallback() {
   return (
     <mesh>
       <sphereGeometry args={[2, 16, 16]} />
-      <meshBasicMaterial color="#DA0E29" wireframe />
+      <meshBasicMaterial color="#d97757" wireframe />
     </mesh>
   );
 }
@@ -284,7 +284,7 @@ export function KnowledgeGraph3D({
         {/* Lighting */}
         <ambientLight intensity={0.4} />
         <pointLight position={[100, 100, 100]} intensity={1} />
-        <pointLight position={[-100, -100, -100]} intensity={0.5} color="#DA0E29" />
+        <pointLight position={[-100, -100, -100]} intensity={0.5} color="#d97757" />
 
         {/* Environment for reflections */}
         <Environment preset="night" />

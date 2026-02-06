@@ -36,11 +36,11 @@ export function HeroCard() {
       <style jsx>{`
         @keyframes pulseRed {
           0%, 100% {
-            box-shadow: 0 0 8px rgba(218, 14, 41, 0.4);
+            box-shadow: 0 0 8px rgba(217, 119, 87, 0.4);
             opacity: 1;
           }
           50% {
-            box-shadow: 0 0 16px rgba(218, 14, 41, 0.8);
+            box-shadow: 0 0 16px rgba(217, 119, 87, 0.8);
             opacity: 0.8;
           }
         }
@@ -125,7 +125,7 @@ export function HeroCard() {
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
           }}>
-            Designer <span style={{ color: '#DA0E29', fontWeight: '400' }}>×</span> Engineer <span style={{ color: '#DA0E29', fontWeight: '400' }}>×</span> Consciousness Explorer
+            Designer <span style={{ color: '#d97757', fontWeight: '400' }}>×</span> Engineer <span style={{ color: '#d97757', fontWeight: '400' }}>×</span> Consciousness Explorer
           </p>
 
           {/* Subtitle */}
@@ -202,7 +202,7 @@ export function HeroCard() {
               width: '6px',
               height: '6px',
               borderRadius: '50%',
-              background: 'rgba(218, 14, 41, 0.9)',
+              background: 'rgba(217, 119, 87, 0.9)',
               animation: 'pulseRed 2s ease-in-out infinite',
             }} />
             Air India DesignLAB • Transforming 450+ daily operations

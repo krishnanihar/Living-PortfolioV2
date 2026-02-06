@@ -83,7 +83,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
       label: 'Currently',
       value: 'Leading Design at Air India · 450+ Daily Users',
       icon: Building2,
-      color: '218, 14, 41' // Brand Red
+      color: '217, 119, 87' // Brand Red
     },
   ];
 
@@ -193,11 +193,11 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
         @keyframes milestonePulse {
           0%, 100% {
             transform: scale(1);
-            box-shadow: 0 0 0 0 rgba(218, 14, 41, 0.4);
+            box-shadow: 0 0 0 0 rgba(217, 119, 87, 0.4);
           }
           50% {
             transform: scale(1.05);
-            box-shadow: 0 0 0 8px rgba(218, 14, 41, 0);
+            box-shadow: 0 0 0 8px rgba(217, 119, 87, 0);
           }
         }
 
@@ -285,7 +285,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
               width: '40px',
               height: '40px',
               borderRadius: '50%',
-              background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(218, 14, 41, 0.08))',
+              background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(217, 119, 87, 0.08))',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
               border: '1px solid rgba(251, 191, 36, 0.25)',
@@ -366,7 +366,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
               inset: 0,
               borderRadius: '28px',
               background: `radial-gradient(at 20% 30%, rgba(251, 191, 36, 0.08) 0%, transparent 50%),
-                           radial-gradient(at 80% 70%, rgba(218, 14, 41, 0.06) 0%, transparent 50%)`,
+                           radial-gradient(at 80% 70%, rgba(217, 119, 87, 0.06) 0%, transparent 50%)`,
               filter: 'blur(60px)',
               opacity: isHovered ? 1 : 0.7,
               transition: 'opacity 0.6s ease',
@@ -669,7 +669,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                       top: 0,
                       left: 0,
                       height: '100%',
-                      background: 'linear-gradient(90deg, rgba(218, 14, 41, 0.6), rgba(251, 191, 36, 0.8))',
+                      background: 'linear-gradient(90deg, rgba(217, 119, 87, 0.6), rgba(251, 191, 36, 0.8))',
                       borderRadius: '2px',
                       animation: (inView && !prefersReducedMotion) ? 'progressFill 2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both' : 'none',
                       width: prefersReducedMotion && inView ? '100%' : undefined,
@@ -722,7 +722,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                         left: '8px',
                         top: '0',
                         width: '2px',
-                        background: 'linear-gradient(180deg, rgba(218, 14, 41, 0.2), rgba(218, 14, 41, 0.6), rgba(218, 14, 41, 0.2))',
+                        background: 'linear-gradient(180deg, rgba(217, 119, 87, 0.2), rgba(217, 119, 87, 0.6), rgba(217, 119, 87, 0.2))',
                         animation: (inView && !prefersReducedMotion) ? 'timelineDraw 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both' : 'none',
                         height: prefersReducedMotion && inView ? '100%' : undefined,
                       }} />
@@ -761,7 +761,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                               background: isMobile ? 'var(--surface-primary)' : 'transparent',
                               borderRadius: isMobile ? '12px' : '0',
                               border: isMobile ? '1px solid var(--border-primary)' : 'none',
-                              outline: isMilestoneHovered ? '2px solid rgba(218, 14, 41, 0.5)' : 'none',
+                              outline: isMilestoneHovered ? '2px solid rgba(217, 119, 87, 0.5)' : 'none',
                               outlineOffset: '3px',
                             }}
                           >
@@ -773,9 +773,9 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                                 width: '16px',
                                 height: '16px',
                                 borderRadius: '50%',
-                                background: `rgba(218, 14, 41, ${milestone.opacity})`,
-                                boxShadow: `0 0 20px rgba(218, 14, 41, ${milestone.opacity * 0.5})`,
-                                border: '2px solid rgba(218, 14, 41, 0.3)',
+                                background: `rgba(217, 119, 87, ${milestone.opacity})`,
+                                boxShadow: `0 0 20px rgba(217, 119, 87, ${milestone.opacity * 0.5})`,
+                                border: '2px solid rgba(217, 119, 87, 0.3)',
                                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                                 animation: !prefersReducedMotion
                                   ? (isMilestoneHovered ? 'milestonePulse 2s ease-in-out infinite' : (inView ? `pulseOrb 3s ease-in-out infinite ${index * 0.5}s` : 'none'))
@@ -834,7 +834,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                                 </p>
                                 <span style={{
                                   fontSize: '0.688rem',
-                                  color: 'rgba(218, 14, 41, 0.8)',
+                                  color: 'rgba(217, 119, 87, 0.8)',
                                   fontWeight: '400',
                                   marginTop: '0.25rem',
                                   display: 'inline-block',
@@ -939,30 +939,30 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                       alignItems: 'center',
                       gap: '0.5rem',
                       padding: '0.875rem 1.75rem',
-                      background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(218, 14, 41, 0.12))',
-                      border: '1.5px solid rgba(218, 14, 41, 0.4)',
+                      background: 'linear-gradient(135deg, rgba(217, 119, 87, 0.18), rgba(217, 119, 87, 0.12))',
+                      border: '1.5px solid rgba(217, 119, 87, 0.4)',
                       borderRadius: '16px',
                       color: 'var(--text-primary)',
                       textDecoration: 'none',
                       fontSize: '0.875rem',
                       fontWeight: '500',
                       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                      boxShadow: '0 4px 12px rgba(218, 14, 41, 0.15)',
+                      boxShadow: '0 4px 12px rgba(217, 119, 87, 0.15)',
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.25), rgba(218, 14, 41, 0.15))';
-                      e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.6)';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 119, 87, 0.25), rgba(217, 119, 87, 0.15))';
+                      e.currentTarget.style.borderColor = 'rgba(217, 119, 87, 0.6)';
                       e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-                      e.currentTarget.style.boxShadow = '0 12px 32px rgba(218, 14, 41, 0.25)';
+                      e.currentTarget.style.boxShadow = '0 12px 32px rgba(217, 119, 87, 0.25)';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(218, 14, 41, 0.18), rgba(218, 14, 41, 0.12))';
-                      e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.4)';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 119, 87, 0.18), rgba(217, 119, 87, 0.12))';
+                      e.currentTarget.style.borderColor = 'rgba(217, 119, 87, 0.4)';
                       e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(218, 14, 41, 0.15)';
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(217, 119, 87, 0.15)';
                     }}
                     onFocus={(e) => {
-                      e.currentTarget.style.outline = '2px solid rgba(218, 14, 41, 0.6)';
+                      e.currentTarget.style.outline = '2px solid rgba(217, 119, 87, 0.6)';
                       e.currentTarget.style.outlineOffset = '2px';
                     }}
                     onBlur={(e) => {
@@ -978,7 +978,7 @@ export default function SimpleAboutSection({ className = '' }: SimpleAboutSectio
                         width: '20px',
                         height: '20px',
                         borderRadius: '50%',
-                        background: 'rgba(218, 14, 41, 0.4)',
+                        background: 'rgba(217, 119, 87, 0.4)',
                         animation: 'aboutRipple 0.6s ease-out',
                         pointerEvents: 'none',
                       }} />

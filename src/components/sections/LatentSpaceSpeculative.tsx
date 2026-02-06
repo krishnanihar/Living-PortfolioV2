@@ -474,8 +474,8 @@ function HeroSection({ isLoaded }: { isLoaded: boolean }) {
               gap: '0.5rem',
               padding: '0.5rem 1rem',
               borderRadius: '999px',
-              background: 'rgba(218, 14, 41, 0.1)',
-              border: '1px solid rgba(218, 14, 41, 0.3)',
+              background: 'rgba(217, 119, 87, 0.1)',
+              border: '1px solid rgba(217, 119, 87, 0.3)',
               marginBottom: '2rem',
             }}
           >
@@ -845,7 +845,7 @@ const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
                 transition: 'all 0.3s ease',
                 ...(expandedChapter === index ? {
                   background: 'var(--glass-04)',
-                  borderColor: 'rgba(218, 14, 41, 0.3)',
+                  borderColor: 'rgba(217, 119, 87, 0.3)',
                 } : {})
               }}
             >
@@ -1842,7 +1842,7 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const architectureLayers = [
     {
       name: "Input Layer",
-      color: "rgba(218, 14, 41, 0.6)",
+      color: "rgba(217, 119, 87, 0.6)",
       components: [
         {
           id: "eeg",
@@ -2328,7 +2328,7 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
                 <div style={{
                   fontSize: '2rem',
                   fontWeight: '200',
-                  color: 'rgba(218, 14, 41, 0.9)',
+                  color: 'rgba(217, 119, 87, 0.9)',
                   marginBottom: '0.5rem',
                 }}>
                   4
@@ -2412,8 +2412,8 @@ const [selectedNode, setSelectedNode] = useState<string | null>(null);
           100% { opacity: 0; transform: translateX(2rem); }
         }
         @keyframes pulse-0 {
-          0% { box-shadow: 0 0 20px rgba(218, 14, 41, 0.3); }
-          100% { box-shadow: 0 0 30px rgba(218, 14, 41, 0.6); }
+          0% { box-shadow: 0 0 20px rgba(217, 119, 87, 0.3); }
+          100% { box-shadow: 0 0 30px rgba(217, 119, 87, 0.6); }
         }
         @keyframes pulse-1 {
           0% { box-shadow: 0 0 20px rgba(147, 51, 234, 0.3); }
@@ -3119,7 +3119,7 @@ const [activeQuestion, setActiveQuestion] = useState(0);
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.05) 0%, rgba(147, 51, 234, 0.05) 100%)',
+            background: 'linear-gradient(135deg, rgba(217, 119, 87, 0.05) 0%, rgba(147, 51, 234, 0.05) 100%)',
           }} />
 
           <motion.div
@@ -3134,7 +3134,7 @@ const [activeQuestion, setActiveQuestion] = useState(0);
               marginBottom: '2rem',
               cursor: 'pointer',
             }}
-            whileHover={{ scale: 1.1, background: 'rgba(218, 14, 41, 0.2)' }}
+            whileHover={{ scale: 1.1, background: 'rgba(217, 119, 87, 0.2)' }}
             whileTap={{ scale: 0.9 }}
           >
             <Play size={32} color="var(--text-secondary)" />
@@ -3183,10 +3183,10 @@ const [activeQuestion, setActiveQuestion] = useState(0);
               cursor: 'pointer',
               transition: 'all 0.5s ease',
               border: activeQuestion === index
-                ? '2px solid rgba(218, 14, 41, 0.4)'
+                ? '2px solid rgba(217, 119, 87, 0.4)'
                 : `1px solid var(--text-10)`,
               background: activeQuestion === index
-                ? 'rgba(218, 14, 41, 0.05)'
+                ? 'rgba(217, 119, 87, 0.05)'
                 : 'var(--glass-02)',
             }}
             whileHover={{
@@ -3221,7 +3221,7 @@ const [activeQuestion, setActiveQuestion] = useState(0);
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.4 }}
                   style={{
-                    borderTop: '1px solid rgba(218, 14, 41, 0.3)',
+                    borderTop: '1px solid rgba(217, 119, 87, 0.3)',
                     paddingTop: '1.5rem',
                   }}
                 >
@@ -3248,8 +3248,8 @@ const [activeQuestion, setActiveQuestion] = useState(0);
                         transition={{ delay: i * 0.1 }}
                         style={{
                           padding: '0.5rem 1rem',
-                          background: 'rgba(218, 14, 41, 0.1)',
-                          border: '1px solid rgba(218, 14, 41, 0.3)',
+                          background: 'rgba(217, 119, 87, 0.1)',
+                          border: '1px solid rgba(217, 119, 87, 0.3)',
                           borderRadius: '999px',
                           fontSize: '0.75rem',
                           color: 'var(--text-secondary)',
@@ -3709,7 +3709,7 @@ const [activeQuestioner, setActiveQuestioner] = useState(0);
       perspective: "Scientific Inquiry",
       question: "How do we measure consciousness without reducing it to mere data?",
       concern: "In our pursuit of understanding the brain's electrical patterns during dreams, we risk losing sight of the subjective experience that makes consciousness fundamentally human. Can objective science capture subjective reality?",
-      color: "rgba(218, 14, 41, 0.6)"
+      color: "rgba(217, 119, 87, 0.6)"
     },
     {
       role: "The Designer",
@@ -3965,7 +3965,7 @@ const [hoveredProject, setHoveredProject] = useState<number | null>(null);
       description: 'Leading design transformation for India\'s flag carrier.',
       year: '2024',
       href: '/work/air-india' as const,
-      orbColor: '218, 14, 41'
+      orbColor: '217, 119, 87'
     },
     {
       id: 3,

@@ -150,7 +150,7 @@ export function HomeFirstPersonMoments({ onOpenChat }: HomeFirstPersonMomentsPro
               boxShadow: `0 0 20px ${narrativeState.color.primary.replace('0.8', '0.6')}`,
             }}
           >
-            <Sparkles className="w-3 h-3" style={{ color: '#0A0A0A' }} />
+            <Sparkles className="w-3 h-3" style={{ color: '#0c0c10' }} />
           </motion.div>
 
           {/* Icon */}

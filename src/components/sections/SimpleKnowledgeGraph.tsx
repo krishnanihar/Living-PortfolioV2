@@ -81,7 +81,7 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
         x: centerX + Math.cos(angle) * conceptRadius,
         y: centerY + Math.sin(angle) * conceptRadius,
         type: 'concept',
-        color: '#DA0E29',
+        color: '#d97757',
       });
     });
 
@@ -337,7 +337,7 @@ export function SimpleKnowledgeGraph({ books, games, onNodeClick }: SimpleKnowle
                       cy={pos.y}
                       r={finalRadius * 2}
                       fill="none"
-                      stroke="rgba(218, 14, 41, 0.3)"
+                      stroke="rgba(217, 119, 87, 0.3)"
                       strokeWidth="1"
                       style={{
                         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',

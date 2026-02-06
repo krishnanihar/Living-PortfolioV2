@@ -182,11 +182,12 @@ export function FigmaVariablesPanelMobile({ brandColor }: FigmaVariablesPanelMob
             style={{
               padding: '8px 14px',
               borderRadius: '6px',
-              background: cascadePhase === 'playing' ? FIGMA.bgSecondary : 'rgba(99,102,241,0.9)',
+              background: cascadePhase === 'playing' ? FIGMA.bgSecondary : '#0C8CE9',
               minHeight: '36px',
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
+              animation: cascadePhase === 'idle' ? 'demoButtonPulse 2s ease-in-out infinite' : 'none',
             }}
           >
             {cascadePhase === 'playing' ? (

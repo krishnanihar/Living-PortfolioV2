@@ -68,7 +68,7 @@ export function CollectionSection({ narrativeState }: CollectionSectionProps) {
         >
           <p
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '0.75rem',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -80,7 +80,7 @@ export function CollectionSection({ narrativeState }: CollectionSectionProps) {
           </p>
           <h2
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
               fontWeight: 300,
               color: 'var(--text-90)',
@@ -92,7 +92,7 @@ export function CollectionSection({ narrativeState }: CollectionSectionProps) {
           </h2>
           <p
             style={{
-              fontFamily: 'var(--font-dm-sans)',
+              fontFamily: 'var(--font-urbanist)',
               fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
               color: 'var(--text-60)',
               maxWidth: '640px',
@@ -129,7 +129,7 @@ export function CollectionSection({ narrativeState }: CollectionSectionProps) {
             >
               <h3
                 style={{
-                  fontFamily: 'var(--font-space-grotesk)',
+                  fontFamily: 'var(--font-newsreader)',
                   fontSize: '1rem',
                   fontWeight: 500,
                   color: 'var(--text-70)',
@@ -150,7 +150,7 @@ export function CollectionSection({ narrativeState }: CollectionSectionProps) {
               animate={isInView ? { opacity: 1 } : { opacity: 0 }}
               transition={{ duration: 0.8, delay: 1 }}
               style={{
-                fontFamily: 'var(--font-space-grotesk)',
+                fontFamily: 'var(--font-newsreader)',
                 fontSize: '0.875rem',
                 fontStyle: 'italic',
                 color: 'var(--text-50)',
@@ -219,7 +219,7 @@ export function CollectionSection({ narrativeState }: CollectionSectionProps) {
                     >
                       <span
                         style={{
-                          fontFamily: 'var(--font-space-grotesk)',
+                          fontFamily: 'var(--font-newsreader)',
                           fontSize: '1.5rem',
                           color: narrativeState.color.primary,
                           opacity: 0.5,
@@ -249,7 +249,7 @@ export function CollectionSection({ narrativeState }: CollectionSectionProps) {
             >
               <span
                 style={{
-                  fontFamily: 'var(--font-space-grotesk)',
+                  fontFamily: 'var(--font-newsreader)',
                   fontSize: '0.8125rem',
                   color: 'var(--text-50)',
                 }}

@@ -134,7 +134,7 @@ export default function ConceptFooter() {
                 fontSize: 'clamp(2rem, 5vw, 3.5rem)',
                 fontWeight: 300,
                 lineHeight: 1.2,
-                fontFamily: 'var(--font-space-grotesk)',
+                fontFamily: 'var(--font-newsreader)',
                 letterSpacing: '-0.02em',
                 marginBottom: '1rem',
               }}
@@ -223,7 +223,7 @@ export default function ConceptFooter() {
                     fontWeight: 400,
                     color: 'var(--text-95)',
                     marginBottom: '0.125rem',
-                    fontFamily: 'var(--font-space-grotesk)',
+                    fontFamily: 'var(--font-newsreader)',
                   }}
                 >
                   Krishna Nihar Sunkara
@@ -236,7 +236,7 @@ export default function ConceptFooter() {
                   }}
                 >
                   Product Designer at{' '}
-                  <span style={{ color: '#DA0E29', fontWeight: 500 }}>Air India</span>
+                  <span style={{ color: '#d97757', fontWeight: 500 }}>Air India</span>
                 </p>
               </div>
             </div>
@@ -282,7 +282,7 @@ export default function ConceptFooter() {
                   fontSize: '0.75rem',
                   fontWeight: 400,
                   color: 'var(--text-50)',
-                  fontFamily: 'var(--font-space-grotesk)',
+                  fontFamily: 'var(--font-newsreader)',
                 }}>
                   IST (UTC+5:30)
                 </span>

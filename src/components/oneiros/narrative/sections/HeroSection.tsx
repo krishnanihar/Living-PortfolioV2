@@ -90,7 +90,7 @@ export function HeroSection({ narrativeState }: HeroSectionProps) {
             />
             <span
               style={{
-                fontFamily: 'var(--font-space-grotesk)',
+                fontFamily: 'var(--font-newsreader)',
                 fontSize: '0.75rem',
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
@@ -108,7 +108,7 @@ export function HeroSection({ narrativeState }: HeroSectionProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5 }}
           style={{
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             fontSize: 'clamp(3rem, 10vw, 7rem)',
             fontWeight: 300,
             textAlign: 'center',
@@ -130,7 +130,7 @@ export function HeroSection({ narrativeState }: HeroSectionProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.7 }}
           style={{
-            fontFamily: 'var(--font-dm-sans)',
+            fontFamily: 'var(--font-urbanist)',
             fontSize: 'clamp(1rem, 2vw, 1.25rem)',
             color: 'var(--text-60)',
             textAlign: 'center',
@@ -160,7 +160,7 @@ export function HeroSection({ narrativeState }: HeroSectionProps) {
         >
           <p
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)',
               fontStyle: 'italic',
               color: 'var(--text-70)',
@@ -190,7 +190,7 @@ export function HeroSection({ narrativeState }: HeroSectionProps) {
         >
           <span
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '0.625rem',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',

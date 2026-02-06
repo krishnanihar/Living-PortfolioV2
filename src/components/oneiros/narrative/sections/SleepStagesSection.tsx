@@ -134,7 +134,7 @@ function StageCard({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             fontSize: '0.75rem',
             fontWeight: 600,
             color: stage.color,
@@ -159,7 +159,7 @@ function StageCard({
       <div style={{ flex: 1 }}>
         <h4
           style={{
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             fontSize: '1rem',
             fontWeight: 500,
             color: isSelected ? 'var(--text-95)' : 'var(--text-75)',
@@ -170,7 +170,7 @@ function StageCard({
         </h4>
         <p
           style={{
-            fontFamily: 'var(--font-dm-sans)',
+            fontFamily: 'var(--font-urbanist)',
             fontSize: '0.8125rem',
             color: 'var(--text-45)',
             lineHeight: 1.5,
@@ -203,7 +203,7 @@ function StageCard({
         </div>
         <p
           style={{
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             fontSize: '0.625rem',
             color: 'var(--text-35)',
             marginTop: '0.25rem',
@@ -243,7 +243,7 @@ export function SleepStagesSection({ narrativeState }: SleepStagesSectionProps) 
         >
           <p
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '0.75rem',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -255,7 +255,7 @@ export function SleepStagesSection({ narrativeState }: SleepStagesSectionProps) 
           </p>
           <h2
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
               fontWeight: 300,
               color: 'var(--text-90)',
@@ -267,7 +267,7 @@ export function SleepStagesSection({ narrativeState }: SleepStagesSectionProps) 
           </h2>
           <p
             style={{
-              fontFamily: 'var(--font-dm-sans)',
+              fontFamily: 'var(--font-urbanist)',
               fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
               color: 'var(--text-60)',
               maxWidth: '600px',
@@ -337,7 +337,7 @@ export function SleepStagesSection({ narrativeState }: SleepStagesSectionProps) 
             >
               <span
                 style={{
-                  fontFamily: 'var(--font-space-grotesk)',
+                  fontFamily: 'var(--font-newsreader)',
                   fontSize: '1.5rem',
                   fontWeight: 600,
                   color: selected.color,
@@ -349,7 +349,7 @@ export function SleepStagesSection({ narrativeState }: SleepStagesSectionProps) 
 
             <h3
               style={{
-                fontFamily: 'var(--font-space-grotesk)',
+                fontFamily: 'var(--font-newsreader)',
                 fontSize: '1.5rem',
                 fontWeight: 500,
                 color: 'var(--text-90)',
@@ -361,7 +361,7 @@ export function SleepStagesSection({ narrativeState }: SleepStagesSectionProps) 
 
             <p
               style={{
-                fontFamily: 'var(--font-dm-sans)',
+                fontFamily: 'var(--font-urbanist)',
                 fontSize: '1rem',
                 color: 'var(--text-60)',
                 lineHeight: 1.7,
@@ -381,7 +381,7 @@ export function SleepStagesSection({ narrativeState }: SleepStagesSectionProps) 
               <div>
                 <p
                   style={{
-                    fontFamily: 'var(--font-space-grotesk)',
+                    fontFamily: 'var(--font-newsreader)',
                     fontSize: '0.6875rem',
                     color: 'var(--text-35)',
                     textTransform: 'uppercase',
@@ -393,7 +393,7 @@ export function SleepStagesSection({ narrativeState }: SleepStagesSectionProps) 
                 </p>
                 <p
                   style={{
-                    fontFamily: 'var(--font-dm-sans)',
+                    fontFamily: 'var(--font-urbanist)',
                     fontSize: '0.8125rem',
                     color: 'var(--text-70)',
                   }}
@@ -404,7 +404,7 @@ export function SleepStagesSection({ narrativeState }: SleepStagesSectionProps) 
               <div>
                 <p
                   style={{
-                    fontFamily: 'var(--font-space-grotesk)',
+                    fontFamily: 'var(--font-newsreader)',
                     fontSize: '0.6875rem',
                     color: 'var(--text-35)',
                     textTransform: 'uppercase',
@@ -416,7 +416,7 @@ export function SleepStagesSection({ narrativeState }: SleepStagesSectionProps) 
                 </p>
                 <p
                   style={{
-                    fontFamily: 'var(--font-dm-sans)',
+                    fontFamily: 'var(--font-urbanist)',
                     fontSize: '0.8125rem',
                     color: 'var(--text-70)',
                   }}

@@ -48,7 +48,7 @@ export function PalaceRoom({
   // Create floor material with subtle reflection
   const floorMaterial = useMemo(() => {
     return new THREE.MeshStandardMaterial({
-      color: '#0A0A0A',
+      color: '#0c0c10',
       roughness: 0.3,
       metalness: 0.8,
       envMapIntensity: 0.5,
@@ -68,7 +68,7 @@ export function PalaceRoom({
   // Create ceiling material with emissive glow
   const ceilingMaterial = useMemo(() => {
     return new THREE.MeshStandardMaterial({
-      color: '#0A0A0A',
+      color: '#0c0c10',
       roughness: 0.9,
       metalness: 0.1,
       emissive: '#1a1025',

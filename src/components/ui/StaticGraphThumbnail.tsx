@@ -60,7 +60,7 @@ export function StaticGraphThumbnail({ books, games, onClick }: StaticGraphThumb
       type: 'concept' as const,
       x: centerX + Math.cos(angle) * conceptRadius,
       y: centerY + Math.sin(angle) * conceptRadius,
-      color: '#DA0E29'
+      color: '#d97757'
     };
   });
 
@@ -170,7 +170,7 @@ export function StaticGraphThumbnail({ books, games, onClick }: StaticGraphThumb
                   cy={node.y}
                   r={finalRadius * 2}
                   fill="none"
-                  stroke="rgba(218, 14, 41, 0.3)"
+                  stroke="rgba(217, 119, 87, 0.3)"
                   strokeWidth="0.8"
                   opacity={0.6}
                   style={{ transition: 'all 0.3s ease' }}

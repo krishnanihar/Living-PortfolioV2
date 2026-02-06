@@ -117,7 +117,7 @@ export function AnimatedHeading({
     [0, 1],
     [
       '0px 0px 0px rgba(255, 255, 255, 0)',
-      '0px 0px 30px rgba(255, 255, 255, 0.4), 0px 0px 60px rgba(218, 14, 41, 0.3), 0px 0px 90px rgba(218, 14, 41, 0.1)'
+      '0px 0px 30px rgba(255, 255, 255, 0.4), 0px 0px 60px rgba(217, 119, 87, 0.3), 0px 0px 90px rgba(217, 119, 87, 0.1)'
     ]
   );
 
@@ -289,7 +289,7 @@ export function AnimatedHeading({
           <motion.div
             className="absolute inset-0 -z-10 blur-3xl"
             style={{
-              background: `radial-gradient(circle at center, rgba(218, 14, 41, ${
+              background: `radial-gradient(circle at center, rgba(217, 119, 87, ${
                 isHovered ? 0.2 : 0
               }), transparent 70%)`,
               opacity: springGlow,

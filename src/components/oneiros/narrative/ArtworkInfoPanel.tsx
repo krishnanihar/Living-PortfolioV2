@@ -95,7 +95,7 @@ export function ArtworkInfoPanel({
             fontSize: '0.95rem',
             fontWeight: '500',
             color: 'rgba(255, 255, 255, 0.95)',
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             marginBottom: '0.25rem',
             lineHeight: '1.3',
           }}
@@ -108,7 +108,7 @@ export function ArtworkInfoPanel({
           style={{
             fontSize: '0.8rem',
             color: 'rgba(255, 255, 255, 0.7)',
-            fontFamily: 'var(--font-dm-sans)',
+            fontFamily: 'var(--font-urbanist)',
             marginBottom: '0.5rem',
           }}
         >
@@ -134,7 +134,7 @@ export function ArtworkInfoPanel({
                   border: `1px solid ${primaryColor}30`,
                   borderRadius: '4px',
                   color: primaryColor,
-                  fontFamily: 'var(--font-dm-sans)',
+                  fontFamily: 'var(--font-urbanist)',
                   textTransform: 'lowercase',
                 }}
               >
@@ -150,7 +150,7 @@ export function ArtworkInfoPanel({
             style={{
               fontSize: '0.65rem',
               color: 'rgba(255, 255, 255, 0.4)',
-              fontFamily: 'var(--font-dm-sans)',
+              fontFamily: 'var(--font-urbanist)',
               marginTop: '0.5rem',
               fontStyle: 'italic',
             }}

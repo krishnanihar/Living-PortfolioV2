@@ -176,10 +176,10 @@ function getVariantStyles(
   switch (variant) {
     case 'accent':
       return {
-        background: 'linear-gradient(135deg, #DA0E29 0%, #B00C22 100%)',
+        background: 'linear-gradient(135deg, #d97757 0%, #b84d35 100%)',
         color: '#FFFFFF',
         border: 'none',
-        boxShadow: '0 2px 8px rgba(218, 14, 41, 0.3)',
+        boxShadow: '0 2px 8px rgba(217, 119, 87, 0.3)',
       };
     case 'ghost':
       return {

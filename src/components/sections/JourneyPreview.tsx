@@ -80,7 +80,7 @@ export default function JourneyPreview() {
         { label: 'Daily Users', value: '10K+' },
         { label: 'Systems Designed', value: '5+' }
       ],
-      color: '#DA0E29',
+      color: '#d97757',
       organization: 'Air India',
       status: 'Current',
       logoFile: 'air-india.svg'
@@ -296,7 +296,7 @@ export default function JourneyPreview() {
                 ? '0px 8px 30px rgba(0, 0, 0, 0.08), 0px 0px 12px rgba(255, 255, 255, 0.5) inset'
                 : '0px 8px 30px rgba(0, 0, 0, 0.41), 0px 0px 12px rgba(255, 255, 255, 0.03) inset',
             }}>
-              <Compass size={16} style={{ color: 'rgba(218, 14, 41, 0.8)' }} />
+              <Compass size={16} style={{ color: 'rgba(217, 119, 87, 0.8)' }} />
             </div>
             <h2 style={{
               fontSize: '1.5rem',

@@ -359,9 +359,9 @@ export function AboutSection() {
         <div style={{
           height: '100%',
           width: `${scrollProgress}%`,
-          background: 'linear-gradient(90deg, var(--brand-red), rgba(218, 14, 41, 0.6))',
+          background: 'linear-gradient(90deg, var(--brand-red), rgba(217, 119, 87, 0.6))',
           transition: 'width 0.1s ease-out',
-          boxShadow: '0 0 8px rgba(218, 14, 41, 0.5)',
+          boxShadow: '0 0 8px rgba(217, 119, 87, 0.5)',
         }} />
       </div>
 
@@ -370,7 +370,7 @@ export function AboutSection() {
         position: 'fixed',
         inset: 0,
         background: `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%,
-          rgba(218, 14, 41, 0.02) 0%,
+          rgba(217, 119, 87, 0.02) 0%,
           transparent 40%)`,
         pointerEvents: 'none',
         transition: 'background 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -556,8 +556,8 @@ export function AboutSection() {
                         const container = e.currentTarget.querySelector('[data-logo-container]') as HTMLElement;
                         if (container) {
                           container.style.transform = 'scale(1.06)';
-                          container.style.borderColor = 'rgba(218, 14, 41, 0.4)';
-                          container.style.boxShadow = '0 0 20px rgba(218, 14, 41, 0.25), var(--shadow-small)';
+                          container.style.borderColor = 'rgba(217, 119, 87, 0.4)';
+                          container.style.boxShadow = '0 0 20px rgba(217, 119, 87, 0.25), var(--shadow-small)';
                         }
                       }}
                       onMouseLeave={(e) => {
@@ -568,7 +568,7 @@ export function AboutSection() {
                             ? 'var(--brand-red)'
                             : 'var(--border-muted)';
                           container.style.boxShadow = activeTimeline === milestone.id
-                            ? '0 0 24px rgba(218, 14, 41, 0.3), var(--shadow-small)'
+                            ? '0 0 24px rgba(217, 119, 87, 0.3), var(--shadow-small)'
                             : 'var(--shadow-small)';
                         }
                       }}
@@ -583,7 +583,7 @@ export function AboutSection() {
                           padding: '14px',
                           borderRadius: '18px',
                           background: activeTimeline === milestone.id
-                            ? 'rgba(218, 14, 41, 0.12)'
+                            ? 'rgba(217, 119, 87, 0.12)'
                             : 'transparent',
                           backdropFilter: 'blur(20px) saturate(110%)',
                           border: activeTimeline === milestone.id
@@ -593,7 +593,7 @@ export function AboutSection() {
                           alignItems: 'center',
                           justifyContent: 'center',
                           boxShadow: activeTimeline === milestone.id
-                            ? '0 0 24px rgba(218, 14, 41, 0.3), var(--shadow-small)'
+                            ? '0 0 24px rgba(217, 119, 87, 0.3), var(--shadow-small)'
                             : 'var(--shadow-small)',
                           transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                         }}
@@ -664,11 +664,11 @@ export function AboutSection() {
                   <div style={{
                     marginTop: '1.5rem',
                     padding: '1.5rem',
-                    background: 'rgba(218, 14, 41, 0.05)',
+                    background: 'rgba(217, 119, 87, 0.05)',
                     backdropFilter: 'blur(20px)',
                     WebkitBackdropFilter: 'blur(20px)',
                     borderRadius: '16px',
-                    border: '1px solid rgba(218, 14, 41, 0.2)',
+                    border: '1px solid rgba(217, 119, 87, 0.2)',
                     animation: 'fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                   }}>
                     <p style={{
@@ -1463,9 +1463,9 @@ export function AboutSection() {
                           WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
                           borderRadius: '20px',
                           padding: '1.5rem',
-                          border: isExpanded ? '1px solid rgba(218, 14, 41, 0.3)' : '1px solid var(--border-primary)',
+                          border: isExpanded ? '1px solid rgba(217, 119, 87, 0.3)' : '1px solid var(--border-primary)',
                           boxShadow: isExpanded
-                            ? '0 8px 32px rgba(218, 14, 41, 0.15)'
+                            ? '0 8px 32px rgba(217, 119, 87, 0.15)'
                             : 'var(--shadow-small)',
                           transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                           cursor: 'pointer',
@@ -1653,9 +1653,9 @@ export function AboutSection() {
                                 {/* Applied To */}
                                 <div style={{
                                   padding: '1rem',
-                                  background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.08), rgba(218, 14, 41, 0.03))',
+                                  background: 'linear-gradient(135deg, rgba(217, 119, 87, 0.08), rgba(217, 119, 87, 0.03))',
                                   borderRadius: '14px',
-                                  border: '1px solid rgba(218, 14, 41, 0.15)',
+                                  border: '1px solid rgba(217, 119, 87, 0.15)',
                                 }}>
                                   <div style={{
                                     display: 'flex',
@@ -1720,9 +1720,9 @@ export function AboutSection() {
                           WebkitBackdropFilter: 'blur(40px) saturate(120%) brightness(0.9)',
                           borderRadius: '20px',
                           padding: '1.5rem',
-                          border: isExpanded ? '1px solid rgba(218, 14, 41, 0.3)' : '1px solid var(--border-primary)',
+                          border: isExpanded ? '1px solid rgba(217, 119, 87, 0.3)' : '1px solid var(--border-primary)',
                           boxShadow: isExpanded
-                            ? '0 8px 32px rgba(218, 14, 41, 0.15)'
+                            ? '0 8px 32px rgba(217, 119, 87, 0.15)'
                             : 'var(--shadow-small)',
                           transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                           cursor: 'pointer',
@@ -1894,9 +1894,9 @@ export function AboutSection() {
                                 {/* Applied To */}
                                 <div style={{
                                   padding: '1rem',
-                                  background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.08), rgba(218, 14, 41, 0.03))',
+                                  background: 'linear-gradient(135deg, rgba(217, 119, 87, 0.08), rgba(217, 119, 87, 0.03))',
                                   borderRadius: '14px',
-                                  border: '1px solid rgba(218, 14, 41, 0.15)',
+                                  border: '1px solid rgba(217, 119, 87, 0.15)',
                                 }}>
                                   <div style={{
                                     display: 'flex',
@@ -1954,7 +1954,7 @@ export function AboutSection() {
           transform: 'translate(-50%, -50%)',
           width: '600px',
           height: '600px',
-          background: 'radial-gradient(circle, rgba(218, 14, 41, 0.06) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(217, 119, 87, 0.06) 0%, transparent 70%)',
           filter: 'blur(60px)',
           pointerEvents: 'none',
         }} />

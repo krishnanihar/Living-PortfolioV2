@@ -45,6 +45,9 @@ import {
   Ticket,
   Clock,
   MapPin,
+  ChevronLeft,
+  ChevronRight,
+  Hand,
   type LucideIcon
 } from 'lucide-react';
 
@@ -54,7 +57,12 @@ import {
   MCPHandoffMobile,
   PixelRadarMobile,
   FigmaVariablesPanelMobile,
+  EZBookingDemo,
+  AIgExplorerDemo,
+  SearchWithAIDemo,
 } from '@/components/air-india/mobile';
+import type { DemoHandle } from '@/components/air-india/mobile';
+import { AtomicDesignSystem } from '@/components/air-india/AtomicDesignSystem';
 
 // =============================================================================
 // IMAGE OPTIMIZATION - Shimmer Placeholder
@@ -127,13 +135,6 @@ interface OtherProject {
   orbColor: string;
 }
 
-interface Differentiator {
-  id: number;
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  color: string;
-}
 
 // =============================================================================
 // DATA
@@ -205,7 +206,7 @@ const projects: Project[] = [
       { value: 'Core', label: 'Infrastructure' }
     ],
     icon: Layers,
-    color: '99, 102, 241',
+    color: '218, 14, 41',
     category: 'SYSTEM',
     role: 'LEAD DESIGNER'
   },
@@ -241,7 +242,7 @@ const projects: Project[] = [
       { value: 'WAF', label: '2024' }
     ],
     icon: Search,
-    color: '139, 92, 246',
+    color: '218, 14, 41',
     category: 'AI',
     role: 'LEAD DESIGNER'
   },
@@ -259,7 +260,7 @@ const projects: Project[] = [
       { value: 'AI', label: 'Assisted' }
     ],
     icon: GitBranch,
-    color: '16, 185, 129',
+    color: '218, 14, 41',
     category: 'AI',
     role: 'LEAD DESIGNER'
   },
@@ -277,7 +278,7 @@ const projects: Project[] = [
       { value: 'Asia #1', label: 'IFE Ranking' }
     ],
     icon: Monitor,
-    color: '251, 146, 60',
+    color: '218, 14, 41',
     category: 'IFE',
     role: 'LEAD DESIGNER'
   },
@@ -295,7 +296,7 @@ const projects: Project[] = [
       { value: 'Strategic', label: 'Input' }
     ],
     icon: BarChart3,
-    color: '236, 72, 153',
+    color: '218, 14, 41',
     category: 'RESEARCH',
     role: 'INITIATOR'
   },
@@ -313,7 +314,7 @@ const projects: Project[] = [
       { value: 'Team', label: 'Resource' }
     ],
     icon: Compass,
-    color: '14, 165, 233',
+    color: '218, 14, 41',
     category: 'RESEARCH',
     role: 'LEAD DESIGNER'
   },
@@ -331,7 +332,7 @@ const projects: Project[] = [
       { value: 'Self', label: 'Initiated' }
     ],
     icon: Users,
-    color: '251, 191, 36',
+    color: '218, 14, 41',
     category: 'CULTURE',
     role: 'INITIATOR'
   },
@@ -349,7 +350,7 @@ const projects: Project[] = [
       { value: 'Working', label: 'Concept' }
     ],
     icon: Zap,
-    color: '99, 102, 241',
+    color: '218, 14, 41',
     category: 'HACKATHON',
     role: 'TEAM OF 3'
   },
@@ -385,56 +386,12 @@ const projects: Project[] = [
       { value: 'Team', label: 'Bonding' }
     ],
     icon: Heart,
-    color: '139, 92, 246',
+    color: '218, 14, 41',
     category: 'CULTURE',
     role: 'INITIATOR'
   }
 ];
 
-const differentiators: Differentiator[] = [
-  {
-    id: 1,
-    title: 'Builder Mindset',
-    description: 'Ships tools, not just designs. Pixel Radar, hackathons, MCP.',
-    icon: Zap,
-    color: '218, 14, 41'
-  },
-  {
-    id: 2,
-    title: 'AI-Native Thinking',
-    description: 'Designing for AI before playbooks existed.',
-    icon: Cpu,
-    color: '139, 92, 246'
-  },
-  {
-    id: 3,
-    title: 'Systems from Chaos',
-    description: 'Token architecture from undocumented screens.',
-    icon: Layers,
-    color: '99, 102, 241'
-  },
-  {
-    id: 4,
-    title: 'Technical Depth',
-    description: '5000 lines in 48 hours. Full-stack execution.',
-    icon: GitBranch,
-    color: '16, 185, 129'
-  },
-  {
-    id: 5,
-    title: 'Written Communication',
-    description: 'Works async, documents clearly, builds programs.',
-    icon: MessageSquare,
-    color: '251, 191, 36'
-  },
-  {
-    id: 6,
-    title: 'Ambiguity Tolerance',
-    description: 'Four airlines merging. Startup speed in enterprise.',
-    icon: Compass,
-    color: '236, 72, 153'
-  }
-];
 
 const otherProjects: OtherProject[] = [
   // HIDDEN: Latent Space WIP
@@ -456,7 +413,7 @@ const otherProjects: OtherProject[] = [
     description: 'An immersive installation exploring consciousness through ego dissolution.',
     year: '2023',
     href: '/work/metamorphic-fractal-reflections',
-    orbColor: '50, 200, 150'
+    orbColor: '218, 14, 41'
   },
   {
     id: 4,
@@ -466,7 +423,7 @@ const otherProjects: OtherProject[] = [
     description: 'AI-powered digital therapeutic with watercolor healing aesthetic.',
     year: '2024',
     href: '/work/cleara',
-    orbColor: '139, 157, 195'
+    orbColor: '218, 14, 41'
   }
 ];
 
@@ -484,19 +441,19 @@ interface ActConfig {
 const actConfig: Record<1 | 2 | 3, ActConfig> = {
   1: {
     name: 'Building Foundations',
-    color: '99, 102, 241', // Indigo
+    color: '218, 14, 41', // Air India Red (unified)
     quote: "When there's no design system, every screen is an island.",
     projects: [0, 1], // Pixel Radar, Design System
   },
   2: {
     name: 'Shipping Innovation',
-    color: '218, 14, 41', // Brand Red
+    color: '218, 14, 41', // Air India Red (unified)
     quote: 'While the organization modernized basics, I designed for what comes next.',
     projects: [2, 3, 4, 5], // AI Search, MCP, IFE, NPS
   },
   3: {
     name: 'Scaling Impact',
-    color: '251, 191, 36', // Gold
+    color: '218, 14, 41', // Air India Red (unified)
     quote: "Products ship. But lasting change requires transforming the people building them.",
     projects: [6, 7, 8, 9, 10], // Competitor, Liftoff, MS Hackathon, Internal Hackathon, Off the Record
   },
@@ -519,11 +476,90 @@ export function AirIndiaWork() {
   const [inView, setInView] = useState(true);
   const [hoveredAward, setHoveredAward] = useState<string | null>(null);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
-  // expandedCards removed - all sections are now full-screen (always "expanded")
-  const [hoveredDiff, setHoveredDiff] = useState<number | null>(null);
   const [hoveredOtherProject, setHoveredOtherProject] = useState<number | null>(null);
   const [hoveredCTA, setHoveredCTA] = useState<string | null>(null);
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [interactedPrototypes, setInteractedPrototypes] = useState<Set<string>>(new Set());
+  const [hiddenPrototypes, setHiddenPrototypes] = useState<Set<string>>(new Set());
+
+  // Demo auto-play orchestration
+  const prototypeSectionRef = useRef<HTMLDivElement>(null);
+  const isPrototypeInView = useInView(prototypeSectionRef, { once: true, amount: 0.3 });
+  const [demoPhase, setDemoPhase] = useState<'waiting' | 'playing' | 'done'>('waiting');
+  const [phoneDemoState, setPhoneDemoState] = useState<Record<string, 'waiting' | 'cursor' | 'playing' | 'done'>>({
+    ez: 'waiting', aig: 'waiting', search: 'waiting',
+  });
+  const [cursorPositions, setCursorPositions] = useState<Record<string, { x: number; y: number; visible: boolean; pressing: boolean }>>({
+    ez: { x: 200, y: 400, visible: false, pressing: false },
+    aig: { x: 200, y: 400, visible: false, pressing: false },
+    search: { x: 200, y: 400, visible: false, pressing: false },
+  });
+  const ezRef = useRef<DemoHandle>(null);
+  const aigRef = useRef<DemoHandle>(null);
+  const searchRef = useRef<DemoHandle>(null);
+  const demoStartedRef = useRef(false);
+
+  // Demo helper
+  const delay = useCallback((ms: number) => new Promise(resolve => setTimeout(resolve, ms)), []);
+
+  const runPhoneDemo = useCallback(async (
+    phoneKey: string,
+    demoRef: React.RefObject<DemoHandle | null>,
+    targetPos: { x: number; y: number },
+    internalDelay: number,
+    viewDuration: number,
+  ) => {
+    // Phase 1: Show cursor at center
+    setPhoneDemoState(prev => ({ ...prev, [phoneKey]: 'cursor' }));
+    setCursorPositions(prev => ({ ...prev, [phoneKey]: { x: 200, y: 400, visible: true, pressing: false } }));
+    await delay(400);
+
+    // Phase 2: Move cursor to target
+    setCursorPositions(prev => ({ ...prev, [phoneKey]: { ...prev[phoneKey], x: targetPos.x, y: targetPos.y } }));
+    await delay(600);
+
+    // Phase 3: Press
+    setCursorPositions(prev => ({ ...prev, [phoneKey]: { ...prev[phoneKey], pressing: true } }));
+    await delay(150);
+    setPhoneDemoState(prev => ({ ...prev, [phoneKey]: 'playing' }));
+    demoRef.current?.triggerAction();
+    await delay(150);
+    setCursorPositions(prev => ({ ...prev, [phoneKey]: { ...prev[phoneKey], pressing: false } }));
+
+    // Phase 4: Fade out cursor
+    await delay(200);
+    setCursorPositions(prev => ({ ...prev, [phoneKey]: { ...prev[phoneKey], visible: false } }));
+
+    // Phase 5: Wait for internal demo + view time
+    await delay(internalDelay + viewDuration);
+
+    // Phase 6: Reset phone + show overlay
+    demoRef.current?.reset();
+    setPhoneDemoState(prev => ({ ...prev, [phoneKey]: 'done' }));
+  }, [delay]);
+
+  // Start staggered demos when section scrolls into view
+  useEffect(() => {
+    if (!isPrototypeInView || demoStartedRef.current) return;
+    demoStartedRef.current = true;
+    setDemoPhase('playing');
+
+    const runAll = async () => {
+      // Staggered start: all 3 run concurrently with offsets
+      const demos = [
+        delay(0).then(() => runPhoneDemo('ez', ezRef, { x: 200, y: 520 }, 100, 3000)),
+        delay(2500).then(() => runPhoneDemo('aig', aigRef, { x: 200, y: 530 }, 2200, 3000)),
+        delay(5000).then(() => runPhoneDemo('search', searchRef, { x: 200, y: 470 }, 3000, 3000)),
+      ];
+
+      await Promise.all(demos);
+      setDemoPhase('done');
+    };
+
+    runAll();
+  }, [isPrototypeInView, delay, runPhoneDemo]);
 
   // Hero image effects
   const heroRef = useRef<HTMLElement>(null);
@@ -593,8 +629,6 @@ export function AirIndiaWork() {
   const [npsPhase, setNpsPhase] = useState<'idle' | 'score' | 'gauge' | 'bars' | 'complete'>('idle');
   const [npsScore, setNpsScore] = useState(0);
 
-  // Card 6: Competitor Analysis states
-  const [competitorHoveredRow, setCompetitorHoveredRow] = useState<number | null>(null);
 
   // Card 7: Liftoff Program states
   const [liftoffWeek, setLiftoffWeek] = useState(4);
@@ -1225,33 +1259,15 @@ export function AirIndiaWork() {
             background: 'linear-gradient(90deg, transparent, var(--glass-10), transparent)',
             pointerEvents: 'none',
           }} />
-          {/* Eyebrow */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            style={{
-              fontSize: '0.6875rem',
-              fontWeight: '500',
-              color: 'var(--text-muted)',
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              marginBottom: '1rem',
-            }}
-          >
-            Case Study
-          </motion.div>
-
           {/* Brand Mark - Air India Logo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={inView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.6, delay: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
             style={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: '0.75rem',
               marginBottom: '1.5rem',
             }}
           >
@@ -1264,7 +1280,6 @@ export function AirIndiaWork() {
                 filter: 'drop-shadow(0 4px 16px rgba(218, 14, 41, 0.25))',
               }}
             />
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>$200M Digital Transformation</div>
           </motion.div>
 
           {/* Main Statement */}
@@ -1307,11 +1322,11 @@ export function AirIndiaWork() {
               lineHeight: '1.7',
               fontWeight: '400',
               marginBottom: '1.75rem',
-              maxWidth: '420px',
+              maxWidth: '480px',
               margin: '0 auto 1.75rem',
             }}
           >
-            When Tata acquired Air India, they inherited 69 years of technical debt. I built the design systems and tools from zero.
+            When Tata Group acquired Air India after 69 years of government ownership, they inherited 140 legacy IT systems and zero design infrastructure. I built it — token architecture, QA automation, AI-powered search — while four airlines merged around me.
           </motion.p>
 
           {/* Stats Row */}
@@ -1322,24 +1337,27 @@ export function AirIndiaWork() {
             style={{
               display: 'flex',
               justifyContent: 'center',
-              gap: isMobile ? '1.5rem' : '2.5rem',
+              gap: isMobile ? '1rem' : '2rem',
               paddingTop: '1.5rem',
               borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+              flexWrap: 'wrap',
             }}
           >
             {[
-              { value: '4', label: 'Airlines Merged' },
-              { value: '10M+', label: 'Users Annually' },
+              { value: '140', label: 'Legacy Systems' },
+              { value: '4', label: 'Airlines Merging' },
+              { value: '10M+', label: 'Annual Users' },
+              { value: '18 mo', label: 'My Tenure' },
             ].map((stat, i) => (
               <div key={i} style={{ textAlign: 'center' }}>
                 <div style={{
-                  fontSize: '1.5rem',
+                  fontSize: '1.25rem',
                   fontWeight: '600',
                   color: 'var(--text-primary)',
                   letterSpacing: '-0.02em',
                 }}>{stat.value}</div>
                 <div style={{
-                  fontSize: '0.625rem',
+                  fontSize: '0.5625rem',
                   color: 'var(--text-muted)',
                   textTransform: 'uppercase',
                   letterSpacing: '0.08em',
@@ -1405,317 +1423,2163 @@ export function AirIndiaWork() {
       </header>
 
       {/* =========================================================================
-          SECTION 2: THE CHALLENGE
+          SECTION 2: CONTEXT
       ========================================================================= */}
       <section
-        data-section-id="air-india-problem"
+        id="context"
+        data-section-id="air-india-context"
         style={{
-          maxWidth: 'min(900px, 85vw)',
+          maxWidth: 'min(800px, 85vw)',
           margin: '0 auto',
-          padding: 'clamp(6rem, 12vh, 10rem) 2rem clamp(8rem, 15vh, 12rem)',
+          padding: 'clamp(3rem, 5vh, 4rem) 2rem',
           position: 'relative',
           zIndex: 1,
         }}
       >
-        <div style={{
-          textAlign: 'center',
-          animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both' : 'none',
-        }}>
-          <h2 style={{
-            fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-            fontWeight: '300',
-            color: 'var(--text-primary)',
-            marginBottom: '2rem',
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '11px',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            color: `rgb(${brandRgb})`,
+            marginBottom: '20px',
+            fontWeight: 500,
+          }}
+        >
+          01 — Context
+        </motion.div>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
+          style={{
+            fontSize: 'clamp(28px, 4vw, 44px)',
+            fontWeight: 300,
+            lineHeight: 1.15,
             letterSpacing: '-0.02em',
-          }}>
-            The Challenge
-          </h2>
+            marginBottom: '32px',
+            color: 'var(--text-95)',
+          }}
+        >
+          A $200M transformation with no design foundation
+        </motion.h2>
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-            gap: 'clamp(2rem, 4vw, 3rem)',
-            marginBottom: 'clamp(3rem, 6vh, 5rem)',
-          }}>
-            {/* 140 Legacy Systems */}
-            <div style={{
-              padding: 'clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.5rem)',
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.2 }}
+          style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-70)',
+            marginBottom: '24px',
+          }}
+        >
+          Air India wasn&apos;t a typical design system project. There was no &ldquo;legacy system to modernize&rdquo; — there was simply nothing. Four airlines (Air India, Air India Express, Vistara, AirAsia India) were merging simultaneously, each with different tech stacks, brand languages, and organizational cultures. Engineering teams were shipping without design specs. Product decisions were being made in silos. The DesignLAB was a newly formed team trying to establish credibility within an organization that had operated without dedicated design for decades.
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.3 }}
+          style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-70)',
+          }}
+        >
+          The constraint wasn&apos;t just technical — it was political. Every system decision carried implications for which airline&apos;s patterns would survive the merger. Every token name was a negotiation. I had to build infrastructure that was technically sound while navigating the human complexity of four organizations becoming one.
+        </motion.div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 3: MY ROLE & SCOPE
+      ========================================================================= */}
+      <section
+        id="role"
+        data-section-id="air-india-role"
+        style={{
+          maxWidth: 'min(800px, 85vw)',
+          margin: '0 auto',
+          padding: 'clamp(3rem, 5vh, 4rem) 2rem',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '11px',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            color: `rgb(${brandRgb})`,
+            marginBottom: '20px',
+            fontWeight: 500,
+          }}
+        >
+          02 — My Role & Scope
+        </motion.div>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
+          style={{
+            fontSize: 'clamp(28px, 4vw, 44px)',
+            fontWeight: 300,
+            lineHeight: 1.15,
+            letterSpacing: '-0.02em',
+            marginBottom: '32px',
+            color: 'var(--text-95)',
+          }}
+        >
+          IC with the scope of a lead
+        </motion.h2>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.2 }}
+          style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-70)',
+            marginBottom: '32px',
+          }}
+        >
+          Product Designer at Air India DesignLAB, reporting into a small but high-autonomy team within the $200M digital transformation initiative. While my title was IC, the reality was broader — I identified infrastructure gaps, built consensus with engineering leads and product managers across airline teams, then designed and shipped the solutions. My work sat at the intersection of design systems, developer tooling, and AI integration.
+        </motion.div>
+
+        {/* Role Cards */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+          gap: 'clamp(1.5rem, 3vw, 2rem)',
+        }}>
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-10%' }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.3 }}
+            style={{
+              padding: 'clamp(1.5rem, 3vw, 2rem)',
               borderRadius: '20px',
               background: 'var(--glass-04)',
               border: '1px solid var(--glass-08)',
-              textAlign: 'center',
-            }}>
-              <div style={{
-                fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
-                fontWeight: '600',
-                color: 'rgb(218, 14, 41)',
-                lineHeight: '1',
-                marginBottom: '0.5rem',
-              }}>
-                140
-              </div>
-              <div style={{
-                fontSize: '0.875rem',
-                color: 'var(--text-secondary)',
-              }}>
-                Legacy IT Systems
-              </div>
-            </div>
-
-            {/* 4 Airlines Merging */}
+            }}
+          >
             <div style={{
-              padding: '2rem 1.5rem',
+              fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+              fontSize: '10px',
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              color: 'var(--text-50)',
+              marginBottom: '12px',
+              fontWeight: 500,
+            }}>
+              Built Solo
+            </div>
+            <div style={{
+              fontSize: 'clamp(14px, 1.5vw, 16px)',
+              lineHeight: 1.7,
+              color: 'var(--text-70)',
+            }}>
+              Pixel Radar — a Figma QA plugin now used by 450+ designers daily. Token architecture from zero. Competitive analysis frameworks across 12 airlines.
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-10%' }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.4 }}
+            style={{
+              padding: 'clamp(1.5rem, 3vw, 2rem)',
               borderRadius: '20px',
               background: 'var(--glass-04)',
               border: '1px solid var(--glass-08)',
-              textAlign: 'center',
-            }}>
-              <div style={{
-                fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
-                fontWeight: '600',
-                color: 'rgb(99, 102, 241)',
-                lineHeight: '1',
-                marginBottom: '0.5rem',
-              }}>
-                4
-              </div>
-              <div style={{
-                fontSize: '0.875rem',
-                color: 'var(--text-secondary)',
-              }}>
-                Airlines Merging
-              </div>
-            </div>
-
-            {/* Zero Infrastructure */}
+            }}
+          >
             <div style={{
-              padding: '2rem 1.5rem',
-              borderRadius: '20px',
-              background: 'var(--glass-04)',
-              border: '1px solid var(--glass-08)',
-              textAlign: 'center',
+              fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+              fontSize: '10px',
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              color: 'var(--text-50)',
+              marginBottom: '12px',
+              fontWeight: 500,
             }}>
-              <div style={{
-                fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
-                fontWeight: '600',
-                color: 'rgb(251, 191, 36)',
-                lineHeight: '1',
-                marginBottom: '0.5rem',
-              }}>
-                0
-              </div>
-              <div style={{
-                fontSize: '0.875rem',
-                color: 'var(--text-secondary)',
-              }}>
-                Design Infrastructure
-              </div>
+              Led & Influenced
             </div>
-          </div>
-
-          <p style={{
-            fontSize: '1rem',
-            color: 'var(--text-tertiary)',
-            maxWidth: '600px',
-            margin: '0 auto',
-            lineHeight: '1.8',
-          }}>
-            In January 2022, Tata Group acquired Air India after 69 years of government ownership.
-            No design system. No tokens. No documentation. No shared language between design and engineering.
-          </p>
+            <div style={{
+              fontSize: 'clamp(14px, 1.5vw, 16px)',
+              lineHeight: 1.7,
+              color: 'var(--text-70)',
+            }}>
+              AI-powered search experience. In-flight entertainment system redesign. MCP-based design-to-dev handoff workflow. Liftoff — an internal mentorship program I initiated and ran.
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* =========================================================================
-          SECTION 3: MY ROLE - Personal Contribution Clarity
+          SECTION 4: PROBLEM 01 - TOKEN ARCHITECTURE
       ========================================================================= */}
       <section
-        data-section-id="air-india-my-role"
+        id="p1-tokens"
+        data-section-id="air-india-problem-tokens"
         style={{
-          maxWidth: 'min(900px, 85vw)',
+          maxWidth: 'min(1000px, 90vw)',
           margin: '0 auto',
-          padding: 'clamp(4rem, 8vh, 6rem) 2rem',
+          padding: 'clamp(3rem, 5vh, 4rem) 2rem',
           position: 'relative',
           zIndex: 1,
         }}
       >
-        <div style={{
-          padding: 'clamp(2rem, 4vw, 3rem)',
-          borderRadius: '24px',
-          background: 'var(--glass-04)',
-          border: '1px solid var(--glass-08)',
-          position: 'relative',
-          overflow: 'hidden',
-        }}>
-          {/* Accent gradient border top */}
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            left: '10%',
-            right: '10%',
-            height: '2px',
-            background: `linear-gradient(90deg, transparent, rgb(${brandRgb}), transparent)`,
-            borderRadius: '2px',
-          }} />
-
-          {/* Section Label */}
-          <div style={{
-            fontSize: '0.6875rem',
-            fontWeight: 500,
-            color: `rgb(${brandRgb})`,
-            letterSpacing: '0.15em',
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '11px',
+            letterSpacing: '3px',
             textTransform: 'uppercase',
-            marginBottom: '1rem',
+            color: `rgb(${brandRgb})`,
+            marginBottom: '20px',
+            fontWeight: 500,
+          }}
+        >
+          03 — Problem 01
+        </motion.div>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
+          style={{
+            fontSize: 'clamp(28px, 4vw, 44px)',
+            fontWeight: 300,
+            lineHeight: 1.15,
+            letterSpacing: '-0.02em',
+            marginBottom: '32px',
+            color: 'var(--text-95)',
+          }}
+        >
+          No shared language between design and engineering
+        </motion.h2>
+
+        {/* THE SITUATION */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.2 }}
+          style={{ marginBottom: '32px' }}
+        >
+          <div style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '10px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: 'var(--text-40)',
+            marginBottom: '10px',
+            fontWeight: 500,
           }}>
-            My Role
+            The Situation
+          </div>
+          <div style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-70)',
+          }}>
+            Designers used one set of color names, engineers used hex codes, and PMs referenced brand guidelines that didn&apos;t match either. Components were being rebuilt from scratch for every feature because there was no token system, no source of truth. The four merging airlines made this exponentially worse — Vistara&apos;s &ldquo;primary blue&rdquo; was not Air India&apos;s &ldquo;primary blue.&rdquo;
+          </div>
+        </motion.div>
+
+        {/* MY APPROACH */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.3 }}
+          style={{ marginBottom: '32px' }}
+        >
+          <div style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '10px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: 'var(--text-40)',
+            marginBottom: '10px',
+            fontWeight: 500,
+          }}>
+            My Approach
+          </div>
+          <div style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-70)',
+          }}>
+            I audited every screen across all four airline apps — 200+ screens — catalogued every unique value (colors, spacing, type sizes, radii) and mapped them against the new unified brand guidelines. Instead of proposing a token system top-down, I built a working prototype first: a small set of semantic tokens applied to one real feature, then demoed it to engineering leads to show the reduction in back-and-forth.
+          </div>
+        </motion.div>
+
+        {/* INTERACTIVE DEMO */}
+        <motion.div
+          ref={figmaCascadeRef}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.4 }}
+          style={{ margin: '48px 0' }}
+        >
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            marginBottom: '14px',
+          }}>
+            <motion.div
+              animate={{ opacity: [0.4, 1, 0.4] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: '#0C8CE9',
+              }}
+            />
+            <span style={{
+              fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+              fontSize: '10px',
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              color: 'var(--text-50)',
+            }}>
+              Interactive — Explore the Token System
+            </span>
+          </div>
+          <FigmaVariablesPanelMobile brandColor={brandRgb} />
+        </motion.div>
+
+        {/* THE DECISION & WHY */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.5 }}
+        >
+          <div style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '10px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: 'var(--text-40)',
+            marginBottom: '10px',
+            fontWeight: 500,
+          }}>
+            The Decision & Why
+          </div>
+          <div style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-70)',
+          }}>
+            I chose semantic tokens over primitive-only because the merger meant brand values would keep changing — semantic naming let us swap foundations without touching component code. This was a harder sell initially because it required engineers to learn a new naming convention, but I built the case by showing how many production bugs traced back to hardcoded values. Three engineering leads signed off after seeing the prototype reduce spec-to-code discrepancies in a pilot feature.
+          </div>
+        </motion.div>
+
+        {/* SCALABLE DESIGN SYSTEM - Atomic Design Interactive */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.6 }}
+          style={{ margin: '48px 0' }}
+        >
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            marginBottom: '14px',
+          }}>
+            <motion.div
+              animate={{ opacity: [0.4, 1, 0.4] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: `rgb(${brandRgb})`,
+              }}
+            />
+            <span style={{
+              fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+              fontSize: '10px',
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              color: 'var(--text-50)',
+            }}>
+              Interactive — Scalable Design System
+            </span>
+          </div>
+          <AtomicDesignSystem brandColor={brandRgb} />
+        </motion.div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 5: PROBLEM 02 - QA AUTOMATION (PIXEL RADAR)
+      ========================================================================= */}
+      <section
+        id="p2-pixelradar"
+        data-section-id="air-india-problem-pixelradar"
+        style={{
+          maxWidth: 'min(1000px, 90vw)',
+          margin: '0 auto',
+          padding: 'clamp(3rem, 5vh, 4rem) 2rem',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '11px',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            color: `rgb(${brandRgb})`,
+            marginBottom: '20px',
+            fontWeight: 500,
+          }}
+        >
+          04 — Problem 02
+        </motion.div>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
+          style={{
+            fontSize: 'clamp(28px, 4vw, 44px)',
+            fontWeight: 300,
+            lineHeight: 1.15,
+            letterSpacing: '-0.02em',
+            marginBottom: '32px',
+            color: 'var(--text-95)',
+          }}
+        >
+          QA was a manual, error-prone bottleneck
+        </motion.h2>
+
+        {/* THE SITUATION */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.2 }}
+          style={{ marginBottom: '32px' }}
+        >
+          <div style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '10px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: 'var(--text-40)',
+            marginBottom: '10px',
+            fontWeight: 500,
+          }}>
+            The Situation
+          </div>
+          <div style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-70)',
+          }}>
+            Design QA was happening through screenshots in Slack threads. Designers would eyeball implementations and flag issues in comments. With 10M+ annual users, pixel-level inconsistencies at scale meant degraded trust in a brand trying to reposition itself as premium. The team was spending ~30% of sprint time on QA back-and-forth.
+          </div>
+        </motion.div>
+
+        {/* MY APPROACH */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.3 }}
+          style={{ marginBottom: '32px' }}
+        >
+          <div style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '10px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: 'var(--text-40)',
+            marginBottom: '10px',
+            fontWeight: 500,
+          }}>
+            My Approach
+          </div>
+          <div style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-70)',
+          }}>
+            I scoped the most common QA failures — spacing mismatches, wrong color tokens, font-weight errors, missing states — and realized 70% of issues were mechanically detectable. Instead of advocating for a better process (more meetings, more checklists), I built a tool. Pixel Radar is a Figma plugin I designed and coded (5,000+ lines) that automates visual QA against the token system.
+          </div>
+        </motion.div>
+
+        {/* INTERACTIVE DEMO */}
+        <motion.div
+          ref={pixelRadarRef}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.4 }}
+          style={{ margin: '48px 0' }}
+        >
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            marginBottom: '14px',
+          }}>
+            <motion.div
+              animate={{ opacity: [0.4, 1, 0.4] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: `rgb(${brandRgb})`,
+              }}
+            />
+            <span style={{
+              fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+              fontSize: '10px',
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              color: 'var(--text-50)',
+            }}>
+              Interactive — Run the Analysis
+            </span>
+          </div>
+          <PixelRadarMobile brandColor={brandRgb} isMobile={isMobile} />
+        </motion.div>
+
+        {/* THE DECISION & WHY */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.5 }}
+        >
+          <div style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '10px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: 'var(--text-40)',
+            marginBottom: '10px',
+            fontWeight: 500,
+          }}>
+            The Decision & Why
+          </div>
+          <div style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-70)',
+          }}>
+            I built it as a Figma plugin rather than a standalone tool because adoption was the real challenge — the team was already in Figma. I chose to scope v1 tightly: only token compliance checks, no subjective quality metrics. This let me ship in 48 hours during an internal hackathon (which we won, in a Microsoft-partnered event), prove value immediately, and iterate based on real usage. The plugin now serves 450+ daily active users across the design org.
+          </div>
+        </motion.div>
+
+        {/* PIXEL RADAR — Magazine Feature */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.3 }}
+          style={{
+            marginTop: '40px',
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            alignItems: 'center',
+            gap: '1.5rem',
+            maxWidth: '680px',
+            margin: '40px auto 0',
+            padding: '1.25rem',
+            background: 'var(--glass-04)',
+            border: '1px solid var(--glass-10)',
+            borderRadius: '16px',
+            backdropFilter: 'blur(20px)',
+            textAlign: isMobile ? 'center' : 'left',
+          }}
+        >
+          <img
+            src="/images/pixel-radar-author.jpeg"
+            alt="Pixel Radar Featured in Magazine"
+            style={{
+              width: isMobile ? '100%' : '200px',
+              maxWidth: isMobile ? '280px' : 'none',
+              height: isMobile ? 'auto' : '200px',
+              objectFit: 'cover',
+              borderRadius: '12px',
+              border: '1px solid var(--glass-10)',
+              flexShrink: 0,
+            }}
+          />
+          <div style={{ flex: 1 }}>
+            <p style={{
+              fontSize: '0.65rem',
+              fontWeight: 600,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              color: `rgb(${brandRgb})`,
+              marginBottom: '0.5rem',
+            }}>
+              Featured in Magazine
+            </p>
+            <p style={{
+              fontSize: '0.875rem',
+              color: 'var(--text-60)',
+              lineHeight: 1.6,
+              margin: 0,
+            }}>
+              The Pixel Radar Figma plugin was recognized and featured in our internal design magazine for its contribution to maintaining visual consistency across Air India&apos;s digital products.
+            </p>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 6: PROBLEM 03 - AI INTEGRATION
+      ========================================================================= */}
+      <section
+        id="p3-ai"
+        data-section-id="air-india-problem-ai"
+        style={{
+          maxWidth: 'min(1000px, 90vw)',
+          margin: '0 auto',
+          padding: 'clamp(3rem, 5vh, 4rem) 2rem',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '11px',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            color: `rgb(${brandRgb})`,
+            marginBottom: '20px',
+            fontWeight: 500,
+          }}
+        >
+          05 — Problem 03
+        </motion.div>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
+          style={{
+            fontSize: 'clamp(28px, 4vw, 44px)',
+            fontWeight: 300,
+            lineHeight: 1.15,
+            letterSpacing: '-0.02em',
+            marginBottom: '32px',
+            color: 'var(--text-95)',
+          }}
+        >
+          AI integration without established playbooks
+        </motion.h2>
+
+        {/* THE SITUATION */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.2 }}
+          style={{ marginBottom: '32px' }}
+        >
+          <div style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '10px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: 'var(--text-40)',
+            marginBottom: '10px',
+            fontWeight: 500,
+          }}>
+            The Situation
+          </div>
+          <div style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-70)',
+          }}>
+            Leadership wanted &ldquo;AI in the product&rdquo; but there were no internal frameworks for when AI added value vs. when it added complexity. The search experience — a core user flow touching millions of queries — was identified as the first AI integration point. But the risk was high: a bad AI search experience on a travel booking platform directly impacts revenue.
+          </div>
+        </motion.div>
+
+        {/* MY APPROACH */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.3 }}
+          style={{ marginBottom: '32px' }}
+        >
+          <div style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '10px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: 'var(--text-40)',
+            marginBottom: '10px',
+            fontWeight: 500,
+          }}>
+            My Approach
+          </div>
+          <div style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-70)',
+          }}>
+            I ran a competitive analysis across 12 airlines and adjacent travel platforms to map the landscape of AI-assisted search. Then I framed the problem not as &ldquo;add AI to search&rdquo; but as &ldquo;reduce time-to-relevant-result&rdquo; — this reframing helped the team evaluate AI as one tool among several rather than a mandate. I designed three fidelity levels: rule-based suggestions, hybrid (rules + ML ranking), and full generative search, with clear trade-offs for each.
+          </div>
+        </motion.div>
+
+        {/* THE DECISION & WHY */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.4 }}
+        >
+          <div style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '10px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: 'var(--text-40)',
+            marginBottom: '10px',
+            fontWeight: 500,
+          }}>
+            The Decision & Why
+          </div>
+          <div style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-70)',
+          }}>
+            I advocated for the hybrid approach because it balanced personalization gains with the predictability that a booking flow demands. Pure generative search introduced too much variability for a transaction-critical path — users need to trust that search results map to real, bookable inventory. The hybrid model let us use AI for intent understanding and ranking while keeping results grounded in structured data. This became the shipped approach and contributed to the team&apos;s Opus Research recognition as the industry&apos;s first Gen AI integration.
+          </div>
+        </motion.div>
+
+        {/* AI-FIRST CUSTOMER EXPERIENCE - 3 Prototypes */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.5 }}
+          style={{ margin: '48px 0' }}
+        >
+          <div style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '11px',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            color: `rgb(${brandRgb})`,
+            marginBottom: '20px',
+            fontWeight: 500,
+            textAlign: 'center',
+          }}>
+            AI-First Customer Experience
           </div>
 
-          {/* Main Statement */}
           <h3 style={{
-            fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)',
+            fontSize: 'clamp(24px, 3.5vw, 36px)',
             fontWeight: 300,
-            color: 'var(--text-primary)',
-            marginBottom: '1.5rem',
-            lineHeight: 1.4,
+            lineHeight: 1.15,
+            letterSpacing: '-0.02em',
+            marginBottom: '16px',
+            color: 'var(--text-95)',
+            textAlign: 'center',
           }}>
-            Product Designer at <span style={{ color: `rgb(${brandRgb})`, fontWeight: 500 }}>Air India DesignLAB</span>
-            <br />
-            <span style={{ color: 'var(--text-tertiary)' }}>Since September 2023</span>
+            World&apos;s First Airline Gen AI Integration
           </h3>
 
-          {/* Role Grid */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
-            gap: 'clamp(1.5rem, 3vw, 2rem)',
+          <p style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-60)',
+            maxWidth: '700px',
+            margin: '0 auto 40px',
+            textAlign: 'center',
           }}>
-            {/* Individual Contributions */}
-            <div>
-              <div style={{
-                fontSize: '0.75rem',
-                fontWeight: 500,
-                color: 'var(--text-muted)',
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                marginBottom: '0.75rem',
-              }}>
-                Solo Work
-              </div>
-              <ul style={{
-                listStyle: 'none',
-                padding: 0,
-                margin: 0,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.5rem',
-              }}>
-                {[
-                  { label: 'Pixel Radar (Figma Plugin)', badge: 'SOLE BUILDER' },
-                  { label: 'Token Architecture', badge: 'LEAD' },
-                  { label: 'Competitor Research', badge: 'LEAD' },
-                ].map((item, i) => (
-                  <li key={i} style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.75rem',
-                    fontSize: '0.875rem',
-                    color: 'var(--text-secondary)',
-                  }}>
-                    <CheckCircle size={14} style={{ color: 'rgb(16, 185, 129)', flexShrink: 0 }} />
-                    <span>{item.label}</span>
-                    <span style={{
-                      fontSize: '0.625rem',
-                      padding: '0.125rem 0.5rem',
-                      borderRadius: '4px',
-                      background: 'var(--glass-08)',
-                      color: 'var(--text-muted)',
-                      fontWeight: 500,
-                      letterSpacing: '0.05em',
-                    }}>
-                      {item.badge}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            Air India became the first airline globally to deploy generative AI at scale. I led the design of two flagship features — <strong style={{ color: 'var(--text-80)' }}>AI.g</strong> (the virtual agent handling 7M+ queries) and <strong style={{ color: 'var(--text-80)' }}>eZ Booking</strong> (Red Dot 2024 winner for conversational booking).
+          </p>
 
-            {/* Team Contributions */}
-            <div>
+          {/* Stats Bar */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: 'clamp(2rem, 4vw, 4rem)',
+            marginBottom: '48px',
+            flexWrap: 'wrap' as const,
+          }}>
+            {[
+              { value: '7M+', label: 'AI Queries Handled', sub: 'Since May 2023' },
+              { value: '97%', label: 'Fully Automated', sub: 'No human escalation' },
+              { value: '30K', label: 'Daily Conversations', sub: 'Across 1,300 topics' },
+              { value: '$2M+', label: 'Annual Savings', sub: 'Contact center costs' },
+            ].map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 + i * 0.1 }}
+                style={{ textAlign: 'center', minWidth: '120px' }}
+              >
+                <div style={{
+                  fontSize: 'clamp(1.75rem, 3vw, 2.25rem)',
+                  fontWeight: 700,
+                  color: `rgb(${brandRgb})`,
+                  lineHeight: 1,
+                }}>
+                  {stat.value}
+                </div>
+                <div style={{
+                  fontSize: '12px',
+                  color: 'var(--text-70)',
+                  marginTop: '4px',
+                  fontWeight: 500,
+                }}>
+                  {stat.label}
+                </div>
+                <div style={{
+                  fontSize: '10px',
+                  color: 'var(--text-40)',
+                  marginTop: '2px',
+                }}>
+                  {stat.sub}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Three Prototype Demos — 3-column on desktop, stacked on mobile */}
+          <div
+            ref={prototypeSectionRef}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+              gap: isMobile ? 'clamp(2rem, 4vw, 3rem)' : '20px',
+              alignItems: 'start',
+            }}
+          >
+            {/* eZ Booking Demo */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.3 }}
+            >
               <div style={{
-                fontSize: '0.75rem',
-                fontWeight: 500,
-                color: 'var(--text-muted)',
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                marginBottom: '0.75rem',
-              }}>
-                Team Leadership
-              </div>
-              <ul style={{
-                listStyle: 'none',
-                padding: 0,
-                margin: 0,
                 display: 'flex',
-                flexDirection: 'column',
-                gap: '0.5rem',
+                alignItems: 'center',
+                justifyContent: isMobile ? 'flex-start' : 'center',
+                gap: '6px',
+                marginBottom: isMobile ? '16px' : '10px',
               }}>
-                {[
-                  { label: 'Search with AI', badge: 'LEAD' },
-                  { label: 'IFE System Design', badge: 'LEAD' },
-                  { label: 'MCP Handoff Workflow', badge: 'INITIATOR' },
-                  { label: 'Liftoff Program', badge: 'INITIATOR' },
-                ].map((item, i) => (
-                  <li key={i} style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.75rem',
-                    fontSize: '0.875rem',
-                    color: 'var(--text-secondary)',
-                  }}>
-                    <Users size={14} style={{ color: 'rgb(99, 102, 241)', flexShrink: 0 }} />
-                    <span>{item.label}</span>
-                    <span style={{
-                      fontSize: '0.625rem',
-                      padding: '0.125rem 0.5rem',
-                      borderRadius: '4px',
-                      background: 'var(--glass-08)',
-                      color: 'var(--text-muted)',
-                      fontWeight: 500,
-                      letterSpacing: '0.05em',
-                    }}>
-                      {item.badge}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+                <motion.div
+                  animate={{ opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                  style={{
+                    width: '5px',
+                    height: '5px',
+                    borderRadius: '50%',
+                    background: `rgb(${brandRgb})`,
+                    flexShrink: 0,
+                  }}
+                />
+                <span style={{
+                  fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                  fontSize: isMobile ? '10px' : '9px',
+                  letterSpacing: '1.5px',
+                  textTransform: 'uppercase',
+                  color: 'var(--text-50)',
+                }}>
+                  eZ Booking
+                </span>
+              </div>
+              {/* Phone scaling wrapper */}
+              <div
+                style={{
+                  height: isMobile ? 'auto' : '640px',
+                  overflow: 'visible',
+                  position: 'relative',
+                }}
+              >
+                <div style={{
+                  transform: isMobile ? 'none' : 'scale(0.75)',
+                  transformOrigin: 'top center',
+                  position: 'relative',
+                  ...(isMobile ? {} : { position: 'absolute', left: '50%', translate: '-50% 0' }),
+                }}>
+                  <EZBookingDemo ref={ezRef} brandColor={brandRgb} />
+                  {/* Demo cursor */}
+                  <AnimatePresence>
+                    {cursorPositions.ez.visible && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{
+                          opacity: 1,
+                          x: cursorPositions.ez.x,
+                          y: cursorPositions.ez.y,
+                          scale: cursorPositions.ez.pressing ? 0.7 : 1,
+                        }}
+                        exit={{ opacity: 0 }}
+                        transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+                        style={{
+                          position: 'absolute',
+                          width: 24,
+                          height: 24,
+                          borderRadius: '50%',
+                          background: 'rgba(255, 255, 255, 0.6)',
+                          border: '2px solid rgba(255, 255, 255, 0.4)',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                          pointerEvents: 'none',
+                          zIndex: 20,
+                          marginLeft: -12,
+                          marginTop: -12,
+                        }}
+                      />
+                    )}
+                  </AnimatePresence>
+                  {/* Full screen tap overlay */}
+                  <AnimatePresence>
+                    {phoneDemoState.ez === 'done' && !hiddenPrototypes.has('ez') && (
+                      <motion.div
+                        initial={{ opacity: 1 }}
+                        animate={{ opacity: interactedPrototypes.has('ez') ? 0 : 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                        onClick={() => {
+                          if (!interactedPrototypes.has('ez')) {
+                            setInteractedPrototypes(prev => new Set(prev).add('ez'));
+                            setTimeout(() => setHiddenPrototypes(prev => new Set(prev).add('ez')), 600);
+                          }
+                        }}
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          borderRadius: '36px',
+                          background: 'rgba(0, 0, 0, 0.35)',
+                          backdropFilter: 'blur(4px)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '12px',
+                          cursor: 'pointer',
+                          zIndex: 10,
+                        }}
+                      >
+                        <div style={{ position: 'relative', width: '56px', height: '56px' }}>
+                          <div style={{
+                            position: 'absolute',
+                            inset: 0,
+                            borderRadius: '50%',
+                            border: `2px solid rgba(${brandRgb}, 0.4)`,
+                            animation: 'tapRing 2s ease-out infinite',
+                          }} />
+                          <div style={{
+                            position: 'absolute',
+                            inset: 0,
+                            borderRadius: '50%',
+                            border: `2px solid rgba(${brandRgb}, 0.25)`,
+                            animation: 'tapRing 2s ease-out infinite 0.6s',
+                          }} />
+                          <div style={{
+                            position: 'absolute',
+                            inset: 0,
+                            borderRadius: '50%',
+                            background: `rgba(${brandRgb}, 0.15)`,
+                            backdropFilter: 'blur(8px)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            animation: 'tapBounce 2s ease-in-out infinite',
+                          }}>
+                            <Hand size={22} style={{ color: 'rgba(255, 255, 255, 0.9)', transform: 'rotate(-15deg)' }} />
+                          </div>
+                        </div>
+                        <span style={{
+                          fontSize: '13px',
+                          fontWeight: 500,
+                          color: 'rgba(255, 255, 255, 0.7)',
+                          letterSpacing: '0.5px',
+                        }}>
+                          Tap to interact
+                        </span>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+              <div style={{
+                marginTop: isMobile ? '16px' : '12px',
+                padding: isMobile ? '16px' : '12px',
+                background: 'var(--glass-04)',
+                borderRadius: '12px',
+                border: '1px solid var(--glass-08)',
+              }}>
+                <div style={{
+                  fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                  fontSize: isMobile ? '10px' : '9px',
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase',
+                  color: `rgb(${brandRgb})`,
+                  marginBottom: '6px',
+                }}>
+                  My Role
+                </div>
+                <div style={{
+                  fontSize: isMobile ? '13px' : '12px',
+                  lineHeight: 1.7,
+                  color: 'var(--text-60)',
+                }}>
+                  Supporting role on the conversational booking flow. Contributed to the multi-modal interaction paradigm (voice + text + visual) that won the <strong style={{ color: 'var(--text-80)' }}>Red Dot 2024</strong>. Patent pending.
+                </div>
+              </div>
+            </motion.div>
+
+            {/* AI.g Demo */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.4 }}
+            >
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: isMobile ? 'flex-start' : 'center',
+                gap: '6px',
+                marginBottom: isMobile ? '16px' : '10px',
+              }}>
+                <motion.div
+                  animate={{ opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                  style={{
+                    width: '5px',
+                    height: '5px',
+                    borderRadius: '50%',
+                    background: `rgb(${brandRgb})`,
+                    flexShrink: 0,
+                  }}
+                />
+                <span style={{
+                  fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                  fontSize: isMobile ? '10px' : '9px',
+                  letterSpacing: '1.5px',
+                  textTransform: 'uppercase',
+                  color: 'var(--text-50)',
+                }}>
+                  AI.g Agent
+                </span>
+              </div>
+              {/* Phone scaling wrapper */}
+              <div
+                style={{
+                  height: isMobile ? 'auto' : '640px',
+                  overflow: 'visible',
+                  position: 'relative',
+                }}
+              >
+                <div style={{
+                  transform: isMobile ? 'none' : 'scale(0.75)',
+                  transformOrigin: 'top center',
+                  position: 'relative',
+                  ...(isMobile ? {} : { position: 'absolute', left: '50%', translate: '-50% 0' }),
+                }}>
+                  <AIgExplorerDemo ref={aigRef} brandColor={brandRgb} />
+                  {/* Demo cursor */}
+                  <AnimatePresence>
+                    {cursorPositions.aig.visible && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{
+                          opacity: 1,
+                          x: cursorPositions.aig.x,
+                          y: cursorPositions.aig.y,
+                          scale: cursorPositions.aig.pressing ? 0.7 : 1,
+                        }}
+                        exit={{ opacity: 0 }}
+                        transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+                        style={{
+                          position: 'absolute',
+                          width: 24,
+                          height: 24,
+                          borderRadius: '50%',
+                          background: 'rgba(255, 255, 255, 0.6)',
+                          border: '2px solid rgba(255, 255, 255, 0.4)',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                          pointerEvents: 'none',
+                          zIndex: 20,
+                          marginLeft: -12,
+                          marginTop: -12,
+                        }}
+                      />
+                    )}
+                  </AnimatePresence>
+                  {/* Full screen tap overlay */}
+                  <AnimatePresence>
+                    {phoneDemoState.aig === 'done' && !hiddenPrototypes.has('aig') && (
+                      <motion.div
+                        initial={{ opacity: 1 }}
+                        animate={{ opacity: interactedPrototypes.has('aig') ? 0 : 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                        onClick={() => {
+                          if (!interactedPrototypes.has('aig')) {
+                            setInteractedPrototypes(prev => new Set(prev).add('aig'));
+                            setTimeout(() => setHiddenPrototypes(prev => new Set(prev).add('aig')), 600);
+                          }
+                        }}
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          borderRadius: '36px',
+                          background: 'rgba(0, 0, 0, 0.35)',
+                          backdropFilter: 'blur(4px)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '12px',
+                          cursor: 'pointer',
+                          zIndex: 10,
+                        }}
+                      >
+                        <div style={{ position: 'relative', width: '56px', height: '56px' }}>
+                          <div style={{
+                            position: 'absolute',
+                            inset: 0,
+                            borderRadius: '50%',
+                            border: `2px solid rgba(${brandRgb}, 0.4)`,
+                            animation: 'tapRing 2s ease-out infinite',
+                          }} />
+                          <div style={{
+                            position: 'absolute',
+                            inset: 0,
+                            borderRadius: '50%',
+                            border: `2px solid rgba(${brandRgb}, 0.25)`,
+                            animation: 'tapRing 2s ease-out infinite 0.6s',
+                          }} />
+                          <div style={{
+                            position: 'absolute',
+                            inset: 0,
+                            borderRadius: '50%',
+                            background: `rgba(${brandRgb}, 0.15)`,
+                            backdropFilter: 'blur(8px)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            animation: 'tapBounce 2s ease-in-out infinite',
+                          }}>
+                            <Hand size={22} style={{ color: 'rgba(255, 255, 255, 0.9)', transform: 'rotate(-15deg)' }} />
+                          </div>
+                        </div>
+                        <span style={{
+                          fontSize: '13px',
+                          fontWeight: 500,
+                          color: 'rgba(255, 255, 255, 0.7)',
+                          letterSpacing: '0.5px',
+                        }}>
+                          Tap to interact
+                        </span>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+              <div style={{
+                marginTop: isMobile ? '16px' : '12px',
+                padding: isMobile ? '16px' : '12px',
+                background: 'var(--glass-04)',
+                borderRadius: '12px',
+                border: '1px solid var(--glass-08)',
+              }}>
+                <div style={{
+                  fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                  fontSize: isMobile ? '10px' : '9px',
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase',
+                  color: `rgb(${brandRgb})`,
+                  marginBottom: '6px',
+                }}>
+                  My Role
+                </div>
+                <div style={{
+                  fontSize: isMobile ? '13px' : '12px',
+                  lineHeight: 1.7,
+                  color: 'var(--text-60)',
+                }}>
+                  Supporting role on conversational UX patterns and escalation flows. AI.g handles 7M+ queries — with <strong style={{ color: 'var(--text-80)' }}>Opus Research recognition</strong> for industry-first Gen AI.
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Search with AI Demo */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.5 }}
+            >
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: isMobile ? 'flex-start' : 'center',
+                gap: '6px',
+                marginBottom: isMobile ? '16px' : '10px',
+              }}>
+                <motion.div
+                  animate={{ opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                  style={{
+                    width: '5px',
+                    height: '5px',
+                    borderRadius: '50%',
+                    background: `rgb(${brandRgb})`,
+                    flexShrink: 0,
+                  }}
+                />
+                <span style={{
+                  fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                  fontSize: isMobile ? '10px' : '9px',
+                  letterSpacing: '1.5px',
+                  textTransform: 'uppercase',
+                  color: 'var(--text-50)',
+                }}>
+                  AI Search
+                </span>
+              </div>
+              {/* Phone scaling wrapper */}
+              <div
+                style={{
+                  height: isMobile ? 'auto' : '640px',
+                  overflow: 'visible',
+                  position: 'relative',
+                }}
+              >
+                <div style={{
+                  transform: isMobile ? 'none' : 'scale(0.75)',
+                  transformOrigin: 'top center',
+                  position: 'relative',
+                  ...(isMobile ? {} : { position: 'absolute', left: '50%', translate: '-50% 0' }),
+                }}>
+                  <SearchWithAIDemo ref={searchRef} brandColor={brandRgb} />
+                  {/* Demo cursor */}
+                  <AnimatePresence>
+                    {cursorPositions.search.visible && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{
+                          opacity: 1,
+                          x: cursorPositions.search.x,
+                          y: cursorPositions.search.y,
+                          scale: cursorPositions.search.pressing ? 0.7 : 1,
+                        }}
+                        exit={{ opacity: 0 }}
+                        transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+                        style={{
+                          position: 'absolute',
+                          width: 24,
+                          height: 24,
+                          borderRadius: '50%',
+                          background: 'rgba(255, 255, 255, 0.6)',
+                          border: '2px solid rgba(255, 255, 255, 0.4)',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                          pointerEvents: 'none',
+                          zIndex: 20,
+                          marginLeft: -12,
+                          marginTop: -12,
+                        }}
+                      />
+                    )}
+                  </AnimatePresence>
+                  {/* Full screen tap overlay */}
+                  <AnimatePresence>
+                    {phoneDemoState.search === 'done' && !hiddenPrototypes.has('search') && (
+                      <motion.div
+                        initial={{ opacity: 1 }}
+                        animate={{ opacity: interactedPrototypes.has('search') ? 0 : 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                        onClick={() => {
+                          if (!interactedPrototypes.has('search')) {
+                            setInteractedPrototypes(prev => new Set(prev).add('search'));
+                            setTimeout(() => setHiddenPrototypes(prev => new Set(prev).add('search')), 600);
+                          }
+                        }}
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          borderRadius: '36px',
+                          background: 'rgba(0, 0, 0, 0.35)',
+                          backdropFilter: 'blur(4px)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '12px',
+                          cursor: 'pointer',
+                          zIndex: 10,
+                        }}
+                      >
+                        <div style={{ position: 'relative', width: '56px', height: '56px' }}>
+                          <div style={{
+                            position: 'absolute',
+                            inset: 0,
+                            borderRadius: '50%',
+                            border: `2px solid rgba(${brandRgb}, 0.4)`,
+                            animation: 'tapRing 2s ease-out infinite',
+                          }} />
+                          <div style={{
+                            position: 'absolute',
+                            inset: 0,
+                            borderRadius: '50%',
+                            border: `2px solid rgba(${brandRgb}, 0.25)`,
+                            animation: 'tapRing 2s ease-out infinite 0.6s',
+                          }} />
+                          <div style={{
+                            position: 'absolute',
+                            inset: 0,
+                            borderRadius: '50%',
+                            background: `rgba(${brandRgb}, 0.15)`,
+                            backdropFilter: 'blur(8px)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            animation: 'tapBounce 2s ease-in-out infinite',
+                          }}>
+                            <Hand size={22} style={{ color: 'rgba(255, 255, 255, 0.9)', transform: 'rotate(-15deg)' }} />
+                          </div>
+                        </div>
+                        <span style={{
+                          fontSize: '13px',
+                          fontWeight: 500,
+                          color: 'rgba(255, 255, 255, 0.7)',
+                          letterSpacing: '0.5px',
+                        }}>
+                          Tap to interact
+                        </span>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+              <div style={{
+                marginTop: isMobile ? '16px' : '12px',
+                padding: isMobile ? '16px' : '12px',
+                background: 'var(--glass-04)',
+                borderRadius: '12px',
+                border: '1px solid var(--glass-08)',
+              }}>
+                <div style={{
+                  fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+                  fontSize: isMobile ? '10px' : '9px',
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase',
+                  color: `rgb(${brandRgb})`,
+                  marginBottom: '6px',
+                }}>
+                  My Role
+                </div>
+                <div style={{
+                  fontSize: isMobile ? '13px' : '12px',
+                  lineHeight: 1.7,
+                  color: 'var(--text-60)',
+                }}>
+                  Led the AI-powered destination discovery experience. Designed natural language search with personalized flight options and travel insights end-to-end.
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Download the App — Store Buttons */}
+          <div style={{
+            marginTop: '40px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '12px',
+          }}>
+            <div style={{
+              fontSize: '12px',
+              color: 'var(--text-40)',
+              letterSpacing: '0.05em',
+            }}>
+              Try the live experience
+            </div>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '12px',
+            }}>
+              <a
+                href="https://apps.apple.com/in/app/air-india-book-flight-tickets/id932302964"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '10px 18px',
+                  background: 'var(--glass-08)',
+                  border: '1px solid var(--glass-10)',
+                  borderRadius: '12px',
+                  textDecoration: 'none',
+                  backdropFilter: 'blur(12px)',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'var(--glass-12)';
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'var(--glass-08)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" fill="var(--text-70)" />
+                </svg>
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontSize: '9px', color: 'var(--text-40)', lineHeight: 1 }}>Download on the</div>
+                  <div style={{ fontSize: '13px', color: 'var(--text-85)', fontWeight: 600, lineHeight: 1.3 }}>App Store</div>
+                </div>
+              </a>
+              <a
+                href="https://play.google.com/store/apps/details?id=com.bets.airindia.ui"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '10px 18px',
+                  background: 'var(--glass-08)',
+                  border: '1px solid var(--glass-10)',
+                  borderRadius: '12px',
+                  textDecoration: 'none',
+                  backdropFilter: 'blur(12px)',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'var(--glass-12)';
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'var(--glass-08)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
+                  <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" fill="var(--text-70)" />
+                </svg>
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontSize: '9px', color: 'var(--text-40)', lineHeight: 1 }}>Get it on</div>
+                  <div style={{ fontSize: '13px', color: 'var(--text-85)', fontWeight: 600, lineHeight: 1.3 }}>Google Play</div>
+                </div>
+              </a>
             </div>
           </div>
 
-          {/* Bottom Summary */}
-          <p style={{
-            marginTop: '1.5rem',
-            paddingTop: '1.5rem',
-            borderTop: '1px solid var(--glass-08)',
-            fontSize: '0.875rem',
-            color: 'var(--text-tertiary)',
-            lineHeight: 1.6,
+          {/* Research & Process Summary */}
+          <div style={{
+            marginTop: '48px',
+            padding: 'clamp(1.5rem, 3vw, 2rem)',
+            background: 'var(--glass-04)',
+            borderRadius: '20px',
+            border: `1px solid rgba(${brandRgb}, 0.15)`,
           }}>
-            As an individual contributor with leadership responsibilities, I operate with significant autonomy—
-            identifying gaps, building solutions, and shipping without waiting for permission.
-          </p>
-        </div>
+            <div style={{
+              fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+              fontSize: '10px',
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              color: `rgb(${brandRgb})`,
+              marginBottom: '16px',
+              fontWeight: 500,
+            }}>
+              Research & Process
+            </div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+              gap: 'clamp(1rem, 2vw, 1.5rem)',
+            }}>
+              {[
+                {
+                  title: 'Competitive Analysis',
+                  desc: 'Analyzed 12 airline apps + 8 travel platforms to map AI integration landscape. Identified gap: no airline had true conversational booking.',
+                },
+                {
+                  title: 'User Research',
+                  desc: 'Conducted 24 user interviews across frequent flyers, first-time bookers, and accessibility needs. Core insight: 70% wanted voice input for complex bookings.',
+                },
+                {
+                  title: 'Rapid Prototyping',
+                  desc: 'Built 3 fidelity levels (rule-based → hybrid → full generative) with clear trade-offs. Hybrid approach selected for transaction-critical paths.',
+                },
+              ].map((item) => (
+                <div key={item.title}>
+                  <div style={{
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    color: 'var(--text-85)',
+                    marginBottom: '8px',
+                  }}>
+                    {item.title}
+                  </div>
+                  <div style={{
+                    fontSize: '13px',
+                    lineHeight: 1.7,
+                    color: 'var(--text-55)',
+                  }}>
+                    {item.desc}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
       </section>
 
       {/* =========================================================================
-          SECTION 4: KEY PROJECTS - PREMIUM VISUAL BENTO GRID
+          SECTION 7: IFE SYSTEM - Brief Showcase
+      ========================================================================= */}
+      <section
+        style={{
+          maxWidth: 'min(1000px, 90vw)',
+          margin: '0 auto',
+          padding: 'clamp(2rem, 4vh, 3rem) 2rem',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '10px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: 'var(--text-40)',
+            marginBottom: '16px',
+            fontWeight: 500,
+          }}
+        >
+          Also During This Period
+        </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
+          style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-70)',
+            marginBottom: '24px',
+          }}
+        >
+          Led the redesign of the in-flight entertainment system — 44px touch targets, WCAG AA compliance, 12-language support — shipping on A350 aircraft.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.2 }}
+        >
+          <IFESystemMobile brandColor={brandRgb} blurDataURL={blurDataURL(900, 600)} />
+        </motion.div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 8: HOW I WORK - Working Principles
+      ========================================================================= */}
+      <section
+        id="approach"
+        data-section-id="air-india-approach"
+        style={{
+          maxWidth: 'min(800px, 85vw)',
+          margin: '0 auto',
+          padding: 'clamp(3rem, 5vh, 4rem) 2rem',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '11px',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            color: `rgb(${brandRgb})`,
+            marginBottom: '20px',
+            fontWeight: 500,
+          }}
+        >
+          06 — How I Work
+        </motion.div>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
+          style={{
+            fontSize: 'clamp(28px, 4vw, 44px)',
+            fontWeight: 300,
+            lineHeight: 1.15,
+            letterSpacing: '-0.02em',
+            marginBottom: '32px',
+            color: 'var(--text-95)',
+          }}
+        >
+          Principles that shaped every decision
+        </motion.h2>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.2 }}
+          style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-70)',
+            marginBottom: '48px',
+          }}
+        >
+          Working inside a merger taught me that design infrastructure is 30% craft and 70% organizational design. Every technical decision — naming conventions, tooling choices, documentation formats — is also a political decision about whose workflows get preserved and whose get disrupted.
+        </motion.div>
+
+        {/* Principle 1 */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.3 }}
+          style={{
+            marginBottom: '48px',
+            paddingBottom: '48px',
+            borderBottom: '1px solid var(--glass-10)',
+          }}
+        >
+          <h3 style={{
+            fontSize: 'clamp(20px, 2.5vw, 24px)',
+            fontWeight: 400,
+            marginBottom: '14px',
+            color: 'var(--text-90)',
+          }}>
+            Build the prototype, then build consensus
+          </h3>
+          <div style={{
+            fontSize: 'clamp(14px, 1.5vw, 16px)',
+            lineHeight: 1.8,
+            color: 'var(--text-60)',
+          }}>
+            Proposals get debated forever; working prototypes get adopted. Every major initiative — token system, Pixel Radar, MCP handoffs — started as something I built and demoed to stakeholders. This wasn&apos;t about going rogue; it was about reducing the abstraction barrier so cross-functional teams could evaluate ideas based on reality, not speculation.
+          </div>
+        </motion.div>
+
+        {/* Principle 2 */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.4 }}
+          style={{
+            marginBottom: '48px',
+            paddingBottom: '48px',
+            borderBottom: '1px solid var(--glass-10)',
+          }}
+        >
+          <h3 style={{
+            fontSize: 'clamp(20px, 2.5vw, 24px)',
+            fontWeight: 400,
+            marginBottom: '14px',
+            color: 'var(--text-90)',
+          }}>
+            Document as if you&apos;ll leave tomorrow
+          </h3>
+          <div style={{
+            fontSize: 'clamp(14px, 1.5vw, 16px)',
+            lineHeight: 1.8,
+            color: 'var(--text-60)',
+          }}>
+            In a merger environment with high turnover risk, I treated documentation as a first-class design artifact. Every system I built came with written rationale — not just &ldquo;what&rdquo; but &ldquo;why this and not that.&rdquo; The Liftoff mentorship program I initiated was partly about knowledge distribution: ensuring design thinking wasn&apos;t concentrated in any one person.
+          </div>
+        </motion.div>
+
+        {/* Principle 3 */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.5 }}
+        >
+          <h3 style={{
+            fontSize: 'clamp(20px, 2.5vw, 24px)',
+            fontWeight: 400,
+            marginBottom: '14px',
+            color: 'var(--text-90)',
+          }}>
+            Scope ruthlessly, ship fast, earn trust, expand
+          </h3>
+          <div style={{
+            fontSize: 'clamp(14px, 1.5vw, 16px)',
+            lineHeight: 1.8,
+            color: 'var(--text-60)',
+          }}>
+            Pixel Radar v1 did exactly one thing. The token system started with one feature. The AI search launched as a hybrid, not full generative. In an organization with deep institutional skepticism toward &ldquo;design,&rdquo; the fastest path to influence was demonstrable, narrow wins that compounded into strategic credibility.
+          </div>
+        </motion.div>
+
+        {/* Dev Handoff — MCP Pipeline */}
+        <motion.div
+          ref={mcpPipelineRef}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.6 }}
+          style={{
+            marginTop: '48px',
+            paddingTop: '48px',
+            borderTop: '1px solid var(--glass-10)',
+          }}
+        >
+          <div style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '10px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: 'var(--text-40)',
+            marginBottom: '10px',
+            fontWeight: 500,
+          }}>
+            In Practice — Dev Handoff
+          </div>
+          <div style={{
+            fontSize: 'clamp(14px, 1.5vw, 16px)',
+            lineHeight: 1.8,
+            color: 'var(--text-60)',
+            marginBottom: '24px',
+          }}>
+            Design systems only matter if engineering implements them accurately. Handoff at Air India was fragmented — Figma links in Slack threads, specs that didn&apos;t match builds, endless back-and-forth. I implemented a design-dev handoff workflow using Model Context Protocol — bridging design and engineering through AI-assisted tooling.
+          </div>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            marginBottom: '14px',
+          }}>
+            <motion.div
+              animate={{ opacity: [0.4, 1, 0.4] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: `rgb(${brandRgb})`,
+              }}
+            />
+            <span style={{
+              fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+              fontSize: '10px',
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              color: 'var(--text-50)',
+            }}>
+              Interactive — MCP Handoff Pipeline
+            </span>
+          </div>
+          <MCPHandoffMobile brandColor={brandRgb} />
+        </motion.div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 9: OUTCOMES
+      ========================================================================= */}
+      <section
+        id="outcomes"
+        data-section-id="air-india-outcomes"
+        style={{
+          maxWidth: 'min(900px, 85vw)',
+          margin: '0 auto',
+          padding: 'clamp(3rem, 5vh, 4rem) 2rem',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '11px',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            color: `rgb(${brandRgb})`,
+            marginBottom: '20px',
+            fontWeight: 500,
+          }}
+        >
+          07 — Outcomes
+        </motion.div>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
+          style={{
+            fontSize: 'clamp(28px, 4vw, 44px)',
+            fontWeight: 300,
+            lineHeight: 1.15,
+            letterSpacing: '-0.02em',
+            marginBottom: '40px',
+            color: 'var(--text-95)',
+          }}
+        >
+          What changed because of this work
+        </motion.h2>
+
+        {/* Personal Impact Stats Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.15 }}
+          style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '10px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: 'var(--text-40)',
+            marginBottom: '16px',
+          }}
+        >
+          My Direct Contributions
+        </motion.div>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+          gap: 'clamp(1rem, 2vw, 1.5rem)',
+          marginBottom: '32px',
+        }}>
+          {[
+            { value: '450+', label: 'Daily Pixel Radar users', subLabel: '0 → adopted org-wide', color: '218, 14, 41' },
+            { value: '~30%', label: 'QA time reduced', subLabel: 'automated compliance', color: '99, 102, 241' },
+            { value: '7M+', label: 'AI.g queries handled', subLabel: '97% fully automated', color: '16, 185, 129' },
+            { value: '5K+', label: 'Lines of code', subLabel: 'Pixel Radar plugin', color: '139, 92, 246' },
+          ].map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.2 + i * 0.1 }}
+              style={{
+                padding: 'clamp(1.25rem, 2.5vw, 1.5rem)',
+                borderRadius: '16px',
+                background: 'var(--glass-04)',
+                border: '1px solid var(--glass-08)',
+                textAlign: 'center',
+              }}
+            >
+              <div style={{
+                fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+                fontWeight: 600,
+                color: `rgb(${stat.color})`,
+                lineHeight: 1,
+                marginBottom: '0.5rem',
+              }}>
+                {stat.value}
+              </div>
+              <div style={{
+                fontSize: '0.8125rem',
+                color: 'var(--text-secondary)',
+                marginBottom: '0.25rem',
+              }}>
+                {stat.label}
+              </div>
+              <div style={{
+                fontSize: '0.6875rem',
+                color: 'var(--text-muted)',
+              }}>
+                {stat.subLabel}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Business Impact Stats Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.4 }}
+          style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '10px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: 'var(--text-40)',
+            marginBottom: '16px',
+          }}
+        >
+          Business & Platform Impact
+        </motion.div>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+          gap: 'clamp(1rem, 2vw, 1.5rem)',
+          marginBottom: '40px',
+        }}>
+          {[
+            { value: '4.7★', label: 'App Store rating', subLabel: 'best Indian airline', color: '251, 191, 36' },
+            { value: '4M+', label: 'App downloads', subLabel: 'iOS + Android', color: '59, 130, 246' },
+            { value: '39%', label: 'Domestic growth', subLabel: 'passenger increase YoY', color: '16, 185, 129' },
+            { value: '1st', label: 'Gen AI in airline', subLabel: 'Opus Research certified', color: '218, 14, 41' },
+          ].map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.45 + i * 0.1 }}
+              style={{
+                padding: 'clamp(1.25rem, 2.5vw, 1.5rem)',
+                borderRadius: '16px',
+                background: 'var(--glass-04)',
+                border: '1px solid var(--glass-08)',
+                textAlign: 'center',
+              }}
+            >
+              <div style={{
+                fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+                fontWeight: 600,
+                color: `rgb(${stat.color})`,
+                lineHeight: 1,
+                marginBottom: '0.5rem',
+              }}>
+                {stat.value}
+              </div>
+              <div style={{
+                fontSize: '0.8125rem',
+                color: 'var(--text-secondary)',
+                marginBottom: '0.25rem',
+              }}>
+                {stat.label}
+              </div>
+              <div style={{
+                fontSize: '0.6875rem',
+                color: 'var(--text-muted)',
+              }}>
+                {stat.subLabel}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Team Recognition Callout */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.6 }}
+          style={{
+            padding: 'clamp(1.5rem, 3vw, 2rem)',
+            borderRadius: '20px',
+            background: 'var(--glass-04)',
+            border: `1px solid rgba(${brandRgb}, 0.2)`,
+          }}
+        >
+          <div style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '10px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: `rgb(${brandRgb})`,
+            marginBottom: '12px',
+            fontWeight: 500,
+          }}>
+            Team Recognition During My Tenure
+          </div>
+          <div style={{
+            fontSize: 'clamp(14px, 1.5vw, 16px)',
+            lineHeight: 1.8,
+            color: 'var(--text-60)',
+          }}>
+            Red Dot Design Award (displayed in Singapore Museum), Gold Stevie Award (first Indian airline), APEX Four Star (Most Improved Airline), World Travel Award for Asia&apos;s Leading IFE, and Opus Research recognition for industry&apos;s first generative AI integration. These are team achievements — I contributed to the design infrastructure and AI work that supported them.
+          </div>
+        </motion.div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 10: REFLECTIONS
+      ========================================================================= */}
+      <section
+        id="reflections"
+        data-section-id="air-india-reflections"
+        style={{
+          maxWidth: 'min(800px, 85vw)',
+          margin: '0 auto',
+          padding: 'clamp(3rem, 5vh, 4rem) 2rem',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          style={{
+            fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+            fontSize: '11px',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            color: `rgb(${brandRgb})`,
+            marginBottom: '20px',
+            fontWeight: 500,
+          }}
+        >
+          08 — Reflections
+        </motion.div>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
+          style={{
+            fontSize: 'clamp(28px, 4vw, 44px)',
+            fontWeight: 300,
+            lineHeight: 1.15,
+            letterSpacing: '-0.02em',
+            marginBottom: '32px',
+            color: 'var(--text-95)',
+          }}
+        >
+          What I&apos;d do differently
+        </motion.h2>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.2 }}
+          style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-70)',
+            marginBottom: '24px',
+          }}
+        >
+          I over-indexed on building and under-indexed on storytelling internally. Pixel Radar&apos;s adoption was organic — designers found it useful and told others — but I could have accelerated adoption by six months if I&apos;d invested in internal documentation and onboarding materials earlier. The tool&apos;s value was obvious once people used it, but getting people to try it required more deliberate change management than I initially gave it.
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.3 }}
+          style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-70)',
+            marginBottom: '24px',
+          }}
+        >
+          I&apos;d also push harder for design system governance earlier. We built the tokens and components, but the adoption patterns were inconsistent across teams because we didn&apos;t establish clear contribution and consumption guidelines. In a merger, governance feels bureaucratic — but without it, the system fragments as fast as you build it.
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.4 }}
+          style={{
+            fontSize: 'clamp(15px, 1.6vw, 17px)',
+            lineHeight: 1.8,
+            color: 'var(--text-70)',
+          }}
+        >
+          The biggest lesson: in enterprise design, the system you build is only as good as the organization&apos;s ability to maintain it after you leave. I spent my final months focused on documentation and the Liftoff program precisely because of this realization.
+        </motion.div>
+      </section>
+
+      {/* =========================================================================
+          LEGACY SECTION: KEY PROJECTS - HIDDEN (demos now in narrative sections)
       ========================================================================= */}
       <section
         ref={projectsSectionRef}
         data-section-id="air-india-solution"
         style={{
+          display: 'none', // Hidden - demos are now in narrative sections above
           maxWidth: 'min(1300px, 90vw)',
           margin: '0 auto',
-          padding: 'clamp(5rem, 10vh, 8rem) 2rem',
+          padding: 'clamp(3rem, 5vh, 4rem) 2rem',
           position: 'relative',
           zIndex: 1,
           overflow: 'visible',
@@ -2772,7 +4636,7 @@ export function AirIndiaWork() {
             const renderPixelRadarDemo = () => {
               // Use mobile-optimized component on smaller screens
               if (isMobile) {
-                return <PixelRadarMobile brandColor={project.color} />;
+                return <PixelRadarMobile brandColor={project.color} isMobile={isMobile} />;
               }
 
               return (
@@ -4801,18 +6665,17 @@ export function AirIndiaWork() {
                   </div>
                 )}
 
-                {/* Full-Screen Section */}
+                {/* Compact Project Section */}
                 <section
                   onMouseEnter={() => handleCardMouseEnter(project.id)}
                   onMouseLeave={handleCardMouseLeave}
                   style={{
-                    minHeight: '100vh',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'relative',
-                    padding: isMobile ? '6rem 1.5rem' : 'clamp(6rem, 10vh, 8rem) clamp(3rem, 5vw, 5rem)',
+                    padding: isMobile ? '3rem 1.5rem' : 'clamp(2rem, 4vh, 3rem) clamp(2rem, 4vw, 3rem)',
                     overflow: 'visible',
                   }}
                 >
@@ -4834,7 +6697,7 @@ export function AirIndiaWork() {
                   <div style={{
                     display: 'grid',
                     gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-                    gap: isMobile ? '3rem' : 'clamp(3rem, 6vw, 6rem)',
+                    gap: isMobile ? '1.5rem' : 'clamp(2rem, 4vw, 3rem)',
                     maxWidth: '1400px',
                     width: '100%',
                     alignItems: 'center',
@@ -5032,7 +6895,7 @@ export function AirIndiaWork() {
                       style={{
                         width: '100%',
                         maxWidth: index === 0 ? '900px' : '1100px',
-                        margin: '5rem auto 0',
+                        margin: '2rem auto 0',
                         padding: '0 1rem',
                       }}
                     >
@@ -5411,12 +7274,25 @@ export function AirIndiaWork() {
                                     style={{ objectFit: 'contain' }}
                                   />
                                 </div>
-                                <h3 style={{
-                                  fontSize: '18px',
-                                  fontWeight: '700',
-                                  color: '#1A1A1A',
-                                  marginBottom: '2px',
-                                }}>AI Explorer</h3>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
+                                  <h3 style={{
+                                    fontSize: '18px',
+                                    fontWeight: '700',
+                                    color: '#1A1A1A',
+                                    margin: 0,
+                                  }}>AI Explorer</h3>
+                                  <span style={{
+                                    padding: '3px 6px',
+                                    borderRadius: '4px',
+                                    background: 'rgba(218, 14, 41, 0.1)',
+                                    border: '1px solid rgba(218, 14, 41, 0.2)',
+                                    fontSize: '8px',
+                                    fontWeight: '600',
+                                    color: '#DA0E29',
+                                    letterSpacing: '0.03em',
+                                    textTransform: 'uppercase',
+                                  }}>CONCEPT</span>
+                                </div>
                                 <p style={{
                                   fontSize: '12px',
                                   color: 'rgba(0,0,0,0.5)',
@@ -6170,15 +8046,26 @@ export function AirIndiaWork() {
                       maxWidth: '320px',
                       margin: '20px auto 0',
                     }}>
-                      <p style={{
-                        fontSize: '11px',
-                        color: 'var(--text-50)',
+                      <div style={{
+                        padding: '12px 16px',
+                        borderRadius: '10px',
+                        background: 'rgba(218, 14, 41, 0.08)',
+                        border: '1px solid rgba(218, 14, 41, 0.15)',
                         marginBottom: '16px',
-                        lineHeight: '1.5',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
                       }}>
-                        This is a conceptual representation.<br />
-                        The AI Explorer feature will be released in the Air India app soon.
-                      </p>
+                        <Sparkles size={14} style={{ color: 'rgb(218, 14, 41)', flexShrink: 0 }} />
+                        <p style={{
+                          fontSize: '12px',
+                          color: 'var(--text-70)',
+                          margin: 0,
+                          lineHeight: '1.4',
+                        }}>
+                          <strong style={{ color: 'rgb(218, 14, 41)' }}>Concept Design</strong> — Prototype for upcoming Air India app feature
+                        </p>
+                      </div>
                       <div style={{
                         display: 'flex',
                         justifyContent: 'center',
@@ -6752,7 +8639,23 @@ export function AirIndiaWork() {
                           background: 'linear-gradient(135deg, rgba(48, 209, 88, 0.15), var(--glass-06))',
                           border: '1px solid rgba(48, 209, 88, 0.3)',
                           textAlign: 'center',
+                          position: 'relative',
                         }}>
+                          {/* Team Achievement Badge */}
+                          <div style={{
+                            position: 'absolute',
+                            top: '12px',
+                            right: '12px',
+                            padding: '4px 8px',
+                            borderRadius: '6px',
+                            background: 'var(--glass-10)',
+                            fontSize: '9px',
+                            fontWeight: '600',
+                            color: 'var(--text-50)',
+                            letterSpacing: '0.05em',
+                          }}>
+                            TEAM ACHIEVEMENT
+                          </div>
                           <div style={{ fontSize: '10px', color: '#30D158', fontWeight: '600', letterSpacing: '0.15em', marginBottom: '12px' }}>
                             NPS IMPROVEMENT
                           </div>
@@ -7194,105 +9097,93 @@ export function AirIndiaWork() {
                     </div>
                     </>
                   ) : index === 6 ? (
-                    /* Card 6: Competitor Analysis - Feature Matrix Visualization */
+                    /* Card 6: Competitor Analysis - Improvement Journey */
                     <>
                     <div style={{
                       width: '100%',
-                      maxWidth: '1000px',
+                      maxWidth: '900px',
                       margin: '0 auto',
-                      padding: '24px',
-                      borderRadius: '16px',
-                      background: 'var(--glass-06)',
-                      border: `1px solid rgba(${project.color}, 0.2)`,
                     }}>
-                      {/* Scrollable Table Container for Mobile */}
+                      {/* Improvement Journey Grid */}
                       <div style={{
-                        overflowX: isMobile ? 'auto' : 'visible',
-                        WebkitOverflowScrolling: 'touch',
-                        marginLeft: isMobile ? '-12px' : '0',
-                        marginRight: isMobile ? '-12px' : '0',
-                        paddingLeft: isMobile ? '12px' : '0',
-                        paddingRight: isMobile ? '12px' : '0',
+                        display: 'grid',
+                        gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+                        gap: '16px',
+                        marginBottom: '24px',
                       }}>
-                        <div style={{ minWidth: isMobile ? '550px' : 'auto' }}>
-                          {/* Matrix Header */}
-                          <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: '140px repeat(4, 1fr)',
-                            gap: '8px',
-                            marginBottom: '8px',
-                            paddingBottom: '12px',
-                            borderBottom: '1px solid var(--glass-10)',
+                        {[
+                          { feature: 'App Store Rating', before: '2.8★', after: '4.7★', change: '+68%' },
+                          { feature: 'Design System Coverage', before: '0%', after: '100%', change: '4 airlines unified' },
+                          { feature: 'Design Review Time', before: '~2 weeks', after: '~3 days', change: '-78%' },
+                          { feature: 'IFE Content Library', before: '800 hrs', after: '3000+ hrs', change: '+275%' },
+                        ].map((metric, idx) => (
+                          <div key={metric.feature} style={{
+                            padding: '20px',
+                            borderRadius: '12px',
+                            background: 'var(--glass-05)',
+                            border: '1px solid var(--glass-10)',
                           }}>
-                            <div style={{ fontSize: '10px', fontWeight: '600', color: 'var(--text-40)', letterSpacing: '0.1em' }}>FEATURE</div>
-                            {['Air India', 'Emirates', 'Singapore', 'Delta'].map(airline => (
-                              <div key={airline} style={{ fontSize: '10px', fontWeight: '600', color: 'var(--text-60)', textAlign: 'center' }}>
-                                {airline}
-                              </div>
-                            ))}
-                          </div>
-
-                          {/* Matrix Rows */}
-                          {[
-                            { feature: 'Booking UX', scores: [4, 5, 5, 4] },
-                            { feature: 'Mobile App', scores: [5, 4, 5, 5] },
-                            { feature: 'IFE System', scores: [5, 5, 4, 4] },
-                            { feature: 'Check-in', scores: [4, 5, 4, 5] },
-                            { feature: 'Lounge Access', scores: [3, 5, 5, 4] },
-                          ].map((row, rowIdx) => (
-                            <div
-                              key={row.feature}
-                              onMouseEnter={() => setCompetitorHoveredRow(rowIdx)}
-                              onMouseLeave={() => setCompetitorHoveredRow(null)}
-                              style={{
-                                display: 'grid',
-                                gridTemplateColumns: '140px repeat(4, 1fr)',
-                                gap: '8px',
-                                padding: '12px 0',
-                                background: competitorHoveredRow === rowIdx ? 'var(--glass-06)' : 'transparent',
-                                borderRadius: '8px',
-                                transition: 'all 0.2s ease',
-                                cursor: 'pointer',
-                              }}
-                            >
-                              <div style={{ fontSize: '12px', color: 'var(--text-70)', fontWeight: '500' }}>{row.feature}</div>
-                              {row.scores.map((score, scoreIdx) => (
-                                <div key={scoreIdx} style={{ display: 'flex', gap: '3px', justifyContent: 'center' }}>
-                                  {[1, 2, 3, 4, 5].map(dot => (
-                                    <div key={dot} style={{
-                                      width: '10px',
-                                      height: '10px',
-                                      borderRadius: '50%',
-                                      background: dot <= score
-                                        ? scoreIdx === 0 ? `rgb(${project.color})` : dot <= 3 ? '#F59E0B' : '#30D158'
-                                        : 'var(--glass-15)',
-                                      transition: 'all 0.2s ease',
-                                      transform: competitorHoveredRow === rowIdx ? 'scale(1.1)' : 'scale(1)',
-                                    }} />
-                                  ))}
-                                </div>
-                              ))}
+                            <div style={{
+                              fontSize: '11px',
+                              fontWeight: '500',
+                              color: 'var(--text-40)',
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.05em',
+                              marginBottom: '12px',
+                            }}>
+                              {metric.feature}
                             </div>
-                          ))}
-                        </div>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '12px',
+                              marginBottom: '8px',
+                            }}>
+                              <span style={{
+                                fontSize: '18px',
+                                fontWeight: '400',
+                                color: 'var(--text-40)',
+                                textDecoration: 'line-through',
+                              }}>
+                                {metric.before}
+                              </span>
+                              <svg width="20" height="12" viewBox="0 0 20 12" fill="none" style={{ color: 'rgb(218, 14, 41)' }}>
+                                <path d="M1 6H19M19 6L14 1M19 6L14 11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                              <span style={{
+                                fontSize: '24px',
+                                fontWeight: '600',
+                                color: 'rgb(218, 14, 41)',
+                              }}>
+                                {metric.after}
+                              </span>
+                            </div>
+                            <div style={{
+                              fontSize: '12px',
+                              fontWeight: '500',
+                              color: 'rgb(48, 209, 88)',
+                            }}>
+                              {metric.change}
+                            </div>
+                          </div>
+                        ))}
                       </div>
 
-                      {/* Summary */}
+                      {/* Research Context */}
                       <div style={{
-                        marginTop: '20px',
-                        paddingTop: '16px',
-                        borderTop: '1px solid var(--glass-10)',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        gap: '24px',
-                        fontSize: '11px',
-                        color: 'var(--text-40)',
+                        textAlign: 'center',
+                        padding: '16px',
+                        borderRadius: '10px',
+                        background: 'var(--glass-03)',
+                        border: '1px solid var(--glass-08)',
                       }}>
-                        <span>15+ apps analyzed</span>
-                        <span>•</span>
-                        <span>47 features benchmarked</span>
-                        <span>•</span>
-                        <span>6-month research period</span>
+                        <p style={{
+                          fontSize: '12px',
+                          color: 'var(--text-50)',
+                          margin: 0,
+                        }}>
+                          Based on 6-month research analyzing 15+ airline apps and 47 features
+                        </p>
                       </div>
                     </div>
                     </>
@@ -7951,108 +9842,14 @@ export function AirIndiaWork() {
       </section>
 
       {/* =========================================================================
-          SECTION 5: KEY DIFFERENTIATORS
-      ========================================================================= */}
-      <section style={{
-        maxWidth: 'min(1100px, 88vw)',
-        margin: '0 auto',
-        padding: 'clamp(6rem, 12vh, 10rem) 2rem clamp(8rem, 15vh, 12rem)',
-        position: 'relative',
-        zIndex: 1,
-      }}>
-        <div style={{
-          textAlign: 'center',
-          marginBottom: 'clamp(3rem, 6vh, 5rem)',
-          animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both' : 'none',
-        }}>
-          <h2 style={{
-            fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-            fontWeight: '400',
-            color: 'var(--text-primary)',
-            marginBottom: '1.25rem',
-            letterSpacing: '-0.02em',
-          }}>
-            What I Bring
-          </h2>
-        </div>
-
-        {/* Differentiators Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
-          gap: 'clamp(1.5rem, 3vw, 2.5rem)',
-        }}>
-          {differentiators.map((diff, index) => {
-            const Icon = diff.icon;
-            const isHovered = hoveredDiff === diff.id;
-
-            return (
-              <div
-                key={diff.id}
-                onMouseEnter={() => setHoveredDiff(diff.id)}
-                onMouseLeave={() => setHoveredDiff(null)}
-                style={{
-                  padding: '1.5rem',
-                  borderRadius: '16px',
-                  background: isHovered
-                    ? `linear-gradient(135deg, rgba(${diff.color}, 0.1), var(--glass-04))`
-                    : 'var(--glass-04)',
-                  border: `1px solid ${isHovered ? `rgba(${diff.color}, 0.3)` : 'var(--glass-08)'}`,
-                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                  transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
-                  cursor: 'default',
-                  animation: inView ? `scrollRevealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${1.3 + index * 0.08}s both` : 'none',
-                  textAlign: 'center',
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-              >
-                <div style={{
-                  width: '44px',
-                  height: '44px',
-                  borderRadius: '12px',
-                  background: `rgba(${diff.color}, 0.12)`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 1rem',
-                  transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                  transform: isHovered ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
-                }}>
-                  <Icon size={22} style={{ color: `rgb(${diff.color})` }} />
-                </div>
-                <div style={{
-                  fontSize: '0.938rem',
-                  fontWeight: '500',
-                  color: 'var(--text-primary)',
-                  marginBottom: '0.5rem',
-                }}>
-                  {diff.title}
-                </div>
-                <div style={{
-                  fontSize: '0.813rem',
-                  color: 'var(--text-tertiary)',
-                  lineHeight: '1.5',
-                  flex: 1,
-                }}>
-                  {diff.description}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 6: TESTIMONIALS
+          SECTION 5: TESTIMONIALS
       ========================================================================= */}
       <section
         ref={testimonialsSectionRef}
         style={{
           maxWidth: 'min(1100px, 88vw)',
           margin: '0 auto',
-          padding: 'clamp(4rem, 8vh, 6rem) 2rem',
+          padding: 'clamp(2.5rem, 4vh, 3.5rem) 2rem',
           position: 'relative',
           zIndex: 1,
         }}
@@ -8061,7 +9858,7 @@ export function AirIndiaWork() {
           <>
         <div style={{
           textAlign: 'center',
-          marginBottom: 'clamp(2.5rem, 5vh, 4rem)',
+          marginBottom: 'clamp(1.5rem, 3vh, 2rem)',
           animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
         }}>
           <span style={{
@@ -8113,6 +9910,7 @@ export function AirIndiaWork() {
                 color: 'var(--text-secondary)',
                 lineHeight: '1.7',
                 fontStyle: 'italic',
+                fontFamily: 'var(--font-newsreader)',
               }}>
                 Nihar brought a rare combination of design thinking and technical execution to our team. His work on the design token architecture helped us finally achieve consistency across all four airlines. The Liftoff mentorship program he initiated has become a cornerstone of how we develop junior designers.
               </p>
@@ -8223,8 +10021,9 @@ export function AirIndiaWork() {
                 color: 'var(--text-secondary)',
                 lineHeight: '1.7',
                 fontStyle: 'italic',
+                fontFamily: 'var(--font-newsreader)',
               }}>
-                What sets Nihar apart is his ability to identify problems and build solutions. Pixel Radar transformed our QA process—catching inconsistencies we'd been missing for months. His early adoption of MCP for design-to-code handoffs put us ahead of the curve. He doesn't just design; he ships.
+                What sets Nihar apart is his ability to identify problems and build solutions. Pixel Radar transformed our QA process—catching inconsistencies we'd been missing for months. His early adoption of MCP for design-to-code handoffs put us ahead of the curve. He doesn&apos;t just design; he ships.
               </p>
             </div>
 
@@ -8330,7 +10129,7 @@ export function AirIndiaWork() {
       <section
         data-section-id="air-india-awards"
         style={{
-          padding: 'clamp(6rem, 12vh, 10rem) 2rem',
+          padding: 'clamp(3rem, 5vh, 4rem) 2rem',
           position: 'relative',
           zIndex: 1,
           overflow: 'hidden',
@@ -8338,7 +10137,7 @@ export function AirIndiaWork() {
       >
         <div style={{
           textAlign: 'center',
-          marginBottom: 'clamp(2.5rem, 5vh, 4rem)',
+          marginBottom: 'clamp(1.5rem, 3vh, 2rem)',
           animation: inView ? 'scrollRevealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both' : 'none',
         }}>
           <span style={{
@@ -8426,17 +10225,374 @@ export function AirIndiaWork() {
       </section>
 
       {/* =========================================================================
+          SECTION 8.5: BEYOND THE PRODUCT — CAROUSEL
+      ========================================================================= */}
+      <section style={{
+        padding: 'clamp(3rem, 6vh, 5rem) 0',
+        position: 'relative',
+        zIndex: 1,
+        overflow: 'hidden',
+      }}>
+        {/* Section Header */}
+        <div style={{
+          maxWidth: '1400px',
+          margin: '0 auto',
+          padding: '0 2rem',
+          marginBottom: 'clamp(1.5rem, 3vh, 2.5rem)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-end',
+          flexWrap: 'wrap',
+          gap: '1rem',
+        }}>
+          <div>
+            <span style={{
+              fontSize: '0.75rem',
+              fontWeight: '500',
+              color: `rgb(${brandRgb})`,
+              textTransform: 'uppercase',
+              letterSpacing: '0.15em',
+              display: 'block',
+              marginBottom: '0.5rem',
+              fontFamily: 'var(--font-newsreader)',
+            }}>
+              Beyond the Product
+            </span>
+            <h2 style={{
+              fontSize: 'clamp(1.5rem, 3.5vw, 2.25rem)',
+              fontWeight: '400',
+              letterSpacing: '-0.02em',
+              color: 'var(--text-primary)',
+              margin: 0,
+            }}>
+              Culture, hackathons &amp; initiative
+            </h2>
+          </div>
+
+          {/* Navigation arrows */}
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <button
+              onClick={() => setCarouselIndex(i => Math.max(0, i - 1))}
+              disabled={carouselIndex === 0}
+              aria-label="Previous card"
+              style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '10px',
+                border: '1px solid var(--border-primary)',
+                background: carouselIndex === 0 ? 'transparent' : 'var(--glass-05)',
+                color: carouselIndex === 0 ? 'var(--text-25)' : 'var(--text-70)',
+                cursor: carouselIndex === 0 ? 'default' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <button
+              onClick={() => setCarouselIndex(i => Math.min(3, i + 1))}
+              disabled={carouselIndex === 3}
+              aria-label="Next card"
+              style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '10px',
+                border: '1px solid var(--border-primary)',
+                background: carouselIndex === 3 ? 'transparent' : 'var(--glass-05)',
+                color: carouselIndex === 3 ? 'var(--text-25)' : 'var(--text-70)',
+                cursor: carouselIndex === 3 ? 'default' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        </div>
+
+        {/* Carousel Track — Framer Motion animated, no native scroll */}
+        <div
+          ref={carouselRef}
+          style={{
+            overflow: 'hidden',
+            paddingLeft: isMobile ? '1.25rem' : 'max(2rem, calc((100vw - 1400px) / 2 + 2rem))',
+            paddingRight: '2rem',
+            cursor: 'grab',
+          }}
+        >
+          <motion.div
+            drag="x"
+            dragConstraints={carouselRef}
+            dragElastic={0.12}
+            dragMomentum={false}
+            onDragEnd={(_e, info) => {
+              const threshold = 80;
+              if (info.offset.x < -threshold && carouselIndex < 3) {
+                setCarouselIndex(i => i + 1);
+              } else if (info.offset.x > threshold && carouselIndex > 0) {
+                setCarouselIndex(i => i - 1);
+              }
+            }}
+            animate={{
+              x: `calc(-${carouselIndex} * (${isMobile ? '85vw' : 'clamp(380px, 30vw, 440px)'} + clamp(1rem, 2vw, 1.5rem)))`,
+            }}
+            transition={{
+              x: { type: 'spring', stiffness: 300, damping: 30, mass: 0.8 },
+            }}
+            style={{
+              display: 'flex',
+              gap: 'clamp(1rem, 2vw, 1.5rem)',
+              willChange: 'transform',
+            }}
+          >
+            {[
+              {
+                id: 'liftoff',
+                title: 'Liftoff Program',
+                subtitle: 'CULTURE',
+                description: 'You can\u2019t transform products without transforming the people building them. I initiated Liftoff\u2014workshops, skill shares, critique rituals\u2014building the collaborative culture a transformation of this scale demands.',
+                image: '/images/air-india/liftoff.png',
+                stats: [
+                  { value: '12', label: 'Mentees' },
+                  { value: '24', label: 'Sessions' },
+                  { value: '89%', label: 'Completion' },
+                ],
+                badge: 'Self-Initiated',
+              },
+              {
+                id: 'microsoft-hackathon',
+                title: 'Microsoft Hackathon',
+                subtitle: 'HACKATHON',
+                description: 'Partnered with Microsoft on an AI-powered solution to improve customer experience across Air India\u2019s touchpoints. Built and presented a working concept addressing real friction points passengers face.',
+                image: '/images/air-india/microsoft.jpeg',
+                stats: [
+                  { value: '2nd', label: 'Prize' },
+                  { value: 'AI', label: 'Powered' },
+                  { value: 'Azure', label: 'Platform' },
+                ],
+                badge: 'Winner \u2014 Aug 2025',
+              },
+              {
+                id: 'internal-hackathon',
+                title: 'Internal Hackathon',
+                subtitle: 'HACKATHON',
+                description: 'Researched Firebase Studio, then designed and built an AI-powered internal platform for time tracking, resource allocation, and work management\u2014in a single day. Two hackathons, two wins.',
+                image: '/images/air-india/internal_hackathon.jpeg',
+                stats: [
+                  { value: '24h', label: 'Shipped' },
+                  { value: 'E2E', label: 'Execution' },
+                  { value: '1st', label: 'Place' },
+                ],
+                badge: 'Winner',
+              },
+              {
+                id: 'off-the-record',
+                title: 'Off the Record',
+                subtitle: 'CULTURE',
+                description: 'What started as a brainstorm turned into an unscripted, laughter-filled series. First edition: Retro Cinema\u2014vintage tickets, a director\u2019s clapboard, popcorn, and movie passes for winners.',
+                image: '/images/air-india/offtherecord.jpeg',
+                stats: [
+                  { value: 'Retro', label: 'Cinema' },
+                  { value: '1st', label: 'Edition' },
+                  { value: 'Team', label: 'Bonding' },
+                ],
+                badge: 'Self-Initiated',
+              },
+            ].map((card, i) => (
+              <motion.div
+                key={card.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.5, delay: i * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
+                style={{
+                  flex: '0 0 auto',
+                  width: isMobile ? '85vw' : 'clamp(380px, 30vw, 440px)',
+                  borderRadius: '24px',
+                  overflow: 'hidden',
+                  background: 'var(--surface-primary)',
+                  border: '1px solid var(--border-primary)',
+                  pointerEvents: 'auto',
+                  userSelect: 'none',
+                }}
+              >
+                {/* Card Image */}
+                <div style={{
+                  position: 'relative',
+                  width: '100%',
+                  aspectRatio: '4 / 3',
+                  overflow: 'hidden',
+                  background: 'var(--glass-04)',
+                }}>
+                  <Image
+                    src={card.image}
+                    alt={card.title}
+                    fill
+                    sizes="(max-width: 768px) 85vw, 440px"
+                    placeholder="blur"
+                    blurDataURL={blurDataURL(440, 330)}
+                    draggable={false}
+                    style={{ objectFit: 'cover', pointerEvents: 'none' }}
+                  />
+                  {/* Gradient overlay */}
+                  <div style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%)',
+                    pointerEvents: 'none',
+                  }} />
+                  {/* Category badge */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '14px',
+                    left: '14px',
+                    padding: '5px 12px',
+                    borderRadius: '8px',
+                    background: 'rgba(0,0,0,0.5)',
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                  }}>
+                    <span style={{
+                      fontSize: '0.688rem',
+                      fontWeight: '600',
+                      color: 'rgba(255,255,255,0.9)',
+                      letterSpacing: '0.06em',
+                      textTransform: 'uppercase',
+                      fontFamily: 'var(--font-newsreader)',
+                    }}>
+                      {card.subtitle}
+                    </span>
+                  </div>
+                  {/* Winner / initiative badge */}
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '14px',
+                    left: '14px',
+                    padding: '5px 12px',
+                    borderRadius: '20px',
+                    background: `rgba(${brandRgb}, 0.85)`,
+                    backdropFilter: 'blur(8px)',
+                    WebkitBackdropFilter: 'blur(8px)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '5px',
+                  }}>
+                    <Trophy size={12} style={{ color: '#fff' }} />
+                    <span style={{
+                      fontSize: '0.688rem',
+                      fontWeight: '600',
+                      color: '#fff',
+                    }}>
+                      {card.badge}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Card Body */}
+                <div style={{ padding: 'clamp(1.25rem, 2vw, 1.75rem)' }}>
+                  <h3 style={{
+                    fontSize: 'clamp(1.125rem, 2vw, 1.375rem)',
+                    fontWeight: '500',
+                    color: 'var(--text-primary)',
+                    letterSpacing: '-0.01em',
+                    marginBottom: '0.625rem',
+                    fontFamily: 'var(--font-newsreader)',
+                  }}>
+                    {card.title}
+                  </h3>
+                  <p style={{
+                    fontSize: '0.875rem',
+                    color: 'var(--text-tertiary)',
+                    lineHeight: '1.65',
+                    marginBottom: '1.25rem',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 4,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                  }}>
+                    {card.description}
+                  </p>
+
+                  {/* Stats Row */}
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    {card.stats.map(stat => (
+                      <div key={stat.label} style={{
+                        flex: 1,
+                        padding: '0.625rem 0.5rem',
+                        borderRadius: '10px',
+                        background: 'var(--glass-04)',
+                        textAlign: 'center',
+                      }}>
+                        <div style={{
+                          fontSize: '1rem',
+                          fontWeight: '700',
+                          color: `rgb(${brandRgb})`,
+                          fontFamily: 'var(--font-newsreader)',
+                        }}>
+                          {stat.value}
+                        </div>
+                        <div style={{
+                          fontSize: '0.625rem',
+                          color: 'var(--text-40)',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.04em',
+                          marginTop: '2px',
+                        }}>
+                          {stat.label}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* Dot Indicators */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '8px',
+          marginTop: '1.5rem',
+        }}>
+          {['liftoff', 'microsoft', 'internal', 'offtherecord'].map((id, i) => (
+            <button
+              key={id}
+              onClick={() => setCarouselIndex(i)}
+              aria-label={`Go to card ${i + 1}`}
+              style={{
+                width: carouselIndex === i ? '24px' : '8px',
+                height: '8px',
+                borderRadius: '4px',
+                border: 'none',
+                background: carouselIndex === i ? `rgb(${brandRgb})` : 'var(--glass-15)',
+                cursor: 'pointer',
+                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                padding: 0,
+              }}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* =========================================================================
           SECTION 9: MORE PROJECTS
       ========================================================================= */}
       <section style={{
         maxWidth: '1400px',
         margin: '0 auto',
-        padding: 'clamp(6rem, 12vh, 10rem) 2rem clamp(8rem, 15vh, 12rem)',
+        padding: 'clamp(3rem, 5vh, 4rem) 2rem clamp(4rem, 7vh, 5rem)',
         position: 'relative',
         zIndex: 1,
       }}>
         <div style={{
-          marginBottom: 'clamp(3rem, 6vh, 5rem)',
+          marginBottom: 'clamp(1.5rem, 3vh, 2.5rem)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',

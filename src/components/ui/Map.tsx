@@ -106,7 +106,7 @@ export function WorldMap({ artworks, onArtworkSelect }: MapProps) {
               y1="0"
               x2={(i + 1) * 10}
               y2="50"
-              stroke="rgba(218, 14, 41, 0.05)"
+              stroke="rgba(217, 119, 87, 0.05)"
               strokeWidth="0.1"
             />
           ))}
@@ -117,7 +117,7 @@ export function WorldMap({ artworks, onArtworkSelect }: MapProps) {
               y1={(i + 1) * 10}
               x2="100"
               y2={(i + 1) * 10}
-              stroke="rgba(218, 14, 41, 0.05)"
+              stroke="rgba(217, 119, 87, 0.05)"
               strokeWidth="0.1"
             />
           ))}
@@ -155,7 +155,7 @@ export function WorldMap({ artworks, onArtworkSelect }: MapProps) {
                     backgroundColor: 'var(--brand-red)',
                     borderRadius: '50% 50% 50% 0',
                     transform: 'rotate(-45deg)',
-                    boxShadow: '0 0 20px rgba(218, 14, 41, 0.6)',
+                    boxShadow: '0 0 20px rgba(217, 119, 87, 0.6)',
                     border: '2px solid white',
                   }}
                   className="mystical-breathe"

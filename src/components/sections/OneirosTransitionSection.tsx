@@ -106,7 +106,7 @@ export function OneirosTransitionSection() {
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
               color: 'var(--text-60)',
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
             }}
           >
             Act III: Resolution
@@ -121,7 +121,7 @@ export function OneirosTransitionSection() {
           style={{
             fontSize: 'clamp(2rem, 5vw, 3rem)',
             fontWeight: 300,
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             color: 'var(--text-95)',
             letterSpacing: '-0.02em',
             lineHeight: 1.2,
@@ -149,7 +149,7 @@ export function OneirosTransitionSection() {
           style={{
             fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
             color: 'var(--text-60)',
-            fontFamily: 'var(--font-dm-sans)',
+            fontFamily: 'var(--font-urbanist)',
             lineHeight: 1.7,
             marginBottom: '3rem',
           }}
@@ -175,7 +175,7 @@ export function OneirosTransitionSection() {
             border: 'none',
             borderRadius: '16px',
             color: '#fff',
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             fontSize: '1rem',
             fontWeight: 500,
             cursor: 'pointer',
@@ -200,7 +200,7 @@ export function OneirosTransitionSection() {
           transition={{ duration: 0.8, delay: 0.6 }}
           style={{
             marginTop: '2rem',
-            fontFamily: 'var(--font-dm-sans)',
+            fontFamily: 'var(--font-urbanist)',
             fontSize: '0.875rem',
             color: 'var(--text-40)',
           }}
@@ -234,7 +234,7 @@ export function OneirosTransitionSection() {
         >
           <h3
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '0.875rem',
               fontWeight: 500,
               color: 'var(--text-70)',
@@ -264,7 +264,7 @@ export function OneirosTransitionSection() {
               <li
                 key={i}
                 style={{
-                  fontFamily: 'var(--font-dm-sans)',
+                  fontFamily: 'var(--font-urbanist)',
                   fontSize: '0.9375rem',
                   color: 'var(--text-60)',
                   display: 'flex',

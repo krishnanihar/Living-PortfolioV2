@@ -117,7 +117,7 @@ export function HeroIdentityCard({
         }}
       >
         Product Designer at{' '}
-        <span style={{ color: '#DA0E29', fontWeight: 500 }}>Air India</span>
+        <span style={{ color: '#d97757', fontWeight: 500 }}>Air India</span>
       </motion.p>
 
       {/* Impact Statement */}
@@ -163,7 +163,7 @@ export function HeroIdentityCard({
             alignItems: 'center',
             gap: '0.5rem',
             padding: isCompact ? '0.625rem 1.25rem' : '0.75rem 1.5rem',
-            background: '#DA0E29',
+            background: '#d97757',
             color: '#FFFFFF',
             borderRadius: '12px',
             fontSize: isCompact ? '0.875rem' : '0.9375rem',
@@ -173,7 +173,7 @@ export function HeroIdentityCard({
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = '0 8px 24px rgba(218, 14, 41, 0.3)';
+            e.currentTarget.style.boxShadow = '0 8px 24px rgba(217, 119, 87, 0.3)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'translateY(0)';

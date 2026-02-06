@@ -127,7 +127,7 @@ export default function ConceptPage() {
         style={{
           position: 'fixed',
           inset: 0,
-          backgroundColor: '#0A0A0A',
+          backgroundColor: '#0c0c10',
           opacity: fadeOpacity,
           pointerEvents: fadeOpacity > 0 ? 'auto' : 'none',
           transition: fadeOpacity === 0 ? 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',

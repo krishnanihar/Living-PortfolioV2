@@ -304,7 +304,7 @@ function ContactCard({ method, index, onChatClick }: ContactCardProps) {
             fontWeight: '500',
             color: 'var(--text-95)',
             marginBottom: '0.5rem',
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
           }}
         >
           {method.title}
@@ -490,7 +490,7 @@ export default function ContactPage() {
                 lineHeight: '1.1',
                 letterSpacing: '-0.03em',
                 marginBottom: '1rem',
-                fontFamily: 'var(--font-space-grotesk)',
+                fontFamily: 'var(--font-newsreader)',
               }}
             >
               Let's Create Something{' '}

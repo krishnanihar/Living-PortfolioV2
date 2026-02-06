@@ -449,7 +449,7 @@ export const filterTabs: FilterTab[] = [
   {
     id: 'all',
     label: 'All Work',
-    color: '#DA0E29',
+    color: '#d97757',
   },
   {
     id: 'system',

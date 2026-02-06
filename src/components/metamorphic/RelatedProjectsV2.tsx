@@ -23,7 +23,7 @@ const OTHER_PROJECTS = [
     description: "Leading design transformation for India's flag carrier.",
     year: '2024',
     href: '/work/air-india' as const,
-    color: '218, 14, 41',
+    color: '217, 119, 87',
   },
   // HIDDEN: Latent Space WIP
   // {

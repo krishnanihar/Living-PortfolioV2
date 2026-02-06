@@ -1000,22 +1000,22 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
         .project-card-air-india::before {
           background: conic-gradient(
             from 0deg,
-            rgba(218, 14, 41, 0.6) 0deg,
+            rgba(217, 119, 87, 0.6) 0deg,
             rgba(255, 82, 82, 0.8) 90deg,
-            rgba(218, 14, 41, 0.6) 180deg,
+            rgba(217, 119, 87, 0.6) 180deg,
             rgba(255, 82, 82, 0.8) 270deg,
-            rgba(218, 14, 41, 0.6) 360deg
+            rgba(217, 119, 87, 0.6) 360deg
           );
         }
 
         .project-card-air-india:hover::before {
           background: conic-gradient(
             from 0deg,
-            rgba(218, 14, 41, 0.8) 0deg,
+            rgba(217, 119, 87, 0.8) 0deg,
             rgba(255, 82, 82, 1) 90deg,
-            rgba(218, 14, 41, 0.8) 180deg,
+            rgba(217, 119, 87, 0.8) 180deg,
             rgba(255, 82, 82, 1) 270deg,
-            rgba(218, 14, 41, 0.8) 360deg
+            rgba(217, 119, 87, 0.8) 360deg
           );
         }
 
@@ -1501,7 +1501,7 @@ export default function AboutSectionV2({ className = '', snapIndex }: AboutSecti
                   width: '100px',
                   height: '100px',
                   borderRadius: '50%',
-                  background: 'radial-gradient(circle at 30% 30%, rgba(218, 14, 41, 0.4) 0%, rgba(147, 51, 234, 0.2) 50%, transparent 100%)',
+                  background: 'radial-gradient(circle at 30% 30%, rgba(217, 119, 87, 0.4) 0%, rgba(147, 51, 234, 0.2) 50%, transparent 100%)',
                   filter: 'blur(40px)',
                   animation: 'breathe 4s ease-in-out infinite',
                 }}

@@ -34,7 +34,7 @@ export function SectionDivider({ text }: SectionDividerProps) {
         <div style={{
           height: '1px',
           background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent)',
-          boxShadow: '0 0 20px rgba(218, 14, 41, 0.1)',
+          boxShadow: '0 0 20px rgba(217, 119, 87, 0.1)',
         }} />
       </div>
     </div>

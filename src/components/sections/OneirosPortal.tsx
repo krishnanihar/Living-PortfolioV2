@@ -26,7 +26,7 @@ const OneirosExperience = dynamic(
         style={{
           position: 'fixed',
           inset: 0,
-          background: '#0A0A0A',
+          background: '#0c0c10',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -47,7 +47,7 @@ const OneirosExperience = dynamic(
           />
           <p
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '0.875rem',
               color: 'var(--text-50)',
               letterSpacing: '0.1em',
@@ -110,7 +110,7 @@ export function OneirosPortal() {
             position: 'fixed',
             inset: 0,
             zIndex: 100,
-            background: '#0A0A0A',
+            background: '#0c0c10',
           }}
         >
           {/* 3D Experience */}
@@ -137,7 +137,7 @@ export function OneirosPortal() {
               border: '1px solid var(--text-15)',
               borderRadius: '8px',
               color: 'var(--text-70)',
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '0.8125rem',
               letterSpacing: '0.02em',
               cursor: 'pointer',
@@ -183,7 +183,7 @@ export function OneirosPortal() {
               >
                 <p
                   style={{
-                    fontFamily: 'var(--font-dm-sans)',
+                    fontFamily: 'var(--font-urbanist)',
                     fontSize: '0.8125rem',
                     color: 'var(--text-60)',
                     margin: 0,
@@ -213,7 +213,7 @@ export function OneirosPortal() {
                 style={{
                   position: 'fixed',
                   inset: 0,
-                  background: '#0A0A0A',
+                  background: '#0c0c10',
                   zIndex: 120,
                   display: 'flex',
                   alignItems: 'center',
@@ -225,7 +225,7 @@ export function OneirosPortal() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   style={{
-                    fontFamily: 'var(--font-space-grotesk)',
+                    fontFamily: 'var(--font-newsreader)',
                     fontSize: 'clamp(1rem, 2vw, 1.25rem)',
                     fontStyle: 'italic',
                     color: 'var(--text-50)',

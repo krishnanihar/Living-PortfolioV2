@@ -277,9 +277,9 @@ export function DreamRecorderPrototype() {
               height: '120px',
               borderRadius: '50%',
               background: isRecording
-                ? 'rgba(218, 14, 41, 0.2)'
+                ? 'rgba(217, 119, 87, 0.2)'
                 : 'rgba(147, 51, 234, 0.2)',
-              border: `3px solid ${isRecording ? 'rgba(218, 14, 41, 0.6)' : 'rgba(147, 51, 234, 0.6)'}`,
+              border: `3px solid ${isRecording ? 'rgba(217, 119, 87, 0.6)' : 'rgba(147, 51, 234, 0.6)'}`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -302,12 +302,12 @@ export function DreamRecorderPrototype() {
                   position: 'absolute',
                   inset: 0,
                   borderRadius: '50%',
-                  background: 'rgba(218, 14, 41, 0.3)',
+                  background: 'rgba(217, 119, 87, 0.3)',
                 }}
               />
             )}
             {isRecording ? (
-              <Square size={40} fill="rgba(218, 14, 41, 0.9)" color="rgba(218, 14, 41, 0.9)" />
+              <Square size={40} fill="rgba(217, 119, 87, 0.9)" color="rgba(217, 119, 87, 0.9)" />
             ) : (
               <Circle size={40} fill="rgba(147, 51, 234, 0.9)" color="rgba(147, 51, 234, 0.9)" />
             )}
@@ -447,21 +447,21 @@ export function DreamRecorderPrototype() {
             style={{
               marginTop: '1.5rem',
               padding: '1.5rem',
-              background: 'rgba(218, 14, 41, 0.1)',
-              border: '1px solid rgba(218, 14, 41, 0.3)',
+              background: 'rgba(217, 119, 87, 0.1)',
+              border: '1px solid rgba(217, 119, 87, 0.3)',
               borderRadius: '16px',
               display: 'flex',
               alignItems: 'center',
               gap: '1rem',
             }}
           >
-            <AlertCircle size={24} style={{ color: 'rgba(218, 14, 41, 0.9)', flexShrink: 0 }} />
+            <AlertCircle size={24} style={{ color: 'rgba(217, 119, 87, 0.9)', flexShrink: 0 }} />
             <div>
               <div
                 style={{
                   fontSize: '0.875rem',
                   fontWeight: '500',
-                  color: 'rgba(218, 14, 41, 0.9)',
+                  color: 'rgba(217, 119, 87, 0.9)',
                   marginBottom: '0.25rem',
                 }}
               >

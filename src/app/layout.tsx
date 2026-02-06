@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Space_Grotesk, DM_Sans, Fraunces, Manrope, JetBrains_Mono, Cormorant_Garamond } from 'next/font/google';
+import { Space_Grotesk, DM_Sans, Newsreader, Urbanist, Fraunces, Manrope, JetBrains_Mono, Cormorant_Garamond } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/effects/ThemeProvider';
 import { SmoothScrollProvider } from '@/components/effects/SmoothScrollProvider';
@@ -38,6 +38,22 @@ const dmSans = DM_Sans({
   variable: '--font-dm-sans',
   display: 'swap',
   weight: ['400', '500', '600'],
+});
+
+// New primary fonts
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  variable: '--font-newsreader',
+  display: 'swap',
+  style: ['normal', 'italic'],
+  axes: ['opsz'],
+});
+
+const urbanist = Urbanist({
+  subsets: ['latin'],
+  variable: '--font-urbanist',
+  display: 'swap',
+  style: ['normal', 'italic'],
 });
 
 // Journey Timeline fonts
@@ -135,7 +151,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${dmSans.variable} ${fraunces.variable} ${manrope.variable} ${jetbrainsMono.variable} ${cormorantGaramond.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${newsreader.variable} ${urbanist.variable} ${spaceGrotesk.variable} ${dmSans.variable} ${fraunces.variable} ${manrope.variable} ${jetbrainsMono.variable} ${cormorantGaramond.variable}`} suppressHydrationWarning>
       <head>
         {/* next/font/google automatically handles font optimization and preloading */}
 
@@ -184,7 +200,7 @@ export default function RootLayout({
       </head>
       <body
         className={`
-          ${dmSans.className}
+          ${urbanist.className}
           min-h-screen antialiased overflow-x-hidden
         `}
         style={{

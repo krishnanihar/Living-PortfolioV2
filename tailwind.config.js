@@ -29,10 +29,10 @@ module.exports = {
       },
       colors: {
         brand: {
-          red: '#DA0E29',
+          red: '#d97757',
         },
         accent: {
-          home: '#DA0E29',
+          home: '#d97757',
           work: '#3B82F6',
           labs: '#F59E0B',
           about: '#8B5CF6',
@@ -41,61 +41,61 @@ module.exports = {
         // Dark theme colors
         dark: {
           bg: {
-            primary: '#0A0A0A',
-            secondary: '#0F0F0F',
-            tertiary: '#141414',
+            primary: '#0c0c10',
+            secondary: '#151519',
+            tertiary: '#18181e',
           },
           surface: {
-            primary: 'rgba(255, 255, 255, 0.04)',
-            secondary: 'rgba(255, 255, 255, 0.06)',
-            hover: 'rgba(255, 255, 255, 0.08)',
-            active: 'rgba(255, 255, 255, 0.12)',
+            primary: 'rgba(228, 227, 222, 0.03)',
+            secondary: 'rgba(228, 227, 222, 0.02)',
+            hover: 'rgba(228, 227, 222, 0.05)',
+            active: 'rgba(228, 227, 222, 0.08)',
           },
           border: {
-            primary: 'rgba(255, 255, 255, 0.08)',
-            secondary: 'rgba(255, 255, 255, 0.12)',
-            hover: 'rgba(255, 255, 255, 0.16)',
-            focus: 'rgba(255, 255, 255, 0.24)',
+            primary: '#222228',
+            secondary: 'rgba(228, 227, 222, 0.08)',
+            hover: 'rgba(228, 227, 222, 0.12)',
+            focus: 'rgba(228, 227, 222, 0.24)',
           },
           text: {
-            primary: 'rgba(255, 255, 255, 0.95)',
-            secondary: 'rgba(255, 255, 255, 0.80)',
-            tertiary: 'rgba(255, 255, 255, 0.60)',
-            muted: 'rgba(255, 255, 255, 0.40)',
-            disabled: 'rgba(255, 255, 255, 0.24)',
+            primary: '#e4e3de',
+            secondary: 'rgba(228, 227, 222, 0.80)',
+            tertiary: 'rgba(228, 227, 222, 0.60)',
+            muted: '#78776f',
+            disabled: 'rgba(228, 227, 222, 0.24)',
           },
         },
         // Light theme colors
         light: {
           bg: {
-            primary: '#FFFFFF',
-            secondary: '#F8FAFC',
-            tertiary: '#F1F5F9',
+            primary: '#faf9f5',
+            secondary: '#ffffff',
+            tertiary: '#f4f3ee',
           },
           surface: {
-            primary: 'rgba(0, 0, 0, 0.04)',
-            secondary: 'rgba(0, 0, 0, 0.06)',
-            hover: 'rgba(0, 0, 0, 0.08)',
-            active: 'rgba(0, 0, 0, 0.12)',
+            primary: 'rgba(20, 20, 19, 0.03)',
+            secondary: 'rgba(20, 20, 19, 0.02)',
+            hover: 'rgba(20, 20, 19, 0.05)',
+            active: 'rgba(20, 20, 19, 0.08)',
           },
           border: {
-            primary: 'rgba(0, 0, 0, 0.08)',
-            secondary: 'rgba(0, 0, 0, 0.12)',
-            hover: 'rgba(0, 0, 0, 0.16)',
-            focus: 'rgba(0, 0, 0, 0.24)',
+            primary: '#e8e6dc',
+            secondary: 'rgba(20, 20, 19, 0.08)',
+            hover: 'rgba(20, 20, 19, 0.12)',
+            focus: 'rgba(20, 20, 19, 0.24)',
           },
           text: {
-            primary: 'rgba(0, 0, 0, 0.95)',
-            secondary: 'rgba(0, 0, 0, 0.80)',
-            tertiary: 'rgba(0, 0, 0, 0.60)',
-            muted: 'rgba(0, 0, 0, 0.40)',
-            disabled: 'rgba(0, 0, 0, 0.24)',
+            primary: '#141413',
+            secondary: 'rgba(20, 20, 19, 0.80)',
+            tertiary: 'rgba(20, 20, 19, 0.60)',
+            muted: '#9e9c94',
+            disabled: 'rgba(20, 20, 19, 0.24)',
           },
         },
       },
       fontFamily: {
-        sans: ['DM Sans', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-        heading: ['Space Grotesk', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Urbanist', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        heading: ['Newsreader', 'Georgia', 'Times New Roman', 'serif'],
       },
       fontSize: {
         'xs': '0.75rem',
@@ -187,14 +187,14 @@ module.exports = {
     function({ addUtilities }) {
       const newUtilities = {
         '.glass-dark': {
-          'background': 'rgba(255, 255, 255, 0.05)',
+          'background': 'rgba(228, 227, 222, 0.05)',
           'backdrop-filter': 'blur(24px) saturate(150%)',
-          'border': '1px solid rgba(255, 255, 255, 0.12)',
+          'border': '1px solid rgba(228, 227, 222, 0.12)',
         },
         '.glass-light': {
-          'background': 'rgba(255, 255, 255, 0.85)',
+          'background': 'rgba(250, 249, 245, 0.85)',
           'backdrop-filter': 'blur(20px) saturate(110%)',
-          'border': '1px solid rgba(0, 0, 0, 0.08)',
+          'border': '1px solid rgba(20, 20, 19, 0.08)',
         },
         '.nav-height': {
           'height': '56px',

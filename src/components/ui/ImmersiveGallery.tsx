@@ -143,7 +143,7 @@ export function ImmersiveGallery({
           right: '1rem',
           zIndex: 60,
           padding: '0.5rem 1rem',
-          backgroundColor: 'rgba(218, 14, 41, 0.8)',
+          backgroundColor: 'rgba(217, 119, 87, 0.8)',
           color: '#FFFFFF',
           fontWeight: '600',
           borderRadius: '8px',
@@ -160,7 +160,7 @@ export function ImmersiveGallery({
           e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = 'rgba(218, 14, 41, 0.8)';
+          e.currentTarget.style.backgroundColor = 'rgba(217, 119, 87, 0.8)';
           e.currentTarget.style.borderColor = 'transparent';
         }}
       >

@@ -66,7 +66,7 @@ export function DreamInput({ embedded = false }: DreamInputProps) {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '2rem',
-        backgroundColor: '#0A0A0A',
+        backgroundColor: '#0c0c10',
         zIndex: 50,
         overflow: 'auto',
       };
@@ -108,7 +108,7 @@ export function DreamInput({ embedded = false }: DreamInputProps) {
             }}
           >
             <Moon size={16} style={{ color: '#8B5CF6' }} />
-            <span style={{ fontSize: '0.875rem', color: 'var(--text-60)', fontFamily: 'var(--font-space-grotesk)' }}>
+            <span style={{ fontSize: '0.875rem', color: 'var(--text-60)', fontFamily: 'var(--font-newsreader)' }}>
               ONEIROS PALACE
             </span>
           </div>
@@ -118,7 +118,7 @@ export function DreamInput({ embedded = false }: DreamInputProps) {
               fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
               fontWeight: 500,
               color: 'var(--text-95)',
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               marginBottom: '0.75rem',
             }}
           >
@@ -129,7 +129,7 @@ export function DreamInput({ embedded = false }: DreamInputProps) {
             style={{
               fontSize: '1rem',
               color: 'var(--text-50)',
-              fontFamily: 'var(--font-dm-sans)',
+              fontFamily: 'var(--font-urbanist)',
               maxWidth: '480px',
               margin: '0 auto',
             }}
@@ -154,7 +154,7 @@ export function DreamInput({ embedded = false }: DreamInputProps) {
               border: '1px solid var(--text-10)',
               borderRadius: '12px',
               color: 'var(--text-90)',
-              fontFamily: 'var(--font-dm-sans)',
+              fontFamily: 'var(--font-urbanist)',
               fontSize: '1rem',
               lineHeight: 1.6,
               resize: 'vertical',
@@ -193,7 +193,7 @@ export function DreamInput({ embedded = false }: DreamInputProps) {
               fontSize: '0.75rem',
               color: 'var(--text-40)',
               marginBottom: '0.5rem',
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               textTransform: 'uppercase',
               letterSpacing: '0.05em',
             }}
@@ -213,7 +213,7 @@ export function DreamInput({ embedded = false }: DreamInputProps) {
                   borderRadius: '6px',
                   color: 'var(--text-60)',
                   fontSize: '0.875rem',
-                  fontFamily: 'var(--font-dm-sans)',
+                  fontFamily: 'var(--font-urbanist)',
                   cursor: 'pointer',
                   transition: 'all 0.2s',
                 }}
@@ -246,7 +246,7 @@ export function DreamInput({ embedded = false }: DreamInputProps) {
               color: isValid ? '#fff' : 'var(--text-40)',
               fontSize: '1rem',
               fontWeight: 500,
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               cursor: isValid ? 'pointer' : 'not-allowed',
               display: 'flex',
               alignItems: 'center',
@@ -279,7 +279,7 @@ export function DreamInput({ embedded = false }: DreamInputProps) {
                   fontSize: '0.75rem',
                   color: 'var(--text-40)',
                   marginBottom: '0.75rem',
-                  fontFamily: 'var(--font-space-grotesk)',
+                  fontFamily: 'var(--font-newsreader)',
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em',
                 }}
@@ -301,7 +301,7 @@ export function DreamInput({ embedded = false }: DreamInputProps) {
                       style={{
                         fontSize: '0.875rem',
                         color: 'var(--text-80)',
-                        fontFamily: 'var(--font-dm-sans)',
+                        fontFamily: 'var(--font-urbanist)',
                       }}
                     >
                       {theme.name}
@@ -328,7 +328,7 @@ export function DreamInput({ embedded = false }: DreamInputProps) {
                     fontSize: '0.75rem',
                     color: 'var(--text-40)',
                     marginBottom: '0.75rem',
-                    fontFamily: 'var(--font-space-grotesk)',
+                    fontFamily: 'var(--font-newsreader)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.05em',
                   }}
@@ -365,7 +365,7 @@ export function DreamInput({ embedded = false }: DreamInputProps) {
                             fontSize: '1rem',
                             fontWeight: 500,
                             color: 'var(--text-90)',
-                            fontFamily: 'var(--font-space-grotesk)',
+                            fontFamily: 'var(--font-newsreader)',
                           }}
                         >
                           {room.roomConfig.name}
@@ -374,7 +374,7 @@ export function DreamInput({ embedded = false }: DreamInputProps) {
                           style={{
                             fontSize: '0.875rem',
                             color: 'var(--text-50)',
-                            fontFamily: 'var(--font-dm-sans)',
+                            fontFamily: 'var(--font-urbanist)',
                           }}
                         >
                           {room.roomConfig.sleepStage} • {room.artworks.length} artworks
@@ -398,7 +398,7 @@ export function DreamInput({ embedded = false }: DreamInputProps) {
                 color: '#fff',
                 fontSize: '1rem',
                 fontWeight: 500,
-                fontFamily: 'var(--font-space-grotesk)',
+                fontFamily: 'var(--font-newsreader)',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
@@ -428,7 +428,7 @@ export function DreamInput({ embedded = false }: DreamInputProps) {
               border: 'none',
               color: 'var(--text-40)',
               fontSize: '0.875rem',
-              fontFamily: 'var(--font-dm-sans)',
+              fontFamily: 'var(--font-urbanist)',
               cursor: 'pointer',
               textDecoration: 'underline',
               textUnderlineOffset: '2px',

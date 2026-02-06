@@ -126,7 +126,7 @@ export function ContinuePill({
             {displayData.label}
           </span>
           <span
-            className="text-sm font-medium transition-colors group-hover:text-[#DA0E29]"
+            className="text-sm font-medium transition-colors group-hover:text-[#d97757]"
             style={{ color: 'var(--text-90)' }}
           >
             {displayData.name}
@@ -198,7 +198,7 @@ export function NavigationContinuePill() {
       <span>Continue</span>
       <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
       <span
-        className="font-medium transition-colors group-hover:text-[#DA0E29]"
+        className="font-medium transition-colors group-hover:text-[#d97757]"
         style={{ color: 'var(--text-80)' }}
       >
         {scrollMemory.lastProjectName}

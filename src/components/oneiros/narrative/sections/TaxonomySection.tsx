@@ -134,7 +134,7 @@ function ThemeCard({
         </span>
         <span
           style={{
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             fontSize: '0.9375rem',
             fontWeight: 500,
             color: isSelected ? 'var(--text-95)' : 'var(--text-80)',
@@ -146,7 +146,7 @@ function ThemeCard({
       </div>
       <p
         style={{
-          fontFamily: 'var(--font-dm-sans)',
+          fontFamily: 'var(--font-urbanist)',
           fontSize: '0.75rem',
           color: 'var(--text-40)',
           lineHeight: 1.5,
@@ -204,7 +204,7 @@ function ArtworkPreview({
         ) : (
           <span
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '2rem',
               color: `${color}50`,
             }}
@@ -216,7 +216,7 @@ function ArtworkPreview({
       <div style={{ padding: '0.875rem' }}>
         <p
           style={{
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             fontSize: '0.8125rem',
             fontWeight: 500,
             color: 'var(--text-85)',
@@ -228,7 +228,7 @@ function ArtworkPreview({
         </p>
         <p
           style={{
-            fontFamily: 'var(--font-dm-sans)',
+            fontFamily: 'var(--font-urbanist)',
             fontSize: '0.6875rem',
             color: 'var(--text-45)',
           }}
@@ -268,7 +268,7 @@ export function TaxonomySection({ narrativeState }: TaxonomySectionProps) {
         >
           <p
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '0.75rem',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -280,7 +280,7 @@ export function TaxonomySection({ narrativeState }: TaxonomySectionProps) {
           </p>
           <h2
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
               fontWeight: 300,
               color: 'var(--text-90)',
@@ -292,7 +292,7 @@ export function TaxonomySection({ narrativeState }: TaxonomySectionProps) {
           </h2>
           <p
             style={{
-              fontFamily: 'var(--font-dm-sans)',
+              fontFamily: 'var(--font-urbanist)',
               fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
               color: 'var(--text-60)',
               maxWidth: '600px',
@@ -346,7 +346,7 @@ export function TaxonomySection({ narrativeState }: TaxonomySectionProps) {
             >
               <h3
                 style={{
-                  fontFamily: 'var(--font-space-grotesk)',
+                  fontFamily: 'var(--font-newsreader)',
                   fontSize: '1.25rem',
                   fontWeight: 500,
                   color: themeColor,
@@ -358,7 +358,7 @@ export function TaxonomySection({ narrativeState }: TaxonomySectionProps) {
               </h3>
               <p
                 style={{
-                  fontFamily: 'var(--font-dm-sans)',
+                  fontFamily: 'var(--font-urbanist)',
                   fontSize: '0.875rem',
                   color: 'var(--text-50)',
                 }}
@@ -400,7 +400,7 @@ export function TaxonomySection({ narrativeState }: TaxonomySectionProps) {
                 >
                   <p
                     style={{
-                      fontFamily: 'var(--font-dm-sans)',
+                      fontFamily: 'var(--font-urbanist)',
                       color: 'var(--text-40)',
                     }}
                   >

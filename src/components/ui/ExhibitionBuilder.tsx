@@ -349,7 +349,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                 cursor: (isGenerating || !prompt.trim()) ? 'not-allowed' : 'pointer',
                 opacity: (isGenerating || !prompt.trim()) ? 0.6 : 1,
                 whiteSpace: 'nowrap',
-                boxShadow: (isGenerating || !prompt.trim()) ? 'none' : '0 0 20px rgba(218, 14, 41, 0.3)',
+                boxShadow: (isGenerating || !prompt.trim()) ? 'none' : '0 0 20px rgba(217, 119, 87, 0.3)',
                 fontFamily: 'inherit',
                 letterSpacing: '0.005em',
                 display: 'flex',
@@ -360,7 +360,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
               onMouseEnter={(e) => {
                 if (!isGenerating && prompt.trim()) {
                   e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(218, 14, 41, 0.3)';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(217, 119, 87, 0.3)';
                 }
               }}
               onMouseLeave={(e) => {
@@ -432,7 +432,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
           <div style={{
             marginTop: '1rem',
             padding: '1.5rem',
-            backgroundColor: 'rgba(218, 14, 41, 0.05)',
+            backgroundColor: 'rgba(217, 119, 87, 0.05)',
             border: '1px solid var(--mystical-border)',
             borderRadius: '6px',
             position: 'relative',
@@ -447,7 +447,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
               transform: 'translate(-50%, -50%)',
               width: '100px',
               height: '100px',
-              background: 'radial-gradient(circle, rgba(218, 14, 41, 0.2) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(217, 119, 87, 0.2) 0%, transparent 70%)',
               borderRadius: '50%',
               filter: 'blur(20px)',
               animation: 'mystical-breathe 2s ease-in-out infinite',
@@ -468,7 +468,7 @@ export function ExhibitionBuilder({ onExhibitionGenerated, className = '' }: Exh
                   position: 'absolute',
                   inset: '-4px',
                   borderRadius: '50%',
-                  background: 'conic-gradient(from 0deg, transparent, rgba(218, 14, 41, 0.3), transparent)',
+                  background: 'conic-gradient(from 0deg, transparent, rgba(217, 119, 87, 0.3), transparent)',
                   animation: 'spin 2s linear infinite',
                 }} />
               </div>

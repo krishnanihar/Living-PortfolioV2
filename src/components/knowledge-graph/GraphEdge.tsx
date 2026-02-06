@@ -124,7 +124,7 @@ export function GraphEdges({
         const isHighlighted = highlightedEdges.has(edgeKey) || highlightedEdges.has(`${edge.target}-${edge.source}`);
         const isDimmed = dimmedEdges.has(edgeKey) || dimmedEdges.has(`${edge.target}-${edge.source}`);
 
-        const color = isHighlighted ? new THREE.Color('#DA0E29') : new THREE.Color('#ffffff');
+        const color = isHighlighted ? new THREE.Color('#d97757') : new THREE.Color('#ffffff');
 
         // Two vertices per edge
         colorArray.push(color.r, color.g, color.b, color.r, color.g, color.b);

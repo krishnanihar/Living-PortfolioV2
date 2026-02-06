@@ -120,7 +120,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       'relative inline-flex items-center justify-center gap-2',
       'font-medium select-none cursor-pointer',
       'border border-transparent rounded-full overflow-hidden',
-      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DA0E29] focus-visible:ring-offset-2 focus-visible:ring-offset-black',
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d97757] focus-visible:ring-offset-2 focus-visible:ring-offset-black',
       'disabled:pointer-events-none disabled:opacity-50',
       'transform-gpu will-change-transform',
       'transition-all duration-300 ease-out',
@@ -129,9 +129,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variants = {
       primary: [
-        'bg-[#DA0E29] text-white border-[#DA0E29]',
-        'hover:bg-[#DA0E29]/90 hover:shadow-2xl hover:shadow-[#DA0E29]/25',
-        'active:bg-[#DA0E29]/95',
+        'bg-[#d97757] text-white border-[#d97757]',
+        'hover:bg-[#d97757]/90 hover:shadow-2xl hover:shadow-[#d97757]/25',
+        'active:bg-[#d97757]/95',
       ],
       secondary: [
         'glass-layer-2 text-white/90 border-white/12',
@@ -302,7 +302,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {/* Enhanced shadow for premium variant */}
         {variant === 'premium' && (
           <motion.div
-            className="absolute -inset-1 bg-gradient-to-r from-[#DA0E29]/20 via-transparent to-[#DA0E29]/20 rounded-full blur-sm -z-10"
+            className="absolute -inset-1 bg-gradient-to-r from-[#d97757]/20 via-transparent to-[#d97757]/20 rounded-full blur-sm -z-10"
             animate={{
               opacity: [0.5, 0.8, 0.5],
               scale: [1, 1.02, 1],

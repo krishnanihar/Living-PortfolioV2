@@ -256,7 +256,7 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
           fontWeight: 300,
           color: 'var(--text-95)',
           marginBottom: '0.5rem',
-          fontFamily: 'var(--font-space-grotesk)',
+          fontFamily: 'var(--font-newsreader)',
           textAlign: 'center',
         }}
       >
@@ -429,7 +429,7 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
           transform: animationStage >= 1 ? 'translateY(0)' : 'translateY(20px)',
           filter: animationStage >= 1 ? 'blur(0)' : 'blur(12px)',
           transition: 'all 0.9s cubic-bezier(0.16, 1, 0.3, 1)',
-          fontFamily: 'var(--font-space-grotesk)',
+          fontFamily: 'var(--font-newsreader)',
         }}
       >
         <span
@@ -463,7 +463,7 @@ export default function ConceptHero({ scrollProgress = 0 }: ConceptHeroProps) {
           transform: animationStage >= 1 ? 'translateY(0)' : 'translateY(10px)',
           filter: animationStage >= 1 ? 'blur(0)' : 'blur(6px)',
           transition: 'all 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
-          fontFamily: 'var(--font-dm-sans)',
+          fontFamily: 'var(--font-urbanist)',
           display: 'flex',
           flexWrap: 'wrap',
           justifyContent: 'center',

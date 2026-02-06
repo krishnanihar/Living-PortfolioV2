@@ -44,15 +44,15 @@ export function CurrentRoleCard() {
         padding: '2rem',
         borderRadius: '24px',
         background: isHovered
-          ? 'linear-gradient(135deg, rgba(218, 14, 41, 0.12), rgba(255, 255, 255, 0.04))'
+          ? 'linear-gradient(135deg, rgba(217, 119, 87, 0.12), rgba(255, 255, 255, 0.04))'
           : 'rgba(255, 255, 255, 0.03)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         border: isHovered
-          ? '1px solid rgba(218, 14, 41, 0.4)'
+          ? '1px solid rgba(217, 119, 87, 0.4)'
           : '1px solid rgba(255, 255, 255, 0.08)',
         boxShadow: isHovered
-          ? '0 20px 40px rgba(0, 0, 0, 0.2), 0 0 40px rgba(218, 14, 41, 0.15)'
+          ? '0 20px 40px rgba(0, 0, 0, 0.2), 0 0 40px rgba(217, 119, 87, 0.15)'
           : '0 4px 12px rgba(0, 0, 0, 0.1)',
         transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
         cursor: 'pointer',
@@ -70,7 +70,7 @@ export function CurrentRoleCard() {
           width: 'clamp(44px, 8vw, 56px)',
           height: 'clamp(44px, 8vw, 56px)',
           borderRadius: '16px',
-          background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.3), rgba(218, 14, 41, 0.15))',
+          background: 'linear-gradient(135deg, rgba(217, 119, 87, 0.3), rgba(217, 119, 87, 0.15))',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -78,7 +78,7 @@ export function CurrentRoleCard() {
           transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
-        <Building2 style={{ width: 'clamp(22px, 4vw, 28px)', height: 'clamp(22px, 4vw, 28px)' }} color="rgb(218, 14, 41)" />
+        <Building2 style={{ width: 'clamp(22px, 4vw, 28px)', height: 'clamp(22px, 4vw, 28px)' }} color="rgb(217, 119, 87)" />
       </div>
 
       {/* Content */}
@@ -147,7 +147,7 @@ export function CurrentRoleCard() {
           left: 0,
           right: 0,
           height: '2px',
-          background: 'linear-gradient(90deg, rgba(218, 14, 41, 0.8), transparent)',
+          background: 'linear-gradient(90deg, rgba(217, 119, 87, 0.8), transparent)',
           transform: isHovered ? 'scaleX(1)' : 'scaleX(0)',
           transformOrigin: 'left',
           transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -163,7 +163,7 @@ export function CurrentRoleCard() {
             right: '-20%',
             width: '200px',
             height: '200px',
-            background: 'radial-gradient(circle, rgba(218, 14, 41, 0.15) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(217, 119, 87, 0.15) 0%, transparent 70%)',
             filter: 'blur(60px)',
             pointerEvents: 'none',
           }}

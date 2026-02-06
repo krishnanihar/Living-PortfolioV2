@@ -6,11 +6,11 @@
 /* === THEME VARIABLES === */
 .mythosTheme {
   --mythos-bg: #0F0F12;
-  --mythos-glow: #DA0E29;
+  --mythos-glow: #d97757;
   --mythos-glow-secondary: #8B7D6B;
   --mythos-text-aged: #E0D8C8;
-  --mythos-border: rgba(218, 14, 41, 0.15);
-  --mythos-particle: rgba(218, 14, 41, 0.3);
+  --mythos-border: rgba(217, 119, 87, 0.15);
+  --mythos-particle: rgba(217, 119, 87, 0.3);
 }
 
 /* === ANIMATIONS === */
@@ -23,7 +23,7 @@
 }
 
 .gradientText {
-  background: linear-gradient(90deg, #E0D8C8, #fff, #DA0E29, #E0D8C8);
+  background: linear-gradient(90deg, #E0D8C8, #fff, #d97757, #E0D8C8);
   background-size: 300% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -44,8 +44,8 @@
 
 /* Badge pulse glow */
 @keyframes badgePulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(218, 14, 41, 0.2); }
-  50% { box-shadow: 0 0 35px 8px rgba(218, 14, 41, 0.4); }
+  0%, 100% { box-shadow: 0 0 20px rgba(217, 119, 87, 0.2); }
+  50% { box-shadow: 0 0 35px 8px rgba(217, 119, 87, 0.4); }
 }
 
 .badgePulse {
@@ -93,7 +93,7 @@
   position: absolute;
   inset: 0;
   top: -50%;
-  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(218, 14, 41, 0.18), rgba(255, 255, 255, 0));
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(217, 119, 87, 0.18), rgba(255, 255, 255, 0));
   pointer-events: none;
 }
 
@@ -175,7 +175,7 @@
 .divider {
   height: 6px;
   width: 8rem;
-  background: linear-gradient(to right, #DA0E29, transparent);
+  background: linear-gradient(to right, #d97757, transparent);
   margin: 0 auto;
 }
 
@@ -223,11 +223,11 @@
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background: rgba(218, 14, 41, 0.2);
+  background: rgba(217, 119, 87, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #DA0E29;
+  color: #d97757;
   font-weight: 700;
 }
 
@@ -272,7 +272,7 @@
 .statNumber {
   font-size: clamp(3rem, 7vw, 4.5rem);
   font-weight: 800;
-  color: #DA0E29;
+  color: #d97757;
   margin-bottom: 0.5rem;
 }
 
@@ -288,7 +288,7 @@
 .innovationSection {
   position: relative;
   padding: 10rem 2rem;
-  background: radial-gradient(ellipse 100% 60% at 50% 50%, rgba(218, 14, 41, 0.08), transparent);
+  background: radial-gradient(ellipse 100% 60% at 50% 50%, rgba(217, 119, 87, 0.08), transparent);
 }
 
 .innovationContent {
@@ -328,14 +328,14 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #DA0E29, transparent);
+  background: linear-gradient(90deg, #d97757, transparent);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 .featureCard:hover {
   background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(218, 14, 41, 0.3);
+  border-color: rgba(217, 119, 87, 0.3);
   transform: translateY(-4px);
 }
 
@@ -347,12 +347,12 @@
   width: 3rem;
   height: 3rem;
   border-radius: 0.75rem;
-  background: rgba(218, 14, 41, 0.15);
+  background: rgba(217, 119, 87, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1.5rem;
-  color: #DA0E29;
+  color: #d97757;
 }
 
 .featureTitle {
@@ -432,8 +432,8 @@
 }
 
 .comparisonColumn.mythos {
-  border: 1px solid rgba(218, 14, 41, 0.3);
-  background: rgba(218, 14, 41, 0.05);
+  border: 1px solid rgba(217, 119, 87, 0.3);
+  background: rgba(217, 119, 87, 0.05);
 }
 
 .comparisonHeader {
@@ -450,7 +450,7 @@
 }
 
 .comparisonColumn.mythos .comparisonHeader {
-  color: #DA0E29;
+  color: #d97757;
 }
 
 .comparisonList {
@@ -479,7 +479,7 @@
 
 .comparisonColumn.mythos .comparisonList li::before {
   content: '✓';
-  color: #DA0E29;
+  color: #d97757;
 }
 
 /* === IMPACT SECTION STYLES === */
@@ -520,7 +520,7 @@
 
 .useCaseCard:hover {
   background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(218, 14, 41, 0.2);
+  border-color: rgba(217, 119, 87, 0.2);
   transform: translateY(-2px);
 }
 
@@ -562,8 +562,8 @@
 
 .techBadge {
   padding: 0.5rem 1.25rem;
-  background: rgba(218, 14, 41, 0.1);
-  border: 1px solid rgba(218, 14, 41, 0.2);
+  background: rgba(217, 119, 87, 0.1);
+  border: 1px solid rgba(217, 119, 87, 0.2);
   border-radius: 9999px;
   font-size: 0.875rem;
   font-weight: 500;
@@ -572,8 +572,8 @@
 }
 
 .techBadge:hover {
-  background: rgba(218, 14, 41, 0.15);
-  border-color: rgba(218, 14, 41, 0.3);
+  background: rgba(217, 119, 87, 0.15);
+  border-color: rgba(217, 119, 87, 0.3);
   transform: translateY(-1px);
 }
 
@@ -582,7 +582,7 @@
 .ctaSection {
   position: relative;
   padding: 8rem 2rem;
-  background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(218, 14, 41, 0.12), transparent);
+  background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(217, 119, 87, 0.12), transparent);
 }
 
 .ctaContent {
@@ -616,7 +616,7 @@
 
 .ctaButtonPrimary {
   padding: 1rem 2.5rem;
-  background: linear-gradient(135deg, #DA0E29, rgba(218, 14, 41, 0.8));
+  background: linear-gradient(135deg, #d97757, rgba(217, 119, 87, 0.8));
   color: white;
   font-size: 1.125rem;
   font-weight: 600;
@@ -624,12 +624,12 @@
   border-radius: 9999px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-  box-shadow: 0 10px 30px rgba(218, 14, 41, 0.3);
+  box-shadow: 0 10px 30px rgba(217, 119, 87, 0.3);
 }
 
 .ctaButtonPrimary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 15px 40px rgba(218, 14, 41, 0.4);
+  box-shadow: 0 15px 40px rgba(217, 119, 87, 0.4);
 }
 
 .ctaButtonSecondary {
@@ -677,7 +677,7 @@
 }
 
 .ctaFooterLink:hover {
-  color: #DA0E29;
+  color: #d97757;
 }
 
 /* === GALLERY SECTION STYLES === */
@@ -729,8 +729,8 @@
 
 .exhibitionInput:focus {
   outline: none;
-  border-color: rgba(218, 14, 41, 0.5);
-  box-shadow: 0 0 0 3px rgba(218, 14, 41, 0.1);
+  border-color: rgba(217, 119, 87, 0.5);
+  box-shadow: 0 0 0 3px rgba(217, 119, 87, 0.1);
   background: rgba(0, 0, 0, 0.4);
 }
 
@@ -740,7 +740,7 @@
 
 .summonButton {
   padding: 1.25rem 2.5rem;
-  background: linear-gradient(135deg, #DA0E29, rgba(218, 14, 41, 0.8));
+  background: linear-gradient(135deg, #d97757, rgba(217, 119, 87, 0.8));
   color: white;
   font-size: 1rem;
   font-weight: 600;
@@ -753,7 +753,7 @@
 
 .summonButton:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(218, 14, 41, 0.4);
+  box-shadow: 0 10px 30px rgba(217, 119, 87, 0.4);
 }
 
 .summonButton:disabled {
@@ -781,7 +781,7 @@
 
 .examplePrompt:hover {
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(218, 14, 41, 0.3);
+  border-color: rgba(217, 119, 87, 0.3);
   color: white;
 }
 
@@ -910,7 +910,7 @@
 
 .modalClose:hover {
   background: rgba(0, 0, 0, 0.8);
-  border-color: rgba(218, 14, 41, 0.5);
+  border-color: rgba(217, 119, 87, 0.5);
 }
 
 .modalTitle {
@@ -962,8 +962,8 @@
 
 .motifTag {
   padding: 0.375rem 0.75rem;
-  background: rgba(218, 14, 41, 0.15);
-  border: 1px solid rgba(218, 14, 41, 0.3);
+  background: rgba(217, 119, 87, 0.15);
+  border: 1px solid rgba(217, 119, 87, 0.3);
   border-radius: 0.375rem;
   font-size: 0.8125rem;
   color: rgba(255, 255, 255, 0.9);

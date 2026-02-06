@@ -65,7 +65,7 @@ export function OneirosReflectionSection() {
           style={{
             fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
             fontWeight: 300,
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             color: 'var(--text-90)',
             letterSpacing: '-0.02em',
             lineHeight: 1.3,
@@ -83,7 +83,7 @@ export function OneirosReflectionSection() {
           style={{
             fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
             color: 'var(--text-50)',
-            fontFamily: 'var(--font-dm-sans)',
+            fontFamily: 'var(--font-urbanist)',
             fontStyle: 'italic',
             lineHeight: 1.7,
             marginBottom: '4rem',
@@ -129,7 +129,7 @@ export function OneirosReflectionSection() {
               />
               <p
                 style={{
-                  fontFamily: 'var(--font-dm-sans)',
+                  fontFamily: 'var(--font-urbanist)',
                   fontSize: '0.9375rem',
                   color: 'var(--text-70)',
                   margin: 0,
@@ -156,7 +156,7 @@ export function OneirosReflectionSection() {
         >
           <p
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '0.8125rem',
               color: 'var(--text-40)',
               letterSpacing: '0.05em',

@@ -84,7 +84,7 @@ function RoomCard({
       >
         <h4
           style={{
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             fontSize: '1rem',
             fontWeight: 500,
             color: isSelected ? 'var(--text-95)' : 'var(--text-80)',
@@ -97,7 +97,7 @@ function RoomCard({
             padding: '0.25rem 0.5rem',
             background: `${room.atmosphere.primaryColor}15`,
             borderRadius: '4px',
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             fontSize: '0.625rem',
             fontWeight: 600,
             color: room.atmosphere.primaryColor,
@@ -111,7 +111,7 @@ function RoomCard({
       {/* Description */}
       <p
         style={{
-          fontFamily: 'var(--font-dm-sans)',
+          fontFamily: 'var(--font-urbanist)',
           fontSize: '0.8125rem',
           color: 'var(--text-50)',
           lineHeight: 1.5,
@@ -138,7 +138,7 @@ function RoomCard({
                 padding: '0.25rem 0.5rem',
                 background: 'var(--glass-05)',
                 borderRadius: '4px',
-                fontFamily: 'var(--font-space-grotesk)',
+                fontFamily: 'var(--font-newsreader)',
                 fontSize: '0.625rem',
                 color: 'var(--text-50)',
                 textTransform: 'capitalize',
@@ -152,7 +152,7 @@ function RoomCard({
         {/* Artwork count */}
         <span
           style={{
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             fontSize: '0.6875rem',
             color: 'var(--text-40)',
           }}
@@ -191,7 +191,7 @@ export function RoomsPreviewSection({ narrativeState }: RoomsPreviewSectionProps
         >
           <p
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '0.75rem',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -203,7 +203,7 @@ export function RoomsPreviewSection({ narrativeState }: RoomsPreviewSectionProps
           </p>
           <h2
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
               fontWeight: 300,
               color: 'var(--text-90)',
@@ -215,7 +215,7 @@ export function RoomsPreviewSection({ narrativeState }: RoomsPreviewSectionProps
           </h2>
           <p
             style={{
-              fontFamily: 'var(--font-dm-sans)',
+              fontFamily: 'var(--font-urbanist)',
               fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
               color: 'var(--text-60)',
               maxWidth: '640px',
@@ -275,7 +275,7 @@ export function RoomsPreviewSection({ narrativeState }: RoomsPreviewSectionProps
               <div>
                 <h3
                   style={{
-                    fontFamily: 'var(--font-space-grotesk)',
+                    fontFamily: 'var(--font-newsreader)',
                     fontSize: 'clamp(1.5rem, 3vw, 2rem)',
                     fontWeight: 400,
                     color: selected.atmosphere.primaryColor,
@@ -286,7 +286,7 @@ export function RoomsPreviewSection({ narrativeState }: RoomsPreviewSectionProps
                 </h3>
                 <p
                   style={{
-                    fontFamily: 'var(--font-dm-sans)',
+                    fontFamily: 'var(--font-urbanist)',
                     fontSize: '1rem',
                     color: 'var(--text-65)',
                     lineHeight: 1.7,
@@ -312,7 +312,7 @@ export function RoomsPreviewSection({ narrativeState }: RoomsPreviewSectionProps
               >
                 <span
                   style={{
-                    fontFamily: 'var(--font-space-grotesk)',
+                    fontFamily: 'var(--font-newsreader)',
                     fontSize: '2.5rem',
                     fontWeight: 300,
                     color: selected.atmosphere.primaryColor,
@@ -341,7 +341,7 @@ export function RoomsPreviewSection({ narrativeState }: RoomsPreviewSectionProps
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <h3
               style={{
-                fontFamily: 'var(--font-space-grotesk)',
+                fontFamily: 'var(--font-newsreader)',
                 fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)',
                 fontWeight: 400,
                 color: 'var(--text-90)',
@@ -352,7 +352,7 @@ export function RoomsPreviewSection({ narrativeState }: RoomsPreviewSectionProps
             </h3>
             <p
               style={{
-                fontFamily: 'var(--font-dm-sans)',
+                fontFamily: 'var(--font-urbanist)',
                 fontSize: '1rem',
                 color: 'var(--text-55)',
                 lineHeight: 1.6,

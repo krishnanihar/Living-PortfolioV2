@@ -143,7 +143,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 >
                   <button
                     onClick={this.handleReload}
-                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-[#DA0E29] hover:bg-[#DA0E29]/90 text-white rounded-full font-medium transition-all duration-300 hover:scale-105 active:scale-95"
+                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-[#d97757] hover:bg-[#d97757]/90 text-white rounded-full font-medium transition-all duration-300 hover:scale-105 active:scale-95"
                   >
                     <RefreshCw size={16} />
                     Try Again

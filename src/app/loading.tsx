@@ -30,7 +30,7 @@ export default function Loading() {
                 fontWeight="700"
                 textAnchor="middle"
                 fill="url(#logoGradient)"
-                style={{ fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif' }}
+                style={{ fontFamily: 'var(--font-newsreader), system-ui, sans-serif' }}
               >
                 K
               </text>

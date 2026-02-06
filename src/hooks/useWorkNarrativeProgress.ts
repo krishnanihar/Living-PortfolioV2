@@ -41,9 +41,9 @@ export function useWorkNarrativeProgress(
     intensity: 0,
     contentType: 'transition',
     color: {
-      primary: 'rgba(218, 14, 41, 0.8)', // Red - Air India
+      primary: 'rgba(217, 119, 87, 0.8)', // Red - Air India
       secondary: 'rgba(251, 146, 60, 0.8)', // Orange - accent
-      atmosphere: 'rgba(218, 14, 41, 0.02)',
+      atmosphere: 'rgba(217, 119, 87, 0.02)',
     },
   });
 
@@ -62,9 +62,9 @@ export function useWorkNarrativeProgress(
       actProgress = scrollProgress / 0.3;
       intensity = 0.3 + actProgress * 0.3; // Builds from 0.3 to 0.6
       color = {
-        primary: 'rgba(218, 14, 41, 0.8)', // Red - Air India
+        primary: 'rgba(217, 119, 87, 0.8)', // Red - Air India
         secondary: 'rgba(251, 146, 60, 0.8)', // Orange - accent
-        atmosphere: `rgba(218, 14, 41, ${0.02 + actProgress * 0.02})`,
+        atmosphere: `rgba(217, 119, 87, ${0.02 + actProgress * 0.02})`,
       };
     }
     // Act II: Innovation (30-70%) - Blue theme (research)

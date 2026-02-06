@@ -79,7 +79,7 @@ export function HeroIntro() {
               width: 'clamp(180px, 40vw, 256px)',
               height: 'clamp(180px, 40vw, 256px)',
               borderRadius: '50%',
-              background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.1), rgba(251, 191, 36, 0.05))',
+              background: 'linear-gradient(135deg, rgba(217, 119, 87, 0.1), rgba(251, 191, 36, 0.05))',
               padding: '4px',
               transform: isHovered
                 ? `perspective(1000px) rotateX(${mousePosition.y}deg) rotateY(${mousePosition.x}deg) scale(1.05)`
@@ -114,7 +114,7 @@ export function HeroIntro() {
                   style={{
                     position: 'absolute',
                     inset: '-50%',
-                    background: 'radial-gradient(circle, rgba(218, 14, 41, 0.3) 0%, transparent 70%)',
+                    background: 'radial-gradient(circle, rgba(217, 119, 87, 0.3) 0%, transparent 70%)',
                     filter: 'blur(40px)',
                     animation: 'spin 8s linear infinite',
                   }}

@@ -50,7 +50,7 @@ class SceneErrorBoundary extends Component<
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#0A0A0A',
+            backgroundColor: '#0c0c10',
             color: 'white',
             fontFamily: 'var(--font-dm-sans, system-ui)',
             padding: '2rem',
@@ -264,7 +264,7 @@ function LoadingScreen() {
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: '#0A0A0A',
+        backgroundColor: '#0c0c10',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -286,7 +286,7 @@ function LoadingScreen() {
       <p
         style={{
           color: 'var(--text-60)',
-          fontFamily: 'var(--font-space-grotesk)',
+          fontFamily: 'var(--font-newsreader)',
           fontSize: '0.875rem',
           letterSpacing: '0.1em',
           textTransform: 'uppercase',
@@ -358,7 +358,7 @@ function InstructionsOverlay({ isLocked, onEnterPalace }: { isLocked: boolean; o
       <div style={{ textAlign: 'center', maxWidth: '480px', padding: '0 2rem' }}>
         <h2
           style={{
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
             fontWeight: 500,
             color: 'var(--text-95)',
@@ -419,7 +419,7 @@ function InstructionsOverlay({ isLocked, onEnterPalace }: { isLocked: boolean; o
             border: 'none',
             borderRadius: '12px',
             cursor: 'pointer',
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             transition: 'all 0.2s ease',
           }}
           onMouseEnter={(e) => {
@@ -468,7 +468,7 @@ function DepthIndicator({ depth }: { depth: string }) {
     >
       <p
         style={{
-          fontFamily: 'var(--font-space-grotesk)',
+          fontFamily: 'var(--font-newsreader)',
           fontSize: '0.75rem',
           color: 'var(--text-40)',
           textTransform: 'uppercase',
@@ -480,7 +480,7 @@ function DepthIndicator({ depth }: { depth: string }) {
       </p>
       <p
         style={{
-          fontFamily: 'var(--font-space-grotesk)',
+          fontFamily: 'var(--font-newsreader)',
           fontSize: '1rem',
           color: '#8B5CF6',
           fontWeight: 500,
@@ -689,7 +689,7 @@ export function OneirosScene() {
   }
 
   return (
-    <div style={{ position: 'fixed', inset: 0, backgroundColor: '#0A0A0A' }}>
+    <div style={{ position: 'fixed', inset: 0, backgroundColor: '#0c0c10' }}>
       <SceneErrorBoundary>
         <Canvas
           camera={{

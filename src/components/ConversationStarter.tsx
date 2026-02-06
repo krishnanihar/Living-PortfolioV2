@@ -222,7 +222,7 @@ export function ConversationStarter({ onMessageSubmit }: ConversationStarterProp
               height: '6px',
               borderRadius: '50%',
               background: 'var(--brand-red)',
-              boxShadow: '0 0 12px rgba(218, 14, 41, 0.6)',
+              boxShadow: '0 0 12px rgba(217, 119, 87, 0.6)',
               animation: 'pulse 2s ease-in-out infinite',
             }} />
             Air India DesignLAB • 450+ daily users

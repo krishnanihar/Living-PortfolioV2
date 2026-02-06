@@ -72,7 +72,7 @@ export function ProjectAccordion({ projects, inView }: ProjectAccordionProps) {
                   borderRadius: '1rem',
                   pointerEvents: 'none',
                   padding: '1px',
-                  background: 'linear-gradient(135deg, rgba(218, 14, 41, 0.6), rgba(218, 14, 41, 0.2), rgba(218, 14, 41, 0.6))',
+                  background: 'linear-gradient(135deg, rgba(217, 119, 87, 0.6), rgba(217, 119, 87, 0.2), rgba(217, 119, 87, 0.6))',
                   backgroundSize: '200% 200%',
                   animation: 'borderShimmer 3s ease-in-out infinite',
                   WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',

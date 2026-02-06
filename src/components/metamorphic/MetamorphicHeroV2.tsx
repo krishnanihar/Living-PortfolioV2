@@ -347,7 +347,7 @@ export function MetamorphicHeroV2({ onEnterPortal }: MetamorphicHeroV2Props) {
                     lineHeight: 1.15,
                     color: 'var(--text-95)',
                     marginBottom: '1rem',
-                    fontFamily: 'var(--font-space-grotesk)',
+                    fontFamily: 'var(--font-newsreader)',
                   }}
                 >
                   Metamorphic Fractal Reflections

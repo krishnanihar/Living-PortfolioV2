@@ -49,10 +49,10 @@ export function ImpactBadge({ status, impactType, customLabel, className }: Impa
         return {
           icon: Zap,
           label: customLabel || 'Live',
-          gradient: 'linear-gradient(135deg, rgba(218, 14, 41, 0.2) 0%, rgba(185, 12, 35, 0.1) 100%)',
-          border: 'rgba(218, 14, 41, 0.3)',
-          glow: '0 0 20px rgba(218, 14, 41, 0.2)',
-          color: 'rgba(218, 14, 41, 0.9)',
+          gradient: 'linear-gradient(135deg, rgba(217, 119, 87, 0.2) 0%, rgba(185, 12, 35, 0.1) 100%)',
+          border: 'rgba(217, 119, 87, 0.3)',
+          glow: '0 0 20px rgba(217, 119, 87, 0.2)',
+          color: 'rgba(217, 119, 87, 0.9)',
         };
     }
   };

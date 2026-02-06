@@ -57,7 +57,7 @@ export function WorkNarrativeProgressIndicator({
       description: 'Professional Work',
       icon: Briefcase,
       range: [0, 0.3],
-      color: 'rgba(218, 14, 41, 0.8)',
+      color: 'rgba(217, 119, 87, 0.8)',
     },
     {
       id: 'innovation',
@@ -323,7 +323,7 @@ export function WorkNarrativeProgressBar() {
       <motion.div
         style={{
           height: '100%',
-          background: `linear-gradient(90deg, rgba(147, 51, 234, 0.8), rgba(218, 14, 41, 0.8), rgba(14, 165, 233, 0.8))`,
+          background: `linear-gradient(90deg, rgba(147, 51, 234, 0.8), rgba(217, 119, 87, 0.8), rgba(14, 165, 233, 0.8))`,
           width: `${narrativeState.progress * 100}%`,
           boxShadow: `0 0 10px ${narrativeState.color.primary}`,
         }}

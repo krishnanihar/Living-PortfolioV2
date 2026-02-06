@@ -21,7 +21,7 @@ interface GradientTextProps {
 export function GradientText({
   text,
   className = '',
-  gradient = ['#DA0E29', '#FF6B9D', '#FFA07A', '#DA0E29'], // Brand red palette
+  gradient = ['#d97757', '#e8a88a', '#f0c4a8', '#d97757'], // Warm terracotta palette
   animationDuration = 4,
   splitByLetters = true,
   staggerDelay = 0.03,

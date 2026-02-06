@@ -45,7 +45,7 @@ function MagneticLetter({ char, index, strength, staggerDelay, glowEffect }: Mag
     [0, 1],
     [
       '0px 0px 0px rgba(255, 255, 255, 0)',
-      '0px 0px 20px rgba(255, 255, 255, 0.3), 0px 0px 40px rgba(218, 14, 41, 0.2)'
+      '0px 0px 20px rgba(255, 255, 255, 0.3), 0px 0px 40px rgba(217, 119, 87, 0.2)'
     ]
   );
 

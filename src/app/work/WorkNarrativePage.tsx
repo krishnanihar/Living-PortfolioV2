@@ -265,7 +265,7 @@ export function WorkNarrativePage() {
       expandedDescription: 'Built a Figma plugin that automates consistency checks. What started as a personal workflow fix became infrastructure serving 10M+ users annually, cutting review time by 30%.',
       metric: '10M+ Users Annually',
       tags: ['Figma', 'Plugin', 'Automation'],
-      color: '218, 14, 41',
+      color: '217, 119, 87',
     },
     {
       id: 3,
@@ -2458,7 +2458,7 @@ function ResearchSkeleton() {
  */
 function CTACard({ isMobile, inView }: { isMobile: boolean; inView: boolean }) {
   const [isHovered, setIsHovered] = React.useState(false);
-  const airIndiaRed = '218, 14, 41';
+  const airIndiaRed = '217, 119, 87';
 
   return (
     <Link

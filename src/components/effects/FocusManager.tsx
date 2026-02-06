@@ -178,12 +178,12 @@ export function FocusManager({ className = '' }: FocusManagerProps) {
           >
             {/* Main focus ring */}
             <div
-              className="absolute inset-0 border-2 border-[#DA0E29] animate-pulse"
+              className="absolute inset-0 border-2 border-[#d97757] animate-pulse"
               style={{
                 borderRadius: focusRing.borderRadius,
                 boxShadow: `
-                  0 0 0 2px rgba(218, 14, 41, 0.3),
-                  0 0 20px rgba(218, 14, 41, 0.2),
+                  0 0 0 2px rgba(217, 119, 87, 0.3),
+                  0 0 20px rgba(217, 119, 87, 0.2),
                   inset 0 0 0 1px rgba(255, 255, 255, 0.1)
                 `,
               }}
@@ -197,9 +197,9 @@ export function FocusManager({ className = '' }: FocusManagerProps) {
               }}
               animate={{
                 boxShadow: [
-                  '0 0 20px rgba(218, 14, 41, 0.4)',
-                  '0 0 30px rgba(218, 14, 41, 0.6)',
-                  '0 0 20px rgba(218, 14, 41, 0.4)',
+                  '0 0 20px rgba(217, 119, 87, 0.4)',
+                  '0 0 30px rgba(217, 119, 87, 0.6)',
+                  '0 0 20px rgba(217, 119, 87, 0.4)',
                 ],
               }}
               transition={{
@@ -218,7 +218,7 @@ export function FocusManager({ className = '' }: FocusManagerProps) {
             ].map((position, index) => (
               <motion.div
                 key={index}
-                className="absolute w-2 h-2 bg-[#DA0E29] rounded-full"
+                className="absolute w-2 h-2 bg-[#d97757] rounded-full"
                 style={position}
                 animate={{
                   scale: [1, 1.2, 1],
@@ -241,7 +241,7 @@ export function FocusManager({ className = '' }: FocusManagerProps) {
                 background: `
                   linear-gradient(90deg,
                     transparent,
-                    rgba(218, 14, 41, 0.4),
+                    rgba(217, 119, 87, 0.4),
                     transparent
                   )
                 `,
@@ -284,7 +284,7 @@ export const focusStyles = {
     focus-visible:outline-none
     focus-visible:ring-0
     data-[focused]:ring-2
-    data-[focused]:ring-[#DA0E29]
+    data-[focused]:ring-[#d97757]
     data-[focused]:ring-offset-2
     data-[focused]:ring-offset-black
   `,

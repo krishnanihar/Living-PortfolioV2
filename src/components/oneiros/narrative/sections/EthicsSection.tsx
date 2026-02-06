@@ -91,7 +91,7 @@ function DilemmaCard({
         >
           <span
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '0.75rem',
               fontWeight: 600,
               color,
@@ -102,7 +102,7 @@ function DilemmaCard({
           </span>
           <h4
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '1.125rem',
               fontWeight: 500,
               color: 'var(--text-90)',
@@ -114,7 +114,7 @@ function DilemmaCard({
 
         <p
           style={{
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)',
             fontStyle: 'italic',
             color: 'var(--text-70)',
@@ -144,7 +144,7 @@ function DilemmaCard({
             >
               <p
                 style={{
-                  fontFamily: 'var(--font-dm-sans)',
+                  fontFamily: 'var(--font-urbanist)',
                   fontSize: '0.9375rem',
                   color: 'var(--text-60)',
                   lineHeight: 1.8,
@@ -170,7 +170,7 @@ function DilemmaCard({
                       background: `${color}10`,
                       border: `1px solid ${color}25`,
                       borderRadius: '6px',
-                      fontFamily: 'var(--font-space-grotesk)',
+                      fontFamily: 'var(--font-newsreader)',
                       fontSize: '0.6875rem',
                       color: color,
                       textTransform: 'uppercase',
@@ -213,7 +213,7 @@ export function EthicsSection({ narrativeState }: EthicsSectionProps) {
         >
           <p
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: '0.75rem',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -225,7 +225,7 @@ export function EthicsSection({ narrativeState }: EthicsSectionProps) {
           </p>
           <h2
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
               fontWeight: 300,
               color: 'var(--text-90)',
@@ -237,7 +237,7 @@ export function EthicsSection({ narrativeState }: EthicsSectionProps) {
           </h2>
           <p
             style={{
-              fontFamily: 'var(--font-dm-sans)',
+              fontFamily: 'var(--font-urbanist)',
               fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
               color: 'var(--text-60)',
               maxWidth: '560px',

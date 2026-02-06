@@ -44,7 +44,7 @@ export const ProblemSection = () => {
                 <span className="text-6xl opacity-10">?</span>
               </div>
               {/* Decorative accent */}
-              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-[#DA0E29]/10 rounded-full blur-3xl" />
+              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-[#d97757]/10 rounded-full blur-3xl" />
             </div>
           </ScrollReveal>
 

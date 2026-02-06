@@ -119,7 +119,7 @@ export function WorkConceptHero({ scrollProgress = 0 }: WorkConceptHeroProps) {
                 textTransform: 'uppercase',
                 color: 'var(--text-50)',
                 marginBottom: '1rem',
-                fontFamily: 'var(--font-space-grotesk)',
+                fontFamily: 'var(--font-newsreader)',
                 opacity: animationStage >= 1 ? 1 : 0,
                 transform: animationStage >= 1 ? 'translateY(0)' : 'translateY(20px)',
                 filter: animationStage >= 1 ? 'blur(0)' : 'blur(8px)',
@@ -138,7 +138,7 @@ export function WorkConceptHero({ scrollProgress = 0 }: WorkConceptHeroProps) {
                 letterSpacing: '0.02em',
                 marginBottom: '1rem',
                 color: 'var(--text-95)',
-                fontFamily: 'var(--font-space-grotesk)',
+                fontFamily: 'var(--font-newsreader)',
                 opacity: animationStage >= 1 ? 1 : 0,
                 transform: animationStage >= 1 ? 'translateY(0)' : 'translateY(20px)',
                 filter: animationStage >= 1 ? 'blur(0)' : 'blur(12px)',
@@ -202,7 +202,7 @@ export function WorkConceptHero({ scrollProgress = 0 }: WorkConceptHeroProps) {
                       fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
                       fontWeight: 300,
                       color: 'var(--text-90)',
-                      fontFamily: 'var(--font-space-grotesk)',
+                      fontFamily: 'var(--font-newsreader)',
                       letterSpacing: '-0.02em',
                     }}
                   >

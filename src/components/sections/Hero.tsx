@@ -210,7 +210,7 @@ export function Hero({ className }: HeroProps) {
                     className="glass-card rounded-full p-2 transform-gpu will-change-transform"
                     whileHover={{
                       scale: 1.02,
-                      boxShadow: '0 20px 40px rgba(218, 14, 41, 0.1)',
+                      boxShadow: '0 20px 40px rgba(217, 119, 87, 0.1)',
                       transition: { duration: 0.2 },
                     }}
                     whileTap={{ scale: 0.98 }}
@@ -245,7 +245,7 @@ export function Hero({ className }: HeroProps) {
                     onClick={() => handleButtonClick('work')}
                     whileHover={{
                       scale: 1.05,
-                      boxShadow: '0 20px 40px rgba(218, 14, 41, 0.3)',
+                      boxShadow: '0 20px 40px rgba(217, 119, 87, 0.3)',
                       transition: { duration: 0.2 },
                     }}
                     whileTap={{ scale: 0.95 }}

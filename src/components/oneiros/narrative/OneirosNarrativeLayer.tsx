@@ -150,7 +150,7 @@ function AmbientWhisper({
             position: 'fixed',
             left: position.x,
             top: position.y,
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             fontSize: '0.75rem',
             fontStyle: 'italic',
             color,
@@ -203,7 +203,7 @@ function FirstPersonMoment({
             exit={{ y: -20, opacity: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
             style={{
-              fontFamily: 'var(--font-space-grotesk)',
+              fontFamily: 'var(--font-newsreader)',
               fontSize: 'clamp(1rem, 2.5vw, 1.5rem)',
               fontStyle: 'italic',
               color,
@@ -241,7 +241,7 @@ function SkipButton({ onClick }: { onClick: () => void }) {
         border: '1px solid var(--text-10)',
         borderRadius: '8px',
         color: 'var(--text-50)',
-        fontFamily: 'var(--font-space-grotesk)',
+        fontFamily: 'var(--font-newsreader)',
         fontSize: '0.75rem',
         letterSpacing: '0.05em',
         cursor: 'pointer',
@@ -295,7 +295,7 @@ function ActTransition({
       >
         <motion.p
           style={{
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             fontSize: '0.75rem',
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
@@ -307,7 +307,7 @@ function ActTransition({
         </motion.p>
         <motion.h2
           style={{
-            fontFamily: 'var(--font-space-grotesk)',
+            fontFamily: 'var(--font-newsreader)',
             fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
             fontWeight: 300,
             color,
@@ -389,7 +389,7 @@ export function OneirosNarrativeLayer() {
       style={{
         position: 'relative',
         minHeight: '100vh',
-        backgroundColor: '#0A0A0A',
+        backgroundColor: '#0c0c10',
       }}
     >
       {/* Navigation */}

@@ -120,10 +120,10 @@ export function JourneyTimelineMini({ act2InView, mounted }: JourneyTimelineMini
                     ? 'var(--brand-red)'
                     : 'rgba(255, 255, 255, 0.3)',
                   border: index === journeyMilestones.length - 1 || activeTimeline === milestone.id
-                    ? '2px solid rgba(218, 14, 41, 0.5)'
+                    ? '2px solid rgba(217, 119, 87, 0.5)'
                     : '2px solid rgba(255, 255, 255, 0.2)',
                   boxShadow: index === journeyMilestones.length - 1 || activeTimeline === milestone.id
-                    ? '0 0 12px rgba(218, 14, 41, 0.5)'
+                    ? '0 0 12px rgba(217, 119, 87, 0.5)'
                     : 'none',
                   transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                 }} />
@@ -162,11 +162,11 @@ export function JourneyTimelineMini({ act2InView, mounted }: JourneyTimelineMini
           <div style={{
             marginTop: '1.5rem',
             padding: '1.5rem',
-            background: 'rgba(218, 14, 41, 0.05)',
+            background: 'rgba(217, 119, 87, 0.05)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
             borderRadius: '16px',
-            border: '1px solid rgba(218, 14, 41, 0.2)',
+            border: '1px solid rgba(217, 119, 87, 0.2)',
             animation: 'fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
           }}>
             <p style={{
@@ -206,10 +206,10 @@ export function JourneyTimelineMini({ act2InView, mounted }: JourneyTimelineMini
               boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(218, 14, 41, 0.15)';
-              e.currentTarget.style.borderColor = 'rgba(218, 14, 41, 0.4)';
+              e.currentTarget.style.background = 'rgba(217, 119, 87, 0.15)';
+              e.currentTarget.style.borderColor = 'rgba(217, 119, 87, 0.4)';
               e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(218, 14, 41, 0.2)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(217, 119, 87, 0.2)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
