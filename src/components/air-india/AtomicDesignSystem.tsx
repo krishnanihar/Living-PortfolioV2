@@ -149,7 +149,7 @@ export function AtomicDesignSystem({ brandColor = '218, 14, 41' }: AtomicDesignS
           transition={{ type: 'spring', stiffness: 400, damping: 30 }}
           style={{ fontSize: 'clamp(18px, 2.5vw, 24px)', fontWeight: 600, color: '#1a1a1a', lineHeight: 1.4 }}
         >
-          The quick brown fox jumps over the lazy dog, showcasing its agility and playfulness.
+          Fly the Maharajah way — discover India&apos;s finest destinations with Air India.
         </motion.div>
       </div>
 
@@ -238,10 +238,10 @@ export function AtomicDesignSystem({ brandColor = '218, 14, 41' }: AtomicDesignS
       <div>
         <div style={{ fontSize: '13px', color: '#999', marginBottom: '8px' }}>Title Wrapper</div>
         <div style={{ fontSize: 'clamp(18px, 2.2vw, 22px)', fontWeight: 600, color: '#1a1a1a', marginBottom: '8px', lineHeight: 1.3 }}>
-          The quick brown fox jumps over the lazy dog
+          Explore Destinations Across India
         </div>
         <div style={{ fontSize: 'clamp(12px, 1.4vw, 14px)', color: '#666', lineHeight: 1.6 }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porttitor ultricies volutpat. Vestibulum volutpat consequat
+          From the snowy peaks of Kashmir to the sun-kissed beaches of Goa, Air India connects you to every corner of the subcontinent.
         </div>
       </div>
 
@@ -270,7 +270,7 @@ export function AtomicDesignSystem({ brandColor = '218, 14, 41' }: AtomicDesignS
               transition: 'background 0.2s',
             }}
           >
-            Learn More
+            Book Now
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M7 3v8M3 7h8" stroke="white" strokeWidth="2" strokeLinecap="round" />
             </svg>
@@ -297,7 +297,7 @@ export function AtomicDesignSystem({ brandColor = '218, 14, 41' }: AtomicDesignS
               transition: 'background 0.2s',
             }}
           >
-            Learn More
+            Manage Trip
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M7 3v8M3 7h8" stroke={BRAND_RED} strokeWidth="2" strokeLinecap="round" />
             </svg>
@@ -322,7 +322,7 @@ export function AtomicDesignSystem({ brandColor = '218, 14, 41' }: AtomicDesignS
               gap: '6px',
             }}
           >
-            Learn More
+            Check Status
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <path d="M2 6h8M7 3l3 3-3 3" stroke={BRAND_RED} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -400,7 +400,7 @@ export function AtomicDesignSystem({ brandColor = '218, 14, 41' }: AtomicDesignS
             lineHeight: 1.6,
             marginBottom: '16px',
           }}>
-            Step into the pages of history at Red Fort, Delhi. Marvel at the majestic Mughal architecture, soak in the rich culture, and witness the grandeur of India&apos;s glorious past. A must-visit for every history enthusiast!&quot;
+            Step into the pages of history at Red Fort, Delhi. Marvel at the majestic Mughal architecture, soak in the rich culture, and witness the grandeur of India&apos;s glorious past.
           </div>
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -416,7 +416,7 @@ export function AtomicDesignSystem({ brandColor = '218, 14, 41' }: AtomicDesignS
               cursor: 'pointer',
             }}
           >
-            Buy Tickets
+            Explore
           </motion.button>
         </div>
       </motion.div>
@@ -434,7 +434,7 @@ export function AtomicDesignSystem({ brandColor = '218, 14, 41' }: AtomicDesignS
     { id: 5, title: 'MEENAKSHI TEMPLE', gradient: 'linear-gradient(135deg, #98D8C8, #2E8B57)' },
   ];
 
-  const cardDescription = 'Step into the pages of history at Red Fort, Delhi. Marvel at themajestic Mughal architecture, soak in the rich culture, and witnessthe grandeur of India\'s glorious past. A must-visit for everyhistory enthusiast!"';
+  const cardDescription = 'Step into the pages of history at Red Fort, Delhi. Marvel at the majestic Mughal architecture, soak in the rich culture, and witness the grandeur of India\'s glorious past.';
 
   const renderTemplates = () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: 'clamp(16px, 3vw, 32px)', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
@@ -489,7 +489,7 @@ export function AtomicDesignSystem({ brandColor = '218, 14, 41' }: AtomicDesignS
                     cursor: 'pointer',
                   }}
                 >
-                  Buy Tickets
+                  Explore
                 </motion.button>
               </div>
             </motion.div>
@@ -552,7 +552,7 @@ export function AtomicDesignSystem({ brandColor = '218, 14, 41' }: AtomicDesignS
           {/* Status bar */}
           <div style={{
             height: '24px',
-            background: 'linear-gradient(180deg, #4A90D9, #3A7BD5)',
+            background: 'linear-gradient(180deg, #E01230, #DA0E29)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -576,7 +576,7 @@ export function AtomicDesignSystem({ brandColor = '218, 14, 41' }: AtomicDesignS
           {/* Nav bar */}
           <div style={{
             height: '28px',
-            background: 'linear-gradient(180deg, #3A7BD5, #2E6BBF)',
+            background: 'linear-gradient(180deg, #DA0E29, #B80C22)',
             display: 'flex',
             alignItems: 'center',
             padding: '0 10px',
@@ -595,10 +595,10 @@ export function AtomicDesignSystem({ brandColor = '218, 14, 41' }: AtomicDesignS
             overflowY: 'auto',
             WebkitOverflowScrolling: 'touch',
           }}>
-            {/* Hero image - Burj Al Arab gradient */}
+            {/* Hero image - Dubai skyline gradient */}
             <div style={{
               height: '110px',
-              background: 'linear-gradient(180deg, #1A4F7A 0%, #2E7DA8 35%, #4AA3C7 65%, #7BC0DB 100%)',
+              background: 'linear-gradient(180deg, #DA0E29 0%, #E8445A 35%, #F4A460 65%, #FFD5A0 100%)',
               position: 'relative',
             }}>
               <svg viewBox="0 0 260 130" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} preserveAspectRatio="xMidYMax meet">

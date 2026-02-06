@@ -1080,6 +1080,14 @@ h1, h2, h3, h4, h5, h6 {
   50% { box-shadow: 0 0 0 6px rgba(12, 140, 233, 0); }
 }
 
+/* Air India hero logo: white in dark mode, red+gold in light mode */
+.air-india-hero-logo {
+  filter: drop-shadow(0 4px 16px rgba(218, 14, 41, 0.25));
+}
+[data-theme="dark"] .air-india-hero-logo {
+  filter: brightness(0) invert(1) drop-shadow(0 4px 16px rgba(255, 255, 255, 0.15));
+}
+
 @keyframes tapRing {
   0% { transform: scale(0.8); opacity: 0.5; }
   70% { transform: scale(2); opacity: 0; }

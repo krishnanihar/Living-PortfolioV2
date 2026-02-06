@@ -1274,10 +1274,10 @@ export function AirIndiaWork() {
             <img
               src="/logos/air-india.svg"
               alt="Air India"
+              className="air-india-hero-logo"
               style={{
                 width: '180px',
                 height: 'auto',
-                filter: 'drop-shadow(0 4px 16px rgba(218, 14, 41, 0.25))',
               }}
             />
           </motion.div>
