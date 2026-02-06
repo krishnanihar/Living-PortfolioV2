@@ -662,6 +662,7 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
                       right: isMobile ? '5%' : '8%',
                       width: isMobile ? '90%' : 'clamp(340px, 32vw, 420px)',
                       zIndex: 10,
+                      pointerEvents: 'none',
                       background: `linear-gradient(135deg, var(--glass-04) 0%, var(--glass-02) 50%, var(--glass-03) 100%), var(--overlay-65)`,
                       backdropFilter: 'blur(40px) saturate(180%)',
                       WebkitBackdropFilter: 'blur(40px) saturate(180%)',
