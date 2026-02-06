@@ -11,6 +11,7 @@ export interface Credential {
   role?: string;
   isPhoto?: boolean; // Photos can't use monochrome filter
   scale?: number; // Optional scale multiplier for individual logos
+  hoverFilter?: string; // Custom CSS filter on hover
 }
 
 export interface CredentialBarProps {
@@ -20,7 +21,7 @@ export interface CredentialBarProps {
 
 const defaultCredentials: Credential[] = [
   { logo: '/logos/nid-light.svg', lightLogo: '/logos/nid-dark.svg', name: 'NID Gandhinagar', role: 'Graduate' },
-  { logo: '/logos/isbnew.svg', name: 'ISB Hyderabad', role: 'Product' },
+  { logo: '/logos/isbnew.svg', name: 'ISB Hyderabad', role: 'Product', hoverFilter: 'brightness(0) invert(27%) sepia(83%) saturate(1500%) hue-rotate(185deg) brightness(92%)' },
   { logo: '/logos/infosys.svg', lightLogo: '/logos/infosys-dark.svg', name: 'Infosys', role: 'Former' },
   { logo: '/logos/air-india.svg', lightLogo: '/logos/air-india-dark.svg', name: 'Air India', role: 'Current', scale: 1.4 },
 ];
@@ -120,7 +121,7 @@ export function CredentialBar({
             variants={{
               hover: {
                 opacity: 0.9,
-                filter: 'none',
+                filter: cred.hoverFilter || 'none',
               },
             }}
             style={{
