@@ -649,11 +649,14 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
 
                     </>
                   ) : null}
+                </div>
+              </div>
+            </div>
+          </div>
 
-                  {/* Floating Glass Panel - Parallax FORWARD */}
-                  <div
-                    data-atropos-offset="4"
-                    style={{
+          {/* Floating Glass Panel - Static (no 3D tilt) */}
+          <div
+            style={{
                       position: 'absolute',
                       bottom: isMobile ? '18%' : '15%',
                       right: isMobile ? '5%' : '8%',
@@ -709,7 +712,6 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
                     {/* Title or Logo */}
                     {project.id === 'air-india' ? (
                       <div
-                        data-atropos-offset="2"
                         style={{ margin: '0 0 0.875rem 0' }}
                       >
                         <Image
@@ -725,7 +727,6 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
                       </div>
                     ) : (
                       <h2
-                        data-atropos-offset="2"
                         style={{
                           fontSize: isMobile ? '1.75rem' : 'clamp(1.875rem, 3vw, 2.5rem)',
                           fontWeight: '300',
@@ -796,7 +797,6 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
                     <Link
                       href={project.link}
                       draggable="false"
-                      data-atropos-offset="3"
                       onMouseEnter={() => setIsButtonHovered(true)}
                       onMouseLeave={() => setIsButtonHovered(false)}
                       style={{
@@ -836,10 +836,6 @@ const ConceptWorkPlaceholder = forwardRef<HTMLDivElement, Props>(
                         }}
                       />
                     </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
