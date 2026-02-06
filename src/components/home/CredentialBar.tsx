@@ -20,7 +20,7 @@ export interface CredentialBarProps {
 
 const defaultCredentials: Credential[] = [
   { logo: '/logos/nid-light.svg', lightLogo: '/logos/nid-dark.svg', name: 'NID Gandhinagar', role: 'Graduate' },
-  { logo: '/logos/ISB.jpeg', name: 'ISB Hyderabad', role: 'Product', isPhoto: true },
+  { logo: '/logos/isbnew.svg', name: 'ISB Hyderabad', role: 'Product' },
   { logo: '/logos/infosys.svg', lightLogo: '/logos/infosys-dark.svg', name: 'Infosys', role: 'Former' },
   { logo: '/logos/air-india.svg', lightLogo: '/logos/air-india-dark.svg', name: 'Air India', role: 'Current', scale: 1.4 },
 ];
