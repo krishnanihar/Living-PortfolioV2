@@ -195,18 +195,22 @@ export function ClearaHeroCard() {
                 />
               </div>
 
-              {/* Glass Info Panel - Parallax FORWARD */}
-              <div
-                data-atropos-offset="4"
-                style={{
-                  position: 'absolute',
-                  bottom: isMobile ? '6%' : '10%',
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Glass Info Panel - Static (no 3D tilt) */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: isMobile ? '6%' : '10%',
                   left: isMobile ? '0.5rem' : 'auto',
                   right: isMobile ? '0.5rem' : '6%',
                   zIndex: 10,
                   width: isMobile ? 'auto' : 'clamp(320px, 26vw, 400px)',
                   padding: isMobile ? '1.5rem' : '2rem 2.5rem',
-                  pointerEvents: 'auto',
+                  pointerEvents: 'none',
                   // Cream-tinted glassmorphism
                   background: `
                     linear-gradient(135deg,
@@ -323,6 +327,7 @@ export function ClearaHeroCard() {
                     boxShadow: isButtonHovered
                       ? `0 8px 24px rgba(${lavenderRgb}, 0.2)`
                       : 'none',
+                    pointerEvents: 'auto',
                   }}
                 >
                   View Case Study
@@ -334,10 +339,6 @@ export function ClearaHeroCard() {
                     }}
                   />
                 </Link>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

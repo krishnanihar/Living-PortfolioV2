@@ -163,12 +163,16 @@ export function MetamorphicHeroCard() {
                 />
               </div>
 
-              {/* Floating Glass Panel - Parallax FORWARD */}
-              <div
-                data-atropos-offset="4"
-                style={{
-                  position: 'absolute',
-                  bottom: isMobile ? '6%' : '3%',
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Floating Glass Panel - Static (no 3D tilt) */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: isMobile ? '6%' : '3%',
                   left: isMobile ? '0.5rem' : 'auto',
                   right: isMobile ? '0.5rem' : '2%',
                   width: isMobile ? 'auto' : 'clamp(340px, 32vw, 420px)',
@@ -185,7 +189,7 @@ export function MetamorphicHeroCard() {
                     inset 0 1px 0 var(--glass-10),
                     0 0 80px rgba(${brandRgb}, 0.08)
                   `,
-                  pointerEvents: 'auto',
+                  pointerEvents: 'none',
                 }}
               >
                 {/* Category Tag */}
@@ -223,7 +227,6 @@ export function MetamorphicHeroCard() {
 
                 {/* Project Title */}
                 <h2
-                  data-atropos-offset="2"
                   style={{
                     fontSize: isMobile ? '1.75rem' : '2.25rem',
                     fontWeight: '300',
@@ -315,6 +318,7 @@ export function MetamorphicHeroCard() {
                     textDecoration: 'none',
                     position: 'relative',
                     zIndex: 20,
+                    pointerEvents: 'auto',
                   }}
                 >
                   View Case Study
@@ -326,10 +330,6 @@ export function MetamorphicHeroCard() {
                     }}
                   />
                 </Link>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
