@@ -11,9 +11,9 @@ import ConceptStatement from './ConceptStatement';
 import ConceptWorkStack from './ConceptWorkStack';
 import ConceptFooter from './ConceptFooter';
 
-// Dynamic import for HeroParticleSystem (no SSR - uses Three.js)
-const HeroParticleSystem = dynamic(
-  () => import('@/components/effects/HeroParticleSystem'),
+// Ambient hero background (CSS-only, replaces GPGPU particles)
+const AmbientHeroBackground = dynamic(
+  () => import('@/components/effects/AmbientHeroBackground'),
   { ssr: false }
 );
 
@@ -96,11 +96,8 @@ export default function ConceptPage() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
-      {/* Particle background - fixed, full viewport */}
-      <HeroParticleSystem
-        starOpacity={0.35}
-        scrollProgress={progress}
-      />
+      {/* Ambient warm glow background — fixed, full viewport */}
+      <AmbientHeroBackground />
 
       {/* Navigation - fixed */}
       <PortfolioNavigation />

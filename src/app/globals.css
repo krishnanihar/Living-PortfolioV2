@@ -9,6 +9,19 @@
   inherits: false;
 }
 
+/* === AMBIENT HERO BACKGROUND — @property for GPU-animated gradients === */
+@property --glow-hue {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@property --glow-opacity {
+  syntax: "<number>";
+  initial-value: 0.12;
+  inherits: false;
+}
+
 /* === VANILLA JS DESIGN TOKEN SYSTEM === */
 
 /*
@@ -3775,6 +3788,138 @@ select {
   }
 
   .case-study-auto-scroll {
+    animation: none !important;
+  }
+}
+
+/* =========================================================
+   AMBIENT HERO BACKGROUND
+   Warm editorial glow — replaces GPGPU particle system
+   Three layers: radial gradients, film grain, floating orbs
+   ========================================================= */
+
+/* Layer 1: Warm ambient glow — @property-driven radial gradients */
+.ambient-glow {
+  background:
+    radial-gradient(
+      ellipse 60% 50% at 55% 40%,
+      rgba(217, 119, 87, 0.10) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 50% 45% at 30% 70%,
+      rgba(139, 92, 246, 0.05) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 40% 35% at 75% 80%,
+      rgba(59, 130, 246, 0.04) 0%,
+      transparent 55%
+    );
+  animation: ambientShift 40s ease-in-out infinite alternate;
+}
+
+@keyframes ambientShift {
+  0% {
+    --glow-hue: 0deg;
+    --glow-opacity: 0.10;
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.85;
+  }
+  100% {
+    --glow-hue: 25deg;
+    --glow-opacity: 0.14;
+    opacity: 1;
+  }
+}
+
+/* Layer 3: Floating orbs — CSS transform animation */
+.ambient-orb-1 {
+  background: radial-gradient(circle, rgba(217, 119, 87, 0.6) 0%, rgba(196, 101, 74, 0.2) 40%, transparent 70%);
+  animation: ambientFloat1 35s ease-in-out infinite;
+}
+
+.ambient-orb-2 {
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.5) 0%, rgba(99, 62, 196, 0.15) 40%, transparent 70%);
+  animation: ambientFloat2 45s ease-in-out infinite;
+}
+
+@keyframes ambientFloat1 {
+  0%, 100% {
+    transform: translate(-50%, -50%) translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(-50%, -50%) translate(30px, -25px) scale(1.05);
+  }
+  50% {
+    transform: translate(-50%, -50%) translate(-20px, 15px) scale(0.95);
+  }
+  75% {
+    transform: translate(-50%, -50%) translate(15px, 20px) scale(1.02);
+  }
+}
+
+@keyframes ambientFloat2 {
+  0%, 100% {
+    transform: translate(-50%, 50%) translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(-50%, 50%) translate(-25px, -15px) scale(1.04);
+  }
+  66% {
+    transform: translate(-50%, 50%) translate(20px, 10px) scale(0.97);
+  }
+}
+
+/* Light theme: warm tinted glows on cream #faf9f5 background.
+   multiply/screen blend modes wash out on near-white, so use
+   normal blend + higher opacity + deeper hue values. */
+[data-theme="light"] .ambient-glow {
+  background:
+    radial-gradient(
+      ellipse 65% 55% at 55% 40%,
+      rgba(193, 95, 60, 0.12) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 55% 50% at 30% 70%,
+      rgba(139, 92, 246, 0.08) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 45% 40% at 75% 80%,
+      rgba(59, 130, 246, 0.06) 0%,
+      transparent 50%
+    );
+}
+
+[data-theme="light"] .ambient-orb-1 {
+  background: radial-gradient(circle, rgba(193, 95, 60, 0.45) 0%, rgba(193, 95, 60, 0.15) 40%, transparent 70%);
+  mix-blend-mode: normal;
+  opacity: 0.15;
+}
+
+[data-theme="light"] .ambient-orb-2 {
+  background: radial-gradient(circle, rgba(109, 72, 186, 0.4) 0%, rgba(109, 72, 186, 0.12) 40%, transparent 70%);
+  mix-blend-mode: normal;
+  opacity: 0.10;
+}
+
+[data-theme="light"] .ambient-grain {
+  opacity: 0.04;
+  mix-blend-mode: soft-light;
+}
+
+/* Reduced motion: disable floating orbs and glow animation */
+@media (prefers-reduced-motion: reduce) {
+  .ambient-orb-1,
+  .ambient-orb-2 {
+    animation: none !important;
+  }
+
+  .ambient-glow {
     animation: none !important;
   }
 }
