@@ -85,8 +85,6 @@ export function AirIndiaHeroCard() {
           height: isMobile ? '85vh' : 'clamp(600px, 75vh, 800px)',
           width: '100%',
           position: 'relative',
-          overflow: 'hidden',
-          borderRadius: '24px',
           pointerEvents: 'auto',
         }}
       >
@@ -99,7 +97,7 @@ export function AirIndiaHeroCard() {
                 width: '100%',
                 height: '100%',
                 position: 'relative',
-                overflow: 'hidden',
+                overflow: 'visible',
                 background: 'var(--bg-primary)',
                 borderRadius: '24px',
                 border: '1px solid var(--border-primary)',
@@ -174,14 +172,14 @@ export function AirIndiaHeroCard() {
                   />
                 </div>
 
-                {/* LAYER 3: Aircraft */}
+                {/* LAYER 3: Aircraft - breaks out of card for visual effect */}
                 <div
                   data-atropos-offset="-2"
                   style={{
                     position: 'absolute',
                     inset: '-15%',
                     zIndex: 3,
-                    overflow: 'hidden',
+                    overflow: 'visible',
                     pointerEvents: 'none',
                   }}
                 >

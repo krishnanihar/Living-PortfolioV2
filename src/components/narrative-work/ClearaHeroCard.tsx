@@ -206,12 +206,12 @@ export function ClearaHeroCard() {
       <div
         style={{
           position: 'absolute',
-          bottom: isMobile ? '6%' : '10%',
+          bottom: isMobile ? '6%' : '3%',
                   left: isMobile ? '0.5rem' : 'auto',
-                  right: isMobile ? '0.5rem' : '6%',
+                  right: isMobile ? '0.5rem' : '2%',
                   zIndex: 10,
-                  width: isMobile ? 'auto' : 'clamp(320px, 26vw, 400px)',
-                  padding: isMobile ? '1.5rem' : '2rem 2.5rem',
+                  width: isMobile ? 'auto' : 'clamp(340px, 32vw, 420px)',
+                  padding: isMobile ? '1.75rem' : '2.25rem',
                   pointerEvents: 'none',
                   // Cream-tinted glassmorphism
                   background: `
