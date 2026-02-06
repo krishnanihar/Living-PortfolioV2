@@ -137,15 +137,14 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
 
   return (
     <motion.nav
-      className="nav-floating-wrapper"
-      data-floating={isFloating}
       role="navigation"
       aria-label="Main navigation"
       style={{
         position: 'fixed',
         top,
-        left: '50%',
-        x: '-50%',
+        left: 0,
+        right: 0,
+        margin: '0 auto',
         zIndex: 9999,
         height,
         width: '100%',
@@ -153,9 +152,26 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
         borderRadius,
         overflow: 'visible',
         pointerEvents: 'auto',
+        transition: shouldReduceMotion
+          ? 'max-width 0s'
+          : 'max-width 0.5s var(--ease-premium)',
       }}
     >
-      {/* Inner content container — z-index above pseudo-element glass layers */}
+      {/* Glass layer — SEPARATE element from motion wrapper to avoid
+          Chromium bug: transform + backdrop-filter don't composite together.
+          Framer Motion injects transform on motion.nav, so backdrop-filter
+          must live on this plain div instead. */}
+      <div
+        className="nav-floating-wrapper"
+        data-floating={isFloating}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          borderRadius: 'inherit',
+        }}
+      />
+
+      {/* Content container — above glass layer */}
       <div style={{
         position: 'relative',
         zIndex: 2,
@@ -184,7 +200,6 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
             transition: 'background 0.6s ease',
             pointerEvents: 'none',
             zIndex: 0,
-            transform: 'translate3d(0, 0, 0)',
           }}
         />
 
