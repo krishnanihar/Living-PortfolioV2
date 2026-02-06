@@ -152,12 +152,7 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
         maxWidth: isFloating ? 'min(90vw, 1200px)' : '100%',
         borderRadius,
         overflow: 'visible',
-        willChange: 'transform',
-        isolation: 'isolate',
         pointerEvents: 'auto',
-        transition: shouldReduceMotion
-          ? 'max-width 0s'
-          : 'max-width 0.5s var(--ease-premium)',
       }}
     >
       {/* Inner content container — z-index above pseudo-element glass layers */}
