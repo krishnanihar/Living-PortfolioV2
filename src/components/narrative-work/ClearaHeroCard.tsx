@@ -85,11 +85,13 @@ export function ClearaHeroCard() {
           height: isMobile ? '85vh' : 'clamp(600px, 75vh, 800px)',
           width: '100%',
           position: 'relative',
+          overflow: 'hidden',
+          borderRadius: '24px',
           pointerEvents: 'auto',
         }}
       >
-        <div className="atropos-scale" style={{ height: '100%', overflow: 'visible', pointerEvents: 'none' }}>
-          <div ref={rotateRef} className="atropos-rotate" style={{ height: '100%', overflow: 'visible', pointerEvents: 'all' }}>
+        <div className="atropos-scale" style={{ height: '100%', pointerEvents: 'none' }}>
+          <div ref={rotateRef} className="atropos-rotate" style={{ height: '100%', pointerEvents: 'all' }}>
             {/* Visual card with cream background */}
             <div
               className="atropos-inner"

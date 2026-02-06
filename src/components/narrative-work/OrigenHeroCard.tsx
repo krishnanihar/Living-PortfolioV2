@@ -83,11 +83,13 @@ export function OrigenHeroCard() {
           height: isMobile ? '85vh' : 'clamp(600px, 75vh, 800px)',
           width: '100%',
           position: 'relative',
+          overflow: 'hidden',
+          borderRadius: '24px',
           pointerEvents: 'auto',
         }}
       >
-        <div className="atropos-scale" style={{ height: '100%', overflow: 'visible', pointerEvents: 'none' }}>
-          <div ref={rotateRef} className="atropos-rotate" style={{ height: '100%', overflow: 'visible', pointerEvents: 'all' }}>
+        <div className="atropos-scale" style={{ height: '100%', pointerEvents: 'none' }}>
+          <div ref={rotateRef} className="atropos-rotate" style={{ height: '100%', pointerEvents: 'all' }}>
             {/* Visual card with background/border */}
             <div
               className="atropos-inner"
@@ -95,7 +97,7 @@ export function OrigenHeroCard() {
                 width: '100%',
                 height: '100%',
                 position: 'relative',
-                overflow: 'visible',
+                overflow: 'hidden',
                 background: 'var(--bg-primary)',
                 borderRadius: '24px',
                 border: '1px solid var(--border-primary)',

@@ -85,11 +85,13 @@ export function AirIndiaHeroCard() {
           height: isMobile ? '85vh' : 'clamp(600px, 75vh, 800px)',
           width: '100%',
           position: 'relative',
+          overflow: 'hidden',
+          borderRadius: '24px',
           pointerEvents: 'auto',
         }}
       >
-        <div className="atropos-scale" style={{ height: '100%', overflow: 'visible', pointerEvents: 'none' }}>
-          <div ref={rotateRef} className="atropos-rotate" style={{ height: '100%', overflow: 'visible', pointerEvents: 'all' }}>
+        <div className="atropos-scale" style={{ height: '100%', pointerEvents: 'none' }}>
+          <div ref={rotateRef} className="atropos-rotate" style={{ height: '100%', pointerEvents: 'all' }}>
             {/* Visual card with background/border - sized to original dimensions */}
             <div
               className="atropos-inner"
@@ -97,7 +99,7 @@ export function AirIndiaHeroCard() {
                 width: '100%',
                 height: '100%',
                 position: 'relative',
-                overflow: 'visible',
+                overflow: 'hidden',
                 background: 'var(--bg-primary)',
                 borderRadius: '24px',
                 border: '1px solid var(--border-primary)',
@@ -172,14 +174,14 @@ export function AirIndiaHeroCard() {
                   />
                 </div>
 
-                {/* LAYER 3: Aircraft - breaks out of card, behind glass panel */}
+                {/* LAYER 3: Aircraft */}
                 <div
                   data-atropos-offset="-2"
                   style={{
                     position: 'absolute',
                     inset: '-15%',
                     zIndex: 3,
-                    overflow: 'visible',
+                    overflow: 'hidden',
                     pointerEvents: 'none',
                   }}
                 >
