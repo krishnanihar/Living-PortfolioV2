@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion';
+import { motion, useScroll, useReducedMotion } from 'framer-motion';
 import { Briefcase, User, Moon, Sun } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
 import { MobileBottomNav } from './MobileBottomNav';
@@ -51,24 +51,9 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
   const { scrollY } = useScroll();
   const shouldReduceMotion = useReducedMotion();
 
-  // Spring config: instant for reduced motion, smooth otherwise
-  const navSpring = shouldReduceMotion
-    ? { stiffness: 1000, damping: 100, mass: 0.1 }
-    : { stiffness: 200, damping: 30, mass: 0.8 };
-
-  // Scroll -> spring-interpolated style values
-  const rawTop = useTransform(scrollY, [0, SCROLL_THRESHOLD], [0, 12]);
-  const top = useSpring(rawTop, navSpring);
-
-  const rawBorderRadius = useTransform(scrollY, [0, SCROLL_THRESHOLD], [0, 20]);
-  const borderRadius = useSpring(rawBorderRadius, navSpring);
-
-  const rawHeight = useTransform(
-    scrollY,
-    [0, SCROLL_THRESHOLD],
-    [navHeight.normal, navHeight.scrolled]
-  );
-  const height = useSpring(rawHeight, navSpring);
+  // No spring/useTransform — plain CSS transitions handle animation
+  // This avoids Framer Motion injecting `transform` on the nav element,
+  // which kills `backdrop-filter` in Chromium (bug #40175472).
 
   // Flip boolean at scroll threshold (for CSS glass toggle)
   useEffect(() => {
@@ -136,25 +121,23 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
   }
 
   return (
-    <motion.nav
+    <nav
       role="navigation"
       aria-label="Main navigation"
+      className="nav-wrapper"
       style={{
         position: 'fixed',
-        top,
+        top: isFloating ? 12 : 0,
         left: 0,
         right: 0,
         margin: '0 auto',
         zIndex: 9999,
-        height,
+        height: isFloating ? navHeight.scrolled : navHeight.normal,
         width: '100%',
         maxWidth: isFloating ? 'min(90vw, 1200px)' : '100%',
-        borderRadius,
+        borderRadius: isFloating ? 20 : 0,
         overflow: 'visible',
         pointerEvents: 'auto',
-        transition: shouldReduceMotion
-          ? 'max-width 0s'
-          : 'max-width 0.5s var(--ease-premium)',
       }}
     >
       {/* Glass layer — SEPARATE element from motion wrapper to avoid
@@ -401,6 +384,6 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
           </div>
         </div>
       </div>
-    </motion.nav>
+    </nav>
   );
 }

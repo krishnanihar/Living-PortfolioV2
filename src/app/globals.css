@@ -136,6 +136,7 @@ h1, h2, h3, h4, h5, h6 {
   --border-secondary: rgba(228, 227, 222, 0.08);
   --border-hover: rgba(228, 227, 222, 0.12);
   --border-focus: rgba(228, 227, 222, 0.24);
+  --mystical-border: rgba(228, 227, 222, 0.06);
 
   /* Text Colors - Complete Opacity Scale */
   --text-primary: #e4e3de;
@@ -391,6 +392,7 @@ h1, h2, h3, h4, h5, h6 {
   --border-secondary: rgba(20, 20, 19, 0.08);
   --border-hover: rgba(20, 20, 19, 0.12);
   --border-focus: rgba(20, 20, 19, 0.24);
+  --mystical-border: rgba(20, 20, 19, 0.06);
 
   /* Text Colors - Complete Opacity Scale (Light Mode) */
   --text-primary: #141413;
@@ -845,6 +847,22 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.08),
     0 1px 0 rgba(0, 0, 0, 0.05) inset;
+}
+
+/* === Nav Wrapper — position/size transitions (NO transform!) === */
+/* Plain <nav> — no Framer Motion, no transform, so backdrop-filter works */
+.nav-wrapper {
+  transition:
+    top 0.5s var(--ease-premium),
+    height 0.5s var(--ease-premium),
+    max-width 0.5s var(--ease-premium),
+    border-radius 0.5s var(--ease-premium);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-wrapper {
+    transition: none !important;
+  }
 }
 
 /* === Floating Nav State System — Liquid Glass === */
