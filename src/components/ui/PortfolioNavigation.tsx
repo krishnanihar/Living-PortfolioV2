@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion, useScroll, useReducedMotion } from 'framer-motion';
+import { useScroll } from 'framer-motion';
 import { Briefcase, User, Moon, Sun } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
 import { MobileBottomNav } from './MobileBottomNav';
@@ -49,11 +49,9 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
 
   // Framer Motion scroll pipeline
   const { scrollY } = useScroll();
-  const shouldReduceMotion = useReducedMotion();
-
-  // No spring/useTransform — plain CSS transitions handle animation
-  // This avoids Framer Motion injecting `transform` on the nav element,
-  // which kills `backdrop-filter` in Chromium (bug #40175472).
+  // No Framer Motion on <nav> — plain CSS transitions handle animation.
+  // This avoids `transform` on the nav, which kills `backdrop-filter`
+  // in Chromium (bug #40175472).
 
   // Flip boolean at scroll threshold (for CSS glass toggle)
   useEffect(() => {
@@ -140,13 +138,10 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
         pointerEvents: 'auto',
       }}
     >
-      {/* Glass layer — SEPARATE element from motion wrapper to avoid
-          Chromium bug: transform + backdrop-filter don't composite together.
-          Framer Motion injects transform on motion.nav, so backdrop-filter
-          must live on this plain div instead. */}
+      {/* Glass layer — always on, no data-floating toggle */}
       <div
         className="nav-floating-wrapper"
-        data-floating={isFloating}
+        data-floating="true"
         style={{
           position: 'absolute',
           inset: 0,
@@ -281,43 +276,6 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
                     }
                   }}
                 >
-                  {/* Animated active indicator — glassmorphic pill with aurora mesh */}
-                  {active && (
-                    <motion.div
-                      layoutId="nav-active-indicator"
-                      className="nav-active-pill"
-                      style={{
-                        position: 'absolute',
-                        inset: 0,
-                        borderRadius: '10px',
-                        overflow: 'hidden',
-                      }}
-                      transition={{
-                        type: 'spring',
-                        stiffness: 400,
-                        damping: 30,
-                      }}
-                    >
-                      {/* Aurora mesh glow */}
-                      <div
-                        style={{
-                          position: 'absolute',
-                          inset: '-20px',
-                          background: `
-                            radial-gradient(ellipse at 20% 50%, var(--text-25), transparent 60%),
-                            radial-gradient(ellipse at 80% 50%, var(--text-20), transparent 60%),
-                            radial-gradient(ellipse at 50% 20%, var(--text-15), transparent 50%),
-                            linear-gradient(135deg, var(--aurora-gradient-2) 0%, transparent 50%, var(--aurora-gradient-2) 100%)
-                          `,
-                          backgroundSize: '250% 250%',
-                          animation: shouldReduceMotion ? 'none' : 'auroraDrift 4s ease-in-out infinite',
-                          filter: 'blur(20px)',
-                          pointerEvents: 'none',
-                        }}
-                      />
-                    </motion.div>
-                  )}
-
                   {/* Nav item content */}
                   <div style={{
                     position: 'relative',
