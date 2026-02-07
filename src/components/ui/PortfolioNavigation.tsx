@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useScroll } from 'framer-motion';
 import { Briefcase, User, Moon, Sun } from 'lucide-react';
 import { useTheme } from '@/components/effects/ThemeProvider';
 import { MobileBottomNav } from './MobileBottomNav';
@@ -47,17 +46,12 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
   const pathname = usePathname();
   const { resolvedTheme, toggleTheme } = useTheme();
 
-  // Framer Motion scroll pipeline
-  const { scrollY } = useScroll();
-  // No Framer Motion on <nav> — plain CSS transitions handle animation.
-  // This avoids `transform` on the nav, which kills `backdrop-filter`
-  // in Chromium (bug #40175472).
-
-  // Flip boolean at scroll threshold (for CSS glass toggle)
+  // Scroll detection for floating state
   useEffect(() => {
-    const unsub = scrollY.on('change', (v) => setIsFloating(v > SCROLL_THRESHOLD));
-    return unsub;
-  }, [scrollY]);
+    const onScroll = () => setIsFloating(window.scrollY > SCROLL_THRESHOLD);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   // Support snapIndex prop: if snapIndex > 0, treat as floating
   useEffect(() => {
@@ -119,228 +113,314 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
   }
 
   return (
-    <nav
-      role="navigation"
-      aria-label="Main navigation"
-      className="nav-wrapper"
-      style={{
-        position: 'fixed',
-        top: isFloating ? 12 : 0,
-        left: 0,
-        right: 0,
-        margin: '0 auto',
-        zIndex: 9999,
-        height: isFloating ? navHeight.scrolled : navHeight.normal,
-        width: '100%',
-        maxWidth: isFloating ? 'min(90vw, 1200px)' : '100%',
-        borderRadius: isFloating ? 20 : 0,
-        overflow: 'visible',
-        pointerEvents: 'auto',
-      }}
-    >
-      {/* Glass layer — always on */}
-      <div
-        className="nav-floating-wrapper"
+    <>
+      <style jsx global>{`
+        @keyframes auroraDrift {
+          0%, 100% {
+            background-position: 0% 50%;
+            filter: blur(20px) saturate(1);
+          }
+          25% {
+            background-position: 100% 25%;
+            filter: blur(16px) saturate(1.2);
+          }
+          50% {
+            background-position: 100% 75%;
+            filter: blur(20px) saturate(1);
+          }
+          75% {
+            background-position: 0% 100%;
+            filter: blur(16px) saturate(1.2);
+          }
+        }
+
+        .nav-item:hover .hover-glow {
+          opacity: 1 !important;
+        }
+      `}</style>
+
+      <nav
+        role="navigation"
+        aria-label="Main navigation"
+        className="nav-wrapper"
         style={{
+          position: 'fixed',
+          top: isFloating ? 12 : 0,
+          left: 0,
+          right: 0,
+          zIndex: 9999,
+          height: isFloating ? navHeight.scrolled : navHeight.normal,
+          width: '100%',
+          maxWidth: isFloating ? 'min(90vw, 1200px)' : '100%',
+          margin: '0 auto',
+          borderRadius: isFloating ? 20 : 0,
+          overflow: 'visible',
+          pointerEvents: 'auto',
+        }}
+      >
+        {/* Backdrop blur layer — inline styles (original working approach) */}
+        <div style={{
           position: 'absolute',
           inset: 0,
           borderRadius: 'inherit',
-        }}
-      />
+          background: 'transparent',
+          backdropFilter: 'blur(20px) saturate(120%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(120%)',
+          borderBottom: '1px solid transparent',
+          boxShadow: 'none',
+          pointerEvents: 'none',
+        }} />
 
-      {/* Content container — above glass layer */}
-      <div style={{
-        position: 'relative',
-        zIndex: 2,
-        height: '100%',
-        maxWidth: '1400px',
-        margin: '0 auto',
-        padding: '0 clamp(1rem, 3vw, 2.5rem)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}>
-        {/* Ambient Aurora Reflection - route-aware glow across entire nav */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            borderRadius: 'inherit',
-            background: isActive('/')
-              ? 'radial-gradient(ellipse 600px 200px at 15% 50%, var(--text-18), var(--text-10) 40%, transparent 70%)'
-              : isActive('/work')
-              ? 'radial-gradient(ellipse 600px 200px at 70% 50%, var(--text-18), var(--text-10) 40%, transparent 70%)'
-              : isActive('/about')
-              ? 'radial-gradient(ellipse 600px 200px at 78% 50%, var(--text-18), var(--text-10) 40%, transparent 70%)'
-              : 'none',
-            filter: 'blur(50px)',
-            transition: 'background 0.6s ease',
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
-        />
-
-        {/* Logo */}
-        <Link
-          href="/"
-          style={{ textDecoration: 'none', position: 'relative', zIndex: 1 }}
-          className="rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--text-50)]"
-        >
-          <div
-            style={{
-              fontSize: '0.925rem',
-              fontWeight: isActive('/') ? '600' : '500',
-              letterSpacing: '0.08em',
-              transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-              position: 'relative',
-              cursor: 'pointer',
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)';
-              const span = e.currentTarget.querySelector('span') as HTMLElement;
-              if (span) {
-                span.style.backgroundPosition = '100% 50%';
-                span.style.filter = 'var(--logo-shadow-hover)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
-              const span = e.currentTarget.querySelector('span') as HTMLElement;
-              if (span) {
-                span.style.backgroundPosition = '0% 50%';
-                span.style.filter = isActive('/')
-                  ? 'var(--logo-shadow-active)'
-                  : 'var(--logo-shadow-inactive)';
-              }
-            }}
-          >
-            <span
-              className="font-heading"
-              style={{
-                display: 'inline-block',
-                fontStyle: 'italic',
-                letterSpacing: '0.04em',
-                background: isActive('/') ? 'var(--logo-gradient-active)' : 'var(--logo-gradient-inactive)',
-                backgroundSize: '200% 100%',
-                backgroundPosition: '0% 50%',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                filter: isActive('/') ? 'var(--logo-shadow-active)' : 'var(--logo-shadow-inactive)',
-                transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
-              }}
-            >
-              NIHAR
-            </span>
-          </div>
-        </Link>
-
-        {/* Right side: nav items + theme toggle */}
         <div style={{
+          position: 'relative',
+          height: '100%',
+          maxWidth: '1400px',
+          margin: '0 auto',
+          padding: '0 clamp(1rem, 3vw, 2.5rem)',
           display: 'flex',
           alignItems: 'center',
-          gap: '2rem',
+          justifyContent: 'space-between',
         }}>
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const active = isActive(item.href);
-
-            return (
-              <Link
-                key={item.name}
-                href={item.href}
-                style={{ textDecoration: 'none', position: 'relative', zIndex: 1 }}
-                aria-current={active ? 'page' : undefined}
-                className="rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--text-50)]"
-              >
-                <div
-                  style={{
-                    position: 'relative',
-                    padding: '0.5rem 1rem',
-                    fontSize: '0.9375rem',
-                    fontWeight: 500,
-                    color: active ? 'var(--text-95)' : 'var(--text-70)',
-                    transition: 'color 0.3s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!active) {
-                      (e.currentTarget as HTMLElement).style.color = 'var(--text-90)';
-                      (e.currentTarget as HTMLElement).style.background = 'var(--glass-04)';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!active) {
-                      (e.currentTarget as HTMLElement).style.color = 'var(--text-70)';
-                      (e.currentTarget as HTMLElement).style.background = 'transparent';
-                    }
-                  }}
-                >
-                  {/* Nav item content */}
-                  <div style={{
-                    position: 'relative',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    zIndex: 1,
-                  }}>
-                    <Icon size={15} />
-                    <span className="font-heading">{item.name}</span>
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-
-          {/* Separator */}
-          <div style={{
-            width: '1px',
-            height: '18px',
-            background: 'var(--border-primary)',
-            margin: '0 0.5rem',
-          }} />
-
-          {/* Theme toggle */}
+          {/* Ambient Aurora Reflection - route-aware glow across entire nav */}
           <div
-            onClick={toggleTheme}
-            role="button"
-            aria-label="Toggle theme"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                toggleTheme();
-              }
-            }}
-            className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--text-50)]"
             style={{
-              position: 'relative',
-              borderRadius: '50%',
-              width: '34px',
-              height: '34px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--text-secondary)',
-              background: 'var(--surface-primary)',
-              backdropFilter: 'blur(20px) brightness(0.8)',
-              WebkitBackdropFilter: 'blur(20px) brightness(0.8)',
-              border: '1px solid var(--border-primary)',
-              transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-              cursor: 'pointer',
+              position: 'absolute',
+              inset: 0,
+              borderRadius: 'inherit',
+              background: isActive('/')
+                ? 'radial-gradient(ellipse 600px 200px at 15% 50%, var(--text-18), var(--text-10) 40%, transparent 70%)'
+                : isActive('/work')
+                ? 'radial-gradient(ellipse 600px 200px at 70% 50%, var(--text-18), var(--text-10) 40%, transparent 70%)'
+                : isActive('/about')
+                ? 'radial-gradient(ellipse 600px 200px at 78% 50%, var(--text-18), var(--text-10) 40%, transparent 70%)'
+                : 'none',
+              filter: 'blur(50px)',
+              transition: 'background 0.6s ease',
+              pointerEvents: 'none',
+              zIndex: 0,
             }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.transform = 'scale(1.1) rotate(15deg)';
-              (e.currentTarget as HTMLElement).style.background = 'var(--surface-secondary)';
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.transform = 'scale(1) rotate(0)';
-              (e.currentTarget as HTMLElement).style.background = 'var(--surface-primary)';
-            }}
+          />
+
+          {/* Logo */}
+          <Link
+            href="/"
+            style={{ textDecoration: 'none', position: 'relative', zIndex: 1 }}
+            className="rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--text-50)]"
           >
-            {resolvedTheme === 'dark' ? <Moon size={15} /> : <Sun size={15} />}
+            <div
+              className="nav-item"
+              style={{
+                fontSize: '0.925rem',
+                fontWeight: isActive('/') ? '600' : '500',
+                letterSpacing: '0.08em',
+                transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                position: 'relative',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)';
+                const span = e.currentTarget.querySelector('span') as HTMLElement;
+                if (span) {
+                  span.style.backgroundPosition = '100% 50%';
+                  span.style.filter = 'var(--logo-shadow-hover)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
+                const span = e.currentTarget.querySelector('span') as HTMLElement;
+                if (span) {
+                  span.style.backgroundPosition = '0% 50%';
+                  span.style.filter = isActive('/')
+                    ? 'var(--logo-shadow-active)'
+                    : 'var(--logo-shadow-inactive)';
+                }
+              }}
+            >
+              <span
+                className="font-heading"
+                style={{
+                  display: 'inline-block',
+                  fontStyle: 'italic',
+                  letterSpacing: '0.04em',
+                  background: isActive('/') ? 'var(--logo-gradient-active)' : 'var(--logo-gradient-inactive)',
+                  backgroundSize: '200% 100%',
+                  backgroundPosition: '0% 50%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  filter: isActive('/') ? 'var(--logo-shadow-active)' : 'var(--logo-shadow-inactive)',
+                  transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+                }}
+              >
+                NIHAR
+              </span>
+
+              {/* Radial Glow - Only for inactive home on hover */}
+              {!isActive('/') && (
+                <div
+                  className="hover-glow"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    borderRadius: '12px',
+                    background: 'radial-gradient(ellipse 90% 60% at center, var(--text-30) 0%, var(--text-12) 40%, transparent 75%)',
+                    filter: 'blur(12px)',
+                    opacity: 0,
+                    transition: 'opacity 0.3s ease',
+                    pointerEvents: 'none',
+                    zIndex: -1,
+                  }}
+                />
+              )}
+            </div>
+          </Link>
+
+          {/* Right side: nav items + theme toggle */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '2rem',
+          }}>
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const active = isActive(item.href);
+
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  style={{ textDecoration: 'none', position: 'relative', zIndex: 1 }}
+                  aria-current={active ? 'page' : undefined}
+                  className="rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--text-50)]"
+                >
+                  <div
+                    className="nav-item"
+                    style={{
+                      position: 'relative',
+                      padding: '0.75rem 1rem',
+                      fontSize: '0.9375rem',
+                      fontWeight: 500,
+                      color: active ? 'var(--text-95)' : 'var(--text-70)',
+                      transition: 'color 0.3s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!active) {
+                        (e.currentTarget as HTMLElement).style.color = 'var(--text-90)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!active) {
+                        (e.currentTarget as HTMLElement).style.color = 'var(--text-70)';
+                      }
+                    }}
+                  >
+                    {/* Nav item content */}
+                    <div style={{
+                      position: 'relative',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      zIndex: 1,
+                    }}>
+                      <Icon size={15} />
+                      <span className="font-heading">{item.name}</span>
+                    </div>
+
+                    {/* Aurora Mesh - Only for active state */}
+                    {active && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          inset: '-20px',
+                          borderRadius: '12px',
+                          background: `
+                            radial-gradient(ellipse at 20% 50%, var(--text-25), transparent 60%),
+                            radial-gradient(ellipse at 80% 50%, var(--text-20), transparent 60%),
+                            radial-gradient(ellipse at 50% 20%, var(--text-15), transparent 50%),
+                            linear-gradient(135deg, var(--aurora-gradient-2) 0%, transparent 50%, var(--aurora-gradient-2) 100%)
+                          `,
+                          backgroundSize: '250% 250%',
+                          animation: 'auroraDrift 4s ease-in-out infinite',
+                          filter: 'blur(20px)',
+                          pointerEvents: 'none',
+                          zIndex: -1,
+                        }}
+                      />
+                    )}
+
+                    {/* Radial Glow - Only for inactive items on hover */}
+                    {!active && (
+                      <div
+                        className="hover-glow"
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          borderRadius: '12px',
+                          background: 'radial-gradient(ellipse 90% 60% at center, var(--text-30) 0%, var(--text-12) 40%, transparent 75%)',
+                          filter: 'blur(12px)',
+                          opacity: 0,
+                          transition: 'opacity 0.3s ease',
+                          pointerEvents: 'none',
+                          zIndex: -1,
+                        }}
+                      />
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
+
+            {/* Separator */}
+            <div style={{
+              width: '1px',
+              height: '18px',
+              background: 'var(--border-primary)',
+              margin: '0 0.5rem',
+            }} />
+
+            {/* Theme toggle */}
+            <div
+              onClick={toggleTheme}
+              role="button"
+              aria-label="Toggle theme"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  toggleTheme();
+                }
+              }}
+              className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--text-50)]"
+              style={{
+                position: 'relative',
+                borderRadius: '50%',
+                width: '34px',
+                height: '34px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--text-secondary)',
+                background: 'var(--surface-primary)',
+                backdropFilter: 'blur(20px) brightness(0.8)',
+                WebkitBackdropFilter: 'blur(20px) brightness(0.8)',
+                border: '1px solid var(--border-primary)',
+                transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.transform = 'scale(1.1) rotate(15deg)';
+                (e.currentTarget as HTMLElement).style.background = 'var(--surface-secondary)';
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.transform = 'scale(1) rotate(0)';
+                (e.currentTarget as HTMLElement).style.background = 'var(--surface-primary)';
+              }}
+            >
+              {resolvedTheme === 'dark' ? <Moon size={15} /> : <Sun size={15} />}
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }
