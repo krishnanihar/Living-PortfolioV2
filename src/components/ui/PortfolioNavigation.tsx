@@ -138,10 +138,9 @@ export function PortfolioNavigation({ className, snapIndex }: PortfolioNavigatio
         pointerEvents: 'auto',
       }}
     >
-      {/* Glass layer — always on, no data-floating toggle */}
+      {/* Glass layer — always on */}
       <div
         className="nav-floating-wrapper"
-        data-floating="true"
         style={{
           position: 'absolute',
           inset: 0,
